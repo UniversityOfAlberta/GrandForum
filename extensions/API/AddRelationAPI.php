@@ -17,7 +17,7 @@ class AddRelationAPI extends API{
     }
 
 	function doAction($noEcho=false){
-		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
+		global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 		$me = Person::newFromId($wgUser->getId());
 
 		$person1 = Person::newFromNameLike($_POST['name1']);
@@ -31,6 +31,11 @@ class AddRelationAPI extends API{
                 echo "There is no person by the name of '{$_POST['name2']}'\n";
                 exit;
             }
+        }
+        if($person1->getId() == $person2->getId()){
+            // Don't allow the user to have a relationship with themselves
+            $wgMessage->addError("You can not have a relationship with yourself");
+            return;
         }
 		if($me->isRoleAtLeast(HQP)){
             // Actually Add the Relation

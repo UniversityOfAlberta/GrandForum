@@ -13,14 +13,28 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
+session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 date_default_timezone_set('America/Edmonton');
 if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = MW_INSTALL_PATH;
 } else {
 	$IP = dirname( __FILE__ );
+}
+
+if(!defined('TESTING')){
+    if(file_exists("$IP/test.tmp")){
+        define("TESTING", true);
+    }
+    else{
+        define("TESTING", false);
+    }
 }
 
 $path = array( $IP, "$IP/includes", "$IP/languages" );
@@ -58,12 +72,8 @@ $wgListAdminPassword    = $config->getValue("listAdminPassword");
 
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
-if(file_exists("$IP/test.tmp")){
+if(TESTING && !defined('INIT_TESTING')){
     $wgDBname = $wgTestDBname;
-    define("TESTING", true);
-}
-else{
-    define("TESTING", false);
 }
 
 # If PHP's memory limit is very low, some operations may fail.
@@ -113,12 +123,15 @@ $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;
-if(!file_exists($config->getValue('localizationCache'))){
-    mkdir($config->getValue('localizationCache'));
-}
-if(file_exists($config->getValue('localizationCache'))){
-    $wgCacheDirectory = $config->getValue('localizationCache');
-    $wgUseLocalMessageCache = true;
+if($config->getValue('localizationCache') != ""){
+    if(!file_exists($config->getValue('localizationCache')) && 
+       is_writable($config->getValue('localizationCache'))){
+        mkdir($config->getValue('localizationCache'));
+    }
+    if(file_exists($config->getValue('localizationCache'))){
+        $wgCacheDirectory = $config->getValue('localizationCache');
+        $wgUseLocalMessageCache = true;
+    }
 }
 
 ## To enable image uploads, make sure the 'images' directory
@@ -209,6 +222,8 @@ $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       EXTERNAL => 2,
                       ISAC => 3,
+                      IAC => 3,
+                      CAC => 3,
                       NCE => 4,
                       NI => 5,
                       AR => 5,
@@ -218,6 +233,8 @@ $wgRoleValues = array(INACTIVE => 0,
                       'PL' => 9,
                       TL => 11,
                       'TL' => 11,
+                      TC => 11,
+                      CF => 11,
                       RMC => 12,
                       EVALUATOR => 12,
                       BOD => 12,
@@ -226,15 +243,16 @@ $wgRoleValues = array(INACTIVE => 0,
                       SD => 13,
                       GOV => 13,
                       STAFF => 16,
-                      MANAGER => 17);
+                      MANAGER => 17,
+                      ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, NCE, NI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, NCE, NI, AR, CI, PL, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, TL, RMC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 function unaccentChars($str){
     $normalizeChars = array("'" => '',

@@ -110,14 +110,13 @@ class CCVExport extends SpecialPage {
     }
 
     static function exportXML(){
-        global $wgOut, $wgUser;
-        global $userID;
+        global $wgOut, $wgUser, $config, $userID;
         
         $person = Person::newFromId($userID);
         $personCCV = $person->getCCV();
 
         // Template Files
-        $map_file = getcwd()."/extensions/GrandObjects/Products.xml";
+        $map_file = getcwd()."/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
         $hqp_file = getcwd()."/extensions/CCVExport/templates/HQP.xml";
         $id_file =  getcwd()."/extensions/CCVExport/templates/Identification.xml";
         $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";

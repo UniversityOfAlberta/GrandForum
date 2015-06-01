@@ -148,6 +148,9 @@ class ReportXMLParser {
             if(isset($attributes->name)){
                 $this->report->setName("{$attributes->name}");
             }
+            if(isset($attributes->headerName)){
+                $this->report->setHeaderName("{$attributes->headerName}");
+            }
             if(isset($attributes->reportType)){
                 if(!defined($attributes->reportType)){
                     $this->errors[] = "Report Type '{$attributes->reportType}' does not exist for Report, using RP_RESEARCHER";

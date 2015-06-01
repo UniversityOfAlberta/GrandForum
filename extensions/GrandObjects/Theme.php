@@ -143,6 +143,27 @@ class Theme {
         $data = DBFunctions::select(array("grand_theme_leaders"),
                                     array("user_id"),
                                     array("theme" => $this->getId(),
+                                          "coordinator" => EQ("False"),
+                                          "end_date" => EQ("0000-00-00 00:00:00")));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $leader = Person::newFromId($row['user_id']);
+                $leaders[$leader->getReversedName()] = $leader;
+            }
+        }
+        return $leaders;
+    }
+    
+    /*
+     * Returns all of the leaders regardless of their type
+     * @return array An array of all leaders
+     */
+    function getCoordinators(){
+        $leaders = array();
+        $data = DBFunctions::select(array("grand_theme_leaders"),
+                                    array("user_id"),
+                                    array("theme" => $this->getId(),
+                                          "coordinator" => EQ("True"),
                                           "end_date" => EQ("0000-00-00 00:00:00")));
         if(count($data) > 0){
             foreach($data as $row){

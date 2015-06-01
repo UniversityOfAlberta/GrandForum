@@ -66,7 +66,7 @@ class AddMaterialAPI extends API{
         }
 		if(isset($_POST['id'])){
 		    if($_POST['title'] == ""){
-	            $string = "The Multimedia Story must not have an empty title";
+	            $string = "The Multimedia must not have an empty title";
 	            $wgMessage->addError($string);
 	            return $string;
 	        }
@@ -111,7 +111,7 @@ class AddMaterialAPI extends API{
 		else{
 		    //Inserting
 		    if($_POST['title'] == ""){
-	            $string = "The Multimedia Story must not have an empty title";
+	            $string = "The Multimedia must not have an empty title";
 	            $wgMessage->addError($string);
 	            return $string;
 	        }

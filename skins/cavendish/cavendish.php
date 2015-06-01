@@ -241,6 +241,7 @@ class CavendishTemplate extends QuickTemplate {
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
+		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
@@ -645,7 +646,7 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        echo "</div>";
-            if(!TESTING && $wgScriptPath != ""){
+            if(!TESTING && $wgScriptPath != "" && !DEMO){
                 exec("git rev-parse HEAD", $output);
                 $revId = @substr($output[0], 0, 10);
                 exec("git rev-parse --abbrev-ref HEAD", $output);
@@ -841,13 +842,22 @@ class CavendishTemplate extends QuickTemplate {
 	    $GLOBALS['toolbox'] = array();
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
-        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Products");
+        $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){
+		    if(isset($_GET['returnto'])){
+		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
+		    }
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
-	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
+	            // It might be worth creating an extension for this if there are more network specific customizations like this
+	            $GLOBALS['toolbox']['Other']['links'][1001] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            $GLOBALS['toolbox']['Other']['links'][1002] = TabUtils::createToolboxLink("Network Resources", "$wgServer$wgScriptPath/index.php/Network_Resources");
+	        }
+	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
 	        $i = 0;
 	        foreach($toolbox as $key => $header){

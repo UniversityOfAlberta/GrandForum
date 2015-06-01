@@ -198,6 +198,7 @@ class PersonVisualizationsTab extends AbstractTab {
     }
     
     static function getTimelineData($action, $article){
+        global $config;
         if($action == "getTimelineData" && isset($_GET['person'])){
             global $wgServer, $wgScriptPath;
             header("Content-Type: application/json");
@@ -219,7 +220,7 @@ class PersonVisualizationsTab extends AbstractTab {
                                   'content' => 'Relations',
                                   'className' => 'visGreen'),
                             array('id' => 'products',
-                                  'content' => 'Products',
+                                  'content' => Inflect::pluralize($config->getValue('productsTerm')),
                                   'className' => 'visOrange'));
             foreach($person->getRoles(true) as $role){
                 $start = substr($role->getStartDate(), 0, 10);

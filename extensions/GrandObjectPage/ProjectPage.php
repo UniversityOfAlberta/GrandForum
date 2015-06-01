@@ -15,9 +15,11 @@ class ProjectPage {
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
-            
+
             $name = ($article != null) ? str_replace("_Talk", "", $article->getTitle()->getNsText()) : "";
+            $name = str_replace("_", " ", $name);
             $title = ($article != null) ? $article->getTitle()->getText() : "";
+
             $project = Project::newFromHistoricName($name);
             
             $wgOut->addScript("<script type='text/javascript'>
@@ -53,6 +55,7 @@ class ProjectPage {
                         !$me->isMemberOf($project) && 
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
+                        !$me->isRole(CF) && 
                         !($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
@@ -64,27 +67,7 @@ class ProjectPage {
             }
             $isLead = false;
             if($project != null){
-                if($me->isRoleAtLeast(STAFF)){
-                    $isLead = true;
-                }
-                if(!$isLead){
-                    if($project->isDeleted()){
-                        $leadership = $me->leadershipOn($project->getDeleted());
-                        foreach($leadership as $proj){
-                            if($proj->getName() == $project->getName()){
-                                $isLead = true;
-                                break;
-                            }
-                        }
-                    }
-                    else{
-                        $isLead = $me->leadershipOf($project->getName());
-                        $parent = $project->getParent();
-                        if($parent != null){
-                            $isLead = ($isLead || $me->leadershipOf($parent));
-                        }
-                    }
-                }
+                $isLead = $project->userCanEdit();
             }
             
             $isMember = $me->isMemberOf($project);

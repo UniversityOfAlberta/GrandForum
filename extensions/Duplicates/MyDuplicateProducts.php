@@ -19,7 +19,7 @@ class MyDuplicateProducts extends SpecialPage{
 	}
 
 	function execute($par){
-	    global $wgServer, $wgScriptPath, $wgOut, $wgUser;
+	    global $wgServer, $wgScriptPath, $wgOut, $wgUser, $config;
 	    $me = Person::newFromId($wgUser->getId());
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
@@ -29,14 +29,16 @@ class MyDuplicateProducts extends SpecialPage{
         $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['myPress']));
         $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['myAward']));
         $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['myPresentation']));
-        
+        $wgOut->setPageTitle("My Duplicate ".Inflect::pluralize($config->getValue('productsTerm')));
         $tabbedPage->showPage();
 	}
 	
 	static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Review Duplicates", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
+	    if($me->isRoleAtLeast(HQP)){
+	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Review Duplicates", "$wgServer$wgScriptPath/index.php/Special:MyDuplicateProducts");
+	    }
 	    return true;
 	}
 }

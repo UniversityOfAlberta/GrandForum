@@ -155,6 +155,10 @@ abstract class AbstractReportItem {
     
     // Returns the number of completed values (usually 1, or 0)
     function getNComplete(){
+        $opt = $this->getAttr('optional', '0');
+        if($opt == '1' || $opt == 'true'){
+            return 0;
+        }
         if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
             return 0;
         }
@@ -170,6 +174,10 @@ abstract class AbstractReportItem {
     
     // Returns the number of fields which are associated with this AbstractReportItem (usually 1)
     function getNFields(){
+        $opt = $this->getAttr('optional', '0');
+        if($opt == '1' || $opt == 'true'){
+            return 0;
+        }
         if($this->getReport()->topProjectOnly && $this->private && $this->projectId == 0){
             return 0;
         }
@@ -272,14 +280,22 @@ abstract class AbstractReportItem {
     /*
      * Returns the MD5 code for this blob
      */
-    function getDownloadLink(){
-        global $wgServer, $wgScriptPath;
+    function getMD5(){
         $report = $this->getReport();
         $section = $this->getSection();
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
+	    return $md5;
+    }
+    
+    /*
+     * Returns the download link for this blob
+     */
+    function getDownloadLink(){
+        global $wgServer, $wgScriptPath;
+        $md5 = $this->getMD5();
 	    $mime = $this->getAttr('mimeType', '');
 	    if($mime != ""){
 	        $mime = "&mime={$mime}";

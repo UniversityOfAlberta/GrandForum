@@ -82,6 +82,9 @@ $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
 
 /*$egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");*/
+                                          
+$egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
+                                          'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");
@@ -131,9 +134,6 @@ $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
 $egAnnokiExtensions['Solr'] = array('name' => 'Solr',
                                     'path' => "$IP/extensions/Solr/Solr.php");
 
-$egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
-                                           'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php");
-
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
 
@@ -182,10 +182,22 @@ function getTableName($baseName) {
 
 $wgHooks['SpecialPage_initList'][] = 'orderSpecialPages';
 function orderSpecialPages(&$aSpecialPages){
+    $me = Person::newFromWgUser();
     $array1 = array();
     $array2 = array();
     $skip = false;
     foreach($aSpecialPages as $key => $page){
+        //echo "$key\n";
+        if(!$me->isRoleAtLeast(STAFF) && 
+            ($key == "Log" || $key == "Listusers" ||
+             $key == "Listgrouprights" || $key == "Contributions" ||
+             $key == "BlockList" || $key == "Activeusers" || 
+             $key == "Allmessages" || $key == "Statistics" ||
+             $key == "Version" || $key == "Recentchanges" ||
+             $key == "Recentchangeslinked" || $key == "Tags")){
+            unset($aSpecialPages[$key]);
+            continue;
+        }
         if($skip == true){
             $array1[$key] = $page;
         }

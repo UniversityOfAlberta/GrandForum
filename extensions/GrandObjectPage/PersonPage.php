@@ -21,7 +21,7 @@ class PersonPage {
     }
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $result = true;
         $this->userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
@@ -50,12 +50,12 @@ class PersonPage {
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
                                                            $role == PL || $role == 'PL') && 
                $person->getName() != null && 
-               $person != null && $person->isRole($role)){
+               $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
                 TabUtils::clearActions();
                 $supervisors = $person->getSupervisors();
                 
                 $isMe = ($person->isMe() ||
-                        $me->isRoleAtLeast(MANAGER));
+                        $me->isRoleAtLeast(STAFF));
                 $isSupervisor = false;
                 foreach($supervisors as $supervisor){
                     if($supervisor->getName() == $me->getName()){
@@ -108,6 +108,9 @@ class PersonPage {
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
+                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
+                    $tabbedPage->addTab(new HQPProjectTab($person, $visibility));
+                }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));

@@ -47,7 +47,7 @@ class ReviewerConflicts extends SpecialPage {
     function userCanExecute($user){
         global $current_evals;
         $me = Person::newFromUser($user);
-        if($me->isRole(MANAGER) || array_search($me->getId(), $current_evals) !== false){
+        if($me->isRoleAtLeast(MANAGER) || array_search($me->getId(), $current_evals) !== false){
             return true;
         }
         return false;
@@ -198,7 +198,7 @@ class ReviewerConflicts extends SpecialPage {
 		$wgOut->addHTML("<div id='nis'>");
 
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
             $overall[NI] = ReviewerConflicts::managerNiTable($nis, NI);                    
             $wgOut->addHTML("</div><div id='projects'>");
             $overall['PROJECTS'] = ReviewerConflicts::managerProjectTable($projects);

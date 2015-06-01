@@ -175,7 +175,7 @@ EOF;
         }
         $dom = new SmartDOMDocument();
         $dom->loadHTML($blobValue);
-        
+
         $imgs = $dom->getElementsByTagName("img");
         $margins = $config->getValue('pdfMargins');
         $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*DPI_CONSTANT;
@@ -223,7 +223,9 @@ EOF;
             $html .= "<div class='tinymce'>$blobValue</div>";
         }
         else{
-            $html .= nl2br("<p>{$blobValue}</p>");
+            $blobValue = str_replace("<p>", "", "{$blobValue}");
+            $blobValue = str_replace("</p>", "", "{$blobValue}");
+            $html .= nl2br($blobValue);
         }
         return $html;
     }
@@ -247,26 +249,6 @@ EOF;
         $item = $this->getHTMLForPDF();
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
-    }
-
-    function getNComplete(){
-        $opt = $this->getAttr('optional', '0');
-        if($opt == '1'){
-            return 0;
-        }
-        else{
-            return parent::getNComplete();
-        }
-    }
-    function getNFields(){
-        $opt = $this->getAttr('optional', '0');
-
-        if($opt == '1'){
-            return 0;
-        }
-        else{
-            return parent::getNFields();
-        }
     }
 }
 

@@ -18,7 +18,7 @@ class GrandAccess {
 	    foreach($me->getThemeProjects() as $project){
 	        $aRights[$i++] = $project->getName();
 	    }
-	    if($me->isRole(MANAGER)){
+	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	        $aRights[$i++] = PL;
 	    }
@@ -49,20 +49,22 @@ class GrandAccess {
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
 	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER) && array_search('Leadership+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Leadership+', $aRights) === false){
 	                $aRights[$i++] = 'Leadership+';
 	            }
-	            if(($role == STAFF || $role == MANAGER) && array_search('Evaluator+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
 	                $aRights[$i++] = 'Evaluator+';
 	            }
-	            if(($role == STAFF || $role == MANAGER) && array_search('Researcher+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Researcher+', $aRights) === false){
 	                $aRights[$i++] = 'Researcher+';
 	            }
 	        }
 	    }
 	    foreach($me->getRolesDuring(CYCLE_START, CYCLE_END) as $role){
-	        $aRights[$i++] = $role->getRole().'During';
-	        $aRights[$i++] = $role->getRole().'During+';
+	        if(!$me->isCandidate()){
+	            $aRights[$i++] = $role->getRole().'During';
+	            $aRights[$i++] = $role->getRole().'During+';
+	        }
 	    }
 	    if(count($me->getRoles()) > 0){
 	        foreach($me->getRoles() as $role){

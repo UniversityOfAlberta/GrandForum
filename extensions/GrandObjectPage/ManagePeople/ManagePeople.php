@@ -10,7 +10,8 @@ class ManagePeople extends BackbonePage {
     }
     
     function userCanExecute($user){
-        return true;
+        $me = Person::newFromWgUser();
+        return $me->isRoleAtLeast(NI);
     }
     
     function getTemplates(){
@@ -33,10 +34,12 @@ class ManagePeople extends BackbonePage {
     }
     
     static function createToolboxLinks(&$toolbox){
-	    global $wgServer, $wgScriptPath;
-	    $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage People", "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
-	    return true;
-	}
+        global $wgServer, $wgScriptPath, $wgUser;
+        if(self::userCanExecute($wgUser)){
+            $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage People", "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
+        }
+        return true;
+    }
 
 }
 

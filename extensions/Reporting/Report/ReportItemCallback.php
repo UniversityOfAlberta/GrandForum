@@ -109,6 +109,12 @@ class ReportItemCallback {
             "sab_weakness" => "getSABWeakness",
             "sab_ranking" => "getSABRanking",
             "sab_summary" => "getSABSummary",
+            // RMC
+            "rmc_project_rank" => "getRMCProjectRank",
+            "rmc_project_confidence" => "getRMCProjectConfidence",
+            // HQP Application
+            "hqp_application_uni" => "getHQPApplicationUni",
+            "hqp_application_program" => "getHQPApplicationProgram", 
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
@@ -124,6 +130,7 @@ class ReportItemCallback {
     
     var $reportItem;
     
+    // Constructor
     function ReportItemCallback($reportItem){
         $this->reportItem = $reportItem;
     }
@@ -1183,6 +1190,52 @@ class ReportItemCallback {
            return $data;
         }
         return "";
+    }
+    
+    function getRMCProjectRank(){
+        $addr = ReportBlob::create_address(RP_EVAL_PROJECT, RMC_REVIEW, EVL_OVERALLSCORE, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
+        }
+        return "";
+    }
+    
+    function getRMCProjectConfidence(){
+        $addr = ReportBlob::create_address(RP_EVAL_PROJECT, RMC_REVIEW, EVL_CONFIDENCE, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        if($data != null){
+            if(isset($data['original'])){
+                return $data['original'];
+            }
+            else if(isset($data['revised'])){
+                return $data['revised'];
+            }
+        }
+        return "";
+    }
+    
+    function getHQPApplicationUni(){
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_UNI, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        return $blb->getData();
+    }
+    
+    function getHQPApplicationProgram(){
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_PROGRAM, 0);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
+        $result = $blb->load($addr);
+        return $blb->getData();
     }
     
     function getProductId(){

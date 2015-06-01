@@ -25,7 +25,7 @@ class EditMember extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
         $user = Person::newFromId($wgUser->getId());
         $date = date("Y-m-d");
         $wgOut->addScript("<script type='text/javascript'>
@@ -236,7 +236,7 @@ class EditMember extends SpecialPage{
                         $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
                         $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
                         APIRequest::doAction('DeleteProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a project leader of {$project->getName()}");
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', PL))." of {$project->getName()}");
                     }
                     $currentPL[$project->getName()] = $project->getName();
                 }
@@ -250,7 +250,7 @@ class EditMember extends SpecialPage{
                         $_POST['role'] = $project;
                         $_POST['user'] = $person->getName();
                         APIRequest::doAction('AddProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a project leader of {$project}");
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', PL))." of {$project}");
                     }
                 }
                 
@@ -267,13 +267,14 @@ class EditMember extends SpecialPage{
                 foreach($person->getLeadThemes() as $theme){
                     if(!isset($tl[$theme->getId()])){
                         // Remove Theme Leadership
+                        $_POST['coordinator'] = 'False';
                         $_POST['co_lead'] = 'False';
                         $_POST['theme'] = $theme->getId();
                         $_POST['name'] = $person->getName();
                         $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme->getId()]);
                         $_POST['effective_date'] = $_POST["tl_datepicker"][$theme->getId()];
                         APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a theme leader of {$theme->getAcronym()}");
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
                     }
                     $currentTL[$theme->getId()] = $theme->getId();
                 }
@@ -282,12 +283,51 @@ class EditMember extends SpecialPage{
                 foreach($tl as $theme){
                     if(!isset($currentTL[$theme->getId()])){
                         // Add Theme Leadership
+                        $_POST['coordinator'] = 'False';
                         $_POST['co_lead'] = 'False';
                         $_POST['theme'] = $theme->getId();
                         $_POST['name'] = $person->getName();
                         APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a theme leader of {$theme->getAcronym()}");
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
                     }
+                }
+            }
+            
+            // Theme Coordinator Changes
+            $tc = array();
+            if(isset($_POST['tc'])){
+                foreach($_POST['tc'] as $value){
+                    $tc[$value] = Theme::newFromId($value);
+                }
+            }
+        
+            $currentTC = array();
+            // Removing Theme Coordinators
+            foreach($person->getCoordThemes() as $theme){
+                if(!isset($tc[$theme->getId()])){
+                    // Remove Theme Coordinator
+                    $_POST['coordinator'] = 'True';
+                    $_POST['co_lead'] = 'False';
+                    $_POST['theme'] = $theme->getId();
+                    $_POST['name'] = $person->getName();
+                    $_POST['comment'] = @str_replace("'", "", $_POST["tc_comment"][$theme->getId()]);
+                    $_POST['effective_date'] = $_POST["tc_datepicker"][$theme->getId()];
+                    APIRequest::doAction('DeleteThemeLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
+                }
+                $currentTC[$theme->getId()] = $theme->getId();
+            }
+            
+            // Adding Theme Coordinators
+            foreach($tc as $theme){
+                if(!isset($currentTC[$theme->getId()])){
+                    // Add Theme Coordinator
+                    $_POST['coordinator'] = 'True';
+                    $_POST['co_lead'] = 'False';
+                    $_POST['theme'] = $theme->getId();
+                    $_POST['name'] = $person->getName();
+                    APIRequest::doAction('AddThemeLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
                 }
             }
             
@@ -855,7 +895,7 @@ class EditMember extends SpecialPage{
     }
     
     function generateEditMemberFormHTML($wgOut){
-        global $wgServer, $wgScriptPath, $wgUser;
+        global $wgServer, $wgScriptPath, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
@@ -866,7 +906,7 @@ class EditMember extends SpecialPage{
                         <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Project Leadership</a></li>
-                             <li><a id='ThemesTab' href='#tabs-4'>Theme Leaders</a></li>");
+                             <li><a id='ThemesTab' href='#tabs-4'>{$config->getValue('projectThemes')} Leaders</a></li>");
         }
         $wgOut->addHTML("
                     </ul>");
@@ -904,7 +944,7 @@ class EditMember extends SpecialPage{
     }
     
     function generateRoleFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
+        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromId($wgUser->getId());
         if(!isset($_GET['name'])){
             return;
@@ -984,8 +1024,12 @@ class EditMember extends SpecialPage{
             </script>");
         }
         foreach($wgRoles as $role){
-            if(($role != ISAC || $user->isRoleAtLeast(STAFF)) && 
-               ($role != NCE || $user->isRoleAtLeast(MANAGER)) && 
+            if(($role != ISAC || $user->isRoleAtLeast(STAFF)) &&
+               ($role != IAC  || $user->isRoleAtLeast(IAC)) &&
+               ($role != CAC  || $user->isRoleAtLeast(CAC)) &&
+               ($role != RMC  || $user->isRoleAtLeast(RMC)) && 
+               ($role != CF   || $user->isRoleAtLeast(MANAGER)) &&
+               ($role != NCE  || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($user->isRole(NI) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
@@ -995,7 +1039,7 @@ class EditMember extends SpecialPage{
                     $boxes .= "checked onChange='addComment(this, false)' class='already'";
                 }
                 if($role == HQP){
-                    $boxes .= " /> $role<div style='display:none; padding-left:30px;'>
+                    $boxes .= " /> {$config->getValue('roleDefs', $role)}<div style='display:none; padding-left:30px;'>
                                             <fieldset><legend>Reasoning</legend>
                                             <table>
                                             <tr id='step1'>
@@ -1018,7 +1062,7 @@ class EditMember extends SpecialPage{
                                         </div><br />";
                 }
                 else{
-                    $boxes .= " /> $role<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date&nbsp;Effective:<input type='text' class='datepicker' id='datepicker{$role}' name='r_datepicker[$role]' /></p>Additional Comments:<br /><textarea name='r_comment[".$role."]' cols='15' rows='4' style='height:auto;' ></textarea></fieldset></div><br />";
+                    $boxes .= " /> {$config->getValue('roleDefs', $role)}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date&nbsp;Effective:<input type='text' class='datepicker' id='datepicker{$role}' name='r_datepicker[$role]' /></p>Additional Comments:<br /><textarea name='r_comment[".$role."]' cols='15' rows='4' style='height:auto;' ></textarea></fieldset></div><br />";
                 }
             }
             else{
@@ -1185,13 +1229,13 @@ class EditMember extends SpecialPage{
     }
     
     function generateTLFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath;
+        global $wgUser, $wgServer, $wgScriptPath, $config;
         $user = Person::newFromId($wgUser->getId());
         if(!isset($_GET['name'])){
             return;
         }
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $wgOut->addHTML("<h2>Theme Leader</h2>");
+        $wgOut->addHTML("<h2>{$config->getValue('roleDefs', TL)}</h2>");
         $wgOut->addHTML("<table border='0' cellspacing='2'>");
         $leadThemes = $person->getLeadThemes();
         $themes = Theme::getAllThemes(PROJECT_PHASE);
@@ -1209,6 +1253,27 @@ class EditMember extends SpecialPage{
             }
             else {
                 $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='tl[]' value='$themeId' />{$theme->getAcronym()}</td></tr>\n");
+            }
+        }
+        $wgOut->addHTML("</table>");
+        $wgOut->addHTML("<h2>{$config->getValue('roleDefs', TC)}</h2>");
+        $wgOut->addHTML("<table border='0' cellspacing='2'>");
+        $coordThemes = $person->getCoordThemes();
+        $themes = Theme::getAllThemes(PROJECT_PHASE);
+        foreach($themes as $theme){
+            $themeId = $theme->getId();
+            $isLead = false;
+            foreach($coordThemes as $t){
+                if($t->getId() == $themeId){
+                    $isLead = true;
+                    break;
+                }
+            }
+            if($isLead){
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='tc[]' value='$themeId' checked='checked' class='already' onChange='addComment(this, false);' />{$theme->getAcronym()}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date Effective:<input type='text' class='datepicker' id='tc_datepicker{$themeId}' name='tc_datepicker[$themeId]' /></p>Additional Comments:<br /><textarea name='tc_comment[$themeId]' cols='15' rows='4' style='height:auto;'></textarea></fielset></div><br /></td></tr>\n");
+            }
+            else {
+                $wgOut->addHTML("<tr><td style='min-width:150px;' valign='top'><input type='checkbox' name='tc[]' value='$themeId' />{$theme->getAcronym()}</td></tr>\n");
             }
         }
         $wgOut->addHTML("</table>");

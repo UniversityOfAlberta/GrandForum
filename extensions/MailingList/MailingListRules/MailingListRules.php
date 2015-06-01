@@ -10,7 +10,7 @@ class MailingListRules extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);
-        return $me->isRole(MANAGER);
+        return $me->isRole(ADMIN);
     }
     
     function getTemplates(){

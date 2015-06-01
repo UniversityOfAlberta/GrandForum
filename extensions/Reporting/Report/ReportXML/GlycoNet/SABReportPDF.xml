@@ -12,15 +12,22 @@
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
                 <div class='report_info'>
-                    <p style="font-size:150%;font-weight:bold;">{$project_name}</p>
                 </div>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" pagebreak="false" type="HeaderReportSection">
         <ReportItemSet id="project_materials" type="AllProjectsReportItemSet" subType="SAB">
+            <ReportItemSet type="NotFirstReportItemSet">
+                <ReportItem type="PageBreakReportItem">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="project_head" type="StaticReportItem">
                 <![CDATA[
+                    <p style="font-size:150%;font-weight:bold;">{$project_name}</p>
                     <h1>Reviewer Comments</h1>
                 ]]>
             </ReportItem>

@@ -436,9 +436,9 @@ class Paper extends BackboneModel{
      * @return array The array containing all the structure in Products.xml
      */
     static function structure(){
-        global $config;
+        global $config, $IP;
         if(!Cache::exists("product_structure")){
-            $file = file_get_contents("extensions/GrandObjects/Products.xml");
+            $file = file_get_contents("$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml");
             $parser = simplexml_load_string($file);
             $categories = array('categories' => array());
             foreach($parser->children() as $category){
@@ -488,11 +488,13 @@ class Paper extends BackboneModel{
                             }
                         }
                     }
-                    $misc_types = Paper::getAllMiscTypes($cname);
-                    foreach($misc_types as $key => $type){
-                        $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                    if(DBFunctions::isReady()){
+                        $misc_types = Paper::getAllMiscTypes($cname);
+                        foreach($misc_types as $key => $type){
+                            $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                        }
+                        $categories['categories'][$cname]['misc'] = $misc_types;
                     }
-                    $categories['categories'][$cname]['misc'] = $misc_types;
                 }
             }
             Cache::store("product_structure", $categories);
@@ -737,6 +739,7 @@ class Paper extends BackboneModel{
                     $pdata[0]['user_registration'] = "";
                     $pdata[0]['user_public_profile'] = "";
                     $pdata[0]['user_private_profile'] = "";
+                    $pdata[0]['candidate'] = 0;
                     $person = new Person($pdata);
                     if($cache){
                         Person::$cache[$author] = $person;

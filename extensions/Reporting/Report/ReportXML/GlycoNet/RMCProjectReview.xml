@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="RMC Project Review" reportType="RP_EVAL_PROJECT" ajax="true" disabled="false">
+<Report name="RMC Project Review" reportType="RP_EVAL_PROJECT" pdfType="RPTP_RMC_PROJ_REPORT" pdfFiles="RMCProjectReviewPDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="project_materials" permissions="rw" />
             <SectionPermission id="project_reviews" permissions="rw" />
+            <SectionPermission id="overview" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
 
     <!-- Project Materials -->
-    <ReportSection id="project_materials" name="Project Materials" tooltip="Project Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="true">
+    <ReportSection id="project_materials" name="Project Materials" tooltip="Project Materials" blobSection="RMC_REVIEW" type="ReportSection" renderpdf="false" private="true">
         <Instructions>
             <![CDATA[
                <p>You can download the Project Proposal and SAB Report PDFs for review.</p>
@@ -137,7 +139,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q2_3" type="TextareaReportItem" blobItem="EVL_STRATEGIC_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q2_3" type="TextareaReportItem" blobItem="EVL_STRATEGIC_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -170,7 +172,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q3_3" type="TextareaReportItem" blobItem="EVL_INTEG_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q3_3" type="TextareaReportItem" blobItem="EVL_INTEG_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -203,7 +205,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q4_3" type="TextareaReportItem" blobItem="EVL_NETWORKING_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q4_3" type="TextareaReportItem" blobItem="EVL_NETWORKING_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -237,7 +239,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q5_3" type="TextareaReportItem" blobItem="EVL_KNOWLEDGE_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q5_3" type="TextareaReportItem" blobItem="EVL_KNOWLEDGE_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -271,7 +273,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q6_3" type="TextareaReportItem" blobItem="EVL_HQPDEVELOPMENT_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q6_3" type="TextareaReportItem" blobItem="EVL_HQPDEVELOPMENT_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -305,7 +307,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="Q7_3" type="TextareaReportItem" blobItem="EVL_REPORTQUALITY_OTHER" blobType="BLOB_TEXT">
+                <ReportItem id="Q7_3" type="TextareaReportItem" blobItem="EVL_REPORTQUALITY_OTHER" blobType="BLOB_TEXT" optional="1">
                     <![CDATA[
                         </td></tr>
                         <tr>
@@ -339,5 +341,30 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="overview" name="Overview" tooltip="Overview of Evaluations" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" private="false">
+        <Instructions>
+            <![CDATA[
+               <p>This table allows for an easy comparison of the scores you have given in your reviews. Additionally, once reviews have been submitted, this is also where you will have an opportunity to compare your reviews with those of other evaluators who have reviewed the same Project.</p>
+            ]]>
+        </Instructions>
+        <ReportItem id="overview" type="GlycoNetEvalOverviewReportItem" subType="Project">
+            <![CDATA[
+            <style type="text/css">
+                a#PNIOverview, a#CNIOverview, a#ProjectOverview{
+                    margin-bottom: 15px;
+                }
+            </style>
+            {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

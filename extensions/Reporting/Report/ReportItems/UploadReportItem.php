@@ -43,7 +43,7 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data != ""){
             $json = json_decode($data);
             $name = $json->name;
-            $html = "<a class='externalLink' href='{$link}'>Download <b>{$name}</b></a>";
+            $html = "<a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a>";
         }
         $item = $this->processCData($html);
         $wgOut->addHTML($item);
@@ -138,7 +138,7 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_FILES['file']) && $_FILES['file']['tmp_name'] != ""){
             $name = $_FILES['file']['name'];
             $size = $_FILES['file']['size'];
-            list($partname, $ext) = UploadForm::splitExtensions($name);
+            list($partname, $ext) = UploadBase::splitExtensions($name);
             if(count($ext)){
                 $finalExt = $ext[count($ext) - 1];
             }
@@ -148,8 +148,8 @@ class UploadReportItem extends AbstractReportItem {
             if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
                 $magic = MimeMagic::singleton();
                 $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
-                if(UploadForm::checkFileExtension($finalExt, $wgFileExtensions) &&
-                   UploadForm::verifyExtension($mime, $finalExt)){
+                if(UploadBase::checkFileExtension($finalExt, $wgFileExtensions) &&
+                   UploadBase::verifyExtension($mime, $finalExt)){
                     $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
                     $hash = md5($contents);
                     $data = array('name' => $name,
