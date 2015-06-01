@@ -403,7 +403,7 @@ EOF;
             }
             
             #pdfBody .logo {
-                width:".(203*DPI_CONSTANT)."px;
+                width:".(198.333*DPI_CONSTANT)."px;
                 height:".(68*DPI_CONSTANT)."px;
                 position:absolute;
                 margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
