@@ -1900,6 +1900,38 @@ class Person extends BackboneModel {
         return $roles;
     }
     
+    /*
+     * Returns a list of projects (strings) which this Person is allowed to edit
+     * @returns array A list of projects (strings) which this Person is allowed to edit
+     */
+    function getAllowedProjects(){
+        $projects = array();
+        foreach($this->getProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->leadership() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->getThemeProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        if($this->isRoleAtLeast(STAFF)){
+            foreach(Project::getAllProjects() as $project){
+                if(!$project->isSubProject()){
+                    $projects[$project->getId()] = $project->getName();
+                }
+            }
+        }
+        asort($projects);
+        return array_values($projects);
+    }
+    
     function getProjectHistory($groupBySubs=false){
         $projects = array();
         $tmpProjects = array();
@@ -1932,6 +1964,35 @@ class Person extends BackboneModel {
                 }
             }
             $projects = $tmpProjects;
+        }
+        return $projects;
+    }
+    
+    /*
+     * Returns an array of 'PersonProjects' (used for Backbone API)
+     * @return array
+     */
+    function getPersonProjects(){
+        $projects = array();
+        $data = DBFunctions::select(array('grand_project_members' => 'u',
+                                          'grand_project' => 'p'),
+                                    array('u.id', 'u.project_id', 'u.start_date', 'u.end_date', 'u.comment'),
+                                    array('u.user_id' => EQ($this->id),
+                                          'p.id' => EQ(COL('u.project_id'))),
+                                    array('p.name' => 'ASC'));
+        foreach($data as $row){
+            $project = Project::newFromId($row['project_id']);
+            if(!$project->isSubProject()){
+                $projects[] = array(
+                    'id' => $row['id'],
+                    'projectId' => $project->getId(),
+                    'personId' => $this->getId(),
+                    'startDate' => $row['start_date'],
+                    'endDate' => $row['end_date'],
+                    'name' => $project->getName(),
+                    'comment' => $row['comment']
+                );
+            }
         }
         return $projects;
     }

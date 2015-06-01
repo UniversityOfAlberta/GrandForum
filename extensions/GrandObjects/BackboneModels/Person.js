@@ -149,10 +149,14 @@ PersonProject = RelationModel.extend({
     },
     
     defaults: {
+        id: null,
         personId: "",
         projectId: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
     }
 });
 

@@ -4,6 +4,7 @@ ManagePeopleRowView = Backbone.View.extend({
     parent: null,
     row: null,
     editRoles: null,
+    editProjects: null,
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
@@ -20,6 +21,14 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, 
                                                         person:this.model, 
                                                         el: this.rolesDialog});
+    },
+    
+    openProjectsDialog: function(){
+        this.projectsDialog.empty();
+        this.projectsDialog.dialog('open');
+        this.editProjects = new ManagePeopleEditProjectsView({model: this.model.projects, 
+                                                              person:this.model, 
+                                                              el: this.projectsDialog});
     },
     
     events: {
@@ -81,7 +90,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: "500px",
+	        width: 800,
 	        position: {
                 my: "center bottom",
                 at: "center center"
@@ -94,6 +103,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Save": $.proxy(function(e){
+	                this.editProjects.saveAll();
                     this.projectsDialog.dialog('close');
 	            }, this),
 	            "Cancel": $.proxy(function(){
@@ -107,7 +117,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        show: 'fade',
 	        resizable: false,
 	        draggable: false,
-	        width: "500px",
+	        width: 800,
 	        position: {
                 my: "center bottom",
                 at: "center center"

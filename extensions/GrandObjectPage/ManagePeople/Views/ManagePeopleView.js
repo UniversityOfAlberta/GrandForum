@@ -100,7 +100,7 @@ ManagePeopleView = Backbone.View.extend({
 	            $("html").css("overflow", "auto");
 	        },
 	        buttons: {
-	            "Save": $.proxy(function(e){
+	            "Add": $.proxy(function(e){
 	                var id = $("#selectExistingMember").val();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.people/managed", {id: id})
 	                .done($.proxy(function(){

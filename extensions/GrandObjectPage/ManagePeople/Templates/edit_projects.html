@@ -1,0 +1,22 @@
+<table class="wikitable" frame="box" rules="all" width="100%" cellpadding="5">
+    <thead>
+        <tr>
+            <th width="1%">Project</th>
+            <th width="1%" style="white-space: nowrap;">Start Date</th>
+            <th width="1%" style="white-space: nowrap;">End Date</th>
+            <th>Comment</th>
+            <th width="1%">Delete?</th>
+        </tr>
+    </thead>
+    <% if(allowedProjects.length > 0){ %>
+        <tfoot>
+            <tr>
+                <td><button id="add" title="Add New Project">+</button></td>
+                <td colspan="4">&nbsp;</td>
+            </tr>
+        </tfoot>
+    <% } %>
+    <tbody id="project_rows">
+        <tr></tr>
+    </tbody>
+</table>

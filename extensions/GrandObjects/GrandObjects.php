@@ -12,6 +12,7 @@ global $apiRequest;
 // Person
 $apiRequest->addAction('Hidden','person/:id', new PersonAPI());
 $apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
+$apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', new PersonProjectsAPI());
 $apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
 $apiRequest->addAction('Hidden','person/:id/products', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/private', new PersonProductAPI());

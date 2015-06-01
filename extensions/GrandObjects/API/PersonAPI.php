@@ -124,29 +124,59 @@ class PersonProjectsAPI extends RESTAPI {
 
     function doGET(){
         $person = Person::newFromId($this->getParam('id'));
-        $json = array();
-        $projects = $person->getProjects(true);
-        foreach($projects as $project){
-            if(!$project->isSubProject()){
-                $json[] = array('projectId' => $project->getId(),
-                                'personId' => $person->getId(),
-                                'startDate' => $project->getJoinDate($person),
-                                'endDate' => $project->getEndDate($person));
+        $projects = $person->getPersonProjects();
+        if($this->getParam('personProjectId') != ""){
+            // Single Project
+            foreach($projects as $project){
+                if($project['id'] == $this->getParam('personProjectId')){
+                    return json_encode($project);
+                }
             }
         }
-        return json_encode($json);
+        else{
+            // All Projects
+            return json_encode($projects);
+        }
     }
     
     function doPOST(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        $project = Project::newFromName($this->POST('name'));
+        DBFunctions::insert('grand_project_members',
+                            array('user_id'    => $person->getId(),
+                                  'project_id' => $project->getId(),
+                                  'start_date' => $this->POST('startDate'),
+                                  'end_date'   => $this->POST('endDate'),
+                                  'comment'    => $this->POST('comment')));
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('id'),
+                                    array('project_id' => $project->getId(),
+                                          'person_id' => $person->getId()),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            $this->params['personProjectId'] = $data[0]['id'];
+        }
+        return $this->doGET();
     }
     
     function doPUT(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        $project = Project::newFromName($this->POST('name'));
+        DBFunctions::update('grand_project_members',
+                            array('project_id' => $project->getId(),
+                                  'start_date' => $this->POST('startDate'),
+                                  'end_date'   => $this->POST('endDate'),
+                                  'comment'    => $this->POST('comment')),
+                            array('id' => $this->getParam('personProjectId')));
+        return $this->doGET();
     }
     
     function doDELETE(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        DBFunctions::delete('grand_project_members',
+                            array('id' => $this->getParam('personProjectId')));
+        return false;
     }
 }
 
