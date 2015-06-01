@@ -88,31 +88,14 @@ class IndexTable {
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "Products" || 
                          $wgTitle->getText() == "Multimedia Stories" ||
-                         $wgTitle->getNsText() == "Publication" ||
-                         $wgTitle->getNsText() == "Artifact" ||
-                         $wgTitle->getNsText() == "Presentation" ||
-                         $wgTitle->getNsText() == "Activity" ||
-                         $wgTitle->getNsText() == "Press" ||
-                         $wgTitle->getNsText() == "Award" ||
                          $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
             $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-            if(Product::countByCategory('Publication') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected");
-            }
-            if(Product::countByCategory('Artifact') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Artifacts", "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact", "$selected");
-            }
-            if(Product::countByCategory('Presentation') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Presentations", "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation", "$selected");
-            }
-            if(Product::countByCategory('Activity') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Activities", "$wgServer$wgScriptPath/index.php/Special:Products#/Activity", "$selected");
-            }
-            if(Product::countByCategory('Press') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Press", "$wgServer$wgScriptPath/index.php/Special:Products#/Press", "$selected");
-            }
-            if(Product::countByCategory('Award') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Awards", "$wgServer$wgScriptPath/index.php/Special:Products#/Award", "$selected");
+            $structure = Product::structure();
+            $categories = array_keys($structure['categories']);
+            foreach($categories as $category){
+                if(Product::countByCategory($category) > 0){
+                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
+                }
             }
             if(Material::countByCategory() > 0){
                 $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected");

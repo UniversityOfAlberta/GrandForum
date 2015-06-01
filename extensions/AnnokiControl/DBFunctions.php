@@ -111,10 +111,14 @@ class DBFunctions {
     static $queryDebug = false;
     
     static function initDB(){
-        if(DBFunctions::$dbr == null){
+        if(DBFunctions::$dbr == null && DBFunctions::isReady()){
             DBFunctions::$dbr = wfGetDB(DB_SLAVE);
             DBFunctions::$dbw = wfGetDB(DB_MASTER);
         }
+    }
+    
+    static function isReady(){
+        return function_exists("wfGetDB");
     }
     
     // Returns the number of queries executed so far
