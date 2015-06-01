@@ -142,16 +142,28 @@ class PersonProjectsAPI extends RESTAPI {
     function doPOST(){
         $person = Person::newFromId($this->getParam('id'));
         $project = Project::newFromName($this->POST('name'));
-        DBFunctions::insert('grand_project_members',
-                            array('user_id'    => $person->getId(),
-                                  'project_id' => $project->getId(),
-                                  'start_date' => $this->POST('startDate'),
-                                  'end_date'   => $this->POST('endDate'),
-                                  'comment'    => $this->POST('comment')));
+        $me = Person::newFromWgUser();
+        $allowedProjects = $me->getAllowedProjects();
+        if($project == null || $project->getName() == ""){
+            $this->throwError("This Project does not exist");
+        }
+        if(!in_array($this->POST('name'), $allowedProjects) || 
+           !in_array($project->getName(), $allowedProjects)){
+            $this->throwError("You are not allowed to add this person to that project");
+        }
+        $status = DBFunctions::insert('grand_project_members',
+                                      array('user_id'    => $person->getId(),
+                                            'project_id' => $project->getId(),
+                                            'start_date' => $this->POST('startDate'),
+                                            'end_date'   => $this->POST('endDate'),
+                                            'comment'    => $this->POST('comment')));
+        if(!$status){
+            $this->throwError("The project <i>{$project->getName()}</i> could not be created");
+        }
         $data = DBFunctions::select(array('grand_project_members'),
                                     array('id'),
                                     array('project_id' => $project->getId(),
-                                          'person_id' => $person->getId()),
+                                          'user_id' => $person->getId()),
                                     array('id' => 'DESC'),
                                     array(1));
         if(count($data) > 0){
@@ -163,17 +175,43 @@ class PersonProjectsAPI extends RESTAPI {
     function doPUT(){
         $person = Person::newFromId($this->getParam('id'));
         $project = Project::newFromName($this->POST('name'));
-        DBFunctions::update('grand_project_members',
-                            array('project_id' => $project->getId(),
-                                  'start_date' => $this->POST('startDate'),
-                                  'end_date'   => $this->POST('endDate'),
-                                  'comment'    => $this->POST('comment')),
-                            array('id' => $this->getParam('personProjectId')));
+        $me = Person::newFromWgUser();
+        $allowedProjects = $me->getAllowedProjects();
+        if($project == null || $project->getName() == ""){
+            $this->throwError("This Project does not exist");
+        }
+        if(!in_array($this->POST('name'), $allowedProjects) || 
+           !in_array($project->getName(), $allowedProjects)){
+            $this->throwError("You are not allowed to add this person to that project");
+        }
+        $status = DBFunctions::update('grand_project_members',
+                                      array('project_id' => $project->getId(),
+                                            'start_date' => $this->POST('startDate'),
+                                            'end_date'   => $this->POST('endDate'),
+                                            'comment'    => $this->POST('comment')),
+                                      array('id' => $this->getParam('personProjectId')));
+        if(!$status){
+            $this->throwError("The project <i>{$project->getName()}</i> could not be updated");
+        }
         return $this->doGET();
     }
     
     function doDELETE(){
         $person = Person::newFromId($this->getParam('id'));
+        $me = Person::newFromWgUser();
+        $allowedProjects = $me->getAllowedProjects();
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('project_id'),
+                                    array('id' => EQ($this->getParam('personProjectId'))));
+        if(count($data) > 0){
+            $project = Project::newFromId($data[0]['project_id']);
+            if(!in_array($project->getName(), $allowedProjects)){
+                $this->throwError("You are not allowed to remove this person from that project");
+            }
+        }
+        else{
+            $this->throwError("This Project does not exist");
+        }
         DBFunctions::delete('grand_project_members',
                             array('id' => $this->getParam('personProjectId')));
         return false;

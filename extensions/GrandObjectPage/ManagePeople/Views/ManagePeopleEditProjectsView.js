@@ -6,7 +6,6 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
-        //this.listenTo(this.model, "change", this.render);
         this.template = _.template($('#edit_projects_template').html());
         this.model.ready().then($.proxy(function(){
             this.projects = this.model;
