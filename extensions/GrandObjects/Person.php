@@ -1979,7 +1979,7 @@ class Person extends BackboneModel {
                                     array('u.id', 'u.project_id', 'u.start_date', 'u.end_date', 'u.comment'),
                                     array('u.user_id' => EQ($this->id),
                                           'p.id' => EQ(COL('u.project_id'))),
-                                    array('p.name' => 'ASC'));
+                                    array('end_date' => 'DESC'));
         foreach($data as $row){
             $project = Project::newFromId($row['project_id']);
             if(!$project->isSubProject()){
