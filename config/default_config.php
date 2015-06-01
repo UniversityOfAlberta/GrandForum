@@ -163,6 +163,8 @@
      * Constants
      */
      
+    $config->setConst("DEMO", false);
+     
     // The current Project Phase
     $config->setConst("PROJECT_PHASE", 2);
      

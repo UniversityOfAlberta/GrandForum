@@ -645,7 +645,7 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        echo "</div>";
-            if(!TESTING && $wgScriptPath != ""){
+            if(!TESTING && $wgScriptPath != "" && !DEMO){
                 exec("git rev-parse HEAD", $output);
                 $revId = @substr($output[0], 0, 10);
                 exec("git rev-parse --abbrev-ref HEAD", $output);
