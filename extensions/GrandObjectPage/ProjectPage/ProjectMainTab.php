@@ -374,11 +374,6 @@ EOF;
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
-        
-        $pls = $project->getAllPeople(PL);
-        $cis = $project->getAllPeople(CI);
-        $ars = $project->getAllPeople(AR);
-        $hqps = $project->getAllPeople(HQP);
 
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
