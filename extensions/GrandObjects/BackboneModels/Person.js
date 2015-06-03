@@ -10,6 +10,9 @@ Person = Backbone.Model.extend({
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
         
+        this.relations = new PersonRelations();
+        this.relations.url = this.urlRoot + '/' + this.get('id') + '/relations';
+        
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
         
@@ -52,6 +55,11 @@ Person = Backbone.Model.extend({
     getRoles: function(){
         this.roles.fetch();
         return this.roles;
+    },
+    
+    getRelations: function(){
+        this.relations.fetch();
+        return this.relations;
     },
     
     // Returns a simple string containing all of the roles for this Person
@@ -144,7 +152,7 @@ PersonProject = RelationModel.extend({
     },
     
     getTarget: function(){
-        project = new Project({id: this.get('projectId')});
+        var project = new Project({id: this.get('projectId')});
         return project;
     },
     
@@ -168,6 +176,51 @@ PersonProjects = RangeCollection.extend({
     
     newModel: function(){
         return new Projects();
+    },
+});
+
+/**
+ * PersonRelation RelationModel
+ */
+PersonRelation = RelationModel.extend({
+    initialize: function(){
+        
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/relation'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('user1')});
+        return person;
+    },
+    
+    getTarget: function(){
+        var person = new Person({id: this.get('user2')});
+        return person;
+    },
+    
+    defaults: {
+        id: null,
+        user1: "",
+        user2: "",
+        startDate: "",
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
+    }
+});
+
+/**
+ * PersonRelations RangeCollection
+ */
+PersonRelations = RangeCollection.extend({
+    model: PersonRelation,
+    
+    newModel: function(){
+        return new People();
     },
 });
 

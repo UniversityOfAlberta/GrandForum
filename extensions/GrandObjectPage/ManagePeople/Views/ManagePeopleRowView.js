@@ -5,6 +5,7 @@ ManagePeopleRowView = Backbone.View.extend({
     row: null,
     editRoles: null,
     editProjects: null,
+    editRelations: null,
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
@@ -29,6 +30,14 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editProjects = new ManagePeopleEditProjectsView({model: this.model.projects, 
                                                               person:this.model, 
                                                               el: this.projectsDialog});
+    },
+    
+    openRelationsDialog: function(){
+        this.relationsDialog.empty();
+        this.relationsDialog.dialog('open');
+        this.editRelations = new ManagePeopleEditRelationsView({model: this.model.projects, 
+                                                                person:this.model, 
+                                                                el: this.relationsDialog});
     },
     
     events: {
@@ -130,6 +139,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	        },
 	        buttons: {
 	            "Save": $.proxy(function(e){
+	                this.editRelations.saveAll();
                     this.relationsDialog.dialog('close');
 	            }, this),
 	            "Cancel": $.proxy(function(){

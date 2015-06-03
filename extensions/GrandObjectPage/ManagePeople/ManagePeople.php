@@ -21,7 +21,9 @@ class ManagePeople extends BackbonePage {
                      'edit_roles',
                      'edit_roles_row',
                      'edit_projects',
-                     'edit_projects_row');
+                     'edit_projects_row',
+                     'edit_relations',
+                     'edit_relations_row');
     }
     
     function getViews(){
@@ -29,7 +31,8 @@ class ManagePeople extends BackbonePage {
                      'ManagePeopleView',
                      'ManagePeopleRowView',
                      'ManagePeopleEditRolesView',
-                     'ManagePeopleEditProjectsView');
+                     'ManagePeopleEditProjectsView',
+                     'ManagePeopleEditRelationsView');
     }
     
     function getModels(){
