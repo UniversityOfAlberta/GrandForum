@@ -87,7 +87,7 @@ class IndexTable {
         
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "Products" || 
-                         $wgTitle->getText() == "Multimedia Stories" ||
+                         $wgTitle->getText() == "Multimedia" ||
                          $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
             $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
             $structure = Product::structure();
@@ -98,7 +98,7 @@ class IndexTable {
                 }
             }
             if(Material::countByCategory() > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected");
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
             }
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
@@ -151,7 +151,7 @@ class IndexTable {
 	        $text = $title->getText();
 	        switch ($title->getText()) {
 	            case 'ALL '.HQP:
-				case 'Multimedia Stories':
+				case 'Multimedia':
 				    $result = $me->isLoggedIn();
 	                break;
 				case 'Forms':
@@ -215,8 +215,8 @@ class IndexTable {
 			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));
 				    $this->generateRMCTable();
 				    break;
-				case 'Multimedia Stories':
-				    $wgOut->setPageTitle("Multimedia Stories");
+				case 'Multimedia':
+				    $wgOut->setPageTitle("Multimedia");
 				    $this->generateMaterialsTable();
 				    break;
 				case 'Forms':
