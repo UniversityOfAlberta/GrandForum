@@ -241,6 +241,7 @@ class AddMember extends SpecialPage{
                 $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
             }
         }
+        ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");

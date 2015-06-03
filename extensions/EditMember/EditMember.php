@@ -1023,7 +1023,9 @@ class EditMember extends SpecialPage{
                 });                           
             </script>");
         }
-        foreach($wgRoles as $role){
+        $wgRolesCopy = $wgRoles;
+        asort($wgRolesCopy);
+        foreach($wgRolesCopy as $role){
             if(($role != ISAC || $user->isRoleAtLeast(STAFF)) &&
                ($role != IAC  || $user->isRoleAtLeast(IAC)) &&
                ($role != CAC  || $user->isRoleAtLeast(CAC)) &&
