@@ -260,7 +260,9 @@ class Milestone {
         $quarters = explode(",", $this->quarters);
         foreach($quarters as $quarter){
             $exp = explode(":", $quarter);
-            $years[$exp[0]][] = $exp[1];
+            if(count($exp) >= 2){
+                $years[$exp[0]][] = $exp[1];
+            }
         }
         return $years;
     }

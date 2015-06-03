@@ -1,6 +1,6 @@
 <?php
 
-class ProjectMilestonesTab extends AbstractTab {
+class ProjectMilestonesTab extends AbstractEditableTab {
 
     var $project;
     var $visibility;
@@ -88,6 +88,7 @@ class ProjectMilestonesTab extends AbstractTab {
                 $_POST['comment'] = htmlspecialchars($_POST["m_{$key}_comment"]);
                 $_POST['status'] = $_POST["m_{$key}_status"];
                 $_POST['people'] = @$_POST["ni_{$milestone->getMilestoneId()}"];
+                $_POST['id'] = $milestone->getMilestoneId();
                 
                 $current_status = $milestone->getStatus();
                 $nochange = false;
@@ -129,6 +130,7 @@ class ProjectMilestonesTab extends AbstractTab {
                 }
                 
                 if(isset($_POST['status']) && !$skip){
+                    $_POST['quarters'] = "";
                     $api = new ProjectMilestoneAPI(true);
                     $error = $api->doAction(true);
                     if($error != ""){
@@ -147,6 +149,7 @@ class ProjectMilestonesTab extends AbstractTab {
                 $_POST['assessment'] = htmlspecialchars($_POST['m_new_assessment'][$key]);
                 $_POST['end_date'] = $_POST["m_new_year"][$key]."-".$_POST["m_new_month"][$key];
                 $_POST['status'] = "New";
+                $_POST['quarters'] = "";
                 while($i < 1000){
                     if(isset($_POST["ni_new_$i"])){
                         $_POST['people'] = $_POST["ni_new_$i"];
@@ -217,7 +220,7 @@ EOF;
         $lastActivity = "";
         foreach($milestones as $milestone){
             $activity = $milestone->getActivity();
-            if($activity->getName() != $lastActivity){
+            if($activity != null && $activity->getName() != $lastActivity){
                 $this->html .= "<h2 style='margin-left:15px;'>{$activity->getName()}</h2>";
             }
             $key = $milestone->getMilestoneId();
@@ -302,7 +305,9 @@ EOF;
                 $history_html
                 </fieldset>
 EOF;
-            $lastActivity = $activity->getName();
+            if($activity != null){
+                $lastActivity = $activity->getName();
+            }
         }// milestones loop
         
         $this->html .= "</div>";    
