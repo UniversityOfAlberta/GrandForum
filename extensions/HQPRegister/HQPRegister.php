@@ -1,5 +1,7 @@
 <?php
 
+require_once("HQPRegisterTable.php");
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';

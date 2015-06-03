@@ -234,6 +234,7 @@
     $config->setConst("TL",         "Theme Leader");
     $config->setConst("TC",         "Theme Coordinator");
     $config->setConst("RMC",        "RMC");
+    $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("CF",         "CF");
     $config->setConst("BOD",        "BOD");
@@ -262,6 +263,7 @@
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('CF')             => "Core Facillity",
         $config->getConst('BOD')            => "Board of Directors",

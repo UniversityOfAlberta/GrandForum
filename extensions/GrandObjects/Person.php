@@ -594,6 +594,32 @@ class Person extends BackboneModel {
         return $people;
     }
     
+    /**
+     * Returns an array of People of the type $filter and are also candidates
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
+    static function getAllCandidates($filter=null){
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1),
+                                          'candidate' => EQ(1)),
+                                    array('user_name' => 'ASC'));
+        $people = array();
+        foreach($data as $row){
+            $rowA = array();
+            $rowA[0] = $row;
+            $person = Person::newFromId($rowA[0]['user_id']);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
+                    $people[] = $person;
+                }
+            }
+        }
+        return $people;
+    }
+    
     /// Returns an array of registered evaluators (Person instances).
     /// Optionally, user IDs can be filtered out from the query as a single
     /// ID as a string, or an array of user IDs.
