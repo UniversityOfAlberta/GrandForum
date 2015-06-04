@@ -84,9 +84,14 @@ class ImportBibTeXAPI extends API{
         foreach($authors as $author){
             $obj = new stdClass;
             $names = explode(",", $author);
-            $firstName = trim($names[1]);
-            $lastName = trim($names[0]);
-            $obj->name = trim("$firstName $lastName");
+            if(count($names) >= 2){
+                $firstName = trim($names[1]);
+                $lastName = trim($names[0]);
+                $obj->name = trim("$firstName $lastName");
+            }
+            else{
+                $obj->name = trim($author);
+            }
             $product->authors[] = $obj;
         }
         foreach($paper as $key => $field){

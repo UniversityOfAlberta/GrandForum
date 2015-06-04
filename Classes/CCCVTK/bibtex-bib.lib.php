@@ -395,7 +395,7 @@ class Bibliography // {{{
       $contents, $entries, PREG_SET_ORDER);
     foreach ($entries as $entry)
     {
-      $bibtex_type = $entry[1];
+      $bibtex_type = strtolower($entry[1]);
       $bibtex_name = $entry[2];
       $bibtex_contents = $entry[3].",\n"; // Newline added so that all entries are followed by one
       preg_match_all("/(\\w+?)\\s*=\\s*\\{(.*?)\\},\\n/ms", 
@@ -403,7 +403,7 @@ class Bibliography // {{{
       $params = array();
       foreach ($pairs as $pair)
       {
-        $k = $pair[1];
+        $k = strtolower($pair[1]);
         $v = $pair[2];
         $params["raw"][$k] = Bibliography::unspace($v); // We keep the original BibTeX string in the "raw" subarray
         $params[$k] = Bibliography::removeBraces(
