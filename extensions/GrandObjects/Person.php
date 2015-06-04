@@ -404,7 +404,8 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_universities'),
                                     array('*'),
                                     array(),
-                                    array('`order`' => 'ASC'));
+                                    array('`order`' => 'ASC',
+                                          'university_name' => 'ASC'));
         $universities = array();
         foreach($data as $row){
             $universities[$row['university_id']] = $row['university_name'];

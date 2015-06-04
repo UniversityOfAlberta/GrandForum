@@ -502,7 +502,7 @@ EOF;
                             </tr>";
         }
         else{
-            $universities = Person::getAllUniversities();
+            $universities = University::getAllUniversities();
             $positions = Person::getAllPositions();
             $myPosition = "";
             foreach($positions as $key => $position){
@@ -525,10 +525,10 @@ EOF;
                                 <td><select name='university'>";
             foreach($universities as $uni){
                 $selected = "";
-                if($uni == $university['university']){
+                if($uni->getName() == $university['university']){
                     $selected = " selected";
                 }
-                $this->html .= "<option$selected>{$uni}</option>";
+                $this->html .= "<option$selected>{$uni->getName()}</option>";
             }
             $this->html .= "</select></td></tr>
                             <tr>
