@@ -322,7 +322,7 @@ class IndexTable {
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
+<a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
