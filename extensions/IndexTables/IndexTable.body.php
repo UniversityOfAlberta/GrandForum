@@ -78,6 +78,11 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected");
         }
         
+        if(count(Person::getAllPeople(BOD)) > 0){
+            $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL BOD" || ($wgTitle->getNSText() == BOD && !($me->isRole(BOD) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(BOD, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_BOD", "$selected");
+        }
+        
         if(count(Person::getAllPeople(RMC)) > 0){
             $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected");
@@ -210,6 +215,10 @@ class IndexTable {
 				case 'ALL '.NCE:
 			        $wgOut->setPageTitle("NCE Reps");
 				    $this->generatePersonTable(NCE);
+				    break;
+				case 'ALL '.BOD:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', BOD));
+				    $this->generatePersonTable(BOD);
 				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));

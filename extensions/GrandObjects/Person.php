@@ -1289,7 +1289,7 @@ class Person extends BackboneModel {
         if (!empty($this->realname))
             return str_replace("&nbsp;", " ", ucfirst($this->realname));
         else
-            return str_replace("&nbsp;", " ", str_replace('.', $sep, $this->name));
+            return trim($this->getFirstName()." ".$this->getLastName());
     }
     
     // Returns the user's profile.
