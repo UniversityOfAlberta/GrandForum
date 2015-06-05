@@ -16,6 +16,7 @@ class Person extends BackboneModel {
     static $idsCache = array();
     static $allocationsCache = array();
     static $disciplineMap = array();
+    static $allPeopleCache = array();
 
     var $user = null;
     var $name;
@@ -349,8 +350,7 @@ class Person extends BackboneModel {
                                               'grand_positions' => 'p'),
                                         array('*'),
                                         array('u.university_id' => EQ(COL('uu.university_id')),
-                                              'uu.position_id' => EQ(COL('p.position_id'))),
-                                        array('uu.id' => 'DESC'));
+                                              'uu.position_id' => EQ(COL('p.position_id'))));
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']]) || 
                    (self::$universityCache[$row['user_id']]['date'] != '0000-00-00 00:00:00' && 
@@ -392,6 +392,20 @@ class Person extends BackboneModel {
             foreach($data as $row){
                 self::$authorshipCache[$row['author']][] = $row['product_id'];
             }
+        }
+    }
+    
+    /*
+     * Caches the partial resultset of the mw_user table
+     */
+    static function generateAllPeopleCache(){
+        if(count(self::$allPeopleCache) == 0){
+            $data = DBFunctions::select(array('mw_user'),
+                                        array('user_id', 'user_name'),
+                                        array('deleted' => NEQ(1),
+                                              'candidate' => NEQ(1)),
+                                        array('user_name' => 'ASC'));
+            self::$allPeopleCache = $data;
         }
     }
     
@@ -503,13 +517,9 @@ class Person extends BackboneModel {
      * @return array The People who currently have at least the Staff fole
      */
     static function getAllStaff(){
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
+        foreach(self::$allPeopleCache as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
@@ -527,13 +537,9 @@ class Person extends BackboneModel {
      */
     static function getAllPeople($filter=null){
         $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
+        foreach(self::$allPeopleCache as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
@@ -554,13 +560,9 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter between $startRange and $endRange
      */
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
+        foreach(self::$allPeopleCache as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
@@ -578,13 +580,9 @@ class Person extends BackboneModel {
      * @return array An array of People of the type $filter
      */
     static function getAllPeopleOn($filter=null, $date){
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
+        foreach(self::$allPeopleCache as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
@@ -602,13 +600,9 @@ class Person extends BackboneModel {
      */
     static function getAllCandidates($filter=null){
         $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => EQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
+        foreach(self::$allPeopleCache as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
@@ -644,7 +638,6 @@ class Person extends BackboneModel {
     }
 
     static function getAllProjectManagers() {
-        
         $ret = array();
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.user_id NOT IN (4, 150)
