@@ -76,8 +76,19 @@ class UploadCCVAPI extends API{
         }
         $product->access = "Public";
         $product->ccv_id = $ccv_id;
-        $authors = explode(",", $paper['authors']);
+        $authors1 = explode(",", $paper['authors']);
+        $authors2 = explode(" and ", $paper['authors']);
+        if(strstr($paper['authors'], " and ") !== false){
+            $authors = array_merge($authors1, array($authors2[count($authors2)-1]));
+        }
+        else{
+            $authors = $authors1;
+        }
         foreach($authors as $author){
+            if(strstr($author, " and ") !== false){
+                $exploded = explode(" and ", $author);
+                $author = $exploded[0];
+            }
             $obj = new stdClass;
             $obj->name = trim($author);
             $product->authors[] = $obj;
