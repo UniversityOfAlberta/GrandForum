@@ -1300,6 +1300,9 @@ input.other_option:focus {
 .card_description {
     display:inline-block;
     vertical-align:top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 285px;
 }
 
 .small_card .card_description {
