@@ -71,6 +71,7 @@ class ImportBibTeXAPI extends API{
         $structure = $this->structure['categories'][$category]['types'][$type];
         $product = new Product(array());
         $product->title = str_replace("&#39;", "'", $paper['title']);
+        $product->description = @$paper['abstract'];
         $product->category = $category;
         $product->type = $type;
         $product->status = "Published";
