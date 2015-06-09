@@ -78,8 +78,15 @@ class UploadCCVAPI extends API{
         $product->ccv_id = $ccv_id;
         $authors1 = explode(",", $paper['authors']);
         $authors2 = explode(" and ", $paper['authors']);
-        if(strstr($paper['authors'], " and ") !== false){
-            $authors = array_merge($authors1, array($authors2[count($authors2)-1]));
+        $commaFirstLast = false;
+        foreach($authors1 as $author){
+            if(strstr(trim($author), " ") === false){
+                // Probably using commas to separate first/last name... *sigh*
+                $commaFirstLast = true;
+            }
+        }
+        if($commaFirstLast){
+            $authors = $authors2;
         }
         else{
             $authors = $authors1;
@@ -88,6 +95,12 @@ class UploadCCVAPI extends API{
             if(strstr($author, " and ") !== false){
                 $exploded = explode(" and ", $author);
                 $author = $exploded[0];
+            }
+            if($commaFirstLast){
+                $names = explode(",", $author);
+                $last = @trim($names[0]);
+                $first = @trim($names[1]);
+                $author = "$first $last";
             }
             $obj = new stdClass;
             $obj->name = trim($author);
