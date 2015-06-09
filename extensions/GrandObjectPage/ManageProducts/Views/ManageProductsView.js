@@ -21,6 +21,7 @@ ManageProductsView = Backbone.View.extend({
         this.template = _.template($('#manage_products_template').html());
         me.getProjects();
         this.listenTo(this.model, "sync", function(){
+            this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
             this.listenTo(this.products, "remove", this.addRows);
             this.listenTo(this.products, "sync", $.proxy(function(){
@@ -39,7 +40,6 @@ ManageProductsView = Backbone.View.extend({
                     }, this));
                 }, this));
             }, this));
-            this.products = this.model.getAll();
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
     },
