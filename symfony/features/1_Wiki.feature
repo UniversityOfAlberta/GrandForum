@@ -76,4 +76,4 @@ Feature: Wiki
     Scenario: NI searches for Wiki Page
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I fill in "globalSearchInput" with "Test"
-        Then I wait until I see "TestWikiPage" up to "1000"
+        Then I wait until I see "TestWikiPage" up to "2000"
