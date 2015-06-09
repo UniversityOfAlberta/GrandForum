@@ -1282,7 +1282,7 @@ input.other_option:focus {
 .card_photo {
     display:inline-block;
     vertical-align:middle;
-    text-align: center;
+    text-align: left;
 }
 
 .small_card .card_photo {
