@@ -61,10 +61,10 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
         $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
         APIRequest::doAction('UserProfile', true);
         $_POST['type'] = "private";
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
         APIRequest::doAction('UserProfile', true);
         Person::$cache = array();
         Person::$namesCache = array();
