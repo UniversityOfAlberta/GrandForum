@@ -235,6 +235,7 @@ class CavendishTemplate extends QuickTemplate {
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
+		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";

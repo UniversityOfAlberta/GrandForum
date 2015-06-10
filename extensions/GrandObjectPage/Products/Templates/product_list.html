@@ -1,4 +1,6 @@
-<a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
+<% if(projectsEnabled){ %>
+    <a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
+<% } %>
 <table id='listTable' frame='box' rules='all'>
     <thead>
         <tr>

@@ -235,6 +235,10 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
         $data = array();
         if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access])){
             return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access];
@@ -319,7 +323,11 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
-        if( $startRange === false || $endRange === false ){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
+        if($startRange === false || $endRange === false){
             debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
