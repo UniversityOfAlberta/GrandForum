@@ -408,14 +408,6 @@
     <!-- Presentations -->
     <Presentations category="Presentation">
         
-        <Presentation type="Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-        
         <Presentation type="Poster" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
                 <type lov_id="00000000000000000000000100007002">Poster</type>
@@ -446,18 +438,65 @@
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
-        <Presentation type="Invited Presentation" status="">
+        <Presentation type="Plenary" status="Invited|Not Invited">
             <data>
-                <field label="Location" type="String">location</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
         
-        <Presentation type="Media Interview" status="">
+        <Presentation type="Keynote" status="Invited|Not Invited">
             <data>
-                <field label="Location" type="String">location</field>
-                <field label="Media Organization" type="String">media_organization</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Colloquium" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Dinner Speech" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Panel Member" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Tutorial" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
