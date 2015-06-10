@@ -30,9 +30,13 @@ ProductListView = Backbone.View.extend({
                     projects.push(project.name);
                 }
             });
-            data.push(new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
+            var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '), projects.join(', ')));
+                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '));
+            if(projectsEnabled){
+                row.push(projects.join(', '));
+            }
+            data.push(row);
         }, this);
         return data;
     },
@@ -53,7 +57,8 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var data = this.processData();
         this.$('#listTable').dataTable({'iDisplayLength': 100,
-	                                    'aaSorting': [ [0,'desc'], [1,'asc'], [4, 'asc'] ],
+	                                    'aaSorting': [ [0,'desc'], [1,'asc']],
+	                                    'autoWidth': false,
 	                                    'aaData' : data,
 	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
 	    this.$("#listTable_length").append(showButton);
