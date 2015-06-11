@@ -1554,16 +1554,11 @@ class Person extends BackboneModel {
      * @return array The last University that this Person was at between the given range
      */ 
     function getUniversityDuring($startRange, $endRange){
-        if(!isset($this->universityDuring[$startRange.$endRange])){
-            $data = $this->getUniversitiesDuring($startRange, $endRange);
-            if(count($data) > 0){
-                $this->universityDuring[$startRange.$endRange] = $data[0];
-            }
-            else{
-                $this->universityDuring[$startRange.$endRange] = null;
-            }
+        $data = $this->getUniversitiesDuring($startRange, $endRange);
+        if(isset($data[0])){
+            return $data[0];
         }
-        return $this->universityDuring[$startRange.$endRange];
+        return null;
     }
     
     /**
@@ -1573,31 +1568,34 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
-        $sql = "SELECT * 
-                FROM grand_user_university uu, grand_universities u, grand_positions p
-                WHERE uu.user_id = '{$this->id}'
-                AND u.university_id = uu.university_id
-                AND uu.position_id = p.position_id
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )
-                ORDER BY uu.id DESC";
-        $data = DBFunctions::execSQL($sql);
-        $universities = array();
-        if(count($data) > 0){
-            foreach($data as $row){
-                if($row['university_name'] != "Unknown"){
-                    $universities[] = array("university" => $row['university_name'],
-                                            "department" => $row['department'],
-                                            "position"   => $row['position']);
+        if(!isset($this->universityDuring[$startRange.$endRange])){
+            $sql = "SELECT * 
+                    FROM grand_user_university uu, grand_universities u, grand_positions p
+                    WHERE uu.user_id = '{$this->id}'
+                    AND u.university_id = uu.university_id
+                    AND uu.position_id = p.position_id
+                    AND ( 
+                    ( (end_date != '0000-00-00 00:00:00') AND
+                    (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                    OR
+                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ((start_date <= '$endRange')))
+                    )
+                    ORDER BY uu.id DESC";
+            $data = DBFunctions::execSQL($sql);
+            $universities = array();
+            if(count($data) > 0){
+                foreach($data as $row){
+                    if($row['university_name'] != "Unknown"){
+                        $universities[] = array("university" => $row['university_name'],
+                                                "department" => $row['department'],
+                                                "position"   => $row['position']);
+                    }
                 }
             }
+            $this->universityDuring[$startRange.$endRange] = $universities;
         }
-        return $universities;
+        return $this->universityDuring[$startRange.$endRange];
     }
     
     /**

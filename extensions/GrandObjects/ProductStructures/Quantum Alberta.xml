@@ -403,6 +403,18 @@
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
             <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field bibtex="school" label="University" type="String">university</field>
+                <field label="Department" type="String">department</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
     </Publications>
 
     <!-- Presentations -->

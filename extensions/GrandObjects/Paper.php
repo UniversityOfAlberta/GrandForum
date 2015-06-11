@@ -940,6 +940,9 @@ class Paper extends BackboneModel{
         $people = $this->getAuthors();
         $unis = array();
         foreach($people as $person){
+            if($person->getId() == 0){
+                continue;
+            }
             $universities = $person->getUniversitiesDuring($this->getDate(), $this->getDate());
             if(count($universities) > 0){
                 foreach($universities as $university){
@@ -978,6 +981,14 @@ class Paper extends BackboneModel{
         $date = str_replace("0000", substr($dates[1], 0, 4), $date);
         $date = str_replace("-00", "-01", $date);
         return $date;
+    }
+    
+    /*
+     * Returns the year of this Paper
+     * @return string The year of this Paper
+     */
+    function getYear(){
+        return substr($this->getDate(), 0, 4);
     }
     
     /**
