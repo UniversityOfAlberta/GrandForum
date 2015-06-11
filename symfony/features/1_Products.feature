@@ -126,6 +126,7 @@ Feature: Products
         And I wait "500"
         Then I should see "1 products were created/updated"
         When I click by css ".edit-icon"
+        And I wait 1000
         Then I should see "Hello World"
         
     Scenario: Uploading an invalid BibTeX

@@ -5,6 +5,7 @@ class ImportBibTeXAPI extends API{
     static $bibtexHash = array('inproceedings' => 'Proceedings Paper',
                                'proceedings' => 'Proceedings Paper',
                                'inbook' => 'Proceedings Paper',
+                               'conference' => 'Conference Paper',
                                'book' => 'Book',
                                'article' => 'Journal Paper',
                                'collection' => 'Collections Paper',
