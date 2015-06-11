@@ -591,7 +591,7 @@ ManageProductsView = Backbone.View.extend({
                             var nError = response.messages.length;
                             
                             if(nCreated > 0){
-                                addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created");
+                                addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
                             }
                             if(nError > 0){
                                 addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
@@ -638,7 +638,7 @@ ManageProductsView = Backbone.View.extend({
                                 addError(response.errors.join("<br />"));
                             }
                             else{
-                                addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created");
+                                addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
                             }
                             button.prop("disabled", false);
                             this.doiDialog.dialog('close');

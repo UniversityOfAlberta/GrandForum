@@ -95,7 +95,7 @@ Feature: Products
         """
         And I click "Import"
         And I wait "500"
-        Then I should see "1 products were created"
+        Then I should see "1 products were created/updated"
         
     Scenario: Uploading a duplicate BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -107,6 +107,7 @@ Feature: Products
          author = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
          title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
          booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         abstract = {Hello World},
          series = {ASE '05},
          year = {2005},
          isbn = {1-58113-993-4},
@@ -123,7 +124,9 @@ Feature: Products
         """
         And I click "Import"
         And I wait "500"
-        Then I should see "1 products were ignored (probably duplicates)"
+        Then I should see "1 products were created/updated"
+        When I click by css ".edit-icon"
+        Then I should see "Hello World"
         
     Scenario: Uploading an invalid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -177,7 +180,7 @@ Feature: Products
         """
         And I click "Import"
         And I wait "500"
-        Then I should see "1 products were created"
+        Then I should see "1 products were created/updated"
         
     Scenario: Uploading an empty BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"

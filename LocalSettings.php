@@ -317,6 +317,27 @@ function array_clean(array $haystack){
     return $haystack;
 }
 
+function str_replace_every_other($needle, $replace, $haystack, &$count=null, $replace_first=true) {
+    $count = 0;
+    $offset = strpos($haystack, $needle);
+    //If we don't replace the first, go ahead and skip it
+    if (!$replace_first) {
+        $offset += strlen($needle);
+        $offset = strpos($haystack, $needle, $offset);
+    }
+    while ($offset !== false) {
+        $haystack = substr_replace($haystack, $replace, $offset, strlen($needle));
+        $count++;
+        $offset += strlen($replace);
+        $offset = strpos($haystack, $needle, $offset);
+        if ($offset !== false) {
+            $offset += strlen($needle);
+            $offset = strpos($haystack, $needle, $offset);
+        }
+    }
+    return $haystack;
+}
+
 /**
  * Returns a 'human readable' date from the given string
  * @param string $time The time in db timestamp format 'YYYY-MM-DD hh-mm-ss'

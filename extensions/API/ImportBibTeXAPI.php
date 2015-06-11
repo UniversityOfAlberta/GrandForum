@@ -87,6 +87,12 @@ class ImportBibTeXAPI extends API{
             $product->bibtex_id = $bibtex_id;
         }
         if(count($product->authors) == 0){
+            if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
+                // Must be using ',' as a delimiter...
+                $count = null;
+                $paper['author'] = str_replace_every_other(",", " and ", $paper['author'], $count, false);
+            }
+            
             $authors = explode(" and ", $paper['author']);
             foreach($authors as $author){
                 $obj = new stdClass;
