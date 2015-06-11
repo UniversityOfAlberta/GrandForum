@@ -809,8 +809,9 @@ class CavendishTemplate extends QuickTemplate {
 				    $validFooterLinks[] = $aLink;
 			    }
 		    }
+		    echo '<ul id="f-list">';
 		    if ( count( $validFooterLinks ) > 0 ) {
-    ?>			<ul id="f-list">
+    ?>			
     <?php
 			    foreach( $validFooterLinks as $aLink ) {
 				    if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {

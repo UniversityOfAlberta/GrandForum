@@ -6,6 +6,9 @@ class D3Map extends Visualization {
     var $url = "";
     var $width = "500";
     var $height = "500";
+    var $lat = 49;
+    var $long = -100;
+    var $zoom = 4;
     
     function D3Map($url){
         $this->url = $url;
@@ -63,10 +66,10 @@ class D3Map extends Visualization {
     var showHide = Array();
     var lastMapRequest;
     function onLoad{$this->index}(){
-        // Create the Google Map…
+        // Create the Google Map
         var map = new google.maps.Map(d3.select("#vis{$this->index}").node(), {
-            zoom: 4,
-            center: new google.maps.LatLng(49, -100),
+            zoom: {$this->zoom},
+            center: new google.maps.LatLng({$this->lat}, {$this->long}),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         });
 
@@ -174,7 +177,7 @@ class D3Map extends Visualization {
                                         }
                                         return "M" + startX + "," + startY + "A" + dr + "," + dr + " 0 0,1 " + (dx + startX) + "," + (dy + startY);
                                     })
-                                    .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0.2;});
+                                    .attr("opacity", function(d){if(showHide[locSource.name] == true || showHide[locTarget.name] == true){ return 1;} return 0.70;});
                                 i++;
                             });
                         });
@@ -185,7 +188,7 @@ class D3Map extends Visualization {
                             .enter().append("svg:svg")
                             .each(transform)
                             .attr("class", "marker")
-                            .attr("opacity", function(d){if(showHide[d.value.name] == true){ return 1;} return 0.5;});
+                            .attr("opacity", function(d){if(showHide[d.value.name] == true){ return 1;} return 0.70;});
 
                         // Add a circle.
                         marker.append("svg:circle")
@@ -219,7 +222,7 @@ class D3Map extends Visualization {
                 overlay.setMap(map);
                 
                 if($("#visOptions{$this->index}").html().trim() == '' && typeof data.filterOptions != 'undefined'){
-                    $("#visOptions{$this->index}").append("<h3>Filter Options</h3><table>");
+                    $("#visOptions{$this->index}").append("<h3>Filter Options</h3><table width='100%'>");
                     for(oId in data.filterOptions){
                         var option = data.filterOptions[oId];
                         $("#visOptions{$this->index} table").append("<tr><td><input type='checkbox' value='" + option.param + "' " + option.checked + " /></td><td valign='top'><b>" + option.name + "</b></td></tr>");
@@ -241,7 +244,7 @@ class D3Map extends Visualization {
                     });
                     
                     if(data.dateOptions != undefined){
-                        $("#visOptions{$this->index}").append("<tr><td><b>Date Range:</b><br /><div style='margin-top:5px;margin-left:1px;width:200px;' id='visDateSlider{$this->index}'></div><div id='visDateSliderLabels{$this->index}' class='steps'></td></tr>");
+                        $("#visOptions{$this->index} table").append("<tr><td><b>Date Range:</b><br /><div style='margin-top:5px;margin-left:1px;width:100%;' id='visDateSlider{$this->index}'></div><div id='visDateSliderLabels{$this->index}' class='steps'></td></tr>");
                         var dateOptions = data.dateOptions;
                         $("#visDateSlider{$this->index}").slider({
                             min: dateOptions[0].date,

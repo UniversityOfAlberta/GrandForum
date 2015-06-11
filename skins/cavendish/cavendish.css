@@ -951,7 +951,7 @@ div#person .ui-tabs-panel {
 
 .steps {
     border: 1px solid transparent; /*follows #slider2 style for sizing purposes */
-    width: 200px;
+    width: 100%;
     position: relative;
     height: 30px;
 }
