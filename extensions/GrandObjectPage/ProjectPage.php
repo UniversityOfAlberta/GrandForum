@@ -178,36 +178,41 @@ class ProjectPage {
     }
     
     static function createTab(&$tabs){
-        $tabs["Projects"] = TabUtils::createTab("My Projects");
+        global $config;
+        if($config->getValue('projectsEnabled')){
+            $tabs["Projects"] = TabUtils::createTab("My Projects");
+        }
         return true;
     }
     
     static function createSubTabs(&$tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromWgUser();
-        $projects = $me->getProjects();
-        
-        if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
-		    return true;
-		}
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+        if($config->getValue('projectsEnabled')){
+            $me = Person::newFromWgUser();
+            $projects = $me->getProjects();
+            
+            if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+		        return true;
+		    }
 
-        foreach($projects as $key => $project){
-            if($project->isSubProject()){
-                unset($projects[$key]);
-            }
-        }
-        $projects = array_values($projects);
-        foreach($projects as $project){
-            $selected = ($wgTitle->getNSText() == $project->getName()) ? "selected" : "";
-            $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
-            $subprojects = $project->getSubProjects();
-            if(count($subprojects) > 0){
-                $subtab['dropdown'][] = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
-                foreach($project->getSubProjects() as $subProject){
-                    $subtab['dropdown'][] = TabUtils::createSubTab($subProject->getName(), $subProject->getUrl(), $selected);
+            foreach($projects as $key => $project){
+                if($project->isSubProject()){
+                    unset($projects[$key]);
                 }
             }
-            $tabs["Projects"]['subtabs'][] = $subtab;
+            $projects = array_values($projects);
+            foreach($projects as $project){
+                $selected = ($wgTitle->getNSText() == $project->getName()) ? "selected" : "";
+                $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+                $subprojects = $project->getSubProjects();
+                if(count($subprojects) > 0){
+                    $subtab['dropdown'][] = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+                    foreach($project->getSubProjects() as $subProject){
+                        $subtab['dropdown'][] = TabUtils::createSubTab($subProject->getName(), $subProject->getUrl(), $selected);
+                    }
+                }
+                $tabs["Projects"]['subtabs'][] = $subtab;
+            }
         }
         return true;
     }

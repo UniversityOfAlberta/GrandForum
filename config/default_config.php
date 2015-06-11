@@ -76,6 +76,9 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
+    // Whether or not to enable projects
+    $config->setValue("projectsEnabled", true);
+    
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
     
