@@ -328,29 +328,32 @@ class PersonVisualizationsTab extends AbstractTab {
     }
     
     static function getDoughnutData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getDoughnutData"){
 	        $me = Person::newFromWgUser();
 	        $array = array();
             $person = Person::newFromId($_GET['person']);
             
             $legend = array();
-            $legend[0]['name'] = "Year";
-            $legend[0]['color'] = "#D38946";
+            $i = 0;
+            $legend[$i]['name'] = "Year";
+            $legend[$i++]['color'] = "#D38946";
+            if($config->getValue('projectsEnabled')){
+                $legend[$i]['name'] = "Project";
+                $legend[$i++]['color'] = "#82D868";
+            }
             
-            $legend[1]['name'] = "Project";
-            $legend[1]['color'] = "#82D868";
-            
-            $legend[2]['name'] = "University";
-            $legend[2]['color'] = "#B26060";
+            $legend[$i]['name'] = "University";
+            $legend[$i++]['color'] = "#B26060";
             if($me->isLoggedIn()){
-                $legend[3]['name'] = "Co-authorship";
-                $legend[3]['color'] = "#6191B3";
+                $legend[$i]['name'] = "Co-authorship";
+                $legend[$i++]['color'] = "#6191B3";
             }
             
             $levels = array();
-            $levels[0]['labels'] = array();
-            $levels[0]['values'] = array();
+            $i = 0;
+            $levels[$i]['labels'] = array();
+            $levels[$i]['values'] = array();
             
             $products = $person->getPapers("all", false, 'both', true, "Public");
             
@@ -361,32 +364,35 @@ class PersonVisualizationsTab extends AbstractTab {
                 $year = substr($date, 0, 4);
                 if(!isset($labelIndicies[$year])){
                     $labelIndicies[$year] = $index;
-                    $levels[0]['labels'][] = $year;
+                    $levels[$i]['labels'][] = $year;
                     $index++;
                 }
-                @$levels[0]['values'][$labelIndicies[$year]]++;
+                @$levels[$i]['values'][$labelIndicies[$year]]++;
             }
-            
+            $i++;
             $labelIndicies = array();
             $index = 0;
-            foreach($products as $paper){
-                $projects = $paper->getProjects();
-                if(count($projects) == 0){
-                    if(!isset($labelIndicies["None"])){
-                        $labelIndicies["None"] = $index;
-                        $levels[1]['labels'][] = "None";
-                        $index++;
+            if($config->getValue('projectsEnabled')){
+                foreach($products as $paper){
+                    $projects = $paper->getProjects();
+                    if(count($projects) == 0){
+                        if(!isset($labelIndicies["None"])){
+                            $labelIndicies["None"] = $index;
+                            $levels[$i]['labels'][] = "None";
+                            $index++;
+                        }
+                        @$levels[$i]['values'][$labelIndicies["None"]]++;
                     }
-                    @$levels[1]['values'][$labelIndicies["None"]]++;
-                }
-                foreach($projects as $project){
-                    if(!isset($labelIndicies[$project->getName()])){
-                        $labelIndicies[$project->getName()] = $index;
-                        $levels[1]['labels'][] = $project->getName();
-                        $index++;
+                    foreach($projects as $project){
+                        if(!isset($labelIndicies[$project->getName()])){
+                            $labelIndicies[$project->getName()] = $index;
+                            $levels[$i]['labels'][] = $project->getName();
+                            $index++;
+                        }
+                        @$levels[$i]['values'][$labelIndicies[$project->getName()]]++;
                     }
-                    @$levels[1]['values'][$labelIndicies[$project->getName()]]++;
                 }
+                $i++;
             }
             
             $labelIndicies = array();
@@ -396,14 +402,15 @@ class PersonVisualizationsTab extends AbstractTab {
                 foreach($unis as $uni){
                     if(!isset($labelIndicies[$uni])){
                         $labelIndicies[$uni] = $index;
-                        $levels[2]['labels'][] = $uni;
+                        $levels[$i]['labels'][] = $uni;
                         $index++;
                     }
-                    @$levels[2]['values'][$labelIndicies[$uni]]++;
+                    @$levels[$i]['values'][$labelIndicies[$uni]]++;
                 }
             }
             
             if($me->isLoggedIn()){
+                $i++;
                 $labelIndicies = array();
                 $index = 0;
                 foreach($products as $paper){
@@ -412,10 +419,10 @@ class PersonVisualizationsTab extends AbstractTab {
                         if($author->getId() != $person->getId()){
                             if(!isset($labelIndicies[$author->getNameForForms()])){
                                 $labelIndicies[$author->getNameForForms()] = $index;
-                                $levels[3]['labels'][] = $author->getNameForForms();
+                                $levels[$i]['labels'][] = $author->getNameForForms();
                                 $index++;
                             }
-                            @$levels[3]['values'][$labelIndicies[$author->getNameForForms()]]++;
+                            @$levels[$i]['values'][$labelIndicies[$author->getNameForForms()]]++;
                         }
                     }
                 }
