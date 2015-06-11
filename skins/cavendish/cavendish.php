@@ -809,9 +809,16 @@ class CavendishTemplate extends QuickTemplate {
 				    $validFooterLinks[] = $aLink;
 			    }
 		    }
-		    
-    ?>			<ul id="f-list">
+		    echo '<ul id="f-list">';
+		    if ( count( $validFooterLinks ) > 0 ) {
+    ?>			
     <?php
+			    foreach( $validFooterLinks as $aLink ) {
+				    if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
+    ?>					<li id="f-<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
+    <?php 			}
+			    }
+		    }
 		echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
 	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
