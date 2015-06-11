@@ -1569,7 +1569,7 @@ class Paper extends BackboneModel{
     }
     
     function exists(){
-
+        return ($this->id != "");
     }
     
     function getCacheId(){

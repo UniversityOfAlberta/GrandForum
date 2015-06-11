@@ -51,61 +51,76 @@ class ImportBibTeXAPI extends API{
     }
     
     function createProduct($paper, $category, $type, $bibtex_id){
-        $checkProduct = Product::newFromBibTeXId($bibtex_id);
-        if($checkProduct->getId() != 0){
-            // Make sure that this entry was not already entered
-            return null;
-        }
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
         }
+        $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
         $checkProduct = Product::newFromTitle($paper['title']);
-        if($checkProduct->getId() != 0 && 
+        if($checkBibProduct->getId() != 0){
+            // Make sure that this entry was not already entered
+            $product = $checkBibProduct;
+        }
+        else if($checkProduct->getId() != 0 && 
            $checkProduct->getCategory() == $category &&
            $checkProduct->getType() == $type){
             // Make sure that a product with the same title/category/type does not already exist
-            return null;
+            $product = $checkProduct;
         }
-        $me = Person::newFromWgUser();
+        else{
+            $product = new Product(array());
+            $product->title = str_replace("&#39;", "'", $paper['title']);
+            $product->category = $category;
+            $product->type = $type;
+        }
         $structure = $this->structure['categories'][$category]['types'][$type];
-        $product = new Product(array());
-        $product->title = str_replace("&#39;", "'", $paper['title']);
-        $product->description = @$paper['abstract'];
-        $product->category = $category;
-        $product->type = $type;
-        $product->status = "Published";
-        $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01";
-        $product->data = array();
-        $product->projects = array();
-        $product->authors = array();
-        $product->access_id = $me->getId();
-        $product->bibtex_id = $bibtex_id;
-        $authors = explode(" and ", $paper['author']);
-        foreach($authors as $author){
-            $obj = new stdClass;
-            $names = explode(",", $author);
-            if(count($names) >= 2){
-                $firstName = trim($names[1]);
-                $lastName = trim($names[0]);
-                $obj->name = trim("$firstName $lastName");
-            }
-            else{
-                $obj->name = trim($author);
-            }
-            $product->authors[] = $obj;
+        $me = Person::newFromWgUser();
+
+        if($product->description == ""){ $product->description = @$paper['abstract']; }
+        if($product->status == ""){ $product->status = "Published"; }
+        if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01"; }
+        if(!is_array($product->data)){ $product->data = array(); }
+        if(!is_array($product->projects)){ $product->projects = array(); }
+        if(!is_array($product->authors)){ $product->authors = array(); }
+        if(!$product->exists()){
+            $product->access_id = $me->getId();
+            $product->bibtex_id = $bibtex_id;
         }
+        if(count($product->authors) == 0){
+            $authors = explode(" and ", $paper['author']);
+            foreach($authors as $author){
+                $obj = new stdClass;
+                $names = explode(",", $author);
+                if(count($names) >= 2){
+                    $firstName = trim($names[1]);
+                    $lastName = trim($names[0]);
+                    $obj->name = trim("$firstName $lastName");
+                }
+                else{
+                    $obj->name = trim($author);
+                }
+                $product->authors[] = $obj;
+            }
+        }
+        
         foreach($paper as $key => $field){
             if($field != ""){
                 foreach($structure['data'] as $dkey => $dfield){
                     if($dfield['bibtex'] == $key){
-                        $product->data[$dkey] = $field;
+                        if(!isset($product->data[$dkey]) || $product->data[$dkey] == ""){
+                            $product->data[$dkey] = $field;
+                        }
                         break;
                     }
                 }
             }
         }
-        $status = $product->create();
+        if(!$product->exists()){
+            $status = $product->create();
+        }
+        else{
+            $status = $product->update();
+        }
         if($status){
             $product = Product::newFromId($product->getId());
             return $product;

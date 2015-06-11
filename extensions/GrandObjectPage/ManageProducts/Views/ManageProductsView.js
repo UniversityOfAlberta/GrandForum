@@ -24,7 +24,7 @@ ManageProductsView = Backbone.View.extend({
             this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
             this.listenTo(this.products, "remove", this.addRows);
-            this.listenTo(this.products, "sync", $.proxy(function(){
+            this.listenToOnce(this.products, "sync", $.proxy(function(){
                 me.projects.ready().then($.proxy(function(){
                     this.projects = me.projects.getCurrent();
                     this.model.ready().then($.proxy(function(){
@@ -393,7 +393,6 @@ ManageProductsView = Backbone.View.extend({
                                         this.duplicatesDialog.open();
                                     }
                                 }, this));
-                                
                             }, this),
                             error: $.proxy(function(){
                                 clearAllMessages("#dialogMessages");
@@ -579,8 +578,9 @@ ManageProductsView = Backbone.View.extend({
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
-                            this.products.add(data.created, {silent: true});
-                            this.addRows();
+	                        var ids = _.pluck(data.created, 'id');
+	                        this.products.remove(ids);
+                            this.products.add(data.created);
                         }
                         clearAllMessages();
                         if(response.errors.length > 0){
@@ -627,8 +627,12 @@ ManageProductsView = Backbone.View.extend({
 	                    button.prop("disabled", true);
 	                    var value = $("input[name=doi]", this.doiDialog).val();
 	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
-                            this.products.add(response.data.created, {silent: true});
-                            this.addRows();
+	                        var data = response.data;
+	                        if(!_.isUndefined(data.created)){
+	                            var ids = _.pluck(data.created, 'id');
+	                            this.products.remove(ids);
+                                this.products.add(data.created);
+                            }
                             clearAllMessages();
                             if(response.errors.length > 0){
                                 addError(response.errors.join("<br />"));
