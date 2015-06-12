@@ -2,6 +2,7 @@
 
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getGraphData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getSurveyData';
 
@@ -444,6 +445,87 @@ class PersonVisualizationsTab extends AbstractTab {
             exit;
         }
         return true;
+	}
+	
+	static function getChordData($action, $article){
+	    global $wgServer, $wgScriptPath, $config;
+	    if($action == "getChordData"){
+	        $person = Person::newFromId($_GET['person']);
+	        $authors = array($person);
+	        $authors = $person->getCoAuthors("all", false, 'both', true, "Public");
+	        
+	        $labels = array();
+	        $matrix = array();
+	        $colorHashs = array();
+	        $colors = array();
+	        
+	        $newAuthors = array();
+	        foreach($authors as $author){
+	            $a = Person::newFromName($author);
+	            if($a->getId() != 0){
+	                $newAuthors[] = $a;
+	            }
+	        }
+	        $authors = $newAuthors;
+	        
+	        // Initialize
+            foreach($authors as $k1 => $author){
+                foreach($authors as $k2 => $a){
+                    $matrix[$author->getId()][$a->getId()] = 0;
+                }
+                $labels[] = $author->getNameForForms();
+                $colorHashs[] = $author->getNameForForms();
+            }
+	        
+	        foreach($authors as $author){
+	            $products = $author->getPapers("all", false, 'both', true, "Public");
+	            foreach($products as $product){
+	                $auths = $product->getAuthors();
+	                foreach($auths as $a){
+	                    if(isset($matrix[$author->getId()][$a->getId()]) && $author->getId() != $a->getId()){
+	                        $matrix[$author->getId()][$a->getId()] += 1;
+	                    }
+	                }
+	            }
+	        }
+	        
+	        $found = false;
+            foreach($authors as $k1 => $author){
+                if(array_sum($matrix[$author->getId()]) != 0){
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found){
+                foreach($authors as $k1 => $author){
+                    $matrix[$author->getId()][$author->getId()] = 1;
+                }
+            }
+	        
+	        $newMatrix = array();
+            foreach($matrix as $row){
+                $newRow = array();
+                foreach($row as $col){
+                    $newRow[] = $col;
+                }
+                $newMatrix[] = $newRow;
+            }
+            $matrix = $newMatrix;
+	        
+	        $array = array();
+	        
+	        $array['filterOptions'] = array();
+            $array['dateOptions'] = array();                     
+            $array['sortOptions'] = array();
+            $array['matrix'] = $matrix;
+            $array['labels'] = $labels;
+            $array['colorHashs'] = $colorHashs;
+            $array['colors'] = $colors;
+
+            header("Content-Type: application/json");
+            echo json_encode($array);
+            exit;
+	    }
 	}
 	
 	static function getRootDiscipline($disc){
