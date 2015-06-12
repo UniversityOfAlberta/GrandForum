@@ -298,14 +298,14 @@ EOF;
             $string = "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
             foreach($products as $paper){
                 $projects = array();
                 foreach($paper->getProjects() as $project){
-                    $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
+                    $projects[] = "{$project->getName()}";
                 }
 
                 $names = array();
@@ -319,9 +319,8 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $projects)."</td>";
                 $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
@@ -331,7 +330,8 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     $('#personProducts').dataTable({
-                        'order': [[ 1, 'desc' ]]
+                        'order': [[ 1, 'desc' ]],
+                        'autoWidth': false
                     });
                 </script>";
         }
@@ -416,6 +416,7 @@ EOF;
             if($person->isRoleDuring(HQP, "0000", "9999") ||
                $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
                 $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
                 $nationality = "<tr>
@@ -423,6 +424,7 @@ EOF;
                     <td>
                         <select name='nationality'>
                             <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='American' $amerSelected>American</option>
                             <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
                             <option value='Visa Holder' $visaSelected>Visa Holder</option>
                         </select>

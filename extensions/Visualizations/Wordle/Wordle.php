@@ -37,7 +37,7 @@ class Wordle extends Visualization {
             $words = explode(" ", $line);
             foreach($words as $word){
                 $word = preg_replace("/\&lt;.*\&gt;/", '', $word); // Strip out html-like stuff
-                $word = preg_replace("/[^A-Za-z0-9 ]/", '', $word);
+                //$word = preg_replace("/[^A-Za-z0-9 ]/", '', $word);
                 $word = strtolower($word);
                 $skip = false;
                 foreach(self::$commonStubs as $stub){

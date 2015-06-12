@@ -28,8 +28,6 @@ class IndexTable {
             $tabs['Main']['subtabs'][] = $projectTab;
         }
         
-        
-        
         $lastRole = "";
         if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
             $person = Person::newFromName($wgTitle->getText());
@@ -357,49 +355,64 @@ EOF;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
+		$projectsHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
-            $idHeader = "<th width='0%' style='white-space: nowrap;'>User Id</th>";
+            $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
+        }
+        if($config->getValue('projectsEnabled')){
+            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th width='15%' style='white-space: nowrap;'>Name</th><th width='65%' style='white-space: nowrap;'>Projects</th><th width='20%' style='white-space: nowrap;'>University</th>$idHeader</tr></thead><tbody>
+                            <thead>
+                                <tr>
+                                    <th style='white-space: nowrap;'>Name</th>
+                                    {$projectsHeader}
+                                    <th style='white-space: nowrap;'>University</th>
+                                    <th style='white-space: nowrap;'>Department</th>
+                                    <th style='white-space: nowrap;'>Title</th>
+                                    $idHeader</tr>
+                                </thead>
+                                <tbody>
 ";
 		foreach($data as $person){
-		    $projects = $person->getProjects();
+		    
 			$this->text .= "
 <tr>
 <td align='left' style='white-space: nowrap;'>
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
-<td align='left'>
 ";
-            $projs = array();
-			foreach($projects as $project){
-			    if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
-				    $subprojs = array();
-				    foreach($project->getSubProjects() as $subproject){
-				        if($person->isMemberOf($subproject)){
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+            if($config->getValue('projectsEnabled')){
+                $projects = $person->getProjects();
+                $projs = array();
+			    foreach($projects as $project){
+			        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
+				        $subprojs = array();
+				        foreach($project->getSubProjects() as $subproject){
+				            if($person->isMemberOf($subproject)){
+				                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				            }
 				        }
+				        $subprojects = "";
+				        if(count($subprojs) > 0){
+				            $subprojects = "(".implode(", ", $subprojs).")";
+				        }
+				        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
 				    }
-				    $subprojects = "";
-				    if(count($subprojs) > 0){
-				        $subprojects = "(".implode(", ", $subprojs).")";
-				    }
-				    $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-				}
+			    }
+			    $this->text .= "<td align='left'>".implode("<br />", $projs)."</td>";
 			}
-			$this->text .= implode("<br />", $projs);
-            $this->text .= "</td><td align='left'>";
-            $university = $person->getUniversity();
-            $this->text .= $university['university'];
-			$this->text .= "</td>";
+			$university = $person->getUniversity();
+            $this->text .= "<td align='left'>{$university['university']}</td>";
+            $this->text .= "<td align='left'>{$university['department']}</td>";
+            $this->text .= "<td align='left'>{$university['position']}</td>";
 			if($me->isRoleAtLeast(MANAGER)){
 			    $this->text .= "<td>{$person->getId()}</td>";
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'bAutoWidth': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}
