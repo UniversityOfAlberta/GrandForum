@@ -423,6 +423,7 @@ class Paper extends BackboneModel{
         if(count(self::$illegalAuthorsCache) == 0){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
+            self::$illegalAuthorsCache[""] = "";
             foreach($data as $row){
                 self::$illegalAuthorsCache[$row['author']] = $row['author'];
             }

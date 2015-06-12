@@ -313,7 +313,6 @@ EOF;
                                         var widthDiff = leftWidth - cardWidth;
                                         newWidth = Math.min(maxWidth, widthDiff);
                                         if($('#vis{$chord->index}').is(':visible') && width != newWidth){
-                                            console.log('render');
                                             width = newWidth;
                                             height = width;
                                             if(width < 100){

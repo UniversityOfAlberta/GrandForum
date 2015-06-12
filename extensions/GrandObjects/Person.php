@@ -334,6 +334,7 @@ class Person extends BackboneModel {
                     AND (l.end_date = '0000-00-00 00:00:00'
                          OR l.end_date > CURRENT_TIMESTAMP)";
             $data = DBFunctions::execSQL($sql);
+            self::$leaderCache[-1][] = array();
             foreach($data as $row){
                 self::$leaderCache[$row['user_id']][] = $row;
             }
