@@ -293,7 +293,7 @@ EOF;
     function showChord($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getChordData&person={$person->getId()}";
-        $html = "<div style='position:absolute; right:0; display:inline-block; width:100%; text-align:right;'>";
+        $html = "<div style='position:absolute; right:0; display:inline-block; text-align:right;'>";
         $chord = new Chord($dataUrl);
         $chord->width = 226;
         $chord->height = 226;
