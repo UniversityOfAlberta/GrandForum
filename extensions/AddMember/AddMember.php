@@ -216,6 +216,7 @@ class AddMember extends SpecialPage{
                                             $role != CAC && 
                                             $role != NCE &&
                                             $role != RMC &&
+                                            $role != CF &&
                                             $role != HQPAC){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
@@ -235,6 +236,9 @@ class AddMember extends SpecialPage{
             }
             if(in_array(RMC, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
+            }
+            if(in_array(CF, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', CF)] = CF;
             }
             if(in_array(HQPAC, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', HQPAC)] = HQPAC;

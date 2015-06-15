@@ -610,7 +610,7 @@ EOF;
             if($filter == AR || $filter == CI || $filter == PL){
                 if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
                     ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->isRole(NI) && $person->leadershipOf($this)))){
+                    ($filter == PL && $person->leadershipOf($this)))){
                     $people[$person->getId()] = $person;
                 }
             }
@@ -665,7 +665,7 @@ EOF;
             if($filter == AR || $filter == CI || $filter == PL){
                 if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
                     ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->isRole(NI, $startRange, $endRange) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+                    ($filter == PL && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
                     $people[$person->getId()] = $person;
                 }
             }
@@ -701,7 +701,7 @@ EOF;
             if($filter == AR || $filter == CI || $filter == PL){
                 if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
                     ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->isRoleOn(NI, $date) && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+                    ($filter == PL && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
                     $people[$person->getId()] = $person;
                 }
             }

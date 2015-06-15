@@ -1031,7 +1031,7 @@ class EditMember extends SpecialPage{
                ($role != CAC   || $user->isRoleAtLeast(STAFF)) &&
                ($role != HQPAC || $user->isRoleAtLeast(STAFF)) && 
                ($role != RMC   || $user->isRoleAtLeast(STAFF)) && 
-               ($role != CF    || $user->isRoleAtLeast(MANAGER)) &&
+               ($role != CF    || $user->isRoleAtLeast(STAFF)) &&
                ($role != NCE   || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
