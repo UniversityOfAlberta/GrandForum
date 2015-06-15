@@ -80,7 +80,6 @@ function initTab(role, selector, tabSelector, fields){
             }
             html +=    "</div></div></div>";
             j++;
-            console.log(i % 4);
             if(j % 4 == 0){
                 html += "<br>";
             }
