@@ -4,7 +4,7 @@ CCVImportView = Backbone.View.extend({
 
     initialize: function(options){
         this.people = new People();
-        this.people.roles = ['PNI','CNI','AR'];
+        this.people.roles = ['NI'];
         this.listenTo(this.people, "sync", $.proxy(function(){
             this.render();
         }, this));

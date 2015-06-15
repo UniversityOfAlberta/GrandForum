@@ -13,7 +13,7 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
-            if($sub->getLeader() == null){
+            if(count($sub->getLeaders()) == 0){
                 $head = $dashboard2->copy()->where(HEAD);
                 $dashboard2->filter(HEAD);
                 $blankDash = new DashboardTable(array(array(BLANK, BLANK)),
@@ -48,7 +48,7 @@ class ProjectRosterReportItem extends StaticReportItem {
         foreach($subs as $sub){
             $dashboard1 = new DashboardTable(PROJECT_CHAMP_ROSTER_STRUCTURE, $sub);
             $dashboard2 = new DashboardTable(PROJECT_NI_ROSTER_STRUCTURE, $sub);
-            if($sub->getLeader() == null){
+            if(count($sub->getLeaders()) == 0){
                 $head = $dashboard2->copy()->where(HEAD);
                 $dashboard2->filter(HEAD);
                 $blankDash = new DashboardTable(array(array(BLANK, BLANK)),

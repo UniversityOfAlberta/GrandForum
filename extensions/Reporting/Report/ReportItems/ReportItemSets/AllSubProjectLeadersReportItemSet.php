@@ -9,7 +9,7 @@ class AllSubProjectLeadersReportItemSet extends ReportItemSet {
             $projects = $project->getSubProjects();
             $people = array();
             foreach($projects as $project){
-                $leaders = array_merge($project->getLeaders(), $project->getCoLeaders());
+                $leaders = $project->getLeaders();
                 foreach($leaders as $lead){
                     $people[$lead->getId()] = $lead;
                 }

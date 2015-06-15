@@ -1,8 +1,8 @@
 <?php
 
-$wgMessage = new Message();
+$wgMessage = new Messages();
 
-class Message {
+class Messages {
     
     var $errors = array();
     var $warnings = array();
@@ -15,7 +15,7 @@ class Message {
     var $infoIndex = 0;
     var $purpleIndex = 0;
     
-    function Message(){
+    function Messages(){
         if(isset($_COOKIE['errors'])){
             $this->errors = unserialize($_COOKIE['errors']);
         }

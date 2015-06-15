@@ -8,7 +8,7 @@ $wgExtensionMessagesFiles['ReportErrors'] = $dir . 'ReportErrors.i18n.php';
 $wgSpecialPageGroups['ReportErrors'] = 'report-reviewing';
 
 function runReportErrors($par) {
-	ReportErrors::run($par);
+	ReportErrors::exeucte($par);
 }
 
 class ReportErrors extends SpecialPage {
@@ -17,11 +17,10 @@ class ReportErrors extends SpecialPage {
                           //'project' => 'Project PDF Diff');
 
 	function __construct() {
-		wfLoadExtensionMessages('ReportErrors');
-		SpecialPage::SpecialPage("ReportErrors", STAFF.'+', true, 'runReportErrors');
+		SpecialPage::__construct("ReportErrors", STAFF.'+', true, 'runReportErrors');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    $year = (isset($_GET['reportingYear'])) ? $_GET['reportingYear'] : REPORTING_YEAR;
 	    $type = (isset($_GET['type'])) ? $_GET['type'] : 'ni';
@@ -112,13 +111,7 @@ class ReportErrors extends SpecialPage {
 	        exit;
 	    }
 	    if($type == 'ni'){
-	        foreach(Person::getAllPeopleDuring(CNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
-	            if(array_search($person->getId(), $ids) === false){
-	                $names[] = $person->getName();
-	                $ids[] = $person->getId();
-	            }
-	        }
-	        foreach(Person::getAllPeopleDuring(PNI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
+	        foreach(Person::getAllPeopleDuring(NI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH) as $person){
 	            if(array_search($person->getId(), $ids) === false){
 	                $names[] = $person->getName();
 	                $ids[] = $person->getId();
@@ -318,7 +311,12 @@ class ReportErrors extends SpecialPage {
 	        }
 	        $alreadyDone[$pName] = true;
 	        $project = Project::newFromName($pName);
-	        $leader = $project->getLeader();
+	        $leaders = $project->getLeaders();
+	        $leader = null;
+            if(count($leaders) > 0){
+                $leaders = array_values($leaders);
+                $leader = $leaders[0];
+            }
 	        if($leader != null){
 	            $report = new DummyReport("ProjectReportPDF", $leader, $project);
 	            ReportErrors::tableRow($report, $project->getId(), $project->getName(), $project->getName());

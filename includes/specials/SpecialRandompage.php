@@ -1,20 +1,39 @@
 <?php
+/**
+ * Implements Special:Randompage
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
+ * @ingroup SpecialPage
+ * @author Rob Church <robchur@gmail.com>, Ilmari Karonen
+ */
 
 /**
  * Special page to direct the user to a random page
  *
  * @ingroup SpecialPage
- * @author Rob Church <robchur@gmail.com>, Ilmari Karonen
- * @license GNU General Public Licence 2.0 or later
  */
 class RandomPage extends SpecialPage {
-	private $namespaces;  // namespaces to select pages from
+	private $namespaces; // namespaces to select pages from
+	protected $isRedir = false; // should the result be a redirect?
+	protected $extra = array(); // Extra SQL statements
 
-	function __construct( $name = 'Randompage' ){
-		global $wgContentNamespaces;
-
-		$this->namespaces = $wgContentNamespaces;
-
+	public function __construct( $name = 'Randompage' ) {
+		$this->namespaces = MWNamespace::getContentNamespaces();
 		parent::__construct( $name );
 	}
 
@@ -22,35 +41,60 @@ class RandomPage extends SpecialPage {
 		return $this->namespaces;
 	}
 
-	public function setNamespace ( $ns ) {
-		if( !$ns || $ns < NS_MAIN ) $ns = NS_MAIN;
+	public function setNamespace( $ns ) {
+		if ( !$ns || $ns < NS_MAIN ) {
+			$ns = NS_MAIN;
+		}
 		$this->namespaces = array( $ns );
 	}
 
 	// select redirects instead of normal pages?
-	// Overriden by SpecialRandomredirect
-	public function isRedirect(){
-		return false;
+	public function isRedirect() {
+		return $this->isRedir;
 	}
 
 	public function execute( $par ) {
-		global $wgOut, $wgContLang;
+		global $wgContLang;
 
-		if ($par)
+		if ( $par ) {
 			$this->setNamespace( $wgContLang->getNsIndex( $par ) );
+		}
 
 		$title = $this->getRandomTitle();
 
-		if( is_null( $title ) ) {
+		if ( is_null( $title ) ) {
 			$this->setHeaders();
-			$wgOut->addWikiMsg( strtolower( $this->mName ) . '-nopages',  $wgContLang->getNsText( $this->namespace ) );
+			// Message: randompage-nopages, randomredirect-nopages
+			$this->getOutput()->addWikiMsg( strtolower( $this->getName() ) . '-nopages',
+				$this->getNsList(), count( $this->namespaces ) );
+
 			return;
 		}
 
-		$query = $this->isRedirect() ? 'redirect=no' : '';
-		$wgOut->redirect( $title->getFullUrl( $query ) );
+		$redirectParam = $this->isRedirect() ? array( 'redirect' => 'no' ) : array();
+		$query = array_merge( $this->getRequest()->getValues(), $redirectParam );
+		unset( $query['title'] );
+		$this->getOutput()->redirect( $title->getFullURL( $query ) );
 	}
 
+	/**
+	 * Get a comma-delimited list of namespaces we don't have
+	 * any pages in
+	 * @return String
+	 */
+	private function getNsList() {
+		global $wgContLang;
+		$nsNames = array();
+		foreach ( $this->namespaces as $n ) {
+			if ( $n === NS_MAIN ) {
+				$nsNames[] = $this->msg( 'blanknamespace' )->plain();
+			} else {
+				$nsNames[] = $wgContLang->getNsText( $n );
+			}
+		}
+
+		return $wgContLang->commaList( $nsNames );
+	}
 
 	/**
 	 * Choose a random title.
@@ -58,6 +102,15 @@ class RandomPage extends SpecialPage {
 	 */
 	public function getRandomTitle() {
 		$randstr = wfRandom();
+		$title = null;
+
+		if ( !wfRunHooks(
+			'SpecialRandomGetRandomTitle',
+			array( &$randstr, &$this->isRedir, &$this->namespaces, &$this->extra, &$title )
+		) ) {
+			return $title;
+		}
+
 		$row = $this->selectRandomPageFromDB( $randstr );
 
 		/* If we picked a value that was higher than any in
@@ -67,38 +120,53 @@ class RandomPage extends SpecialPage {
 		 * any more bias than what the page_random scheme
 		 * causes anyway.  Trust me, I'm a mathematician. :)
 		 */
-		if( !$row )
+		if ( !$row ) {
 			$row = $this->selectRandomPageFromDB( "0" );
+		}
 
-		if( $row )
+		if ( $row ) {
 			return Title::makeTitleSafe( $row->page_namespace, $row->page_title );
-		else
-			return null;
+		}
+
+		return null;
 	}
 
-	private function selectRandomPageFromDB( $randstr ) {
-		global $wgExtraRandompageSQL;
-		$fname = 'RandomPage::selectRandomPageFromDB';
-
-		$dbr = wfGetDB( DB_SLAVE );
-
-		$use_index = $dbr->useIndexClause( 'page_random' );
-		$page = $dbr->tableName( 'page' );
-
-		$ns = implode( ",", $this->namespaces );
+	protected function getQueryInfo( $randstr ) {
 		$redirect = $this->isRedirect() ? 1 : 0;
 
-		$extra = $wgExtraRandompageSQL ? "AND ($wgExtraRandompageSQL)" : "";
-		$sql = "SELECT page_title, page_namespace
-			FROM $page $use_index
-			WHERE page_namespace IN ( $ns )
-			AND page_is_redirect = $redirect
-			AND page_random >= $randstr
-			$extra
-			ORDER BY page_random";
+		return array(
+			'tables' => array( 'page' ),
+			'fields' => array( 'page_title', 'page_namespace' ),
+			'conds' => array_merge( array(
+				'page_namespace' => $this->namespaces,
+				'page_is_redirect' => $redirect,
+				'page_random >= ' . $randstr
+			), $this->extra ),
+			'options' => array(
+				'ORDER BY' => 'page_random',
+				'LIMIT' => 1,
+			),
+			'join_conds' => array()
+		);
+	}
 
-		$sql = $dbr->limitResult( $sql, 1, 0 );
-		$res = $dbr->query( $sql, $fname );
+	private function selectRandomPageFromDB( $randstr, $fname = __METHOD__ ) {
+		$dbr = wfGetDB( DB_SLAVE );
+
+		$query = $this->getQueryInfo( $randstr );
+		$res = $dbr->select(
+			$query['tables'],
+			$query['fields'],
+			$query['conds'],
+			$fname,
+			$query['options'],
+			$query['join_conds']
+		);
+
 		return $dbr->fetchObject( $res );
+	}
+
+	protected function getGroupName() {
+		return 'redirects';
 	}
 }

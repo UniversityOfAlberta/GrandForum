@@ -9,8 +9,8 @@ Feature: AddMember
         When I go to "index.php/Special:AddMember"
         Then I should see "Permission Error"
 
-    Scenario: PNI Requesting a user
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI Requesting a user
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "New"
         And I fill in "last_name_field" with "User"
@@ -30,8 +30,8 @@ Feature: AddMember
         And "new.user@behat-test.com" should be subscribed to "test-hqps"
         And unsubscribe "new.user@behat-test.com" from "test-hqps"
         
-    Scenario: PNI Requesting an already existing user
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI Requesting an already existing user
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "Already"
         And I fill in "last_name_field" with "Existing"
@@ -40,8 +40,8 @@ Feature: AddMember
         And I press "Submit Request"
         Then I should see "The user name must not be an already existing Person"
         
-    Scenario: PNI Requesting a user with no email
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI Requesting a user with no email
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "Test"
         And I fill in "last_name_field" with "User"
@@ -49,8 +49,8 @@ Feature: AddMember
         And I press "Submit Request"
         Then I should see "The field 'Email' must not be empty"
         
-    Scenario: PNI Requesting a user with no roles
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI Requesting a user with no roles
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "Test"
         And I fill in "last_name_field" with "User"
@@ -58,8 +58,8 @@ Feature: AddMember
         And I press "Submit Request"
         Then I should see "The field 'Roles' must not be empty"
         
-    Scenario: PNI Requesting a user with accents in name and email
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI Requesting a user with accents in name and email
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "Ààè"
         And I fill in "last_name_field" with "Öå"

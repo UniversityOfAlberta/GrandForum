@@ -4,7 +4,7 @@ Feature: Products
     I need to be able to view/add/edit/delete products
 
     Scenario: Adding a new Publication
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
         And I press "Add Product"
         And I fill in "title" with "New Publication"
@@ -17,7 +17,7 @@ Feature: Products
         Then I should see "The Product has been saved sucessfully"
         
     Scenario: Viewing list of Publications
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
         Then I should see "New Publication"
         
@@ -31,7 +31,7 @@ Feature: Products
         Then I should see "This Product does not exist"
         
     Scenario: Changing the permissions of a product
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
@@ -49,7 +49,7 @@ Feature: Products
         Then I should see "New Publication"
     
     Scenario: Editing a Publication
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
@@ -59,7 +59,7 @@ Feature: Products
         Then I should see "This is an edited description"
         
     Scenario: Deleting a Publication
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Delete Publication"
@@ -68,3 +68,126 @@ Feature: Products
         Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
         When I go to "index.php/Special:Products#/Publication"
         Then I should not see "New Publication"
+        
+    Scenario: Uploading a valid BibTeX
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{Xing:2005:UAO:1101908.1101919,
+         author = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
+         title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were created/updated"
+        
+    Scenario: Uploading a duplicate BibTeX
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{Xing:2005:UAO:1101908.1101919,
+         author = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
+         title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         abstract = {Hello World},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were created/updated"
+        When I click by css ".edit-icon"
+        And I wait "1000"
+        Then I should see "Hello World"
+        
+    Scenario: Uploading an invalid BibTeX
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "A publication was missing a title"
+        
+    Scenario: Uploading a BibTeX with capital letters 
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @INPROCEEDINGS{Xing:2006:UAO:1101908.1101919,
+         AUTHOR = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
+         TITLE = {This has capital letters but should still work},
+         BOOKTITLE = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         SERIES = {ASE '05},
+         YEAR = {2006},
+         ISBN = {1-58113-993-4},
+         LOCATION = {Long Beach, CA, USA},
+         PAGES = {54--65},
+         NUMPAGES = {12},
+         URL = {http://doi.acm.org/10.1145/1101908.1101919},
+         DOI = {10.1145/1101908.1101919},
+         ACMID = {1101919},
+         PUBLISHER = {ACM},
+         ADDRESS = {New York, NY, USA},
+         KEYWORDS = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were created/updated"
+        
+    Scenario: Uploading an empty BibTeX
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with ""
+        And I click "Import"
+        And I wait "500"
+        Then I should see "No BibTeX references were found"

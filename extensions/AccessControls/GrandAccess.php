@@ -18,10 +18,9 @@ class GrandAccess {
 	    foreach($me->getThemeProjects() as $project){
 	        $aRights[$i++] = $project->getName();
 	    }
-	    if($me->isRole(MANAGER)){
+	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	        $aRights[$i++] = PL;
-	        $aRights[$i++] = COPL;
 	    }
 	    $leadership = $me->leadership();
 	    if(count($leadership) > 0){
@@ -31,18 +30,9 @@ class GrandAccess {
 	            $aRights[$i++] = PL;
 	            $aRights[$i++] = PL.'+';
 	        }
-	        if($me->isProjectCoLeader()){
-	            $aRights[$i++] = COPL;
-	            $aRights[$i++] = COPL.'+';
-	        }
-	        if($me->isProjectManager()){
-	            $aRights[$i++] = PM;
-	            $aRights[$i++] = PM.'+';
-	        }
 	        foreach($leadership as $lead){
 	            if($lead->isSubProject()){
 	                $aRights[$i++] = "SUB-PL";
-	                $aRights[$i++] = "SUB-COPL";
 	                break;
 	            }
 	        }
@@ -51,7 +41,7 @@ class GrandAccess {
 	        $aRights[$i++] = "Evaluator";
 	        $aRights[$i++] = "Evaluator+";
 	    }
-	    if($me->isPNI() || $me->isCNI()){
+	    if($me->isRole(NI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
 	    }
@@ -59,13 +49,13 @@ class GrandAccess {
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
 	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER) && array_search('Leadership+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Leadership+', $aRights) === false){
 	                $aRights[$i++] = 'Leadership+';
 	            }
-	            if(($role == STAFF || $role == MANAGER) && array_search('Evaluator+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
 	                $aRights[$i++] = 'Evaluator+';
 	            }
-	            if(($role == STAFF || $role == MANAGER) && array_search('Researcher+', $aRights) === false){
+	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Researcher+', $aRights) === false){
 	                $aRights[$i++] = 'Researcher+';
 	            }
 	        }

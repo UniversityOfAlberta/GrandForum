@@ -8,17 +8,16 @@ $wgSpecialPageGroups['TravelForm'] = 'network-tools';
 require_once($dir . '../../Classes/PHPExcel/IOFactory.php');
 
 function runTravelForm($par) {
-	TravelForm::run($par);
+	TravelForm::execute($par);
 }
 
 class TravelForm extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('TravelForm');
-		SpecialPage::SpecialPage("TravelForm", HQP.'+', true, 'runTravelForm');
+		SpecialPage::__construct("TravelForm", HQP.'+', true, 'runTravelForm');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgUser, $wgOut, $wgServer, $wgScriptPath;
 	    if(isset($_POST['submit'])){
 	    	TravelForm::handleSubmit();

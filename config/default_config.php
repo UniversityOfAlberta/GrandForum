@@ -34,6 +34,9 @@
     // DB Password
     $config->setValue("dbPassword", "");
     
+    // Localization Cache Directory
+    $config->setValue("localizationCache", "");
+    
     // Default Mailing List Admins
     $config->setValue("listAdmins", array());
     
@@ -56,7 +59,7 @@
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
     // Highlight color for skin
-    $config->setValue("highlightColor", "#0088FF");
+    $config->setValue("highlightColor", "#555555");
     
     // Highlight color for headers
     $config->setValue("headerColor", "#333333");
@@ -72,6 +75,9 @@
     
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
+    
+    // Whether or not to enable projects
+    $config->setValue("projectsEnabled", true);
     
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
@@ -98,10 +104,9 @@
         //'TextReplace',
         //'Twitter',
         'MailingList',
-        //'FeatureRequest',
         'AddMember',
         'EditMember',
-        'HQPRegister',
+        //'HQPRegister',
         'Poll',
         'QueryableTable',
         'IndexTables',
@@ -116,14 +121,10 @@
         'Duplicates',
         //'Acknowledgements',
         //'AllocatedBudgets',
-        'FundedCNI',
         'ProjectEvolution',
-        'ProjectLeadership',
         //'ScreenCapture',
         //'Solr',
-        //'AcademiaMap',
         //'TravelForm',
-        //'EthicsTable',
         //'AdvancedSearch',
         'CCVExport'
     ));
@@ -134,7 +135,6 @@
                                                'ReportArchive'          => false,
                                                'ReviewerConflicts'      => false,
                                                'ReviewResults'          => false,
-                                               'LoiProposals'           => false,
                                                'SanityChecks'           => false,
                                                'AdminVisualizations'    => false));
     
@@ -143,8 +143,8 @@
     // Options: twitter, linkedin, flickr, youtube
     $config->setValue("socialLinks", array());
 
-    // The dates that each phase started
-    $config->setValue("projectPhaseDates", array());
+    $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
+                                                 2 => "2015-04-01 00:00:00"));
     
     /*
      * PDF Config
@@ -165,6 +165,8 @@
     /*
      * Constants
      */
+     
+    $config->setConst("DEMO", false);
      
     // The current Project Phase
     $config->setConst("PROJECT_PHASE", 2);
@@ -224,21 +226,20 @@
     $config->setConst("HQP",        "HQP");
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
+    $config->setConst("ISAC",       "ISAC");
     $config->setConst("IAC",        "IAC");
     $config->setConst("CAC",        "CAC");
-    $config->setConst("ISAC",       "ISAC");
     $config->setConst("NCE",        "NCE Rep");
-    $config->setConst("CNI",        "CNI");
-    $config->setConst("PNI",        "PNI");
+    $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
-    $config->setConst("LOI",        "LOI Member");
-    $config->setConst("COPL",       "Project co-Leader");
+    $config->setConst("CI",         "CI");
     $config->setConst("PL",         "Project Leader");
-    $config->setConst("PM",         "Project Manager");
-    $config->setConst("COTL",       "Theme co-Leader");
     $config->setConst("TL",         "Theme Leader");
+    $config->setConst("TC",         "Theme Coordinator");
     $config->setConst("RMC",        "RMC");
+    $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
+    $config->setConst("CF",         "CF");
     $config->setConst("BOD",        "BOD");
     $config->setConst("BODC",       "BOD Chair");
     $config->setConst("CHAMP",      "Champion");
@@ -247,34 +248,35 @@
     $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
+    $config->setConst("ADMIN",    "Admin");
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
         $config->getConst('EXTERNAL')       => "External",
+        $config->getConst('ISAC')           => "International Scientific Advisory Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",
         $config->getConst('CAC')            => "Consumer Advisory Committee",
-        $config->getConst('ISAC')           => "ISAC",
         $config->getConst('NCE')            => "NCE Rep",
-        $config->getConst('CNI')            => "Collaborating Network Investigator",
-        $config->getConst('PNI')            => "Principal Network Investigator",
-        $config->getConst('AR')             => "Associated Network Investigator",
-        $config->getConst('LOI')            => "LOI",
+        $config->getConst('NI')             => "Network Investigator",
+        $config->getConst('AR')             => "Affiliated Researcher",
+        $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
-        $config->getConst('COPL')           => "Co-Project Leader",
         $config->getConst('PL')             => "Project Leader",
-        $config->getConst('PM')             => "Project Manager",
-        $config->getConst('COTL')           => "Co-Theme Leader",
         $config->getConst('TL')             => "Theme Leader",
+        $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
+        $config->getConst('CF')             => "Core Facillity",
         $config->getConst('BOD')            => "Board of Directors",
-        $config->getConst('BODC')           => "BOD Chair",
+        $config->getConst('BODC')           => "Board of Directors Chair",
         $config->getConst('ASD')            => "Associate Scientific Director",
         $config->getConst('SD')             => "Scientific Director",
-        $config->getConst('GOV')            => "Government",
+        $config->getConst('GOV')            => "Government Rep",
         $config->getConst('STAFF')          => "Staff",
-        $config->getConst('MANAGER')        => "Manager"));
+        $config->getConst('MANAGER')        => "Manager",
+        $config->getConst('ADMIN')          => "Admin"));
         
     /* Other */
     $config->setValue("analyticsCode", "");

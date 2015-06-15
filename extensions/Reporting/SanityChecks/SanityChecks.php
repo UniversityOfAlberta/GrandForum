@@ -6,18 +6,17 @@ $wgExtensionMessagesFiles['SanityChecks'] = $dir . 'SanityChecks.i18n.php';
 $wgSpecialPageGroups['SanityChecks'] = 'network-tools';
 
 function runSanityChecks($par) {
-	SanityChecks::run($par);
+	SanityChecks::execute($par);
 }
 
 
 class SanityChecks extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('SanityChecks');
-		SpecialPage::SpecialPage("SanityChecks", CNI.'+', true, 'runSanityChecks');
+		SpecialPage::__construct("SanityChecks", NI.'+', true, 'runSanityChecks');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $me = Person::newFromId($wgUser->getId());
@@ -47,7 +46,7 @@ class SanityChecks extends SpecialPage {
                                 });
                             </script>");
 		}
-		else if($me->isRoleAtLeast(CNI)){
+		else if($me->isRoleAtLeast(NI)){
 			$wgOut->setPageTitle("Data Quality Issues");
 			SanityChecks::personalizedTable();
     	}
@@ -61,7 +60,7 @@ class SanityChecks extends SpecialPage {
     // 	if($me->isRoleAtLeast(STAFF)){
     // 		SanityChecks::niTable();
     // 	}
-    // 	else if($me->isRoleAtLeast(CNI)){
+    // 	else if($me->isRoleAtLeast(NI)){
     // 		SanityChecks::personalizedTable();
     // 	}
 
@@ -199,7 +198,7 @@ EOF;
 	    		$niname_normal = $ni->getNameForForms();
 	    		$niname_reversed = $ni->getReversedName();
 	    		$niname_link = $ni->getUrl();
-	    		$ni_role = ($ni->isCNI())? "role:CNI" : (($ni->isPNI())? "role:PNI" : "role:Other"); 
+	    		$ni_role = ($ni->isRole(NI))? "role:".NI : "role:Other"); 
 	    		$projects = $ni->getProjectsDuring((REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
 	    		$project_names = array();
 	    		foreach ($projects as $p) {
@@ -285,9 +284,8 @@ EOF;
     static function getErrors($ni_id = null){
     	
     	if(is_null($ni_id)){
-    		$cnis = Person::getAllPeople('CNI');
-			$pnis = Person::getAllPeople('PNI');
-			$all_people = array_merge($cnis, $pnis);
+			$nis = Person::getAllPeople('NI');
+			$all_people = $nis;
 		}else{
 			$ni = Person::newFromId($ni_id);
 			$all_people = array($ni);
@@ -375,14 +373,8 @@ EOF;
 					$university = $s->getUni();
 					$department = $s->getDepartment();
 					$errors = array();
-					$ishqp = $s->isHQP();
+					$ishqp = $s->isRole(HQP);
 					$related = $person->relatedTo($s, 'Supervises');
-
-					//Check for Ethics tutorial completion
-					$ethics = $s->getEthics();
-					if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
-						$errors[] = "Not Completed TCPS2";
-					}
 
 					//Acknowledgements
 					if($ishqp && $related){

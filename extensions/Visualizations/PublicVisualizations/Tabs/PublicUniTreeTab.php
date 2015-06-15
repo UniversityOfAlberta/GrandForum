@@ -32,8 +32,7 @@ class PublicUniTreeTab extends AbstractTab {
             $people = Person::getAllPeople();
             $unis = array();
             foreach($people as $person){
-                if($person->isRole(CNI) ||
-                   $person->isRole(PNI)){
+                if($person->isRole(NI)){
                     $uni = $person->getUni();
                     @$unis[$uni][$person->getReversedName()] = 1;
                 }

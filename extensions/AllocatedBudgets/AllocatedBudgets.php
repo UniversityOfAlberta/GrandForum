@@ -8,17 +8,16 @@ $wgExtensionMessagesFiles['AllocatedBudgets'] = $dir . 'AllocatedBudgets.i18n.ph
 $wgSpecialPageGroups['AllocatedBudgets'] = 'reporting-tools';
 
 function runAllocatedBudgets($par) {
-	AllocatedBudgets::run($par);
+	AllocatedBudgets::execute($par);
 }
 
 class AllocatedBudgets extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('AllocatedBudgets');
-		SpecialPage::SpecialPage("AllocatedBudgets", MANAGER.'+', true, 'runAllocatedBudgets');
+		SpecialPage::__construct("AllocatedBudgets", MANAGER.'+', true, 'runAllocatedBudgets');
 	}
 	
-	function run(){
+	function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgRoleValues;
 	    $wgOut->addScript("<script type='text/javascript'>
             $(document).ready(function(){
@@ -54,7 +53,7 @@ class AllocatedBudgets extends SpecialPage {
 	        $found = false;
 	        $roles = $person->getRolesDuring("{$year}-00-00", ($year+1)."-00-00");
 	        foreach($roles as $role){
-	            if($wgRoleValues[$role->getRole()] >= $wgRoleValues[CNI]){
+	            if($wgRoleValues[$role->getRole()] >= $wgRoleValues[NI]){
 	                $found = true;
 	                break;
 	            }

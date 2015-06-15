@@ -2,18 +2,18 @@
 
 $dir = dirname(__FILE__) . '/';
 
-$wgSpecialPages['AddMultimediaStoryPage'] = 'AddMultimediaStoryPage'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['AddMultimediaStoryPage'] = $dir . 'AddMultimediaStoryPage.i18n.php';
-$wgSpecialPageGroups['AddMultimediaStoryPage'] = 'network-tools';
+$wgSpecialPages['AddMultimediaPage'] = 'AddMultimediaPage'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['AddMultimediaPage'] = $dir . 'AddMultimediaPage.i18n.php';
+$wgSpecialPageGroups['AddMultimediaPage'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'MultimediaStorySearch';
-$wgHooks['ToolboxLinks'][] = 'AddMultimediaStoryPage::createToolboxLinks';
+$wgHooks['UnknownAction'][] = 'MultimediaSearch';
+$wgHooks['ToolboxLinks'][] = 'AddMultimediaPage::createToolboxLinks';
 
-function runAddMultimediaStoryPage($par){
-    AddMultimediaStoryPage::run($par);
+function runAddMultimediaPage($par){
+    AddMultimediaPage::execute($par);
 }
 
-function MultimediaStorySearch($action, $request){
+function MultimediaSearch($action, $request){
     if($action == "MaterialSearch"){
         header("Content-type: text/json");
         echo Material::search($_GET['phrase']);
@@ -22,7 +22,7 @@ function MultimediaStorySearch($action, $request){
     return true;
 }
 
-function generateMultimediaStoryScript($category){
+function generateMultimediaScript($category){
     global $wgServer, $wgScriptPath;
     $script = "<script type='text/javascript'>
 		                            var lastCall;
@@ -73,11 +73,11 @@ function generateMultimediaStoryScript($category){
 		                            function changeLocation(){
 		                                if($('#title').val() == ''){
                                             clearError();
-                                            addError('The Multimedia Story must not have an empty title');
+                                            addError('The Multimedia must not have an empty title');
                                             return;
                                         }
 		                                var page = escape($('#title').val().replace(/\‘/g, '\'').replace(/\’/g, '\''));
-		                                document.location = '$wgServer$wgScriptPath/index.php/Multimedia_Story:New?name=' + page + '&create';
+		                                document.location = '$wgServer$wgScriptPath/index.php/Multimedia:New?name=' + page + '&create';
 		                            }
 		                            
 		                            $(document).ready(function(){
@@ -88,21 +88,20 @@ function generateMultimediaStoryScript($category){
     return $script;
 }
 
-class AddMultimediaStoryPage extends SpecialPage{
+class AddMultimediaPage extends SpecialPage{
 
-	function AddMultimediaStoryPage() {
-		wfLoadExtensionMessages('AddMultimediaStoryPage');
-		SpecialPage::SpecialPage("AddMultimediaStoryPage", HQP.'During+', true, 'runAddMultimediaStoryPage');
+	function AddMultimediaPage() {
+		SpecialPage::__construct("AddMultimediaPage", HQP.'During+', true, 'runAddMultimediaPage');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
-	    $wgOut->addScript(generateMultimediaStoryScript("Multimedia_Story"));
-		$wgOut->addHTML("<i>Multimedia Stories</i> are any media form which has been produced as a result of {$config->getValue('networkName')} participation.<br /><br />Enter a short title for the Story in the text field below. If there is an already existing Story with the same or similar title, it will be listed below the text field. If you see the Story in the list, then you can click on the title to edit its information, otherwise you can choose to create the Story with the name you have entered by clicking the 'Create' button.<br /><br />
+	    $wgOut->addScript(generateMultimediaScript("Multimedia"));
+		$wgOut->addHTML("<i>Multimedia Stories</i> are any media form which has been produced as a result of {$config->getValue('networkName')} participation.<br /><br />Enter a short title for the  in the text field below. If there is an already existing with the same or similar title, it will be listed below the text field. If you see the in the list, then you can click on the title to edit its information, otherwise you can choose to create the with the name you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Name:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />
 		                 <fieldset id='sug' style='display:none;'>
 		                    <legend>Suggestions</legend>
-		                    It looks like there might be a Multimedia Story with a similar name to the one entered.<br /><br />
+		                    It looks like there might be a Multimedia with a similar name to the one entered.<br /><br />
 		                    <div id='suggestions'></div>
 		                 </fieldset>");
 	}
@@ -111,7 +110,7 @@ class AddMultimediaStoryPage extends SpecialPage{
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(HQP)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Multimedia Story", "$wgServer$wgScriptPath/index.php/Special:AddMultimediaStoryPage");
+	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Multimedia", "$wgServer$wgScriptPath/index.php/Special:AddMultimediaPage");
 	    }
 	    return true;
 	}

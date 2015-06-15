@@ -13,19 +13,30 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
-session_start();
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+if(PHP_SAPI != 'cli'){
+    session_start();
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
 
-header('Cache-Control: no-cache, no-store, must-revalidate');
-header('Pragma: no-cache');
-header('Expires: 0');
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
 
 date_default_timezone_set('America/Edmonton');
 if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = MW_INSTALL_PATH;
 } else {
 	$IP = dirname( __FILE__ );
+}
+
+if(!defined('TESTING')){
+    if(file_exists("$IP/test.tmp")){
+        define("TESTING", true);
+    }
+    else{
+        define("TESTING", false);
+    }
 }
 
 $path = array( $IP, "$IP/includes", "$IP/languages" );
@@ -63,12 +74,8 @@ $wgListAdminPassword    = $config->getValue("listAdminPassword");
 
 $wgFavicon          = "$wgServer$wgScriptPath/favicon.ico";
 
-if(file_exists("$IP/test.tmp")){
+if(TESTING && !defined('INIT_TESTING')){
     $wgDBname = $wgTestDBname;
-    define("TESTING", true);
-}
-else{
-    define("TESTING", false);
 }
 
 # If PHP's memory limit is very low, some operations may fail.
@@ -114,6 +121,20 @@ $wgDBmysql5 = true;
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
 $wgMemCachedServers = array();
+$wgDisableCounters = true;
+$wgJobRunRate = 0.01;
+$wgSessionsInObjectCache = true;
+$wgEnableSidebarCache = true;
+if($config->getValue('localizationCache') != ""){
+    if(!file_exists($config->getValue('localizationCache')) && 
+       is_writable($config->getValue('localizationCache'))){
+        mkdir($config->getValue('localizationCache'));
+    }
+    if(file_exists($config->getValue('localizationCache'))){
+        $wgCacheDirectory = $config->getValue('localizationCache');
+        $wgUseLocalMessageCache = true;
+    }
+}
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
@@ -145,6 +166,7 @@ $wgLanguageCode = "en";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook':
+require_once "$IP/skins/cavendish/cavendish.php";
 $wgDefaultSkin = 'cavendish';
 $wgAllowUserSkin = false;
 
@@ -183,7 +205,8 @@ $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
-$wgPasswordReminderResendTime = 0.5;
+$wgPasswordReminderResendTime = 0.25;
+$wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
 $wgRealUser;
 
@@ -204,20 +227,18 @@ $wgRoleValues = array(INACTIVE => 0,
                       IAC => 3,
                       CAC => 3,
                       NCE => 4,
-                      CNI => 5,
-                      PNI => 6,
-                      AR => 7,
-                      LOI => 7,
+                      NI => 5,
+                      AR => 5,
+                      CI => 6,
                       CHAMP => 7,
-                      COPL => 8,
-                      'COPL' => 8,
                       PL => 9,
                       'PL' => 9,
-                      PM => 10,
-                      'PM' => 10,
-                      COTL => 11,
                       TL => 11,
+                      'TL' => 11,
+                      TC => 11,
+                      CF => 11,
                       RMC => 12,
+                      HQPAC => 13,
                       EVALUATOR => 12,
                       BOD => 12,
                       BODC => 13,
@@ -225,29 +246,16 @@ $wgRoleValues = array(INACTIVE => 0,
                       SD => 13,
                       GOV => 13,
                       STAFF => 16,
-                      MANAGER => 17);
+                      MANAGER => 17,
+                      ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, RMC, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
+    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, HQPAC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, CNI, PNI, AR, LOI, COPL, PL, PM, TL, RMC, EVALUATOR, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER);
-
-// Defining Custom Namespace Constants
-define("NS_GRAND_PROJ", 122);
-define("NS_GRAND_PROJ_TALK", 123);
-define("NS_GRAND_NI", 124);
-define("NS_GRAND_NI_TALK", 125);
-define("NS_GRAND_CR", 126);
-define("NS_GRAND_CR_TALK", 127);
-define("NS_STUDENT", 128);
-define("NS_STUDENT_TALK", 129);
-define("NS_STUDENT_COMM", 206);
-define("NS_PAPER", 216);    # David's: 276
-define("NS_BOOK", 218);        # David's: 278
-define("NS_POSTER", 134);
+    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, TL, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 function unaccentChars($str){
     $normalizeChars = array("'" => '',
@@ -309,6 +317,50 @@ function array_clean(array $haystack){
     return $haystack;
 }
 
+function str_replace_every_other($needle, $replace, $haystack, &$count=null, $replace_first=true) {
+    $count = 0;
+    $offset = strpos($haystack, $needle);
+    //If we don't replace the first, go ahead and skip it
+    if (!$replace_first) {
+        $offset += strlen($needle);
+        $offset = strpos($haystack, $needle, $offset);
+    }
+    while ($offset !== false) {
+        $haystack = substr_replace($haystack, $replace, $offset, strlen($needle));
+        $count++;
+        $offset += strlen($replace);
+        $offset = strpos($haystack, $needle, $offset);
+        if ($offset !== false) {
+            $offset += strlen($needle);
+            $offset = strpos($haystack, $needle, $offset);
+        }
+    }
+    return $haystack;
+}
+
+function adjustBrightness($hex, $steps) {
+    // Steps should be between -255 and 255. Negative = darker, positive = lighter
+    $steps = max(-255, min(255, $steps));
+
+    // Normalize into a six character long hex string
+    $hex = str_replace('#', '', $hex);
+    if (strlen($hex) == 3) {
+        $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+    }
+
+    // Split into three parts: R, G and B
+    $color_parts = str_split($hex, 2);
+    $return = '#';
+
+    foreach ($color_parts as $color) {
+        $color   = hexdec($color); // Convert to decimal
+        $color   = max(0,min(255,$color + $steps)); // Adjust color
+        $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+    }
+
+    return $return;
+}
+
 /**
  * Returns a 'human readable' date from the given string
  * @param string $time The time in db timestamp format 'YYYY-MM-DD hh-mm-ss'
@@ -318,4 +370,28 @@ function array_clean(array $haystack){
 function time2date($time, $format='F j, Y'){
     $strtime = strtotime($time);
     return date($format, $strtime);
+}
+
+/**
+ * Returns a HTML comment with the elapsed time since request.
+ * This method has no side effects.
+ * @return string
+ */
+function wfReportTimeOld() {
+	global $wgRequestTime, $wgShowHostnames;
+
+	$now = wfTime();
+	$elapsed = $now - $wgRequestTime;
+    $mem = memory_get_peak_usage(true);
+    $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
+    $ind = 1;
+    while ($mem > 1024 && $ind < count($bytes)) {
+	    $mem = $mem / 1024;
+	    $ind++;
+    }
+	
+
+	return $wgShowHostnames
+		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
+		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
 }

@@ -16,26 +16,33 @@ $wgSpecialPageGroups['PublicVisualizations'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'PublicVisualizations::createSubTabs';
 
 function runPublicVisualizations($par) {
-  PublicVisualizations::run($par);
+  PublicVisualizations::execute($par);
 }
 
 class PublicVisualizations extends SpecialPage{
 
 	function PublicVisualizations() {
-		wfLoadExtensionMessages('PublicVisualizations');
-		SpecialPage::SpecialPage("PublicVisualizations", '', true, 'runPublicVisualizations');
+		SpecialPage::__construct("PublicVisualizations", '', true, 'runPublicVisualizations');
 	}
 
-    function run(){
-        global $wgOut;
+    function execute(){
+        global $wgOut, $config;
         $tabbedPage = new TabbedPage("publicVis");
-        $tabbedPage->addTab(new PublicChordTab());
-        $tabbedPage->addTab(new PublicProjectClusterTab());
-        $tabbedPage->addTab(new PublicDiscTreeTab());
-        $tabbedPage->addTab(new PublicProjTreeTab());
+        if($config->getValue('projectsEnabled')){
+            $tabbedPage->addTab(new PublicChordTab());
+            $tabbedPage->addTab(new PublicProjectClusterTab());
+        }
+        if($config->getValue('networkName') == "GRAND"){
+            $tabbedPage->addTab(new PublicDiscTreeTab());
+        }
+        if($config->getValue('projectsEnabled')){
+            $tabbedPage->addTab(new PublicProjTreeTab());
+        }
         $tabbedPage->addTab(new PublicUniTreeTab());
         $tabbedPage->addTab(new PublicUniversityMapTab());
-        $tabbedPage->addTab(new PublicWordleTab());
+        if($config->getValue('projectsEnabled')){
+            $tabbedPage->addTab(new PublicWordleTab());
+        }
         $tabbedPage->showPage();
     }
     

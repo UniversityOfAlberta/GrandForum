@@ -17,15 +17,18 @@ class PersonProfileTab extends AbstractEditableTab {
         global $wgUser;
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
-        $this->html .= "</td><td width='50%' valign='top'>";
+        $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
+            $this->html .= "<br />";
         }
+        $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         $extra[] = $this->showCloud($this->person, $this->visibility);
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        $extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
@@ -33,14 +36,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 unset($extra[$key]);
             }
         }
-        $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
-        
-        $this->html .= "<tr><td colspan='2'>".$this->showTable($this->person, $this->visibility)."</td></tr>";
-        if($wgUser->isLoggedIn()){
-            if(isExtensionEnabled('EthicsTable')){
-                $this->html .= "<tr><td colspan='2' align='right'><p>".$this->showEthics($this->person, $this->visibility)."</p></td></tr>";
-            }
-        }
+        $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
@@ -54,9 +50,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
-        if(isExtensionEnabled('EthicsTable')){
-            $this->showEditEthics($this->person, $this->visibility);
-        }
     }
     
     function canEdit(){
@@ -69,14 +62,11 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
         $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
         APIRequest::doAction('UserProfile', true);
         $_POST['type'] = "private";
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
         APIRequest::doAction('UserProfile', true);
-        if(isExtensionEnabled('EthicsTable') && $this->person->isHQP()){
-            APIRequest::doAction('UserEthics', true);
-        }
         Person::$cache = array();
         Person::$namesCache = array();
         Person::$idsCache = array();
@@ -196,17 +186,19 @@ class PersonProfileTab extends AbstractEditableTab {
      * Displays the twitter widget for this user
      */
     function showTwitter($person, $visibility){
+        $html = "";
         if($person->getTwitter() != ""){
-            $this->html .= <<<EOF
-                <div id='twitter' style='display: inline-block; width: 50%; text-align: right;'>
-                    <div style='max-height: 225px; max-width:225px; display:inline-block; overflow: hidden;'>
-                        <a class="twitter-timeline" width="300" height="300" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
+            $html = <<<EOF
+                <br />
+                <div id='twitter' style='display: block; width: 100%; text-align: right;'>
+                    <div>
+                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </div>
                 </div>
                 <script type='text/javascript'>
                     // Adds a bit of responsiveness to the profile
-                    setInterval(function(){
+                    /*setInterval(function(){
                         if($("#bodyContent").width() < 1000){
                             $('#twitter').css('display', 'block');
                             $('#twitter').css('width', '100%');
@@ -220,10 +212,11 @@ class PersonProfileTab extends AbstractEditableTab {
                             $('#twitter div').css('max-width', 225);
                             $('#twitter iframe').css('width', 300);
                         }
-                    }, 100);
+                    }, 100);*/
                 </script>
 EOF;
         }
+        return $html;
     }
     
     function showEditProfile($person, $visibility){
@@ -297,6 +290,50 @@ EOF;
         return $doughnut->show();
     }
     
+    function showChord($person, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut;
+        $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getChordData&person={$person->getId()}";
+        $html = "<div style='position:absolute; right:0; display:inline-block; text-align:right;'>";
+        $chord = new Chord($dataUrl);
+        $chord->width = 226;
+        $chord->height = 226;
+        $chord->options = false;
+        $html .= $chord->show();
+        $html .= "</div>";
+        $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    $('#vis{$chord->index}').hide();
+                                    var maxWidth = {$chord->width};
+                                    var width = -1;
+                                    var height = {$chord->height};
+                                    var lastWidth = -1;
+                                    setInterval(function(){
+                                        var leftWidth = $('#firstLeft').width();
+                                        var cardWidth = $('#firstLeft div#card').width();
+                                        var widthDiff = leftWidth - cardWidth;
+                                        newWidth = Math.min(maxWidth, widthDiff);
+                                        if($('#vis{$chord->index}').is(':visible') && width != newWidth){
+                                            width = newWidth;
+                                            height = width;
+                                            if(width < 100){
+                                                // Too small, just don't show it anymore
+                                                $('#vis{$chord->index}').empty();
+                                            }
+                                            else{
+                                                _.defer(function(){
+                                                    $('#vis{$chord->index}').empty();
+                                                    $('#vis{$chord->index}').show();
+                                                    render{$chord->index}(width, height);
+                                                });
+                                            }
+                                            lastWidth = $('#firstLeft').width();
+                                        }
+                                    }, 100);
+                                });
+                          </script>");
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
@@ -309,14 +346,14 @@ EOF;
             $string = "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
             foreach($products as $paper){
                 $projects = array();
                 foreach($paper->getProjects() as $project){
-                    $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
+                    $projects[] = "{$project->getName()}";
                 }
 
                 $names = array();
@@ -330,9 +367,8 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $projects)."</td>";
                 $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
@@ -342,146 +378,14 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     $('#personProducts').dataTable({
-                        'order': [[ 1, 'desc' ]]
+                        'order': [[ 1, 'desc' ]],
+                        'autoWidth': false
                     });
                 </script>";
         }
         return $string;
     }
-
-    /*
-     * Displays the profile for this user
-     */
-    function showEthics($person, $visibility){
-        global $wgUser, $wgServer, $wgScriptPath;
-        
-        $ethics = $person->getEthics();
-        $completed_tutorial = ($ethics['completed_tutorial'])? "Yes" : "No";
-        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        $ethics_str = "<b>Have not completed the TCPS2 tutorial.</b>";
-        if($completed_tutorial == "Yes"){
-            $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button.jpg' /></td>
-            <td>&nbsp;<h3>I have completed the TCPS2 tutorial on {$date}.</h3></td>
-            <tr></table>";
-        }
-        else{
-            $ethics_str = "<table><tr>
-            <td><img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/ethical_button_not.jpg' /></td>
-            <td>&nbsp;<h3>I have not completed the TCPS2 tutorial.</h3></td>
-            <tr></table>";
-        }
-        if($person->isHQP()){
-            return $ethics_str;
-        }
-        else if($person->isCNI() || $person->isPNI()){
-            $relations = $person->getRelations("Supervises");
-            $total_hqp = 0;
-            $ethical_hqp = 0;
-            foreach($relations as $r){
-                $hqp =  $r->getUser2();
-                $ethics = $hqp->getEthics();
-                if($ethics['completed_tutorial']){
-                    $ethical_hqp++;
-                }
-                $total_hqp++;
-            }
-            $perc = 0;
-            if($total_hqp >0 ){
-                $perc = $ethical_hqp/$total_hqp;
-            //$perc = floor($perc / 0.25)*0.25;
-            }
-            $perc = round($perc*100);
-            if($ethical_hqp == 0){
-                $perc = "";
-                $button = "ethical_button_not.jpg";
-            }
-            else{
-                $perc .= "%";
-                $button = "ethical_button_ni.jpg";
-            }
-
-            return "
-            <style>
-            span.supervisor_lbl{
-                text-align: center;
-                bottom: 0px;
-                left: 7px;
-                display: block;
-                font-size: 15px;
-                font-weight: bold;
-            }
-            span.percent_lbl{
-                text-align: center;
-                top: 3px;
-                right: 25px;
-                display: block;
-                font-size: 12px;
-                font-weight: bold;
-            }
-            </style>
-            <table><tr>
-            <td style='position:relative; padding:0;'>
-                <span class='percent_lbl highlights-text'>{$perc}</span>
-                <img style='vertical-align:bottom;' height='66px' src='$wgServer$wgScriptPath/skins/cavendish/ethical_btns/{$button}' />
-                <span class='supervisor_lbl highlights-text'>Supervisor</span>
-            </td>
-            <td style='padding-left:15px;'><h3>{$ethical_hqp} of my {$total_hqp} students have completed the TCPS2 Tutorial.</h3></td>
-            <tr></table>";
-        }
-        return "";
-    }
-    
-    function showEditEthics($person, $visibility){
-        global $config;
-        $ethics = $person->getEthics();
-
-        if($ethics['completed_tutorial']){
-            $completed_tutorial_y = "checked='checked'";
-            $completed_tutorial_n = "";
-        }
-        else{
-            $completed_tutorial_n = "checked='checked'";
-            $completed_tutorial_y = "";
-        }
-
-        $date = ($ethics['date'] == '0000-00-00')? "" : $ethics['date'];
-        if($person->isHQP()){
-            $this->html .=<<<EOF
-            <script>
-            $(function() {
-                $( "#datepicker" ).datepicker( { dateFormat: "yy-mm-dd" } );
-            });
-            </script>
-            <table border='0' cellpadding='5' cellspacing='0' width='70%'>
-            <tr>
-            <td>
-            <i>
-            <p>All {$config->getValue('networkName')} HQP are required to complete the TCPS2 tutorial <b>Course on Research Ethics (CORE)</b>.  This interactive online tutorial can be completed in approximately two hours and provides an essential orientation to the Tri Council Policy Statement.</p>
-            <p>Please note, the current version of the ethics module was released February 2011. If you completed a previous version (i.e. the one that HQP were asked to complete when {$config->getValue('networkName')} started), you are still required to complete the most recent version.</p>
-            </i>
-            </td>
-            </tr>
-            </table>
-            <table border='0' cellpadding='5' cellspacing='0'>
-            <tr><th align='right' style='padding-right:15px;'>I have completed the TCPS2 tutorial:<br />
-                <a target='_blank' href="http://grand-nce.ca/resource/tcps2-core">http://grand-nce.ca/resource/tcps2-core</a></th>
-                <td valign='top'>
-                    Yes <input type='radio' value='1' name='completed_tutorial' {$completed_tutorial_y} />&nbsp;&nbsp;
-                    No <input type='radio' value='0' name='completed_tutorial' {$completed_tutorial_n} />
-                </td>
-            </tr>
-            <tr>
-                <th align='right' style='padding-right:15px;'>Date: </th>
-                <td>
-                    <input id='datepicker' name='date' type='text' value='{$date}' />
-                </td>
-            </tr>
-            </table>
-EOF;
-        }
-    }
-    
+   
     /*
      * Displays the profile for this user
      */
@@ -489,7 +393,7 @@ EOF;
         global $wgUser, $wgServer, $wgScriptPath;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
-            if(($person->isRole(PNI) || $person->isRole(CNI)) && $me->getId() == $person->getId()){
+            if(($person->isRole(NI)) && $me->getId() == $person->getId()){
                 $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
             }
         }
@@ -537,9 +441,9 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div style='white-space: nowrap;'>";
+        $this->html .= "<div style='white-space: nowrap;position:relative;height:229px;'>";
         $this->html .= <<<EOF
-            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;width:50%;'></div>
+            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
                 $(document).ready(function(){    
                     var person = new Person({$person->toJSON()});
@@ -548,7 +452,7 @@ EOF;
                 });
             </script>
 EOF;
-        $this->showTwitter($this->person, $this->visibility);
+        $this->html .= $this->showChord($person, $visibility);
         $this->html .= "</div>";
     }
     
@@ -558,10 +462,9 @@ EOF;
         $nationality = "";
         if($visibility['isMe'] || $visibility['isSupervisor']){
             if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(CNI, "0000", "9999") ||
-               $person->isRoleDuring(PNI, "0000", "9999") ||
-               $person->isRoleDuring(AR, "0000", "9999")){
+               $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
                 $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
                 $nationality = "<tr>
@@ -569,6 +472,7 @@ EOF;
                     <td>
                         <select name='nationality'>
                             <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='American' $amerSelected>American</option>
                             <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
                             <option value='Visa Holder' $visaSelected>Visa Holder</option>
                         </select>
@@ -648,7 +552,7 @@ EOF;
                             </tr>";
         }
         else{
-            $universities = Person::getAllUniversities();
+            $universities = University::getAllUniversities();
             $positions = Person::getAllPositions();
             $myPosition = "";
             foreach($positions as $key => $position){
@@ -671,10 +575,10 @@ EOF;
                                 <td><select name='university'>";
             foreach($universities as $uni){
                 $selected = "";
-                if($uni == $university['university']){
+                if($uni->getName() == $university['university']){
                     $selected = " selected";
                 }
-                $this->html .= "<option$selected>{$uni}</option>";
+                $this->html .= "<option$selected>{$uni->getName()}</option>";
             }
             $this->html .= "</select></td></tr>
                             <tr>

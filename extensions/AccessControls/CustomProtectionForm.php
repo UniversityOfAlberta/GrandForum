@@ -1,6 +1,6 @@
 <?php
 require_once("$IP/includes/ProtectionForm.php");
-require_once("CustomSpecialUserRights.php");
+//require_once("CustomSpecialUserRights.php");
 /**
  * This class is responsible for the custom protect action handler. When somebody clicks on the protect
  * tab on a page, the form will be rendered by this class instead of the regular ProtectionForm  

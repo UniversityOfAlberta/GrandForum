@@ -1,13 +1,13 @@
 <?php
-/*
- * Script to clean up broken, unparseable titles.
+/**
+ * Clean up broken, unparseable titles.
  *
  * Usage: php cleanupTitles.php [--fix]
  * Options:
  *   --fix  Actually clean up titles; otherwise just checks for them
  *
- * Copyright (C) 2005 Brion Vibber <brion@pobox.com>
- * http://www.mediawiki.org/
+ * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,109 +29,152 @@
  * @ingroup Maintenance
  */
 
-require_once( 'commandLine.inc' );
-require_once( 'cleanupTable.inc' );
+require_once __DIR__ . '/cleanupTable.inc';
 
 /**
+ * Maintenance script to clean up broken, unparseable titles.
+ *
  * @ingroup Maintenance
  */
 class TitleCleanup extends TableCleanup {
-	function __construct( $dryrun = false ) {
-		parent::__construct( 'page', $dryrun );
+	public function __construct() {
+		parent::__construct();
+		$this->mDescription = "Script to clean up broken, unparseable titles";
 	}
 
-	function processPage( $row ) {
-		$current = Title::makeTitle( $row->page_namespace, $row->page_title );
-		$display = $current->getPrefixedText();
-
-		$verified = UtfNormal::cleanUp( $display );
-
+	/**
+	 * @param object $row
+	 */
+	protected function processRow( $row ) {
+		global $wgContLang;
+		$display = Title::makeName( $row->page_namespace, $row->page_title );
+		$verified = $wgContLang->normalize( $display );
 		$title = Title::newFromText( $verified );
 
-		if( !is_null( $title ) && $title->equals( $current ) && $title->canExist() ) {
-			return $this->progress( 0 );  // all is fine
+		if ( !is_null( $title )
+			&& $title->canExist()
+			&& $title->getNamespace() == $row->page_namespace
+			&& $title->getDBkey() === $row->page_title
+		) {
+			$this->progress( 0 ); // all is fine
+
+			return;
 		}
 
-		if( $row->page_namespace == NS_FILE && $this->fileExists( $row->page_title ) ) {
-			$this->log( "file $row->page_title needs cleanup, please run cleanupImages.php." );
-			return $this->progress( 0 );
-		} elseif( is_null( $title ) ) {
-			$this->log( "page $row->page_id ($display) is illegal." );
+		if ( $row->page_namespace == NS_FILE && $this->fileExists( $row->page_title ) ) {
+			$this->output( "file $row->page_title needs cleanup, please run cleanupImages.php.\n" );
+			$this->progress( 0 );
+		} elseif ( is_null( $title ) ) {
+			$this->output( "page $row->page_id ($display) is illegal.\n" );
 			$this->moveIllegalPage( $row );
-			return $this->progress( 1 );
+			$this->progress( 1 );
 		} else {
-			$this->log( "page $row->page_id ($display) doesn't match self." );
+			$this->output( "page $row->page_id ($display) doesn't match self.\n" );
 			$this->moveInconsistentPage( $row, $title );
-			return $this->progress( 1 );
+			$this->progress( 1 );
 		}
 	}
 
-	function fileExists( $name ) {
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	protected function fileExists( $name ) {
 		// XXX: Doesn't actually check for file existence, just presence of image record.
 		// This is reasonable, since cleanupImages.php only iterates over the image table.
 		$dbr = wfGetDB( DB_SLAVE );
 		$row = $dbr->selectRow( 'image', array( 'img_name' ), array( 'img_name' => $name ), __METHOD__ );
+
 		return $row !== false;
 	}
 
-	function moveIllegalPage( $row ) {
+	/**
+	 * @param object $row
+	 */
+	protected function moveIllegalPage( $row ) {
 		$legal = 'A-Za-z0-9_/\\\\-';
 		$legalized = preg_replace_callback( "!([^$legal])!",
 			array( &$this, 'hexChar' ),
 			$row->page_title );
-		if( $legalized == '.' ) $legalized = '(dot)';
-		if( $legalized == '_' ) $legalized = '(space)';
+		if ( $legalized == '.' ) {
+			$legalized = '(dot)';
+		}
+		if ( $legalized == '_' ) {
+			$legalized = '(space)';
+		}
 		$legalized = 'Broken/' . $legalized;
 
 		$title = Title::newFromText( $legalized );
-		if( is_null( $title ) ) {
+		if ( is_null( $title ) ) {
 			$clean = 'Broken/id:' . $row->page_id;
-			$this->log( "Couldn't legalize; form '$legalized' still invalid; using '$clean'" );
+			$this->output( "Couldn't legalize; form '$legalized' still invalid; using '$clean'\n" );
 			$title = Title::newFromText( $clean );
-		} elseif( $title->exists() ) {
+		} elseif ( $title->exists() ) {
 			$clean = 'Broken/id:' . $row->page_id;
-			$this->log( "Legalized for '$legalized' exists; using '$clean'" );
+			$this->output( "Legalized for '$legalized' exists; using '$clean'\n" );
 			$title = Title::newFromText( $clean );
 		}
 
 		$dest = $title->getDBkey();
-		if( $this->dryrun ) {
-			$this->log( "DRY RUN: would rename $row->page_id ($row->page_namespace,'$row->page_title') to ($row->page_namespace,'$dest')" );
+		if ( $this->dryrun ) {
+			$this->output( "DRY RUN: would rename $row->page_id ($row->page_namespace," .
+				"'$row->page_title') to ($row->page_namespace,'$dest')\n" );
 		} else {
-			$this->log( "renaming $row->page_id ($row->page_namespace,'$row->page_title') to ($row->page_namespace,'$dest')" );
+			$this->output( "renaming $row->page_id ($row->page_namespace," .
+				"'$row->page_title') to ($row->page_namespace,'$dest')\n" );
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->update( 'page',
 				array( 'page_title' => $dest ),
 				array( 'page_id' => $row->page_id ),
-				'cleanupTitles::moveInconsistentPage' );
+				__METHOD__ );
 		}
 	}
 
-	function moveInconsistentPage( $row, $title ) {
-		if( $title->exists() || $title->getInterwiki() ) {
-			if( $title->getInterwiki() ) {
-				$prior = $title->getPrefixedDbKey();
+	/**
+	 * @param object $row
+	 * @param Title $title
+	 */
+	protected function moveInconsistentPage( $row, $title ) {
+		if ( $title->exists() || $title->getInterwiki() || !$title->canExist() ) {
+			if ( $title->getInterwiki() || !$title->canExist() ) {
+				$prior = $title->getPrefixedDBkey();
 			} else {
 				$prior = $title->getDBkey();
 			}
+
+			# Old cleanupTitles could move articles there. See bug 23147.
+			$ns = $row->page_namespace;
+			if ( $ns < 0 ) {
+				$ns = 0;
+			}
+
+			# Namespace which no longer exists. Put the page in the main namespace
+			# since we don't have any idea of the old namespace name. See bug 68501.
+			if ( !MWNamespace::exists( $ns ) ) {
+				$ns = 0;
+			}
+
 			$clean = 'Broken/' . $prior;
-			$verified = Title::makeTitleSafe( $row->page_namespace, $clean );
-			if( $verified->exists() ) {
+			$verified = Title::makeTitleSafe( $ns, $clean );
+			if ( $verified->exists() ) {
 				$blah = "Broken/id:" . $row->page_id;
-				$this->log( "Couldn't legalize; form '$clean' exists; using '$blah'" );
-				$verified = Title::makeTitleSafe( $row->page_namespace, $blah );
+				$this->output( "Couldn't legalize; form '$clean' exists; using '$blah'\n" );
+				$verified = Title::makeTitleSafe( $ns, $blah );
 			}
 			$title = $verified;
 		}
-		if( is_null( $title ) ) {
-			wfDie( "Something awry; empty title.\n" );
+		if ( is_null( $title ) ) {
+			$this->error( "Something awry; empty title.", true );
 		}
 		$ns = $title->getNamespace();
 		$dest = $title->getDBkey();
-		if( $this->dryrun ) {
-			$this->log( "DRY RUN: would rename $row->page_id ($row->page_namespace,'$row->page_title') to ($row->page_namespace,'$dest')" );
+
+		if ( $this->dryrun ) {
+			$this->output( "DRY RUN: would rename $row->page_id ($row->page_namespace," .
+				"'$row->page_title') to ($ns,'$dest')\n" );
 		} else {
-			$this->log( "renaming $row->page_id ($row->page_namespace,'$row->page_title') to ($ns,'$dest')" );
+			$this->output( "renaming $row->page_id ($row->page_namespace," .
+				"'$row->page_title') to ($ns,'$dest')\n" );
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->update( 'page',
 				array(
@@ -139,15 +182,11 @@ class TitleCleanup extends TableCleanup {
 					'page_title' => $dest
 				),
 				array( 'page_id' => $row->page_id ),
-				'cleanupTitles::moveInconsistentPage' );
-			$linkCache = LinkCache::singleton();
-			$linkCache->clear();
+				__METHOD__ );
+			LinkCache::singleton()->clear();
 		}
 	}
 }
 
-$wgUser->setName( 'Conversion script' );
-$caps = new TitleCleanup( !isset( $options['fix'] ) );
-$caps->cleanup();
-
-
+$maintClass = "TitleCleanup";
+require_once RUN_MAINTENANCE_IF_MAIN;

@@ -81,7 +81,7 @@ class ResearcherProductivity {
 
 		// Traverse report and count HQPs.
 		$this->_hqps = array();
-		$hqps = ArrayUtils::get_array($this->_report, 'hqp');
+		$hqps = ArrayUtil::get_array($this->_report, 'hqp');
 		foreach ($hqps as $hqpid => $hqpname) {
 			// The ID has an 'u' prepended.  Remove, since it was  not a good idea.  :+)
 			$hqpid = substr($hqpid, 1);
@@ -97,13 +97,13 @@ class ResearcherProductivity {
 				$hqpfname = str_replace('_', '&nbsp;', $hqpname);
 
 				// Found -- mark it, collect level, and interrupt loop.
-				$tmparr = ArrayUtils::get_array($this->_hqps, 'hqps');
+				$tmparr = ArrayUtil::get_array($this->_hqps, 'hqps');
 				$tmparr[$hqpid] = $hqpfname;
 				$this->_hqps['hqps'] = $tmparr;
 
 				// Level.
-				$hqplvl = ArrayUtils::get_subarray($this->_report, 'ident', $hqpname);
-				$lvl = ArrayUtils::get_string($hqplvl, 'level');
+				$hqplvl = ArrayUtil::get_subarray($this->_report, 'ident', $hqpname);
+				$lvl = ArrayUtil::get_string($hqplvl, 'level');
 				if (strlen($lvl) === 0)
 					// Cannot continue with this HQP.
 					break;
@@ -111,7 +111,7 @@ class ResearcherProductivity {
 				if ($lvl == 'none')
 					$lvl = 'other';
 
-				$tmparr = ArrayUtils::get_array($this->_hqps, $lvl);
+				$tmparr = ArrayUtil::get_array($this->_hqps, $lvl);
 				$tmparr[$hqpid] = $hqpfname;
 				$this->_hqps[$lvl] = $tmparr;
 
@@ -136,17 +136,17 @@ class ResearcherProductivity {
 
 		$publi = self::restructure($this->_report, '_IVq1pId');
 
-		$prim = ArrayUtils::get_array($publi, 'prim');
-		$sec = ArrayUtils::get_array($publi, 'sec');
-		$ter = ArrayUtils::get_array($publi, 'ter');
+		$prim = ArrayUtil::get_array($publi, 'prim');
+		$sec = ArrayUtil::get_array($publi, 'sec');
+		$ter = ArrayUtil::get_array($publi, 'ter');
 
 		// Filter out those with N/A field set to non-null.
-		$na = ArrayUtils::get_array($publi, 'na');
+		$na = ArrayUtil::get_array($publi, 'na');
 		$possibles = array_keys($na, 'null', true);
 
 		foreach ($possibles as $possible) {
 			// Check whether this has been counted already, skipping if so.
-			if (ArrayUtils::get_field($pids, $possible) == 1)
+			if (ArrayUtil::get_field($pids, $possible) == 1)
 				continue;
 
 			// Use the same check as when building the report for publications.
@@ -159,9 +159,9 @@ class ResearcherProductivity {
 				continue;
 
 			// Check whether this possible publication is listed for the project.
-			$v1 = ArrayUtils::get_string($prim, $possible);
-			$v2 = ArrayUtils::get_string($sec, $possible);
-			$v3 = ArrayUtils::get_string($ter, $possible);
+			$v1 = ArrayUtil::get_string($prim, $possible);
+			$v2 = ArrayUtil::get_string($sec, $possible);
+			$v3 = ArrayUtil::get_string($ter, $possible);
 
 			// Assume the report is correct: only check whether a publication
 			// is listed for any project.
@@ -172,7 +172,7 @@ class ResearcherProductivity {
 
 				$tmpdata = self::scrape_publication($ft);
 				$tmpdata['title'] = $art->getTitle()->getText();
-				switch (ArrayUtils::get_string($tmpdata, '__type__')) {
+				switch (ArrayUtil::get_string($tmpdata, '__type__')) {
 				case 'Book':
 				case 'Collection':
 				case 'Proceedings_Paper':
@@ -196,7 +196,7 @@ class ResearcherProductivity {
 				}
 
 				// Mark this publication in the appropriate publication class.
-				$tmparr = ArrayUtils::get_array($table7, $tmpcounter);
+				$tmparr = ArrayUtil::get_array($table7, $tmpcounter);
 				$tmparr[$possible] = $tmpdata;
 				$table7[$tmpcounter] = $tmparr;
 			}
@@ -218,8 +218,8 @@ class ResearcherProductivity {
 		$artif = self::restructure($this->_report, '_IVq2aId');
 		
 		// Use titles for counting, but avoid trusting them blindly.
-		$titles = ArrayUtils::get_array($artif, 'title');
-		$descs = ArrayUtils::get_array($artif, 'desc');
+		$titles = ArrayUtil::get_array($artif, 'title');
+		$descs = ArrayUtil::get_array($artif, 'desc');
 		$cnt = 0;
 		foreach ($titles as $title)
 			$cnt += (strlen(trim($title)) > 0);
@@ -237,29 +237,29 @@ class ResearcherProductivity {
 			// Already computed.
 			return $this->_contributions;
 
-		$conts = ArrayUtils::get_array($this->_report, 'Cont');
+		$conts = ArrayUtil::get_array($this->_report, 'Cont');
 		foreach ($conts as $cont) {
-			$cash = self::extract_number(ArrayUtils::get_string($cont, 'Cash', '0'));
-			$kind = self::extract_number(ArrayUtils::get_string($cont, 'Inkind', '0'));
+			$cash = self::extract_number(ArrayUtil::get_string($cont, 'Cash', '0'));
+			$kind = self::extract_number(ArrayUtil::get_string($cont, 'Inkind', '0'));
 			$tot = $cash + $kind;
 			// XXX: confirm whether inkind+cash in a same contribution counts as 1 or 2.
 			$cnt = ($cash > 0) + ($kind > 0);
 			$name = $this->_person->getNameForForms();
-			$bigarr = ArrayUtils::get_array($this->_contributions, 'details');
-			$arr = ArrayUtils::get_array($bigarr, $name);
+			$bigarr = ArrayUtil::get_array($this->_contributions, 'details');
+			$arr = ArrayUtil::get_array($bigarr, $name);
 			if ($cash > 0) {
-				$tarr = ArrayUtils::get_array($arr, 'cash');
+				$tarr = ArrayUtil::get_array($arr, 'cash');
 				$tarr[] = $cash;
 				$arr['cash'] = $tarr;
 			}
 			if ($kind > 0) {
-				$tarr = ArrayUtils::get_array($arr, 'inkind');
+				$tarr = ArrayUtil::get_array($arr, 'inkind');
 				$tarr[] = $kind;
 				$arr['inkind'] = $tarr;
 			}
 			$this->_contributions['details'][$name] = $arr;
-			$this->_contributions['total'] = ArrayUtils::get_field($this->_contributions, 'total', 0) + $tot;
-			$this->_contributions['count'] = ArrayUtils::get_field($this->_contributions, 'count', 0) + $cnt;
+			$this->_contributions['total'] = ArrayUtil::get_field($this->_contributions, 'total', 0) + $tot;
+			$this->_contributions['count'] = ArrayUtil::get_field($this->_contributions, 'count', 0) + $cnt;
 		}
 
 		$this->_contributions['table2'] = $conts;

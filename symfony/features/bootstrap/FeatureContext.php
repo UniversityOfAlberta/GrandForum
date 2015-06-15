@@ -1,5 +1,5 @@
 <?php
-
+define('TESTING', true);
 require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 
@@ -163,7 +163,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function iTakeAScreenshot(){
         file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".png", $this->getSession()->getDriver()->getScreenshot());
-        //file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
+        file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
     }
     
     /**
@@ -327,14 +327,5 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $button = $this->getSession()->getPage()->find('css', $css);
         $button->press();
     }
-    
-    /**
-     * @override /^(?:|I )am on "(?P<page>[^"]+)"$/
-     * @override /^(?:|I )go to "(?P<page>[^"]+)"$/
-     */
-    public function visit($page){
-        global $config;
-        $page = str_replace('$networkName', $config->getValue('networkName'), $page);
-        $this->getSession()->visit($this->locatePath($page));
-    }
+
 }

@@ -1,127 +1,121 @@
-// IE fixes javascript
+/**
+ * IE fixes javascript loaded by wikibits.js for IE <= 6.0
+ */
+/*global isMSIE55:true, doneIETransform:true, doneIEAlphaFix:true */
+/*global hookit:true, fixalpha:true */
+( function ( mw, $ ) {
 
-var isMSIE55 = (window.showModalDialog && window.clipboardData && window.createPopup);
-var doneIETransform;
-var doneIEAlphaFix;
+var expandedURLs, hasClass;
 
-if (document.attachEvent)
-  document.attachEvent('onreadystatechange', hookit);
+// Also returns true for IE6, 7, 8, 9 and 10. createPopup is removed in IE11.
+// Good thing this is only loaded for IE <= 6 by wikibits.
+// Might as well set it to true.
+isMSIE55 = ( window.showModalDialog && window.clipboardData && window.createPopup );
+doneIETransform = false;
+doneIEAlphaFix = false;
 
-function hookit() {
-    if (!doneIETransform && document.getElementById && document.getElementById('bodyContent')) {
-        doneIETransform = true;
-        relativeforfloats();
-        fixalpha();
-    }
+hookit = function () {
+	if ( !doneIETransform && document.getElementById && document.getElementById( 'bodyContent' ) ) {
+		doneIETransform = true;
+		fixalpha();
+	}
+};
+
+if ( document.attachEvent ) {
+	document.attachEvent( 'onreadystatechange', hookit );
 }
 
 // png alpha transparency fixes
-function fixalpha() {
-    // bg
-    if (isMSIE55 && !doneIEAlphaFix)
-    {
-        var plogo = document.getElementById('p-logo');
-        if (!plogo) return;
+fixalpha = function ( logoId ) {
+	// bg
+	if ( isMSIE55 && !doneIEAlphaFix ) {
+		var bg, imageUrl, linkFix, logoa, logospan, plogo;
+		plogo = document.getElementById( logoId || 'p-logo' );
+		if ( !plogo ) {
+			return;
+		}
 
-        var logoa = plogo.getElementsByTagName('a')[0];
-        if (!logoa) return;
+		logoa = plogo.getElementsByTagName('a')[0];
+		if ( !logoa ) {
+			return;
+		}
 
-        var bg = logoa.currentStyle.backgroundImage;
-        var imageUrl = bg.substring(5, bg.length-2);
+		bg = logoa.currentStyle.backgroundImage;
+		imageUrl = bg.substring( 5, bg.length - 2 );
 
-        doneIEAlphaFix = true;
+		doneIEAlphaFix = true;
 
-        if (imageUrl.substr(imageUrl.length-4).toLowerCase() == '.png') {
-            var logospan = logoa.appendChild(document.createElement('span'));
+		if ( imageUrl.substr( imageUrl.length - 4 ).toLowerCase() === '.png' ) {
+			logospan = logoa.appendChild( document.createElement( 'span' ) );
 
-            logoa.style.backgroundImage = 'none';
-            logospan.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' + imageUrl + ')';
-            logospan.style.height = '100%';
-            logospan.style.position = 'absolute';
-            logospan.style.width = logoa.currentStyle.width;
-            logospan.style.cursor = 'hand';
-            // Center image with hack for IE5.5
-            if (document.documentElement.dir == "rtl")
-            {
-              logospan.style.right = '50%';
-              logospan.style.setExpression('marginRight', '"-" + (this.offsetWidth / 2) + "px"');
-            }
-            else
-            {
-              logospan.style.left = '50%';
-              logospan.style.setExpression('marginLeft', '"-" + (this.offsetWidth / 2) + "px"');
-            }
-            logospan.style.top = '50%';
-            logospan.style.setExpression('marginTop', '"-" + (this.offsetHeight / 2) + "px"');
+			logoa.style.backgroundImage = 'none';
+			logospan.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=' + imageUrl + ')';
+			logospan.style.height = '100%';
+			logospan.style.position = 'absolute';
+			logospan.style.width = logoa.currentStyle.width;
+			logospan.style.cursor = 'hand';
+			// Center image with hack for IE5.5
+			if ( document.documentElement.dir === 'rtl' ) {
+				logospan.style.right = '50%';
+				logospan.style.setExpression( 'marginRight', '"-" + (this.offsetWidth / 2) + "px"' );
+			} else {
+				logospan.style.left = '50%';
+				logospan.style.setExpression( 'marginLeft', '"-" + (this.offsetWidth / 2) + "px"' );
+			}
+			logospan.style.top = '50%';
+			logospan.style.setExpression( 'marginTop', '"-" + (this.offsetHeight / 2) + "px"' );
 
-            var linkFix = logoa.appendChild(logoa.cloneNode());
-            linkFix.style.position = 'absolute';
-            linkFix.style.height = '100%';
-            linkFix.style.width = '100%';
-        }
-    }
+			linkFix = logoa.appendChild( logoa.cloneNode() );
+			linkFix.style.position = 'absolute';
+			linkFix.style.height = '100%';
+			linkFix.style.width = '100%';
+		}
+	}
+};
+
+if ( isMSIE55 ) {
+	// ondomready
+	$( fixalpha );
 }
-
-// fix ie6 disappering float bug
-function relativeforfloats() {
-    var bc = document.getElementById('bodyContent');
-    if (bc) {
-        var tables = bc.getElementsByTagName('table');
-        var divs = bc.getElementsByTagName('div');
-    }
-    setrelative(tables);
-    setrelative(divs);
-}
-function setrelative (nodes) {
-    var i = 0;
-    while (i < nodes.length) {
-        if(((nodes[i].style.float && nodes[i].style.float != ('none') ||
-        (nodes[i].align && nodes[i].align != ('none'))) &&
-        (!nodes[i].style.position || nodes[i].style.position != 'relative'))) 
-        {
-            nodes[i].style.position = 'relative';
-        }
-        i++;
-    }
-}
-
 
 // Expand links for printing
+hasClass = function ( classText, classWanted ) {
+	var i = 0, classArr = classText.split(/\s/);
+	for ( i = 0; i < classArr.length; i++ ) {
+		if ( classArr[i].toLowerCase() === classWanted.toLowerCase() ) {
+			return true;
+		}
+	}
+	return false;
+};
 
-String.prototype.hasClass = function(classWanted)
-{
-    var classArr = this.split(/\s/);
-    for (var i=0; i<classArr.length; i++)
-      if (classArr[i].toLowerCase() == classWanted.toLowerCase()) return true;
-    return false;
-}
+window.onbeforeprint = function () {
+	var allLinks, contentEl, expandedLink, expandedText, i;
 
-var expandedURLs;
+	expandedURLs = [];
+	contentEl = document.getElementById( 'content' );
 
-onbeforeprint = function() { 
-    expandedURLs = [];
+	if ( contentEl ) {
+		allLinks = contentEl.getElementsByTagName( 'a' );
 
-    var contentEl = document.getElementById("content");
+		for ( i = 0; i < allLinks.length; i++ ) {
+			if ( hasClass( allLinks[i].className, 'external' ) && !hasClass( allLinks[i].className, 'free' ) ) {
+				expandedLink = document.createElement( 'span' );
+				expandedText = document.createTextNode( ' (' + allLinks[i].href + ')' );
+				expandedLink.appendChild( expandedText );
+				allLinks[i].parentNode.insertBefore( expandedLink, allLinks[i].nextSibling );
+				expandedURLs[i] = expandedLink;
+			}
+		}
+	}
+};
 
-    if (contentEl)
-    {
-      var allLinks = contentEl.getElementsByTagName("a");
+window.onafterprint = function () {
+	for ( var i = 0; i < expandedURLs.length; i++ ) {
+		if ( expandedURLs[i] ) {
+			expandedURLs[i].removeNode( true );
+		}
+	}
+};
 
-      for (var i=0; i < allLinks.length; i++) {
-          if (allLinks[i].className.hasClass("external") && !allLinks[i].className.hasClass("free")) {
-              var expandedLink = document.createElement("span");
-              var expandedText = document.createTextNode(" (" + allLinks[i].href + ")");
-              expandedLink.appendChild(expandedText);
-              allLinks[i].parentNode.insertBefore(expandedLink, allLinks[i].nextSibling);
-              expandedURLs[i] = expandedLink;
-          }
-      }
-   }
-}
-
-onafterprint = function()
-{
-    for (var i=0; i < expandedURLs.length; i++)
-        if (expandedURLs[i])
-            expandedURLs[i].removeNode(true);
-}
+}( mediaWiki, jQuery ) );

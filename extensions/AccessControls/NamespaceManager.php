@@ -1,5 +1,5 @@
 <?php
-require_once("includes/SpecialPage.php");
+require_once("includes/specialpage/SpecialPage.php");
 
 /**
  * This is a special page that allows an administrator to create new namespaces, rename existing ones and
@@ -12,7 +12,7 @@ class NamespaceManager extends SpecialPage {
 
 	function NamespaceManager() {
 		global $wgMessageCache;
-		SpecialPage::SpecialPage("NamespaceManager");
+		SpecialPage::__construct("NamespaceManager");
 
 		$wgMessageCache->addMessages( array('namespacemanager' => 'Namespace Manager'), 'en' );
 	}

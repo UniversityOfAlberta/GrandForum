@@ -10,7 +10,7 @@ $wgHooks['UnknownAction'][] = 'contributionSearch';
 $wgHooks['ToolboxLinks'][] = 'AddContributionPage::createToolboxLinks';
 
 function runAddContributionPage($par){
-    AddContributionPage::run($par);
+    AddContributionPage::execute($par);
 }
 
 function contributionSearch($action, $request){
@@ -89,11 +89,10 @@ function generateContributionScript($category){
 class AddContributionPage extends SpecialPage{
 
 	function AddContributionPage() {
-		wfLoadExtensionMessages('AddContributionPage');
-		SpecialPage::SpecialPage("AddContributionPage", CNI.'+', true, 'runAddContributionPage');
+		SpecialPage::__construct("AddContributionPage", NI.'+', true, 'runAddContributionPage');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
 	    $wgOut->addScript(generateContributionScript("Contribution"));
 		$wgOut->addHTML("Enter a short title for the contribution in the text field below. If there is an already existing contribution with the same or similar title, it will be listed below the text field. If you see the contribution in the list, then you can click on the title to edit its information, otherwise you can choose to create the contribution with the name you have entered by clicking the 'Create' button.<br /><br />
@@ -108,7 +107,7 @@ class AddContributionPage extends SpecialPage{
 	static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    if($me->isRoleAtLeast(CNI)){
+	    if($me->isRoleAtLeast(NI)){
 	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Contribution", "$wgServer$wgScriptPath/index.php/Special:AddContributionPage");
 	    }
 	    return true;

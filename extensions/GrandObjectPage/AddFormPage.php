@@ -9,7 +9,7 @@ $wgSpecialPageGroups['AddFormPage'] = 'network-tools';
 $wgHooks['UnknownAction'][] = 'formSearch';
 
 function runAddFormPage($par){
-    AddFormPage::run($par);
+    AddFormPage::execute($par);
 }
 
 function formSearch($action, $request){
@@ -88,11 +88,10 @@ function generateFormScript($category){
 class AddFormPage extends SpecialPage{
 
 	function AddFormPage() {
-		wfLoadExtensionMessages('AddFormPage');
-		SpecialPage::SpecialPage("AddFormPage", STAFF.'+', true, 'runAddFormPage');
+		SpecialPage::__construct("AddFormPage", STAFF.'+', true, 'runAddFormPage');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
 		$me = Person::newFromWgUser();
 		if($me->isRoleAtLeast(MANAGER)){

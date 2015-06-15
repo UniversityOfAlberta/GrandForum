@@ -35,20 +35,19 @@ $special_evals = array(11,  // Kellogg.Booth
                        );
 
 function runReviewerConflicts($par) {
-	ReviewerConflicts::run($par);
+	ReviewerConflicts::execute($par);
 }
 
 class ReviewerConflicts extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('ReviewerConflicts');
-		SpecialPage::SpecialPage("ReviewerConflicts", null, true, 'runReviewerConflicts');
+		SpecialPage::__construct("ReviewerConflicts", null, true, 'runReviewerConflicts');
 	}
 
     function userCanExecute($user){
         global $current_evals;
         $me = Person::newFromUser($user);
-        if($me->isRole(MANAGER) || array_search($me->getId(), $current_evals) !== false){
+        if($me->isRoleAtLeast(MANAGER) || array_search($me->getId(), $current_evals) !== false){
             return true;
         }
         return false;
@@ -94,7 +93,7 @@ class ReviewerConflicts extends SpecialPage {
         return true;
     }
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $reviewer_id = $wgUser->getId();
@@ -124,7 +123,7 @@ class ReviewerConflicts extends SpecialPage {
         }
 
         $cur_year = date('Y');
-	    if(isset($_POST['Submit']) && ($_POST['Submit'] == "Confirm CNI Conflicts" || $_POST['Submit'] == "Confirm PNI Conflicts")){
+	    if(isset($_POST['Submit']) && ($_POST['Submit'] == "Confirm ".NI." Conflicts")){
             if(isset($_POST['reviewee_id'])){
                 foreach($_POST['reviewee_id'] as $reviewee_id){
                     if(isset($_POST['conflict_'.$reviewee_id]) && $_POST['conflict_'.$reviewee_id]){
@@ -179,12 +178,9 @@ class ReviewerConflicts extends SpecialPage {
         }
 
         if(isset($_POST['type'])){
-            if($_POST['type'] == 'PNI'){
+            if($_POST['type'] == NI){
                 $active = 0;
-            }
-            else if($_POST['type'] == 'CNI'){
-                $active = 1;
-            }   
+            } 
             else if($_POST['type'] == 'PROJECTS'){
                 $active = 2;
             }  
@@ -194,37 +190,21 @@ class ReviewerConflicts extends SpecialPage {
 	    $wgOut->setPageTitle("Reviewer Conflicts");
 	    $wgOut->addHTML("<div id='ackTabs'>
 	                        <ul>
-		                        <li><a href='#pnis'>PNIs</a></li>
-                                <li><a href='#cnis'>CNIs</a></li>
+		                        <li><a href='#nis'>".NI."s</a></li>
 		                        <li><a href='#projects'>Projects</a></li>
 	                        </ul>");
 
-        $cnistmp = Person::getAllPeopleDuring(CNI, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
-        $cnis = array();
-        foreach($cnistmp as $cni){
-	        $leadership = $cni->leadership();
-	        foreach($leadership as $lead){
-	            if($lead->getPhase() == 2 && !$lead->isSubProject()){
-	                $cnis[] = $cni;
-	                break;
-	            }
-	        }
-	    }
-        $pnis = Person::getAllPeopleDuring(PNI, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
-		$wgOut->addHTML("<div id='pnis'>");
+        $nis = Person::getAllPeopleDuring(NI, (REPORTING_YEAR+1).REPORTING_NCE_START_MONTH, (REPORTING_YEAR+2).REPORTING_NCE_END_MONTH);
+		$wgOut->addHTML("<div id='nis'>");
 
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(MANAGER)){
-            $overall['PNI'] = ReviewerConflicts::managerNiTable($pnis, 'PNI');           
-            $wgOut->addHTML("</div><div id='cnis'>");
-            $overall['CNI'] = ReviewerConflicts::managerNiTable($cnis, 'CNI');           
+        if($me->isRoleAtLeast(MANAGER)){
+            $overall[NI] = ReviewerConflicts::managerNiTable($nis, NI);                    
             $wgOut->addHTML("</div><div id='projects'>");
             $overall['PROJECTS'] = ReviewerConflicts::managerProjectTable($projects);
         }
         else{
-            $overall['PNI'] = ReviewerConflicts::niTable($pnis, 'PNI');           
-    	    $wgOut->addHTML("</div><div id='cnis'>");
-            $overall['CNI'] = ReviewerConflicts::niTable($cnis, 'CNI');           
+            $overall['NI'] = ReviewerConflicts::niTable($nis, NI);                    
             $wgOut->addHTML("</div><div id='projects'>");
     		$overall['PROJECTS'] = ReviewerConflicts::projectTable($projects);
 		}
@@ -245,16 +225,10 @@ class ReviewerConflicts extends SpecialPage {
                                     $('#ackTabs').tabs( 'select', $active);
                                     $('input[name=date]').datepicker();
                                     $('input[name=date]').datepicker('option', 'dateFormat', 'dd-mm-yy');
-                                	$('#CNI_conflicts').tablesorter({ 
-										sortList: [[0,0], [1,0], [2,0], [3,0]],
-									});
-                                    $('#PNI_conflicts').tablesorter({ 
+                                    $('#NI_conflicts').tablesorter({ 
                                         sortList: [[0,0], [1,0], [2,0], [3,0]],
                                     });
-                                    $('#CNI_conflicts_man').tablesorter({ 
-                                        sortList: [[0,0]],
-                                    });
-                                    $('#PNI_conflicts_man').tablesorter({ 
+                                    $('#NI_conflicts_man').tablesorter({ 
                                         sortList: [[0,0]],
                                     });
 	    							$('#project_conflicts').tablesorter({ 
@@ -299,14 +273,14 @@ class ReviewerConflicts extends SpecialPage {
     }
 
     
-    static function managerNiTable($nis, $type='CNI'){
+    static function managerNiTable($nis, $type='NI'){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $current_evals;
         
         $html = "";
         $csv = "";
 
         $me = Person::newFromId($wgUser->getId());
-        $allPeople = $nis; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $allPeople = $nis;
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
@@ -321,28 +295,12 @@ class ReviewerConflicts extends SpecialPage {
         var sort = "first";
         var allPeople = new Array('{$names}');
 
-        function filterResultsCNI(value){
+        function filterResultsNI(value){
             if(typeof value != 'undefined'){
                 value = $.trim(value);
                 value = value.replace(/\s+/g, '|');
                 //console.log(value);
-                $.each($("table#CNI_conflicts tr[name=search]"), function(index, val){
-                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
-                        $(val).show();
-                    }
-                    else{
-                        $(val).hide();
-                    }
-                });
-            }
-        }
-
-        function filterResultsPNI(value){
-            if(typeof value != 'undefined'){
-                value = $.trim(value);
-                value = value.replace(/\s+/g, '|');
-                //console.log(value);
-                $.each($("table#PNI_conflicts tr[name=search]"), function(index, val){
+                $.each($("table#NI_conflicts tr[name=search]"), function(index, val){
                     if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
                         $(val).show();
                     }
@@ -594,13 +552,13 @@ EOF;
         $wgOut->addHTML($html);    
     }
     
-    static function niTable($nis, $type='CNI'){
+    static function niTable($nis, $type='NI'){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         
         $html = "";
 
         $me = Person::newFromId($wgUser->getId());
-        $allPeople = $nis; //array_merge(Person::getAllPeople(CNI), Person::getAllPeople(PNI));
+        $allPeople = $nis;
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
@@ -615,28 +573,12 @@ EOF;
         var sort = "first";
         var allPeople = new Array('{$names}');
 
-        function filterResultsCNI(value){
+        function filterResultsNI(value){
             if(typeof value != 'undefined'){
                 value = $.trim(value);
                 value = value.replace(/\s+/g, '|');
                 //console.log(value);
-                $.each($("table#CNI_conflicts tr[name=search]"), function(index, val){
-                    if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
-                        $(val).show();
-                    }
-                    else{
-                        $(val).hide();
-                    }
-                });
-            }
-        }
-
-        function filterResultsPNI(value){
-            if(typeof value != 'undefined'){
-                value = $.trim(value);
-                value = value.replace(/\s+/g, '|');
-                //console.log(value);
-                $.each($("table#PNI_conflicts tr[name=search]"), function(index, val){
+                $.each($("table#NI_conflicts tr[name=search]"), function(index, val){
                     if($(val).attr("class").toLowerCase().regexIndexOf(value.toLowerCase()) != -1){
                         $(val).show();
                     }
@@ -1178,9 +1120,8 @@ EOF;
                         $conflict_number = 0;
 
                         //Conflicts per each member
-                        $p_cnis = $project->getAllPeople(CNI);
-                        $p_pnis = $project->getAllPeople(PNI);
-                        foreach( array_merge($p_cnis, $p_pnis) as $p_pers ){
+                        $nis = $project->getAllPeople(NI);
+                        foreach($nis as $p_pers ){
                             //Organization
                             $p_pers_pos = $p_pers->getUniversity();
                             $p_pers_pos = $p_pers_pos['university'];
@@ -1258,9 +1199,8 @@ EOF;
                         $conflict_number = 0;
 
                         //Conflicts per each member
-                        $p_cnis = $project->getAllPeople(CNI);
-                        $p_pnis = $project->getAllPeople(PNI);
-                        foreach( array_merge($p_cnis, $p_pnis) as $p_pers ){
+                        $nis = $project->getAllPeople(NI);
+                        foreach($nis as $p_pers){
                             //Organization
                             $p_pers_pos = $p_pers->getUniversity();
                             $p_pers_pos = $p_pers_pos['university'];

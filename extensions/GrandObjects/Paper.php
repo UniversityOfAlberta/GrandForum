@@ -89,7 +89,7 @@ class Paper extends BackboneModel{
             return self::$cache[$bibtex_id];
         }
         $me = Person::newFromWgUser();
-        $bibtex_id = mysql_real_escape_string($bibtex_id);
+        $bibtex_id = DBFunctions::escape($bibtex_id);
         $sql = "SELECT *
                 FROM grand_products
                 WHERE bibtex_id = '$bibtex_id'
@@ -146,9 +146,9 @@ class Paper extends BackboneModel{
     static function newFromTitle($title, $category = "%", $type = "%", $status = "%"){
         $title = str_replace("&#58;", ":", $title);
         $title = str_replace("'", "&#39;", $title);
-        $category = mysql_real_escape_string($category);
-        $type = mysql_real_escape_string($type);
-        $status = mysql_real_escape_string($status);
+        $category = DBFunctions::escape($category);
+        $type = DBFunctions::escape($type);
+        $status = DBFunctions::escape($status);
         if(isset(self::$cache[$title.$category.$type.$status])){
             return self::$cache[$title.$category.$type.$status];
         }
@@ -235,6 +235,10 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
         $data = array();
         if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access])){
             return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access];
@@ -319,7 +323,11 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
-        if( $startRange === false || $endRange === false ){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
+        if($startRange === false || $endRange === false){
             debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
@@ -415,6 +423,7 @@ class Paper extends BackboneModel{
         if(count(self::$illegalAuthorsCache) == 0){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
+            self::$illegalAuthorsCache[""] = "";
             foreach($data as $row){
                 self::$illegalAuthorsCache[$row['author']] = $row['author'];
             }
@@ -436,9 +445,9 @@ class Paper extends BackboneModel{
      * @return array The array containing all the structure in Products.xml
      */
     static function structure(){
-        global $config;
+        global $config, $IP;
         if(!Cache::exists("product_structure")){
-            $file = file_get_contents("extensions/GrandObjects/Products.xml");
+            $file = file_get_contents("$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml");
             $parser = simplexml_load_string($file);
             $categories = array('categories' => array());
             foreach($parser->children() as $category){
@@ -488,11 +497,13 @@ class Paper extends BackboneModel{
                             }
                         }
                     }
-                    $misc_types = Paper::getAllMiscTypes($cname);
-                    foreach($misc_types as $key => $type){
-                        $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                    if(DBFunctions::isReady()){
+                        $misc_types = Paper::getAllMiscTypes($cname);
+                        foreach($misc_types as $key => $type){
+                            $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                        }
+                        $categories['categories'][$cname]['misc'] = $misc_types;
                     }
-                    $categories['categories'][$cname]['misc'] = $misc_types;
                 }
             }
             Cache::store("product_structure", $categories);
@@ -743,6 +754,10 @@ class Paper extends BackboneModel{
                         Person::$cache[$author] = $person;
                     }
                 }
+                if($person->getName() == "WikiSysop"){
+                    // Under no circumstances should WikiSysop be an author
+                    continue;
+                }
                 $authors[] = $person;
             }
             //return $authors;
@@ -753,6 +768,28 @@ class Paper extends BackboneModel{
             return array();
         }
         return $this->authors;
+    }
+    
+    function getAuthorNames(){
+        $authors = array();
+        $unserialized = unserialize($this->authors);
+        foreach($unserialized as &$author){
+            if($author == ""){
+                unset($author);
+                continue;
+            }
+            if(is_numeric($author)){
+                $person = Person::newFromId($author);
+                if($person == null) { continue; }
+                $authors[] = (strlen($person->getRealName()) > 0) ? $person->getRealName() : $person->getName();
+                continue;
+            } 
+            else {
+                $authors[] = $author;
+            }
+        }
+        unset($author);
+        return $authors;
     }
     
     /**
@@ -819,7 +856,7 @@ class Paper extends BackboneModel{
                     // Author has changed
                     $invalidate = true;
                 }
-                $name = mysql_real_escape_string($author->getName());
+                $name = DBFunctions::escape($author->getName());
                 $inserts[] = "('{$name}','{$this->getId()}','{$order}')";
             }
             $order++;
@@ -869,13 +906,31 @@ class Paper extends BackboneModel{
                 $data = self::$productProjectsCache[$this->id];
                 if(is_array($data)){
                     foreach($data as $projectId){
-                        $this->projects[] = Project::newFromId($projectId);
+                        $project = Project::newFromId($projectId);
+                        if($project instanceof Project){
+                            $this->projects[] = $project;
+                        }
                     }
                 }
             }
             $this->projectsWaiting = false;
         }
         return $this->projects;
+    }
+    
+    // Returns an array of Projects which this Paper is related to
+    function getProjectNames(){
+        $projs = array();
+        if($this->projects != null){
+            foreach($this->projects as $key => $project){
+                if($project == null){
+                    unset($this->projects[$key]);
+                } else {
+                    $projs[] = $project->name;
+                }
+            }
+        }
+        return $projs;
     }
     
     /**
@@ -886,6 +941,9 @@ class Paper extends BackboneModel{
         $people = $this->getAuthors();
         $unis = array();
         foreach($people as $person){
+            if($person->getId() == 0){
+                continue;
+            }
             $universities = $person->getUniversitiesDuring($this->getDate(), $this->getDate());
             if(count($universities) > 0){
                 foreach($universities as $university){
@@ -926,6 +984,14 @@ class Paper extends BackboneModel{
         return $date;
     }
     
+    /*
+     * Returns the year of this Paper
+     * @return string The year of this Paper
+     */
+    function getYear(){
+        return substr($this->getDate(), 0, 4);
+    }
+    
     /**
      * Returns the type of this Paper
      * @return strig The type of this Paper
@@ -935,36 +1001,36 @@ class Paper extends BackboneModel{
     }
     
     /**
-	 * Returns the 'CCV' type of this Paper
-	 * @return string The 'CCV' type of this Paper
-	 * TODO: Change this to use the Products.xml once it is used
-	 */
-	function getCCVType(){
-	    switch($this->getType()){
-	        case "Aesthetic Object":
-	            return "Aesthetic Object";
-	        case "Device/Machine":
-	            return "Device/Machine";
-	        case "Open Software":
-	            return "Open Software";
-	        case "Patent":
-	            return "Patent";
-	        case "Startup Company":
-	            return "Startup Company";
-	        case "Repository":
-	            return "Repository";
-	        case "Journal Paper":
-	            return "Journals";
-	        case "Book Chapter":
-	            return "Book Chapters";
-	        case "Conference Paper":
+     * Returns the 'CCV' type of this Paper
+     * @return string The 'CCV' type of this Paper
+     * TODO: Change this to use the Products.xml once it is used
+     */
+    function getCCVType(){
+        switch($this->getType()){
+            case "Aesthetic Object":
+                return "Aesthetic Object";
+            case "Device/Machine":
+                return "Device/Machine";
+            case "Open Software":
+                return "Open Software";
+            case "Patent":
+                return "Patent";
+            case "Startup Company":
+                return "Startup Company";
+            case "Repository":
+                return "Repository";
+            case "Journal Paper":
+                return "Journals";
+            case "Book Chapter":
+                return "Book Chapters";
+            case "Conference Paper":
             case "Collections Paper":
             case "Proceedings Paper":
                 return "Conference Publications";
             default:
                 return "Other";
-	    }
-	}
+        }
+    }
     
     /**
      * Returns the venue for this Paper (legacy stuff)
@@ -973,23 +1039,23 @@ class Paper extends BackboneModel{
     function getVenue(){
         $venue = $this->venue;
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'venue');
+            $venue = ArrayUtil::get_string($this->data, 'venue');
         }
         
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_title');
+            $venue = ArrayUtil::get_string($this->data, 'event_title');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'conference');
+            $venue = ArrayUtil::get_string($this->data, 'conference');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtils::get_string($this->data, 'event_location');
+            $venue = ArrayUtil::get_string($this->data, 'event_location');
         }
 
         if(empty($venue)){
-            $venue = ArrayUtils::get_string($this->data, 'location');
+            $venue = ArrayUtil::get_string($this->data, 'location');
         }
         return $venue;
     }
@@ -1062,7 +1128,7 @@ class Paper extends BackboneModel{
         $data = $this->getData();
         $type = $this->getType();
         $title = $this->getTitle();
-        $status = ($showStatus) ? "&nbsp;".$this->getStatus() : "";
+        $status = ($showStatus) ? $this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
         foreach($this->getAuthors() as $a){
@@ -1073,9 +1139,7 @@ class Paper extends BackboneModel{
                         $name = "<u>{$a->getNameForForms()}</u>";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                            (!$a->isRoleOn(PNI, $this->getDate()) && !$a->wasLastRole(PNI)) &&
-                            (!$a->isRoleOn(CNI, $this->getDate()) && !$a->wasLastRole(CNI)) &&
-                            (!$a->isRoleOn(AR, $this->getDate()) && !$a->wasLastRole(AR))){
+                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
                         $name = "<i>{$a->getNameForForms()}</i>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
@@ -1096,14 +1160,14 @@ class Paper extends BackboneModel{
 
         //This is not really a venue, but this is how we want to put this into the proper citation
         if(($type == "Journal Paper" || $type == "Journal Abstract")){
-            $vn = ArrayUtils::get_string($data, 'journal_title');
+            $vn = ArrayUtil::get_string($data, 'journal_title');
             if(empty($vn)){
-                $vn = ArrayUtils::get_string($data, 'published_in');
+                $vn = ArrayUtil::get_string($data, 'published_in');
             }
         }
         if(($type == "Journal Paper")){
-            $volume = ArrayUtils::get_string($data, 'volume');
-            $number = ArrayUtils::get_string($data, 'number');
+            $volume = ArrayUtil::get_string($data, 'volume');
+            $number = ArrayUtil::get_string($data, 'number');
             if(!empty($volume)){
                 $vn .= " $volume";
             }
@@ -1112,25 +1176,25 @@ class Paper extends BackboneModel{
             }
         }
         if($type == "Book Chapter"){
-            $vn .= ArrayUtils::get_string($data, 'book_title');
+            $vn .= ArrayUtil::get_string($data, 'book_title');
         }
 
-        $pg = ArrayUtils::get_string($data, 'pages');
+        $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
         }
         else{
             $pg = "(no pages)";
         }
-        $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+        $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
 
         $peer_rev = "";
         if($showPeerReviewed && $category == "Publication"){
             if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
-                $peer_rev = ",&nbsp;Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
             }
             else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
-                $peer_rev = ",&nbsp;Not Peer Reviewed";
+                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
             }
         }
 
@@ -1142,26 +1206,19 @@ class Paper extends BackboneModel{
         }
         $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
-        if(in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            if($pg != "" || $pb != ""){
-                $vn .= ",";
-            }
-            if($vn != "" || $pg != "" || $pb != ""){
+        if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
+            if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
                 $vn = ":&nbsp;$vn";
             }
-            if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
-                $pb .= "<span class='pdfnodisplay'>,</span>";
-            }
-       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}&nbsp;{$pg}&nbsp;{$pb}&nbsp;<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb}
+       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
     	}
     	else{
     	    if($vn != ""){
     	        $vn = ":&nbsp;$vn";
             }
-            if($status != "" || $peer_rev != ""){
-                $vn .= "<span class='pdfnodisplay'>,</span>";
-            }
-        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}<span class='pdfnodisplay'>{$status}{$peer_rev}</span>";
+        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}
+        	             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         return trim($citation);
     }
@@ -1183,11 +1240,11 @@ class Paper extends BackboneModel{
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = ArrayUtils::get_string($data, 'pages');
+            $pg = ArrayUtil::get_string($data, 'pages');
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtils::get_string($data, 'publisher', '(no publisher)');
+            $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
             if($pb == '(no publisher)'){
                 $completeness['publisher'] = false;
             }
@@ -1524,7 +1581,7 @@ class Paper extends BackboneModel{
     }
     
     function exists(){
-
+        return ($this->id != "");
     }
     
     function getCacheId(){

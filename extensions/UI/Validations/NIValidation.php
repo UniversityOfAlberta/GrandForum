@@ -14,7 +14,7 @@ class NIValidation extends UIValidation {
         if($person == null){
             $person = Person::newFromNameLike($value);
         }
-        return ($person != null && $person->getName() != "" && $person->isRoleAtLeast(CNI));
+        return ($person != null && $person->getName() != "" && $person->isRoleAtLeast(NI));
     }
     
     function failMessage($name){

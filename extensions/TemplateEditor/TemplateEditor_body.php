@@ -96,9 +96,6 @@ class TemplateEditor {
   static function addTETabs($skin, &$content_actions ) {
     global $wgRequest, $wgTitle, $wgArticle;
 
-    if (!$wgArticle)
-      return true;
-
     if ($wgTitle->getNamespace() == NS_TEMPLATE && $wgTitle->exists()) { //Page itself is a template
       $tabName = 'Instance List';
       $actionCmd = 'getPagesForTemplate';
@@ -109,7 +106,7 @@ class TemplateEditor {
 			   'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 			   );
 
-      $content_actions['instance list'] = $listAction;
+      $content_actions['actions']['instance list'] = $listAction;
 
       return true;
     }
@@ -124,13 +121,13 @@ class TemplateEditor {
                            'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
                            );
 
-      $keys = array_keys($content_actions);
+      $keys = array_keys($content_actions['views']);
       $index = array_search('edit', $keys);
 
       if ($index === false)
-	$content_actions[$tabName] = $createAction;
+	$content_actions['views'][$tabName] = $createAction;
       else
-	self::array_put_to_position($content_actions, $createAction, $index+1, $tabName);
+	self::array_put_to_position($content_actions['views'], $createAction, $index+1, $tabName);
 
       return true;
     }
@@ -147,15 +144,15 @@ class TemplateEditor {
 		      'href' => $wgTitle->getLocalURL( 'action=' . $actionCmd)
 		      );
     
-    $keys = array_keys($content_actions);
+    $keys = array_keys($content_actions['views']);
     $index = array_search('edit', $keys);
     if ($index === false)
       return true;
     
     if ($check)
       //$content_actions['edit']['class'] = false;
-      unset( $content_actions['edit'] ); // only this to remove an action
-    self::array_put_to_position($content_actions, $teAction, $index+1, 'editTemplate');
+      unset( $content_actions['views']['edit'] ); // only this to remove an action
+    self::array_put_to_position($content_actions['views'], $teAction, $index+1, 'editTemplate');
     return true;
   }
   
@@ -178,7 +175,7 @@ class TemplateEditor {
                 $count++;
         }   
         if (!$name) $name = $count;
-        if (!$inserted) @$return[$name];
+        if (!$inserted) @$return[$name] = $object;
         $array = $return;
         return $array;
 }
@@ -242,15 +239,14 @@ class TemplateEditor {
    * @return true (to continue hook execution).
    */
   public function updateFromRequest(&$editPage) {
+    global $wgRequest;
   	if (!TemplateEditor::isEditorNeeded($editPage->mTitle))
   		return true;
 
   	$this->templates = TemplateFunctions::getAllTemplateInfoAsObjects($editPage->mTitle);
-
   	if ($this->parseWgRequest()) {
   		$editPage->textbox1 = $this->updateTemplateCall($editPage->textbox1);
   	}
-
   	return true;
   }
 
@@ -428,7 +424,7 @@ class TemplateEditor {
    * @param string $error An error message to return (not used)
    * @return true (to continue hook execution).
    */
-  public function onEditFilter($editPage, $text, $section, $error) {
+  public function onEditFilter($editPage) {
     return $this->updateFromRequest($editPage); // I guess the ::initial hook doesn't get called in this case??
     /*if (!$this->validate()) {
      //TODO also show the error when previewing?

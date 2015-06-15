@@ -22,14 +22,6 @@ class ProjectRolesCell extends Cell{
             $person = Person::newFromName($params[2]);
             $values = array();
             $leads = $person->getLeadProjects();
-            $coLeads = $person->getCoLeadProjects();
-            $managers = $person->getManagerProjects();
-            foreach($managers as $manage){
-                if($manage->getId() == $table->obj->getId()){
-                    $values[] = "PM";
-                    break;
-                }
-            }
             foreach($leads as $lead){
                 if($lead->getId() == $table->obj->getId()){
                     if($table->obj->isSubProject()){
@@ -38,12 +30,6 @@ class ProjectRolesCell extends Cell{
                     else{
                         $values[] = "PL";
                     }
-                    break;
-                }
-            }
-            foreach($coLeads as $lead){
-                if($lead->getId() == $table->obj->getId()){
-                    $values[] = "COPL";
                     break;
                 }
             }
@@ -61,13 +47,8 @@ class ProjectRolesCell extends Cell{
                 }
             }
             foreach($person->getRoles() as $role){
-                if($role->getRole() == HQP || $role->getRole() == PNI || $role->getRole() == CNI || $role->getRole() == AR || $role->getRole() == CHAMP){
-                    if($role->getRole() == AR){
-                        $values[] = "AR";
-                    }
-                    else{
-                        $values[] = $role->getRole();
-                    }
+                if($role->getRole() == HQP || $role->getRole() == NI || $role->getRole() == CHAMP){
+                    $values[] = $role->getRole();
                 }
             }
             $this->value = implode(", ", $values);

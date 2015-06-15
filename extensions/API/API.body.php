@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['UnknownAction'][] = array($apiRequest, 'processRequest');
+$wgHooks['UnknownAction'][1000] = array($apiRequest, 'processRequest');
 
 /**
  * @package API
@@ -14,8 +14,9 @@ class APIRequest{
     static $action;
     var $actions = array();
 
-	function processRequest($action, $article){
+	function processRequest(){
 		global $wgServer, $wgScriptPath;
+		$action = @$_GET['action'];
 		$actions = explode(".", $action, 2);
 		if($actions[0] == "api"){
 		    session_write_close();
@@ -109,6 +110,7 @@ class APIRequest{
 	    $this->addAction('Products', 'uploadCCV', new UploadCCVAPI());
 	    $this->addAction('Products', 'importBibTeX', new ImportBibTeXAPI());
 	    $this->addAction('Products', 'importDOI', new ImportDOIAPI());
+	    $this->addAction('Products', 'getPublicationSearch', new PublicationSearchAPI());
 	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
@@ -132,11 +134,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
-		$this->addAction('User Accounts', 'updateUserEthics', new UserEthicsAPI());
-
-		//GET
-		$this->addAction('User Accounts', 'getResearcherInfo', new ResearcherAPI());
-		$this->addAction('User Accounts', 'getResearcherCompleteInfo', new ResearcherCompleteAPI());
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
@@ -155,14 +152,9 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
 		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
 		//GET
-		$this->addAction('Projects', 'getProjectInfo', new ProjectInfoAPI());
 		$this->addAction('Themes', 'getThemeInfo', new ThemeInfoAPI());
 		
-		//GET
-		$this->addAction('University', 'getEthicsStats', new UniversityEthicsAPI());
-		
 		// HIDDENS
-		$this->addAction('Hidden', 'getWFInfo', new WFAPI());
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());

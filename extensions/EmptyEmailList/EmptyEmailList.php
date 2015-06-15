@@ -8,23 +8,22 @@ $wgSpecialPageGroups['EmptyEmailList'] = 'other-tools';
 $wgHooks['SubLevelTabs'][] = 'EmptyEmailList::createSubTabs';
 
 function runEmptyEmailList($par) {
-  EmptyEmailList::run($par);
+  EmptyEmailList::execute($par);
 }
 
 class EmptyEmailList extends SpecialPage{
 
 	function EmptyEmailList() {
-		wfLoadExtensionMessages('EmptyEmailList');
-		SpecialPage::SpecialPage("EmptyEmailList", CNI.'+', true, 'runEmptyEmailList');
+		SpecialPage::__construct("EmptyEmailList", NI.'+', true, 'runEmptyEmailList');
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
 	    $wgOut->addHTML("<table class='wikitable sortable' bgcolor='#aaaaaa' cellspacing='1' cellpadding='2' style='text-align:center;'>
 <tr bgcolor='#F2F2F2'><th>Last Name</th><th>First Name</th><th>Type</th><th>Email</th></tr>");
         foreach(Person::getAllPeople('all') as $person){
             if(($person->getEmail() == "" || $person->getEmail() == "{$config->getValue('supportEmail')}") && 
-               ($person->isRole(HQP) || $person->isRole(PNI) || $person->isRole(CNI))){
+               ($person->isRole(HQP) || $person->isRole(NI))){
                 $names = explode(".", $person->getName());
                 $wgOut->addHTML("<tr bgcolor='#FFFFFF'>
                                     <td align='left'>

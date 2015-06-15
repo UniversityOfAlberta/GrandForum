@@ -8,35 +8,23 @@ $wgSpecialPageGroups['ReviewResults'] = 'network-tools';
 require_once($dir . '../../../Classes/PHPExcel/IOFactory.php');
 
 function runReviewResults($par) {
-    ReviewResults::run($par);
+    ReviewResults::execute($par);
 }
 
 class ReviewResults extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('ReviewResults');
-        SpecialPage::SpecialPage("ReviewResults", STAFF.'+', true, 'runReviewResults');
+        SpecialPage::__construct("ReviewResults", STAFF.'+', true, 'runReviewResults');
     }
     
-    function run(){
+    function execute(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-        $type = "PNI";
-        if(!empty($_GET['type']) && $_GET['type'] == 'CNI'){
-            $type = "CNI";
-        }
-        else if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
+        $type = "NI";
+        if(!empty($_GET['type']) && $_GET['type'] == 'Project'){
             $type = "Project";
         }
-        else if(!empty($_GET['type']) && $_GET['type'] == 'LOI'){
-            $type = "LOI";
-        }
         
-        if($type == 'LOI'){
-            ReviewResults::loi_routine();
-        }
-        else{
-            ReviewResults::ni_routine();
-        }
+        ReviewResults::ni_routine();
 
         $html =<<<EOF
         <script type='text/javascript'>
@@ -85,27 +73,17 @@ class ReviewResults extends SpecialPage {
             </style>
             <div id='ackTabs'>
             <ul>
-            <li><a href='#pni'>PNI</a></li>
-            <li><a href='#cni'>CNI</a></li>
+            <li><a href='#ni'>NI</a></li>
             <li><a href='#project'>Project</a></li>
-            <li><a href='#loi'>LOI</a></li>
             </ul>
 EOF;
         
-        $html .= "<div id='pni' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewResults('PNI');
-        $html .= "</div>";
-
-        $html .= "<div id='cni' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewResults('CNI');
+        $html .= "<div id='ni' style='width: 100%; overflow: auto;'>";
+        $html .= ReviewResults::reviewResults('NI');
         $html .= "</div>";
         
         $html .= "<div id='project' style='width: 100%; overflow: auto;'>";
         $html .= ReviewResults::reviewResults('Project');
-        $html .= "</div>";
-
-        $html .= "<div id='loi' style='width: 100%; overflow: auto;'>";
-        $html .= ReviewResults::reviewLOIResults();
         $html .= "</div>";
 
         $html .=<<<EOF
@@ -151,24 +129,6 @@ EOF;
         }
 
        // ReviewResults::reviewResults($type);
-    }
-
-    static function loi_routine(){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-
-        if(isset($_POST['submit'])){
-            $submit_val = $_POST['submit'];
-            //if($submit_val == "Send out Emails"){
-                ReviewResults::emailAllLOIPDFs('LOI');
-            //}
-            
-        }
-        else if(isset($_GET['generatePDF'])){
-            ReviewResults::generateAllFeedback('LOI');
-            exit;
-        }
-
-       // ReviewResults::reviewLOIResults();
     }
 
     static function emailAllPDFs($type){
@@ -223,157 +183,11 @@ EOF;
         }
     }
 
-    static function emailAllLOIPDFs(){
-        global $wgUser, $wgMessage;
-        $curr_year = REPORTING_YEAR;
-
-        $lois = LOI::getAssignedLOIs($curr_year);
-
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type = 'LOI' AND user_id= %d";
-    
-        $sent_success = array();
-        $sent_fail = array();
-        $file_fail = array();
-        
-        foreach($lois as $loi){
-            $loi_id = $loi->getId();
-            $sql = sprintf($query, $loi_id);
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0 && $data[0]['email_sent'] == 1){
-                continue;
-            }
-
-            //if($loi_id == 2 || $loi_id == 30){
-                
-            $loi_name = $loi->getName();
-
-            $error = ReviewResults::emailLOIPDF($loi_id);
-            if($error == 0){
-                $sent_success[] = $loi_name;
-            }
-            else if($error == 1){
-                $sent_fail[] = $loi_name;
-            }
-            else if($error == 2){
-                $file_fail[] = $loi_name;
-            }
-            //}
-        }
-
-        if(!empty($sent_success)){
-            $message = "Email was sent successfully to the following:<br />";
-            $message .= implode("<br />", $sent_success);
-            $wgMessage->addSuccess($message);
-        }
-
-        if(!empty($sent_fail)){
-            $message = "There was a problem sending emails to the following:<br />";
-            $message .= implode("<br />", $sent_fail);
-            $wgMessage->addError($message);
-        }
-
-        if(!empty($file_fail)){
-            $message = "There was a problem retrieving PDFs for the following:<br />";
-            $message .= implode("<br />", $file_fail);
-            $wgMessage->addError($message);
-        }
-    }
-
-    static function emailLOIPDF($loi_id){
-        global $wgUser, $wgMessage;
-        $loi = LOI::newFromId($loi_id);
-        $loi_name = $loi->getName();
-        //$loi_email = $ni->getEmail();
-        ///$ni_name_good = $ni->getNameForForms();
-
-        $lead = $loi->getLeadEmail();
-        if(!empty($lead['email'])){
-            $lead_email = $lead['email'];
-        }
-        else{
-            $lead_email = "adrian_sheppard@gnwc.ca";
-        }
-
-        $colead = $loi->getCoLeadEmail();    
-        if(!empty($colead['email'])){
-            $colead_email = $colead['email'];
-        }
-        else{
-            $colead_email = "";
-        }
-
-        $to = $lead_email;
-        if(!empty($colead_email)){
-            $to .= ", ".$colead_email;
-        }
-
-        //$to = "dgolovan@gmail.com, adrian_sheppard@gnwc.ca";  
-        $subject = "GRAND NCE - {$loi_name} Feedback and Next Steps";
-        
-        $email_body =<<<EOF
-This message is going out to the LOI Submission project leaders and co-leaders. Attached you will find the specific feedback from the reviews of your project or subproject LOI Submission, as well as some instructions and guidance regarding the next steps in the process.
-
-Included in the attached is an initial draft of GRAND's portfolio of research projects for Phase 2. The purpose of this initial draft portfolio is to provide guidance on how each of the LOI Submissions (full projects and subprojects) might fit into the anticipated 20-25 projects that will form GRAND's Phase 2 research project portfolio.
-
-The next phase of the process will be the LOI Responses, which will be focused on filling these anticipated 20-25 project slots in the Phase 2 portfolio. More information about this next phase is included in the attached, along with your individual project feedback.  The LOI Responses template is available at http://grand-nce.ca/renewal/template-and-instructions-for-loi-responses.
-
-If you have any questions or concerns, or if you require any additional information at this time, please let me know. Thanks.
-
-Regards,
-Adrian Sheppard
-Director, Operations
-GRAND NCE
-Centre for Digital Media
-685 Great Northern Way
-Vancouver BC V5T 0C6
-EOF;
-        
-        $from = "Adrian Sheppard <adrian_sheppard@gnwc.ca>";
-        $filename = "{$loi_name}_Feedback-August2013.pdf";
-        //$file = "data/review-feedback/{$type}/{$filename}";
-        //$file_content = @file_get_contents($file);
-        $admin = Person::newFromId(4);
-        $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-        $check = $report->getPDF();
-        
-        if(count($check)>0){
-            $sto = new ReportStorage($admin);
-            $file_content = $sto->fetch_pdf($check[0]['token']);
-        }
-        else{
-            $file_content = "";
-        }
-
-        $error_code = 0; //If all is good return 0;
-
-        if($file_content){
-            $success = ReviewResults::mail_attachment($file_content, $filename, $to, $from, $subject, $email_body);
-            if($success){
-                //Update the NI record that the email was sent out.
-                $curr_year = REPORTING_YEAR;
-                $query =<<<EOF
-                UPDATE grand_review_results
-                SET email_sent = 1
-                WHERE user_id = {$loi_id} AND type = 'LOI' AND year = {$curr_year}
-EOF;
-                $result = DBFunctions::execSQL($query, true);
-            }
-            else{
-                $error_code = 1; 
-            }
-        }
-        else{
-            $error_code = 2;
-        }
-
-        return $error_code;
-    }
-
     static function emailPDF($ni_id, $type){
         global $wgUser, $wgMessage;
         $recipients = array();
-        if($type == CNI || $type == PNI){
-            $subject = "GRAND NCE - RMC Feedback 2014 - PNIs and CNIs";
+        if($type == NI){
+            $subject = "GRAND NCE - RMC Feedback 2014 - NIs";
             $ni = Person::newFromId($ni_id);
             $recipients[] = $ni;
         }
@@ -381,8 +195,7 @@ EOF;
             $subject = "GRAND NCE - RMC Feedback 2014 - Projects";
             $ni = Project::newFromId($ni_id);
             $leaders = $ni->getLeaders();
-            $coleaders = $ni->getCoLeaders();
-            $recipients = array_merge($leaders, $coleaders);
+            $recipients = $leaders;
         }
         $ni_name = $ni->getName();
         
@@ -399,7 +212,7 @@ The PDF contains information regarding your 2014-15 research funding
 allocation as well as specific feedback based on your report.
 
 Please note that additional information regarding the Phase 2 Process
-around projects and themes, including project funding for CNIs and the
+around projects and themes, including project funding for NIs and the
 preparation of project and theme descriptions for the renewal application,
 will be made available on the GRAND Forum under GRAND => Phase 2 =>
 Process (https://forum.grand-nce.ca/index.php/GRAND:Process) early next
@@ -510,10 +323,10 @@ EOF;
                 $overall_score = (isset($ni_data['overall_score'])) ? $ni_data['overall_score'] : "";
                 $send_email = (isset($ni_data['send_email'])) ? 1 : 0;
                 
-                $allocated_amount = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount)));
-                $allocated_amount2 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount2)));
-                $allocated_amount3 = mysql_real_escape_string(floatval(str_replace(",", "", $allocated_amount3)));
-                $overall_score = mysql_real_escape_string($overall_score);
+                $allocated_amount = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount)));
+                $allocated_amount2 = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount2)));
+                $allocated_amount3 = DBFunctions::escape(floatval(str_replace(",", "", $allocated_amount3)));
+                $overall_score = DBFunctions::escape($overall_score);
 
                 $query =<<<EOF
                 INSERT INTO grand_review_results (user_id, type, year, allocated_amount, allocated_amount2, allocated_amount3, overall_score, send_email)
@@ -554,47 +367,34 @@ EOF;
         return $data;
     }
 
-    static function generateAllFeedback($type='PNI'){
+    static function generateAllFeedback($type='NI'){
         global $wgUser;
-
-        if($type == 'LOI'){
-            $lois = LOI::getAssignedLOIs(REPORTING_YEAR);
-            foreach ($lois as $loi){
-                //$loi_id = $loi->getId();
-                $admin = Person::newFromId(4);
-                $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-                $report->generatePDF(null, false);
-                //break;
-            }
+        if($type == NI){
+            $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
         }
-        else{
-            if($type == PNI || $type == CNI){
-                $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
-            }
-            else if($type == "Project"){
-                $nis = array();
-                $projects = Project::getAllProjects();
-                foreach($projects as $project){
-                    if($project->getPhase() == 2){
-                        $nis[$project->getName()] = $project;
-                    }
+        else if($type == "Project"){
+            $nis = array();
+            $projects = Project::getAllProjects();
+            foreach($projects as $project){
+                if($project->getPhase() == 2){
+                    $nis[$project->getName()] = $project;
                 }
             }
+        }
 
-            foreach ($nis as $ni) {
-                $ni_id = $ni->getId();
+        foreach ($nis as $ni) {
+            $ni_id = $ni->getId();
 
-                ReviewResults::generateFeedback($ni_id, $type);
-                echo $ni->getName() ."<br />";
-            }
+            ReviewResults::generateFeedback($ni_id, $type);
+            echo $ni->getName() ."<br />";
         }
     }
 
-    static function generateFeedback($ni_id, $type="PNI"){
+    static function generateFeedback($ni_id, $type="NI"){
         global $wgOut;
 
         $wgOut->clearHTML();
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $ni = Person::newFromId($ni_id);
             $name = $ni->getNameForForms();
             $university = $ni->getUni();
@@ -603,45 +403,16 @@ EOF;
             $ni = Project::newFromId($ni_id);
             $name = $ni->getName();
             $leaders = $ni->getLeaders();
-            $coleaders = $ni->getCoLeaders();
         }
         $curr_year = REPORTING_YEAR;
         $boilerplate = "";
-        if($type == "PNI"){
+        if($type == "NI"){
             $rtype = RP_EVAL_RESEARCHER;
-            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
-<br />
-<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
-        }
-        else if($type == "CNI"){
-            $rtype = RP_EVAL_CNI;
-            $boilerplate = "<p>There were 49 prospective PNIs evaluated in this review cycle, along with an additional 11 CNIs who were proposed as project co-leaders.  Funding allocations for 2014-15 were made in four tiers:  Top Tier: $65,000; Upper Middle: $55,000; Lower Middle: $45,000; and Bottom Tier: $35,000.  Note that a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>Of the 49 prospective PNIs evaluated, 46 were funded as PNIs: 21 were Top Tier, 19 were Upper Middle, 6 were Lower Middle, and 3 were not funded as PNIs.  Of the 11 CNIs who were proposed as project co-leaders, they were evaluated across all four tiers, although they were only eligible for funding at the $45,000 and $35,000 levels.  Six were funded at the $45,000 level, four were funded at the $35,000 level, and one was awarded no funding.  Again, a researcher was not awarded more than his/her budget request, notwithstanding their funding tier.</p>
-<br />
-<p>The \"2015 Allocation\" amounts are full year allocations based on a proposed \"Phase 2\" research budget.  The \"April-December 2014 Amount\" is your actual allocation for the funding period from 01Apr2014 through 31Dec2014.  These amounts are notably lower than the \"2015 Allocation\" for two reasons: (1) they have been scaled down to fit within the Phase 1 research budget, which is less than the proposed Phase 2 research budget, and (2) they are providing funding for only a nine-month period.  If GRAND is renewed at a funding level consistent with the proposed Phase 2 research budget, then additional allocations of research funding for 01Jan2015 – 31Mar2015 are expected to be a full 25% of the 2015 Allocation indicated.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving separate feedback from the RMC regarding their projects which will also include details regarding project funding available for CNIs.</p>
-<br />
-<p>Each PNI and CNI who is a project co-leader was reviewed by at least two RMC evaluators.  The Overall Rating is based not only on the reviewer scores, but also on the discussion at the RMC meeting.  The available scores are as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 5 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
+            $boilerplate = "";
         }
         else if($type == "Project"){
             $rtype = RP_EVAL_PROJECT;
-            $boilerplate = "<p>There were 23 projects evaluated in this review cycle.  Each project was reviewed by three RMC evaluators.  The highest scoring project received three \"Top Tier\" overall ratings, and the lowest scoring project received three \"Bottom Tier\" ratings.  However all but a few projects received at least one \"Upper Middle\" overall rating.  There were 22 standard projects and one \"alliance\" project.  Alliance projects are funded from a separate pool of funds.  Of the 22 standard projects, 19 were deemed ready to proceed as full projects, with the remaining three to proceed on a development basis with reduced funding and additional oversight.</p>
-<br />
-<p>Project Leaders and co-leaders will be receiving a separate document that provide the details of the overall funding for their project for 2014-15.</p>
-<br />
-<p>
-Each Phase 2 Project was reviewed by at least three RMC evaluators.  The International Scientific Advisory Committee (ISAC) were also given access to all of the Phase 2 Project Reports.  While the primary goal of the ISAC was to review GRAND's Phase 2 research program as a whole, in some cases comments were provided on individual projects.  For projects that received specific comments from an ISAC reviewer, those comments are also included below.
-</p>
-<br />
-<p>For the RMC reviewer scoring of projects, the available scores were as follows:  1) Overall Score:  Top, Upper Middle, Lower Middle, Bottom; 2) Each of the 4 NCE Evaluation Criteria and Rating for Quality of Report: Exceptional, Very Good, Satisfactory, Unsatisfactory; and 3) Confidence Level of Evaluator: Very High, High, Moderate, Low.</p>";
+            $boilerplate = "";
         }
 
         $query = "SELECT * FROM grand_review_results WHERE year='{$curr_year}' AND user_id='{$ni_id}' AND type = '{$type}'";
@@ -661,7 +432,7 @@ Each Phase 2 Project was reviewed by at least three RMC evaluators.  The Interna
         $allocated_amount3 = @money_format('%i', $allocated_amount3);
         
         $allocated_html = "";
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             // NI Specific HTML variables
             $title = "GRAND NCE - Research Management Committee - Network Investigator Review 2014 - Feedback";
             $person_html = <<<EOF
@@ -706,16 +477,11 @@ EOF;
             // Project Specific HTML variables
             $title = "GRAND NCE - Research Management Committee - Phase2 Project Review 2014 - Feedback";
             $leader_names = array();
-            $coleader_names = array();
             
             foreach($leaders as $leader){
                 $leader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
             }
-            foreach($coleaders as $leader){
-                $coleader_names[] = $leader->getNameForForms()." ({$leader->getUni()})";
-            }
             $lead_names = implode("<br />", $leader_names);
-            $colead_names = implode("<br />", $coleader_names);
             $person_html = <<<EOF
             <tr>
                 <td align='right'><strong>Project Name:</strong></td>
@@ -724,10 +490,6 @@ EOF;
             <tr>
                 <td align='right'><strong>Leader(s):</strong></td>
                 <td>{$lead_names}</td>
-            </tr>
-            <tr>
-                <td align='right'><strong>Co-Leader(s):</strong></td>
-                <td>{$colead_names}</td>
             </tr>
 EOF;
             $allocated_html = <<<EOF
@@ -774,7 +536,7 @@ EOF;
             $found = false;
             foreach ($sections as $sec_name => $sec_addr){
                 $ev_id = $eval->getId();
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
                     $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
                 }
@@ -806,7 +568,7 @@ EOF;
             $rows = array();
             foreach($evaluators as $eval){
                 $ev_id = $eval->getId();
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $score = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[0], $ni, $ev_id, $curr_year);
                     $comments = self::getData(BLOB_ARRAY, $rtype,  $sec_addr[1], $ni, $ev_id, $curr_year);
                 }
@@ -922,12 +684,12 @@ EOF;
         $my_id = $wgUser->getId();
         $me = Person::newFromId($wgUser->getId());
         
-        if($type != "CNI" && $type != "PNI" && $type != "Project"){
-            $type = "PNI";
+        if($type != "NI" && $type != "Project"){
+            $type = "NI";
         }
 
         $curr_year = REPORTING_YEAR;
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $nis = Person::getAllEvaluates($type); //Person::getAllPeopleDuring($type, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
 
             $nis_sorted = array();
@@ -963,7 +725,7 @@ EOF;
                                   'email_sent'          => $row['email_sent']);    
         }
 
-        if($type == PNI || $type == CNI){
+        if($type == NI){
             $allocationHeadCells = <<<EOF
             <th width="15%">2014 Allocation</th>
             <th width="15%">2015 Allocation</th>
@@ -971,9 +733,8 @@ EOF;
         }
         else if($type == "Project"){
             $allocationHeadCells = <<<EOF
-            <th width="10%">2014 PNI Allocation</th>
-            <th width="10%">2014 CNI Allocation</th>
-            <th width="10%">2015 Amount</th>
+            <th width="15%">2014 NI Allocation</th>
+            <th width="15%">2015 Amount</th>
 EOF;
         }
 
@@ -1023,7 +784,7 @@ EOF;
                     $file_link = "No&nbsp;PDF&nbsp;found";
                 }
                 
-                if($type == PNI || $type == CNI){
+                if($type == NI){
                     $allocationCells = <<<EOF
                     <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount]" value="{$allocated_amount}" class="number" /></td>
                     <td><input style='width:175px;' type="text" name="ni[{$ni_id}][allocated_amount2]" value="{$allocated_amount2}" class="number" /></td>
@@ -1055,101 +816,6 @@ EOF;
             <input type='hidden' name='year' value='{$curr_year}' />
             <input type='submit' name='submit' value='Submit' />
             <input type='submit' name='submit' value='Send out Emails' />
-            </form>
-EOF;
-        return $html;
-    }
-
-    static function reviewLOIResults(){
-        global $wgOut, $wgScriptPath, $wgServer, $wgUser;
-
-        $my_id = $wgUser->getId();
-        $me = Person::newFromId($wgUser->getId());
-        
-        $type = "LOI";
-
-        $curr_year = REPORTING_YEAR;
-        $lois = LOI::getAssignedLOIs($curr_year);
-
-        $query = "SELECT * FROM grand_review_results WHERE year={$curr_year} AND type='{$type}'";
-        $data = DBFunctions::execSQL($query);
-
-        $fetched = array();
-        foreach($data as $row){
-            $id = $row['user_id'];
-            $fetched[$id] = array('email_sent'=>$row['email_sent']);    
-        }
-
-        $html =<<<EOF
-            <h3>RMC Review Results ({$type})</h3>
-            <form id="resultsForm" action='$wgServer$wgScriptPath/index.php/Special:ReviewResults?type={$type}#loi' method='post'>
-            
-            <table width='90%' class="wikitable" cellspacing="1" cellpadding="5" frame="box" rules="all">
-            <tr>
-            <th>LOI Name</th>
-            <th width="30%">Leader Name</th>
-            <th width="30%">co-Leader Name</th>
-            <th width="15%">Feedback PDF</th>
-            <th width="15%">Email</th>
-            </tr>
-EOF;
-            foreach ($lois as $loi) {
-                $loi_id = $loi->getId();
-                $loi_name = $loi->getName();
-                $filename = $loi->getName();
-                $lead = $loi->getLeadEmail();
-                if(!empty($lead['email'])){
-                    $lead_email = "<a href='mailto:".$lead['email']."'>".$lead['name']."</a>";
-                }
-                else{
-                    $lead_email = $lead['name'];
-                }
-
-                $colead = $loi->getCoLeadEmail();    
-                if(!empty($colead['email'])){
-                    $colead_email = "<a href='mailto:".$colead['email']."'>".$colead['name']."</a>";
-                }
-                else{
-                    $colead_email = $colead['name'];
-                }
-                $email_sent = "Email Not Sent";
-                $email_sent_bg = "background-color: red;";
-                if(isset($fetched[$loi_id])){
-                    if(isset($fetched[$loi_id]['email_sent']) &&  $fetched[$loi_id]['email_sent'] == 1){
-                        $email_sent = "Email Sent";
-                        $email_sent_bg = "background-color: green;";
-                    }
-                }
-
-                $admin = Person::newFromId(4); //Just because I need to pass a person object
-                $report = new DummyReport("LOIFeedbackReportPDF", $admin, $loi);
-                $check = $report->getPDF();
-                if(count($check) > 0){
-                    $tok = $check[0]['token'];
-                    $downloadButton = "<a id='download{$loi_id}' target='downloadIframe' class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=$tok'>Download</a>";
-                }
-                else{
-                    $downloadButton = "No PDF found";
-                }
-                
-                $html .=<<<EOF
-                <tr>
-                <td>{$loi_name}</td>
-                <td>{$lead_email}</td>
-                <td>{$colead_email}</td>
-                <td align="center">{$downloadButton}</td>
-                <td align="center"><span style="padding:5px; {$email_sent_bg}">{$email_sent}</span></td>
-                </tr>
-EOF;
-            }
-
-            $html .=<<<EOF
-            </table>
-            <br />
-            <input type='hidden' name='ni_type' value='{$type}' />
-            <input type='hidden' name='year' value='{$curr_year}' />
-            
-            <input type='submit' name='submit' value='Send out Emails' disabled />
             </form>
 EOF;
         return $html;

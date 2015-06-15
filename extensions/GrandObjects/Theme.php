@@ -15,7 +15,6 @@ class Theme {
     var $phase;
     var $color;
     var $leader = null;
-    var $coleader = null;
     
     /**
      * Returns a new Theme from the given Id
@@ -123,8 +122,8 @@ class Theme {
      * @return This Theme's url
      */
     function getUrl(){
-        global $wgServer, $wgScriptPath;
-        return "{$wgServer}{$wgScriptPath}/index.php/GRAND:{$this->getAcronym()} - {$this->getName()}";
+        global $wgServer, $wgScriptPath, $config;
+        return "{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$this->getAcronym()} - {$this->getName()}";
     }
     
     /**
@@ -133,24 +132,6 @@ class Theme {
      */
     function getColor(){
         return $this->color;
-    }
-    
-    /**
-     * Returns the current leader of this Theme
-     * @return Person the current Leader of this Theme
-     */
-    function getLeader(){
-        if($this->leader == null){
-            $data = DBFunctions::select(array("grand_theme_leaders"),
-                                        array("user_id"),
-                                        array("theme" => $this->getId(),
-                                              "co_lead" => EQ("False"),
-                                              "end_date" => EQ("0000-00-00 00:00:00")));
-            if(count($data) > 0){
-                $this->leader = Person::newFromId($data[0]['user_id']);
-            }
-        }
-        return $this->leader;
     }
     
     /*
@@ -162,6 +143,7 @@ class Theme {
         $data = DBFunctions::select(array("grand_theme_leaders"),
                                     array("user_id"),
                                     array("theme" => $this->getId(),
+                                          "coordinator" => EQ("False"),
                                           "end_date" => EQ("0000-00-00 00:00:00")));
         if(count($data) > 0){
             foreach($data as $row){
@@ -172,22 +154,24 @@ class Theme {
         return $leaders;
     }
     
-    /**
-     * Returns the current co-leader of this Theme
-     * @return Person the current Co-Leader of this Theme
+    /*
+     * Returns all of the leaders regardless of their type
+     * @return array An array of all leaders
      */
-    function getCoLeader(){
-        if($this->coleader == null){
-            $data = DBFunctions::select(array("grand_theme_leaders"),
-                                        array("user_id"),
-                                        array("theme" => $this->getId(),
-                                              "co_lead" => EQ("True"),
-                                              "end_date" => EQ("0000-00-00 00:00:00")));
-            if(count($data) > 0){
-                $this->coleader = Person::newFromId($data[0]['user_id']);
+    function getCoordinators(){
+        $leaders = array();
+        $data = DBFunctions::select(array("grand_theme_leaders"),
+                                    array("user_id"),
+                                    array("theme" => $this->getId(),
+                                          "coordinator" => EQ("True"),
+                                          "end_date" => EQ("0000-00-00 00:00:00")));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $leader = Person::newFromId($row['user_id']);
+                $leaders[$leader->getReversedName()] = $leader;
             }
         }
-        return $this->coleader;
+        return $leaders;
     }
 
 }

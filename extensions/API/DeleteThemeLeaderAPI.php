@@ -7,6 +7,7 @@ class DeleteThemeLeaderAPI extends API{
         $this->addPOST("theme", true, "The theme number", "2");
         $this->addPOST("comment", true, "A comment for why the user is no longer a leade of this theme", "My Reason");
         $this->addPOST("co_lead", false,"Whether or not this user was a co-leader or not.  If not provided, 'False' is assumed", "False");
+        $this->addPOST("coordinator", false,"Whether or not this user was a coordinator or not.  If not provided, 'False' is assumed", "False");
         $this->addPOST("effective_date", false, "The date when the theme change should be made in the format YYYY-MM-DD.  If this value is not included, the current time is assumed.", "2012-10-30");
     }
 
@@ -25,6 +26,9 @@ class DeleteThemeLeaderAPI extends API{
             $person = Person::newFromName($_POST['name']);
             if(!isset($_POST['co_lead']) || ($_POST['co_lead'] != "False" && $_POST['co_lead'] != "True")){
                 $_POST['co_lead'] = 'False';
+            }
+            if(!isset($_POST['coordinator']) || ($_POST['coordinator'] != "False" && $_POST['coordinator'] != "True")){
+                $_POST['coordinator'] = 'False';
             }
             $comment = str_replace("'", "&#39;", $_POST['comment']);
             if(!$noEcho){
@@ -52,6 +56,7 @@ class DeleteThemeLeaderAPI extends API{
 	            WHERE `theme` = '{$_POST['theme']}'
 	            AND `user_id` = '{$person->getId()}'
 	            AND `co_lead` = '{$_POST['co_lead']}'
+	            AND `coordinator` = '{$_POST['coordinator']}'
 	            ORDER BY `start_date` DESC LIMIT 1";
             DBFunctions::execSQL($sql, true);
             

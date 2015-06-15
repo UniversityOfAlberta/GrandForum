@@ -7,12 +7,11 @@ $egAlwaysAllow = array();
    * Run any initialization code needed by the extension.
    */
 function initializeAccessControls(){
-  global $egAnnokiNamespaces;
+  global $egAnnokiNamespaces, $wgExtraNamespaces;
 
   createExtraTables();
   
-  require_once('AnnokiNamespaces.php');
-  $egAnnokiNamespaces = new AnnokiNamespaces();
+  $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
 
   addMenuJavascript();
 }
@@ -21,74 +20,6 @@ function addMenuJavascript() {
 	global $wgOut, $wgScriptPath;
 	$script = "<script type='text/javascript' src='$wgScriptPath/extensions/AccessControls/selectMenu.js'></script>\n";
 	$wgOut->addScript($script);	
-}
-
-function checkTabsPermissions($skin,&$content_actions) {
-	/*
-	 * This is just for the user interface. When building the tabs mediawiki only checks $wgGroupPermissions
-	 * but does not run the userCan hook. As a result some pages will have delete/protect tabs even though
-	 * the user is not allowed to have these actions (and would get an error if they actually try to
-	 * delete or protect). This removes such tabs in order to make thing less confusing.
-	 */
-	global $wgTitle, $wgUser;
-	
-	$toCheck = array('protect', 'unprotect', 'delete');
-	
-	foreach ($toCheck as $action) {
-		if (isset($content_actions[$action]) && !onUserCan($wgTitle, $wgUser, $action, $result)) {
-			unset($content_actions[$action]);
-		}
-	}
-	
-	return true;
-}
-
-function test(&$out, $parseroutput ){
-	global $wgUser, $wgTitle, $publicPresent;
-	$text = $parseroutput->getText();
-	if(strstr($text, "<public>") == false && !is_null($wgTitle) && !$wgTitle->userCanRead()){
-		$out->loginToUse();
-		$out->output();
-		$out->disable();
-	}
-	return true;
-}
-
-function checkPublicSections(&$parser, &$text){
-	$text = parsePublicSections($text);
-	return true;
-}
-
-function parsePublicSections($text){
-	global $wgTitle, $wgUser, $wgScriptPath, $wgOut, $publicPresent, $wgArticle;
-	if(!is_null($wgTitle) && (!$wgTitle->userCanRead() || $wgTitle->getText() == "UserLogin") && !$wgOut->isDisabled()){
-		$buffer = "";
-		$offset = 0;
-		
-		$pos1 = stripos($text, "[public]");
-		$pos2 = stripos($text, "[/public]");
-		if(($pos1 == false || $pos2 == false) && !$publicPresent){
-			// Do Nothing
-		}	
-		else {
-			$publicPresent = true;
-			while($pos1 != false && $pos2 != false){
-				$buffer .= substr($text, $pos1, $pos2 - $pos1);
-				$offset = $pos2 + strlen("[/public]");
-				$pos1 = stripos($text, "[public]", $offset);
-				$pos2 = stripos($text, "[/public]", $offset);
-			}
-		
-			$text = $buffer;
-		
-			$text = preg_replace("/\[private\].*\[\/private\]/", "", $text);
-		}
-	}
-	$text = str_ireplace("[public]", "<public>", $text);
-	$text = str_ireplace("[/public]", "</public>", $text);
-	$text = str_ireplace("[private]", "<private>", $text);
-	$text = str_ireplace("[/private]", "</private>", $text);
-	return $text;
 }
 
 /**
@@ -146,6 +77,51 @@ function createExtraTables() {
 	$dbw->query($uploadPermTemp);
 }
 
+function checkPublicSections(&$parser, &$text){
+	$text = parsePublicSections($parser->getTitle(), $text);
+	return true;
+}
+
+function parsePublicSections($title, $text){
+	global $wgUser, $wgScriptPath, $wgOut, $publicPresent;
+	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isLoggedIn()){
+		$buffer = "";
+		$offset = 0;
+		
+		$pos1 = stripos($text, "[public]");
+		$pos2 = stripos($text, "[/public]");
+		
+		if(($pos1 == false || $pos2 == false) && !$publicPresent){
+			// Do Nothing
+		}
+		else {
+			$publicPresent = true;
+			while($pos1 != false && $pos2 != false){
+				$buffer .= substr($text, $pos1, $pos2 - $pos1);
+				$offset = $pos2 + strlen("[/public]");
+				$pos1 = stripos($text, "[public]", $offset);
+				$pos2 = stripos($text, "[/public]", $offset);
+			}
+		
+			$text = $buffer;
+		
+			$text = preg_replace("/\[private\].*\[\/private\]/", "", $text);
+		}
+	}
+	$text = str_ireplace("[public]", "<public>", $text);
+	$text = str_ireplace("[/public]", "</public>", $text);
+	$text = str_ireplace("[private]", "<private>", $text);
+	$text = str_ireplace("[/private]", "</private>", $text);
+	return $text;
+}
+
+function onUserCanExecute($special, $subpage){
+    if(!$special->userCanExecute($special->getUser())){
+        permissionError();
+    }
+    return true;
+}
+
 /**
  * handler for the userCan hook; tells mediawiki whether the given user is allowed to perform the given action to the given title
  *
@@ -159,10 +135,38 @@ function createExtraTables() {
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
+    $ret = onUserCan2($title, $user, $action, $result);
+    return $ret;
+}
+ 
+function onUserCan2(&$title, &$user, $action, &$result) {
   global $wgExtraNamespaces, $egAnProtectUploads, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
   $person = Person::newFromId($user->getId());
+  
+  // Is API set?
+  if(isset($_GET['action'])){
+    $actions = explode(".", $_GET['action'], 2);
+    if($actions[0] == "api"){
+        $result = true;
+        return true;
+    }
+  }
+  
+  // Check public sections of wiki page
+  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action = 'read'){
+      $article = WikiPage::factory($title);
+      if($article != null){
+          $text = $article->getText();
+          if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
+            $result = true;
+            return true;
+          }
+      }
+  }
+
   if($user->isLoggedIn() && $title->getNamespace() == NS_MAIN && $action == 'read'){
     // A logged in user should be able to read any page in the main namespace
+    
     $result = true;
     return true;
   }

@@ -17,15 +17,20 @@ class GlobalSearchAPI extends RESTAPI {
             case 'people':
                 $data = array();
                 $people = DBFunctions::select(array('mw_user'),
-                                              array('user_name', 'user_real_name', 'user_id'),
+                                              array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
                 foreach($people as $pRow){
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
                     $person->realname = $pRow['user_real_name'];
+                    if($me->isLoggedIn()){
+                        // Only search by email if the person is logged in
+                        $person->email = $pRow['user_email'];
+                    }
                     $realName = $person->getNameForForms();
                     $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
                                          explode(" ", str_replace(".", "", unaccentChars($realName))));
+                    $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
                         $grepped = preg_grep("/^$name.*/", $names);
@@ -50,7 +55,7 @@ class GlobalSearchAPI extends RESTAPI {
                         // Don't include Admin
                         $continue = true; 
                     }
-                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(CNI)){
+                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(NI)){
                         $continue = true;
                     }
                     if($continue) continue;
@@ -186,9 +191,8 @@ class GlobalSearchAPI extends RESTAPI {
                                                'Activity',
                                                'Press',
                                                'Award',
-                                               'PNI',
+                                               'NI',
                                                'HQP',
-                                               'CNI',
                                                'Mail');
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
@@ -285,7 +289,7 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                     switch($pdf->getType()){
                         case RPTP_NORMAL:
-                            $keywords = "ni pni cni individual report pdf";
+                            $keywords = "ni individual report pdf";
                             break;
                         case RPTP_HQP:
                             $keywords = "hqp individual report pdf";
@@ -294,7 +298,7 @@ class GlobalSearchAPI extends RESTAPI {
                             $keywords = "champ champion report project pdf";
                             break;
                         case RPTP_NI_COMMENTS:
-                            $keywords = "ni pni cni individual report milestone comments pdf";
+                            $keywords = "ni individual report milestone comments pdf";
                             break;
                         case RPTP_HQP_COMMENTS:
                             $keywords = "hqp individual report milestone comments pdf";
@@ -304,18 +308,6 @@ class GlobalSearchAPI extends RESTAPI {
                             break;
                         case RPTP_LEADER_COMMENTS:
                             $keywords = "project leader report comments pdf";
-                            break;
-                        case RPTP_LOI_REVIEW:
-                            $keywords = "loi project review report pdf";
-                            break;
-                        case RPTP_LOI_EVAL_REVIEW:
-                            $keywords = "loi project evaluator review report pdf";
-                            break;
-                        case RPTP_LOI_EVAL_FEEDBACK:
-                            $keywords = "loi project evaluator feedback report pdf";
-                            break;
-                        case RPTP_LOI_REV_REVIEW:
-                            $keywords = "loi project reviewer review report pdf";
                             break;
                         case RPTP_MTG:
                             $keywords = "mind the gap mtg pdf";

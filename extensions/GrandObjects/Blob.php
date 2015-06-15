@@ -254,7 +254,7 @@ class ReportBlob {
 		}
 
 		// Prepare data for writing into the database.
-		$this->_data_transformed = mysql_real_escape_string($this->_data);
+		$this->_data_transformed = DBFunctions::escape($this->_data);
 
 		// Prepare the address for an SQL statement.
 		$where_list = array();
@@ -283,7 +283,7 @@ class ReportBlob {
 				"edited_by = {$impersonateId} " .
 				"WHERE blob_id = {$this->_blob_id}", true);
 	        if($wgImpersonating){
-	            $oldData = mysql_real_escape_string($res[0]['data']);
+	            $oldData = DBFunctions::escape($res[0]['data']);
 	            $impersonateId = $wgRealUser->getId();
 	            $sql = "INSERT INTO `grand_report_blobs_impersonated` (`blob_id`, `user_id`, `previous_value`, `current_value`)
 	                    VALUES ('{$this->_blob_id}', '{$impersonateId}', '{$oldData}', '{$this->_data_transformed}')";

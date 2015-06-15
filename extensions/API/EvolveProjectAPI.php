@@ -86,7 +86,7 @@ class EvolveProjectAPI extends API{
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
 	        /*$_POST['project'] = $_POST['acronym'];
-	        $_POST['description'] = @mysql_real_escape_string($oldProject->getDescription());
+	        $_POST['description'] = @DBFunctions::escape($oldProject->getDescription());
 	        $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	        APIRequest::doAction('ProjectDescription', true);*/
 	        //MailingList::createMailingList($project);

@@ -8,15 +8,14 @@ $wgSpecialPageGroups['Impersonate'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'Impersonate::createSubTabs';
 
 function runImpersonate($par) {
-  Impersonate::run($par);
+  Impersonate::execute($par);
 }
 
 class Impersonate extends SpecialPage {
 
 	function Impersonate() {
 	    global $wgOut, $wgServer, $wgScriptPath;
-		wfLoadExtensionMessages('Impersonate');
-	    SpecialPage::SpecialPage("Impersonate", MANAGER.'+', true, 'runImpersonate');
+	    SpecialPage::__construct("Impersonate", MANAGER.'+', true, 'runImpersonate');
 	    $wgOut->addScript("<script type='text/javascript'>
 	        $(document).ready(function(){
 	            $('#button').val('Impersonate');
@@ -42,7 +41,7 @@ class Impersonate extends SpecialPage {
 	    </script>");
 	}
 	
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
 	    $user = Person::newFromId($wgUser->getId());
 	    $wgOut->addScript('<script type="text/javascript">
@@ -251,10 +250,8 @@ class Impersonate extends SpecialPage {
 	            $projs[] = $role->getRole();
 	            if($role->getRole() == HQP)
 	                $roleText = HQP;
-	            else if($role->getRole() == CNI)
-	                $roleText = CNI;
-	            else if($role->getRole() == PNI)
-	                $roleText = PNI;
+	            else if($role->getRole() == NI)
+	                $roleText = NI;
 	            else if($role->getRole() == RMC)
 	                $roleText = RMC;
 	                

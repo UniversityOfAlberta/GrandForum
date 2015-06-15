@@ -32,7 +32,7 @@ function initSideBar(){
             jQuery(".gdl-tabs").hide();
             jQuery(".gdl-tabs-content").hide();
             jQuery("#universities").show();
-            initTab("PNI,CNI,RMC,BOD,Staff,Manager/" + university.name, "#universities", "", false);
+            initTab("NI,RMC,BOD,Staff,Manager/" + university.name, "#universities", "", false);
             jQuery(".back_button").show();
         });
         jQuery(".page-wrapper").css('min-height', jQuery(".right-sidebar-wrapper").height());
@@ -133,6 +133,6 @@ function initTab(role, selector, tabSelector, fields){
 jQuery(".page-wrapper").css('min-height', 500);
 jQuery(document).ready(initSideBar);
 initTab("SD,BOD Chair,ASD,Manager", "#executive-leadership", "tab-0", ['university','position']);
-initTab("PNI", "#network-investigators", "tab-1", ['university']);
-initTab("CNI", "#collaborators", "tab-2", ['university']);
+initTab("NI", "#network-investigators", "tab-1", ['university']);
+initTab("Collaborator", "#collaborators", "tab-2", ['university']);
 initTab("Staff,Manager", "#administrative-centre", "tab-3", ['university', 'position']);

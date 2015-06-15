@@ -24,7 +24,7 @@ class SelectBox extends UIElement {
             }
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
-        if(!$selectedFound && $this->value != ""){
+        if(!$selectedFound && $this->value != "" && !is_array($this->value)){
             $html .= "<option value='".str_replace("'", "&#39;", $this->value)."' selected>{$this->value}</option>";
         }
         $html .= "</select>";

@@ -43,34 +43,16 @@ class PersonProjectTab extends AbstractTab {
 				    $subprojs = array();
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){
-				            $lead = "";
-				            if($person->leadershipOf($subproject, 'leader')){
-				                $lead = " (lead)";
-				            }
-				            else if ($person->leadershipOf($subproject, 'co-leader')){
-				                $lead = " (co-lead)";
-				            }
-				            else if($person->leadershipOf($subproject, 'manager')){
-				                $lead = " (manager)";
-				            }
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>{$lead}";
+				            $role = $person->getRoleOn($subproject);
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a> ({$role})";
 				        }
 				    }
 				    $subprojects = "";
 				    if(count($subprojs) > 0){
 				        $subprojects = "<ul><li>".implode("</li><li>", $subprojs)."</li></ul>";
 				    }
-				    $lead = "";
-		            if($person->leadershipOf($project, 'leader')){
-		                $lead = " (lead)";
-		            }
-		            else if ($person->leadershipOf($project, 'co-leader')){
-		                $lead = " (co-lead)";
-		            }
-		            else if($person->leadershipOf($project, 'manager')){
-		                $lead = " (manager)";
-		            }
-				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a>{$lead} $subprojects</li>";
+				    $role = $person->getRoleOn($project);
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a> ({$role}) $subprojects</li>";
 				}
 			}
 			if(count($projs) > 0){
@@ -100,7 +82,7 @@ class PersonProjectTab extends AbstractTab {
     function showThemes($person, $visibility){
         global $wgOut, $wgScriptPath, $wgServer, $config;
         $leadThemes = $person->getLeadThemes();
-        $coLeadThemes = $person->getCoLeadThemes();
+        $coordThemes = $person->getCoordThemes();
         $projects = $person->getProjects();
         $themes = array();
         foreach($projects as $project){
@@ -113,7 +95,7 @@ class PersonProjectTab extends AbstractTab {
         foreach($leadThemes as $theme){
             $themes[$theme->getAcronym()] = $theme;
         }
-        foreach($coLeadThemes as $theme){
+        foreach($coordThemes as $theme){
             $themes[$theme->getAcronym()] = $theme;
         }
         if(count($themes) > 0){
@@ -123,8 +105,8 @@ class PersonProjectTab extends AbstractTab {
                 if(isset($leadThemes[$theme->getId()])){
                     $lead = " (lead)";
                 }
-                else if(isset($coLeadThemes[$theme->getId()])){
-                    $lead = " (co-lead)";
+                else if(isset($coordThemes[$theme->getId()])){
+                    $lead = " (coord)";
                 }
                 $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>{$lead}</li>";
             }

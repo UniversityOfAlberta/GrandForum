@@ -37,6 +37,7 @@ abstract class AbstractReport extends SpecialPage {
     var $reportType;
     var $ajax;
     var $header;
+    var $headerName;
     var $sections;
     var $currentSection;
     var $permissions;
@@ -172,11 +173,7 @@ abstract class AbstractReport extends SpecialPage {
             $projectName = $_GET['project'];
         }
         if($projectName != null){
-            if(preg_match('/LOI/', $xmlFileName)){
-                $this->project = LOI::newFromName($projectName);
-            }else{
-                $this->project = Project::newFromName($projectName);
-            }
+            $this->project = Project::newFromName($projectName);
         }
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;
@@ -237,12 +234,10 @@ abstract class AbstractReport extends SpecialPage {
                 $this->currentSection = @$this->sections[0];
             }
             $this->currentSection->selected = true;
-            wfLoadExtensionMessages("Report");
-            SpecialPage::SpecialPage("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", '', false);
         }
         else{
-            wfLoadExtensionMessages("Report");
-            SpecialPage::SpecialPage("Report", HQP.'+', false);
+            SpecialPage::__construct("Report", '', false);
         }
     }
     
@@ -485,6 +480,20 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
+    function setHeaderName($name){
+        $section = new ReportSection();
+        $item = new StaticReportItem();
+        $section->parent = $this;
+        $item->parent = $section;
+        if($this->person != null){
+            $item->setPersonId($this->person->getId());
+        }
+        if($this->project != null){
+            $item->setProjectId($this->project->getId());
+        }
+        $this->headerName = $item->varSubstitute($name);
+    }
+    
     // Specifies which report this one inherits from
     function setExtends($extends){
         $this->extends = $extends;
@@ -653,8 +662,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == COPL || $perm['perm'] == "Leadership") && 
-                           !$me->isProjectManager()){
+                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -664,7 +672,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == "SUB-PL" || $perm['perm'] == "SUB-COPL")){
+                        else if($this->project != null && ($perm['perm'] == "SUB-PL")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -672,11 +680,6 @@ abstract class AbstractReport extends SpecialPage {
                                         $rResult = true;
                                     }
                                 }
-                            }
-                        }
-                        else if($this->project != null && ($perm['perm'] == PM)){
-                            if($me->isProjectManager()){
-                                $rResult = true;
                             }
                         }
                         else{
@@ -721,7 +724,7 @@ abstract class AbstractReport extends SpecialPage {
     function getSectionPermissions($section){
         global $wgUser;
         $me = Person::newFromId($wgUser->getId());
-        if($me->isRole(MANAGER)){
+        if($me->isRoleAtLeast(MANAGER)){
             return array('r' => true, 'w' => true);
         }
         $found = false;
@@ -781,7 +784,7 @@ abstract class AbstractReport extends SpecialPage {
                         $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
                         $report->renderForPDF();
                         $data = "";
-                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false);
+                        $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report);
                         $sto = new ReportStorage($this->person);
                         $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
                         if($project != null){
@@ -802,7 +805,7 @@ abstract class AbstractReport extends SpecialPage {
             $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
             $report->renderForPDF();
             $data = "";
-            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false);
+            $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report);
             if($preview){
                 exit;
             }
@@ -1068,8 +1071,7 @@ abstract class AbstractReport extends SpecialPage {
             $leadership = $realPerson->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $proj){
-                    if(($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || 
-                        $person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)) &&
+                    if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END) &&
                        $person->isMemberOfDuring($proj, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
                         if("$ns:$title" == "Special:Report" &&
                            @$_GET['report'] == "NIReport" &&

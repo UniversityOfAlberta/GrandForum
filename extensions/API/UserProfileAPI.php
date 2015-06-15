@@ -8,18 +8,14 @@ class UserProfileAPI extends API{
     }
 
     function processParams($params){
-        if(isset($_POST['profile']) && $_POST['profile'] != ""){
-            $_POST['profile'] = str_replace("'", "&#39;", $_POST['profile']);
-        }
+
     }
 
 	function doAction($noEcho=false){
-        $person = Person::newFromName($_POST['user_name']);
-        $profile = mysql_real_escape_string($_POST['profile']);
-        $sql = "UPDATE mw_user
-                SET `user_{$_POST['type']}_profile` = '{$profile}'
-                WHERE user_id = '{$person->getId()}'";
-        DBFunctions::execSQL($sql, true);
+        $person = Person::newFromName(@$_POST['user_name']);
+        DBFunctions::update('mw_user',
+                            array("user_{$_POST['type']}_profile" => @$_POST['profile']),
+                            array('user_id' => EQ($person->getId())));
         if(!$noEcho){
             echo "Account profile updated\n";
         }

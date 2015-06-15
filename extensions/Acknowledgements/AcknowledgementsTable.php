@@ -10,7 +10,7 @@ $wgSpecialPageGroups['AcknowledgementsTable'] = 'network-tools';
 
 
 function runAcknowledgementsTable($par) {
-	AcknowledgementsTable::run($par);
+	AcknowledgementsTable::execute($par);
 }
 
 function getack($action, $article){
@@ -38,11 +38,10 @@ function getack($action, $article){
 class AcknowledgementsTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('AcknowledgementsTable');
-		SpecialPage::SpecialPage("AcknowledgementsTable", STAFF.'+', true, 'runAcknowledgementsTable');
+		SpecialPage::__construct("AcknowledgementsTable", STAFF.'+', true, 'runAcknowledgementsTable');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    if(isset($_POST['submit'])){
@@ -78,7 +77,7 @@ class AcknowledgementsTable extends SpecialPage {
                 $filename = $_FILES['pdf']['tmp_name'];
                 $pdf = file_get_contents($_FILES['pdf']['tmp_name']);
                 $md5 = md5($pdf);
-                $pdf = mysql_real_escape_string($pdf);
+                $pdf = DBFunctions::escape($pdf);
                 
                 $sql = "INSERT INTO `grand_acknowledgements`
                        (`user_id`, `user_name`, `university` , `date` ,`supervisor`,  `md5`,  `pdf`)
@@ -111,8 +110,7 @@ class AcknowledgementsTable extends SpecialPage {
 	            if($role->getRole() == HQP){
 	                $hqps[$person->getId()] = $person;
 	            }
-	            else if($role->getRole() == PNI || 
-	                    $role->getRole() == CNI){
+	            else if($role->getRole() == NI){
 	                $nis[$person->getId()] = $person;
 	            }
 	        }
@@ -152,7 +150,7 @@ class AcknowledgementsTable extends SpecialPage {
     }
     
     static function hqpTable($hqps){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $config;
         $wgOut->addHTML("<table class='indexTable' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
 	                        <thead>
 	                            <tr bgcolor='#F2F2F2'>
@@ -175,17 +173,13 @@ class AcknowledgementsTable extends SpecialPage {
                $title == "PostDoc"){
                 $type = "Student";
             }
-	        $inactive = "";
-	        if($hqp->isRole(INACTIVE)){
-	            $inactive = " (Inactive)";
-	        }
 	        $acks = $hqp->getAcknowledgements();
 	        if(count($acks) == 0){
 	            $supervisors = $hqp->getSupervisors();
 	            if(count($supervisors) > 0){
 	                foreach($supervisors as $supervisor){
 	                    $wgOut->addHTML("<tr>
-	                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>{$inactive}</td>
+	                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a></td>
 	                                        <td>$type</td>
 	                                        <td>$university</td>
 	                                        <td></td>
@@ -196,7 +190,7 @@ class AcknowledgementsTable extends SpecialPage {
 	            }
 	            else{
 	                $wgOut->addHTML("<tr>
-                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>{$inactive}</td>
+                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a></td>
                                         <td>$type</td>
                                         <td>$university</td>
                                         <td></td>
@@ -209,7 +203,7 @@ class AcknowledgementsTable extends SpecialPage {
 	            $countedSupervisors = array();
 	            foreach($acks as $ack){
 	                $wgOut->addHTML("<tr>
-	                                    <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>{$inactive}</td>
+	                                    <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a></td>
 	                                    <td>$type</td>
 	                                    <td>{$ack->getUniversity()}</td>
 	                                    <td align='center'>{$ack->getDate()}</td>
@@ -222,7 +216,7 @@ class AcknowledgementsTable extends SpecialPage {
 	                if(!isset($countedSupervisors[$supervisor->getName()]) &&
 	                   !isset($countedSupervisors[$supervisor->getNameForForms()])){
 	                      $wgOut->addHTML("<tr>
-	                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a>{$inactive}</td>
+	                                        <td><a href='{$hqp->getUrl()}' target='_blank'>{$hqp->getReversedName()}</a></td>
 	                                        <td>$type</td>
 	                                        <td>$university</td>
 	                                        <td></td>
@@ -260,14 +254,10 @@ class AcknowledgementsTable extends SpecialPage {
 	            $r[] = $role->getRole();
 	        }
 	        $type = implode(", ", $r);
-	        $inactive = "";
-	        if($ni->isRole(INACTIVE)){
-	            $inactive = " (Inactive)";
-	        }
 	        $acks = $ni->getAcknowledgements();
 	        if(count($acks) == 0){
 	            $wgOut->addHTML("<tr>
-	                                <td><a href='{$ni->getUrl()}' target='_blank'>{$ni->getReversedName()}</a>{$inactive}</td>
+	                                <td><a href='{$ni->getUrl()}' target='_blank'>{$ni->getReversedName()}</a></td>
 	                                <td>$type</td>
 	                                <td>$university</td>
 	                                <td></td>
@@ -279,7 +269,7 @@ class AcknowledgementsTable extends SpecialPage {
 	            foreach($acks as $ack){
 	                
 	                $wgOut->addHTML("<tr>
-	                                    <td><a href='{$ni->getUrl()}' target='_blank'>{$ni->getReversedName()}</a>{$inactive}</td>
+	                                    <td><a href='{$ni->getUrl()}' target='_blank'>{$ni->getReversedName()}</a></td>
 	                                    <td>$type</td>
 	                                    <td>{$ack->getUniversity()}</td>
 	                                    <td align='center'>{$ack->getDate()}</td>

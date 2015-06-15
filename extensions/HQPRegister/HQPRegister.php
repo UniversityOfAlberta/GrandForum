@@ -1,5 +1,7 @@
 <?php
 
+require_once("HQPRegisterTable.php");
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
@@ -8,28 +10,28 @@ $wgSpecialPageGroups['HQPRegister'] = 'network-tools';
 $wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
 
 function runHQPRegister($par) {
-    HQPRegister::run($par);
+    HQPRegister::execute($par);
 }
 
 class HQPRegister extends SpecialPage{
 
     static function onOutputPageParserOutput(&$out, $parseroutput){
         global $wgServer, $wgScriptPath, $config, $wgTitle;
+        
         $me = Person::newFromWgUser();
         if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
             if(!$me->isLoggedIn()){
-                $out->addHTML("<p><i>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</i></p>");
+                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
             }
             else if($me->isRole(HQP.'-Candidate')){
-                $out->addHTML("<p><i>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</i></p>");
+                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
             }
         }
         return true;
     }
 
     function HQPRegister() {
-        wfLoadExtensionMessages('HQPRegister');
-        SpecialPage::SpecialPage("HQPRegister", null, false, 'runHQPRegister');
+        SpecialPage::__construct("HQPRegister", null, false, 'runHQPRegister');
     }
     
     function userCanExecute($user){
@@ -37,7 +39,7 @@ class HQPRegister extends SpecialPage{
         return !$person->isLoggedIn();
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         if(!isset($_POST['submit'])){
             HQPRegister::generateFormHTML($wgOut);
@@ -59,7 +61,6 @@ class HQPRegister extends SpecialPage{
         
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
-        $lastNameField->registerValidation(new SimilarUserValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
         $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));

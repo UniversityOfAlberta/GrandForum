@@ -42,8 +42,6 @@ class DummyReport extends AbstractReport{
                 case RP_EVAL_PDF:
                     $reportType = "EvalNIPDFReport";
                     break;
-                case RP_EVAL_CNI:
-                    break;
                 case RP_MTG:
                     $reportType = "MindTheGap";
                     break;

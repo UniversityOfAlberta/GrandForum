@@ -1,6 +1,6 @@
 <?php
 
-require_once("InactiveUsers.php");
+//require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
@@ -16,17 +16,17 @@ class IndexTable {
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
         $me = Person::newFromWgUser();
-        $project = Project::newFromHistoricName($wgTitle->getNSText());
-        $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") &&
-                     $wgTitle->getNSText() != "Reboot" &&
-                     !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
-        $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
-        if(Project::areThereDeletedProjects()){
-            $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
-            $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+        if($config->getValue('projectsEnabled')){
+            $project = Project::newFromHistoricName($wgTitle->getNSText());
+            $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
+                         !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
+            $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+            if(Project::areThereDeletedProjects()){
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
+                $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
+            }
+            $tabs['Main']['subtabs'][] = $projectTab;
         }
-        
-        $tabs['Main']['subtabs'][] = $projectTab;
         
         $lastRole = "";
         if($wgTitle->getNSText() == INACTIVE && !($me->isRole(INACTIVE) && $wgTitle->getText() == $me->getName())){
@@ -49,19 +49,24 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
         }
         
-        if(count(Person::getAllPeople(PNI)) > 0){
-            $selected = ($lastRole == PNI || $wgTitle->getText() == "ALL PNI" || ($wgTitle->getNSText() == PNI && !($me->isRole(PNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(PNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_PNI", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(CNI)) > 0){
-            $selected = ($lastRole == CNI || $wgTitle->getText() == "ALL CNI" || ($wgTitle->getNSText() == CNI && !($me->isRole(CNI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CNI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_CNI", "$selected");
+        if(count(Person::getAllPeople(NI)) > 0){
+            $selected = ($lastRole == NI || $wgTitle->getText() == "ALL NI" || ($wgTitle->getNSText() == NI && !($me->isRole(NI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NI", "$selected");
         }
         
         if(count(Person::getAllPeople(ISAC)) > 0){
             $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ".ISAC || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".ISAC, "$selected");
+        }
+        
+        if(count(Person::getAllPeople(CAC)) > 0){
+            $selected = ($lastRole == CAC || $wgTitle->getText() == "ALL ".CAC || ($wgTitle->getNSText() == CAC && !($me->isRole(CAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".CAC, "$selected");
+        }
+        
+        if(count(Person::getAllPeople(IAC)) > 0){
+            $selected = ($lastRole == IAC || $wgTitle->getText() == "ALL ".IAC || ($wgTitle->getNSText() == IAC && !($me->isRole(IAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(IAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".IAC, "$selected");
         }
         
         if(count(Person::getAllPeople(EXTERNAL)) > 0){
@@ -74,6 +79,11 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected");
         }
         
+        if(count(Person::getAllPeople(BOD)) > 0){
+            $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL BOD" || ($wgTitle->getNSText() == BOD && !($me->isRole(BOD) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(BOD, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_BOD", "$selected");
+        }
+        
         if(count(Person::getAllPeople(RMC)) > 0){
             $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected");
@@ -83,35 +93,18 @@ class IndexTable {
         
         if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "Products" || 
-                         $wgTitle->getText() == "Multimedia Stories" ||
-                         $wgTitle->getNsText() == "Publication" ||
-                         $wgTitle->getNsText() == "Artifact" ||
-                         $wgTitle->getNsText() == "Presentation" ||
-                         $wgTitle->getNsText() == "Activity" ||
-                         $wgTitle->getNsText() == "Press" ||
-                         $wgTitle->getNsText() == "Award" ||
-                         $wgTitle->getNsText() == "Multimedia_Story") ? "selected" : "";
+                         $wgTitle->getText() == "Multimedia" ||
+                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
             $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-            if(Product::countByCategory('Publication') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Publications", "$wgServer$wgScriptPath/index.php/Special:Products#/Publication", "$selected");
-            }
-            if(Product::countByCategory('Artifact') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Artifacts", "$wgServer$wgScriptPath/index.php/Special:Products#/Artifact", "$selected");
-            }
-            if(Product::countByCategory('Presentation') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Presentations", "$wgServer$wgScriptPath/index.php/Special:Products#/Presentation", "$selected");
-            }
-            if(Product::countByCategory('Activity') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Activities", "$wgServer$wgScriptPath/index.php/Special:Products#/Activity", "$selected");
-            }
-            if(Product::countByCategory('Press') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Press", "$wgServer$wgScriptPath/index.php/Special:Products#/Press", "$selected");
-            }
-            if(Product::countByCategory('Award') > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Awards", "$wgServer$wgScriptPath/index.php/Special:Products#/Award", "$selected");
+            $structure = Product::structure();
+            $categories = array_keys($structure['categories']);
+            foreach($categories as $category){
+                if(Product::countByCategory($category) > 0){
+                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
+                }
             }
             if(Material::countByCategory() > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia_Stories", "$selected");
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
             }
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
@@ -150,7 +143,7 @@ class IndexTable {
                                                                 "$selected");
         }
         
-        if(WikiPage::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
+        if(Wiki::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
         }
@@ -164,7 +157,7 @@ class IndexTable {
 	        $text = $title->getText();
 	        switch ($title->getText()) {
 	            case 'ALL '.HQP:
-				case 'Multimedia Stories':
+				case 'Multimedia':
 				    $result = $me->isLoggedIn();
 	                break;
 				case 'Forms':
@@ -178,8 +171,7 @@ class IndexTable {
 	function generateTable($out, $parseroutput){
 		global $wgTitle, $wgOut, $wgUser, $config;
 		$me = Person::newFromId($wgUser->getId());
-		
-		if($wgTitle != null && $wgTitle->getNsText() == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
+		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
 		    if(!$result){
@@ -201,16 +193,20 @@ class IndexTable {
 			        $wgOut->setPageTitle("Highly Qualified Personnel");
 				    $this->generatePersonTable(HQP);
 				    break;
-			    case 'ALL '.PNI:
-			        $wgOut->setPageTitle("Principal Network Investigators");
-				    $this->generatePersonTable(PNI, 1);
-				    break;
-				case 'ALL '.CNI:
-			        $wgOut->setPageTitle("Collaborating Network Investigators");
-				    $this->generatePersonTable(CNI);
+			    case 'ALL '.NI:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+				    $this->generatePersonTable(NI, 1);
 				    break;
 				case 'ALL '.ISAC:
-			        $wgOut->setPageTitle(ISAC." Members");
+			        $wgOut->setPageTitle($config->getValue('roleDefs', ISAC));
+				    $this->generatePersonTable(ISAC);
+				    break;
+				case 'ALL '.IAC:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', IAC));
+				    $this->generatePersonTable(ISAC);
+				    break;
+				case 'ALL '.CAC:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', CAC));
 				    $this->generatePersonTable(ISAC);
 				    break;
 				case 'ALL '.EXTERNAL:
@@ -221,12 +217,16 @@ class IndexTable {
 			        $wgOut->setPageTitle("NCE Reps");
 				    $this->generatePersonTable(NCE);
 				    break;
+				case 'ALL '.BOD:
+			        $wgOut->setPageTitle($config->getValue('roleDefs', BOD));
+				    $this->generatePersonTable(BOD);
+				    break;
 				case 'ALL '.RMC:
-			        $wgOut->setPageTitle("Research Management Committee");
+			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));
 				    $this->generateRMCTable();
 				    break;
-				case 'Multimedia Stories':
-				    $wgOut->setPageTitle("Multimedia Stories");
+				case 'Multimedia':
+				    $wgOut->setPageTitle("Multimedia");
 				    $this->generateMaterialsTable();
 				    break;
 				case 'Forms':
@@ -313,23 +313,29 @@ class IndexTable {
 		global $wgScriptPath, $wgServer, $config;
 		$this->text .=
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th></tr></thead><tbody>
+<thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ";
         $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
 		    $leaders = array();
+		    $coordinators = array();
 		    $leads = $theme->getLeaders();
+		    $coords = $theme->getCoordinators();
             foreach($leads as $lead){
                 $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
+            foreach($coords as $coord){
+                $coordinators[] = "<a href='{$coord->getUrl()}'>{$coord->getNameForForms()}</a>";
+            }
 		    $leadersString = implode(", ", $leaders);
+		    $coordsString = implode(", ", $coordinators);
 			$this->text .= <<<EOF
 <tr>
 <td align='left'>
-<a href='{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$theme->getAcronym()} - {$theme->getName()}'>{$theme->getAcronym()}</a>
+<a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
 </td><td align='left'>
 {$theme->getName()}
-</td><td>{$leadersString}</td></tr>
+</td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
@@ -349,49 +355,64 @@ EOF;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
+		$projectsHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
-            $idHeader = "<th width='0%' style='white-space: nowrap;'>User Id</th>";
+            $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
+        }
+        if($config->getValue('projectsEnabled')){
+            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th width='15%' style='white-space: nowrap;'>Name</th><th width='65%' style='white-space: nowrap;'>Projects</th><th width='20%' style='white-space: nowrap;'>University</th>$idHeader</tr></thead><tbody>
+                            <thead>
+                                <tr>
+                                    <th style='white-space: nowrap;'>Name</th>
+                                    {$projectsHeader}
+                                    <th style='white-space: nowrap;'>University</th>
+                                    <th style='white-space: nowrap;'>Department</th>
+                                    <th style='white-space: nowrap;'>Title</th>
+                                    $idHeader</tr>
+                                </thead>
+                                <tbody>
 ";
 		foreach($data as $person){
-		    $projects = $person->getProjects();
+		    
 			$this->text .= "
 <tr>
 <td align='left' style='white-space: nowrap;'>
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
-<td align='left'>
 ";
-            $projs = array();
-			foreach($projects as $project){
-			    if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
-				    $subprojs = array();
-				    foreach($project->getSubProjects() as $subproject){
-				        if($person->isMemberOf($subproject)){
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+            if($config->getValue('projectsEnabled')){
+                $projects = $person->getProjects();
+                $projs = array();
+			    foreach($projects as $project){
+			        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
+				        $subprojs = array();
+				        foreach($project->getSubProjects() as $subproject){
+				            if($person->isMemberOf($subproject)){
+				                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
+				            }
 				        }
+				        $subprojects = "";
+				        if(count($subprojs) > 0){
+				            $subprojects = "(".implode(", ", $subprojs).")";
+				        }
+				        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
 				    }
-				    $subprojects = "";
-				    if(count($subprojs) > 0){
-				        $subprojects = "(".implode(", ", $subprojs).")";
-				    }
-				    $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-				}
+			    }
+			    $this->text .= "<td align='left'>".implode("<br />", $projs)."</td>";
 			}
-			$this->text .= implode("<br />", $projs);
-            $this->text .= "</td><td align='left'>";
-            $university = $person->getUniversity();
-            $this->text .= $university['university'];
-			$this->text .= "</td>";
+			$university = $person->getUniversity();
+            $this->text .= "<td align='left'>{$university['university']}</td>";
+            $this->text .= "<td align='left'>{$university['department']}</td>";
+            $this->text .= "<td align='left'>{$university['position']}</td>";
 			if($me->isRoleAtLeast(MANAGER)){
 			    $this->text .= "<td>{$person->getId()}</td>";
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'bAutoWidth': false});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
 	}

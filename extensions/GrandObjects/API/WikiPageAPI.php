@@ -5,7 +5,7 @@ class WikiPageAPI extends RESTAPI {
     function doGET(){
         $id = $this->getParam('id');
         if($id != ""){
-            $page = WikiPage::newFromId($id);
+            $page = Wiki::newFromId($id);
         }
         return $page->toJSON();
     }

@@ -1,6 +1,5 @@
 <?php
 
-autoload_register('Reporting/SessionData');
 $extras = $config->getValue('reportingExtras');
 require_once("Report/AbstractReport.php");
 require_once("PDFGenerator/PDFGenerator.php");
@@ -19,9 +18,6 @@ if($extras['ReviewerConflicts']){
 }
 if($extras['ReviewResults']){
     require_once("ReviewResults/ReviewResults.php");
-}
-if($extras['LoiProposals']){
-    require_once("LoiProposals/LoiProposals.php");
 }
 if($extras['SanityChecks']){
     require_once("SanityChecks/SanityChecks.php");

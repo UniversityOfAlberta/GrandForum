@@ -78,10 +78,6 @@ class Themes {
 		return $this->_themes;
 	}
 
-
-	// FIXME: the following methods should be relocated to an 'ArrayUtils' module.
-
-
 	// Tests whether a field #f is set in #post, and returns it if set,
 	// #def otherwise.
 	static function post_field(&$post, $f, $def = false) {

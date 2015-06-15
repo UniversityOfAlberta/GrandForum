@@ -9,18 +9,17 @@ $wgSpecialPageGroups['MyDuplicateProducts'] = 'other-tools';
 $wgHooks['ToolboxLinks'][] = 'MyDuplicateProducts::createToolboxLinks';
 
 function runMyDuplicateProducts($par){
-    MyDuplicateProducts::run($par);
+    MyDuplicateProducts::execute($par);
 }
 
 class MyDuplicateProducts extends SpecialPage{
 
 	function MyDuplicateProducts() {
-		wfLoadExtensionMessages('MyDuplicateProducts');
-		SpecialPage::SpecialPage("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
+		SpecialPage::__construct("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
 	}
 
-	function run($par){
-	    global $wgServer, $wgScriptPath, $wgOut, $wgUser;
+	function execute($par){
+	    global $wgServer, $wgScriptPath, $wgOut, $wgUser, $config;
 	    $me = Person::newFromId($wgUser->getId());
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
@@ -30,7 +29,7 @@ class MyDuplicateProducts extends SpecialPage{
         $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['myPress']));
         $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['myAward']));
         $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['myPresentation']));
-        
+        $wgOut->setPageTitle("My Duplicate ".Inflect::pluralize($config->getValue('productsTerm')));
         $tabbedPage->showPage();
 	}
 	

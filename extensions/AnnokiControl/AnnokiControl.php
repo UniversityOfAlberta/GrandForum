@@ -71,20 +71,11 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
 
-$egAnnokiExtensions['Cal'] = array('name' => 'Calendar',
-                                   'path' => "$IP/extensions/Calendar/calendar_extension.php");
-
 $egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
                                       'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");
 
-$egAnnokiExtensions['TextReplace'] = array('name' => 'Text Replace',
-                                           'path' => "$IP/extensions/TextReplace/TextReplace.php");
-
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
-
-$egAnnokiExtensions['FeatureRequest'] = array('name' => 'FeatureRequest',
-                                              'path' => "$IP/extensions/FeatureRequest/FeatureRequest.body.php");
 
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
@@ -106,9 +97,6 @@ $egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
 
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
-                                         
-$egAnnokiExtensions['Reboot'] = array('name' => 'Reboot',
-                                      'path' => "$IP/extensions/Reboot/Reboot.php");
 
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
@@ -137,14 +125,8 @@ $egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 
-$egAnnokiExtensions['FundedCNI'] = array('name' => 'Funded CNI',
-                                         'path' => "$IP/extensions/FundedCNI/FundedCNI.php");
-
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-                                                
-$egAnnokiExtensions['ProjectLeadership'] = array('name' => 'Project Leadership',
-                                                 'path' => "$IP/extensions/ProjectLeadership/ProjectLeadership.php");
 
 $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
                                              'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
@@ -152,14 +134,8 @@ $egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
 $egAnnokiExtensions['Solr'] = array('name' => 'Solr',
                                     'path' => "$IP/extensions/Solr/Solr.php");
 
-$egAnnokiExtensions['AcademiaMap'] = array('name' => 'AcademiaMap',
-                                           'path' => "$IP/extensions/AcademiaMap/AcademiaMap.php");
-
 $egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
                                           'path' => "$IP/extensions/TravelForm/TravelForm.php");
-
-$egAnnokiExtensions['EthicsTable'] = array('name' => 'EthicsTable',
-                                           'path' => "$IP/extensions/EthicsTable/EthicsTable.php");
 
 $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
                                               'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
@@ -185,15 +161,10 @@ foreach($egAnnokiExtensions as $key => $extension){
     }
 }
 
-$dir = dirname(__FILE__) . '/';
- 
-$wgAutoloadClasses['AnnokiControl'] = $dir . 'AnnokiControl_body.php'; # Tell MediaWiki to load the extension body.
-$wgExtensionMessagesFiles['AnnokiControl'] = $dir . 'AnnokiControl.i18n.php';
-$wgSpecialPages['AnnokiControl'] = 'AnnokiControl'; # Let MediaWiki know about the special page.
-$wgHooks['LanguageGetSpecialPageAliases'][] = 'AnnokiControl::setLocalizedPageName'; # Add any aliases for the special page.
+require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
+$wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
-
 
 $wgExtensionCredits['specialpage'][] = array(
                          'name' => 'AnnokiControl',
@@ -211,10 +182,22 @@ function getTableName($baseName) {
 
 $wgHooks['SpecialPage_initList'][] = 'orderSpecialPages';
 function orderSpecialPages(&$aSpecialPages){
+    $me = Person::newFromWgUser();
     $array1 = array();
     $array2 = array();
     $skip = false;
     foreach($aSpecialPages as $key => $page){
+        //echo "$key\n";
+        if(!$me->isRoleAtLeast(STAFF) && 
+            ($key == "Log" || $key == "Listusers" ||
+             $key == "Listgrouprights" || $key == "Contributions" ||
+             $key == "BlockList" || $key == "Activeusers" || 
+             $key == "Allmessages" || $key == "Statistics" ||
+             $key == "Version" || $key == "Recentchanges" ||
+             $key == "Recentchangeslinked" || $key == "Tags")){
+            unset($aSpecialPages[$key]);
+            continue;
+        }
         if($skip == true){
             $array1[$key] = $page;
         }
@@ -226,6 +209,11 @@ function orderSpecialPages(&$aSpecialPages){
         }
     }
     $aSpecialPages = array_merge($array1, $array2);
+    return true;
+}
+
+function showSpecialPageHeader($special, $subpage){
+    $special->setHeaders();
     return true;
 }
 

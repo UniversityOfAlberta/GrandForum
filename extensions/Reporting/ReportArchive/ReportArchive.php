@@ -11,27 +11,26 @@ $wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
 #require_once($dir . '../Report/ReportStorage.php');
 
 function runReportArchive($par) {
-    ReportArchive::run($par);
+    ReportArchive::execute($par);
 }
 
 class ReportArchive extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('ReportArchive');
-        SpecialPage::SpecialPage("ReportArchive", '', true, 'runReportArchive');
+        SpecialPage::__construct("ReportArchive", '', true, 'runReportArchive');
     }
     
     function userCanExecute($user){
         if($user->isLoggedIn()){
             $person = Person::newFromWgUser();
-            if($person->isRoleAtLeast(HQP_CANDIDATE)){
+            if($person->isLoggedIn()){
                 return true;
             }
         }
         return false;
     }
     
-    function run(){
+    function execute(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         if(date('m') >= 3){
             $year = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
@@ -88,18 +87,6 @@ class ReportArchive extends SpecialPage {
                         }
                         else if($type == RPTP_HQP_ZIP){
                             $name = "HQPReports_{$tst}.zip";
-                        }
-                        else if($type == RPTP_LOI_REVIEW){
-                            $report = AbstractReport::newFromToken($tok);
-                            $name = "{$report->person->getReversedName()} LOI Evaluation Report.pdf";
-                        }
-                        else if($type == RPTP_LOI_EVAL_REVIEW){
-                            $report = AbstractReport::newFromToken($tok);
-                            $loi_id = $sto->get_report_project_id();
-                            $loi = LOI::newFromId($loi_id);
-                            $loi_name = $loi->getName();
-                            
-                            $name = "{$loi_name} Evaluation Report.pdf";
                         }
                         else{
                             $report = AbstractReport::newFromToken($tok);
@@ -235,7 +222,7 @@ class ReportArchive extends SpecialPage {
         $allHQP = $person->getHQPDuring("$year".REPORTING_PRODUCTION_MONTH, ($year+1).REPORTING_PRODUCTION_MONTH);
         $hqpProcessed = array();
         foreach($allHQP as $hqp){
-            if($isactivehqp && !$hqp->isHQP()){ //contradiction
+            if($isactivehqp && !$hqp->isRole(HQP)){ //contradiction
                 continue;
             }
             if(isset($hqpProcessed[$hqp->getId()])){ // HQP has already been processed
@@ -350,9 +337,8 @@ class ReportArchive extends SpecialPage {
                     continue;
                 }
                 $check = array();
-                if($role->getRole() == PNI || $role->getRole() == CNI){
-                    $usedRoles[PNI] = true;
-                    $usedRoles[CNI] = true;
+                if($role->getRole() == NI){
+                    $usedRoles[NI] = true;
                     $report = new DummyReport("NIReport", $person, null, $year);
                     $check = $report->getPDF();
                 }
@@ -388,9 +374,8 @@ class ReportArchive extends SpecialPage {
                     $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>Download your archived $year {$report->name} PDF</a> (generated $tst)<br />");
                 }
                 $check = array();
-                if($role->getRole() == PNI || $role->getRole() == CNI){
-                    $usedRoles[PNI] = true;
-                    $usedRoles[CNI] = true;
+                if($role->getRole() == NI){
+                    $usedRoles[NI] = true;
                     $report = new DummyReport("NIReportComments", $person, null, $year);
                     $check = $report->getPDF();
                 }
@@ -405,7 +390,7 @@ class ReportArchive extends SpecialPage {
         else{
             $wgOut->addHTML("<b>No Archived PDFs were found.</b>");
         }
-        if(isset($usedRoles[PNI]) || isset($usedRoles[CNI])){
+        if(isset($usedRoles[NI])){
             $alloc = $person->getAllocatedAmount($year, null, true);
             if(count($alloc) > 0){
                 $wgOut->addHTML("<h3>Allocation (April 1 {$year} - March 31 ".($year + 1).")</h3>");

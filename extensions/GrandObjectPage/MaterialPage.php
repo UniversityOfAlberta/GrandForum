@@ -8,7 +8,7 @@ class MaterialPage {
     function processPage($article, $outputDone, $pcache){
         global $wgTitle, $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgFileExtensions, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
-        if($wgTitle->getNSText() == "Multimedia_Story"){
+        if($wgTitle->getNSText() == "Multimedia"){
             $id = $wgTitle->getText();
             $material = Material::newFromId($id);
             $name = $wgTitle->getNSText();
@@ -190,7 +190,7 @@ class MaterialPage {
                             var title = $('form[name=material] input[name=title]').val();
                             if(title == ''){
                                 clearError();
-                                addError('The Multimedia Story must not have an empty title');
+                                addError('The Multimedia must not have an empty title');
                                 $('html, body').animate({ scrollTop: 0 });
                                 return false;
                             }

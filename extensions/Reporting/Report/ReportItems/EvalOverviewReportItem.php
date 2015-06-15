@@ -25,7 +25,7 @@ class EvalOverviewReportItem extends AbstractReportItem {
     
     function getTableHTML(){
         global $wgUser, $wgServer, $wgScriptPath;
-        $type = $this->getAttr('subType', 'PNI');
+        $type = $this->getAttr('subType', 'NI');
         $person = Person::newFromId($this->personId);
         $section_url = "";
 
@@ -33,15 +33,10 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $stock_comments = array(0,0, EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
         $text_question = EVL_OTHERCOMMENTS;
 
-        if($type == "PNI"){
-            $subs = $person->getEvaluatePNIs();
-            $report_url = "EvalPNIReport";
-            $section_url = "PNI+Overview";
-        }
-        else if($type == "CNI"){
-            $subs = $person->getEvaluateCNIs();
-            $report_url = "EvalCNIReport";
-            $section_url = "CNI+Overview";
+        if($type == "NI"){
+            $subs = $person->getEvaluateNIs();
+            $report_url = "EvalNIReport";
+            $section_url = "NI+Overview";
         }
         else if($type == "Project"){
             $subs = $person->getEvaluateProjects();
@@ -152,7 +147,7 @@ EOF;
 
         foreach($subs as $sub){
             $sub_id = $sub->getId();
-            if($type == "PNI" || $type == "CNI"){
+            if($type == "NI"){
                 $sub_name = $sub->getReversedName();
                 $sub_name_straight = $sub->getFirstName(). " " .$sub->getLastName();
                 $evals = $sub->getEvaluators($type, $this->getReport()->year);
@@ -415,17 +410,12 @@ EOF;
         
         $evaluator_id = $this->personId;
         $project_id = 0;
-        $type = $this->getAttr('subType', 'PNI');
+        $type = $this->getAttr('subType', 'NI');
         $person = Person::newFromId($evaluator_id);
 
         $questions = array();
-        if($type == "PNI"){
-            $subs = $person->getEvaluatePNIs();
-            $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
-            $questions2 = array(EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
-        }
-        else if($type == "CNI"){
-            $subs = $person->getEvaluateCNIs();
+        if($type == "NI"){
+            $subs = $person->getEvaluateNIs();
             $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
             $questions2 = array(EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
         }

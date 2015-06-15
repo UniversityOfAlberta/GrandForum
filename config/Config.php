@@ -1,32 +1,47 @@
 <?php
 
-    $config = new Config();
+    if(!defined('TESTING')){
+        if(file_exists("../test.tmp")){
+            define("TESTING", true);
+        }
+        else{
+            define("TESTING", false);
+        }
+    }
+    $config = new ForumConfig();
     $GLOBALS['config'] = $config;
-
-    require_once("default_config.php");
-    require_once("config.php");
+    $config->default = true;
+    require("default_config.php");
+    $config->default = false;
+    require("config.php");
     
     $config->define();
     
-    class Config {
+    class ForumConfig {
     
+        var $default = false;
         var $config = array();
         var $constants = array();
         
         function setValue($key, $value){
-            $this->config[$key] = $value;
+            if(!TESTING || $this->default || strpos($key, "db") === 0 || $key == "path"){
+                $this->config[$key] = $value;
+            }
         }
         
         function hasValue($key){
             return (isset($this->config[$key]));
         }
         
-        function getValue($key){
-            return $this->config[$key];
+        function getValue($key, $subKey=null){
+            if($subKey == null) return $this->config[$key];
+            else return $this->config[$key][$subKey];
         }
         
         function setConst($key, $value){
-            $this->constants[$key] = $value;
+            if(!TESTING || $this->default){
+                $this->constants[$key] = $value;
+            }
         }
         
         function getConst($key){

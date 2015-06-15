@@ -9,33 +9,24 @@ class ProjectBudgetReportItem extends StaticReportItem {
         $year = $this->getReport()->year;
         
         $people = $project->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH);
-        $pnis = array("");
-        $cnis = array("");
+        $nis = array("");
         foreach($people as $person){
-            if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                $pnis[] = $person->getReversedName();
-            }
-            else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                $cnis[] = $person->getReversedName();
+            if($person->isRoleDuring(NI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $nis[] = $person->getReversedName();
             }
         }
         
-        $PNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
-        $CNIBudget = $budget->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
+        $NIBudget = $budget->copy();
         
         $totalBudget = $budget->copy()->uncube()->rasterize()->filter(HEAD1, array("Name of%"))->cube()->rasterize()->filterCols(CUBE_COL_TOTAL);
         
-        $pnitotal = intval(str_replace("$", "", $PNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
-        $cnitotal = intval(str_replace("$", "", $CNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
-        $total = $pnitotal + $cnitotal;
+        $nitotal = intval(str_replace("$", "", $NIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
+        $total = $nitotal;
         
-        $wgOut->addHTML("<h2>PNI Budget Requests</h2><div>");
-        $wgOut->addHTML($PNIBudget->render());
-        $wgOut->addHTML("</div><h2>CNI Budget Requests</h2><div>");
-        $wgOut->addHTML($CNIBudget->render());
+        $wgOut->addHTML("<h2>NI Budget Requests</h2><div>");
+        $wgOut->addHTML($NIBudget->render());
         $wgOut->addHTML("</div><h2>Totals</h2><div>");
         $wgOut->addHTML($totalBudget->render());
-        $wgOut->addHTML("<br /><b>CNI/PNI Request Ratio:</b> ".number_format(($cnitotal/max($pnitotal, 1))*100, 2)."%");
         $wgOut->addHTML("</div>");
     }
     
@@ -103,14 +94,10 @@ class ProjectBudgetReportItem extends StaticReportItem {
                                                      "5) %"));
         
         $people = $project->getAllPeopleDuring(null, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH);
-        $pnis = array("");
-        $cnis = array("");
+        $nis = array("");
         foreach($people as $person){
-            if($person->isRoleDuring(PNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                $pnis[] = $person->getReversedName();
-            }
-            else if($person->isRoleDuring(CNI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                $cnis[] = $person->getReversedName();
+            if($person->isRoleDuring(NI, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                $nis[] = $person->getReversedName();
             }
         }
         
@@ -124,28 +111,15 @@ class ProjectBudgetReportItem extends StaticReportItem {
                              ->transpose()
                              ->renderForPDF();
         
-        $PNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $cnis)->cube();
-        $CNIBudget = $copy->copy()->uncube()->filterCols(V_PERS_NOT_NULL, $pnis)->cube();
+        $NIBudget = $copy->copy();
                                                      
-        $pnibudget_html = $PNIBudget->transpose()
-                                    ->renderForPDF();
-        $cnibudget_html = $CNIBudget->transpose()
-                                    ->renderForPDF();
-        $new_pnibudget = new SmartDomDocument();
-        $new_cnibudget = new SmartDomDocument();
+        $nibudget_html = $NIBudget->transpose()
+                                  ->renderForPDF();
+        $new_nibudget = new SmartDomDocument();
         $new_totalbudget = new SmartDomDocument();
-        $new_pnibudget->loadHTML($pnibudget_html);
-        $new_cnibudget->loadHTML($cnibudget_html);
+        $new_nibudget->loadHTML($nibudget_html);
         $new_totalbudget->loadHTML($total_html);
-        foreach($new_pnibudget->getElementsByTagName("table") as $table){
-            if($table->getAttribute('id') == "budget"){
-                $tr = $table->getElementsByTagName("tr")->item(0);
-                foreach($tr->getElementsByTagName("b") as $b){
-                    $b->nodeValue = (isset($budget_legend[$b->nodeValue]))? $budget_legend[$b->nodeValue] : $b->nodeValue;
-                }
-            }
-        }
-        foreach($new_cnibudget->getElementsByTagName("table") as $table){
+        foreach($new_nibudget->getElementsByTagName("table") as $table){
             if($table->getAttribute('id') == "budget"){
                 $tr = $table->getElementsByTagName("tr")->item(0);
                 foreach($tr->getElementsByTagName("b") as $b){
@@ -162,17 +136,13 @@ class ProjectBudgetReportItem extends StaticReportItem {
             }
         }
         
-        $pnitotal = intval(str_replace("$", "", $PNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
-        $cnitotal = intval(str_replace("$", "", $CNIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
-        $total = $pnitotal + $cnitotal;
+        $nitotal = intval(str_replace("$", "", $NIBudget->copy()->rasterize()->select(CUBE_TOTAL)->where(CUBE_TOTAL)->toString()));
+        $total = $nitotal;
         
-        $wgOut->addHTML("<h2>PNI Budget Requests</h2><div>");
-        $wgOut->addHTML($new_pnibudget);
-        $wgOut->addHTML("</div><h2>CNI Budget Requests</h2><div>");
-        $wgOut->addHTML($new_cnibudget);
+        $wgOut->addHTML("<h2>NI Budget Requests</h2><div>");
+        $wgOut->addHTML($new_nibudget);
         $wgOut->addHTML("</div><h2>Totals</h2><div>");
         $wgOut->addHTML("$new_totalbudget");
-        $wgOut->addHTML("<b>CNI/PNI Request Ratio:</b> ".number_format(($cnitotal/max($pnitotal, 1))*100, 2)."%");
         $wgOut->addHTML($budget_legend_html);
     }
 }

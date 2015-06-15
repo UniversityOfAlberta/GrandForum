@@ -10,17 +10,16 @@ $wgSpecialPageGroups['ProjectEvolution'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'ProjectEvolution::createSubTabs';
 
 function runProjectEvolution($par){
-    ProjectEvolution::run($par);
+    ProjectEvolution::execute($par);
 }
 
 class ProjectEvolution extends SpecialPage {
     
     function ProjectEvolution(){
-        wfLoadExtensionMessages('ProjectEvolution');
-		SpecialPage::SpecialPage("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
+		SpecialPage::__construct("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
     }    
     
-    function run(){
+    function execute(){
         global $wgOut;
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());

@@ -7,25 +7,20 @@ $wgSpecialPageGroups['AddMember'] = 'network-tools';
 
 $wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
 
-function runAddMember($par) {
-  AddMember::run($par);
-}
-
 autoload_register('AddMember/Validations');
 
 class AddMember extends SpecialPage{
 
     function AddMember() {
-        wfLoadExtensionMessages('AddMember');
         if(FROZEN){
-            SpecialPage::SpecialPage("AddMember", STAFF.'+', true, 'runAddMember');
+            parent::__construct("AddMember", STAFF.'+', true);
         }
         else{
-            SpecialPage::SpecialPage("AddMember", CNI.'+', true, 'runAddMember');
+            parent::__construct("AddMember", NI.'+', true);
         }
     }
 
-    function run($par){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
@@ -186,7 +181,7 @@ class AddMember extends SpecialPage{
     }
     
     function createForm(){
-        global $wgRoles, $wgUser;
+        global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
@@ -215,19 +210,42 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && $role != ISAC && $role != NCE){
-                $roleOptions[] = $role;
+            if($me->isRoleAtLeast($role) && $role != CHAMP && 
+                                            $role != ISAC && 
+                                            $role != IAC && 
+                                            $role != CAC && 
+                                            $role != NCE &&
+                                            $role != RMC &&
+                                            $role != HQPAC){
+                $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
-        if($me->isRoleAtLeast(COPL)){
-            $roleOptions[] = CHAMP;
+        if($me->isRoleAtLeast(PL)){
+            $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){
-            $roleOptions[] = ISAC;
+            if(in_array(ISAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', ISAC)] = ISAC;
+            }
+            if(in_array(IAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
+            }
+            if(in_array(CAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', CAC)] = CAC;
+            }
+            if(in_array(RMC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
+            }
+            if(in_array(HQPAC, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', HQPAC)] = HQPAC;
+            }
         }
         if($me->isRoleAtLeast(MANAGER)){
-            $roleOptions[] = NCE;
+            if(in_array(NCE, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
+            }
         }
+        ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
@@ -302,7 +320,7 @@ class AddMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(CNI)){
+        if($me->isRoleAtLeast(NI)){
             $toolbox['People']['links'][0] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;

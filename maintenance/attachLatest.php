@@ -1,10 +1,9 @@
 <?php
-// quick hackjob to fix damages imports on wikisource
-// page records have page_latest wrong
-
 /**
- * Copyright (C) 2005 Brion Vibber <brion@pobox.com>
- * http://www.mediawiki.org/
+ * Corrects wrong values in the `page_latest` field in the database.
+ *
+ * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,49 +24,69 @@
  * @ingroup Maintenance
  */
 
-require_once( 'commandLine.inc' );
+require_once __DIR__ . '/Maintenance.php';
 
-$fixit = isset( $options['fix'] );
-$fname = 'attachLatest';
+/**
+ * Maintenance script to correct wrong values in the `page_latest` field
+ * in the database.
+ *
+ * @ingroup Maintenance
+ */
+class AttachLatest extends Maintenance {
 
-echo "Looking for pages with page_latest set to 0...\n";
-$dbw = wfGetDB( DB_MASTER );
-$result = $dbw->select( 'page',
-	array( 'page_id', 'page_namespace', 'page_title' ),
-	array( 'page_latest' => 0 ),
-	$fname );
-
-$n = 0;
-while( $row = $dbw->fetchObject( $result ) ) {
-	$pageId = intval( $row->page_id );
-	$title = Title::makeTitle( $row->page_namespace, $row->page_title );
-	$name = $title->getPrefixedText();
-	$latestTime = $dbw->selectField( 'revision',
-		'MAX(rev_timestamp)',
-		array( 'rev_page' => $pageId ),
-		$fname );
-	if( !$latestTime ) {
-		echo wfWikiID()." $pageId [[$name]] can't find latest rev time?!\n";
-		continue;
+	public function __construct() {
+		parent::__construct();
+		$this->addOption( "fix", "Actually fix the entries, will dry run otherwise" );
+		$this->addOption( "regenerate-all",
+			"Regenerate the page_latest field for all records in table page" );
+		$this->mDescription = "Fix page_latest entries in the page table";
 	}
 
-	$revision = Revision::loadFromTimestamp( $dbw, $title, $latestTime );
-	if( is_null( $revision ) ) {
-		echo wfWikiID()." $pageId [[$name]] latest time $latestTime, can't find revision id\n";
-		continue;
+	public function execute() {
+		$this->output( "Looking for pages with page_latest set to 0...\n" );
+		$dbw = wfGetDB( DB_MASTER );
+		$conds = array( 'page_latest' => 0 );
+		if ( $this->hasOption( 'regenerate-all' ) ) {
+			$conds = '';
+		}
+		$result = $dbw->select( 'page',
+			array( 'page_id', 'page_namespace', 'page_title' ),
+			$conds,
+			__METHOD__ );
+
+		$n = 0;
+		foreach ( $result as $row ) {
+			$pageId = intval( $row->page_id );
+			$title = Title::makeTitle( $row->page_namespace, $row->page_title );
+			$name = $title->getPrefixedText();
+			$latestTime = $dbw->selectField( 'revision',
+				'MAX(rev_timestamp)',
+				array( 'rev_page' => $pageId ),
+				__METHOD__ );
+			if ( !$latestTime ) {
+				$this->output( wfWikiID() . " $pageId [[$name]] can't find latest rev time?!\n" );
+				continue;
+			}
+
+			$revision = Revision::loadFromTimestamp( $dbw, $title, $latestTime );
+			if ( is_null( $revision ) ) {
+				$this->output( wfWikiID() . " $pageId [[$name]] latest time $latestTime, can't find revision id\n" );
+				continue;
+			}
+			$id = $revision->getId();
+			$this->output( wfWikiID() . " $pageId [[$name]] latest time $latestTime, rev id $id\n" );
+			if ( $this->hasOption( 'fix' ) ) {
+				$page = WikiPage::factory( $title );
+				$page->updateRevisionOn( $dbw, $revision );
+			}
+			$n++;
+		}
+		$this->output( "Done! Processed $n pages.\n" );
+		if ( !$this->hasOption( 'fix' ) ) {
+			$this->output( "This was a dry run; rerun with --fix to update page_latest.\n" );
+		}
 	}
-	$id = $revision->getId();
-	echo wfWikiID()." $pageId [[$name]] latest time $latestTime, rev id $id\n";
-	if( $fixit ) {
-		$article = new Article( $title );
-		$article->updateRevisionOn( $dbw, $revision );
-	}
-	$n++;
 }
-$dbw->freeResult( $result );
-echo "Done! Processed $n pages.\n";
-if( !$fixit ) {
-	echo "This was a dry run; rerun with --fix to update page_latest.\n";
-}
 
-
+$maintClass = "AttachLatest";
+require_once RUN_MAINTENANCE_IF_MAIN;

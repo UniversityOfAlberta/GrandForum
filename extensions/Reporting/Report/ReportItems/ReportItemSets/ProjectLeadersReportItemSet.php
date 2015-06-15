@@ -6,7 +6,7 @@ class ProjectLeadersReportItemSet extends ReportItemSet {
         $data = array();
         $proj = Project::newFromId($this->projectId);
         if($proj != null){
-            $leaders = array_merge($proj->getLeaders(), $proj->getCoLeaders());
+            $leaders = $proj->getLeaders();
             $alreadySeen = array();
             foreach($leaders as $m){
                 if(isset($alreadySeen[$m->getId()])){

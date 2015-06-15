@@ -67,8 +67,7 @@ if ($egAnProtectUploads){
   if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
     wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
     $errorFile = 'extensions/AccessControls/images/errorFile.gif';
-    wfStreamFile( $errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ) );
-    //wfForbidden('You do not have access to the upload entitled '.$unarchivedTitle->getText().'.');
+    StreamFile::stream($errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ));
     exit();
   }
  }
@@ -111,7 +110,7 @@ if( is_dir( $filename ) ) {
 
 // Stream the requested file
 wfDebugLog( 'AnnokiUploadAuth', "Streaming `{$filename}`" );
-wfStreamFile( $filename, array( 'Cache-Control: private', 'Vary: Cookie' ) );
+StreamFile::stream($filename, array( 'Cache-Control: private', 'Vary: Cookie' ));
 wfLogProfilingData();
 
 /**

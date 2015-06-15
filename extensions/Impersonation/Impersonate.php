@@ -165,6 +165,9 @@ function getImpersonatingMessage(){
     $wgImpersonating = true;
     $wgUser = User::newFromId($person->getId());
 
+    $context = RequestContext::getMain();
+    $context->setUser($wgUser);
+
     $message = "";
     if(!isset($_GET['nocookie'])){
         if(strstr($page, "?") !== false){

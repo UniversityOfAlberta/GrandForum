@@ -8,34 +8,24 @@ $wgSpecialPageGroups['ReportStatsTable'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'ReportStatsTable::createSubTabs';
 
 function runReportStatsTable($par) {
-	ReportStatsTable::run($par);
+	ReportStatsTable::execute($par);
 }
 
 class ReportStatsTable extends SpecialPage {
 
 	function __construct() {
-		wfLoadExtensionMessages('ReportStatsTable');
-		SpecialPage::SpecialPage("ReportStatsTable", STAFF.'+', true, 'runReportStatsTable');
+		SpecialPage::__construct("ReportStatsTable", STAFF.'+', true, 'runReportStatsTable');
 	}
 	
-	static function run(){
+	static function execute(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
 	    
 	    $overall = array( "HQP"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
 						  "NI" =>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "CNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "PNI"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "CNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "PNI2"=>array('total'=>0, 'report'=>0, 'pdf'=>0, 'submitted'=>0),
-						  "Projects(P1)"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0),
-						  "Projects(P2)"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
+						  "Projects"=>array('total'=>0, 'report'=>0,'pdf'=>0, 'submitted'=>0));
 	    
 	    $hqps = array();
 	    $nis = array();
-	    $cnis = array();
-	    $pnis = array();
-	    $cni2s = array();
-	    $pni2s = array();
 	    $projects1 = array();
 	    $projects2 = array();
 	    
@@ -44,9 +34,6 @@ class ReportStatsTable extends SpecialPage {
 	        if($project->getPhase() == 1){
 	            $projects1[] = $project;
 	        }
-	        else if($project->getPhase() == 2){
-	            $projects2[] = $project;
-	        }
 	    }
 	    
 	    $people = Person::getAllPeople();
@@ -54,21 +41,8 @@ class ReportStatsTable extends SpecialPage {
             if($person->isRoleDuring(HQP, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
                 $hqps[$person->getId()] = $person;
             }
-            else if($person->isRoleDuring(PNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
-            	$pnis[$person->getId()] = $person;
+            else if($person->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             	$nis[$person->getId()] = $person;
-            }
-            else if($person->isRoleDuring(CNI, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){ 
-                $cnis[$person->getId()] = $person;
-                $nis[$person->getId()] = $person;
-            }
-            
-            // Phase 2
-            if($person->isRoleDuring(PNI, "2014".REPORTING_NCE_START_MONTH, "2015".REPORTING_NCE_END_MONTH)){
-            	$pni2s[$person->getId()] = $person;
-            }
-            else if($person->isRoleDuring(CNI, "2014".REPORTING_NCE_START_MONTH, "2015".REPORTING_NCE_END_MONTH)){ 
-                $cni2s[$person->getId()] = $person;
             }
 	    }
 	    
@@ -77,12 +51,7 @@ class ReportStatsTable extends SpecialPage {
 	                        <ul>
 		                        <li><a href='#hqp'>HQP</a></li>
 		                        <li><a href='#ni'>NI</a></li>
-		                        <li><a href='#cni'>CNI</a></li>
-		                        <li><a href='#pni'>PNI</a></li>
-		                        <li><a href='#cni2'>CNI2</a></li>
-		                        <li><a href='#pni2'>PNI2</a></li>
-		                        <li><a href='#project1'>Projects(P1)</a></li>
-		                        <li><a href='#project2'>Projects(P2)</a></li>
+		                        <li><a href='#project1'>Projects</a></li>
 		                        <li><a href='#all'>Overall</a></li>
 	                        </ul>");
 
@@ -91,18 +60,8 @@ class ReportStatsTable extends SpecialPage {
 	    $overall['HQP'] = ReportStatsTable::hqpTable($hqps);           
 	    $wgOut->addHTML("</div><div id='ni'>");
 		$overall['NI'] = ReportStatsTable::niTable($nis);
-		$wgOut->addHTML("</div><div id='cni'>");
-		$overall['CNI'] = ReportStatsTable::niTable($cnis);
-		$wgOut->addHTML("</div><div id='pni'>");
-		$overall['PNI'] = ReportStatsTable::niTable($pnis);
-		$wgOut->addHTML("</div><div id='cni2'>");
-		$overall['CNI2'] = ReportStatsTable::niTable($cni2s);
-		$wgOut->addHTML("</div><div id='pni2'>");
-		$overall['PNI2'] = ReportStatsTable::niTable($pni2s);
 		$wgOut->addHTML("</div><div id='project1'>");
 		$overall['Projects(P1)'] = ReportStatsTable::projectTable($projects1);
-		$wgOut->addHTML("</div><div id='project2'>");
-		$overall['Projects(P2)'] = ReportStatsTable::projectTable($projects2);
 		$wgOut->addHTML("</div><div id='all'>");
 		ReportStatsTable::overallTable($overall);
 	    $wgOut->addHTML("</div></div>");

@@ -21,15 +21,15 @@ Feature: Project Evolution
         And I click "Inactivate"
         And I fill in "combo_delete_project" with "Phase1Project5"
         And I press "Inactivate"
-        And I go to "index.php/$networkName:Projects"
+        And I go to "index.php/NETWORK:Projects"
         Then I should not see "Phase1Project5"
-        When I go to "index.php/$networkName:CompletedProjects"
+        When I go to "index.php/NETWORK:CompletedProjects"
         Then I should see "Phase1Project5"
         When I follow "Phase1Project5"
         Then I should see "Ended"
         
-    Scenario: PNI viewing their Dashboard
-        Given I am logged in as "PNI.User1" using password "PNI.Pass1"
+    Scenario: NI viewing their Dashboard
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I click "Dashboard"
         Then I should see "Phase2Project1"

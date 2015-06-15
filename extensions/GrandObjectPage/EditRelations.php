@@ -8,22 +8,21 @@ $wgSpecialPageGroups['EditRelations'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'EditRelations::createToolboxLinks';
 
 function runEditRelations($par) {
-  EditRelations::run($par);
+  EditRelations::execute($par);
 }
 
 class EditRelations extends SpecialPage{
 
 	function EditRelations() {
-		wfLoadExtensionMessages('EditRelations');
 		if(FROZEN){
-		    SpecialPage::SpecialPage("EditRelations", STAFF.'+', true, 'runEditRelations');
+		    SpecialPage::__construct("EditRelations", STAFF.'+', true, 'runEditRelations');
 	    }
 	    else{
-	        SpecialPage::SpecialPage("EditRelations", CNI.'+', true, 'runEditRelations');
+	        SpecialPage::__construct("EditRelations", NI.'+', true, 'runEditRelations');
 	    }
 	}
 
-	function run($par){
+	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
 		$wgOut->addHTML("Here you can edit all the relations relevant to your role.");
 	    $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
@@ -175,8 +174,10 @@ class EditRelations extends SpecialPage{
 	    }
 	    $allHQP = Person::getAllPeople(HQP);
 	    foreach($allHQP as $hqp){
-	        if(array_search($hqp->getNameForForms(), $names) === false){
-	            $list[] = $hqp->getNameForForms();
+	        if($person->getId() != $hqp->getId()){
+	            if(array_search($hqp->getNameForForms(), $names) === false){
+	                $list[] = $hqp->getNameForForms();
+	            }
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo noCustom' name='HQP' id='hqps'>
@@ -194,9 +195,11 @@ class EditRelations extends SpecialPage{
 	        $names[] = $relation->getUser2()->getNameForForms();
 	    }
 	    $all = Person::getAllPeople();
-	    foreach($all as $person){
-	        if(array_search($person->getNameForForms(), $names) === false){
-	            $list[] = $person->getNameForForms();
+	    foreach($all as $p){
+	        if($person->getId() != $p->getId()){
+	            if(array_search($p->getNameForForms(), $names) === false){
+	                $list[] = $p->getNameForForms();
+	            }
 	        }
 	    }
         $wgOut->addHTML("<div class='switcheroo noCustom' name='CoWorker' id='coworkers'>
@@ -248,7 +251,7 @@ class EditRelations extends SpecialPage{
 	static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(CNI)){
+        if($me->isRoleAtLeast(NI)){
             $toolbox['People']['links'][2] = TabUtils::createToolboxLink("Edit Relations", "$wgServer$wgScriptPath/index.php/Special:EditRelations");
         }
         return true;

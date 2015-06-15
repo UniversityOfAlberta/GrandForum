@@ -349,7 +349,7 @@ class TemplateFunctions {
     
     require_once("$egAnnokiCommonPath/AnnokiDatabaseFunctions.php");
 
-    $templateName = mysql_real_escape_string($templateName);
+    $templateName = DBFunctions::escape($templateName);
     $query = "select tl_from from ${wgDBprefix}templatelinks where tl_title='$templateName' and tl_namespace='".NS_TEMPLATE.'\'';
         
     $pageIDs = AnnokiDatabaseFunctions::getQueryResultsAsArray($query, 'tl_from');

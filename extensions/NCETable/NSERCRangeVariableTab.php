@@ -60,8 +60,8 @@ function showDiv(div_id, details_div_id){
         
         $this->showContentsTable();
 
-        if(ArrayUtils::get_string($_GET, 'year') == "tabs_{$this->startYear}-{$this->endYear}_".$label){
-        switch (ArrayUtils::get_string($_GET, 'summary')) {
+        if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->startYear}-{$this->endYear}_".$label){
+        switch (ArrayUtil::get_string($_GET, 'summary')) {
         /*
         case 'table2':
             $wgOut->addScript($foldscript);
@@ -299,101 +299,68 @@ EOF;
         $table .= "<th colspan='3'>".($this->startYear+1)." - ".($this->endYear-1)."</th></tr>";
         $table .= "<tr><th>Project</th>";
         for($y=$this->startYear+1;$y<=$this->endYear-1;$y++){
-            $table .= "<th>PNI</th>";
-            $table .= "<th>CNI</th>";
+            $table .= "<th>".NI."</th>";
             $table .= "<th>Total</th>";
         }
-        $table .= "<th>PNI</th>";
-        $table .= "<th>CNI</th>";
+        $table .= "<th>".NI."</th>";
         $table .= "<th>Total</th>";
         $table .= "</tr>";
-        $overallPNITotals = array();
-        $overallCNITotals = array();
+        $overallNITotals = array();
         $overallTotals = array();
         foreach($allProjects as $project){
             if($project->getPhase() == 1 && $project->getStatus() == "Ended"){
-                $pniTotals = array();
-                $cniTotals = array();
+                $niTotals = array();
                 for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-                    $pniTotals[$y] = array();
-                    $cniTotals[$y] = array();
+                    $niTotals[$y] = array();
                     $people = array();
-                    foreach($project->getAllPeopleDuring(PNI, $y."-04-01", ($y+1)."-03-31") as $person){
+                    foreach($project->getAllPeopleDuring(NI, $y."-04-01", ($y+1)."-03-31") as $person){
                         if(!isset($people[$person->getId()])){
                             $budget = $person->getRequestedBudget($y);
                             if($budget != null){
                                 $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->limit(22, 1);
                                 if($b->nCols() > 0 && $b->nRows() > 0){
-                                    $pniTotals[$y][] = $b;
-                                    $people[$person->getId()] = true;
-                                }
-                            }
-                        }
-                    }
-                    foreach($project->getAllPeopleDuring(CNI, $y."-04-01", ($y+1)."-03-31") as $person){
-                        if(!isset($people[$person->getId()])){
-                            $budget = $person->getRequestedBudget($y);
-                            if($budget != null){
-                                $b = $budget->copy()->rasterize()->select(V_PROJ, array($project->getName()))->limit(22, 1);
-                                if($b->nCols() > 0 && $b->nRows() > 0){
-                                    $cniTotals[$y][] = $b;
+                                    $niTotals[$y][] = $b;
                                     $people[$person->getId()] = true;
                                 }
                             }
                         }
                     }
                 }
-                $pniSums = array();
-                $cniSums = array();
-                foreach($pniTotals as $year => $budgets){
+                $niSums = array();
+                foreach($niTotals as $year => $budgets){
                     $joined = Budget::join_tables($budgets);
-                    $pniSums[] = $joined->sum()->xls[0][0]->getValue();
+                    $niSums[] = $joined->sum()->xls[0][0]->getValue();
                 }
-                foreach($cniTotals as $year => $budgets){
-                    $joined = Budget::join_tables($budgets);
-                    $cniSums[] = $joined->sum()->xls[0][0]->getValue();
-                }
-                $pniTotalTotal = 0;
-                $cniTotalTotal = 0;
+                $niTotalTotal = 0;
                 $totalTotal = 0;
                 $table .= "<tr><td><b>{$project->getName()}</b></td>";
                 for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-                    $pniTotal = $pniSums[$y-$this->startYear];
-                    $cniTotal = $cniSums[$y-$this->startYear];
-                    $total = $pniSums[$y-$this->startYear] + $cniSums[$y-$this->startYear];
-                    $table .= "<td align='right'>\$".number_format(intval($pniTotal), 2)."</td>
-                               <td align='right'>\$".number_format(intval($cniTotal), 2)."</td>
+                    $niTotal = $niSums[$y-$this->startYear];
+                    $total = $niSums[$y-$this->startYear];
+                    $table .= "<td align='right'>\$".number_format(intval($niTotal), 2)."</td>
                                <td align='right'>\$".number_format(intval($total), 2)."</td>";
-                    $pniTotalTotal += $pniTotal;
-                    $cniTotalTotal += $cniTotal;
+                    $niTotalTotal += $niTotal;
                     $totalTotal += $total;
                     
-                    @$overallPNITotals[$y] += $pniTotal;
-                    @$overallCNITotals[$y] += $cniTotal;
+                    @$overallNITotals[$y] += $niTotal;
                     @$overallTotals[$y] += $total;
                 }
-                $table .= "<td align='right'>\$".number_format($pniTotalTotal, 2)."</td>
-                           <td align='right'>\$".number_format($cniTotalTotal, 2)."</td>
+                $table .= "<td align='right'>\$".number_format($niTotalTotal, 2)."</td>
                            <td align='right'>\$".number_format($totalTotal, 2)."</td></tr>";
             }
         }
-        $pniTotalTotal = 0;
-        $cniTotalTotal = 0;
+        $niTotalTotal = 0;
         $totalTotal = 0;
         $table .= "<tr><td><b>Total</b></td>";
         for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-            $pniTotal = $overallPNITotals[$y];
-            $cniTotal = $overallCNITotals[$y];
-            $total = $overallPNITotals[$y] + $overallCNITotals[$y];
-            $table .= "<td align='right'>\$".number_format(intval($pniTotal), 2)."</td>
-                       <td align='right'>\$".number_format(intval($cniTotal), 2)."</td>
+            $niTotal = $overallNITotals[$y];
+            $total = $overallNITotals[$y];
+            $table .= "<td align='right'>\$".number_format(intval($niTotal), 2)."</td>
                        <td align='right'>\$".number_format(intval($total), 2)."</td>";
-            $pniTotalTotal += $pniTotal;
-            $cniTotalTotal += $cniTotal;
+            $niTotalTotal += $niTotal;
             $totalTotal += $total;
         }
-        $table .= "<td align='right'>\$".number_format(intval($pniTotalTotal), 2)."</td>
-                   <td align='right'>\$".number_format(intval($cniTotalTotal), 2)."</td>
+        $table .= "<td align='right'>\$".number_format(intval($niTotalTotal), 2)."</td>
                    <td align='right'>\$".number_format(intval($totalTotal), 2)."</td></tr>";
         $table .= "</table>";
         

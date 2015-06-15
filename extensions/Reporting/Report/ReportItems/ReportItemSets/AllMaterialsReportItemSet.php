@@ -6,8 +6,8 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         $data = array();
         //$person = Person::newFromId($this->personId);
         
-        $type = $this->getAttr('subType', 'PNI');
-        if($type == 'PNI' || $type == 'CNI'){
+        $type = $this->getAttr('subType', 'NI');
+        if($type == 'NI'){
             //$subs = Person::getAllPeople($type);
             $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
             $subs = Person::getAllEvaluates($type, $year);

@@ -13,7 +13,7 @@ class PersonDataQualityTab extends AbstractTab {
     
     
     function generateBody(){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         if($this->visibility['isMe'] || $me->isRoleAtLeast(MANAGER)){
             $wgOut->addScript(
@@ -55,6 +55,8 @@ class PersonDataQualityTab extends AbstractTab {
             $product_checks = $this->getProductChecks($errors);
             $duplicates = $this->getMyProductDuplicates();
 
+            $productTerm = $config->getValue('productsTerm');
+
             $this->html .=<<<EOF
             <div id='dataQualityAccordion'>
                 <h3><a href='#'>Profile Errors</a></h3>
@@ -65,11 +67,11 @@ class PersonDataQualityTab extends AbstractTab {
                 <div>
                 {$hqp_checks}
                 </div>
-                <h3><a href='#'>Product Errors</a></h3>
+                <h3><a href='#'>{$productTerm} Errors</a></h3>
                 <div>
                 {$product_checks}
                 </div>
-                <h3><a href='#'>Product Duplicates</a></h3>
+                <h3><a href='#'>{$productTerm} Duplicates</a></h3>
                 <div>
                 {$duplicates}
                 </div>
@@ -312,16 +314,8 @@ EOF;
                 $university = $s->getUni();
                 $department = $s->getDepartment();
                 $errors = array();
-                $ishqp = $s->isHQP();
+                $ishqp = $s->isRole(HQP);
                 $related = $person->relatedTo($s, 'Supervises');
-
-                if(isExtensionEnabled('EthicsTable')){
-                    //Check for Ethics tutorial completion
-                    $ethics = $s->getEthics();
-                    if($ethics['completed_tutorial'] == 0 && $ishqp && $related){
-                        $errors[] = "Not Completed TCPS2";
-                    }
-                }
 
                 if(isExtensionEnabled('Acknowledgements')){
                     //Acknowledgements

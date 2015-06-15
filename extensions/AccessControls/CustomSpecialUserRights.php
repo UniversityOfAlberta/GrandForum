@@ -1,7 +1,7 @@
 <?php
 //this class started out as extending UserrightsPage which ended up being rewritten in 1.13
 //TODO: it needs major refactoring (rewriting?)
-require_once("SpecialPage.php");
+require_once("includes/specialpage/SpecialPage.php");
 require_once("specials/SpecialUserrights.php");
 
 $wgExtensionFunctions[] = 'wfSetupGroupManager';

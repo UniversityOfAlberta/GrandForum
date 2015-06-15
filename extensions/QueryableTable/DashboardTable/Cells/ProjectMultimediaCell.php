@@ -132,7 +132,7 @@ EOF;
                         $details .= '<tr>'.$this->detailsRow($item)."</tr>\n";
                     }
                     $details .= "</tbody></table><br /><br />\n";
-                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddMultimediaStoryPage\");' value='Add Multimedia Story' />\n";
+                    $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddMultimediaPage\");' value='Add Multimedia' />\n";
                 }
                 $table .= $this->dashboardRow($type, $details);
             }

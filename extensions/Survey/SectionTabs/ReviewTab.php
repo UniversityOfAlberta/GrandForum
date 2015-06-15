@@ -155,7 +155,7 @@ EOF;
                 submitted = %d,
                 completed = '%s'
                 WHERE user_id = {$my_id}";
-        $sql = sprintf($sql, mysql_real_escape_string($additional_comments), $receive_results, $current_tab, $submitted, $completed);
+        $sql = sprintf($sql, DBFunctions::escape($additional_comments), $receive_results, $current_tab, $submitted, $completed);
 
         $result = DBFunctions::execSQL($sql, true);
         
