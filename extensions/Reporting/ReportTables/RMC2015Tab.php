@@ -97,8 +97,8 @@ EOF;
         $aves = array('4'=>2, '3'=>1.5, '2'=>1, '1'=>0.5);
 
         // Check for a download.
-        $action = ArrayUtils::get_string($_GET, 'getpdf');
-        if ($action !== "") {
+        $action = @$_GET['getpdf'];
+        if ($action != "") {
             $p = Person::newFromId($wgUser->getId());
             $sto = new ReportStorage($p);
             $wgOut->disable();

@@ -1327,15 +1327,8 @@ input.other_option:focus {
     color: #FFFFFF;
 }
 
-iframe.twitter-timeline {
-    -ms-zoom: 0.75;
-    -moz-transform: scale(0.75);
-    -moz-transform-origin: 0 0;
-    -o-transform: scale(0.75);
-    -o-transform-origin: 0 0;
-    -webkit-transform: scale(0.75);
-    -webkit-transform-origin: 0 0;
-    max-width: none !important;
+#twitter iframe {
+    width: 100% !important;
 }
 
 /* Global Search */

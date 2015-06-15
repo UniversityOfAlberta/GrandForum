@@ -23,8 +23,7 @@ $_projects;
 class EvaluationTable extends SpecialPage {
 
     function __construct() {
-        wfLoadExtensionMessages('EvaluationTable');
-        SpecialPage::SpecialPage("EvaluationTable", null, false, 'runEvaluationTable');
+        parent::__construct("EvaluationTable", null, false, 'runEvaluationTable');
     }
     
     function userCanExecute($user){
@@ -41,7 +40,7 @@ class EvaluationTable extends SpecialPage {
         require_once('Nominations.php');
 
         $init_tabs = array('2015' => 0);
-
+        $init_tab = $init_tabs[REPORTING_YEAR];
         if(isset($_GET['year']) && isset($init_tabs[$_GET['year']])){
             $init_tab = $init_tabs[$_GET['year']];
         }

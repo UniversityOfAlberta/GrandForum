@@ -2,8 +2,7 @@
 
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getGraphData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getSurveyData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
 
 class PersonVisualizationsTab extends AbstractTab {
 
@@ -36,9 +35,6 @@ class PersonVisualizationsTab extends AbstractTab {
 	            <ul>
 		            <li><a href='#timeline'>Timeline</a></li>";
 		            //<li><a href='#chart'>Productivity Chart</a></li>";
-            if(isExtensionEnabled("Survey") && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
-                $this->html .= "<li><a href='#survey'>Survey Graph</a></li>";
-            }
 		    $this->html .= "<!--<li><a href='#network'>Network</a></li>-->
 	            </ul>
 	        <div id='timeline'>";
@@ -46,11 +42,6 @@ class PersonVisualizationsTab extends AbstractTab {
 	        /*$this->html .= "</div>
 	        <div id='chart'>";
 		        $this->showDoughnut($this->person, $this->visibility);*/
-	        if(isExtensionEnabled("Survey") && (($wgUser->isLoggedIn() && $this->person->getId() == $me->getId()) || $me->isRoleAtLeast(MANAGER))){
-	            $this->html .= "</div>
-	            <div id='survey'>";
-		            $this->showSurvey($this->person, $this->visibility);
-		    }
 	        $this->html.= "</div>
     </div>
     <script type='text/javascript'>
@@ -117,83 +108,6 @@ class PersonVisualizationsTab extends AbstractTab {
                                     });
                               </script>");
             $this->html .= $doughnut->show();
-        }
-    }
-    
-    function showSurvey($person, $visibility){
-        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        $me = Person::newFromWgUser();
-        if($wgUser->isLoggedIn() && ($person->getId() == $me->getId() || $me->isMemberOf(Project::newFromName("NAVEL")) || $me->isRoleAtLeast(MANAGER))){
-            $dataUrl1 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=1";
-            $dataUrl2 = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getSurveyData&person={$person->getId()}&degree=2";
-            $fdg1 = new ForceDirectedGraph($dataUrl1);
-            $fdg1->width = 800;
-            $fdg1->height = 700;
-            $this->html .= "<button id='switchSurvey' onClick='return false;'>View 2nd Degree Graph</button>";
-            $wgOut->addScript("<script type='text/javascript'>
-                                    $(document).ready(function(){
-                                        var nTimesLoadedFDG = 0;
-                                        $('#personVis').bind('tabsselect', function(event, ui) {
-                                            if(ui.panel.id == 'survey'){
-                                                if(nTimesLoadedFDG == 0){
-                                                    nTimesLoadedFDG++;
-                                                    createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$fdg1->url}');
-                                                    var showing2nd = false;
-                                                    $('#switchSurvey').click(function(){
-                                                        $('#vis{$fdg1->index}').empty();
-                                                        stopFDG();
-                                                        if(!showing2nd){
-                                                            createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$dataUrl2}');
-                                                            $('#switchSurvey').html('View 1st Degree Graph');
-                                                        }
-                                                        else{
-                                                            createFDG({$fdg1->width}, {$fdg1->height}, 'vis{$fdg1->index}', '{$dataUrl1}');
-                                                            $('#switchSurvey').html('View 2nd Degree Graph');
-                                                        }
-                                                        showing2nd = !showing2nd;
-                                                    });
-                                                }
-                                            }
-                                        });
-                                    });
-                              </script>");
-            $this->html .= $fdg1->show();
-        }
-    }
-    
-    function showGraph($person, $visibility){
-        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
-            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getGraphData&person={$person->getId()}";
-            $graph = new Graph($dataUrl);
-            $wgOut->addScript("<script type='text/javascript'>
-                                    $(document).ready(function(){
-                                        $('#personVis').bind('tabsselect', function(event, ui) {
-                                            if(ui.panel.id == 'network'){
-                                                if(graph != null){
-                                                    graph.destroy();
-                                                    graph = null;
-                                                    $('#vis{$graph->index}').html(\"<div style='height:700px;' id='vis{$graph->index}'></div>\");
-                                                    $('#vis{$graph->index}').graph('{$graph->url}');
-                                                }
-                                                else{
-                                                    $('#vis{$graph->index}').graph('{$graph->url}');
-                                                }
-                                            }
-                                            else{
-                                                if(graph != null){
-                                                    graph.destroy();
-                                                }
-                                            }
-                                        });
-                                        $('#person').bind('tabsselect', function(event, ui){
-                                            if(ui.panel.id != 'visualize' && graph != null){
-                                                graph.destroy();
-                                            }
-                                        });
-                                    });
-                              </script>");
-            $this->html .= $graph->show();
         }
     }
     
@@ -446,6 +360,87 @@ class PersonVisualizationsTab extends AbstractTab {
         return true;
 	}
 	
+	static function getChordData($action, $article){
+	    global $wgServer, $wgScriptPath, $config;
+	    if($action == "getChordData"){
+	        $person = Person::newFromId($_GET['person']);
+	        $authors = array($person);
+	        $authors = $person->getCoAuthors("all", false, 'both', true, "Public");
+	        
+	        $labels = array();
+	        $matrix = array();
+	        $colorHashs = array();
+	        $colors = array();
+	        
+	        $newAuthors = array();
+	        foreach($authors as $author){
+	            $a = Person::newFromName($author);
+	            if($a->getId() != 0){
+	                $newAuthors[] = $a;
+	            }
+	        }
+	        $authors = $newAuthors;
+	        
+	        // Initialize
+            foreach($authors as $k1 => $author){
+                foreach($authors as $k2 => $a){
+                    $matrix[$author->getId()][$a->getId()] = 0;
+                }
+                $labels[] = $author->getNameForForms();
+                $colorHashs[] = $author->getNameForForms();
+            }
+	        
+	        foreach($authors as $author){
+	            $products = $author->getPapers("all", false, 'both', true, "Public");
+	            foreach($products as $product){
+	                $auths = $product->getAuthors();
+	                foreach($auths as $a){
+	                    if(isset($matrix[$author->getId()][$a->getId()]) && $author->getId() != $a->getId()){
+	                        $matrix[$author->getId()][$a->getId()] += 1;
+	                    }
+	                }
+	            }
+	        }
+	        
+	        $found = false;
+            foreach($authors as $k1 => $author){
+                if(array_sum($matrix[$author->getId()]) != 0){
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found){
+                foreach($authors as $k1 => $author){
+                    $matrix[$author->getId()][$author->getId()] = 1;
+                }
+            }
+	        
+	        $newMatrix = array();
+            foreach($matrix as $row){
+                $newRow = array();
+                foreach($row as $col){
+                    $newRow[] = $col;
+                }
+                $newMatrix[] = $newRow;
+            }
+            $matrix = $newMatrix;
+	        
+	        $array = array();
+	        
+	        $array['filterOptions'] = array();
+            $array['dateOptions'] = array();                     
+            $array['sortOptions'] = array();
+            $array['matrix'] = $matrix;
+            $array['labels'] = $labels;
+            $array['colorHashs'] = $colorHashs;
+            $array['colors'] = $colors;
+
+            header("Content-Type: application/json");
+            echo json_encode($array);
+            exit;
+	    }
+	}
+	
 	static function getRootDiscipline($disc){
 	    $discs = explode("|", $disc);
 	    $dics = $discs[0];
@@ -458,248 +453,6 @@ class PersonVisualizationsTab extends AbstractTab {
 	        }
 	    }
 	    return "Other";
-	}
-	
-	static function getSurveyData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getSurveyData"){
-	        $degree = (isset($_GET['degree'])) ? $_GET['degree'] : 2;
-	    
-	        $person = Person::newFromId($_GET['person']);
-	        $names = array();
-	        $nodes = array();
-	        $links = array();
-	        $groups = array();
-	        $disciplines = AboutTab::getDisciplineList();
-	        $edgeGroups = array('Works With', 'Gave/Received Advice', 'Friend', 'Acquaintance');
-	        $i = 0;
-	        foreach($disciplines as $name => $discipline){
-	            $groups[$name] = $i;
-	            $i++;
-	        }
-	        $groups["Other"] = $i;
-	        $nodes[] = array("name" => $person->getReversedName(),
-	                         "group" => $groups[self::getRootDiscipline($person->getSurveyDiscipline())]);
-	        
-	        $names[$person->getReversedName()] = $person;
-	        $doneLinks = array();
-	        foreach($person->getSurveyFirstDegreeConnections() as $key => $connection){
-	            foreach($connection as $name => $data){
-	                $pers = Person::newFromName($name);
-	                
-	                $value = 0.01;
-	                $nFields = 5;
-	                $edgeGroup = 1000;
-	                foreach($data as $k => $field){
-	                    if(is_numeric($field) && $field != 0 && $k != "hotlist"){
-                            $value++;
-                            if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
-                                $edgeGroup = array_search("Works With", $edgeGroups);
-                            }
-                            else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
-                                $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
-                            }
-                            else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
-                                $edgeGroup = array_search("Works With", $edgeGroups);
-                            }
-                            else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
-                                $edgeGroup = array_search("Works With", $edgeGroups);
-                            }
-                        }
-	                }
-	                
-	                if($value > 0 && $edgeGroup != 1000 && $value > 0.01){
-	                    $nodes[] = array("name" => $pers->getReversedName(),
-	                                     "group" => $groups[self::getRootDiscipline($pers->getSurveyDiscipline())],
-	                                     "id" => md5($pers->getReversedName()));
-	                    $names[$pers->getReversedName()] = $pers;
-	                    $links[] = array("source" => 0,
-	                                     "target" => $key+1,
-	                                     "group" => $edgeGroup,
-	                                     "value" => $value/$nFields);
-	                    $doneLinks[0][$key] = true;
-	                }
-	            }
-	        }
-	        
-	        //if($degree > 1){
-	            foreach($nodes as $key1 => $node){
-	                if($node['name'] != $person->getName()){
-	                    $pers = $names[$node['name']];
-	                    foreach($pers->getSurveyFirstDegreeConnections() as $connection){
-	                        foreach($connection as $name => $data){
-	                            $p = Person::newFromName($name);
-	                            $value = 0;
-                                $nFields = 6;
-                                $edgeGroup = 1000;
-	                            foreach($data as $k => $field){
-	                                if(is_numeric($field) && $field != 0 && $k != "hotlist"){
-	                                    $value++;
-	                                    if($k == "work_with" && $edgeGroup >= array_search("Works With", $edgeGroups)){
-	                                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                                    }
-	                                    else if(($k == "gave_advice" || $k == "received_advice") && $edgeGroup >= array_search("Gave/Received Advice", $edgeGroups)){
-	                                        $edgeGroup = array_search("Gave/Received Advice", $edgeGroups);
-	                                    }
-	                                    else if($k == "friend" && $edgeGroup >= array_search("Friend", $edgeGroups)){
-	                                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                                    }
-	                                    else if($k == "acquaintance" && $edgeGroup >= array_search("Acquaintance", $edgeGroups)){
-	                                        $edgeGroup = array_search("Works With", $edgeGroups);
-	                                    }
-	                                }
-	                            }
-                                if(!isset($names[$p->getReversedName().$key1]) && $degree == 2 && $value > 0.01){
-                                    $nodes[] = array("name" => $p->getReversedName(),
-                                                     "group" => $groups[self::getRootDiscipline($p->getSurveyDiscipline())],
-                                                     "id" => md5($p->getReversedName()));
-                                    $names[$p->getReversedName().$key1] = $p;
-                                    $key = array_search($p->getReversedName().$key1, array_keys($names));
-                                }
-                                else{
-                                    $key = array_search($p->getReversedName(), array_keys($names));
-                                }
-                                
-                                if($key !== false && $key != 0 && $edgeGroup != 1000 && $value > 0.01 && !isset($doneLinks[$key][$key1]) && !isset($doneLinks[$key1][$key])){
-                                    $links[] = array("source" => $key1,
-                                                     "target" => $key,
-                                                     "group" => $edgeGroup,
-                                                     "value" => $value/$nFields);
-                                    $doneLinks[$key1][$key] = true;
-                                }
-	                        }
-	                    }
-	                }
-	            }
-	        //}
-	        //if($degree > 1){
-	            foreach($nodes as &$node){
-	                $node['name'] = '';
-	            }
-	        //}
-	        $array = array('groups' => array_flip($groups),
-	                       'edgeGroups' => $edgeGroups,
-	                       'nodes' => $nodes,
-	                       'links' => $links);
-            header("Content-Type: application/json");
-            echo json_encode($array); 
-            exit;
-        }
-        return true;
-	}
-	
-	static function getGraphData($action, $article){
-	    global $wgServer, $wgScriptPath, $config;
-	    if($action == "getGraphData"){
-            $person = Person::newFromId($_GET['person']);
-            
-            $data = array();
-            $data['legend'] = array();
-            $data['legend'][NI] = array('color' => "#4E9B05",
-                                        'name' => NI);
-            $data['legend'][HQP] = array('color' => "#394D26",
-                                         'name' => HQP);     
-            $data['legend']["Project"] = array('color' => "#E41B05",
-                                               'name' => "Project");                        
-            $data['nodes'] = array();
-            $people = Person::getAllPeople();
-            $projects = Project::getAllProjects();
-            foreach($people as $person){
-                if($person->isRole(INACTIVE)){
-                    continue;
-                }
-                $relations = $person->getRelations();
-                $data['nodes']['p'.$person->getId()]['id'] = 'p'.$person->getId();
-                if(count($person->leadership()) > 0){
-                    $data['nodes']['p'.$person->getId()]['name'] = "<img style='width:8px;height:8px;vertical-align:top;' src='$wgServer$wgScriptPath/extensions/Visualizations/Graph/lead.png' />&nbsp;";
-                }
-                @$data['nodes']['p'.$person->getId()]['name'] .= str_replace(" ", "&nbsp;", $person->getNameForForms());
-                
-                if($person->isRole(HQP)){
-                    $data['nodes']['p'.$person->getId()]['type'] = HQP;
-                }
-                else if($person->isRole(NI)){
-                    $data['nodes']['p'.$person->getId()]['type'] = NI;
-                }
-                $description = "<img src='{$person->getPhoto()}' /><br />";
-                
-                $description .= "<b>Roles:</b> ";
-                $roles = array();
-                foreach($person->getRoles() as $role){
-                    $roles[] = $role->getRole();
-                }
-                $description .= implode(", ", $roles);
-                
-                $projs = array();
-                $description .= "<br /><br /><b>Projects:</b> ";
-                foreach($person->getProjects() as $proj){
-                    $projs[] = "<a href='{$proj->getUrl()}' target='_blank'>{$proj->getName()}</a>";
-                }
-                $description .= implode(", ", $projs);
-                
-                $description .= "<br /><br /><a href='{$person->getUrl()}' target='_blank'>User Page</a>";
-                
-                $data['nodes']['p'.$person->getId()]['description'] = $description;
-
-                if(count($relations) > 0){
-                    foreach($relations as $relationTypes){
-                        foreach($relationTypes as $relation){
-                            $weight = 3;
-                            $type = $relation->getType();
-                            if($type == "Supervises"){
-                                $weight = 6;
-                            }
-                            $data['nodes']['p'.$relation->getUser1()->getId()]['connections'][] = array('a' => 'p'.$relation->getUser1()->getId(),
-                                                                                        'b' => 'p'.$relation->getUser2()->getId(),
-                                                                                        'weight' => $weight);
-                            $data['nodes']['p'.$relation->getUser2()->getId()]['connections'][] = array('a' => 'p'.$relation->getUser1()->getId(),
-                                                                                          'b' => 'p'.$relation->getUser2()->getId(),
-                                                                                          'weight' => $weight);
-                        }
-                    }
-                }
-            }
-            foreach($projects as $project){
-                $members = $project->getAllPeople();
-                $data['nodes']['pr'.$project->getId()]['id'] = 'pr'.$project->getId();
-                $data['nodes']['pr'.$project->getId()]['name'] = str_replace(" ", "&nbsp", $project->getName());
-                $data['nodes']['pr'.$project->getId()]['type'] = "Project";
-                
-                $description = "";
-                
-                $description .= "<b>".$config->getValue('roleDefs', PL).": </b>";
-                $leads = array();
-                foreach($project->getLeaders() as $member){
-                    $leads[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description .= implode(", ", $leads);
-                $description .= "<br /><br /><b>Members: </b>";
-                $membs = array();
-                foreach($members as $member){
-                    $membs[] = "<a href='{$member->getUrl()}' target='_blank'>{$member->getNameForForms()}</a>";
-                }
-                $description .= implode(", ", $membs);
-                $description .= "<br /><br /><a href='{$project->getUrl()}' target='_blank'>Project Page</a>";
-                $data['nodes']['pr'.$project->getId()]['description'] = $description;
-                foreach($members as $member){
-                    if($member->isRole(INACTIVE)){
-                        continue;
-                    }
-                    $data['nodes']['p'.$member->getId()]['connections'][] = array('a' => 'p'.$member->getId(),
-                                                                                  'b' => 'pr'.$project->getId(),
-                                                                                  'weight' => 3);
-                    $data['nodes']['pr'.$project->getId()]['connections'][] = array('a' => 'p'.$member->getId(),
-                                                                                  'b' => 'pr'.$project->getId(),
-                                                                                  'weight' => 3);
-                }
-            }
-            $data['start_node'] = 'p'.$_GET['person'];
-            header("Content-Type: application/json");
-           
-            echo json_encode($data);
-            exit;
-        }
-        return true;
 	}
 }
 ?>

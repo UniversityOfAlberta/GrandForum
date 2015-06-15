@@ -334,6 +334,7 @@ class Person extends BackboneModel {
                     AND (l.end_date = '0000-00-00 00:00:00'
                          OR l.end_date > CURRENT_TIMESTAMP)";
             $data = DBFunctions::execSQL($sql);
+            self::$leaderCache[-1][] = array();
             foreach($data as $row){
                 self::$leaderCache[$row['user_id']][] = $row;
             }
@@ -2941,9 +2942,18 @@ class Person extends BackboneModel {
         return $newProducts;
     }
     
-    function getCoAuthors(){
+    /**
+     * Returns an array of People who are authors of Products writted by this Person or their HQP
+     * @param string $category The category of Papers to get
+     * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
+     * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
+     * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @param string $access Whether to include 'Forum' or 'Public' access
+     * @return array Returns an array of People who are authors of Products writted by this Person or their HQP
+     */
+    function getCoAuthors($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
         $coauthors = array();
-        $papers = $this->getPapers();
+        $papers = $this->getPapers($category, $history, $grand, $onlyPublic, $access);
         foreach($papers as $paper){
             $authors = $paper->getAuthors();
             foreach($authors as $author){
