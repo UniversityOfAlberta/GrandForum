@@ -372,6 +372,19 @@ class PersonVisualizationsTab extends AbstractTab {
 	        $colorHashs = array();
 	        $colors = array();
 	        
+	        $possibleColors = array("#33A02C",
+	                                "#A6CEE3",
+	                                "#E31A1C",
+	                                "#1F78B4",
+	                                "#FB9A99",
+	                                "#CAB2D6",
+	                                "#FF7F00",
+	                                "#FDBF6F",
+	                                "#6A3D9A",
+	                                "#B15928",
+	                                "#B2DF8A",
+	                                "#FFFF99");
+	        
 	        $newAuthors = array();
 	        foreach($authors as $author){
 	            $a = Person::newFromName($author);
@@ -382,12 +395,20 @@ class PersonVisualizationsTab extends AbstractTab {
 	        $authors = $newAuthors;
 	        
 	        // Initialize
+	        $i = 0;
             foreach($authors as $k1 => $author){
                 foreach($authors as $k2 => $a){
                     $matrix[$author->getId()][$a->getId()] = 0;
                 }
                 $labels[] = $author->getNameForForms();
-                $colorHashs[] = $author->getNameForForms();
+                //$colorHashs[] = $author->getNameForForms();
+                $colors[] = $possibleColors[$i];
+                if($i < count($possibleColors)){
+                    $i++;
+                }
+                else{
+                    $i = 0;
+                }
             }
 	        
 	        foreach($authors as $author){
