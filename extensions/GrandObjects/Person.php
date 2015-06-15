@@ -600,9 +600,12 @@ class Person extends BackboneModel {
      */
     static function getAllCandidates($filter=null){
         $me = Person::newFromWgUser();
-        self::generateAllPeopleCache();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1)),
+                                    array('user_name' => 'ASC'));
         $people = array();
-        foreach(self::$allPeopleCache as $row){
+        foreach($data as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
