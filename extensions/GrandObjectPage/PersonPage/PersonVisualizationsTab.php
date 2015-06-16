@@ -403,7 +403,7 @@ class PersonVisualizationsTab extends AbstractTab {
                 $labels[] = $author->getNameForForms();
                 //$colorHashs[] = $author->getNameForForms();
                 $colors[] = $possibleColors[$i];
-                if($i < count($possibleColors)){
+                if($i < count($possibleColors)-1){
                     $i++;
                 }
                 else{
