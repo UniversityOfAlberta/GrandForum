@@ -144,6 +144,8 @@ EOF;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
+        $sizes = explode("|", $this->getAttr('sizes', ''));
+        $showHeader = $this->getAttr('showHeader', 'true');
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
         if($values == null){
@@ -156,12 +158,14 @@ EOF;
         $item = "";
         if($max > -1){
             if(count($labels) > 0 && $labels[0] != ""){
-                $item = "<table id='table_{$this->getPostId()}' cellspacing='1' cellpadding='3' style='border: none;' frame='box' rules='all' width='100%'>";
-                $item .= " <tr>";
-                foreach($labels as $label){
-                    $item .= "<th>{$label}</th>";
+                $item = "<table id='table_{$this->getPostId()}' cellspacing='1' style='border: none;' width='100%'>";
+                if(strtolower($showHeader) == 'true'){
+                    $item .= " <tr>";
+                    foreach($labels as $label){
+                        $item .= "<th align='center'>{$label}</th>";
+                    }
+                    $item .= "</tr>";
                 }
-                $item .= "</tr>";
             }
             else{
                 $item = "<table>";
@@ -171,8 +175,9 @@ EOF;
             foreach($values as $i => $value){
                 if($i > -1 && $count < $maxEntries){
                     $item .= "<tr class='obj'>";
-                    foreach($indices as $index){
-                        $item .= "<td>{$value[$index]}</td>";
+                    foreach($indices as $j => $index){
+                        $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
+                        $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                     }
                     $item .= "</tr>";
                     $count++;

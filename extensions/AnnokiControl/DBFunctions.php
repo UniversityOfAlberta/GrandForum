@@ -108,7 +108,7 @@ class DBFunctions {
     static $lastResult;
     static $dbr;
     static $dbw;
-    static $queryDebug = false;
+    static $queryDebug = true;
     
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
@@ -176,7 +176,8 @@ class DBFunctions {
 		        $end = microtime(true);
 		        $diff = number_format(($end - $start)*1000, 5);
 		        self::$queryLength += $diff;
-		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms) $printedSql -->\n";
+		        $peakMem = memory_get_peak_usage(true)/1024/1024;
+		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms / ".count($rows)." / {$peakMem}MiB) $printedSql -->\n";
 		        $wgOut->addHTML($printedSql);
 		    }
 		    return $rows;

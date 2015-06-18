@@ -44,6 +44,8 @@ define('RP_SUBPROJECT', 17);
 define('RP_PROJECT_PROPOSAL',   100);
 define('RP_SAB_REVIEW',         101);
 define('RP_SAB_REPORT',         102);
+define('RP_CATALYST',           103);
+define('RP_TRANS',              104);
 /*
  * AGE-WELLL
  */
@@ -170,6 +172,14 @@ define('SAB_REPORT',    1);
 
 // Second level for RMC Review
 define('RMC_REVIEW',    0);
+
+// Second level for Catalyst and Translational
+define('CAT_DESC',      0);
+define('CAT_BUDGET',    1);
+define('CAT_MILESTONES',2);
+define('CAT_SUPPORT',   3);
+define('CAT_CCV',       4);
+define('CAT_COMM',      5);
 
 /*
  * Third-level identifiers: question within a section.
@@ -383,6 +393,48 @@ define('SAB_REVIEW_WEAKNESS',        2);
 define('SAB_REVIEW_RANKING',         3);
 
 define('SAB_REPORT_SUMMARY',         1);
+
+/* These are used for both the catalyst and translational reports */
+define('CAT_DESC_THEME',           1);
+define('CAT_DESC_TITLE',           2);
+define('CAT_DESC_LEAD',            3);
+define('CAT_DESC_OTHER',           4);
+define('CAT_DESC_PART',            5);
+define('CAT_DESC_ENV',             6);
+define('CAT_DESC_ENV_UP',          7);
+define('CAT_DESC_CONFLICT',        8);
+define('CAT_DESC_CONFLICT_WHICH',  9);
+define('CAT_DESC_CONFLICT_COMP',   10);
+define('CAT_DESC_SUMMARY',         11);
+define('CAT_DESC_ABSTRACT',        12);
+define('CAT_DESC_ABSTRACT_UPLOAD', 13);
+define('CAT_DESC_PROPOSAL',        14);
+define('CAT_DESC_KNOW',            15);
+define('CAT_DESC_TRAIN',           16);
+
+define('CAT_BUD_UPLOAD',           1);
+define('CAT_BUD_JUSTIF',           2);
+
+define('CAT_MIL_UPLOAD',           1);
+
+define('CAT_SUP_UPLOAD1',           1);
+define('CAT_SUP_UPLOAD2',           2);
+define('CAT_SUP_UPLOAD3',           3);
+define('CAT_SUP_UPLOAD4',           4);
+define('CAT_SUP_UPLOAD5',           5);
+
+define('CAT_CCV_UPLOAD1',           1);
+define('CAT_CCV_UPLOAD2',           2);
+define('CAT_CCV_UPLOAD3',           3);
+define('CAT_CCV_UPLOAD4',           4);
+define('CAT_CCV_UPLOAD5',           5);
+define('CAT_CCV_UPLOAD6',           6);
+define('CAT_CCV_UPLOAD7',           7);
+define('CAT_CCV_UPLOAD8',           8);
+define('CAT_CCV_UPLOAD9',           9);
+define('CAT_CCV_UPLOAD10',          10);
+
+define('CAT_COMM_UPLOAD',           1);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

@@ -122,6 +122,12 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_MTG:
                 $type = "MindTheGap";
                 break;
+            case RPTP_CATALYST:
+                $type = "CatalystReport";
+                break;
+            case RPTP_TRANS:
+                $type = "TranslationalReport";
+                break;
         }
         
         $proj = null;

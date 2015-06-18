@@ -349,7 +349,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                               'grand_universities' => 'u',
                                               'grand_positions' => 'p'),
-                                        array('*'),
+                                        array('user_id','university_name','department','position','end_date'),
                                         array('u.university_id' => EQ(COL('uu.university_id')),
                                               'uu.position_id' => EQ(COL('p.position_id'))));
             foreach($data as $row){
