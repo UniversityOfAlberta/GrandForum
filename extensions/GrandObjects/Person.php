@@ -75,8 +75,8 @@ class Person extends BackboneModel {
             $data[] = self::$idsCache[$id];
         }
         $person = new Person($data);
-        self::$cache[$person->id] = &$person;
-        self::$cache[$person->name] = &$person;
+        self::$cache[$person->id] = $person;
+        self::$cache[$person->name] = $person;
         return $person;
     }
     
@@ -96,8 +96,8 @@ class Person extends BackboneModel {
             $data[] = self::$namesCache[$name];
         }
         $person = new Person($data);
-        self::$cache[$person->id] = &$person;
-        self::$cache[$person->name] = &$person;
+        self::$cache[$person->id] = $person;
+        self::$cache[$person->name] = $person;
         return $person;
     }
     
@@ -660,27 +660,27 @@ class Person extends BackboneModel {
     // Takes in a resultset containing the 'user id' and 'user name'
     function Person($data){
         if(count($data) > 0){
-            $this->id = $data[0]['user_id'];
-            $this->name = $data[0]['user_name'];
-            $this->realname = $data[0]['user_real_name'];
-            $this->firstName = $data[0]['first_name'];
-            $this->lastName = $data[0]['last_name'];
-            $this->middleName = $data[0]['middle_name'];
-            $this->prevFirstName = $data[0]['prev_first_name'];
-            $this->prevLastName = $data[0]['prev_last_name'];
-            $this->honorific = $data[0]['honorific'];
-            $this->language = $data[0]['language'];
-            $this->email = $data[0]['user_email'];
-            $this->gender = $data[0]['user_gender'];
-            $this->nationality = $data[0]['user_nationality'];
+            $this->id = @$data[0]['user_id'];
+            $this->name = @$data[0]['user_name'];
+            $this->realname = @$data[0]['user_real_name'];
+            $this->firstName = @$data[0]['first_name'];
+            $this->lastName = @$data[0]['last_name'];
+            $this->middleName = @$data[0]['middle_name'];
+            $this->prevFirstName = @$data[0]['prev_first_name'];
+            $this->prevLastName = @$data[0]['prev_last_name'];
+            $this->honorific = @$data[0]['honorific'];
+            $this->language = @$data[0]['language'];
+            $this->email = @$data[0]['user_email'];
+            $this->gender = @$data[0]['user_gender'];
+            $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
-            $this->twitter = $data[0]['user_twitter'];
-            $this->website = $data[0]['user_website'];
-            $this->publicProfile = $data[0]['user_public_profile'];
-            $this->privateProfile = $data[0]['user_private_profile'];
+            $this->twitter = @$data[0]['user_twitter'];
+            $this->website = @$data[0]['user_website'];
+            $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
             $this->historyHqps = null;
-            $this->candidate = $data[0]['candidate'];
+            $this->candidate = @$data[0]['candidate'];
         }
     }
     

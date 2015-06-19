@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" disabled="false">
+<Report name="2015 Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="instructions" permissions="rw" />
@@ -41,8 +41,6 @@
                     <li>A project summary (500 words maximum)</li>
                     <li>A graphical abstract (included with Figures/Schemes, below)</li>
                     <li>A proposal (7000 words maximum, not including figure/scheme legends and references)</li>
-                    <li>A section on knowledge and technology exchange and exploitation including potential commercialization (500 words maximum)</li>
-                    <li>A section on training potential (500 words maximum)</li>
                 </ul>
                 <p>Formatting requirements:</p>
                 <ul>
@@ -163,15 +161,9 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT" rich="true" height="300px">
-            <![CDATA[
-                <h2>Graphical Abstract</h2>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <h3>Abstract Diagrams</h3>
+                <h2>Graphical Abstract</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -179,20 +171,6 @@
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
             <![CDATA[
                 <h2>Project Proposal (7000 words maximum)</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px">
-            <![CDATA[
-                <h2>Knowledge and Technology Exchange and Exploitation</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px">
-            <![CDATA[
-                <h2>Training Potential (500 words maximum)</h2>
                 {$item}
             ]]>
         </ReportItem>

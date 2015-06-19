@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false">
+<Report name="2015 Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="instructions" permissions="rw" />
@@ -161,15 +161,9 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT" rich="true" height="300px">
-            <![CDATA[
-                <h2>Graphical Abstract</h2>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <h3>Abstract Diagrams</h3>
+                <h2>Graphical Abstract</h2>
                 {$item}
             ]]>
         </ReportItem>
