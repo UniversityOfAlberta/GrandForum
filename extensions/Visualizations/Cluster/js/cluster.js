@@ -4,12 +4,12 @@
     var width = $(this).width();
     var id = $(this).attr("id");
         
-    var scalingFactor = width/1400;
+    var scalingFactor = 0.5;
 
     var offset = 100*scalingFactor;
 
-    var w = 1400*scalingFactor,
-        h = 1400*scalingFactor,
+    var w = (width*2 - 200)*scalingFactor,
+        h = (width*2 - 200)*scalingFactor,
         rx = (w / 2),
         ry = (h / 2),
         m0,
