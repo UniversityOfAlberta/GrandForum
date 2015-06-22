@@ -108,7 +108,7 @@ class DBFunctions {
     static $lastResult;
     static $dbr;
     static $dbw;
-    static $queryDebug = false;
+    static $queryDebug = true;
     
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
