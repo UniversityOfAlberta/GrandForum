@@ -229,6 +229,8 @@ class Person extends BackboneModel {
         $name = str_replace("'", "", $name);
         $name = str_replace(".", "", $name);
         $name = str_replace("*", "", $name);
+        $name = str_replace("And ", "", $name);
+        $name = str_replace("and ", "", $name);
         $name = trim($name);
         return $name;
     }
