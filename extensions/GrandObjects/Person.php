@@ -1509,7 +1509,7 @@ class Person extends BackboneModel {
         if($this->university !== false){
             return $this->university;
         }
-        $this->university = self::$universityCache[$this->id];
+        $this->university = @self::$universityCache[$this->id];
         return $this->university;
     }
 

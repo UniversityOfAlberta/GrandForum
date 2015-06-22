@@ -11,8 +11,8 @@ class PublicChordTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
 	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
-	    $chord->height = 700;
-	    $chord->width = 700;
+	    $chord->height = 600;
+	    $chord->width = 600;
 	    $this->html = "<div><a class='button' onClick='$(\"#help{$chord->index}\").show();$(this).hide();'>Show Help</a>
 	        <div id='help{$chord->index}' style='display:none;'>
 	            <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
