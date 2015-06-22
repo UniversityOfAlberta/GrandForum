@@ -76,7 +76,7 @@ class Person extends BackboneModel {
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
-        self::$cache[$person->name] = $person;
+        self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
     
@@ -86,7 +86,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given name
      */
     static function newFromName($name){
-        $name = str_replace(' ', '.', $name);
+        $name = strtolower(str_replace(' ', '.', $name));
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
         }
@@ -97,7 +97,7 @@ class Person extends BackboneModel {
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
-        self::$cache[$person->name] = $person;
+        self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
     
@@ -162,10 +162,11 @@ class Person extends BackboneModel {
      */
     static function newFromNameLike($name){
         $name = Person::cleanName($name);
+        $name = strtolower($name);
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
-            $data = array(0 => self::$namesCache[$name]);
+            $data[] = self::$namesCache[$name];
         }
         return new Person($data);
     }
@@ -237,7 +238,6 @@ class Person extends BackboneModel {
      */
     static function generateAliasCache(){
         if(count(self::$aliasCache) == 0){
-            self::generateNamesCache();
             $data = DBFunctions::select(array('mw_user_aliases' => 'ua',
                                               'mw_user' => 'u'),
                                         array('ua.alias',
@@ -281,19 +281,19 @@ class Person extends BackboneModel {
                 $lastName = ($row['last_name'] != "") ? $row['last_name'] : @$exploded[1];
                 $middleName = $row['middle_name'];
                 self::$idsCache[$row['user_id']] = $row;
-                self::$namesCache[$row['user_name']] = $row;
-                self::$namesCache["$firstName $lastName"] = $row;
-                self::$namesCache["$lastName $firstName"] = $row;
-                self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
-                self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
-                self::$namesCache[substr($firstName, 0, 1)." $lastName"] = $row;
+                self::$namesCache[strtolower($row['user_name'])] = $row;
+                self::$namesCache[strtolower("$firstName $lastName")] = $row;
+                self::$namesCache[strtolower("$lastName $firstName")] = $row;
+                self::$namesCache[strtolower("$firstName ".substr($lastName, 0, 1))] = $row;
+                self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
+                self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                    self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
+                    self::$namesCache[strtolower(str_replace("&nbsp;", " ", $row['user_real_name']))] = $row;
                 }
                 if($middleName != ""){
-                    self::$namesCache["$firstName $middleName $lastName"] = $row;
-                    self::$namesCache["$firstName ".substr($middleName, 0, 1)." $lastName"] = $row;
-                    self::$namesCache["$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)] = $row;
+                    self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
+                    self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
+                    self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
                 }
             }
         }
@@ -402,11 +402,13 @@ class Person extends BackboneModel {
     static function generateAllPeopleCache(){
         if(count(self::$allPeopleCache) == 0){
             $data = DBFunctions::select(array('mw_user'),
-                                        array('user_id', 'user_name'),
+                                        array('user_id'),
                                         array('deleted' => NEQ(1),
                                               'candidate' => NEQ(1)),
                                         array('user_name' => 'ASC'));
-            self::$allPeopleCache = $data;
+            foreach($data as $row){
+                self::$allPeopleCache[] = $row['user_id'];
+            }
         }
     }
     
@@ -521,9 +523,7 @@ class Person extends BackboneModel {
         self::generateAllPeopleCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+            $person = Person::newFromId($row);
             if($person->isRoleAtLeast(STAFF)){
                 $people[] = $person;
             }
@@ -539,14 +539,26 @@ class Person extends BackboneModel {
     static function getAllPeople($filter=null){
         $me = Person::newFromWgUser();
         self::generateAllPeopleCache();
+        self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                    $people[] = $person;
+            if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
+                if($filter != null && $filter != "all"){
+                    $found = false;
+                    foreach(self::$rolesCache[$row] as $role){
+                        if($role['role'] == $filter){
+                            $found = true;
+                        }
+                    }
+                    if(!$found){
+                        continue;
+                    }
+                }
+                $person = Person::newFromId($row);
+                if($person->getName() != "WikiSysop"){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
+                        $people[] = $person;
+                    }
                 }
             }
         }
@@ -564,9 +576,7 @@ class Person extends BackboneModel {
         self::generateAllPeopleCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+            $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
                 $people[] = $person;
             }
@@ -584,9 +594,7 @@ class Person extends BackboneModel {
         self::generateAllPeopleCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+            $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
                 $people[] = $person;
             }
@@ -604,9 +612,7 @@ class Person extends BackboneModel {
         self::generateAllPeopleCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+            $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
                 if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
@@ -1498,7 +1504,7 @@ class Person extends BackboneModel {
         if($this->university !== false){
             return $this->university;
         }
-        $this->university = @self::$universityCache[$this->id];
+        $this->university = self::$universityCache[$this->id];
         return $this->university;
     }
 
