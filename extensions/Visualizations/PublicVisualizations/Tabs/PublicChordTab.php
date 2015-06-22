@@ -28,7 +28,7 @@ class PublicChordTab extends AbstractTab {
 	}
 	
 	static function getPublicChordData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : date('Y');
 	    if($action == "getPublicChordData"){
@@ -146,7 +146,7 @@ class PublicChordTab extends AbstractTab {
 
             $array['dateOptions'] = $dates;
                                       
-            $array['sortOptions'] = array(array());
+            $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
