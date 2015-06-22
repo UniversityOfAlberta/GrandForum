@@ -146,8 +146,7 @@ class PublicChordTab extends AbstractTab {
 
             $array['dateOptions'] = $dates;
                                       
-            $array['sortOptions'] = array(array('name' => 'Theme', 'value' => 'theme', 'checked' => 'checked'),
-                                          array('name' => 'Project Name', 'value' => 'name', 'checked' => ''));
+            $array['sortOptions'] = array(array());
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
