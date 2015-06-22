@@ -101,7 +101,67 @@ class Project extends BackboneModel {
                                           's.type',
                                           's.status',
                                           's.bigbet'),
-                                    array('p.name' => $name,
+                                    array('LOWER(p.name)' => strtolower(trim($name)),
+                                          'e.new_id' => EQ(COL('p.id')),
+                                          's.evolution_id' => EQ(COL('e.id'))),
+                                    array('e.id' => 'DESC'),
+                                    array(1));
+        if (count($data) > 0){
+            $data1 = DBFunctions::select(array('grand_project_evolution'),
+                                         array('new_id',
+                                               'project_id'),
+                                         array('project_id' => $data[0]['id'],
+                                               'new_id' => $data[0]['id']),
+                                         array('date' => 'DESC'),
+                                         array(1));
+            if(count($data1) > 0){
+                $project = Project::newFromId($data1[0]['new_id']);
+                self::$cache[$data1[0]['project_id']] = &$project;
+                self::$cache[$name] = &$project;
+                return $project;
+            }
+            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
+                $project = new Project($data);
+            }
+            else{
+                return null;
+            }
+            $project = new Project($data);
+            //self::$cache[$project->id] = &$project;
+            //self::$cache[$project->name] = &$project;
+            return $project;
+        }
+        else
+            return null;
+    }
+    
+    /**
+     * Returns a new Project from the given title (may not be unique)
+     * @param string $title The title (fullName) of the Project
+     * @return Project The Project with the given title
+     */
+    static function newFromTitle($title){
+        $me = Person::newFromWgUser();
+        if(isset(self::$cache[$title])){
+            return self::$cache[$title];
+        }
+        $data = DBFunctions::select(array('grand_project' => 'p',
+                                          'grand_project_evolution' => 'e',
+                                          'grand_project_status' => 's',
+                                          'grand_project_descriptions' => 'd'),
+                                    array('p.id',
+                                          'p.name',
+                                          'p.phase',
+                                          'p.parent_id',
+                                          'e.action',
+                                          'e.effective_date',
+                                          'e.id' => 'evolutionId',
+                                          'e.clear',
+                                          's.type',
+                                          's.status',
+                                          's.bigbet'),
+                                    array('LOWER(d.full_name)' => strtolower(trim($title)),
+                                          'p.id' => EQ(COL('d.project_id')),
                                           'e.new_id' => EQ(COL('p.id')),
                                           's.evolution_id' => EQ(COL('e.id'))),
                                     array('e.id' => 'DESC'),

@@ -34,8 +34,15 @@
         }
         
         function getValue($key, $subKey=null){
-            if($subKey == null) return $this->config[$key];
-            else return $this->config[$key][$subKey];
+            if($subKey == null){
+                return @$this->config[$key];
+            }
+            else if(isset($this->config[$key][$subKey])){
+                return $this->config[$key][$subKey];
+            }
+            else{
+                return "";
+            }
         }
         
         function setConst($key, $value){

@@ -163,13 +163,13 @@ class UploadReportItem extends AbstractReportItem {
                     $this->fileUploadForm();
                     exit;
                 }
-                else if(!UploadForm::checkFileExtension($finalExt, $wgFileExtensions)){
+                else if(!UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
                     echo "<div class='error'>Uploads of the type <i>.{$finalExt}</i> are not allowed.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
                     exit;
                 }
-                else if(!UploadForm::verifyExtension($mime, $finalExt)){
+                else if(!UploadBase::verifyExtension($mime, $finalExt)){
                     echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
