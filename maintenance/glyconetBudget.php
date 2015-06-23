@@ -95,7 +95,8 @@ foreach($allPeople as $person){
         }
         $objReader->setReadDataOnly(true);
         $obj = $objReader->load($tmpn);
-        for($i=1; $i<12; $i++){
+        $sheets = $obj->getAllSheets();
+        for($i=1; $i<count($sheets); $i++){
             $obj->setActiveSheetIndex($i);
             $cells = $obj->getActiveSheet()->toArray();
             $project = "";
