@@ -4,12 +4,14 @@ class BudgetReportItem extends AbstractReportItem {
 
 	function render(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+		$structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+		$template = $this->getAttr('template', 'GRAND Researcher Budget Request (2015-16).xls');
 		if(isset($_GET['downloadBudget'])){
 		    $data = $this->getBlobValue();
 		    if($data != null){
 		        $person = Person::newFromId($wgUser->getId());
 		        header('Content-Type: application/vnd.ms-excel');
-		        header("Content-disposition: attachment; filename='{$person->getNameForForms()}_Budget.xls'");
+		        header("Content-disposition: attachment; filename=\"{$person->getNameForForms()}_Budget.xls\"");
 		        echo $data;
 		        exit;
 		    }
@@ -31,7 +33,7 @@ class BudgetReportItem extends AbstractReportItem {
                                     var lastHeight = $('#budgetFrame' + frameId).height();
                                     $('#budgetFrame' + frameId).remove();
                                     frameId++;
-                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe>\");
+                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe>\");
                                     $('#budgetFrame' + frameId).height(lastHeight);
                                 }
                                 function alertsize(pixels){
@@ -40,36 +42,51 @@ class BudgetReportItem extends AbstractReportItem {
                                     $('#budgetFrame' + frameId).css('max-height', pixels);
                                 }
                             </script>");
-		$wgOut->addHTML("<h2>Budget Preview</h2>");
 		$wgOut->addHTML("<div>");
-		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/GRAND Researcher Budget Request (2015-16).xls'>".(REPORTING_YEAR+1)."-".(REPORTING_YEAR+2)." Budget Template</a></li></ul>");
+		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>Budget Template</a></li></ul>");
 		$wgOut->addHTML("<h2>Budget Upload</h2>
-		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
+		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
 	function renderForPDF(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-        $data = $this->getBlobValue();
-		if($data !== null){
-		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-		    $budget = $this->filterCols($budget);
-		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
-		    self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
-		    $errors = self::checkDeletedProjects($budget, $this->getReport()->person, $this->getReport()->year);
-		    foreach($errors as $key => $error){
-	            $budget->errors[0][] = $error;
-	        }
-	        $budget = $this->colorBudget($budget);
-		    $wgOut->addHTML($budget->renderForPDF());
-		}
-		else{
-		    $wgOut->addHTML("You have not yet uploaded a budget");
+	    if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
+	        $data = $this->getBlobValue();
+            $link = $this->getDownloadLink();
+            $html = "";
+            if($data !== null && $data != ""){
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls'>Download&nbsp;<b>Budget</b></a>";
+            }
+            $item = $this->processCData($html);
+            $wgOut->addHTML($item);
+	    }
+	    else{
+	        $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+            $data = $this->getBlobValue();
+		    if($data !== null){
+		        $budget = new Budget("XLS", $structure, $data);
+		        $budget = $this->filterCols($budget);
+		        $budget = $budget->copy()->filterCols(V_PROJ, array(""));
+		        self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
+		        $errors = self::checkDeletedProjects($budget, $this->getReport()->person, $this->getReport()->year);
+		        foreach($errors as $key => $error){
+	                $budget->errors[0][] = $error;
+	            }
+	            if($structure == REPORT2_STRUCTURE){
+	                $budget = $this->colorBudget($budget);
+	            }
+		        $wgOut->addHTML($budget->renderForPDF());
+		    }
+		    else{
+		        $wgOut->addHTML("You have not yet uploaded a budget");
+		    }
 		}
 	}
 	
 	function budgetUploadForm(){
 	    global $wgServer, $wgScriptPath;
+	    $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 	    if(isset($_POST['upload'])){
 	        $this->save();
 	    }
@@ -132,15 +149,15 @@ class BudgetReportItem extends AbstractReportItem {
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
 	                        <input type='submit' name='upload' value='Upload' />
 	                    </form>";
 	            
 	    $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
-		    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
+		    $budget = new Budget("XLS", $structure, $data);
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
@@ -150,7 +167,9 @@ class BudgetReportItem extends AbstractReportItem {
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
 	        }
-	        $budget = $this->colorBudget($budget);
+	        if($structure == REPORT2_STRUCTURE){
+	            $budget = $this->colorBudget($budget);
+	        }
 		    echo $budget->render();
 		}
 		else{
@@ -254,23 +273,26 @@ class BudgetReportItem extends AbstractReportItem {
 	}
 	
 	static function checkDeletedProjects($budget, $person, $year){
+	    global $config;
 	    $errors = array();
-        $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
-        foreach($projects as $rowN => $row){
-            foreach($row as $colN => $proj){
-                $project = Project::newFromName($proj->getValue());
-                if($project != null && $project->getName() != null){
-                    if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not continuing next year";
-                    }
-                    if($project->getPhase() != PROJECT_PHASE){
-                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
-                    }
-                    if($project->isSubProject()){
-                        $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a primary project";
-                    }
-                    if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                        $budget->xls[$rowN][$colN]->error = "You are not a member of '{$project->getName()}' between ".($year+1).REPORTING_NCE_START_MONTH." and ".($year+2).REPORTING_NCE_END_MONTH;
+	    if($config->getValue('networkName') == 'GRAND'){
+            $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
+            foreach($projects as $rowN => $row){
+                foreach($row as $colN => $proj){
+                    $project = Project::newFromName($proj->getValue());
+                    if($project != null && $project->getName() != null){
+                        if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
+                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not continuing next year";
+                        }
+                        if($project->getPhase() != PROJECT_PHASE){
+                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
+                        }
+                        if($project->isSubProject()){
+                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a primary project";
+                        }
+                        if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
+                            $budget->xls[$rowN][$colN]->error = "You are not a member of '{$project->getName()}' between ".($year+1).REPORTING_NCE_START_MONTH." and ".($year+2).REPORTING_NCE_END_MONTH;
+                        }
                     }
                 }
             }

@@ -233,11 +233,8 @@
                 </ul>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
             <![CDATA[
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Budget%20Template.xls">budget template</a> and upload it below.
-                </p>
                 {$item}
             ]]>
         </ReportItem>

@@ -24,7 +24,7 @@ class VProjCell extends Cell{
     }
     
     function render(){
-        return "<b>{$this->value}</b>";
+        return "{$this->value}";
     }
 }
 
