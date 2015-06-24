@@ -279,7 +279,7 @@ function create(holder, data, clickable, fn){
             
             var minDim = Math.min(width, height);
             holder.css('position', 'relative');
-            holder.append("<div style='width:" + minDim + "px;height:" + minDim + "px;vertical-align:top;display:inline-block;' id='" + holder.attr('id') + "doughnut'></div>");
+            holder.append("<div style='width:" + minDim + "px;height:" + minDim + "px;vertical-align:top;display:inline-block;position:absolute;top:0;left:0;z-index:101;' id='" + holder.attr('id') + "doughnut'></div>");
             
             dimension = minDim - 20;
 
