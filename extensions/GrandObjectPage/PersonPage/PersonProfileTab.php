@@ -26,9 +26,15 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
-        $extra[] = $this->showCloud($this->person, $this->visibility);
+        if($this->person->isRole(NI) || 
+           $this->person->isRole(HQP) || 
+           $this->person->isRole(EXTERNAL)){
+            // Only show the word cloud for 'researchers'
+            $extra[] = $this->showCloud($this->person, $this->visibility);
+        }
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
         $extra[] = $this->showTwitter($this->person, $this->visibility);
+        
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
