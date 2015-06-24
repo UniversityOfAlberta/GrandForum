@@ -570,14 +570,15 @@ EOF;
             $departments = Person::getAllDepartments();
             $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
             sort($organizations);
-            $positionCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
             $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-            $departmentCombo = new ComboBox('department', "Department", $university['department'], $departments);
-            $positionCombo->attr('style', 'max-width: 250px;');
-            $departmentCombo->attr('style', 'max-width: 250px;');
+            $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+            $titleCombo->attr('style', 'max-width: 250px;');
+            $orgCombo->attr('style', 'max-width: 250px;');
+            $deptCombo->attr('style', 'max-width: 250px;');
             $this->html .= "<tr>
                                 <td align='right'><b>Title:</b></td>
-                                <td>{$positionCombo->render()}
+                                <td>{$titleCombo->render()}
                                 </td>
                             </tr>
                             <tr>
@@ -587,7 +588,7 @@ EOF;
                             </tr>
                             <tr>
                                 <td align='right'><b>Department:</b></td>
-                                <td>{$departmentCombo->render()}</td>
+                                <td>{$deptCombo->render()}</td>
                             </tr>";
         }
         $this->html .= "</table>";
