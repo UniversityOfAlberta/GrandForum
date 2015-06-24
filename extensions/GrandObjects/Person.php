@@ -150,7 +150,9 @@ class Person extends BackboneModel {
      */
     static function newFromWgUser(){
         global $wgUser;
-        return Person::newFromId($wgUser->getId());
+        $person = Person::newFromId($wgUser->getId());
+        $person->user = $wgUser;
+        return $person;
     }
     
     /**
@@ -389,11 +391,12 @@ class Person extends BackboneModel {
      */
     static function generateAuthorshipCache(){
         if(count(self::$authorshipCache) == 0){
-            $sql = "SELECT *
-                    FROM `grand_product_authors`";
-            $data = DBFunctions::execSQL($sql);
+             $data = DBFunctions::select(array('grand_product_authors'),
+                                        array('author', 'product_id'));
             foreach($data as $row){
-                self::$authorshipCache[$row['author']][] = $row['product_id'];
+                if(is_numeric($row['author'])){
+                    self::$authorshipCache[$row['author']][] = $row['product_id'];
+                }
             }
         }
     }
@@ -2847,7 +2850,6 @@ class Person extends BackboneModel {
                 }
             }
         }
-        
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
             if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
