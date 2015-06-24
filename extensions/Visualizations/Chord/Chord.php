@@ -182,8 +182,9 @@ class Chord extends Visualization {
                 .data(chord.chords)
               .enter().append("path")
                 .style("fill-opacity", 0.67)
-                .style("stroke-width", '0.2px')
+                .style("stroke-width", '1px')
                 .style("stroke", "#000")
+                .style("stroke-opacity", 0.2)
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) { return fill(d.target.index); })
                 .style("opacity", 1);
