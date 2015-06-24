@@ -600,7 +600,7 @@ abstract class QueryableTable {
                         $span = $Cell->span;
                         $class .= " explicitSpan";
                     }
-                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                    $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                     ++$i;
                 }
                 $ret[] = "</tr>\n";
