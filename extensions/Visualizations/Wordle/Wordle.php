@@ -108,7 +108,7 @@ class Wordle extends Visualization {
             if(maxWidth == "100%"){
                 maxWidth = $("#vis{$this->index}").width();
                 setInterval(function(){
-                    if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width()){
+                    if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width() && Math.abs(maxWidth - $("#vis{$this->index}").width()) > 25){
                         maxWidth = $("#vis{$this->index}").width();
                         for(fId in data){
                             var f = data[fId].freq;
