@@ -16,7 +16,7 @@ class PersonProfileTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser;
         $this->person->getLastRole();
-        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
+        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         if($this->person->getProfile() != ""){
