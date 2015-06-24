@@ -536,7 +536,7 @@ EOF;
             $organizations = array_merge(array(""), Person::getAllPartnerNames());
             $depts = array_merge(array(""), Person::getAllPartnerDepartments());
             $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
-            $orgCombo = new ComboBox('org', "Organization", $person->getPartnerName(), $organizations);
+            $orgCombo = new ComboBox('org', "Institution", $person->getPartnerName(), $organizations);
             $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
             $orgCombo->attr('style', 'max-width: 250px;');
             $deptCombo->attr('style', 'max-width: 250px;');
@@ -547,7 +547,7 @@ EOF;
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Organization:</b></td>
+                                <td align='right'><b>Institution:</b></td>
                                 <td>{$orgCombo->render()}
                                 </td>
                             </tr>
@@ -558,7 +558,8 @@ EOF;
                             </tr>";
         }
         else{
-            $universities = University::getAllUniversities();
+            $universities = new Collection(University::getAllUniversities());
+            $uniNames = $universities->pluck('name');
             $positions = Person::getAllPositions();
             $myPosition = "";
             foreach($positions as $key => $position){
@@ -567,7 +568,10 @@ EOF;
                 }
             }
             $departments = Person::getAllDepartments();
+            $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
+            sort($organizations);
             $positionCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
             $departmentCombo = new ComboBox('department', "Department", $university['department'], $departments);
             $positionCombo->attr('style', 'max-width: 250px;');
             $departmentCombo->attr('style', 'max-width: 250px;');
@@ -577,16 +581,10 @@ EOF;
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right'><b>University:</b></td>
-                                <td><select name='university'>";
-            foreach($universities as $uni){
-                $selected = "";
-                if($uni->getName() == $university['university']){
-                    $selected = " selected";
-                }
-                $this->html .= "<option$selected>{$uni->getName()}</option>";
-            }
-            $this->html .= "</select></td></tr>
+                                <td align='right'><b>Institution:</b></td>
+                                <td>{$orgCombo->render()}
+                                </td>
+                            </tr>
                             <tr>
                                 <td align='right'><b>Department:</b></td>
                                 <td>{$departmentCombo->render()}</td>
