@@ -21,6 +21,7 @@ class Person extends BackboneModel {
     var $user = null;
     var $name;
     var $email;
+    var $phone;
     var $nationality;
     var $gender;
     var $photo;
@@ -259,6 +260,15 @@ class Person extends BackboneModel {
      */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
+            $phoneNumbers = array();
+            $phoneData = DBFunctions::select(array('grand_user_telephone'),
+                                             array('user_id',
+                                                   'area_code', 
+                                                   'number'),
+                                             array('primary_indicator' => EQ(1)));
+            foreach($phoneData as $row){
+                $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
+            }
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
                                               'user_name',
@@ -280,6 +290,9 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
+                if(isset($phoneNumbers[$row['user_id']])){
+                    $row['phone'] = @$phoneNumbers[$row['user_id']];
+                }
                 $exploded = explode(".", $row['user_name']);
                 $firstName = ($row['first_name'] != "") ? $row['first_name'] : @$exploded[0];
                 $lastName = ($row['last_name'] != "") ? $row['last_name'] : @$exploded[1];
@@ -687,6 +700,7 @@ class Person extends BackboneModel {
             $this->honorific = @$data[0]['honorific'];
             $this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];
+            $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
@@ -727,6 +741,7 @@ class Person extends BackboneModel {
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName(),
                       'email' => $this->getEmail(),
+                      'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
                       'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
@@ -1070,12 +1085,18 @@ class Person extends BackboneModel {
     // Returns the email of this Person
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
-            return $this->email;
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
+            return "{$this->email}";
         }
-        else{
-            return "";
+        return "";
+    }
+    
+    function getPhoneNumber(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
+            return "{$this->phone}";
         }
+        return "";
     }
     
     // Returns the gender of this Person
