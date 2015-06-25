@@ -34,7 +34,7 @@ foreach($allProjects as $project){
     }
     $data = file_get_contents($project->getName().".xlsx");
     $type = BLOB_EXCEL;
-    $proj = 0;
+    $proj = $project->getId();
     $report = RP_LEADER;
     $section = LDR_BUDGET;
     $item = LDR_BUD_UPLOAD;

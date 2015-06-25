@@ -202,7 +202,7 @@ class ProjectPage {
             }
             $projects = array_values($projects);
             foreach($projects as $project){
-                $selected = ($wgTitle->getNSText() == $project->getName()) ? "selected" : "";
+                $selected = (str_replace("_", " ", $wgTitle->getNSText()) == $project->getName()) ? "selected" : "";
                 $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
                 $subprojects = $project->getSubProjects();
                 if(count($subprojects) > 0){
