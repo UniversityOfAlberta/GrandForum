@@ -45,6 +45,7 @@ define('SUPPLEMENTAL_STRUCTURE', 1);
 define('REPORT_STRUCTURE', 2);
 define('REPORT2_STRUCTURE', 3);
 define('GLYCONET_BUDGET_STRUCTURE', 4);
+define('AGEWELL_BUDGET_STRUCTURE', 5);
 
 $budgetStructures = array();
 
@@ -100,6 +101,34 @@ $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
           array(HEAD4,      MONEY,           MONEY,       MONEY,       MONEY,       BLANK,  NA,     HEAD4,      MONEY,       MONEY,       MONEY,       MONEY,       BLANK,       NA,          NA,         NA),
           array(HEAD4,      MONEY,           MONEY,       MONEY,       MONEY,       BLANK,  NA,     HEAD4,      MONEY,       MONEY,       MONEY,       MONEY,       BLANK,       NA,          NA,         NA),
           array(HEAD1_ROW,  HEAD_MONEY,      HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,  NA,     HEAD1_ROW,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,       NA,          NA,         NA),
+    );
+    
+$budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
+    array(array(BLANK,      HEAD,       NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD_ROW,   NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD_ROW,   HEAD_ROW,   NA,         NA,         HEAD_ROW,   NA,         NA,         BLANK),
+          array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,   NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
+          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(READ,       NA,         NA,         NA,         NA,         NA,         NA,         NA)
     );
 
 $budgetStructures[SUPPLEMENTAL_STRUCTURE] =

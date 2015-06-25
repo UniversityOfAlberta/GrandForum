@@ -13,7 +13,7 @@ function addAllocation($year, $amount, $ni, $project){
                               'project_id' => $project->getId(),
                               'year' => $year,
                               'amount' => $amount));
-    echo "\tAllocation added for {$ni->getName()}:{$project->getName()} ".($year+1)."\n";
+    echo "\tAllocation added for {$ni->getName()}:{$project->getName()} ".($year)."\n";
 }
 
 $year = REPORTING_YEAR;

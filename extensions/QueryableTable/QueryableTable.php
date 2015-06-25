@@ -13,6 +13,7 @@ define('HEAD2', -106);
 define('HEAD3', -107);
 define('HEAD4', -108);
 define('HEAD1_ROW', -109);
+define('HEAD2_ROW', -110);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
@@ -26,6 +27,7 @@ $cellTypes[HEAD2] = "Head2Cell";
 $cellTypes[HEAD3] = "Head3Cell";
 $cellTypes[HEAD4] = "Head4Cell";
 $cellTypes[HEAD1_ROW] = "Head1RowCell";
+$cellTypes[HEAD2_ROW] = "Head2RowCell";
 
 autoload_register('QueryableTable/Cells');
 autoload_register('QueryableTable');
