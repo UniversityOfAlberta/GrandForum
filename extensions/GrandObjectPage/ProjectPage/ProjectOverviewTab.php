@@ -111,7 +111,7 @@ class ProjectOverviewTab extends AbstractTab {
         if(count($people) > 0){
             $this->html .= "<br /><table>";
             foreach($people as $person){
-                $alloc = $person->getAllocatedAmount($year, $this->project);
+                $alloc = $person->getAllocatedAmount($year+1, $this->project);
                 if($alloc > 0){
                     $alloc = number_format($alloc, 2);
                     $this->html .= "<tr><td align='right'><b>{$person->getNameForForms()}:</b>&nbsp;</td><td align='right'>\${$alloc}</td></tr>";
