@@ -96,6 +96,36 @@ foreach($allPeople as $person){
         $objReader->setReadDataOnly(true);
         $obj = $objReader->load($tmpn);
         $sheets = $obj->getAllSheets();
+        $obj->setActiveSheetIndex(0);
+        $cells = $obj->getActiveSheet()->toArray();
+        foreach($cells as $rowN => $row){
+            foreach($row as $colN => $cell){
+                if($rowN == PROJ_ROW){
+                    if($colN == NAME_COL){
+                        $project = $cell;
+                    }
+                }
+            }
+        }
+        $p = Project::newFromName($project);
+        if($p == null){
+            $p = Project::newFromTitle($project);
+        }
+        if($p == null){
+            echo "\tProject not valid\n";
+            $valid = false;
+        }
+        else{
+            $type = BLOB_EXCEL;
+            $proj = $p->getId();
+            $report = RP_LEADER;
+            $section = LDR_BUDGET;
+            $item = LDR_BUD_UPLOAD;
+            $subitem = 0;
+            $blob = new ReportBlob($type, $year, 0, $proj);
+            $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
+            $blob->store($data, $blob_address);
+        }
         for($i=1; $i<count($sheets); $i++){
             $obj->setActiveSheetIndex($i);
             $cells = $obj->getActiveSheet()->toArray();

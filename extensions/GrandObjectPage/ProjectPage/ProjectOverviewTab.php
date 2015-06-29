@@ -31,7 +31,7 @@ class ProjectOverviewTab extends AbstractTab {
                     $this->html .= "<h2 style='page-break-before:always;'>$y</h2>";
                 }
                 $this->showExecutiveSummary($y);
-                $this->showBudgetSummary($y, $y);
+                $this->showBudgetSummary($y-1, $y-1);
                 $this->showResearcherProductivity($y, $y);
                 $this->showContributionsByUniversity($y, $y);
                 $this->showHQPBreakdown($y, $y);
