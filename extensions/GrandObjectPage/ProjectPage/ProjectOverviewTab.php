@@ -103,7 +103,7 @@ class ProjectOverviewTab extends AbstractTab {
             $this->html .= $budget->render();
         }
         $people = array();
-        $tmpPeople = $this->project->getAllPeopleDuring(NI, $year."-01-01", $end."-12-31");
+        $tmpPeople = $this->project->getAllPeopleDuring(NI, ($year+1)."-01-01", ($end+1)."-12-31");
         foreach($tmpPeople as $person){
             $people[$person->getReversedName()] = $person;
         }
