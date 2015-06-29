@@ -104,15 +104,15 @@ $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
     );
     
 $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
-    array(array(BLANK,      HEAD,       NA,         NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      HEAD1_ROW,  READ,       NA,         NA,         NA,         NA,         NA),
-          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
+    array(array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
           array(BLANK,      HEAD_ROW,   NA,         NA,         NA,         NA,         NA,         NA),
-          array(HEAD_ROW,   HEAD_ROW,   NA,         NA,         HEAD_ROW,   NA,         NA,         BLANK),
+          array(HEAD_ROW,   HEAD_ROW,   NA,         NA,         HEAD_ROW,   NA,         NA,         HEAD_ROW),
           array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
           array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),

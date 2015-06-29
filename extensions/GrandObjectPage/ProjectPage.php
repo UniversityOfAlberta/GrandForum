@@ -52,6 +52,7 @@ class ProjectPage {
                     TabUtils::clearActions();
                 }
                 else if($project != null && 
+                        $project->getType() != 'Administrative' &&
                         !$me->isMemberOf($project) && 
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
@@ -70,7 +71,7 @@ class ProjectPage {
                 $isLead = $project->userCanEdit();
             }
             
-            $isMember = $me->isMemberOf($project);
+            $isMember = ($me->isMemberOf($project) || $project->getType() == 'Administrative');
             
             //Adding support for GET['edit']
             if(isset($_GET['edit'])){
@@ -80,7 +81,7 @@ class ProjectPage {
 
             $isLead = ($isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-            $isMember = true;
+
             $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace
@@ -115,7 +116,7 @@ class ProjectPage {
                 /*if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }*/
-                if($project->getStatus() != 'Proposed'){
+                if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));

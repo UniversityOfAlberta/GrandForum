@@ -31,7 +31,7 @@ class ProjectOverviewTab extends AbstractTab {
                     $this->html .= "<h2 style='page-break-before:always;'>$y</h2>";
                 }
                 $this->showExecutiveSummary($y);
-                $this->showBudgetSummary($y-1, $y-1);
+                $this->showBudgetSummary($y, $y);
                 $this->showResearcherProductivity($y, $y);
                 $this->showContributionsByUniversity($y, $y);
                 $this->showHQPBreakdown($y, $y);
@@ -77,70 +77,48 @@ class ProjectOverviewTab extends AbstractTab {
     }
     
     function showBudgetSummary($year, $end){
-        $fullBudget = new Budget(array(array(HEAD, HEAD, HEAD)), array(array("Categories for April 1, ".($year+1).", to March 31, ".($end+2), NI."s")));
-            
-        $niTotals = array();
-        for($y=$year;$y<=$end;$y++){
-            $people = array();
-            foreach($this->project->getAllPeopleDuring(NI, $y."-04-01", ($y+1)."-03-31") as $person){
-                if(!isset($people[$person->getId()])){
-                    $budget = $person->getRequestedBudget($y);
-                    if($budget != null){
-                        $b = $budget->copy()->rasterize()->select(V_PROJ, array($this->project->getName()))->limit(6, 16);
-                        if($b->nCols() > 0 && $b->nRows() > 0){
-                            $niTotals[] = $b;
-                            $people[$person->getId()] = true;
-                        }
-                    }
-                }
-            }
+        global $config;
+        if($config->getValue('networkName') == 'AGE-WELL'){
+            $structure = AGEWELL_BUDGET_STRUCTURE;
         }
-        if(count($niTotals) == 0){
+        else if($config->getValue('networkName') == 'GlycoNet'){
+            $structure = GLYCONET_BUDGET_STRUCTURE;
+        }
+        else{
             return;
         }
-        @$niTotals = Budget::join_tables($niTotals);
-        
-        $cubedNI = new Budget();
-        if($niTotals != null){
-            $cubedNI = @$niTotals->cube();
+        $type = BLOB_EXCEL;
+        $proj = $this->project->getId();
+        $report = RP_LEADER;
+        $section = LDR_BUDGET;
+        $item = LDR_BUD_UPLOAD;
+        $subitem = 0;
+        $blob = new ReportBlob($type, $year, 0, $proj);
+        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        if($data != null){
+            $budget = new Budget("XLS", $structure, $data);
+            $this->html .= "<h3>Budget Summary</h3>";
+            $this->html .= $budget->render();
         }
-        
-        $categoryBudget = new Budget(array(array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD1),
-                                           array(HEAD1),
-                                           array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2)), 
-                                     array(array("1) Salaries and stipends"),
-                                           array("a) Graduate students"),
-                                           array("b) Postdoctoral fellows"),
-                                           array("c) Technical and professional assistants"),
-                                           array("d) Undergraduate students"),
-                                           array("2) Equipment"),
-                                           array("a) Purchase or rental"),
-                                           array("b) Maintenance costs"),
-                                           array("c) Operating costs"),
-                                           array("3) Materials and supplies"),
-                                           array("4) Computing costs"),
-                                           array("5) Travel expenses"),
-                                           array("a) Field trips"),
-                                           array("b) Conferences"),
-                                           array("c) GRAND annual conference")));
-                                        
-        $categoryBudget = @$categoryBudget->join($cubedNI->select(CUBE_ROW_TOTAL)->filter(CUBE_TOTAL)->filter(HEAD, array("TOTAL")));
-                                         
-        $fullBudget = $fullBudget->union($categoryBudget);
-        $this->html .= "<h3>Budget Summary (Requested)</h3>";
-        $this->html .= $fullBudget->cube()->render();
+        $people = array();
+        $tmpPeople = $this->project->getAllPeopleDuring(NI, $year."-01-01", $end."-12-31");
+        foreach($tmpPeople as $person){
+            $people[$person->getReversedName()] = $person;
+        }
+        ksort($people);
+        if(count($people) > 0){
+            $this->html .= "<br /><table>";
+            foreach($people as $person){
+                $alloc = $person->getAllocatedAmount($year, $this->project);
+                if($alloc > 0){
+                    $alloc = number_format($alloc, 2);
+                    $this->html .= "<tr><td align='right'><b>{$person->getNameForForms()}:</b>&nbsp;</td><td align='right'>\${$alloc}</td></tr>";
+                }
+            }
+            $this->html .= "</table>";
+        }
     }
     
     function showResearcherProductivity($year, $end){

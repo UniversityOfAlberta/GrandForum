@@ -1255,6 +1255,10 @@ input.other_option:focus {
     font-size: 94%;
 }
 
+.smallest {
+    font-size: 85%;
+}
+
 /* Backbone Cards */
 
 .small_card {
@@ -1629,5 +1633,5 @@ input.popupBlockSearch {
 /* Dashboard */
 
 table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
-    border-color: gray;
+    border-color: #555555;
 }

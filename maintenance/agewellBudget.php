@@ -21,18 +21,18 @@ $year = REPORTING_YEAR;
 define("NAME_COL", 3);
 define("NAME_ROW", 2);
 
-define("TOTAL_COL", 7);
+define("TOTAL_COL", 3);
 define("TOTAL_ROW", 21);
 
 $wgUser = User::newFromId(1);
 
 $allProjects = Project::getAllProjects();
 foreach($allProjects as $project){
-    if(!file_exists($project->getName().".xlsx")){
-        echo "Missing file '{$project->getName()}.xlsx'\n";
+    if(!file_exists($project->getName().".xls")){
+        echo "Missing file '{$project->getName()}.xls'\n";
         continue;
     }
-    $data = file_get_contents($project->getName().".xlsx");
+    $data = file_get_contents($project->getName().".xls");
     $type = BLOB_EXCEL;
     $proj = $project->getId();
     $report = RP_LEADER;

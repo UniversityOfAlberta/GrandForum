@@ -291,7 +291,7 @@ class Person extends BackboneModel {
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
                 if(isset($phoneNumbers[$row['user_id']])){
-                    $row['phone'] = @$phoneNumbers[$row['user_id']];
+                    $row['phone'] = $phoneNumbers[$row['user_id']];
                 }
                 $exploded = explode(".", $row['user_name']);
                 $firstName = ($row['first_name'] != "") ? $row['first_name'] : @$exploded[0];

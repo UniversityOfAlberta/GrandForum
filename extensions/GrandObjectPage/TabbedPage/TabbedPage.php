@@ -99,7 +99,7 @@ class TabbedPage {
         $i = 0;
         foreach($this->tabs as $tab){
             if($tab->html != ""){
-                $wgOut->addHTML("<div id='{$tab->id}'>{$tab->html}</div>");
+                $wgOut->addHTML("<div id='{$tab->id}' style='overflow-x:auto;'>{$tab->html}</div>");
                 if($tab->id == $activeTabIndex){
                     $active_tab = $i;
                 }
