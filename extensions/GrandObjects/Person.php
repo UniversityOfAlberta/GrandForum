@@ -2990,7 +2990,10 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $authors = $paper->getAuthors();
             foreach($authors as $author){
-                $coauthors[$author->getName()] = $author->getName();
+                if(!isset($coauthors[$author->getName()])){
+                    $coauthors[$author->getName()] = 0;
+                }
+                $coauthors[$author->getName()] += 1;
             }
         }
         return $coauthors;
