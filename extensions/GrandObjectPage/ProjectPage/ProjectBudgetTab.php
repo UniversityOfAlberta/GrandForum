@@ -43,7 +43,7 @@ class ProjectBudgetTab extends AbstractTab {
                 $this->html .= "<h3><a href='#'>".$i."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
 
-                $budget = $project->getAllocatedBudget($i-1);
+                $budget = $project->getAllocatedBudget($i);
                 if($budget != null){
                     $this->html .= $budget->render();
                     $people = array();
