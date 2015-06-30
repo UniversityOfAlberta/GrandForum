@@ -97,7 +97,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
         $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
-        $_POST['description'] = $this->project->getLongDescription();
+        $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
            $_POST['fullName'] != $this->project->getFullName()){
             $error = APIRequest::doAction('ProjectDescription', true);
