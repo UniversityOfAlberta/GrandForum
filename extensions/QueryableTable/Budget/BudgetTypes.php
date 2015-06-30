@@ -41,6 +41,7 @@ $cellTypes[V_PERS] = "VPersCell";
 $cellTypes[V_PERS_NOT_NULL] = "VPersNotNullCell";
 
 //Budget Structures
+define('NETWORK_BUDGET_STRUCTURE', 0);
 define('SUPPLEMENTAL_STRUCTURE', 1);
 define('REPORT_STRUCTURE', 2);
 define('REPORT2_STRUCTURE', 3);
@@ -48,6 +49,8 @@ define('GLYCONET_BUDGET_STRUCTURE', 4);
 define('AGEWELL_BUDGET_STRUCTURE', 5);
 
 $budgetStructures = array();
+
+$budgetStructures[NETWORK_BUDGET_STRUCTURE] = array(array());
 
 $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
     array(array(HEAD1,      V_PROJ,          NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),
