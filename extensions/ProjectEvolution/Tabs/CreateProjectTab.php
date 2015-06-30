@@ -173,8 +173,7 @@ EOF;
         $table->append($plRow);
         $table->append($champRow);
         $table->append($descRow);
-        $table->append($probRow);
-        $table->append($solRow);
+        $table->append($longDescRow);
         
         $form->append($table);
         $form->append($challengeFieldSet);
