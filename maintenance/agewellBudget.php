@@ -16,7 +16,7 @@ function addAllocation($year, $amount, $ni, $project){
     echo "\tAllocation added for {$ni->getName()}:{$project->getName()} ".($year)."\n";
 }
 
-$year = REPORTING_YEAR;
+$year = YEAR;
 
 define("NAME_COL", 3);
 define("NAME_ROW", 2);
@@ -37,9 +37,9 @@ foreach($allProjects as $project){
     $proj = $project->getId();
     $report = RP_LEADER;
     $section = LDR_BUDGET;
-    $item = LDR_BUD_UPLOAD;
+    $item = LDR_BUD_ALLOC;
     $subitem = 0;
-    $blob = new ReportBlob($type, $year-1, 0, $proj);
+    $blob = new ReportBlob($type, $year, 0, $proj);
     $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
     $blob->store($data, $blob_address);
     if($data == null || $data == ""){

@@ -126,7 +126,7 @@ class TabbedPage {
                 $('#currentViewSpinner').remove();
                 $('#{$this->id}').show();
         </script>");
-        foreach($this->tabs as $tab){
+        foreach($this->tabs as $key => $tab){
             $wgOut->addHTML("<script type='text/javascript'>
                 $('#{$this->id}').bind('tabsselect', function(event, ui) {
                     if(ui.panel.id == '{$tab->id}'){
@@ -134,6 +134,11 @@ class TabbedPage {
                     }
                 });
             </script>");
+            if(isset($_POST['edit']) && $_POST['edit'] == true){
+                $wgOut->addHTML("<script type='text/javascript'>
+                    $('#{$this->id}').tabs('disable', {$key});
+                </script>");
+            }
         }
     }
 

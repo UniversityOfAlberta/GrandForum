@@ -104,6 +104,7 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
+                $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
@@ -113,16 +114,11 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                /*if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
-                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
-                }*/
+                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
-                if(!$project->isSubProject() && $project->getStatus() != 'Proposed'){
-                    $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
-                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();

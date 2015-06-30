@@ -88,11 +88,6 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         $this->showChampions();
         $this->showDescription();
-
-        if(!$project->isSubProject()){
-            $this->showProblem();
-            $this->showSolution();
-        }
         
         return $this->html;
     }
@@ -102,11 +97,8 @@ class ProjectMainTab extends AbstractEditableTab {
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
         $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
-        $_POST['problem'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem']));
-        $_POST['solution'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution']));
+        $_POST['description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
-           $_POST['problem'] != $this->project->getProblem() ||
-           $_POST['solution'] != $this->project->getSolution() ||
            $_POST['fullName'] != $this->project->getFullName()){
             $error = APIRequest::doAction('ProjectDescription', true);
             if($error != ""){
@@ -325,52 +317,6 @@ EOF;
         $this->html .= $plusMinus->render();
         $this->html .= "</td><td></td></tr></table>";
     }
-    
-    /*
-    function showLeaders(){
-        global $wgUser, $wgServer, $wgScriptPath, $config;
-        $me = Person::newFromWgUser();
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        $leaders = $project->getLeaders(true); //only get id's
-        
-        $names = array("");
-        if($project->isSubProject()){
-            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
-            foreach($people as $person){
-                if($person->isRoleAtLeast(NI)){
-                    $names[$person->getName()] = $person->getNameForForms();
-                }
-            }
-            asort($names);
-        }
-        
-        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', PL))."</span></h2>";
-        $this->html .= "<ul>";
-        if(!empty($leaders)){
-            foreach($leaders as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                if(!$edit || !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<li><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></li>";
-                }
-                else if($me->leadershipOf($project->getParent())){
-                    $plRow = new FormTableRow("pl_row");
-                    $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-                    $plRow->append(new ComboBox("pl", "Project Leader", $leader->getName(), $names, VALIDATE_NI));
-                    $this->html .= $plRow->render();
-                }
-            }    
-        }
-        else if($edit && $me->leadershipOf($project->getParent())){
-            $plRow = new FormTableRow("pl_row");
-            $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-            $plRow->append(new ComboBox("pl", "Project Leader", "", $names, VALIDATE_NI));
-            $this->html .= $plRow->render();
-        }
-        $this->html .= "</ul>";
-    }*/
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
@@ -416,48 +362,16 @@ EOF;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        if($edit || !$edit && $project->getDescription() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Description</span></h2>";
+        $description = $project->getDescription();
+        
+        if($edit || !$edit && $description != ""){
+            $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
         }
         if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getDescription()) . "</p>";
+            $this->html .= "<p>" . $this->sandboxParse($description) . "</p>";
         }
         else{
-            $this->html .= "<textarea name='description' style='height:500px;'>{$project->getDescription()}</textarea>";
-        }
-    }
-
-    function showProblem(){
-        global $wgServer, $wgScriptPath;
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        if($edit || !$edit && $project->getProblem() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Problem Summary</span></h2>";
-        }
-        if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getProblem()) . "</p>";
-        }
-        else{
-            $this->html .= "<textarea name='problem' style='height:500px;'>{$project->getProblem()}</textarea>";
-        }
-    }
-
-    function showSolution(){
-        global $wgServer, $wgScriptPath;
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        if($edit || !$edit && $project->getSolution() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Proposed Solution Summary</span></h2>";
-        }
-        if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getSolution()) . "</p>";
-        }
-        else{
-            $this->html .= "<textarea name='solution' style='height:500px;'>{$project->getSolution()}</textarea>";
+            $this->html .= "<textarea name='description' style='height:500px;'>{$description}</textarea>";
         }
     }
 

@@ -3,8 +3,23 @@
 class ProjectPeopleCell extends Cell{
     
     function ProjectPeopleCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        if(isset($params[0])){
-            $this->value = $params[0];
+        $start = "0000";
+        $end = "2100";
+        if(count($params) == 1){
+            $params[2] = $params[0];
+        }
+        else{
+            if(isset($params[0])){
+                // Start
+                $start = $params[0];
+            }
+            if(isset($params[1])){
+                // End
+                $end = $params[1];
+            }
+        }
+        if(isset($params[2])){
+            $this->value = $params[2];
         }
         else{
             $this->value = $cellValue;

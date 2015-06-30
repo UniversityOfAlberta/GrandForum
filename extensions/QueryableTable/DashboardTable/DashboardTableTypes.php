@@ -33,6 +33,7 @@ define('PROJECT_PRODUCTS', 1009);
 define('PROJECT_CONTRIBUTIONS', 1014);
 define('PROJECT_MULTIMEDIA', 1016);
 define('PROJECT_PEOPLE_ROLES', 1017);
+define('PROJECT_HQP', 1018);
 //// Project Array Types
 define('PROJECT_PEOPLE_ARRAY', 1125);
 define('PROJECT_LEADERS_ARRAY', 1126);
@@ -57,6 +58,7 @@ $arrayTypes[PERSON_PROJECTS_ARRAY] = "PersonProjectsArray";
 
 $cellTypes[PROJECT_HEAD] = "ProjectHeadCell";
 $cellTypes[PROJECT_PEOPLE] = "ProjectPeopleCell";
+$cellTypes[PROJECT_HQP] = "ProjectHQPCell";
 $cellTypes[PROJECT_ROLES] = "ProjectRolesCell";
 $cellTypes[PROJECT_PARTNERS] = "ProjectPartnersCell";
 $cellTypes[PROJECT_UNIVERSITY] = "ProjectUniversityCell";
@@ -124,13 +126,14 @@ $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = 
-    array(array_merge(array(HEAD."(People)", HEAD."(Roles)"), $head, array(HEAD."(Multimedia)")),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, array(PROJECT_MULTIMEDIA)),
+    array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array_merge(array(PROJECT_PEOPLE,
-                                                                      PROJECT_ROLES),
+                                                                      PROJECT_ROLES,
+                                                                      PROJECT_HQP),
                                                                 $projRow,
-                                                                array(PROJECT_MULTIMEDIA)),
-          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES), $projRow, array(PROJECT_MULTIMEDIA)),
+                                                                array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+          array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
     );
 
 ?>

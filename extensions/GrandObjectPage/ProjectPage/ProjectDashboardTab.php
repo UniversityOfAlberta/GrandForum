@@ -184,13 +184,41 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function showDashboard($project, $visibility){
-        global $wgUser;
-        if($wgUser->isLoggedIn()){
+        global $wgOut, $config;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $wgOut->addScript("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#dashboardAccordion').accordion({autoHeight: false,
+                                                        collapsible: true});
+                });
+            </script>");
+            $this->html .= "<h2>Dashboard</h2>";
+            $this->html .= "<div id='dashboardAccordion'>";
+            $this->html .= "<h3><a href='#'>Overall</a></h3>";
+            $this->html .= "<div style='overflow: auto;'>";
             $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project);
-            if($dashboard != null){
-                $this->html .= "<h2>Dashboard</h2>";
-                $this->html .= $dashboard->render(false, $visibility['isLead']);
+            if(!$visibility['isLead']){
+                $dashboard->filterCols(HEAD, array('Contributions'));
             }
+            $this->html .= $dashboard->render(false, false);
+            $this->html .= "</div>";
+            $startYear = YEAR;
+            if($project->deleted){
+                $startYear = substr($project->getDeleted(), 0, 4)-1;
+            }
+            $phaseDates = $config->getValue("projectPhaseDates");
+            for($i=$startYear; $i >= max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4)); $i--){
+                $this->html .= "<h3><a href='#'>".$i."</a></h3>";
+                $this->html .= "<div style='overflow: auto;'>";
+                $dashboard = new DashboardTable(PROJECT_PUBLIC_STRUCTURE, $project, '2014-01-01', '2014-12-31');
+                if(!$visibility['isLead']){
+                    $dashboard->filterCols(HEAD, array('Contributions'));
+                }
+                $this->html .= $dashboard->render(false, false);
+                $this->html .= "</div>";
+            }
+            $this->html .="</div>";
         }
     }
 
