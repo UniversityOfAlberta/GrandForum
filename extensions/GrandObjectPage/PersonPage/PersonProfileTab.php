@@ -196,30 +196,12 @@ class PersonProfileTab extends AbstractEditableTab {
         if($person->getTwitter() != ""){
             $html = <<<EOF
                 <br />
-                <div id='twitter' style='display: block; width: 100%; text-align: right;'>
+                <div id='twitter' style='display: block; width: 100%; text-align: right; overflow: hidden; position:relative;'>
                     <div>
                         <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </div>
                 </div>
-                <script type='text/javascript'>
-                    // Adds a bit of responsiveness to the profile
-                    /*setInterval(function(){
-                        if($("#bodyContent").width() < 1000){
-                            $('#twitter').css('display', 'block');
-                            $('#twitter').css('width', '100%');
-                            $('#twitter div').css('width', '100%');
-                            $('#twitter div').css('max-width', '');
-                            $('#twitter iframe').css('width', '133%');
-                        }
-                        else{
-                            $('#twitter').css('display', 'inline-block');
-                            $('#twitter').css('width', '50%');
-                            $('#twitter div').css('max-width', 225);
-                            $('#twitter iframe').css('width', 300);
-                        }
-                    }, 100);*/
-                </script>
 EOF;
         }
         return $html;
