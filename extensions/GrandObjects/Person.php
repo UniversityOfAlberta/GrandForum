@@ -1085,7 +1085,7 @@ class Person extends BackboneModel {
     // Returns the email of this Person
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
             return "{$this->email}";
         }
         return "";
@@ -1093,7 +1093,7 @@ class Person extends BackboneModel {
     
     function getPhoneNumber(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
             return "{$this->phone}";
         }
         return "";
