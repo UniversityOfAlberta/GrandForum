@@ -66,6 +66,10 @@ function initTab(role, selector, tabSelector, fields){
                 // Don't include Admin
                 continue;
             }
+            if(person.university == 'Unknown'){
+                // Don't include incomplete people
+                continue;
+            }
             var html = "<div class='tshowcase-box ts-col_4' id='" + id + "'>" + 
                        "<div class='tshowcase-inner-box' style='cursor:pointer;'>" + 
                        "<div class='tshowcase-box-photo ts-rounded ts-white-border' style='height:105px;position:relative;'>" +

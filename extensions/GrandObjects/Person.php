@@ -3700,12 +3700,14 @@ class Person extends BackboneModel {
             $con_people = $contribution->getPeople();
             
             $con_receiver = false;
-            foreach($con_people as $con_pers){
-                if($con_pers instanceof Person){
-                    $con_pers = $con_pers->getId();
-                    if ( $con_pers == $this->id ){
-                        $con_receiver =  true;
-                        break;
+            if(is_array($con_people)){
+                foreach($con_people as $con_pers){
+                    if($con_pers instanceof Person){
+                        $con_pers = $con_pers->getId();
+                        if ( $con_pers == $this->id ){
+                            $con_receiver =  true;
+                            break;
+                        }
                     }
                 }
             }
