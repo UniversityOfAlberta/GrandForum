@@ -86,7 +86,7 @@ Person = Backbone.Model.extend({
         if(this.get('university') != ''){
             university.push(this.get('university'));
         }
-        return university.join(' | ');
+        return university.join('<br />');
     },
 
     urlRoot: 'index.php?action=api.person',

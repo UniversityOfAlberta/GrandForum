@@ -1111,7 +1111,11 @@ class Person extends BackboneModel {
     
     // Returns the nationality of this Person
     function getNationality(){
-        return $this->nationality;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->nationality;
+        }
+        return "";
     }
     
     /**

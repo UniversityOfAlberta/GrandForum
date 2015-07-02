@@ -333,6 +333,7 @@ EOF;
                                                 });
                                             }
                                             lastWidth = $('#firstLeft').width();
+                                            $('#contact').height(height);
                                         }
                                     }, 100);
                                 });
@@ -447,7 +448,7 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div style='white-space: nowrap;position:relative;height:229px;'>";
+        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:150px;min-height:150px'>";
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
