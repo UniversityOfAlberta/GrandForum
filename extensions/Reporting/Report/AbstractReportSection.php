@@ -355,7 +355,7 @@ abstract class AbstractReportSection {
         }
         if($this->getParent()->project != null){
             $projectName .= ": ".$this->getParent()->project->getName();
-            if($this->getParent()->project->isSubProject()){
+            /*if($this->getParent()->project->isSubProject()){
                 $phase = " ({$this->getParent()->project->getParent()->getName()}";
             }
             else{
@@ -364,7 +364,7 @@ abstract class AbstractReportSection {
             if($this->getParent()->project->getPhase() < PROJECT_PHASE){
                 $phase .= ", Final Report";
             }
-            $phase .= ")";
+            $phase .= ")";*/
         }
         if(count($this->number) > 0){
             $numbers = array();
