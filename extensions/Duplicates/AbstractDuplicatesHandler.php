@@ -23,6 +23,10 @@ abstract class AbstractDuplicatesHandler {
     
     abstract function handleDelete();
     
+    function canShortCircuit($obj1, $obj2){
+        return false;
+    }
+    
     function handleIgnore(){
         $data = DBFunctions::select(array('grand_ignored_duplicates'),
                                     array('*'),
@@ -48,20 +52,15 @@ abstract class AbstractDuplicatesHandler {
         ob_flush();
         flush();
         if($nResults > 0){
-            foreach($array as $obj1){
-                $found = false;
+            foreach($array as $key => $obj1){
+                unset($array2[$key]);
                 foreach($array2 as $obj2){
-                    if($obj1 != $obj2){
-                        if($found){
-                            $percent = 0;
-                            echo $this->showResult($obj1, $obj2);
-                            ob_flush();
-                            flush();
-                        }
+                    if($this->canShortCircuit($obj1, $obj2)){
+                        break;
                     }
-                    else{
-                        $found = true;
-                    }
+                    echo $this->showResult($obj1, $obj2);
+                    ob_flush();
+                    flush();
                 }
                 $i++;
                 if(round(($i/$nResults)*100) != $lastPerc){
@@ -70,7 +69,6 @@ abstract class AbstractDuplicatesHandler {
                     flush();
                 }
                 $lastPerc = round(($i/$nResults)*100);
-                $found = false;
             }
         }
         else{

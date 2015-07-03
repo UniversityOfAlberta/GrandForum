@@ -7,9 +7,15 @@ $publicationHandler = new ProductHandler('press', 'Press');
 $publicationHandler = new ProductHandler('award', 'Award');
 $publicationHandler = new ProductHandler('presentation', 'Presentation');
 
+function paper_lengthSort($a, $b){
+    return (strlen($a->getTitle()) < strlen($b->getTitle()));
+}
+
 class ProductHandler extends AbstractDuplicatesHandler {
         
     var $type;
+    
+    var $papers = null;
         
     function ProductHandler($id, $type){
         $this->AbstractDuplicatesHandler($id);
@@ -17,24 +23,38 @@ class ProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray(){
-        $papers = Paper::getAllPapers('all', $this->type, 'both');
-        $paperArray = array();
-        foreach($papers as $paper){
-            $paperArray[] = $paper;
+        if($this->papers == null){
+            $papers = Paper::getAllPapers('all', $this->type, 'both');
+            $this->papers = array();
+            $paperLengths = array();
+            foreach($papers as $paper){
+                $this->papers[] = $paper;
+            }
+            usort($this->papers, 'paper_lengthSort');
         }
-        return $paperArray;
+        return $this->papers;
     }
     
     function getArray2(){
         return $this->getArray();
     }
     
+    function canShortCircuit($paper1, $paper2){
+        $length1 = strlen($paper1->getTitle());
+        $length2 = strlen($paper2->getTitle());
+        $lengthDiff = abs($length1 - $length2)/max($length1, $length2);
+        return ($lengthDiff > 0.15);
+    }
+    
     function showResult($paper1, $paper2){
-        global $wgServer, $wgScriptPath;
-        $lengthDiff = abs(strlen($paper1->getTitle()) - strlen($paper2->getTitle()))/max(strlen($paper1->getTitle()), strlen($paper2->getTitle()));
-        if(!$this->areIgnored($paper1->getId(), $paper2->getId()) && $lengthDiff <= 0.15){
-            similar_text($paper1->getTitle(), $paper2->getTitle(), $percent);
-            $percent = round($percent);
+        if(!$this->areIgnored($paper1->getId(), $paper2->getId())){
+            if(strtolower($paper1->getTitle()) == strtolower($paper2->getTitle())){
+                $percent = 100;
+            }
+            else{
+                similar_text(preg_replace("/[^a-zA-Z0-9]+/", "", $paper1->getTitle()), preg_replace("/[^a-zA-Z0-9]+/", "", $paper2->getTitle()), $percent);
+                $percent = round($percent);
+            }
             if($percent >= 85){
                 $projs1 = $paper1->getProjects();
                 $projs2 = $paper2->getProjects();
