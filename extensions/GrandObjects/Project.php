@@ -969,11 +969,14 @@ EOF;
            !$me->isRole(CF) &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
+             !$me->isThemeCoordinatorOf($this->getParent()) &&
              !$me->leadershipOf($this->getParent()) &&
              !$me->isThemeLeaderOf($this) &&
+             !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
+             !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this)))){
             return false;
         }
