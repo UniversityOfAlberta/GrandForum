@@ -102,6 +102,7 @@ foreach($allPeople as $person){
         $activity = "";
         $project = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         foreach($cells as $rowN => $row){
             if($rowN == 0){
                 foreach($row as $colN => $cell){
@@ -133,40 +134,40 @@ foreach($allPeople as $person){
                             $title = $cell;
                             break;
                         case Y1_Q1_COL:
-                            $quarters[] = ($year).":1";
+                            $quarters[] = ($startYear).":1";
                             break;
                         case Y1_Q2_COL:
-                            $quarters[] = ($year).":2";
+                            $quarters[] = ($startYear).":2";
                             break;
                         case Y1_Q3_COL:
-                            $quarters[] = ($year).":3";
+                            $quarters[] = ($startYear).":3";
                             break;
                         case Y1_Q4_COL:
-                            $quarters[] = ($year).":4";
+                            $quarters[] = ($startYear).":4";
                             break;
                         case Y2_Q1_COL:
-                            $quarters[] = ($year+1).":1";
+                            $quarters[] = ($startYear+1).":1";
                             break;
                         case Y2_Q2_COL:
-                            $quarters[] = ($year+1).":2";
+                            $quarters[] = ($startYear+1).":2";
                             break;
                         case Y2_Q3_COL:
-                            $quarters[] = ($year+1).":3";
+                            $quarters[] = ($startYear+1).":3";
                             break;
                         case Y2_Q4_COL:
-                            $quarters[] = ($year+1).":4";
+                            $quarters[] = ($startYear+1).":4";
                             break;
                         case Y3_Q1_COL:
-                            $quarters[] = ($year+2).":1";
+                            $quarters[] = ($startYear+2).":1";
                             break;
                         case Y3_Q2_COL:
-                            $quarters[] = ($year+2).":2";
+                            $quarters[] = ($startYear+2).":2";
                             break;
                         case Y3_Q3_COL:
-                            $quarters[] = ($year+2).":3";
+                            $quarters[] = ($startYear+2).":3";
                             break;
                         case Y3_Q4_COL:
-                            $quarters[] = ($year+2).":4";
+                            $quarters[] = ($startYear+2).":4";
                             break;
                         case LEADER_COL:
                             $leader = $cell;
@@ -200,7 +201,7 @@ foreach($allPeople as $person){
                 $_POST['assessment'] = "";
                 $_POST['status'] = "New";
                 $_POST['people'] = $people;
-                $_POST['end_date'] = ($year+2)."-12-31 00:00:00";
+                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
                 $_POST['comment'] = $comments;
                 

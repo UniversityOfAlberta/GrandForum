@@ -390,6 +390,7 @@ class Project extends BackboneModel {
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
                        'description' => $this->getDescription(),
+                       'longDescription' => $this->getLongDescription(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'bigbet' => $this->isBigBet(),
@@ -968,11 +969,14 @@ EOF;
            !$me->isRole(CF) &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
+             !$me->isThemeCoordinatorOf($this->getParent()) &&
              !$me->leadershipOf($this->getParent()) &&
              !$me->isThemeLeaderOf($this) &&
+             !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
+             !$me->isThemeCoordinatorOf($this) &&
              !$me->leadershipOf($this)))){
             return false;
         }
@@ -1077,17 +1081,17 @@ EOF;
         }
         return "";
     }
-
-    // Returns the problem summary of the Project
-    function getProblem($history=false){
-        $sql = "(SELECT problem 
+    
+    // Returns the description of the Project
+    function getLongDescription($history=false){
+        $sql = "(SELECT long_description 
                 FROM grand_project_descriptions d
                 WHERE d.project_id = '{$this->id}'\n";
         if(!$history){
             $sql .= "AND evolution_id = '{$this->evolutionId}' 
                      ORDER BY id DESC LIMIT 1)
                     UNION
-                    (SELECT problem
+                    (SELECT long_description
                      FROM `grand_project_descriptions` d
                      WHERE d.project_id = '{$this->id}'";
         }
@@ -1095,29 +1099,7 @@ EOF;
         
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
-            return $data[0]['problem'];
-        }
-        return "";
-    }
-
-    // Returns the solution summary of the Project
-    function getSolution($history=false){
-        $sql = "(SELECT solution 
-                FROM grand_project_descriptions d
-                WHERE d.project_id = '{$this->id}'\n";
-        if(!$history){
-            $sql .= "AND evolution_id = '{$this->evolutionId}' 
-                     ORDER BY id DESC LIMIT 1)
-                    UNION
-                    (SELECT solution
-                     FROM `grand_project_descriptions` d
-                     WHERE d.project_id = '{$this->id}'";
-        }
-        $sql .= "ORDER BY id DESC LIMIT 1)";
-        
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            return $data[0]['solution'];
+            return $data[0]['long_description'];
         }
         return "";
     }
@@ -1565,242 +1547,53 @@ EOF;
                 $alloc += $row['amount'];
             }
         }
-        else {
-            // Check if there was an allocated budget uploaded for this Project
-            $allocated = $this->getAllocatedBudget($year-1);
-            if($allocated != null){
-                $alloc = $allocated->copy()->rasterize()->where(CUBE_TOTAL)->select(CUBE_TOTAL)->toString();
-                $alloc = str_replace("$", "", $alloc);
-                $alloc = str_replace(",", "", $alloc);
-                $alloc = intval($alloc);
-            }
-        }
         return $alloc;
     }
     
+    /*
+     * Returns the allocated Budget for this Project
+     * @param integer $year The allocation year
+     * @return Budget A new allocated Budget
+     */
     function getAllocatedBudget($year){
         global $config;
-        $projectBudget = null;
-        if(isset($this->budgets['s'.$year])){
-            return unserialize($this->budgets['s'.$year]);
+
+        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
+
+        $budget = null;
+        $type = BLOB_EXCEL;
+        $report = RP_LEADER;
+        $section = LDR_BUDGET;
+        $item = LDR_BUD_ALLOC;
+        $subitem = 0;
+        $blob = new ReportBlob($type, $year, 0, $this->getId());
+        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        if($data != null){
+            $budget = new Budget("XLS", $structure, $data);
         }
-        $projectBudget = array();
-        $nameBudget = array();
-        $projectNames = array($this->name);
-        if(!$this->clear){
-            foreach($this->getAllPreds() as $pred){
-                $projectNames[] = $pred->getName();
-            }
-        }
-        foreach($this->getAllPeopleDuring(null, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00") as $member){
-            if($member->isRole(NI, ($year+1)."-00-00 00:00:00", ($year + 2)."-00-00 00:00:00")){
-                $budget = $member->getAllocatedBudget($year);
-                if($budget != null){
-                    $budget = $budget->copy();
-                    if(count($projectBudget) == 0){
-                        $nameBudget[] = new Budget(array(array(HEAD1),
-                                                         array(BLANK)),
-                                                   array(array("Name of network investigator submitting request:"),
-                                                         array("")));
-                        $projectBudget[] = new Budget(array(array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD1),
-                                                           array(HEAD2),
-                                                           array(HEAD2),
-                                                           array(HEAD2)),
-                                                     array(array("Budget Categories for April 1, ".($year+1).", to March 31, ".($year+2).""),
-                                                           array("1) Salaries and stipends"),
-                                                           array("a) Graduate students"),
-                                                           array("b) Postdoctoral fellows"),
-                                                           array("c) Technical and professional assistants"),
-                                                           array("d) Undergraduate students"),
-                                                           array("2) Equipment"),
-                                                           array("a) Purchase or rental"),
-                                                           array("b) Maintenance costs"),
-                                                           array("c) Operating costs"),
-                                                           array("3) Materials and supplies"),
-                                                           array("4) Computing costs"),
-                                                           array("5) Travel expenses"),
-                                                           array("a) Field trips"),
-                                                           array("b) Conferences"),
-                                                           array("c) {$config->getValue('networkName')} annual conference")));
-                    }
-                    $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS_NOT_NULL)->union(new Budget());
-                    $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
-                    if($pBudget->nRows()*$pBudget->nCols() > 0){
-                        $nameBudget[] = $nBudget;
-                        $projectBudget[] = $pBudget;
-                    }
-                }
-            }
-        }
-        $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));
-        
-        $projectBudget = Budget::join_tables($projectBudget);
-        if($projectBudget != null){
-            $this->budgets['s'.$year] = $nameBudget->union($projectBudget->cube());
-            $this->budgets['s'.$year] = serialize($this->budgets['s'.$year]);
-            return unserialize($this->budgets['s'.$year]);
-        }
-        else{
-            return null;
-        }
-    }
-    
-    function getRevisedBudget($year){
-        // This is a special Budget with no strongly defined structure, 
-        // though should ideally look exactly like the requested project budget.
-        // After reading the budget, it attempts to change the structure to show 
-        // the same was as the other requested project budgets
-        $rep_addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_REVISED, 0);
-        $budget_blob = new ReportBlob(BLOB_EXCEL, $year, 0, $this->getId());
-        $budget_blob->load($rep_addr);
-        $data = $budget_blob->getData();
-        if(!empty($data)){
-            $budget = new Budget($data);
-            $newStructure = array();
-            foreach($budget->structure as $rowN => $row){
-                if($rowN == $budget->nRows()-1){
-                    continue;
-                }
-                foreach($row as $colN => $col){
-                    if($colN == $budget->nCols()-1){
-                        continue;
-                    }
-                    if($colN == 0){
-                        $type = HEAD1;
-                        switch($rowN){
-                            case 0: $type = HEAD1; break;
-                            case 1: $type = HEAD1; break;
-                            case 2: $type = HEAD1; break;
-                            case 3: $type = HEAD2; break;
-                            case 4: $type = HEAD2; break;
-                            case 5: $type = HEAD2; break;
-                            case 6: $type = HEAD2; break;
-                            case 7: $type = HEAD1; break;
-                            case 8: $type = HEAD2; break;
-                            case 9: $type = HEAD2; break;
-                            case 10: $type = HEAD2; break;
-                            case 11: $type = HEAD1; break;
-                            case 12: $type = HEAD1; break;
-                            case 13: $type = HEAD1; break;
-                            case 14: $type = HEAD2; break;
-                            case 15: $type = HEAD2; break;
-                            case 16: $type = HEAD2; break;
-                        }
-                        $newStructure[$rowN][$colN] = $type;
-                    }
-                    else if($rowN == 0){
-                        $newStructure[$rowN][$colN] = V_PERS;
-                    }
-                    else{
-                        $newStructure[$rowN][$colN] = MONEY;
-                    }
-                }
-            }
-            $budget = new Budget("XLS", $newStructure, $data);
-            $budget = $budget->cube();
-            return $budget;
-        }
-        return null;
+        return $budget;
     }
     
     function getRequestedBudget($year, $role='all'){
         global $config;
-        $projectBudget = null;
-        if(isset($this->budgets['r'.$role.$year])){
-            return unserialize($this->budgets['r'.$role.$year]);
-        }
-        $year_fr = $year+1;
-        $year_to = $year+2;
-        $projectBudget = array();
-        $nameBudget = array();
-        $projectNames = array($this->name);
-        if(!$this->clear){
-            foreach($this->getAllPreds() as $pred){
-                $projectNames[] = $pred->getName();
-            }
-        }
+        $structure = constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
 
-        $alreadySeen = array();
-        $nameBudget[] = new Budget(array(array(HEAD1)),
-                                   array(array("Name of network investigator submitting request:")));
-        $projectBudget[] = new Budget(array(array(HEAD1),
-                                           array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD1),
-                                           array(HEAD1),
-                                           array(HEAD1),
-                                           array(HEAD2),
-                                           array(HEAD2),
-                                           array(HEAD2)),
-                                     array(array("Budget Categories for April 1, {$year_fr}, to March 31, {$year_to}"),
-                                           array("1) Salaries and stipends"),
-                                           array("a) Graduate students"),
-                                           array("b) Postdoctoral fellows"),
-                                           array("c) Technical and professional assistants"),
-                                           array("d) Undergraduate students"),
-                                           array("2) Equipment"),
-                                           array("a) Purchase or rental"),
-                                           array("b) Maintenance costs"),
-                                           array("c) Operating costs"),
-                                           array("3) Materials and supplies"),
-                                           array("4) Computing costs"),
-                                           array("5) Travel expenses"),
-                                           array("a) Field trips"),
-                                           array("b) Conferences"),
-                                           array("c) {$config->getValue('networkName')} annual conference")));
-        foreach($this->getAllPeopleDuring(null, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH) as $member){
-            $isNI = $member->isRoleDuring(NI, ($year+1).NCE_START_MONTH, ($year+2).NCE_END_MONTH);
-            if(($role == NI && $isNI) ||
-               ($role == 'all' && $isNI)){
-                if(isset($alreadySeen[$member->getId()])){
-                    continue;
-                }
-                $alreadySeen[$member->getId()] = true;
-                $budgets = array();
-                $budgets[] = $member->getRequestedBudget($year);
-                
-                foreach($budgets as $budget){
-                    if($budget != null){
-                        $nBudget = $budget->copy()->limit(0, 1)->select(V_PERS_NOT_NULL)->union(new Budget());
-                        $pBudget = $budget->copy()->select(V_PROJ, $projectNames)->limit(6, 16);
-                        if($pBudget->nRows()*$pBudget->nCols() > 0){
-                            $nameBudget[] = $nBudget;
-                            $projectBudget[] = $pBudget;
-                        }
-                    }
-                }
-            }
+        $budget = null;
+        $type = BLOB_EXCEL;
+        $report = RP_LEADER;
+        $section = LDR_BUDGET;
+        $item = LDR_BUD_UPLOAD;
+        $subitem = 0;
+        $blob = new ReportBlob($type, $year, 0, $this->getId());
+        $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
+        $blob->load($blob_address);
+        $data = $blob->getData();
+        if($data != null){
+            $budget = new Budget("XLS", $structure, $data);
         }
-        // Join all budgets together now
-        $nameBudget = Budget::join_tables($nameBudget)->join(Budget::union_tables(array(new Budget(), new Budget())));
-        $projectBudget = Budget::join_tables($projectBudget);
-        if($projectBudget != null){
-            $this->budgets['r'.$role.$year] = $nameBudget->union($projectBudget->cube());
-            $this->budgets['r'.$role.$year] = serialize($this->budgets['r'.$role.$year]);
-            return unserialize($this->budgets['r'.$role.$year]);
-        }
-        else{
-            return null;
-        }
+        return $budget;
     }
 }
 

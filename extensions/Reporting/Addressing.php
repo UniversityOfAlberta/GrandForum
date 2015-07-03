@@ -50,6 +50,7 @@ define('RP_TRANS',              104);
  * AGE-WELLL
  */
 define('RP_HQP_APPLICATION',    200);
+define('RP_CC_PLANNING',        201);
 
 /*
  * Second-level identifiers: report section.
@@ -80,13 +81,18 @@ define('SUB_SUBPROJECTS',       1);
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
 define('HQP_MILESTONES',		7); // Used to be '3', but moved into HQP_RESACTIVITY ('7')
-define('HQP_PEOPLE_INTERACT',		4);
-define('HQP_PROJECT_INTERACT',		5);
+define('HQP_PEOPLE_INTERACT',	4);
+define('HQP_PROJECT_INTERACT',	5);
 define('HQP_IMPACT',			6);
 define('HQP_RESACTIVITY',		7);
 
 define('HQP_APPLICATION_FORM',  1);
 define('HQP_APPLICATION_DOCS',  2);
+
+define('CC_PLANNING_1',         1);
+define('CC_PLANNING_2',         2);
+define('CC_PLANNING_3',         3);
+define('CC_PLANNING_4',         4);
 
 define('LDR_SUMMARY',			1);
 define('LDR_MILESTONESTATUS',		2);
@@ -278,6 +284,43 @@ define('HQP_APPLICATION_TRANS1',    5);
 define('HQP_APPLICATION_TRANS2',    6);
 define('HQP_APPLICATION_CV',        7);
 
+define('CC_1_OBJECTIVES',   1);
+define('CC_1_MOBILIZE',     2);
+define('CC_1_PARTNERS',     3);
+define('CC_1_ENGAGE',       4);
+define('CC_1_ACHIEVE',      5);
+define('CC_1_EXPERTISE',    6);
+define('CC_1_RESOURCES',    7);
+define('CC_1_MEASURE',      8);
+define('CC_1_SUPPORT',      9);
+
+define('CC_2_PRODUCTS',     1);
+define('CC_2_COMMERCIALIZE',2);
+define('CC_2_PROVIDE',      3);
+define('CC_2_PARTNERS',     4);
+define('CC_2_STAGE',        5);
+define('CC_2_MARKET',       6);
+define('CC_2_IP',           7);
+define('CC_2_ACHIEVE',      8);
+define('CC_2_MEASURE',      9);
+define('CC_2_SUPPORT',      10);
+
+define('CC_3_TRANS',        1);
+define('CC_3_ADOPT',        2);
+define('CC_3_TEAMWORK',     3);
+define('CC_3_NETWORK',      4);
+define('CC_3_SYNERGY',      5);
+define('CC_3_ACCEPT',       6);
+define('CC_3_SUPPORT',      7);
+define('CC_3_EVAL',         8);
+
+define('CC_4_TRAIN',        1);
+define('CC_4_KNOW',         2);
+define('CC_4_OUTCOME',      3);
+define('CC_4_INDUSTRY',     4);
+define('CC_4_OTHER',        5);
+define('CC_4_MEASURE',      6);
+
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
 define('CHAMP_ORG', 3);
@@ -323,6 +366,8 @@ define('LDR_NICOMMENTS_COMMENTS',	0);
 
 define('LDR_BUD_JUST',              0);
 define('LDR_BUD_REVISED',           1);
+define('LDR_BUD_UPLOAD',            2);
+define('LDR_BUD_ALLOC',             3);
 
 // Third-level identifiers for Supplemental report: corrections on HQPs.
 define('SUP_HQP_UGRAD_COUNT',		10);

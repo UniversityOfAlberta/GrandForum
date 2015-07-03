@@ -3,8 +3,8 @@ Feature: Theme Leaders
     As a Theme Leader
     I need to be able to see the full information about those projects as if I were a member
 
-    Scenario: TL views Project Page of a Project that has a challenge which is led by TL
-        Given I am logged in as "TL.User1" using password "TL.Pass1"
+    Scenario Outline: TL views Project Page of a Project that has a challenge which is led by TL
+        Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3:Main"
         Then I should see "Main"
         And I should see "Sub-Projects"
@@ -12,8 +12,13 @@ Feature: Theme Leaders
         And I should see "Visualizations"
         And I should see "Wiki"
         
-    Scenario: TL views Project Page of a Project that does not have a challege which is led by TL
-        Given I am logged in as "TL.User1" using password "TL.Pass1"
+        Examples:
+        | user       | pass       |
+        | "TL.User1" | "TL.Pass1" |
+        | "TC.User1" | "TC.Pass1" |
+        
+    Scenario Outline: TL views Project Page of a Project that does not have a challege which is led by TL
+        Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project1:Main"
         Then I should see "Main"
         And I should not see "Sub-Projects"
@@ -21,24 +26,58 @@ Feature: Theme Leaders
         And I should see "Visualizations"
         And I should not see "Wiki"
         
-    Scenario: TL views Sub-Project Page of a Project that has a challenge which is led by TL
-        Given I am logged in as "TL.User1" using password "TL.Pass1"
+        Examples:
+        | user       | pass       |
+        | "TL.User1" | "TL.Pass1" |
+        | "TC.User1" | "TC.Pass1" |
+        
+    Scenario Outline: TL tries to update the Project Page of a Project that has a challenge which is led by TL
+        Given I am logged in as <user> using password <pass>
+        And I go to "index.php/Phase2Project3:Main"
+        And I press "Edit Main"
+        And I fill in "description" with <text>
+        And I press "Save Main"
+        Then I should see "'Main' updated successfully."
+        And I should see <text>
+        
+        Examples:
+        | user       | pass       | text                |
+        | "TL.User1" | "TL.Pass1" | "TL.User1 was here" |
+        | "TC.User1" | "TC.Pass1" | "TC.User1 was here" |
+        
+    Scenario Outline: TL views Sub-Project Page of a Project that has a challenge which is led by TL
+        Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3SubProject1:Main"
         Then I should see "Main"
         And I should see "Dashboard"
         And I should see "Visualizations"
-        And I should see "Wiki"    
+        And I should see "Wiki"
+        
+        Examples:
+        | user       | pass       |
+        | "TL.User1" | "TL.Pass1" |
+        | "TC.User1" | "TC.Pass1" |  
     
-    Scenario: TL views Sub-Project Page of a Project that does not have a challege which is led by TL
-        Given I am logged in as "TL.User1" using password "TL.Pass1"
+    Scenario Outline: TL views Sub-Project Page of a Project that does not have a challege which is led by TL
+        Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project1SubProject1:Main"
         Then I should see "Main"
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should not see "Wiki"
         
-    Scenario: TL views the listing of their themes
-        Given I am logged in as "TL.User1" using password "TL.Pass1"
+        Examples:
+        | user       | pass       |
+        | "TL.User1" | "TL.Pass1" |
+        | "TC.User1" | "TC.Pass1" |
+        
+    Scenario Outline: TL views the listing of their themes
+        Given I am logged in as <user> using password <pass>
         And I follow "My Profile"
         And I click "Projects"
-        Then I should see "Theme1 (lead)"
+        Then I should see <text>
+        
+        Examples:
+        | user       | pass       | text             |
+        | "TL.User1" | "TL.Pass1" | "Theme1 (lead)"  |
+        | "TC.User1" | "TC.Pass1" | "Theme1 (coord)" |

@@ -10,7 +10,8 @@ class CreateProjectAPI extends API{
 	    $this->addPOST("bigbet",true,"Whether this is a big bet project or not","No");
 	    $this->addPOST("phase", true, "The phase of this project", "1");
 	    $this->addPOST("effective_date", true, "The date that this action should take place", "2012-10-15");
-	    $this->addPOST("description",false,"The description for this project","MEOW is great");
+	    $this->addPOST("description",false,"The overview for this project","MEOW is great");
+	    $this->addPOST("long_description",false,"The long description for this project","MEOW is great");
 	    // $this->addPOST("theme1",false,"The percent value for theme 1","20");
 	    // $this->addPOST("theme2",false,"The percent value for theme 2","20");
 	    // $this->addPOST("theme3",false,"The percent value for theme 3","20");
@@ -29,6 +30,7 @@ class CreateProjectAPI extends API{
         $_POST['phase'] = @$_POST['phase'];
         $_POST['effective_date'] = @$_POST['effective_date'];
         $_POST['description'] = @$_POST['description'];
+        $_POST['long_description'] = @$_POST['long_description'];
         // $_POST['theme1'] = @$_POST['theme1'];
         // $_POST['theme2'] = @$_POST['theme2'];
         // $_POST['theme3'] = @$_POST['theme3'];

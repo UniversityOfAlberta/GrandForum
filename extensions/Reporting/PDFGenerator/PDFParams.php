@@ -54,4 +54,7 @@ define('RPTP_TRANS',            204);
 /*
  * AGE-WELL
  */
-define('RPTP_HQP_APPLICATION', 300);
+define('RPTP_HQP_APPLICATION',  300);
+define('RPTP_CC_PLANNING',      301);
+
+?>

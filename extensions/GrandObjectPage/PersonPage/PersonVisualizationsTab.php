@@ -364,8 +364,10 @@ class PersonVisualizationsTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getChordData"){
 	        $person = Person::newFromId($_GET['person']);
-	        $authors = array($person);
-	        $authors = $person->getCoAuthors("all", false, 'both', true, "Public");
+	        $authors = array_merge(array($person->getName() => 10000), $person->getCoAuthors("all", false, 'both', true, "Public"));
+	        
+	        asort($authors);
+	        $authors = array_reverse($authors);
 	        
 	        $labels = array();
 	        $matrix = array();
@@ -377,16 +379,16 @@ class PersonVisualizationsTab extends AbstractTab {
 	                                "#E31A1C",
 	                                "#1F78B4",
 	                                "#FB9A99",
-	                                "#CAB2D6",
+	                                "#6a3d9a",
 	                                "#FF7F00",
 	                                "#FDBF6F",
-	                                "#6A3D9A",
+	                                "#CAB2D6",
 	                                "#B15928",
 	                                "#B2DF8A",
-	                                "#FFFF99");
+	                                "#009090");
 	        
 	        $newAuthors = array();
-	        foreach($authors as $author){
+	        foreach($authors as $author => $amount){
 	            $a = Person::newFromName($author);
 	            if($a->getId() != 0){
 	                $newAuthors[] = $a;
@@ -401,13 +403,12 @@ class PersonVisualizationsTab extends AbstractTab {
                     $matrix[$author->getId()][$a->getId()] = 0;
                 }
                 $labels[] = $author->getNameForForms();
-                //$colorHashs[] = $author->getNameForForms();
                 $colors[] = $possibleColors[$i];
                 if($i < count($possibleColors)-1){
                     $i++;
                 }
                 else{
-                    $i = 0;
+                    break;
                 }
             }
 	        

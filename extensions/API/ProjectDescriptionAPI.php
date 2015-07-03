@@ -4,9 +4,8 @@ class ProjectDescriptionAPI extends API{
 
     function ProjectDescriptionAPI(){
         $this->addPOST("project",true,"The name of the project","MEOW");
-	    $this->addPOST("description",true,"The description for this project","MEOW is great");
-        $this->addPOST("problem",true,"The description for this projects problem","Here is what we need to solve");
-        $this->addPOST("solution",true,"The description for this projects proposed solution","Here is how we are going to solve it");
+	    $this->addPOST("description",true,"The short overview for this project","MEOW is great");
+	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");
 	    $this->addPOST("themes",false,"The theme distribution of this project", "10,20,30,20,20");
 	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
     }
@@ -15,16 +14,8 @@ class ProjectDescriptionAPI extends API{
         if(isset($_POST['description']) && $_POST['description'] != ""){
             $_POST['description'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
         }
-        if(isset($_POST['problem']) && $_POST['problem'] != ""){
-            $_POST['problem'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem']));
-        }
-        else{
-            $_POST['problem'] = "";
-        }
-        if(isset($_POST['solution']) && $_POST['solution'] != ""){
-            $_POST['solution'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution']));
-        }else{
-            $_POST['solution'] = "";
+        if(isset($_POST['long_description']) && $_POST['long_description'] != ""){
+            $_POST['long_description'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['long_description']));
         }
         if(isset($_POST['project']) && $_POST['project'] != ""){
             $_POST['project'] = str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project']));
@@ -78,8 +69,7 @@ class ProjectDescriptionAPI extends API{
                                   'full_name' => $fullName,
                                   'themes' => "{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}",
                                   'description' => $_POST['description'],
-                                  'problem' => $_POST['problem'],
-                                  'solution' => $_POST['solution'],
+                                  'long_description' => $_POST['long_description'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();
