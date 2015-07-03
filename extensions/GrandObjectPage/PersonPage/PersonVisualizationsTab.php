@@ -397,55 +397,57 @@ class PersonVisualizationsTab extends AbstractTab {
 	        $authors = $newAuthors;
 	        
 	        // Initialize
-	        $i = 0;
-            foreach($authors as $k1 => $author){
-                foreach($authors as $k2 => $a){
-                    $matrix[$author->getId()][$a->getId()] = 0;
+	        if(count($authors) > 1){
+	            $i = 0;
+                foreach($authors as $k1 => $author){
+                    foreach($authors as $k2 => $a){
+                        $matrix[$author->getId()][$a->getId()] = 0;
+                    }
+                    $labels[] = $author->getNameForForms();
+                    $colors[] = $possibleColors[$i];
+                    if($i < count($possibleColors)-1){
+                        $i++;
+                    }
+                    else{
+                        break;
+                    }
                 }
-                $labels[] = $author->getNameForForms();
-                $colors[] = $possibleColors[$i];
-                if($i < count($possibleColors)-1){
-                    $i++;
-                }
-                else{
-                    break;
-                }
-            }
-	        
-	        foreach($authors as $author){
-	            $products = $author->getPapers("all", false, 'both', true, "Public");
-	            foreach($products as $product){
-	                $auths = $product->getAuthors();
-	                foreach($auths as $a){
-	                    if(isset($matrix[$author->getId()][$a->getId()]) && $author->getId() != $a->getId()){
-	                        $matrix[$author->getId()][$a->getId()] += 1;
+	            
+	            foreach($authors as $author){
+	                $products = $author->getPapers("all", false, 'both', true, "Public");
+	                foreach($products as $product){
+	                    $auths = $product->getAuthors();
+	                    foreach($auths as $a){
+	                        if(isset($matrix[$author->getId()][$a->getId()]) && $author->getId() != $a->getId()){
+	                            $matrix[$author->getId()][$a->getId()] += 1;
+	                        }
 	                    }
 	                }
 	            }
-	        }
-	        
-	        $found = false;
-            foreach($authors as $k1 => $author){
-                if(array_sum($matrix[$author->getId()]) != 0){
-                    $found = true;
-                    break;
-                }
-            }
-            if(!$found){
+	            
+	            $found = false;
                 foreach($authors as $k1 => $author){
-                    $matrix[$author->getId()][$author->getId()] = 1;
+                    if(array_sum($matrix[$author->getId()]) != 0){
+                        $found = true;
+                        break;
+                    }
                 }
-            }
-	        
-	        $newMatrix = array();
-            foreach($matrix as $row){
-                $newRow = array();
-                foreach($row as $col){
-                    $newRow[] = $col;
+                if(!$found){
+                    foreach($authors as $k1 => $author){
+                        $matrix[$author->getId()][$author->getId()] = 1;
+                    }
                 }
-                $newMatrix[] = $newRow;
+	            
+	            $newMatrix = array();
+                foreach($matrix as $row){
+                    $newRow = array();
+                    foreach($row as $col){
+                        $newRow[] = $col;
+                    }
+                    $newMatrix[] = $newRow;
+                }
+                $matrix = $newMatrix;
             }
-            $matrix = $newMatrix;
 	        
 	        $array = array();
 	        
