@@ -43,10 +43,11 @@ function addProjectLeader($name, $project, $coLead='False', $manager='False'){
     APIRequest::doAction('AddProjectLeader', true);
 }
 
-function addThemeLeader($name, $theme, $coLead='False'){
+function addThemeLeader($name, $theme, $coLead='False', $coord='False'){
     $_POST['name'] = $name;
     $_POST['theme'] = Theme::newFromName($theme)->getId();
     $_POST['co_lead'] = $coLead;
+    $_POST['coordinator'] = $coord;
     APIRequest::doAction('AddThemeLeader', true);
 }
 
@@ -160,6 +161,7 @@ User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), '
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat-test.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
+User::createNew("TC.User1", array('password' => User::crypt("TC.Pass1"), 'email' => "tc.user1@behat-test.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
 User::createNew("RMC.User2", array('password' => User::crypt("RMC.Pass2"), 'email' => "rmc.user2@behat-test.com"));
 User::createNew("CHAMP.User1", array('password' => User::crypt("CHAMP.Pass1"), 'email' => "champ.user1@behat-test.com"));
@@ -232,7 +234,8 @@ addUserProject("HQP.User3", "Phase2Project1");
 
 addProjectLeader("PL.User1", "Phase2Project1");
 
-addThemeLeader("TL.User1", "Theme1", 'False');
+addThemeLeader("TL.User1", "Theme1", 'False', 'False');
+addThemeLeader("TC.User1", "Theme1", 'False', 'True');
 
 addRelation("NI.User1", "HQP.User1", "Supervises");
 addRelation("NI.User1", "HQP.User2", "Supervises");
