@@ -1,11 +1,9 @@
 <?php
 
-$publicationHandler = new ProductHandler('publication', 'Publication');
-$publicationHandler = new ProductHandler('artifact', 'Artifact');
-$publicationHandler = new ProductHandler('activity', 'Activity');
-$publicationHandler = new ProductHandler('press', 'Press');
-$publicationHandler = new ProductHandler('award', 'Award');
-$publicationHandler = new ProductHandler('presentation', 'Presentation');
+$structure = Product::structure();
+foreach($structure['categories'] as $key => $cat){
+    $publicationHandler = new ProductHandler(strtolower($key), $key);
+}
 
 function paper_lengthSort($a, $b){
     return (strlen($a->getTitle()) < strlen($b->getTitle()));

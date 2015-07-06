@@ -1,11 +1,9 @@
 <?php
 
-$publicationHandler = new MyProductHandler('myPublication', 'Publication');
-$publicationHandler = new MyProductHandler('myArtifact', 'Artifact');
-$publicationHandler = new MyProductHandler('myActivity', 'Activity');
-$publicationHandler = new MyProductHandler('myPress', 'Press');
-$publicationHandler = new MyProductHandler('myAward', 'Award');
-$publicationHandler = new MyProductHandler('myPresentation', 'Presentation');
+$structure = Product::structure();
+foreach($structure['categories'] as $key => $cat){
+    $publicationHandler = new MyProductHandler("my$key", $key);
+}
 
 class MyProductHandler extends AbstractDuplicatesHandler {
         
@@ -36,7 +34,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     }
     
     function showResult($paper1, $paper2){
-        global $wgServer, $wgScriptPath, $memcache;
+        global $wgServer, $wgScriptPath;
         if(!$this->areIgnored($paper1->getId(), $paper2->getId())){
             similar_text($paper1->getTitle(), $paper2->getTitle(), $percent);
             $percent = round($percent);
