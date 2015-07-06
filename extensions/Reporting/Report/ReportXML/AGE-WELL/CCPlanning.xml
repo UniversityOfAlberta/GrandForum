@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CC Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF" personId="0" ajax="true" disabled="false">
+<Report name="CC Planning (Oct 2015)" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="instructions" permissions="rw" />
@@ -15,6 +15,7 @@
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
+                <h3>CC Planning (Oct {$this_year})</h3>
                 <p>The Crosscutting activities in the AGE-WELL network are designed to encourage and support research projects within AGE-WELL to achieve our key network goals. As such there are 4 CCs: Knowledge Mobilization (CC1), Commercialization and Technology Transfer (CC2), Transdisciplinary Working (CC3) and Training and Mentorship (CC4). As an initial step in meeting our Network Goals, we are asking all Project Leads to fill in a planning template for each CC activity. These are designed to put our key network goals to the forefront of projects by:</p>
 <ul>
     <li>Ensuring CC activities are fully integrated into projects</li>
