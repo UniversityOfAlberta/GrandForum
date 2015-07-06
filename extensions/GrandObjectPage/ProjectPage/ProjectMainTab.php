@@ -96,7 +96,7 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgOut, $wgMessage;
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
-        $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
+        $_POST['description'] = @$_POST['description'];
         $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
            $_POST['fullName'] != $this->project->getFullName()){
@@ -368,19 +368,27 @@ EOF;
             $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
         }
         if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($description) . "</p>";
+            $this->html .= $description."<br />";
         }
         else{
-            $this->html .= "<textarea name='description' style='height:500px;'>{$description}</textarea>";
+            $this->html .= "<textarea name='description' style='height:500px;'>{$description}</textarea>
+            <script type='text/javascript'>
+                $('textarea[name=description]').tinymce({
+                    theme: 'modern',
+                    menubar: false,
+                    plugins: 'link image contextmenu charmap lists table paste wordcount',
+                    toolbar: [
+                        'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                    ],
+                    paste_postprocess: function(plugin, args) {
+                        var p = $('p', args.node);
+                        p.each(function(i, el){
+                            $(el).css('line-height', 'inherit');
+                        });
+                    }
+                });
+            </script>";
         }
-    }
-
-    function sandboxParse($wikiText) {
-        global $wgTitle, $wgUser;
-        $myParser = new Parser();
-        $myParserOptions = ParserOptions::newFromUser($wgUser);
-        $result = $myParser->parse($wikiText, $wgTitle, $myParserOptions);
-        return $result->getText();
     }
 
 }    
