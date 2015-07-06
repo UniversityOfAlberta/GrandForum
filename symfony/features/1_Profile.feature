@@ -52,3 +52,8 @@ Feature: User Profile
         When I follow "status_logout"
         And I go to "index.php/NI:NI.User1"
         Then I should see "My Public Profile"
+        
+    Scenario: Checking Data Quality
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "My Profile"
+        And I click "Data Quality Checks"

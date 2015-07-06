@@ -273,7 +273,6 @@ EOF;
             if(empty($ni_position)){ $ni_errors['profile_pub'][] = "Missing public profile"; }
             if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
 
-
             //Product completeness
             $papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
             $person_paper_errors = array();
@@ -315,11 +314,10 @@ EOF;
                 $department = $s->getDepartment();
                 $errors = array();
                 $ishqp = $s->isRole(HQP);
-                $related = $person->relatedTo($s, 'Supervises');
 
                 if(isExtensionEnabled('Acknowledgements')){
                     //Acknowledgements
-                    if($ishqp && $related){
+                    if($ishqp){
                         $acks = $s->getAcknowledgements();
                         if(count($acks) > 0){
                             $ack_found = false;
@@ -340,12 +338,12 @@ EOF;
                     }
                 }
 
-                if($ishqp && $related && ($university == "" || $department == "" || $position == "")){
+                if($ishqp && ($university == "" || $department == "" || $position == "")){
                     $errors[] = "Missing University/Department/Position";
                 }
 
                 //Only care about Masters and PhDs for thesis errors
-                if(($position == "Masters Student" || $position == "PhD Student") && $ishqp && $related){
+                if(($position == "Masters Student" || $position == "PhD Student") && $ishqp){
                     
                     //Check for thesis and no exit data
                     $thesis = $s->getThesis();
