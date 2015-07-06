@@ -35,13 +35,15 @@ Feature: Theme Leaders
         Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3:Main"
         And I press "Edit Main"
+        And I fill in TinyMCE "description" with <text>
         And I press "Save Main"
         Then I should see "'Main' updated successfully."
+        And I should see <text>
         
         Examples:
-        | user       | pass       |
-        | "TL.User1" | "TL.Pass1" |
-        | "TC.User1" | "TC.Pass1" |
+        | user       | pass       | text                |
+        | "TL.User1" | "TL.Pass1" | "TL.User1 was here" |
+        | "TC.User1" | "TC.Pass1" | "TC.User1 was here" |
         
     Scenario Outline: TL views Sub-Project Page of a Project that has a challenge which is led by TL
         Given I am logged in as <user> using password <pass>

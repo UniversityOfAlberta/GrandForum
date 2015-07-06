@@ -41,18 +41,22 @@ Feature: Sub Projects
         When I go to "index.php/NewSubProject:Main"
         And I press "Edit Main"
         And I fill in "fullName" with "New Sub Project Edited 1"
+        And I fill in TinyMCE "description" with "Last edited by PL.User1"
         And I press "Save Main"
         Then I should see "'Main' updated successfully"
         And I should see "New Sub Project Edited 1"
+        And I should see "Last edited by PL.User1"
         
     Scenario: Sub-PL editing sub-project description and title
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/NewSubProject:Main"
         And I press "Edit Main"
         And I fill in "fullName" with "New Sub Project Edited 2"
+        And I fill in TinyMCE "description" with "Last edited by NI.User1"
         And I press "Save Main"
         Then I should see "'Main' updated successfully"
         And I should see "New Sub Project Edited 2"
+        And I should see "Last edited by NI.User1"
         
     Scenario: PL editing sub-project acronym
         Given I am logged in as "PL.User1" using password "PL.Pass1"
