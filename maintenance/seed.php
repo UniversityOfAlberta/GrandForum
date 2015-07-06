@@ -160,6 +160,7 @@ foreach($wgRoles as $role){
 User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), 'email' => "admin.user1@behat-test.com"));
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat-test.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
+User::createNew("PL.User2", array('password' => User::crypt("PL.Pass2"), 'email' => "pl.user2@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
 User::createNew("TC.User1", array('password' => User::crypt("TC.Pass1"), 'email' => "tc.user1@behat-test.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
@@ -233,6 +234,7 @@ addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User3", "Phase2Project1");
 
 addProjectLeader("PL.User1", "Phase2Project1");
+addProjectLeader("PL.User2", "Phase2Project3");
 
 addThemeLeader("TL.User1", "Theme1", 'False', 'False');
 addThemeLeader("TC.User1", "Theme1", 'False', 'True');

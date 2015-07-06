@@ -1832,10 +1832,7 @@ class Person extends BackboneModel {
         else if($this->isRole(NI) && $this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
             return CI;
         }
-        else if($this->isRole(NI) && $project->getType() == 'Administrative' && $this->leadershipOf($project)){
-            return PL;
-        }
-        else if($this->isRole(NI) && $this->leadershipOf($project)){
+        else if($this->leadershipOf($project)){
             return PL;
         }
         return NI;

@@ -233,9 +233,9 @@
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
-    $config->setConst("PL",         "Project Leader");
-    $config->setConst("TL",         "Theme Leader");
-    $config->setConst("TC",         "Theme Coordinator");
+    $config->setConst("PL",         "PL");
+    $config->setConst("TL",         "TL");
+    $config->setConst("TC",         "TC");
     $config->setConst("RMC",        "RMC");
     $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
