@@ -472,6 +472,11 @@ Funding Commences: September 1, 2015<br />
                 550 University Ave. Toronto ON M5G 2A2</p>
             ]]>
         </Instructions>
+        <ReportItem id="review_header" type="StaticReportItem">
+            <![CDATA[ 
+                By generating a PDF your application is automatically submitted.<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>
