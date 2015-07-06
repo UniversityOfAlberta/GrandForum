@@ -188,7 +188,7 @@ EOF;
         foreach($structure['categories'] as $key => $cat){
             $dup_pub = new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]);
             $dup_pub->generateBody();
-            $html .= "<h4><a href='#'>Publications</a></h4>
+            $html .= "<h4><a href='#'>".Inflect::pluralize($key)."</a></h4>
                       <div>
                         {$dup_pub->html}<br />
                       </div>";
