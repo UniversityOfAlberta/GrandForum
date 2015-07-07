@@ -854,9 +854,13 @@ class CavendishTemplate extends QuickTemplate {
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
-	            // It might be worth creating an extension for this if there are more network specific customizations like this
-	            $GLOBALS['toolbox']['Other']['links'][1001] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
-	            $GLOBALS['toolbox']['Other']['links'][1002] = TabUtils::createToolboxLink("Network Resources", "$wgServer$wgScriptPath/index.php/Network_Resources");
+	            $resources = TabUtils::createToolboxHeader("Resources");
+
+	            $resources['links'][1001] = TabUtils::createToolboxLink("Management Office", "$wgServer$wgScriptPath/index.php/Network_Management_Office");
+	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/SFU_Core_Facility");
+	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            
+	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
 	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
