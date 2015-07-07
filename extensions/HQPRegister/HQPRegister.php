@@ -1,5 +1,7 @@
 <?php
 
+require_once("HQPRegisterTable.php");
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
@@ -53,13 +55,12 @@ class HQPRegister extends SpecialPage{
         $formTable = new FormTable("form_table");
         
         $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
+        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
-        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
+        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         

@@ -82,7 +82,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	                    $slead = array("name" => "",
 	                                   "uni" => "");
 	                    if(count($sleaders) > 0){
-	                        $sleaders = array_value($sleaders);
+	                        $sleaders = array_values($sleaders);
 	                        $slead['name'] = $sleaders[0]->getNameForForms();
 	                        $slead['uni'] = $sleaders[0]->getUni();
 	                    }
@@ -96,7 +96,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	                $plead = array("name" => "",
 	                               "uni" => "");
 	                if(count($pleaders) > 0){
-	                    $pleaders = array_value($pleaders);
+	                    $pleaders = array_values($pleaders);
 	                    $plead['name'] = $pleaders[0]->getNameForForms();
 	                    $plead['uni'] = $pleaders[0]->getUni();
 	                }

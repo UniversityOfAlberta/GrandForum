@@ -4,6 +4,7 @@ function initValidations(){
     global $formValidations, $validations;
     $formValidations = array('NOTHING'  => 'NothingValidation',
                              'NULL'     => 'NullValidation',
+                             'NOSPACES' => 'NoSpacesValidation',
                              'NUMERIC'  => 'NumericValidation',
                              'PERCENT'  => 'PercentValidation',
                              'PROJECT'  => 'ProjectValidation',

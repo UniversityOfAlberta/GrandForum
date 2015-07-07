@@ -44,10 +44,13 @@ define('RP_SUBPROJECT', 17);
 define('RP_PROJECT_PROPOSAL',   100);
 define('RP_SAB_REVIEW',         101);
 define('RP_SAB_REPORT',         102);
+define('RP_CATALYST',           103);
+define('RP_TRANS',              104);
 /*
  * AGE-WELLL
  */
 define('RP_HQP_APPLICATION',    200);
+define('RP_CC_PLANNING',        201);
 
 /*
  * Second-level identifiers: report section.
@@ -78,13 +81,18 @@ define('SUB_SUBPROJECTS',       1);
 define('HQP_DEMOGRAPHIC',		1);
 define('HQP_EFFORT',			2);
 define('HQP_MILESTONES',		7); // Used to be '3', but moved into HQP_RESACTIVITY ('7')
-define('HQP_PEOPLE_INTERACT',		4);
-define('HQP_PROJECT_INTERACT',		5);
+define('HQP_PEOPLE_INTERACT',	4);
+define('HQP_PROJECT_INTERACT',	5);
 define('HQP_IMPACT',			6);
 define('HQP_RESACTIVITY',		7);
 
 define('HQP_APPLICATION_FORM',  1);
 define('HQP_APPLICATION_DOCS',  2);
+
+define('CC_PLANNING_1',         1);
+define('CC_PLANNING_2',         2);
+define('CC_PLANNING_3',         3);
+define('CC_PLANNING_4',         4);
 
 define('LDR_SUMMARY',			1);
 define('LDR_MILESTONESTATUS',		2);
@@ -170,6 +178,14 @@ define('SAB_REPORT',    1);
 
 // Second level for RMC Review
 define('RMC_REVIEW',    0);
+
+// Second level for Catalyst and Translational
+define('CAT_DESC',      0);
+define('CAT_BUDGET',    1);
+define('CAT_MILESTONES',2);
+define('CAT_SUPPORT',   3);
+define('CAT_CCV',       4);
+define('CAT_COMM',      5);
 
 /*
  * Third-level identifiers: question within a section.
@@ -257,6 +273,8 @@ define('HQP_APPLICATION_INN',       16);
 define('HQP_APPLICATION_BOUNDARY',  17);
 define('HQP_APPLICATION_FUND',      18);
 define('HQP_APPLICATION_PROGRAM',   19);
+define('HQP_APPLICATION_START',     20);
+define('HQP_APPLICATION_START_OTH', 21);
 
 define('HQP_APPLICATION_SUPPORT1',  1);
 define('HQP_APPLICATION_SUPPORT2',  2);
@@ -265,6 +283,43 @@ define('HQP_APPLICATION_EVIDENCE',  4);
 define('HQP_APPLICATION_TRANS1',    5);
 define('HQP_APPLICATION_TRANS2',    6);
 define('HQP_APPLICATION_CV',        7);
+
+define('CC_1_OBJECTIVES',   1);
+define('CC_1_MOBILIZE',     2);
+define('CC_1_PARTNERS',     3);
+define('CC_1_ENGAGE',       4);
+define('CC_1_ACHIEVE',      5);
+define('CC_1_EXPERTISE',    6);
+define('CC_1_RESOURCES',    7);
+define('CC_1_MEASURE',      8);
+define('CC_1_SUPPORT',      9);
+
+define('CC_2_PRODUCTS',     1);
+define('CC_2_COMMERCIALIZE',2);
+define('CC_2_PROVIDE',      3);
+define('CC_2_PARTNERS',     4);
+define('CC_2_STAGE',        5);
+define('CC_2_MARKET',       6);
+define('CC_2_IP',           7);
+define('CC_2_ACHIEVE',      8);
+define('CC_2_MEASURE',      9);
+define('CC_2_SUPPORT',      10);
+
+define('CC_3_TRANS',        1);
+define('CC_3_ADOPT',        2);
+define('CC_3_TEAMWORK',     3);
+define('CC_3_NETWORK',      4);
+define('CC_3_SYNERGY',      5);
+define('CC_3_ACCEPT',       6);
+define('CC_3_SUPPORT',      7);
+define('CC_3_EVAL',         8);
+
+define('CC_4_TRAIN',        1);
+define('CC_4_KNOW',         2);
+define('CC_4_OUTCOME',      3);
+define('CC_4_INDUSTRY',     4);
+define('CC_4_OTHER',        5);
+define('CC_4_MEASURE',      6);
 
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
@@ -311,6 +366,8 @@ define('LDR_NICOMMENTS_COMMENTS',	0);
 
 define('LDR_BUD_JUST',              0);
 define('LDR_BUD_REVISED',           1);
+define('LDR_BUD_UPLOAD',            2);
+define('LDR_BUD_ALLOC',             3);
 
 // Third-level identifiers for Supplemental report: corrections on HQPs.
 define('SUP_HQP_UGRAD_COUNT',		10);
@@ -381,6 +438,48 @@ define('SAB_REVIEW_WEAKNESS',        2);
 define('SAB_REVIEW_RANKING',         3);
 
 define('SAB_REPORT_SUMMARY',         1);
+
+/* These are used for both the catalyst and translational reports */
+define('CAT_DESC_THEME',           1);
+define('CAT_DESC_TITLE',           2);
+define('CAT_DESC_LEAD',            3);
+define('CAT_DESC_OTHER',           4);
+define('CAT_DESC_PART',            5);
+define('CAT_DESC_ENV',             6);
+define('CAT_DESC_ENV_UP',          7);
+define('CAT_DESC_CONFLICT',        8);
+define('CAT_DESC_CONFLICT_WHICH',  9);
+define('CAT_DESC_CONFLICT_COMP',   10);
+define('CAT_DESC_SUMMARY',         11);
+define('CAT_DESC_ABSTRACT',        12);
+define('CAT_DESC_ABSTRACT_UPLOAD', 13);
+define('CAT_DESC_PROPOSAL',        14);
+define('CAT_DESC_KNOW',            15);
+define('CAT_DESC_TRAIN',           16);
+
+define('CAT_BUD_UPLOAD',           1);
+define('CAT_BUD_JUSTIF',           2);
+
+define('CAT_MIL_UPLOAD',           1);
+
+define('CAT_SUP_UPLOAD1',           1);
+define('CAT_SUP_UPLOAD2',           2);
+define('CAT_SUP_UPLOAD3',           3);
+define('CAT_SUP_UPLOAD4',           4);
+define('CAT_SUP_UPLOAD5',           5);
+
+define('CAT_CCV_UPLOAD1',           1);
+define('CAT_CCV_UPLOAD2',           2);
+define('CAT_CCV_UPLOAD3',           3);
+define('CAT_CCV_UPLOAD4',           4);
+define('CAT_CCV_UPLOAD5',           5);
+define('CAT_CCV_UPLOAD6',           6);
+define('CAT_CCV_UPLOAD7',           7);
+define('CAT_CCV_UPLOAD8',           8);
+define('CAT_CCV_UPLOAD9',           9);
+define('CAT_CCV_UPLOAD10',          10);
+
+define('CAT_COMM_UPLOAD',           1);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

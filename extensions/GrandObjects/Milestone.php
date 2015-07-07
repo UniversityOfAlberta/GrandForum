@@ -14,6 +14,7 @@ class Milestone {
     var $milestone_id;
     var $parent;
     var $project;
+    var $leader;
     var $people;
     var $peopleWaiting;
     var $title;
@@ -28,49 +29,56 @@ class Milestone {
     var $quarters;
     var $comment;
     
-    // Creates a Milestone from the given milestone_id and id
+    /*
+     * Creates a Milestone from the given milestone_id and id
+     * @param integer $milestone_id The id of the milestone
+     * @param integer $id The id of the revision (optional)
+     * @return Milestone The milestone
+     */
     function newFromId($milestone_id, $id=2147483647){
         if(isset(self::$cache[$milestone_id."id".$id])){
             return self::$cache[$milestone_id."id".$id];
         }
-        $sql = "SELECT *
-                FROM grand_milestones
-                WHERE milestone_id = '$milestone_id'
-                AND id <= $id
-                ORDER BY id DESC";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_milestones'),
+                                    array('*'),
+                                    array('milestone_id' => EQ($milestone_id),
+                                          'id' => LTEQ($id)),
+                                    array('id' => 'DESC'));
         $milestone = new Milestone($data);
         self::$cache[$milestone_id."id".$id] = &$milestone;
         self::$cache[$milestone_id."id".$milestone->getId()] = &$milestone;
         return $milestone;
     }
     
-    // Creates a Milestone from the given milestone_id and id
+    /*
+     * Creates a Milestone from the given revision id
+     * @param integer $id The id of the revision
+     * @return Milestone The milestone
+     */
     function newFromIndex($id=2147483647){
-        //if(isset(self::$cache[$milestone_id."id".$id])){
-        //    return self::$cache[$milestone_id."id".$id];
-        //}
-        $sql = "SELECT *
-                FROM grand_milestones
-                WHERE id = '$id'";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_milestones'),
+                                    array('*'),
+                                    array('id' => EQ($id)));
         $milestone = new Milestone($data);
-        //self::$cache[$milestone_id."id".$id] = &$milestone;
-        //self::$cache[$milestone_id."id".$milestone->getId()] = &$milestone;
         return $milestone;
     }
 
+    /*
+     * Creates a new Milestone from the given title and revision id
+     * @param string $milestone_title The title of the Milestone
+     * @param integer $id The revision id of the Milestone
+     * @return Milestone The Milestone
+     */
     function newFromTitle($milestone_title, $id=2147483647){
         $milestone_title = str_replace("'", "#39;", $milestone_title);
         if(isset(self::$cache[$milestone_title."id".$id])){
             return self::$cache[$milestone_title."id".$id];
         }
-        $sql = "SELECT *
-                FROM grand_milestones
-                WHERE title = '$milestone_title'
-                AND id <= $id
-                ORDER BY id DESC";
-        $data = DBFunctions::execSQL($sql);
+        $data = DBFunctions::select(array('grand_milestones'),
+                                    array('*'),
+                                    array('title' => EQ($milestone_title),
+                                          'id' => EQ($id)),
+                                    array('id' => 'DESC'));
         $milestone = new Milestone($data);
         self::$cache[$milestone_title."id".$id] = &$milestone;
         self::$cache[$milestone_title."id".$milestone->getId()] = &$milestone;
@@ -94,6 +102,7 @@ class Milestone {
             }
             $this->status = $data[0]['status'];
             $this->project = Project::newFromId($data[0]['project_id']);
+            $this->leader = $data[0]['leader'];
             $this->people = array();
             $this->peopleWaiting = true;
             $this->problem = $data[0]['problem'];
@@ -108,12 +117,18 @@ class Milestone {
         }
     }
     
-    // Returns the revision number of this Milestone
+    /*
+     * Returns the revision id of this Milestone
+     * @return integer The revision id of this Milestone
+     */
     function getId(){
         return $this->id;
     }
     
-    // Returns the identifier of this Milestone(used for when it is first created)
+    /*
+     * Returns the identifier of this Milestone(used for when it is first created)
+     * @return integer The identifier of this Milestone
+     */
     function getIdentifier(){
         return $this->identifier;
     }
@@ -132,13 +147,19 @@ class Milestone {
         return null;
     }
     
-    // Returns the id of this Milestone
+    /*
+     * Returns the id of this Milestone
+     * @return integer The id of this Milestone
+     */
     function getMilestoneId(){
         return $this->milestone_id;
     }
-    
-    // Returns the parent of this Milestone
-    // (Lazy to help avoid potential infinite loops, and to improve performance on Object construction)
+
+    /*
+     * Returns the parent of this Milestone
+     * (Lazy to help avoid potential infinite loops, and to improve performance on Object construction)
+     * @return Milestone the parent of this Milestone
+     */
     function getParent(){
         if($this->parentWaiting){
             $this->parent = Milestone::newFromId($this->milestone_id, $this->parent);
@@ -151,7 +172,11 @@ class Milestone {
         return $this->parent;
     }
     
-    // Returns the the milestone revision closest to the given date
+    /*
+     * Returns the Milestone revision closest to the given date
+     * @param string $date The date of the revision
+     * @return Milestone The revision closest to the given date
+     */
     function getRevisionByDate($date){
         $parent = $this->getParent();
         $dateTime = strtotime($date);
@@ -177,30 +202,50 @@ class Milestone {
         return $smallestSoFar;
     }
     
-    // Returns the title of this Milestone
+    /*
+     * Return the title of this Milestone
+     * @return string The title of this Milestone
+     */
     function getTitle(){
         return $this->title;
     }
-    
-    // Returns the status of this Milestone
+
+    /*
+     * Returns the status of this Milestone
+     * @return string The status of this Milestone
+     */
     function getStatus(){
         return $this->status;
     }
     
-    // Returns the Project of this Milestone
+    /*
+     * Returns the Project that this Milestone belongs to
+     * @return Project The Project that this Milestone belongs to
+     */
     function getProject(){
         return $this->project;    
     }
     
-    // Returns the People involved in this Milestone revision
+    /*
+     * Returns the Person who leads this Milestone
+     * @return Person The Person who leads this Milestone
+     */
+    function getLeader(){
+        return Person::newFromId($this->leader);
+    }
+
+    /*
+     * Returns the People involved in this Milestone revision
+     * @return array The People involved in this Milestone revision
+     */
     function getPeople(){
         if($this->peopleWaiting){
-            $sql = "SELECT * 
-                    FROM `grand_milestones_people` p, `mw_user` u
-                    WHERE milestone_id = '{$this->id}'
-                    AND u.user_id = p.user_id
-                    AND u.deleted != '1'";
-            $data = DBFunctions::execSQL($sql);
+            $data = DBFunctions::select(array('grand_milestones_people' => 'p',
+                                              'mw_user' => 'u'),
+                                        array('u.user_id'),
+                                        array('milestone_id' => EQ($this->id),
+                                              'u.user_id' => EQ(COL('p.user_id')),
+                                              'u.deleted' => NEQ(1)));
             foreach($data as $row){
                 $this->people[] = Person::newFromId($row['user_id']);
             }
@@ -208,8 +253,11 @@ class Milestone {
         }
         return $this->people;
     }
-    
-    // Returns the problem statement of this Milestone
+
+    /*
+     * Returns the problem statement of this Milestone
+     * @return string The problem statement of this Milestone
+     */
     function getProblem(){
         return str_replace("\\'", "&#39;", 
                str_replace("\\&quot;", "&quot;", 
@@ -218,7 +266,10 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->problem)))));
     }
     
-    // Returns the description of this Milestone
+    /*
+     * Returns the description of this Milestone
+     * @return string The description of this Milestone
+     */
     function getDescription(){
         return str_replace("\\'", "&#39;", 
                str_replace("\\&quot;", "&quot;", 
@@ -227,7 +278,10 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->description)))));
     }
     
-    // Returns the assessment of this Milestone
+    /*
+     * Returns the assessement of this Milestone
+     * @return string The assessment of this Milestone
+     */
     function getAssessment(){
         return str_replace("\\'", "&#39;", 
                str_replace("\\&quot;", "&quot;", 
@@ -236,17 +290,26 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->assessment)))));
     }
     
-    // Returns the Person who modified this Milestone revision
+    /*
+     * Returns the Person who modified this Milestone revision
+     * @return Person The Person who modified this Milestone revision
+     */
     function getEditedBy(){
         return $this->editedBy;
     }
     
-    // Returns the start_date of this Milestone
+    /*
+     * Returns the start date of this Milestone
+     * @return string The start date of this Milestone
+     */
     function getStartDate(){
         return $this->start_date;
     }
     
-    // Returns the end_date of this Milestone
+    /*
+     * Returns the end date of this Milestone
+     * @return string The end date of this Milestone
+     */
     function getEndDate(){
         return $this->end_date;
     }
@@ -260,13 +323,18 @@ class Milestone {
         $quarters = explode(",", $this->quarters);
         foreach($quarters as $quarter){
             $exp = explode(":", $quarter);
-            $years[$exp[0]][] = $exp[1];
+            if(count($exp) >= 2){
+                $years[$exp[0]][$exp[1]] = $exp[1];
+            }
         }
         return $years;
     }
     
-    // Returns the start_date of the very first revision of this Milestone
-    // NOTE: This method may be slow if there are many revisions
+    /*
+     * Returns the start date of the very first revision of this Milestone
+     * NOTE: This method may be slow if there are many revisions
+     * @return string The start date of the very first revision of this Milestone
+     */
     function getVeryStartDate(){
         $parent = $this->getParent();
         if($parent != null){
@@ -277,40 +345,24 @@ class Milestone {
         }
     }
     
-    // Returns the projected end date of this Milestone
+    /*
+     * Returns the projected end date of this Milestone
+     * @return string The projected end date of this Milestone
+     */
     function getProjectedEndDate(){
         return $this->projected_end_date;
     }
     
-    // Returns the comment of this Milestone
+    /*
+     * Returns the comment of this Milestone
+     * @return string The comment of this Milestone
+     */
     function getComment(){
         return str_replace("\\'", "&#39;", 
                str_replace("\\&quot;", "&quot;", 
                str_replace("\n\n", "\n", 
                str_replace("&lt;br /&gt;", "\n", 
                str_replace("&lt;br/&gt;", "\n", $this->comment)))));
-    }
-    
-    function getHistoryPopup($backUntilDate='0000-00-00'){
-        global $wgServer, $wgScriptPath;
-        $url = "{$wgServer}{$wgScriptPath}/index.php?action=api.getProjectMilestoneHistory/{$this->getMilestoneId()}/{$this->getId()}/{$backUntilDate}";
-        $html = "
-            <script type='text/javascript'>
-                function openDialog{$this->getId()}(){
-                    $('#milestone_history_{$this->getId()}').dialog('open');
-                    $.get('$url', function(response){
-                        $('#milestone_history_{$this->getId()}').html(response);
-                    });
-                }
-            </script>
-            <a style='font-style:italic; font-size:11px; font-weight:bold;' onclick='openDialog{$this->getId()}(); return false;' href='#'>See Milestone History</a>
-            <div title='{$this->getTitle()}' style='white-space: pre-line;' id='milestone_history_{$this->getId()}'>Loading...</div>
-            <script type='text/javascript'>
-                $(document).ready(function(){
-                    $('#milestone_history_{$this->getId()}').dialog({ autoOpen: false, height: '600', width: '800' });
-                });
-           </script>";
-        return $html;
     }
 }
 ?>

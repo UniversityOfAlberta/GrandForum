@@ -226,6 +226,23 @@ class Bibliography // {{{
       "{\\'U}", "{\\`U}", "{\\^U}", "{\\\"U}",
       "{\\\"s}", "{!`}", "{?`}", "{\\&}"
       );
+    $patterns_innerbraces = array(
+      "\\'{a}", "\\`{a}", "\\^{a}", "\\\"{a}", "\\~{a}", "\\a{a}", "\\a{e}",
+      "\\'{A}", "\\`{A}", "\\^{A}", "\\\"{A}", "\\~{A}", "\\A{A}", "\\A{E}",
+      "\\c{c}",
+      "\\c{C}",
+      "\\'{e}", "\\`{e}", "\\^{e}", "\\\"{e}",
+      "\\'{E}", "\\`{E}", "\\^{E}", "\\\"{E}",
+      "\\'{i}", "\\`{i}", "\\^{i}", "\\\"{i}", "\\'{i}",
+      "\\'{I}", "\\`{I}", "\\^{I}", "\\\"{I}",
+      "\\~{n}",
+      "\\~{N}",
+      "\\'{o}", "\\`{o}", "\\^{o}", "\\\"{o}", "\\~{o}", "\\o{e}", "\\{o}",
+      "\\'{O}", "\\`{O}", "\\^{O}", "\\\"{O}", "\\~{O}", "\\O{E}", "\\{O}",
+      "\\'{u}", "\\`{u}", "\\^{u}", "\\\"{u}",
+      "\\'{U}", "\\`{U}", "\\^{U}", "\\\"{U}",
+      "\\\"s", "!`", "?`", "\\&"
+      );
     // Same thing without enclosing braces
     $patterns_nobraces = array(
       "\\'a", "\\`a", "\\^a", "\\\"a", "\\~a", "\\aa", "\\ae",
@@ -261,6 +278,7 @@ class Bibliography // {{{
       "Ú", "Ù", "Û", "Ü",
       "ß", "¡", "¿", "&");
     $out = str_replace($patterns_braces, $replacements, $out);
+    $out = str_replace($patterns_innerbraces, $replacements, $out);
     $out = str_replace($patterns_nobraces, $replacements, $out);
     return $out;
   } // }}}
@@ -395,7 +413,7 @@ class Bibliography // {{{
       $contents, $entries, PREG_SET_ORDER);
     foreach ($entries as $entry)
     {
-      $bibtex_type = $entry[1];
+      $bibtex_type = strtolower($entry[1]);
       $bibtex_name = $entry[2];
       $bibtex_contents = $entry[3].",\n"; // Newline added so that all entries are followed by one
       preg_match_all("/(\\w+?)\\s*=\\s*\\{(.*?)\\},\\n/ms", 
@@ -403,7 +421,7 @@ class Bibliography // {{{
       $params = array();
       foreach ($pairs as $pair)
       {
-        $k = $pair[1];
+        $k = strtolower($pair[1]);
         $v = $pair[2];
         $params["raw"][$k] = Bibliography::unspace($v); // We keep the original BibTeX string in the "raw" subarray
         $params[$k] = Bibliography::removeBraces(

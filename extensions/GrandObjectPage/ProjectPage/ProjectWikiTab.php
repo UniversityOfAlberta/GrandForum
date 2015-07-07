@@ -17,7 +17,7 @@ class ProjectWikiTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $edit = $this->visibility['edit'];
         
-        if(!$me->isMemberOf($project) && !$project->userCanEdit()){
+        if(!$this->visibility['isMember'] && !$project->userCanEdit()){
             return $this->html;
         }
         

@@ -198,7 +198,14 @@ class GlobalSearchAPI extends RESTAPI {
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
                         if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
-                            if(strpos($article->getTitle()->getText(), "MAIL") !== 0){
+                            $project = Project::newFromName($article->getTitle()->getNSText());
+                            if($project != null && $project->getName() != ""){
+                                // Namespace belongs to a project
+                                if($project->getType() == 'Administrative' || $me->isMemberOf($project)){
+                                    $ids[] = $page->pageid;
+                                }
+                            }
+                            else if(strpos($article->getTitle()->getText(), "MAIL") !== 0){
                                 $ids[] = $page->pageid;
                             }
                         }

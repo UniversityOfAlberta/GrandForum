@@ -132,17 +132,13 @@ EOF;
         $champRow->append($champPlusMinus);
         
         $descRow = new FormTableRow("{$pre}_description_row");
-        $descRow->append(new Label("{$pre}_description_label", "Description", "The description of the project", VALIDATE_NOTHING));
-        $descRow->append(new TextareaField("{$pre}_description", "Description", "", VALIDATE_NOTHING));
+        $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
+        $descRow->append(new TextareaField("{$pre}_description", "Overview", "", VALIDATE_NOTHING));
         
-        $probRow = new FormTableRow("{$pre}_problem_row");
-        $probRow->append(new Label("{$pre}_problem_label", "Problem Summary", "The problem summary of the project", VALIDATE_NOTHING));
-        $probRow->append(new TextareaField("{$pre}_problem", "Problem Summary", "", VALIDATE_NOTHING));
-        
-        $solRow = new FormTableRow("{$pre}_solution_row");
-        $solRow->append(new Label("{$pre}_solution_label", "Proposed Solution Summary", "The proposed solution summary of the project", VALIDATE_NOTHING));
-        $solRow->append(new TextareaField("{$pre}_solution", "Proposed Solution Summary", "", VALIDATE_NOTHING));
-        
+        $longDescRow = new FormTableRow("{$pre}_long_description_row");
+        $longDescRow->append(new Label("{$pre}_long_description_label", "Description", "The full description of the project", VALIDATE_NOTHING));
+        $longDescRow->append(new TextareaField("{$pre}_long_description", "Description", "", VALIDATE_NOTHING));
+              
         //Challenges
         $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
        
@@ -177,8 +173,7 @@ EOF;
         $table->append($plRow);
         $table->append($champRow);
         $table->append($descRow);
-        $table->append($probRow);
-        $table->append($solRow);
+        $table->append($longDescRow);
         
         $form->append($table);
         $form->append($challengeFieldSet);
@@ -209,10 +204,9 @@ EOF;
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
             $form->getElementById("new_description")->setPOST("description");
+            $form->getElementById("new_long_description")->setPOST("long_description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
-            $form->getElementById("new_problem")->setPOST("problem");
-            $form->getElementById("new_solution")->setPOST("solution");
 
             if(!APIRequest::doAction('CreateProject', true)){
                 return "There was an error Creating the Project";

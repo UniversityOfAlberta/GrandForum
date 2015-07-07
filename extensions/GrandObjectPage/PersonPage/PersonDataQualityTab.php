@@ -182,58 +182,18 @@ EOF;
 
     function getMyProductDuplicates(){
         $handlers = AbstractDuplicatesHandler::$handlers;
-        $dup_pub = new DuplicatesTab("Publications", $handlers['myPublication']);
-        $dup_pub->generateBody();
-        $publications = $dup_pub->html;
-
-        $dup_art = new DuplicatesTab("Artifacts", $handlers['myArtifact']);
-        $dup_art->generateBody();
-        $artifacts = $dup_art->html;
-
-        $dup_act = new DuplicatesTab("Activities", $handlers['myActivity']);
-        $dup_act->generateBody();
-        $activities = $dup_act->html;
-
-        $dup_press = new DuplicatesTab("Press", $handlers['myPress']);
-        $dup_press->generateBody();
-        $press = $dup_press->html;
-    
-        $dup_awd = new DuplicatesTab("Awards", $handlers['myAward']);
-        $dup_awd->generateBody();
-        $awards = $dup_awd->html;
-
-        $dup_present = new DuplicatesTab("Presentations", $handlers['myPresentation']);
-        $dup_present->generateBody();
-        $presentations = $dup_present->html;
-
-        $html =<<<EOF
-            <div id='duplicateProductsAccordion'>
-                <h4><a href='#'>Publications</a></h4>
-                <div>
-                {$publications}<br />
-                </div>
-                <h4><a href='#'>Artifacts</a></h4>
-                <div>
-                {$artifacts}<br />
-                </div>
-                <h4><a href='#'>Activities</a></h4>
-                <div>
-                {$activities}<br />
-                </div>
-                <h4><a href='#'>Press</a></h4>
-                <div>
-                {$press}<br />
-                </div>
-                <h4><a href='#'>Awards</a></h4>
-                <div>
-                {$awards}<br />
-                </div>
-                <h4><a href='#'>Presentations</a></h4>
-                <div>
-                {$presentations}<br />
-                </div>
-            </div>
-EOF;
+        $structure = Product::structure();
+        
+        $html = "<div id='duplicateProductsAccordion'>";
+        foreach($structure['categories'] as $key => $cat){
+            $dup_pub = new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]);
+            $dup_pub->generateBody();
+            $html .= "<h4><a href='#'>".Inflect::pluralize($key)."</a></h4>
+                      <div>
+                        {$dup_pub->html}<br />
+                      </div>";
+        }
+        $html .= "</div>";
         return $html;
     }
 
@@ -272,7 +232,6 @@ EOF;
             if(empty($ni_position)){ $ni_errors['profile_errors'][] = "Missing title"; }
             if(empty($ni_position)){ $ni_errors['profile_pub'][] = "Missing public profile"; }
             if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
-
 
             //Product completeness
             $papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
@@ -315,11 +274,10 @@ EOF;
                 $department = $s->getDepartment();
                 $errors = array();
                 $ishqp = $s->isRole(HQP);
-                $related = $person->relatedTo($s, 'Supervises');
 
                 if(isExtensionEnabled('Acknowledgements')){
                     //Acknowledgements
-                    if($ishqp && $related){
+                    if($ishqp){
                         $acks = $s->getAcknowledgements();
                         if(count($acks) > 0){
                             $ack_found = false;
@@ -340,12 +298,12 @@ EOF;
                     }
                 }
 
-                if($ishqp && $related && ($university == "" || $department == "" || $position == "")){
+                if($ishqp && ($university == "" || $department == "" || $position == "")){
                     $errors[] = "Missing University/Department/Position";
                 }
 
                 //Only care about Masters and PhDs for thesis errors
-                if(($position == "Masters Student" || $position == "PhD Student") && $ishqp && $related){
+                if(($position == "Masters Student" || $position == "PhD Student") && $ishqp){
                     
                     //Check for thesis and no exit data
                     $thesis = $s->getThesis();

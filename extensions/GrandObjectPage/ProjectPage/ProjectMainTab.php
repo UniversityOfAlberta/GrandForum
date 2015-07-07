@@ -88,11 +88,6 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         $this->showChampions();
         $this->showDescription();
-
-        if(!$project->isSubProject()){
-            $this->showProblem();
-            $this->showSolution();
-        }
         
         return $this->html;
     }
@@ -101,12 +96,9 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgOut, $wgMessage;
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
-        $_POST['description'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description']));
-        $_POST['problem'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem']));
-        $_POST['solution'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['solution']));
+        $_POST['description'] = @$_POST['description'];
+        $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
-           $_POST['problem'] != $this->project->getProblem() ||
-           $_POST['solution'] != $this->project->getSolution() ||
            $_POST['fullName'] != $this->project->getFullName()){
             $error = APIRequest::doAction('ProjectDescription', true);
             if($error != ""){
@@ -265,12 +257,16 @@ EOF;
                     $this->html .= "
                     <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
                     <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
-                    if($wgUser->isLoggedIn()){
+                    if($wgUser->isLoggedIn() && $champion['user']->getEmail() != ""){
                         $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
                     }
-                    $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>
-                        <tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>
-                    </table>";
+                    if($champion['title'] != ""){
+                        $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>";
+                    }
+                    if($champion['org'] != ""){
+                        $this->html .= "<tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>";
+                    }
+                    $this->html .= "</table>";
                 }
             }
         }
@@ -321,52 +317,6 @@ EOF;
         $this->html .= $plusMinus->render();
         $this->html .= "</td><td></td></tr></table>";
     }
-    
-    /*
-    function showLeaders(){
-        global $wgUser, $wgServer, $wgScriptPath, $config;
-        $me = Person::newFromWgUser();
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        $leaders = $project->getLeaders(true); //only get id's
-        
-        $names = array("");
-        if($project->isSubProject()){
-            $people = array_merge($project->getParent()->getAllPeople(), $project->getAllPeople());
-            foreach($people as $person){
-                if($person->isRoleAtLeast(NI)){
-                    $names[$person->getName()] = $person->getNameForForms();
-                }
-            }
-            asort($names);
-        }
-        
-        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', PL))."</span></h2>";
-        $this->html .= "<ul>";
-        if(!empty($leaders)){
-            foreach($leaders as $leader_id){
-                $leader = Person::newFromId($leader_id);
-                if(!$edit || !$me->leadershipOf($project->getParent())){
-                    $this->html .= "<li><a href='{$leader->getUrl()}'>{$leader->getReversedName()}</a></li>";
-                }
-                else if($me->leadershipOf($project->getParent())){
-                    $plRow = new FormTableRow("pl_row");
-                    $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-                    $plRow->append(new ComboBox("pl", "Project Leader", $leader->getName(), $names, VALIDATE_NI));
-                    $this->html .= $plRow->render();
-                }
-            }    
-        }
-        else if($edit && $me->leadershipOf($project->getParent())){
-            $plRow = new FormTableRow("pl_row");
-            $plRow->append(new Label("pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
-            $plRow->append(new ComboBox("pl", "Project Leader", "", $names, VALIDATE_NI));
-            $this->html .= $plRow->render();
-        }
-        $this->html .= "</ul>";
-    }*/
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
@@ -412,57 +362,33 @@ EOF;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        if($edit || !$edit && $project->getDescription() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Description</span></h2>";
+        $description = $project->getDescription();
+        
+        if($edit || !$edit && $description != ""){
+            $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
         }
         if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getDescription()) . "</p>";
+            $this->html .= $description."<br />";
         }
         else{
-            $this->html .= "<textarea name='description' style='height:500px;'>{$project->getDescription()}</textarea>";
+            $this->html .= "<textarea name='description' style='height:500px;'>{$description}</textarea>
+            <script type='text/javascript'>
+                $('textarea[name=description]').tinymce({
+                    theme: 'modern',
+                    menubar: false,
+                    plugins: 'link image contextmenu charmap lists table paste wordcount',
+                    toolbar: [
+                        'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                    ],
+                    paste_postprocess: function(plugin, args) {
+                        var p = $('p', args.node);
+                        p.each(function(i, el){
+                            $(el).css('line-height', 'inherit');
+                        });
+                    }
+                });
+            </script>";
         }
-    }
-
-    function showProblem(){
-        global $wgServer, $wgScriptPath;
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        if($edit || !$edit && $project->getProblem() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Problem Summary</span></h2>";
-        }
-        if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getProblem()) . "</p>";
-        }
-        else{
-            $this->html .= "<textarea name='problem' style='height:500px;'>{$project->getProblem()}</textarea>";
-        }
-    }
-
-    function showSolution(){
-        global $wgServer, $wgScriptPath;
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-        
-        if($edit || !$edit && $project->getSolution() != ""){
-            $this->html .= "<h2><span class='mw-headline'>Proposed Solution Summary</span></h2>";
-        }
-        if(!$edit){
-            $this->html .= "<p>" . $this->sandboxParse($project->getSolution()) . "</p>";
-        }
-        else{
-            $this->html .= "<textarea name='solution' style='height:500px;'>{$project->getSolution()}</textarea>";
-        }
-    }
-
-    function sandboxParse($wikiText) {
-        global $wgTitle, $wgUser;
-        $myParser = new Parser();
-        $myParserOptions = ParserOptions::newFromUser($wgUser);
-        $result = $myParser->parse($wikiText, $wgTitle, $myParserOptions);
-        return $result->getText();
     }
 
 }    

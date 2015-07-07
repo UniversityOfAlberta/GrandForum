@@ -64,12 +64,10 @@ class Duplicates extends SpecialPage{
 	    global $wgServer, $wgScriptPath, $wgOut;
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
-        $tabbedPage->addTab(new DuplicatesTab("Publications", $handlers['publication']));
-        $tabbedPage->addTab(new DuplicatesTab("Artifacts", $handlers['artifact']));
-        $tabbedPage->addTab(new DuplicatesTab("Activities", $handlers['activity']));
-        $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['press']));
-        $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['award']));
-        $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['presentation']));
+        $structure = Product::structure();
+        foreach($structure['categories'] as $key => $cat){
+            $tabbedPage->addTab(new DuplicatesTab(Inflect::pluralize($key), $handlers[strtolower($key)]));
+        }
         $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
         $tabbedPage->showPage();
 	}

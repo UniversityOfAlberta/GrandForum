@@ -122,8 +122,8 @@ class Theme {
      * @return This Theme's url
      */
     function getUrl(){
-        global $wgServer, $wgScriptPath;
-        return "{$wgServer}{$wgScriptPath}/index.php/GRAND:{$this->getAcronym()} - {$this->getName()}";
+        global $wgServer, $wgScriptPath, $config;
+        return "{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$this->getAcronym()} - {$this->getName()}";
     }
     
     /**

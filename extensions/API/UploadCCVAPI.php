@@ -76,8 +76,32 @@ class UploadCCVAPI extends API{
         }
         $product->access = "Public";
         $product->ccv_id = $ccv_id;
-        $authors = explode(",", $paper['authors']);
+        $authors1 = explode(",", $paper['authors']);
+        $authors2 = explode(" and ", $paper['authors']);
+        $commaFirstLast = false;
+        foreach($authors1 as $author){
+            if(strstr(trim($author), " ") === false){
+                // Probably using commas to separate first/last name... *sigh*
+                $commaFirstLast = true;
+            }
+        }
+        if($commaFirstLast){
+            $authors = $authors2;
+        }
+        else{
+            $authors = $authors1;
+        }
         foreach($authors as $author){
+            if(strstr($author, " and ") !== false){
+                $exploded = explode(" and ", $author);
+                $author = $exploded[0];
+            }
+            if($commaFirstLast){
+                $names = explode(",", $author);
+                $last = @trim($names[0]);
+                $first = @trim($names[1]);
+                $author = "$first $last";
+            }
             $obj = new stdClass;
             $obj->name = trim($author);
             $product->authors[] = $obj;

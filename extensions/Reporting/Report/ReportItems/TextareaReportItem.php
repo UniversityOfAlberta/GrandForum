@@ -35,7 +35,7 @@ class TextareaReportItem extends AbstractReportItem {
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
                         menubar: false,
-                        plugins: 'link image contextmenu charmap lists table paste',
+                        plugins: 'link image contextmenu charmap lists table paste wordcount',
                         toolbar: [
                             'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
                         ],

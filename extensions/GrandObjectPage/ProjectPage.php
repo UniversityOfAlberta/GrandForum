@@ -52,11 +52,14 @@ class ProjectPage {
                     TabUtils::clearActions();
                 }
                 else if($project != null && 
+                        $project->getType() != 'Administrative' &&
                         !$me->isMemberOf($project) && 
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
+                        !$me->isThemeCoordinatorOf($project) &&
                         !$me->isRole(CF) && 
-                        !($project->isSubProject() && $me->isThemeLeaderOf($project->getParent()))){
+                        !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
+                                                       $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
                     $wgOut->permissionRequired('');
@@ -70,7 +73,7 @@ class ProjectPage {
                 $isLead = $project->userCanEdit();
             }
             
-            $isMember = $me->isMemberOf($project);
+            $isMember = ($me->isMemberOf($project) || $project->getType() == 'Administrative');
             
             //Adding support for GET['edit']
             if(isset($_GET['edit'])){
@@ -80,7 +83,7 @@ class ProjectPage {
 
             $isLead = ($isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
             $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-            $isMember = true;
+
             $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace
@@ -103,6 +106,7 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
+                $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
@@ -112,16 +116,11 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                /*if(isExtensionEnabled('AllocatedBudgets') && !$project->isSubProject()){
-                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
-                }*/
-                if($project->getStatus() != 'Proposed'){
+                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
-                if(!$project->isSubProject() && $project->getStatus() != 'Proposed'){
-                    $tabbedPage->addTab(new ProjectOverviewTab($project, $visibility));
-                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
@@ -178,36 +177,41 @@ class ProjectPage {
     }
     
     static function createTab(&$tabs){
-        $tabs["Projects"] = TabUtils::createTab("My Projects");
+        global $config;
+        if($config->getValue('projectsEnabled')){
+            $tabs["Projects"] = TabUtils::createTab("My Projects");
+        }
         return true;
     }
     
     static function createSubTabs(&$tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromWgUser();
-        $projects = $me->getProjects();
-        
-        if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
-		    return true;
-		}
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+        if($config->getValue('projectsEnabled')){
+            $me = Person::newFromWgUser();
+            $projects = $me->getProjects();
+            
+            if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+		        return true;
+		    }
 
-        foreach($projects as $key => $project){
-            if($project->isSubProject()){
-                unset($projects[$key]);
-            }
-        }
-        $projects = array_values($projects);
-        foreach($projects as $project){
-            $selected = ($wgTitle->getNSText() == $project->getName()) ? "selected" : "";
-            $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
-            $subprojects = $project->getSubProjects();
-            if(count($subprojects) > 0){
-                $subtab['dropdown'][] = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
-                foreach($project->getSubProjects() as $subProject){
-                    $subtab['dropdown'][] = TabUtils::createSubTab($subProject->getName(), $subProject->getUrl(), $selected);
+            foreach($projects as $key => $project){
+                if($project->isSubProject()){
+                    unset($projects[$key]);
                 }
             }
-            $tabs["Projects"]['subtabs'][] = $subtab;
+            $projects = array_values($projects);
+            foreach($projects as $project){
+                $selected = (str_replace("_", " ", $wgTitle->getNSText()) == $project->getName()) ? "selected" : "";
+                $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+                $subprojects = $project->getSubProjects();
+                if(count($subprojects) > 0){
+                    $subtab['dropdown'][] = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);
+                    foreach($project->getSubProjects() as $subProject){
+                        $subtab['dropdown'][] = TabUtils::createSubTab($subProject->getName(), $subProject->getUrl(), $selected);
+                    }
+                }
+                $tabs["Projects"]['subtabs'][] = $subtab;
+            }
         }
         return true;
     }

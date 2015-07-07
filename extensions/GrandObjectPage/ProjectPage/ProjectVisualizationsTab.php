@@ -463,7 +463,7 @@ class ProjectVisualizationsTab extends AbstractTab {
 	    if($action == "getProjectWordleData"){
 	        
 	        $project = Project::newFromId($_GET['project']);
-	        $description = $project->getDescription();
+	        $description = strip_tags($project->getDescription());
 	        
 	        $data = Wordle::createDataFromText($description);
 

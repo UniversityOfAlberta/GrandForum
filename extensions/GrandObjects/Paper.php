@@ -235,6 +235,10 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
         $data = array();
         if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access])){
             return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access];
@@ -319,7 +323,11 @@ class Paper extends BackboneModel{
      * @return array All of the Papers
      */
     static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
-        if( $startRange === false || $endRange === false ){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            $grand = 'both';
+        }
+        if($startRange === false || $endRange === false){
             debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
@@ -415,6 +423,7 @@ class Paper extends BackboneModel{
         if(count(self::$illegalAuthorsCache) == 0){
             $data = DBFunctions::select(array('grand_illegal_authors'),
                                         array('author'));
+            self::$illegalAuthorsCache[""] = "";
             foreach($data as $row){
                 self::$illegalAuthorsCache[$row['author']] = $row['author'];
             }
@@ -932,6 +941,9 @@ class Paper extends BackboneModel{
         $people = $this->getAuthors();
         $unis = array();
         foreach($people as $person){
+            if($person->getId() == 0){
+                continue;
+            }
             $universities = $person->getUniversitiesDuring($this->getDate(), $this->getDate());
             if(count($universities) > 0){
                 foreach($universities as $university){
@@ -970,6 +982,14 @@ class Paper extends BackboneModel{
         $date = str_replace("0000", substr($dates[1], 0, 4), $date);
         $date = str_replace("-00", "-01", $date);
         return $date;
+    }
+    
+    /*
+     * Returns the year of this Paper
+     * @return string The year of this Paper
+     */
+    function getYear(){
+        return substr($this->getDate(), 0, 4);
     }
     
     /**
@@ -1561,7 +1581,7 @@ class Paper extends BackboneModel{
     }
     
     function exists(){
-
+        return ($this->id != "");
     }
     
     function getCacheId(){

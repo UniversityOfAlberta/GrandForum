@@ -109,11 +109,13 @@ $(document).ready(function(){
                     return;
                 }
                 ajaxSection = $.get(href + '&showSection', function(response){
-                    _.each(tinyMCE.editors, function(e){
+                    for (edId in tinyMCE.editors){
+                        var e = tinyMCE.editors[edId];
                         if(e != undefined){
                             e.destroy();
+                            e.remove();
                         }
-                    });
+                    }
                     currentSectionHref = href;
                     $(that).children("img").remove();
                     $("#reportMain > div").stop();

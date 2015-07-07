@@ -122,6 +122,12 @@ abstract class AbstractReport extends SpecialPage {
             case RPTP_MTG:
                 $type = "MindTheGap";
                 break;
+            case RPTP_CATALYST:
+                $type = "CatalystReport";
+                break;
+            case RPTP_TRANS:
+                $type = "TranslationalReport";
+                break;
         }
         
         $proj = null;
@@ -1167,14 +1173,25 @@ abstract class AbstractReport extends SpecialPage {
             $blob->loadFromMD5($_GET['id']);
             $data = $blob->getData();
             if($data != null){
-                // Currently only works for UploadReportItem blobs
-                $data = json_decode($data);
+                $fileName = $_GET['id'];
+                $json = json_decode($data);
                 if(isset($_GET['mime'])){
                     header("Content-Type: {$_GET['mime']}");
                 }
-                header("Content-disposition: attachment; filename=\"".addslashes($data->name)."\"");
-                echo base64_decode($data->file);
-                exit;
+                if($json != null){
+                    $fileName = $json->name;
+                    header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    echo base64_decode($json->file);
+                    exit;
+                }
+                else{
+                    if(isset($_GET['fileName'])){
+                        $fileName = $_GET['fileName'];
+                    }
+                    header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
+                    echo $data;
+                    exit;
+                }
             }
             exit;
         }

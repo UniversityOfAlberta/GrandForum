@@ -23,12 +23,11 @@ class MyDuplicateProducts extends SpecialPage{
 	    $me = Person::newFromId($wgUser->getId());
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
-        $tabbedPage->addTab(new DuplicatesTab("Publications", $handlers['myPublication']));
-        $tabbedPage->addTab(new DuplicatesTab("Artifacts", $handlers['myArtifact']));
-        $tabbedPage->addTab(new DuplicatesTab("Activities", $handlers['myActivity']));
-        $tabbedPage->addTab(new DuplicatesTab("Press", $handlers['myPress']));
-        $tabbedPage->addTab(new DuplicatesTab("Awards", $handlers['myAward']));
-        $tabbedPage->addTab(new DuplicatesTab("Presentations", $handlers['myPresentation']));
+        
+        $structure = Product::structure();
+        foreach($structure['categories'] as $key => $cat){
+            $tabbedPage->addTab(new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]));
+        }
         $wgOut->setPageTitle("My Duplicate ".Inflect::pluralize($config->getValue('productsTerm')));
         $tabbedPage->showPage();
 	}

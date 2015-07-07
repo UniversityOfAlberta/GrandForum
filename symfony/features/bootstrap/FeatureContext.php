@@ -8,30 +8,6 @@ exec(sprintf("%s > %s 2>&1 & echo $! >> %s",
              "phantomjs.log", 
              "phantomjs.pid"));
 
-/*
-$pid = pcntl_fork();
-if ($pid == -1) {
-     die('could not fork');
-} else if ($pid) {
-    // we are the parent
-    $output = exec("netstat -vatn | grep ':::4444'");
-    while(!strstr($output, "4444")){
-        // Not the best way to check if Selenium is running, 
-        // but it is the best I could come up with
-        sleep(1);
-        $output = exec("netstat -vatn | grep ':::4444'");
-    }
-} else {
-     // we are the child
-     $output = exec("netstat -vatn | grep ':::4444'");
-     if(!strstr($output, "4444")){
-        pcntl_exec("bin/selenium");
-     }
-     else{
-        exit();
-     }
-}
-*/
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
@@ -326,6 +302,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function pressButtonByCss($css){
         $button = $this->getSession()->getPage()->find('css', $css);
         $button->press();
+    }
+    
+    /**
+     * @Given /^I fill in TinyMCE "(?P<id>(?:[^"]|\\")*)" with "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function fillInTinyMCEWith($id, $text){
+        $text = addslashes($text);
+        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
     }
 
 }

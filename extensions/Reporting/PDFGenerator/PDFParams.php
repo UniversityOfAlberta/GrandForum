@@ -46,10 +46,15 @@ define('EVTP_PROJECT', 2);
  * GlycoNet
  */
 define('RPTP_PROJECT_PROPOSAL', 200);
-define('RPTP_SAB_REPORT', 201);
-define('RPTP_RMC_PROJ_REPORT', 202);
+define('RPTP_SAB_REPORT',       201);
+define('RPTP_RMC_PROJ_REPORT',  202);
+define('RPTP_CATALYST',         203);
+define('RPTP_TRANS',            204);
 
 /*
  * AGE-WELL
  */
-define('RPTP_HQP_APPLICATION', 300);
+define('RPTP_HQP_APPLICATION',  300);
+define('RPTP_CC_PLANNING',      301);
+
+?>

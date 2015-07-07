@@ -12,6 +12,12 @@ Feature: Login
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         Then I should see "Admin User1"
         And I should not see "Bad title"
+        
+    Scenario: Loggin in using lower case letters
+        Given I am logged in as "admin.user1" using password "admin.pass1"
+        Then I should not see "Admin User1"
+        And I should not see "admin user1"
+        And I should see "There is no user by the name of admin.user1" 
     
     Scenario: Logging in using an invalid password
         Given I am logged in as "Admin.User1" using password "Hello"

@@ -24,16 +24,18 @@ ManageProductsView = Backbone.View.extend({
             this.products = this.model.getAll();
             this.listenTo(this.products, "add", this.addRows);
             this.listenTo(this.products, "remove", this.addRows);
-            me.projects.ready().then($.proxy(function(){
-                this.projects = me.projects.getCurrent();
-                this.model.ready().then($.proxy(function(){
-                    this.allProjects.ready().then($.proxy(function(){
-                        this.otherProjects = this.allProjects.getCurrent();
-                        this.oldProjects = this.allProjects.getOld();
-                        this.otherProjects.remove(this.projects.models);
-                        this.oldProjects.remove(this.projects.models);
-                        me.projects.ready().then($.proxy(function(){
-                            this.render();
+            this.listenToOnce(this.products, "sync", $.proxy(function(){
+                me.projects.ready().then($.proxy(function(){
+                    this.projects = me.projects.getCurrent();
+                    this.model.ready().then($.proxy(function(){
+                        this.allProjects.ready().then($.proxy(function(){
+                            this.otherProjects = this.allProjects.getCurrent();
+                            this.oldProjects = this.allProjects.getOld();
+                            this.otherProjects.remove(this.projects.models);
+                            this.oldProjects.remove(this.projects.models);
+                            me.projects.ready().then($.proxy(function(){
+                                this.render();
+                            }, this));
                         }, this));
                     }, this));
                 }, this));
@@ -391,7 +393,6 @@ ManageProductsView = Backbone.View.extend({
                                         this.duplicatesDialog.open();
                                     }
                                 }, this));
-                                
                             }, this),
                             error: $.proxy(function(){
                                 clearAllMessages("#dialogMessages");
@@ -577,8 +578,9 @@ ManageProductsView = Backbone.View.extend({
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
-                            this.products.add(data.created, {silent: true});
-                            this.addRows();
+	                        var ids = _.pluck(data.created, 'id');
+	                        this.products.remove(ids);
+                            this.products.add(data.created);
                         }
                         clearAllMessages();
                         if(response.errors.length > 0){
@@ -589,7 +591,7 @@ ManageProductsView = Backbone.View.extend({
                             var nError = response.messages.length;
                             
                             if(nCreated > 0){
-                                addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created");
+                                addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
                             }
                             if(nError > 0){
                                 addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
@@ -625,14 +627,18 @@ ManageProductsView = Backbone.View.extend({
 	                    button.prop("disabled", true);
 	                    var value = $("input[name=doi]", this.doiDialog).val();
 	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
-                            this.products.add(response.data.created, {silent: true});
-                            this.addRows();
+	                        var data = response.data;
+	                        if(!_.isUndefined(data.created)){
+	                            var ids = _.pluck(data.created, 'id');
+	                            this.products.remove(ids);
+                                this.products.add(data.created);
+                            }
                             clearAllMessages();
                             if(response.errors.length > 0){
                                 addError(response.errors.join("<br />"));
                             }
                             else{
-                                addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created");
+                                addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
                             }
                             button.prop("disabled", false);
                             this.doiDialog.dialog('close');

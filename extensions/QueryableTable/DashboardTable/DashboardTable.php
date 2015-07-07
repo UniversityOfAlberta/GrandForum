@@ -17,6 +17,9 @@ class DashboardTable extends QueryableTable{
             case 3:
                 self::DerivedDashboardTable($argv[0], $argv[1], $argv[2]);
                 break;
+            case 4:
+                self::DashboardTable($argv[0], $argv[1], $argv[2], $argv[3]);
+                break;
         }
     }
     
@@ -26,11 +29,34 @@ class DashboardTable extends QueryableTable{
     }
     
     // Creates a new DashboardTable instance with the given person ID, structure type, and data set
-    private function DashboardTable($structure, $obj){
+    private function DashboardTable($structure, $obj, $start=null, $end=null){
         global $dashboardStructures;
         $this->QueryableTable();
         $this->obj = $obj;
-        $this->structure = $this->preprocessStructure($dashboardStructures[$structure]);
+        $this->structure = $dashboardStructures[$structure];
+        if($start != null && $end != null){
+            foreach($this->structure as $rowN => $row){
+                foreach($row as $colN => $cell){
+                     if(!is_numeric($cell)){
+                        $splitRow = explode('(', $cell);
+                        $type = $splitRow[0];
+                    }
+                    else{
+                        $type = $cell;
+                    }
+                    if($type >= 0){
+                        if(strstr($cell, ")") !== false){
+                            $cell = str_replace_first(")", ",$start,$end)", $cell);
+                        }
+                        else{
+                            $cell = $cell."($start,$end)";
+                        }
+                        $this->structure[$rowN][$colN] = $cell;
+                    }
+                }
+            }
+        }
+        $this->structure = $this->preprocessStructure($this->structure);
         $data = array();
         foreach($this->structure as $rowN => $row){
             foreach($row as $colN => $cell){

@@ -6,7 +6,6 @@ class EvalBudgetReportItem extends AbstractReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$person_attr = $this->getAttr("person", "false");
 		$project_attr = $this->getAttr("project", "false");
-		$revised = "";
 		if($person_attr == "true"){ 
 			$person = Person::newFromId($this->personId);
 	        $name = $person->getName();
@@ -17,7 +16,6 @@ class EvalBudgetReportItem extends AbstractReportItem {
 			$project = Project::newFromId($this->projectId);
 			$name = $read_name = $project->getName();
 			$budget = $project->getRequestedBudget(REPORTING_YEAR);
-			$revised = $project->getRevisedBudget(REPORTING_YEAR);
 		}
 		
         if($budget instanceof Budget){
@@ -26,9 +24,6 @@ class EvalBudgetReportItem extends AbstractReportItem {
             }
             else if($project_attr == "true"){
             	$budget = $budget->render();
-            	if($revised != null){
-            	    $revised = "<h3>Revised Budget</h3>The following is a revised budget which was uploaded after the reports were closed for editing.<br />".$revised->render();
-            	}
             }
             $budget_lbl = "<span style='color:green;'>Budget Preview</span>";
         }
@@ -41,7 +36,6 @@ class EvalBudgetReportItem extends AbstractReportItem {
 		$wgOut->addHTML("<div id='{$name}_budgetDiv'>");
         
         $wgOut->addHTML($budget);
-        $wgOut->addHTML($revised);
         
 		$wgOut->addHTML("</div></div>");
 	}

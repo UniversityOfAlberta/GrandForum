@@ -164,19 +164,23 @@ class DBFunctions {
 			    }
 			    return $status;
 		    }
+		    $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
 		    $result = DBFunctions::$dbr->query($sql);
-		    self::$lastResult = $result;
+		    
 	        $rows = array();
 	        if($result != null){
 	            while ($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
 		            $rows[] = $row;
 	            }
 	        }
+	        $peakMemAfter = memory_get_peak_usage(true)/1024/1024;
+	        self::$lastResult = count($rows);
 	        if(self::$queryDebug){
 		        $end = microtime(true);
 		        $diff = number_format(($end - $start)*1000, 5);
 		        self::$queryLength += $diff;
-		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms) $printedSql -->\n";
+		        
+		        $printedSql = "<!-- ".self::$queryCount.": ($diff ms / ".count($rows)." / Before:{$peakMemBefore}MiB / After:{$peakMemAfter}MiB) $printedSql -->\n";
 		        $wgOut->addHTML($printedSql);
 		    }
 		    return $rows;
@@ -467,8 +471,8 @@ class DBFunctions {
 	 * Returns the number of rows returned in the last resultset
 	 */
 	static function getNRows(){
-	    if(self::$lastResult != null && self::$lastResult->result != null){
-	        return self::$lastResult->result->num_rows;
+	    if(self::$lastResult != null){
+	        return self::$lastResult;
 	    }
 	    else{
 	        return 0;

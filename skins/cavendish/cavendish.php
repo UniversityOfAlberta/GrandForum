@@ -237,6 +237,7 @@ class CavendishTemplate extends QuickTemplate {
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
+		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
@@ -810,8 +811,9 @@ class CavendishTemplate extends QuickTemplate {
 				    $validFooterLinks[] = $aLink;
 			    }
 		    }
+		    echo '<ul id="f-list">';
 		    if ( count( $validFooterLinks ) > 0 ) {
-    ?>			<ul id="f-list">
+    ?>			
     <?php
 			    foreach( $validFooterLinks as $aLink ) {
 				    if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
@@ -886,7 +888,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
 		        $person = Person::newFromName($_POST['wpName']);
-		        if($person == null || $person->getName() == ""){
+		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
 		                $failMessage .= "<b>Password request failed</b>";

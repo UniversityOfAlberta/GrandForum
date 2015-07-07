@@ -17,7 +17,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection type="BookmarkReportSection" name="AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging" />
+    <ReportSection type="BookmarkReportSection" name="Background Information" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
         <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
@@ -43,7 +43,7 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($14,000, 1 year award)|PhD ($18,000, 2 year award)|Post-doctoral Award ($40,000, 1 year award)">
+        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's (maximum $14,000, 1 year award)|PhD (maximum $18,000, 2 year award)|Post-doctoral Award (maximum $40,000, 1 year award)">
             <![CDATA[
                 <h4>Funding Category</h4>
                 <p>{$item}</p><br />
@@ -61,19 +61,23 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
+        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September|January|Other:">
+            <![CDATA[
+                <h4>Start Date</h4>
+                <p>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTH" width="150px" optional="true">
+            <![CDATA[
+                &nbsp;{$item}</p>
+            ]]>
+        </ReportItem>
     </ReportSection>
-    <ReportSection id="application2" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="application2" name="Scholarly merit and quality of proposed research" blobSection="HQP_APPLICATION_FORM" type="ReportSection" pagebreak="true">
         <ReportItem id="research_bookmark" type="SubBookmarkReportItem" text="Statement of research focus"></ReportItem>
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH">
             <![CDATA[
                 <h4>Statement of research focus</h4>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="biography_bookmark" type="SubBookmarkReportItem" text="Biography and career goals"></ReportItem>
-        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO">
-            <![CDATA[
-                <h4>Biography and career goals</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -91,6 +95,15 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="application2" name="Fit with AGE-WELL goals and priorities" blobSection="HQP_APPLICATION_FORM" type="ReportSection" pagebreak="true">
+        <ReportItem id="biography_bookmark" type="SubBookmarkReportItem" text="Biography and career goals"></ReportItem>
+        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO">
+            <![CDATA[
+                <h4>Biography and career goals</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="alignment_bookmark" type="SubBookmarkReportItem" text="Alignment to the mission"></ReportItem>
         <ReportItem id="alignment" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN">
             <![CDATA[
@@ -105,17 +118,19 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="industry_bookmark" type="SubBookmarkReportItem" text="Industry and/or community partners"></ReportItem>
-        <ReportItem id="industry" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_IND">
-            <![CDATA[
-                <h4>Industry and/or community partners (if applicable)</h4>
-                {$item}<br />
-            ]]>
-        </ReportItem>
         <ReportItem id="innovation_bookmark" type="SubBookmarkReportItem" text="Potential for innovation"></ReportItem>
         <ReportItem id="innovation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_INN">
             <![CDATA[
                 <h4>Potential for innovation</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application3" name="Quality of training environment" blobSection="HQP_APPLICATION_FORM" type="ReportSection" pagebreak="false">
+        <ReportItem id="industry_bookmark" type="SubBookmarkReportItem" text="Industry and/or community partners"></ReportItem>
+        <ReportItem id="industry" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_IND">
+            <![CDATA[
+                <h4>Industry and/or community partners (if applicable)</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -143,18 +158,18 @@
     </ReportSection>
     <ReportSection id="documents" type="HeaderReportSection" name="Required Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
-        <ReportItem id="support1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT1" mimeType="application/pdf" fileSize="2">
+        <!--ReportItem id="support1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT1" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="support2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="admission" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="evidence" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
         </ReportItem>
-        <ReportItem id="transcript1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_TRANS1" mimeType="application/pdf" fileSize="2">
+        <!--ReportItem id="transcript1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_TRANS1" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="transcript2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_TRANS2" mimeType="application/pdf" fileSize="2">
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="cv" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>

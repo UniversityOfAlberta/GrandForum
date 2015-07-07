@@ -7,6 +7,7 @@ class ProjectMilestoneAPI extends API{
     function ProjectMilestoneAPI($update=false){
         $this->update = $update;
         $this->addPOST("project",true,"The name of the project","MEOW");
+        $this->addPOST("leader",false,"The name of the leader for this milestone","First.Last");
         $this->addPOST("activity",true,"The name of the activity", "Analysis");
         $this->addPOST("milestone",true,"The title of the milestone","MEOW is great");
         $this->addPOST("problem",true,"The problem of this milestone","Show that MEOW is great");
@@ -43,6 +44,9 @@ class ProjectMilestoneAPI extends API{
         }
         if(isset($_POST['project']) && $_POST['project'] != ""){
             $_POST['project'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['project'])));
+        }
+        if(isset($_POST['leader']) && $_POST['leader'] != ""){
+            $_POST['leader'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['leader'])));
         }
         if(isset($_POST['people']) && $_POST['people'] != null){
             $_POST['people'] = @explode(", ", $_POST['people']);
@@ -87,12 +91,20 @@ class ProjectMilestoneAPI extends API{
 		$people = array();
 		if(isset($_POST['people']) && count($_POST['people']) > 0 && is_array($_POST['people'])){
             foreach($_POST['people'] as $person){
-                $p = Person::newFromNameLike($person);
+                $p = Person::newFromNameLike(trim($person));
                 if($p != null && $p->getName() != ""){
                     $people[] = $p;
                 }
             }
         }
+		
+		$leader = 0;
+		if(isset($_POST['leader'])){
+		    $l = Person::newFromNameLike(trim($_POST['leader']));
+		    if($l != null && $l->getName() != ""){
+		        $leader = $l->getId();
+		    }
+		}
 		
 		if(!$noEcho){
 		    if($project == null || $project->getName() == null){
@@ -152,10 +164,12 @@ class ProjectMilestoneAPI extends API{
         
         $rows = DBFunctions::execSQL($sql);
         if(count($rows) > 0 && $this->update){
+            $milestoneId = $rows[0]['milestone_id'];
             DBFunctions::insert('grand_milestones',
 		                        array('activity_id'         => $activityId,
 		                              'milestone_id'        => $milestoneId,
 		                              'project_id'          => $project->getId(),
+		                              'leader'              => $leader,
 		                              'title'               => $_POST['new_title'],
 		                              'status'              => $_POST['status'],
 		                              'problem'             => $_POST['problem'],
@@ -216,11 +230,13 @@ class ProjectMilestoneAPI extends API{
 		                              'activity_id'         => $activityId,
 		                              'milestone_id'        => $milestoneId,
 		                              'project_id'          => $project->getId(),
+		                              'leader'              => $leader,
 		                              'title'               => $_POST['title'],
 		                              'status'              => $_POST['status'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
+		                              'comment'             => @$_POST['comment'],
 		                              'edited_by'           => $me->getId(),
 		                              'quarters'            => $_POST['quarters'],
 		                              'start_date'          => EQ(COL('CURRENT_TIMESTAMP')),

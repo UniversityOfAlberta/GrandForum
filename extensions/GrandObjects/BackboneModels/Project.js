@@ -27,6 +27,7 @@ Project = Backbone.Model.extend({
         name: '',
         fullname: '',
         description: '',
+        longDescription: '',
         status: '',
         type: '',
         phase: '',

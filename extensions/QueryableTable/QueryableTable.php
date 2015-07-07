@@ -11,8 +11,11 @@ define('HEAD_ROW', -104);
 define('HEAD1', -105);
 define('HEAD2', -106);
 define('HEAD3', -107);
+define('HEAD4', -108);
+define('HEAD1_ROW', -109);
+define('HEAD2_ROW', -110);
 // Complex Structure Types
-define('GROUP_BY', -108);
+define('GROUP_BY', -200);
 
 $cellTypes[NA] = "NACell";
 $cellTypes[BLANK] = "BlankCell";
@@ -22,6 +25,9 @@ $cellTypes[HEAD_ROW] = "HeadRowCell";
 $cellTypes[HEAD1] = "Head1Cell";
 $cellTypes[HEAD2] = "Head2Cell";
 $cellTypes[HEAD3] = "Head3Cell";
+$cellTypes[HEAD4] = "Head4Cell";
+$cellTypes[HEAD1_ROW] = "Head1RowCell";
+$cellTypes[HEAD2_ROW] = "Head2RowCell";
 
 autoload_register('QueryableTable/Cells');
 autoload_register('QueryableTable');
@@ -582,11 +588,21 @@ abstract class QueryableTable {
                     if(!isset($row[$colN + 1])){
                         $span = max(1, $this->nCols() - $colN);
                     }
+                    $span = 1;
+                    for($i=$colN+1; $i < $this->nCols(); $i++){
+                        $c = $this->structure[$rowN][$i];
+                        if($c == NA){
+                            $span++;
+                        }
+                        else{
+                            break;
+                        }
+                    }
                     if($Cell->span != null){
                         $span = $Cell->span;
                         $class .= " explicitSpan";
                     }
-                    $ret[] = "<td nowrap='nowrap' style='width:6em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                    $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                     ++$i;
                 }
                 $ret[] = "</tr>\n";

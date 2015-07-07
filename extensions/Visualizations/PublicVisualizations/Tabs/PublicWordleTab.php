@@ -40,7 +40,7 @@ class PublicWordleTab extends AbstractTab {
 	        $projects = Project::getAllProjects();
 	        $description = "";
 	        foreach($projects as $project){
-	            $description .= $project->getDescription();
+	            $description .= strip_tags($project->getDescription());
             }
             $data = Wordle::createDataFromText($description);
             header("Content-Type: application/json");

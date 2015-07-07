@@ -16,10 +16,12 @@ class Person extends BackboneModel {
     static $idsCache = array();
     static $allocationsCache = array();
     static $disciplineMap = array();
+    static $allPeopleCache = array();
 
     var $user = null;
     var $name;
     var $email;
+    var $phone;
     var $nationality;
     var $gender;
     var $photo;
@@ -74,8 +76,8 @@ class Person extends BackboneModel {
             $data[] = self::$idsCache[$id];
         }
         $person = new Person($data);
-        self::$cache[$person->id] = &$person;
-        self::$cache[$person->name] = &$person;
+        self::$cache[$person->id] = $person;
+        self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
     
@@ -85,7 +87,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given name
      */
     static function newFromName($name){
-        $name = str_replace(' ', '.', $name);
+        $name = strtolower(str_replace(' ', '.', $name));
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
         }
@@ -95,8 +97,8 @@ class Person extends BackboneModel {
             $data[] = self::$namesCache[$name];
         }
         $person = new Person($data);
-        self::$cache[$person->id] = &$person;
-        self::$cache[$person->name] = &$person;
+        self::$cache[$person->id] = $person;
+        self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
     
@@ -149,7 +151,9 @@ class Person extends BackboneModel {
      */
     static function newFromWgUser(){
         global $wgUser;
-        return Person::newFromId($wgUser->getId());
+        $person = Person::newFromId($wgUser->getId());
+        $person->user = $wgUser;
+        return $person;
     }
     
     /**
@@ -161,10 +165,11 @@ class Person extends BackboneModel {
      */
     static function newFromNameLike($name){
         $name = Person::cleanName($name);
+        $name = strtolower($name);
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
-            $data = array(0 => self::$namesCache[$name]);
+            $data[] = self::$namesCache[$name];
         }
         return new Person($data);
     }
@@ -227,6 +232,8 @@ class Person extends BackboneModel {
         $name = str_replace("'", "", $name);
         $name = str_replace(".", "", $name);
         $name = str_replace("*", "", $name);
+        $name = str_replace("And ", "", $name);
+        $name = str_replace("and ", "", $name);
         $name = trim($name);
         return $name;
     }
@@ -236,7 +243,6 @@ class Person extends BackboneModel {
      */
     static function generateAliasCache(){
         if(count(self::$aliasCache) == 0){
-            self::generateNamesCache();
             $data = DBFunctions::select(array('mw_user_aliases' => 'ua',
                                               'mw_user' => 'u'),
                                         array('ua.alias',
@@ -254,6 +260,15 @@ class Person extends BackboneModel {
      */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
+            $phoneNumbers = array();
+            $phoneData = DBFunctions::select(array('grand_user_telephone'),
+                                             array('user_id',
+                                                   'area_code', 
+                                                   'number'),
+                                             array('primary_indicator' => EQ(1)));
+            foreach($phoneData as $row){
+                $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
+            }
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
                                               'user_name',
@@ -275,24 +290,27 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
+                if(isset($phoneNumbers[$row['user_id']])){
+                    $row['phone'] = $phoneNumbers[$row['user_id']];
+                }
                 $exploded = explode(".", $row['user_name']);
                 $firstName = ($row['first_name'] != "") ? $row['first_name'] : @$exploded[0];
                 $lastName = ($row['last_name'] != "") ? $row['last_name'] : @$exploded[1];
                 $middleName = $row['middle_name'];
                 self::$idsCache[$row['user_id']] = $row;
-                self::$namesCache[$row['user_name']] = $row;
-                self::$namesCache["$firstName $lastName"] = $row;
-                self::$namesCache["$lastName $firstName"] = $row;
-                self::$namesCache["$firstName ".substr($lastName, 0, 1)] = $row;
-                self::$namesCache["$lastName ".substr($firstName, 0, 1)] = $row;
-                self::$namesCache[substr($firstName, 0, 1)." $lastName"] = $row;
+                self::$namesCache[strtolower($row['user_name'])] = $row;
+                self::$namesCache[strtolower("$firstName $lastName")] = $row;
+                self::$namesCache[strtolower("$lastName $firstName")] = $row;
+                self::$namesCache[strtolower("$firstName ".substr($lastName, 0, 1))] = $row;
+                self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
+                self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                    self::$namesCache[str_replace("&nbsp;", " ", $row['user_real_name'])] = $row;
+                    self::$namesCache[strtolower(str_replace("&nbsp;", " ", $row['user_real_name']))] = $row;
                 }
                 if($middleName != ""){
-                    self::$namesCache["$firstName $middleName $lastName"] = $row;
-                    self::$namesCache["$firstName ".substr($middleName, 0, 1)." $lastName"] = $row;
-                    self::$namesCache["$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)] = $row;
+                    self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
+                    self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
+                    self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
                 }
             }
         }
@@ -333,6 +351,7 @@ class Person extends BackboneModel {
                     AND (l.end_date = '0000-00-00 00:00:00'
                          OR l.end_date > CURRENT_TIMESTAMP)";
             $data = DBFunctions::execSQL($sql);
+            self::$leaderCache[-1][] = array();
             foreach($data as $row){
                 self::$leaderCache[$row['user_id']][] = $row;
             }
@@ -347,10 +366,9 @@ class Person extends BackboneModel {
             $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                               'grand_universities' => 'u',
                                               'grand_positions' => 'p'),
-                                        array('*'),
+                                        array('user_id','university_name','department','position','end_date'),
                                         array('u.university_id' => EQ(COL('uu.university_id')),
-                                              'uu.position_id' => EQ(COL('p.position_id'))),
-                                        array('uu.id' => 'DESC'));
+                                              'uu.position_id' => EQ(COL('p.position_id'))));
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']]) || 
                    (self::$universityCache[$row['user_id']]['date'] != '0000-00-00 00:00:00' && 
@@ -386,11 +404,28 @@ class Person extends BackboneModel {
      */
     static function generateAuthorshipCache(){
         if(count(self::$authorshipCache) == 0){
-            $sql = "SELECT *
-                    FROM `grand_product_authors`";
-            $data = DBFunctions::execSQL($sql);
+             $data = DBFunctions::select(array('grand_product_authors'),
+                                        array('author', 'product_id'));
             foreach($data as $row){
-                self::$authorshipCache[$row['author']][] = $row['product_id'];
+                if(is_numeric($row['author'])){
+                    self::$authorshipCache[$row['author']][] = $row['product_id'];
+                }
+            }
+        }
+    }
+    
+    /*
+     * Caches the partial resultset of the mw_user table
+     */
+    static function generateAllPeopleCache(){
+        if(count(self::$allPeopleCache) == 0){
+            $data = DBFunctions::select(array('mw_user'),
+                                        array('user_id'),
+                                        array('deleted' => NEQ(1),
+                                              'candidate' => NEQ(1)),
+                                        array('user_name' => 'ASC'));
+            foreach($data as $row){
+                self::$allPeopleCache[] = $row['user_id'];
             }
         }
     }
@@ -404,7 +439,8 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_universities'),
                                     array('*'),
                                     array(),
-                                    array('`order`' => 'ASC'));
+                                    array('`order`' => 'ASC',
+                                          'university_name' => 'ASC'));
         $universities = array();
         foreach($data as $row){
             $universities[$row['university_id']] = $row['university_name'];
@@ -502,16 +538,10 @@ class Person extends BackboneModel {
      * @return array The People who currently have at least the Staff fole
      */
     static function getAllStaff(){
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+        foreach(self::$allPeopleCache as $row){
+            $person = Person::newFromId($row);
             if($person->isRoleAtLeast(STAFF)){
                 $people[] = $person;
             }
@@ -526,19 +556,27 @@ class Person extends BackboneModel {
      */
     static function getAllPeople($filter=null){
         $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
+        self::generateRolesCache();
         $people = array();
-        foreach($data as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                    $people[] = $person;
+        foreach(self::$allPeopleCache as $row){
+            if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
+                if($filter != null && $filter != "all"){
+                    $found = false;
+                    foreach(self::$rolesCache[$row] as $role){
+                        if($role['role'] == $filter){
+                            $found = true;
+                        }
+                    }
+                    if(!$found){
+                        continue;
+                    }
+                }
+                $person = Person::newFromId($row);
+                if($person->getName() != "WikiSysop"){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                        $people[] = $person;
+                    }
                 }
             }
         }
@@ -553,16 +591,10 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter between $startRange and $endRange
      */
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
-        $data = DBFunctions::select(array('mw_user'),
-                                    array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
-                                    array('user_name' => 'ASC'));
+        self::generateAllPeopleCache();
         $people = array();
-        foreach($data as $row){
-            $rowA = array();
-            $rowA[0] = $row;
-            $person = Person::newFromId($rowA[0]['user_id']);
+        foreach(self::$allPeopleCache as $row){
+            $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
                 $people[] = $person;
             }
@@ -577,18 +609,37 @@ class Person extends BackboneModel {
      * @return array An array of People of the type $filter
      */
     static function getAllPeopleOn($filter=null, $date){
+        self::generateAllPeopleCache();
+        $people = array();
+        foreach(self::$allPeopleCache as $row){
+            $person = Person::newFromId($row);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
+                $people[] = $person;
+            }
+        }
+        return $people;
+    }
+    
+    /**
+     * Returns an array of People of the type $filter and are also candidates
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
+    static function getAllCandidates($filter=null){
+        $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),
-                                    array('deleted' => NEQ(1),
-                                          'candidate' => NEQ(1)),
+                                    array('deleted' => NEQ(1)),
                                     array('user_name' => 'ASC'));
         $people = array();
         foreach($data as $row){
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
-                $people[] = $person;
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                    $people[] = $person;
+                }
             }
         }
         return $people;
@@ -617,7 +668,6 @@ class Person extends BackboneModel {
     }
 
     static function getAllProjectManagers() {
-        
         $ret = array();
         $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
                 WHERE pl.user_id NOT IN (4, 150)
@@ -639,27 +689,28 @@ class Person extends BackboneModel {
     // Takes in a resultset containing the 'user id' and 'user name'
     function Person($data){
         if(count($data) > 0){
-            $this->id = $data[0]['user_id'];
-            $this->name = $data[0]['user_name'];
-            $this->realname = $data[0]['user_real_name'];
-            $this->firstName = $data[0]['first_name'];
-            $this->lastName = $data[0]['last_name'];
-            $this->middleName = $data[0]['middle_name'];
-            $this->prevFirstName = $data[0]['prev_first_name'];
-            $this->prevLastName = $data[0]['prev_last_name'];
-            $this->honorific = $data[0]['honorific'];
-            $this->language = $data[0]['language'];
-            $this->email = $data[0]['user_email'];
-            $this->gender = $data[0]['user_gender'];
-            $this->nationality = $data[0]['user_nationality'];
+            $this->id = @$data[0]['user_id'];
+            $this->name = @$data[0]['user_name'];
+            $this->realname = @$data[0]['user_real_name'];
+            $this->firstName = @$data[0]['first_name'];
+            $this->lastName = @$data[0]['last_name'];
+            $this->middleName = @$data[0]['middle_name'];
+            $this->prevFirstName = @$data[0]['prev_first_name'];
+            $this->prevLastName = @$data[0]['prev_last_name'];
+            $this->honorific = @$data[0]['honorific'];
+            $this->language = @$data[0]['language'];
+            $this->email = @$data[0]['user_email'];
+            $this->phone = @$data[0]['phone'];
+            $this->gender = @$data[0]['user_gender'];
+            $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
-            $this->twitter = $data[0]['user_twitter'];
-            $this->website = $data[0]['user_website'];
-            $this->publicProfile = $data[0]['user_public_profile'];
-            $this->privateProfile = $data[0]['user_private_profile'];
+            $this->twitter = @$data[0]['user_twitter'];
+            $this->website = @$data[0]['user_website'];
+            $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
             $this->historyHqps = null;
-            $this->candidate = $data[0]['candidate'];
+            $this->candidate = @$data[0]['candidate'];
         }
     }
     
@@ -690,6 +741,7 @@ class Person extends BackboneModel {
                       'fullName' => $this->getNameForForms(),
                       'reversedName' => $this->getReversedName(),
                       'email' => $this->getEmail(),
+                      'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
                       'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
@@ -1014,7 +1066,7 @@ class Person extends BackboneModel {
      */
     function getId(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
             return 0;
         }
         return $this->id;
@@ -1033,12 +1085,18 @@ class Person extends BackboneModel {
     // Returns the email of this Person
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
-            return $this->email;
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
+            return "{$this->email}";
         }
-        else{
-            return "";
+        return "";
+    }
+    
+    function getPhoneNumber(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
+            return "{$this->phone}";
         }
+        return "";
     }
     
     // Returns the gender of this Person
@@ -1053,7 +1111,11 @@ class Person extends BackboneModel {
     
     // Returns the nationality of this Person
     function getNationality(){
-        return $this->nationality;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->nationality;
+        }
+        return "";
     }
     
     /**
@@ -1082,7 +1144,7 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI))){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC))){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
         return "";
@@ -1269,7 +1331,7 @@ class Person extends BackboneModel {
         if (!empty($this->realname))
             return str_replace("&nbsp;", " ", ucfirst($this->realname));
         else
-            return str_replace("&nbsp;", " ", str_replace('.', $sep, $this->name));
+            return trim($this->getFirstName()." ".$this->getLastName());
     }
     
     // Returns the user's profile.
@@ -1534,16 +1596,11 @@ class Person extends BackboneModel {
      * @return array The last University that this Person was at between the given range
      */ 
     function getUniversityDuring($startRange, $endRange){
-        if(!isset($this->universityDuring[$startRange.$endRange])){
-            $data = $this->getUniversitiesDuring($startRange, $endRange);
-            if(count($data) > 0){
-                $this->universityDuring[$startRange.$endRange] = $data[0];
-            }
-            else{
-                $this->universityDuring[$startRange.$endRange] = null;
-            }
+        $data = $this->getUniversitiesDuring($startRange, $endRange);
+        if(isset($data[0])){
+            return $data[0];
         }
-        return $this->universityDuring[$startRange.$endRange];
+        return null;
     }
     
     /**
@@ -1553,31 +1610,34 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
-        $sql = "SELECT * 
-                FROM grand_user_university uu, grand_universities u, grand_positions p
-                WHERE uu.user_id = '{$this->id}'
-                AND u.university_id = uu.university_id
-                AND uu.position_id = p.position_id
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )
-                ORDER BY uu.id DESC";
-        $data = DBFunctions::execSQL($sql);
-        $universities = array();
-        if(count($data) > 0){
-            foreach($data as $row){
-                if($row['university_name'] != "Unknown"){
-                    $universities[] = array("university" => $row['university_name'],
-                                            "department" => $row['department'],
-                                            "position"   => $row['position']);
+        if(!isset($this->universityDuring[$startRange.$endRange])){
+            $sql = "SELECT * 
+                    FROM grand_user_university uu, grand_universities u, grand_positions p
+                    WHERE uu.user_id = '{$this->id}'
+                    AND u.university_id = uu.university_id
+                    AND uu.position_id = p.position_id
+                    AND ( 
+                    ( (end_date != '0000-00-00 00:00:00') AND
+                    (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                    OR
+                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ((start_date <= '$endRange')))
+                    )
+                    ORDER BY uu.id DESC";
+            $data = DBFunctions::execSQL($sql);
+            $universities = array();
+            if(count($data) > 0){
+                foreach($data as $row){
+                    if($row['university_name'] != "Unknown"){
+                        $universities[] = array("university" => $row['university_name'],
+                                                "department" => $row['department'],
+                                                "position"   => $row['position']);
+                    }
                 }
             }
+            $this->universityDuring[$startRange.$endRange] = $universities;
         }
-        return $universities;
+        return $this->universityDuring[$startRange.$endRange];
     }
     
     /**
@@ -1682,7 +1742,7 @@ class Person extends BackboneModel {
      */
     function getRoleString(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
             return "";
         }
         $roles = $this->getRoles();
@@ -1772,10 +1832,7 @@ class Person extends BackboneModel {
         else if($this->isRole(NI) && $this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
             return CI;
         }
-        else if($this->isRole(NI) && $project->getType() == 'Administrative' && $this->leadershipOf($project)){
-            return PL;
-        }
-        else if($this->isRole(NI) && $this->leadershipOf($project)){
+        else if($this->leadershipOf($project)){
             return PL;
         }
         return NI;
@@ -2912,7 +2969,6 @@ class Person extends BackboneModel {
                 }
             }
         }
-        
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
             if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
@@ -3017,13 +3073,25 @@ class Person extends BackboneModel {
         return $newProducts;
     }
     
-    function getCoAuthors(){
+    /**
+     * Returns an array of People who are authors of Products writted by this Person or their HQP
+     * @param string $category The category of Papers to get
+     * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
+     * @param string $grand Whether to include 'grand' 'nonGrand' or 'both' Papers
+     * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @param string $access Whether to include 'Forum' or 'Public' access
+     * @return array Returns an array of People who are authors of Products writted by this Person or their HQP
+     */
+    function getCoAuthors($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
         $coauthors = array();
-        $papers = $this->getPapers();
+        $papers = $this->getPapers($category, $history, $grand, $onlyPublic, $access);
         foreach($papers as $paper){
             $authors = $paper->getAuthors();
             foreach($authors as $author){
-                $coauthors[$author->getName()] = $author->getName();
+                if(!isset($coauthors[$author->getName()])){
+                    $coauthors[$author->getName()] = 0;
+                }
+                $coauthors[$author->getName()] += 1;
             }
         }
         return $coauthors;
@@ -3733,12 +3801,14 @@ class Person extends BackboneModel {
             $con_people = $contribution->getPeople();
             
             $con_receiver = false;
-            foreach($con_people as $con_pers){
-                if($con_pers instanceof Person){
-                    $con_pers = $con_pers->getId();
-                    if ( $con_pers == $this->id ){
-                        $con_receiver =  true;
-                        break;
+            if(is_array($con_people)){
+                foreach($con_people as $con_pers){
+                    if($con_pers instanceof Person){
+                        $con_pers = $con_pers->getId();
+                        if ( $con_pers == $this->id ){
+                            $con_receiver =  true;
+                            break;
+                        }
                     }
                 }
             }

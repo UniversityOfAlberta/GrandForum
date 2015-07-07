@@ -95,7 +95,7 @@ Feature: Products
         """
         And I click "Import"
         And I wait "500"
-        Then I should see "1 products were created"
+        Then I should see "1 products were created/updated"
         
     Scenario: Uploading a duplicate BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -107,6 +107,7 @@ Feature: Products
          author = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
          title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
          booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         abstract = {Hello World},
          series = {ASE '05},
          year = {2005},
          isbn = {1-58113-993-4},
@@ -123,7 +124,10 @@ Feature: Products
         """
         And I click "Import"
         And I wait "500"
-        Then I should see "1 products were ignored (probably duplicates)"
+        Then I should see "1 products were created/updated"
+        When I click by css ".edit-icon"
+        And I wait "1000"
+        Then I should see "Hello World"
         
     Scenario: Uploading an invalid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -150,6 +154,34 @@ Feature: Products
         And I click "Import"
         And I wait "500"
         Then I should see "A publication was missing a title"
+        
+    Scenario: Uploading a BibTeX with capital letters 
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @INPROCEEDINGS{Xing:2006:UAO:1101908.1101919,
+         AUTHOR = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
+         TITLE = {This has capital letters but should still work},
+         BOOKTITLE = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         SERIES = {ASE '05},
+         YEAR = {2006},
+         ISBN = {1-58113-993-4},
+         LOCATION = {Long Beach, CA, USA},
+         PAGES = {54--65},
+         NUMPAGES = {12},
+         URL = {http://doi.acm.org/10.1145/1101908.1101919},
+         DOI = {10.1145/1101908.1101919},
+         ACMID = {1101919},
+         PUBLISHER = {ACM},
+         ADDRESS = {New York, NY, USA},
+         KEYWORDS = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were created/updated"
         
     Scenario: Uploading an empty BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"

@@ -8,7 +8,7 @@ Feature: User Profile
         When I follow "My Profile"
         And I press "Edit Profile"
         And I fill in "combo_title" with "Professor"
-        And I select "McGill University" from "university"
+        And I fill in "combo_university" with " McGill University"
         And I fill in "combo_department" with "Computer Science"
         And I press "Save Profile"
         Then I should see "'Profile' updated successfully."
@@ -20,7 +20,7 @@ Feature: User Profile
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"
         And I press "Edit Profile"
-        And I select "University of Alberta" from "university"
+        And I fill in "combo_university" with "University of Alberta"
         And I fill in "combo_department" with "Computing Science"
         And I press "Save Profile"
         Then I should see "'Profile' updated successfully."
@@ -29,6 +29,16 @@ Feature: User Profile
         And I should see "Professor"
         But I should not see "McGill University"
         And I should not see "Computer Science"
+        
+    Scenario: Editing University info with custom University
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "My Profile"
+        And I press "Edit Profile"
+        And I fill in "combo_university" with "This is a new University"
+        And I press "Save Profile"
+        Then I should see "'Profile' updated successfully."
+        And I should see "This is a new University"
+        But I should not see "University of Alberta"
         
     Scenario: Editing Profile text
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -42,3 +52,15 @@ Feature: User Profile
         When I follow "status_logout"
         And I go to "index.php/NI:NI.User1"
         Then I should see "My Public Profile"
+        
+    Scenario: Checking Data Quality
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "My Profile"
+        And I click "Data Quality Checks"
+        Then I should see "Missing gender information"
+        When I click "Profile"
+        And I press "Edit Profile"
+        And I select "Male" from "gender"
+        And I press "Save Profile"
+        And I click "Data Quality Checks"
+        Then I should see "No Errors"

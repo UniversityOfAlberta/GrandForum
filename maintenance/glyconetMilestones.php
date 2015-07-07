@@ -5,34 +5,53 @@ require_once('../Classes/PHPExcel/IOFactory.php');
 
 $year = REPORTING_YEAR;
 
-define('UNIVERSITY_COL', 0);
-define('PI_COL', 1);
-define('ACTIVITY_COL', 2);
+define('UNIVERSITY_COL',0);
+define('PI_COL',        1);
+define('ACTIVITY_COL',  2);
 define('MILESTONE_COL', 3);
-define('Y1_Q1_COL', 4);
-define('Y1_Q2_COL', 5);
-define('Y1_Q3_COL', 6);
-define('Y1_Q4_COL', 7);
-define('Y2_Q1_COL', 8);
-define('Y2_Q2_COL', 9);
-define('Y2_Q3_COL', 10);
-define('Y2_Q4_COL', 11);
-define('Y3_Q1_COL', 12);
-define('Y3_Q2_COL', 13);
-define('Y3_Q3_COL', 14);
-define('Y3_Q4_COL', 15);
-define('PERSON_COL', 16);
+define('Y1_Q1_COL',     4);
+define('Y1_Q2_COL',     5);
+define('Y1_Q3_COL',     6);
+define('Y1_Q4_COL',     7);
+define('Y2_Q1_COL',     8);
+define('Y2_Q2_COL',     9);
+define('Y2_Q3_COL',     10);
+define('Y2_Q4_COL',     11);
+define('Y3_Q1_COL',     12);
+define('Y3_Q2_COL',     13);
+define('Y3_Q3_COL',     14);
+define('Y3_Q4_COL',     15);
+define('LEADER_COL',    16);
+define('PERSON_COL',    17);
+define('TBD_COL',       18);
 
-$projects = Project::getAllProjects();
-foreach($projects as $project){
+$wgUser = User::newFromId(1);
+
+if(isset($argv[0])){
+    if(strtolower($argv[0]) == "catalyst"){
+        $report = RP_CATALYST;
+    }
+    else if(strtolower($argv[0]) == "translational"){
+        $report = RP_TRANS;
+    }
+    else{
+        echo "Invalid Report specified\n";
+        exit;
+    }
+}
+else{
+    echo "You must specify a report type\n";
+    exit;
+}
+
+$allPeople = Person::getAllPeople(NI);
+foreach($allPeople as $person){
     $type = BLOB_EXCEL;
-    $person = 0;
-    $proj = $project->getId();
-    $section = PROP_MILESTONES;
-    $report = RP_PROJECT_PROPOSAL;
-    $item = PROP_MIL_UPLOAD;
+    $proj = 0;
+    $section = CAT_MILESTONES;
+    $item = CAT_MIL_UPLOAD;
     $subitem = 0;
-    $blob = new ReportBlob($type, $year, $person, $proj);
+    $blob = new ReportBlob($type, $year, $person->getId(), $proj);
     $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
     $blob->load($blob_address);
     $data = $blob->getData();
@@ -41,7 +60,7 @@ foreach($projects as $project){
         $data = base64_decode($data->file);
     }
     else{
-        echo "No data uploaded for {$project->getName()}\n";
+        echo "No data uploaded for {$person->getNameForForms()}\n";
         continue;
     }
     
@@ -81,12 +100,23 @@ foreach($projects as $project){
         $obj->setActiveSheetIndex(0);
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
-        echo "== Processing milestones for {$project->getName()} ==\n";
+        $project = "";
+        echo "== Processing milestones for {$person->getNameForForms()} ==\n";
+        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         foreach($cells as $rowN => $row){
+            if($rowN == 0){
+                foreach($row as $colN => $cell){
+                    $cell = trim($cell);
+                    if($colN == 1){
+                        $project = $cell;
+                    }
+                }
+            }
             if($rowN >= 7){
                 $title = "";
                 $quarters = array();
                 $people = array();
+                $comments = "";
                 foreach($row as $colN => $cell){
                     $cell = trim($cell);
                     if($cell == ""){
@@ -104,49 +134,64 @@ foreach($projects as $project){
                             $title = $cell;
                             break;
                         case Y1_Q1_COL:
-                            $quarters[] = ($year).":1";
+                            $quarters[] = ($startYear).":1";
                             break;
                         case Y1_Q2_COL:
-                            $quarters[] = ($year).":2";
+                            $quarters[] = ($startYear).":2";
                             break;
                         case Y1_Q3_COL:
-                            $quarters[] = ($year).":3";
+                            $quarters[] = ($startYear).":3";
                             break;
                         case Y1_Q4_COL:
-                            $quarters[] = ($year).":4";
+                            $quarters[] = ($startYear).":4";
                             break;
                         case Y2_Q1_COL:
-                            $quarters[] = ($year+1).":1";
+                            $quarters[] = ($startYear+1).":1";
                             break;
                         case Y2_Q2_COL:
-                            $quarters[] = ($year+1).":2";
+                            $quarters[] = ($startYear+1).":2";
                             break;
                         case Y2_Q3_COL:
-                            $quarters[] = ($year+1).":3";
+                            $quarters[] = ($startYear+1).":3";
                             break;
                         case Y2_Q4_COL:
-                            $quarters[] = ($year+1).":4";
+                            $quarters[] = ($startYear+1).":4";
                             break;
                         case Y3_Q1_COL:
-                            $quarters[] = ($year+2).":1";
+                            $quarters[] = ($startYear+2).":1";
                             break;
                         case Y3_Q2_COL:
-                            $quarters[] = ($year+2).":2";
+                            $quarters[] = ($startYear+2).":2";
                             break;
                         case Y3_Q3_COL:
-                            $quarters[] = ($year+2).":3";
+                            $quarters[] = ($startYear+2).":3";
                             break;
                         case Y3_Q4_COL:
-                            $quarters[] = ($year+2).":4";
+                            $quarters[] = ($startYear+2).":4";
+                            break;
+                        case LEADER_COL:
+                            $leader = $cell;
                             break;
                         case PERSON_COL:
                             $people = explode(",", $cell);
                             break;
+                        case TBD_COL:
+                            $comments = $cell;
+                            break;
                     }
                 }
+                $p = Project::newFromName($project);
+                if($p == null){
+                    $p = Project::newFromTitle($project);
+                }
+                if($p == null){
+                    echo "\tProject not valid\n";
+                    break;
+                }
                 // Insert
-                $_POST['user_name'] = $project->getLeader()->getName();
-                $_POST['project'] = $project->getName();
+                $_POST['user_name'] = $person->getName();
+                $_POST['project'] = $p->getName();
+                $_POST['leader'] = $leader;
                 $_POST['activity'] = $activity;
                 $_POST['milestone'] = $title;
                 $_POST['title'] = $title;
@@ -156,8 +201,9 @@ foreach($projects as $project){
                 $_POST['assessment'] = "";
                 $_POST['status'] = "New";
                 $_POST['people'] = $people;
-                $_POST['end_date'] = ($year+2)."-12-31 00:00:00";
+                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
+                $_POST['comment'] = $comments;
                 
                 APIRequest::doAction('ProjectMilestone', true);
                 echo "\tMilestone added\n";
@@ -166,7 +212,7 @@ foreach($projects as $project){
     }
     catch (Exception $e) {
         // File is probably encrypted
-        echo "Error reading Milestones for {$project->getName()}\n";
+        echo "Error reading Milestones for {$project->getNameForForms()}\n";
     }
     
     // Delete tmp file

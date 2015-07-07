@@ -11,8 +11,8 @@ class PublicChordTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
 	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
-	    $chord->height = 700;
-	    $chord->width = 700;
+	    $chord->height = 600;
+	    $chord->width = 600;
 	    $this->html = "<div><a class='button' onClick='$(\"#help{$chord->index}\").show();$(this).hide();'>Show Help</a>
 	        <div id='help{$chord->index}' style='display:none;'>
 	            <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
@@ -28,7 +28,7 @@ class PublicChordTab extends AbstractTab {
 	}
 	
 	static function getPublicChordData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : date('Y');
 	    if($action == "getPublicChordData"){
@@ -146,8 +146,7 @@ class PublicChordTab extends AbstractTab {
 
             $array['dateOptions'] = $dates;
                                       
-            $array['sortOptions'] = array(array('name' => 'Theme', 'value' => 'theme', 'checked' => 'checked'),
-                                          array('name' => 'Project Name', 'value' => 'name', 'checked' => ''));
+            $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;

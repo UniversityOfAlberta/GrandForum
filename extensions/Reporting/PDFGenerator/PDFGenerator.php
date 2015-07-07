@@ -338,6 +338,10 @@ EOF;
 		        font-size: ".($fontSize+(1*DPI_CONSTANT))."px;
 		    }
 		    
+		    #pdfBody h1, #pdfBody h2, #pdfBody h3, #pdfBody h4 {
+		        page-break-inside: avoid;
+		    }
+		    
 		    #pdfBody #ni_report_wrapper, #pdfBody #hqp_report_wrapper, #pdfBody #ldr_report_wrapper, #pdfBody #ldr_comments_wrapper, #pdfBody #ldr_budget_wrapper {
 		        width: 100%;
 		    }

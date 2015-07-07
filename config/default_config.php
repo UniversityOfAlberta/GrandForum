@@ -76,6 +76,9 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
+    // Whether or not to enable projects
+    $config->setValue("projectsEnabled", true);
+    
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
     
@@ -230,10 +233,11 @@
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
-    $config->setConst("PL",         "Project Leader");
-    $config->setConst("TL",         "Theme Leader");
-    $config->setConst("TC",         "Theme Coordinator");
+    $config->setConst("PL",         "PL");
+    $config->setConst("TL",         "TL");
+    $config->setConst("TC",         "TC");
     $config->setConst("RMC",        "RMC");
+    $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("CF",         "CF");
     $config->setConst("BOD",        "BOD");
@@ -262,6 +266,7 @@
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('CF')             => "Core Facillity",
         $config->getConst('BOD')            => "Board of Directors",

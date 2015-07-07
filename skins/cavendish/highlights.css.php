@@ -118,7 +118,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     background: $hl;
 }
 
-.ui-tabs .ui-tabs-nav li:hover a{
+.ui-tabs .ui-tabs-nav li:hover:not(.ui-state-disabled) a{
     color: $hl;
 }
 

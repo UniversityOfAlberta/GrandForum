@@ -13,13 +13,15 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
-session_start();
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+if(PHP_SAPI != 'cli'){
+    session_start();
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
 
-header('Cache-Control: no-cache, no-store, must-revalidate');
-header('Pragma: no-cache');
-header('Expires: 0');
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
 
 date_default_timezone_set('America/Edmonton');
 if( defined( 'MW_INSTALL_PATH' ) ) {
@@ -236,6 +238,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       TC => 11,
                       CF => 11,
                       RMC => 12,
+                      HQPAC => 13,
                       EVALUATOR => 12,
                       BOD => 12,
                       BODC => 13,
@@ -248,11 +251,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, HQPAC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, TL, RMC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, TL, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 function unaccentChars($str){
     $normalizeChars = array("'" => '',
@@ -312,6 +315,58 @@ function array_clean(array $haystack){
     }
 
     return $haystack;
+}
+
+function str_replace_first($search, $replace, $subject) {
+    $pos = strpos($subject, $search);
+    if ($pos !== false) {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+    return $subject;
+}
+
+function str_replace_every_other($needle, $replace, $haystack, &$count=null, $replace_first=true) {
+    $count = 0;
+    $offset = strpos($haystack, $needle);
+    //If we don't replace the first, go ahead and skip it
+    if (!$replace_first) {
+        $offset += strlen($needle);
+        $offset = strpos($haystack, $needle, $offset);
+    }
+    while ($offset !== false) {
+        $haystack = substr_replace($haystack, $replace, $offset, strlen($needle));
+        $count++;
+        $offset += strlen($replace);
+        $offset = strpos($haystack, $needle, $offset);
+        if ($offset !== false) {
+            $offset += strlen($needle);
+            $offset = strpos($haystack, $needle, $offset);
+        }
+    }
+    return $haystack;
+}
+
+function adjustBrightness($hex, $steps) {
+    // Steps should be between -255 and 255. Negative = darker, positive = lighter
+    $steps = max(-255, min(255, $steps));
+
+    // Normalize into a six character long hex string
+    $hex = str_replace('#', '', $hex);
+    if (strlen($hex) == 3) {
+        $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+    }
+
+    // Split into three parts: R, G and B
+    $color_parts = str_split($hex, 2);
+    $return = '#';
+
+    foreach ($color_parts as $color) {
+        $color   = hexdec($color); // Convert to decimal
+        $color   = max(0,min(255,$color + $steps)); // Adjust color
+        $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+    }
+
+    return $return;
 }
 
 /**

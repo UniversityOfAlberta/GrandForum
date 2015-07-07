@@ -116,14 +116,8 @@ if(question("Initialize namespaces (y/n)") == 'y'){
         DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
                               VALUES ('".($nsId++)."', '{$role}_Talk', NULL, 1)", true);
     }
-    $productNamespaces = array('Publication', 
-                               'Artifact',
-                               'Presentation',
-                               'Activity',
-                               'Press',
-                               'Award',
-                               'Contribution',
-                               'Multimedia');
+    $structure = Product::structure();
+    $productNamespaces = array_keys($structure['categories']);
     foreach($productNamespaces as $product){
         DBFunctions::execSQL("INSERT INTO `mw_an_extranamespaces` (`nsId`, `nsName`, `nsUser`, `public`)
                               VALUES ('".($nsId++)."', '{$product}', NULL, 1)", true);

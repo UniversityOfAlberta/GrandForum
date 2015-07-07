@@ -37,7 +37,8 @@ class Wordle extends Visualization {
             $words = explode(" ", $line);
             foreach($words as $word){
                 $word = preg_replace("/\&lt;.*\&gt;/", '', $word); // Strip out html-like stuff
-                $word = preg_replace("/[^A-Za-z0-9 ]/", '', $word);
+                $word = preg_replace("/[^A-Za-z0-9 ]/", ' ', $word);
+                $word = trim($word);
                 $word = strtolower($word);
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
@@ -107,7 +108,7 @@ class Wordle extends Visualization {
             if(maxWidth == "100%"){
                 maxWidth = $("#vis{$this->index}").width();
                 setInterval(function(){
-                    if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width()){
+                    if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width() && Math.abs(maxWidth - $("#vis{$this->index}").width()) > 25){
                         maxWidth = $("#vis{$this->index}").width();
                         for(fId in data){
                             var f = data[fId].freq;

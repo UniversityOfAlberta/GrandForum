@@ -1,12 +1,16 @@
-<a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
+<% if(projectsEnabled){ %>
+    <a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
+<% } %>
 <table id='listTable' frame='box' rules='all'>
     <thead>
         <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Title</th>
-            <th>Authors</th>
-            <th>Projects</th>
+            <th width='1%'>Date</th>
+            <th width='1%'>Type</th>
+            <th width='50%'>Title</th>
+            <th width='48%'>Authors</th>
+            <% if(projectsEnabled){ %>
+                <th>Projects</th>
+            <% } %>
         </tr>
     </thead>
     <tbody id='productRows'>

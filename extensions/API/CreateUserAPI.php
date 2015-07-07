@@ -95,7 +95,7 @@ class CreateUserAPI extends API{
 			                                  'university_id' => $unis[$defaultUni],
 			                                  'position_id' => $poss[$defaultPos]));
 		            DBFunctions::update('mw_user',
-		                                array('candidate' => 1),
+		                                array('candidate' => $_POST['candidate']),
 		                                array('user_id' => EQ($person->id)));
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
 			        $data = DBFunctions::select(array('grand_notifications'),

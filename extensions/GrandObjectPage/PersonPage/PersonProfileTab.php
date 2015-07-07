@@ -16,16 +16,25 @@ class PersonProfileTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser;
         $this->person->getLastRole();
-        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0'>";
-        $this->html .= "</td><td width='50%' valign='top'>";
+        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
+        $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
+            $this->html .= "<br />";
         }
+        $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
-        $extra[] = $this->showCloud($this->person, $this->visibility);
+        if($this->person->isRole(NI) || 
+           $this->person->isRole(HQP) || 
+           $this->person->isRole(EXTERNAL)){
+            // Only show the word cloud for 'researchers'
+            $extra[] = $this->showCloud($this->person, $this->visibility);
+        }
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        $extra[] = $this->showTwitter($this->person, $this->visibility);
+        
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
@@ -33,9 +42,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 unset($extra[$key]);
             }
         }
-        $this->html .= "</td><td valign='top' width='50%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
-        
-        $this->html .= "<tr><td colspan='2'>".$this->showTable($this->person, $this->visibility)."</td></tr>";
+        $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
@@ -61,10 +68,10 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
         $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
         APIRequest::doAction('UserProfile', true);
         $_POST['type'] = "private";
-        $_POST['profile'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile'])));
+        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
         APIRequest::doAction('UserProfile', true);
         Person::$cache = array();
         Person::$namesCache = array();
@@ -185,34 +192,19 @@ class PersonProfileTab extends AbstractEditableTab {
      * Displays the twitter widget for this user
      */
     function showTwitter($person, $visibility){
+        $html = "";
         if($person->getTwitter() != ""){
-            $this->html .= <<<EOF
-                <div id='twitter' style='display: inline-block; width: 50%; text-align: right;'>
-                    <div style='max-height: 225px; max-width:225px; display:inline-block; overflow: hidden;'>
-                        <a class="twitter-timeline" width="300" height="300" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
+            $html = <<<EOF
+                <br />
+                <div id='twitter' style='display: block; width: 100%; text-align: right; overflow: hidden; position:relative;'>
+                    <div>
+                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </div>
                 </div>
-                <script type='text/javascript'>
-                    // Adds a bit of responsiveness to the profile
-                    setInterval(function(){
-                        if($("#bodyContent").width() < 1000){
-                            $('#twitter').css('display', 'block');
-                            $('#twitter').css('width', '100%');
-                            $('#twitter div').css('width', '100%');
-                            $('#twitter div').css('max-width', '');
-                            $('#twitter iframe').css('width', '133%');
-                        }
-                        else{
-                            $('#twitter').css('display', 'inline-block');
-                            $('#twitter').css('width', '50%');
-                            $('#twitter div').css('max-width', 225);
-                            $('#twitter iframe').css('width', 300);
-                        }
-                    }, 100);
-                </script>
 EOF;
         }
+        return $html;
     }
     
     function showEditProfile($person, $visibility){
@@ -286,6 +278,51 @@ EOF;
         return $doughnut->show();
     }
     
+    function showChord($person, $visibility){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut;
+        $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getChordData&person={$person->getId()}";
+        $html = "<div style='position:absolute; right:0; display:inline-block; text-align:right;'>";
+        $chord = new Chord($dataUrl);
+        $chord->width = 226;
+        $chord->height = 226;
+        $chord->options = false;
+        $html .= $chord->show();
+        $html .= "</div>";
+        $wgOut->addScript("<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    $('#vis{$chord->index}').hide();
+                                    var maxWidth = {$chord->width};
+                                    var width = -1;
+                                    var height = {$chord->height};
+                                    var lastWidth = -1;
+                                    setInterval(function(){
+                                        var leftWidth = $('#firstLeft').width();
+                                        var cardWidth = $('#firstLeft div#card').width();
+                                        var widthDiff = leftWidth - cardWidth;
+                                        newWidth = Math.min(maxWidth, widthDiff);
+                                        if($('#vis{$chord->index}').is(':visible') && width != newWidth){
+                                            width = newWidth;
+                                            height = width;
+                                            if(width < 100){
+                                                // Too small, just don't show it anymore
+                                                $('#vis{$chord->index}').empty();
+                                            }
+                                            else{
+                                                _.defer(function(){
+                                                    $('#vis{$chord->index}').empty();
+                                                    $('#vis{$chord->index}').show();
+                                                    render{$chord->index}(width, height);
+                                                });
+                                            }
+                                            lastWidth = $('#firstLeft').width();
+                                            $('#contact').height(Math.max(height, $('#contact > #card').height()));
+                                        }
+                                    }, 100);
+                                });
+                          </script>");
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
@@ -298,14 +335,14 @@ EOF;
             $string = "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Projects</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
             foreach($products as $paper){
                 $projects = array();
                 foreach($paper->getProjects() as $project){
-                    $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
+                    $projects[] = "{$project->getName()}";
                 }
 
                 $names = array();
@@ -319,9 +356,8 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}</span></td>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $projects)."</td>";
                 $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
@@ -331,7 +367,8 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     $('#personProducts').dataTable({
-                        'order': [[ 1, 'desc' ]]
+                        'order': [[ 1, 'desc' ]],
+                        'autoWidth': false
                     });
                 </script>";
         }
@@ -393,9 +430,9 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div style='white-space: nowrap;'>";
+        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:172px;min-height:150px'>";
         $this->html .= <<<EOF
-            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;width:50%;'></div>
+            <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
                 $(document).ready(function(){    
                     var person = new Person({$person->toJSON()});
@@ -404,7 +441,7 @@ EOF;
                 });
             </script>
 EOF;
-        $this->showTwitter($this->person, $this->visibility);
+        $this->html .= $this->showChord($person, $visibility);
         $this->html .= "</div>";
     }
     
@@ -416,6 +453,7 @@ EOF;
             if($person->isRoleDuring(HQP, "0000", "9999") ||
                $person->isRoleDuring(NI, "0000", "9999")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
                 $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
                 $nationality = "<tr>
@@ -423,6 +461,7 @@ EOF;
                     <td>
                         <select name='nationality'>
                             <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='American' $amerSelected>American</option>
                             <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
                             <option value='Visa Holder' $visaSelected>Visa Holder</option>
                         </select>
@@ -480,7 +519,7 @@ EOF;
             $organizations = array_merge(array(""), Person::getAllPartnerNames());
             $depts = array_merge(array(""), Person::getAllPartnerDepartments());
             $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
-            $orgCombo = new ComboBox('org', "Organization", $person->getPartnerName(), $organizations);
+            $orgCombo = new ComboBox('org', "Institution", $person->getPartnerName(), $organizations);
             $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
             $orgCombo->attr('style', 'max-width: 250px;');
             $deptCombo->attr('style', 'max-width: 250px;');
@@ -491,7 +530,7 @@ EOF;
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Organization:</b></td>
+                                <td align='right'><b>Institution:</b></td>
                                 <td>{$orgCombo->render()}
                                 </td>
                             </tr>
@@ -502,7 +541,8 @@ EOF;
                             </tr>";
         }
         else{
-            $universities = Person::getAllUniversities();
+            $universities = new Collection(University::getAllUniversities());
+            $uniNames = $universities->pluck('name');
             $positions = Person::getAllPositions();
             $myPosition = "";
             foreach($positions as $key => $position){
@@ -511,29 +551,27 @@ EOF;
                 }
             }
             $departments = Person::getAllDepartments();
-            $positionCombo = new ComboBox('title', "Title", $myPosition, $positions);
-            $departmentCombo = new ComboBox('department', "Department", $university['department'], $departments);
-            $positionCombo->attr('style', 'max-width: 250px;');
-            $departmentCombo->attr('style', 'max-width: 250px;');
+            $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
+            sort($organizations);
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
+            $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+            $titleCombo->attr('style', 'max-width: 250px;');
+            $orgCombo->attr('style', 'max-width: 250px;');
+            $deptCombo->attr('style', 'max-width: 250px;');
             $this->html .= "<tr>
                                 <td align='right'><b>Title:</b></td>
-                                <td>{$positionCombo->render()}
+                                <td>{$titleCombo->render()}
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right'><b>University:</b></td>
-                                <td><select name='university'>";
-            foreach($universities as $uni){
-                $selected = "";
-                if($uni == $university['university']){
-                    $selected = " selected";
-                }
-                $this->html .= "<option$selected>{$uni}</option>";
-            }
-            $this->html .= "</select></td></tr>
+                                <td align='right'><b>Institution:</b></td>
+                                <td>{$orgCombo->render()}
+                                </td>
+                            </tr>
                             <tr>
                                 <td align='right'><b>Department:</b></td>
-                                <td>{$departmentCombo->render()}</td>
+                                <td>{$deptCombo->render()}</td>
                             </tr>";
         }
         $this->html .= "</table>";
