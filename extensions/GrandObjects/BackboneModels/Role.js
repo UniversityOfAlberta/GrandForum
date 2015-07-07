@@ -11,7 +11,7 @@ Role = Backbone.Model.extend({
         userId: "",
         name: "",
         comment: "",
-        startDate: "",
+        startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         deleted: false
     }

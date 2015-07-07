@@ -160,7 +160,7 @@ PersonProject = RelationModel.extend({
         id: null,
         personId: "",
         projectId: "",
-        startDate: "",
+        startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         name: "",
         comment: "",
@@ -205,7 +205,7 @@ PersonRelation = RelationModel.extend({
         id: null,
         user1: "",
         user2: "",
-        startDate: "",
+        startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         name: "",
         comment: "",
@@ -249,7 +249,7 @@ PersonRole = RelationModel.extend({
     defaults: {
         personId: "",
         roleId: "",
-        startDate: "",
+        startDate: new Date().toISOString().substr(0, 10),
         endDate: ""
     }
 });
