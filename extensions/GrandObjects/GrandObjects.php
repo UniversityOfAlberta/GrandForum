@@ -10,6 +10,7 @@ autoload_register('GrandObjects/API');
 
 global $apiRequest;
 // Person
+
 $apiRequest->addAction('Hidden','person/:id', new PersonAPI());
 $apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', new PersonProjectsAPI());

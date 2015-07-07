@@ -35,7 +35,7 @@ ManagePeopleRowView = Backbone.View.extend({
     openRelationsDialog: function(){
         this.relationsDialog.empty();
         this.relationsDialog.dialog('open');
-        this.editRelations = new ManagePeopleEditRelationsView({model: this.model.projects, 
+        this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
                                                                 person:this.model, 
                                                                 el: this.relationsDialog});
     },
@@ -80,9 +80,11 @@ ManagePeopleRowView = Backbone.View.extend({
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
-	        beforeClose: function(){
+	        beforeClose: $.proxy(function(){
 	            $("html").css("overflow", "auto");
-	        },
+	            this.editRoles.stopListening();
+	            this.editRoles.undelegateEvents();
+	        }, this),
 	        buttons: {
 	            "Save": $.proxy(function(e){
 	                this.editRoles.saveAll();
@@ -107,9 +109,11 @@ ManagePeopleRowView = Backbone.View.extend({
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
-	        beforeClose: function(){
+	        beforeClose: $.proxy(function(){
 	            $("html").css("overflow", "auto");
-	        },
+	            this.editProjects.stopListening();
+	            this.editProjects.undelegateEvents();
+	        }, this),
 	        buttons: {
 	            "Save": $.proxy(function(e){
 	                this.editProjects.saveAll();
@@ -134,9 +138,11 @@ ManagePeopleRowView = Backbone.View.extend({
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },
-	        beforeClose: function(){
+	        beforeClose: $.proxy(function(){
 	            $("html").css("overflow", "auto");
-	        },
+	            this.editRelations.stopListening();
+	            this.editRelations.undelegateEvents();
+	        }, this),
 	        buttons: {
 	            "Save": $.proxy(function(e){
 	                this.editRelations.saveAll();

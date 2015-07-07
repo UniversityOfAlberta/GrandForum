@@ -46,7 +46,7 @@ class Person extends BackboneModel {
     var $rolesDuring;
     var $candidate;
     var $isEvaluator = array();
-    var $relations;
+    var $relations = array();
     var $hqps;
     var $historyHqps;
     var $contributions;

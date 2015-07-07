@@ -36,7 +36,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        var copy = this.relations.toArray();
+        var copy = this.relations.where({'user2': this.person.get('id')})
         clearAllMessages();
         _.each(copy, $.proxy(function(relation){
             if(relation.get('deleted') != "true"){
@@ -62,22 +62,23 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         }, this));
     },
     
-    addProject: function(){
-        this.relations.add(new PersonProject({name: 'Works With', personId: this.person.get('id')}));
+    addRelation: function(){
+        this.relations.add(new PersonRelation({name: 'Works With', user1: me.get('id'), user2: this.person.get('id')}));
     },
     
     addRows: function(){
-        if(this.relations.length > 0){
+        var relations = new Backbone.Collection(this.relations.where({'user2': this.person.get('id')}));
+        if(relations.length > 0){
             this.$("#relation_rows").empty();
         }
-        this.relations.each($.proxy(function(relation){
+        relations.each($.proxy(function(relation){
             var view = new ManagePeopleEditRelationsRowView({model: relation});
             this.$("#relation_rows").append(view.render());
         }, this));
     },
     
     events: {
-        "click #add": "addProject"
+        "click #add": "addRelation"
     },
     
     render: function(){

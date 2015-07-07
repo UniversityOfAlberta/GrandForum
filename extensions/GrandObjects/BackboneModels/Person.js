@@ -188,7 +188,7 @@ PersonRelation = RelationModel.extend({
     },
 
     urlRoot: function(){
-        return 'index.php?action=api.person/' + this.get('personId') + '/relation'
+        return 'index.php?action=api.person/' + this.get('user1') + '/relations'
     },
     
     getOwner: function(){
