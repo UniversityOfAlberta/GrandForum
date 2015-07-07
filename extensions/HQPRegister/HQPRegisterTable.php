@@ -34,7 +34,13 @@ class HQPRegisterTable extends SpecialPage{
         $wgOut->addHTML("<table id='hqpRegisterTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th width='1%'>First&nbsp;Name</th><th width='1%'>Last&nbsp;Name</th><th width='1%'>Email</th><th>Registration Date</th><th>Application PDF</th>
+                    <th width='1%'>First&nbsp;Name</th>
+                    <th width='1%'>Last&nbsp;Name</th>
+                    <th width='1%'>Email</th>
+                    <th>Registration Date</th>
+                    <th>Level</th>
+                    <th>Supervisor</th>
+                    <th>Application PDF</th>
                 </tr>
             </thead>
             <tbody>");
@@ -47,12 +53,31 @@ class HQPRegisterTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_SUP, 0);
+            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
+            $blob->load($addr);
+            $supervisor = $blob->getData();
+            
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_LVL, 0);
+            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
+            $blob->load($addr);
+            $level = $blob->getData();
+            
+            if($level == 'Other:'){
+                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_LVL_OTH, 0);
+                $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
+                $blob->load($addr);
+                $level = $blob->getData();
+            }
+            
             $wgOut->addHTML("<tr>");
             $candidate->getName();
             $wgOut->addHTML("<td align='right'>{$candidate->getFirstName()}</td>");
             $wgOut->addHTML("<td>{$candidate->getLastName()}</td>");
             $wgOut->addHTML("<td><a href='mailto:{$candidate->getEmail()}'>{$candidate->getEmail()}</a></td>");
             $wgOut->addHTML("<td>".time2date($candidate->getRegistration(), 'Y-m-d')."</td>");
+            $wgOut->addHTML("<td>{$level}</td>");
+            $wgOut->addHTML("<td>{$supervisor}</td>");
             $wgOut->addHTML("<td align='center'>{$button}</td>");
             $wgOut->addHTML("</tr>");
         }
