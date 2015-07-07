@@ -16,6 +16,9 @@ Person = Backbone.Model.extend({
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
         
+        this.universities = new PersonUniversities();
+        this.universities.url = this.urlRoot + '/' + this.get('id') + '/universities';
+        
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
         
@@ -60,6 +63,11 @@ Person = Backbone.Model.extend({
     getRelations: function(){
         this.relations.fetch();
         return this.relations;
+    },
+    
+    getUniversities: function(){
+        this.universities.fetch();
+        return this.universities;
     },
     
     // Returns a simple string containing all of the roles for this Person
@@ -262,6 +270,50 @@ PersonRoles = RangeCollection.extend({
     
     newModel: function(){
         return new Roles();
+    },
+});
+
+/**
+ * PersonUniversity RelationModel
+ */
+PersonUniversity = RelationModel.extend({
+    initialize: function(){
+    
+    },
+    
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/universities'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('personId')});
+        return person;
+    },
+    
+    getTarget: function(){
+        var university = new University({id: parseInt(this.get('personUniversityId'))});
+        return university;
+    },
+    
+    defaults: {
+        personId: "",
+        univeristy: "",
+        department: "",
+        position: "",
+        personUniversityId: "",
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: ""
+    }
+});
+
+/**
+ * PersonUniversities RangeCollection
+ */
+PersonUniversities = RangeCollection.extend({
+    model: PersonUniversity,
+    
+    newModel: function(){
+        return new Universities();
     },
 });
 

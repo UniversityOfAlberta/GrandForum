@@ -22,16 +22,36 @@ class ManagePeople extends BackbonePage {
                      'edit_roles_row',
                      'edit_projects',
                      'edit_projects_row',
+                     'edit_universities',
+                     'edit_universities_row',
                      'edit_relations',
                      'edit_relations_row');
     }
     
     function getViews(){
+        global $wgOut;
+        $universities = new Collection(University::getAllUniversities());
+        $uniNames = $universities->pluck('name');
+        $positions = json_encode(array_values(Person::getAllPositions()));
+
+        $departments = json_encode(array_values(Person::getAllDepartments()));
+        $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
+        sort($organizations);
+        
+        $organizations = json_encode($organizations);
+        
+        $wgOut->addScript("<script type='text/javascript'>
+            var allUniversities = $organizations;
+            var allPositions = $positions;
+            var allDepartments = $departments;
+        </script>");
+        
         return array('Backbone/*',
                      'ManagePeopleView',
                      'ManagePeopleRowView',
                      'ManagePeopleEditRolesView',
                      'ManagePeopleEditProjectsView',
+                     'ManagePeopleEditUniversitiesView',
                      'ManagePeopleEditRelationsView');
     }
     

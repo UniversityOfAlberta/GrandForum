@@ -54,7 +54,10 @@ class University extends BackboneModel {
                                           'university_name' => 'ASC'));
         $unis = array();
         foreach($data as $row){
-            $unis[] = University::newFromId($row['university_id']);
+            $uni = University::newFromId($row['university_id']);
+            if($uni->getId() != null){
+                $unis[] = $uni;
+            }
         }
         return $unis;
     }

@@ -456,7 +456,7 @@ class Person extends BackboneModel {
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_positions'),
                                     array('*'),
-                                    array(),
+                                    array('position' => NEQ('')),
                                     array('`order`' => 'ASC',
                                           'position' => 'ASC'));
         $positions = array();
@@ -2052,6 +2052,35 @@ class Person extends BackboneModel {
             }
         }
         return $projects;
+    }
+    
+    
+    /*
+     * Returns an array of 'PersonUniversities' (used for Backbone API)
+     * @return array
+     */
+    function getPersonUniversities(){
+        $universities = array();
+        $data = DBFunctions::select(array('grand_user_university' => 'uu',
+                                          'grand_universities' => 'u',
+                                          'grand_positions' => 'p'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.user_id' => EQ($this->id),
+                                          'u.university_id' => EQ(COL('uu.university_id')),
+                                          'p.position_id' => EQ(COL('uu.position_id'))),
+                                    array('end_date' => 'DESC'));
+        foreach($data as $row){
+            $universities[] = array(
+                'id' => $row['id'],
+                'university' => $row['university_name'],
+                'personId' => $this->getId(),
+                'department' => $row['department'],
+                'position' => $row['position'],
+                'startDate' => $row['start_date'],
+                'endDate' => $row['end_date']
+            );
+        }
+        return $universities;
     }
     
     // Returns an array of Projects that this Person is a part of

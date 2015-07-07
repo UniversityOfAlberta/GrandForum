@@ -3,12 +3,16 @@ ManagePeopleRowView = Backbone.View.extend({
     tagName: 'tr',
     parent: null,
     row: null,
+    // Views
     editRoles: null,
     editProjects: null,
     editRelations: null,
+    editUniversities: null,
+    // Dialogs
     rolesDialog: null,
     projectsDialog: null,
     relationsDialog: null,
+    universitiesDialog: null,
     template: _.template($('#manage_people_row_template').html()),
     
     initialize: function(options){
@@ -40,10 +44,19 @@ ManagePeopleRowView = Backbone.View.extend({
                                                                 el: this.relationsDialog});
     },
     
+    openUniversitiesDialog: function(){
+        this.universitiesDialog.empty();
+        this.universitiesDialog.dialog('open');
+        this.editUniversities = new ManagePeopleEditUniversitiesView({model: this.model.universities, 
+                                                                      person:this.model,
+                                                                      el: this.universitiesDialog});
+    },
+    
     events: {
         "click #editRoles": "openRolesDialog",
         "click #editProjects": "openProjectsDialog",
-        "click #editRelations": "openRelationsDialog"
+        "click #editRelations": "openRelationsDialog",
+        "click #editUniversities": "openUniversitiesDialog"
     },
     
     render: function(){
@@ -150,6 +163,35 @@ ManagePeopleRowView = Backbone.View.extend({
 	            }, this),
 	            "Cancel": $.proxy(function(){
 	                this.relationsDialog.dialog('close');
+	            }, this)
+	        }
+	    });
+	    this.universitiesDialog = this.$("#universitiesDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: 800,
+	        position: {
+                my: "center bottom",
+                at: "center center"
+            },
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: $.proxy(function(){
+	            $("html").css("overflow", "auto");
+	            this.editUniversities.stopListening();
+	            this.editUniversities.undelegateEvents();
+	        }, this),
+	        buttons: {
+	            "Save": $.proxy(function(e){
+	                this.editUniversities.saveAll();
+                    this.universitiesDialog.dialog('close');
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.universitiesDialog.dialog('close');
 	            }, this)
 	        }
 	    });
