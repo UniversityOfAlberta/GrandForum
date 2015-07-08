@@ -373,7 +373,7 @@ EOF;
                     $this->text .= "<td><ul>";
                     foreach($me->leadership() as $proj){
                         if($proj->getType() != 'Administrative'){
-                            $this->text .= "<li><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}'>{$proj->getName()}</a></li>";
+                            $this->text .= "<li><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a></li>";
                         }
                     }
                     $this->text .= "</ul></td>";
