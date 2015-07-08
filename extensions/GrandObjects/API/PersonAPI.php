@@ -239,25 +239,51 @@ class PersonUniversitiesAPI extends RESTAPI {
     
     function doPOST(){
         $person = Person::newFromId($this->getParam('id'));
-        $project = Project::newFromName($this->POST('name'));
-        $me = Person::newFromWgUser();
-        $allowedProjects = $me->getAllowedProjects();
-        if($project == null || $project->getName() == ""){
-            $this->throwError("This Project does not exist");
+        
+        $uniCheck = DBFunctions::select(array('grand_universities'),
+                                        array('*'),
+                                        array('university_name' => $this->POST('university')));
+        $posCheck = DBFunctions::select(array('grand_positions'),
+                                        array('*'),
+                                        array('position' => $this->POST('position')));
+        
+        if(count($uniCheck) == 0){
+            // Create new University
+            DBFunctions::insert('grand_universities',
+                                array('university_name' => $this->POST('university'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
         }
-        if(!in_array($this->POST('name'), $allowedProjects) || 
-           !in_array($project->getName(), $allowedProjects)){
-            $this->throwError("You are not allowed to add this person to that project");
+        
+        
+        if(count($posCheck) == 0){
+            // Create new Position
+            DBFunctions::insert('grand_positions',
+                                array('position' => $this->POST('position'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+            
         }
-        $status = DBFunctions::insert('grand_project_members',
-                                      array('user_id'    => $person->getId(),
-                                            'project_id' => $project->getId(),
-                                            'start_date' => $this->POST('startDate'),
-                                            'end_date'   => $this->POST('endDate'),
-                                            'comment'    => $this->POST('comment')));
-        if(!$status){
-            $this->throwError("The project <i>{$project->getName()}</i> could not be created");
+        
+        $universities = University::getAllUniversities();
+        $positions = Person::getAllPositions();
+        
+        $university_id = "";
+        $position_id = "";
+        $department = $this->POST('department');
+        
+        foreach($universities as $university){
+            if($this->POST('university') == $university->getName()){
+                $university_id = $university->getId();
+            }
         }
+        
+        foreach($positions as $id => $position){
+            if($this->POST('position') == $position){
+                $position_id = $id;
+            }
+        }
+        
         $data = DBFunctions::select(array('grand_project_members'),
                                     array('id'),
                                     array('project_id' => $project->getId(),
