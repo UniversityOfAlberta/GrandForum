@@ -40,8 +40,10 @@ class Report extends AbstractReport{
         }
         if($person->isRole(PL)){
             foreach($person->leadership() as $project){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning")) ? "selected" : false;
-                $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
+                if($project->getType() != 'Administrative'){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning")) ? "selected" : false;
+                    $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
+                }
             }
         }
         return true;
