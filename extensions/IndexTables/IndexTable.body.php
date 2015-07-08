@@ -370,13 +370,15 @@ EOF;
                 $this->text .= "<td>{$project->getFullName()}</td>";
                 $this->text .= "<td>{$leaderString}</td>";
                 if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
-                    $this->text .= "<td><ul>";
+                    $this->text .= "<td>";
+                    $projs = array();
                     foreach($me->leadership() as $proj){
                         if($proj->getType() != 'Administrative'){
-                            $this->text .= "<li><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a></li>";
+                            $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    $this->text .= "</ul></td>";
+                    $this->text .= implode(", ", $projs);
+                    $this->text .= "</td>";
                 }
                 $this->text .= "</tr>";
             }
