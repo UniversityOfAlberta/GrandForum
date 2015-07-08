@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CC Planning (Oct 2015)" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF" personId="0" ajax="true" disabled="false">
+<Report name="CC Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="instructions" permissions="rw" />
@@ -15,8 +15,8 @@
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <h3>CC Planning (Oct {$this_year})</h3>
-                <p>The Crosscutting activities in the AGE-WELL network are designed to encourage and support research projects within AGE-WELL to achieve our key network goals. As such there are 4 CCs: Knowledge Mobilization (CC1), Commercialization and Technology Transfer (CC2), Transdisciplinary Working (CC3) and Training and Mentorship (CC4). As an initial step in meeting our Network Goals, we are asking all Project Leads to fill in a planning template for each CC activity. These are designed to put our key network goals to the forefront of projects by:</p>
+                <h3>CC Activity Planning</h3>
+                <p>The Crosscutting activities in the AGE-WELL network are designed to encourage and support research projects within AGE-WELL to achieve our key network goals. As such there are 4 CCs: Knowledge Mobilization (CC1), Commercialization and Technology Transfer (CC2), Transdisciplinary Working (CC3) and Training and Mentorship (CC4). As an initial step in meeting our Network Goals, we are asking all Project Leads to fill in a activity plan for each CC activity. These are designed to put our key network goals to the forefront of projects by:</p>
 <ul>
     <li>Ensuring CC activities are fully integrated into projects</li>
     <li>Providing help and support in areas in which researchers may lack skills and expertise</li>
@@ -28,7 +28,7 @@
     <li>Creating a critical mass that will have an impact far beyond what individual projects could achieve.</li>
 </ul>
 <p>
-The planning templates are attached in this package. In addition, these briefing notes give some background ideas about each of the CC activities, which will help Project Leaders to think about and articulate their ideas.</p>
+The activity plans are attached in this package. In addition, these briefing notes give some background ideas about each of the CC activities, which will help Project Leaders to think about and articulate their ideas.</p>
 <p>
 Each Crosscutting Activity is made up of a team including CC leads, Scientific Director - Andrew Sixsmith, SFU Core Facility Director - Pam Borghardt and appropriate Network Management Office staff as they come on board and of course Network Managing Director – Bridgette Murphy. If you have any queries or would like to get help and guidance, please contact one of the CC leads attached to the particular CC activity area or the supporting team members.
 </p><br />
@@ -114,21 +114,20 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>CC1. K-MOB - Knowledge Mobilization and Translation: K-MOB will involve researchers and stakeholders in an integrated KT approach to jointly develop research agendas and carry out the research program and encourage innovation. CC1 will identify KT opportunities for the network, participate in research and evaluation of outcomes and will be responsible for the overall KT and mobilization strategy for AGE-WELL. See Section 7.3 of the original proposal for a more detailed overview.</p>
 <p>CC2. TECH-TRANS - Commercialization and Technology Transfer: TECH-TRANS will focus on working with our industry partners and project leads to better understand pathways for innovation and to develop novel and innovative approaches to commercialize the outcomes (both technology and services) of AGE-WELL. Activities will include market and policy analyses, service and business modeling, development of ethical guidelines and technical standards. Outcomes will include practical support to commercialization that can be applied across all WPs. See Section 7.4 of the original proposal for a more detailed overview.</p>
 <p>CC3. T-WORK - Transdisciplinary Working: T-WORK aims to transcend disciplinary boundaries by developing shared concepts and understandings, goals and working practices in order to work effectively as a single team to tackle the complexity of real-world problem domains. Workshops and other informal and formal communications strategies will ensure that AGE- WELL develops a common frame of reference and shared concepts, while later work will aim to drive and inform different WPs. Outcomes will include the development of a roadmap and priorities for technology and aging research within the team, and a repository and knowledge networking system. See Section 6.2 of the original proposal for a more detailed overview.</p>
-<p>CC4. TRAIN - Training and Mentorship: TRAIN will provide a unique training environment that exposes AGE-WELL trainees to multi-disciplinary research environments and to our industry and community partners through collaborations with existing research networks and partner universities. See Section 5.5 of the original proposal for a more detailed overview. As an NCE, we are required to monitor progress and demonstrate that we are achieving our network goals. The general reporting framework for the Core Research Program was outlined in the AGE-WELL Terms and Conditions of Funding document that you received with your Funding Letter. We are asking Project Leads to provide ideas about how their projects should be evaluated. The various templates have specific sections in them relating to performance measurement.</p>
+<p>CC4. TRAIN - Training and Mentorship: TRAIN will provide a unique training environment that exposes AGE-WELL trainees to multi-disciplinary research environments and to our industry and community partners through collaborations with existing research networks and partner universities. See Section 5.5 of the original proposal for a more detailed overview. As an NCE, we are required to monitor progress and demonstrate that we are achieving our network goals. The general reporting framework for the Core Research Program was outlined in the AGE-WELL Terms and Conditions of Funding document that you received with your Funding Letter. We are asking Project Leads to provide ideas about how their projects should be evaluated. The various activity plans have specific sections in them relating to performance measurement.</p>
 
-<h3>Timeframe for submission of CC Activity Templates</h3>
+<h3>Timeframe for submission of CC Activity Plans</h3>
 <ul>
-<li>Please fill in the activity templates for the four Crosscutting activities provided in this package</li>
-<li>Please complete draft templates for <b>CCs 3&4 by 1st August</b></li>
-<li>Please complete draft templates for <b>CCs 1&2 by 1st September</b></li>
+<li>Please fill in the activity plans for the four Crosscutting activities provided in this package</li>
+<li>Please complete draft plans for <b>CCs 3&4 by 1st August</b></li>
+<li>Please complete draft plans for <b>CCs 1&2 by 1st September</b></li>
 <li>These will then be reviewed and feedback provided to Project Leads by CC Leads and NMO Officers (if applicable). Depending on feedback, Project Leads should continue to develop their plans in consultation with CC leads and NMO</li>
-<li><b>Final templates should be submitted by 1 st October for review at the October RMC.</b></li>
+<li><b>Final activity plans should be submitted by 1st October for review at the October RMC.</b></li>
 </ul>
 <p>Support in developing your plans will be available by the CC Leads and their supporting team (NMO staff are expected to be in place during the summer).</p>
-<p>It is anticipated that you will be able to submit draft and final plans online via the AGE-WELL Forum Research Portal by the above dates. However, we suggest that you start the planning process as soon as possible using the attached templates.</p>
 <p>Please note, that we see these plans as a starting point and should be seen as living documents that will continue to be developed and changed beyond these deadlines. For example, a project may have to develop capacity in CC2 (e.g. through HQP training or consultation with commercialization consultants at their institutions) and a full commercialization plan would be a deliverable of the project. However, in this scenario, the project will have to demonstrate that they are putting in place the necessary steps towards commercialization, together with a timeline.</p>
-<h3>Filling in the templates</h3>
-<p>The templates are designed to help Project Leads to articulate their ideas and provide detailed plans for their activities in the various CC areas. The bullet points are provided as prompts/guides for your plans, but you are not confined to these points however, you should use the sub-headings provided. The templates contain instructions indicating maximum pages to be submitted.</p>
+<h3>Filling in the activity plans</h3>
+<p>The activity plans are designed to help Project Leads to articulate their ideas and provide detailed plans for their activities in the various CC areas. The bullet points are provided as prompts/guides for your plans, but you are not confined to these points however, you should use the sub-headings provided. The activity plans contain instructions indicating maximum pages to be submitted.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -460,7 +459,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>Given the scale and complexity of the AGE-WELL Network and its goals, transdisciplinarity is a promising way research teams can work towards creating shared ideas, aims, objectives and goals. This involves team members creating a shared culture that integrates and transcends each member’s separate disciplinary perspective.</p>
 <p>In our proposal we stated that AGE-WELL will foster transdisciplinarity by bringing together researchers, industry partners, service providers, and older Canadians and their families and caregivers in a series of research and development projects to create an integrated network.</p>
 <p>While transdisciplinarity is a recognised strength of our NCE, working within such complex teams and large scale networks can be challenging and many research and development projects are compromised by poor communication and team work resulting from conflicting perspectives on how to achieve success, divergent conceptual models, methodological stances and forms of analysis. To achieve the promise of transdisciplinarity, we will need to foster collaborative processes of working within the whole network. This is about creating the right environment for transdisciplinarity, where all participants are engaged in meeting this key network objective.</p>
-<p>A key first step to achieving this is to develop a transdisciplinary plan at the earliest possible stage. To begin this process, we need to get a good sense of the following from each network member. The planning template is aimed at eliciting:</p>
+<p>A key first step to achieving this is to develop a transdisciplinary plan at the earliest possible stage. To begin this process, we need to get a good sense of the following from each network member. The activity planning is aimed at eliciting:</p>
 <ul>
     <li>Understandings about transdisciplinarity</li>
     <li>Experience with a transdisciplinary approach</li>
@@ -468,7 +467,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
     <li>Implementation of transdisciplinarity across the network</li>
     <li>Contributions to the network: Perceived value of transdisciplinary working</li>
 </ul>
-<p>In addition we need to map the opportunities we have in AGE-WELL to work in transdisciplinary ways and how this can be best supported within the AGE-WELL Network. The template is designed to help with the mapping exercise and the development of the support mechanisms needed to facilitate transdisciplinary working within AGE-WELL.</p>
+<p>In addition we need to map the opportunities we have in AGE-WELL to work in transdisciplinary ways and how this can be best supported within the AGE-WELL Network. The activity plan is designed to help with the mapping exercise and the development of the support mechanisms needed to facilitate transdisciplinary working within AGE-WELL.</p>
             ]]>
         </Instructions>
         <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
