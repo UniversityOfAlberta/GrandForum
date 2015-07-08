@@ -237,15 +237,15 @@ class IndexTable {
 				    break;
 			    case 'Projects':
 			        $wgOut->setPageTitle("Current Projects");
-				    $this->generateProjectsTable('Active');
+				    $this->generateProjectsTable('Active', 'all');
 				    break;
 				case 'CompletedProjects':
 			        $wgOut->setPageTitle("Completed Projects");
-				    $this->generateProjectsTable('Ended');
+				    $this->generateProjectsTable('Ended', 'all');
 				    break;
 				case 'AdminProjects':
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
-				    $this->generateProjectsTable('Active', 'Administrative');
+				    $this->generateAdminTable();
 				    break;
 			    case Inflect::pluralize($config->getValue('projectThemes')):
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
@@ -284,7 +284,7 @@ class IndexTable {
             <thead>
             <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>";
 	    foreach($data as $proj){
-	        if($proj->getStatus() == $status && $proj->getType() == $type){
+	        if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
 	            $this->text .= "
                     <tr>
                     <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
@@ -338,6 +338,49 @@ class IndexTable {
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+
+		return true;
+	}
+	
+	/*
+	 * Generates the Table of Admin Projects
+	 */
+	private function generateAdminTable(){
+	    global $wgScriptPath, $wgServer, $config;
+	    $me = Person::newFromWgUser();
+	    $activityPlans = "";
+	    if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+	        $activityPlans = "<th>Activity Plans</th>";
+	    }
+		$this->text .=
+"<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>
+";
+        $adminProjects = Project::getAllProjects();
+        foreach($adminProjects as $project){
+            if($project->getType() == 'Administrative'){
+                $leaders = array();
+                foreach($project->getLeaders() as $lead){
+                    $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+                }
+                $leaderString = implode(", ", $leaders);
+                $this->text .= "<tr>";
+                $this->text .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>";
+                $this->text .= "<td>{$project->getFullName()}</td>";
+                $this->text .= "<td>{$leaderString}</td>";
+                if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+                    $this->text .= "<td><ul>";
+                    foreach($me->leadership() as $proj){
+                        if($proj->getType() != 'Administrative'){
+                            $this->text .= "<li><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}'>{$proj->getName()}</a></li>";
+                        }
+                    }
+                    $this->text .= "</ul></td>";
+                }
+                $this->text .= "</tr>";
+            }
+        }
 		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
 
 		return true;
