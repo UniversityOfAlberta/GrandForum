@@ -56,7 +56,7 @@ class RFPApplicationTable extends SpecialPage{
                     <th width='1%'>Email</th>
                     <th>Project Title</th>
                     <th width='1%'>Generation&nbsp;Date</th>
-                    <th width='1%'>PDF Download</th>
+                    <th width='1%'>PDF&nbsp;Download</th>
                 </tr>
             </thead>
             <tbody>");
