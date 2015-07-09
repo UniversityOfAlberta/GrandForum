@@ -51,6 +51,7 @@ define('RP_TRANS',              104);
  */
 define('RP_HQP_APPLICATION',    200);
 define('RP_CC_PLANNING',        201);
+define('RP_CC_LEADER',          202);
 
 /*
  * Second-level identifiers: report section.
