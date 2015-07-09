@@ -79,6 +79,11 @@ class IndexTable {
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected");
         }
         
+        if(count(Person::getAllPeople(HQPAC)) > 0){
+            $selected = ($lastRole == HQPAC || $wgTitle->getText() == "ALL HQPAC" || ($wgTitle->getNSText() == HQPAC && !($me->isRole(HQPAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQPAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQPAC", "$selected");
+        }
+        
         if(count(Person::getAllPeople(BOD)) > 0){
             $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL BOD" || ($wgTitle->getNSText() == BOD && !($me->isRole(BOD) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(BOD, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_BOD", "$selected");
@@ -87,6 +92,11 @@ class IndexTable {
         if(count(Person::getAllPeople(RMC)) > 0){
             $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
             $peopleSubTab['dropdown'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected");
+        }
+        
+        if(count(Person::getAllPeople(STAFF)) > 0){
+            $selected = ($lastRole == STAFF || $wgTitle->getText() == "ALL Staff" || ($wgTitle->getNSText() == STAFF && !($me->isRole(STAFF) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(STAFF, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Staff", "$selected");
         }
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
@@ -221,9 +231,17 @@ class IndexTable {
 			        $wgOut->setPageTitle($config->getValue('roleDefs', BOD));
 				    $this->generatePersonTable(BOD);
 				    break;
+				case 'ALL '.HQPAC:
+				    $wgOut->setPageTitle($config->getValue('roleDefs', HQPAC));
+				    $this->generatePersonTable(HQPAC);
+				    break;
 				case 'ALL '.RMC:
 			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));
 				    $this->generateRMCTable();
+				    break;
+				case 'ALL '.STAFF:
+				    $wgOut->setPageTitle($config->getValue('roleDefs', STAFF));
+				    $this->generatePersonTable(STAFF);
 				    break;
 				case 'Multimedia':
 				    $wgOut->setPageTitle("Multimedia");
