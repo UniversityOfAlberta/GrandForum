@@ -395,6 +395,24 @@ EOF;
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
+                    if($me->leadershipOf($project)){
+                        $report = "";
+                        switch($project->getName()){
+                            case "CC1 K-MOB":
+                                $report = "CC1Leader";
+                                break;
+                            case "CC2 TECH-TRANS":
+                                $report = "CC2Leader";
+                                break;
+                            case "CC3 T-WORK":
+                                $report = "CC3Leader";
+                                break;
+                            case "CC4 TRAIN":
+                                $report = "CC4Leader";
+                                break;
+                        }
+                        $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report}&project={$project->getName()}'>Feedback</a>";
+                    }
                     $this->text .= implode(", ", $projs);
                     $this->text .= "</td>";
                 }
