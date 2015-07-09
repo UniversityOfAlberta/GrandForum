@@ -700,7 +700,7 @@ abstract class AbstractReport extends SpecialPage {
                     case "Project":
                         $nProjectTags++;
                         if($this->project != null){
-                            if(isset($perm['perm']['deleted']) && $perm['perm']['deleted'] != null){
+                            if(isset($perm['perm']['deleted']) && $perm['perm']['deleted'] !== null){
                                 $pResult = ($pResult || (($perm['perm']['deleted'] && 
                                            $this->project->isDeleted() && 
                                            substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
