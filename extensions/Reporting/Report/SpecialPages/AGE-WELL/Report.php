@@ -26,6 +26,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         $tabs["Plans"] = TabUtils::createTab("My CC Activity Plans");
         $tabs["Applications"] = TabUtils::createTab("HQP Application");
         return true;
@@ -76,7 +77,7 @@ class Report extends AbstractReport{
         }
         if(count($person->getEvaluates("HQP-2015-07-10")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("HQP Competition 2015-07-10", "{$url}HQPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Competition 2015-07-10", "{$url}HQPReview", $selected);
         }
         return true;
     }
