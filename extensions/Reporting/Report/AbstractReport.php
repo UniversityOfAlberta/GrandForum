@@ -688,6 +688,16 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
+                        else if($this->project != null && ($perm['perm'] == TC || $perm['perm'] == TL)){
+                            $project_objs = $me->getThemeProjects();
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->getId() == $this->project->getId()){
+                                        $rResult = true;
+                                    }
+                                }
+                            }
+                        }
                         else{
                             if(strstr($perm['perm'], "+") !== false){
                                 $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm'])), $perm['start'], $perm['end']));

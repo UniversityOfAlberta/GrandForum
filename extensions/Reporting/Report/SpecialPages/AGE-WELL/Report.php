@@ -38,10 +38,17 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("HQP Application", "{$url}HQPApplication", $selected);
         }
-        if($person->isRole(PL)){
+        if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
+            $projects = array();
             foreach($person->leadership() as $project){
+                $projects[$project->getName()] = $project;
+            }
+            foreach($person->getThemeProjects() as $project){
+                $projects[$project->getName()] = $project;
+            }
+            foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning")) ? "selected" : false;
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
                 }
                 else{

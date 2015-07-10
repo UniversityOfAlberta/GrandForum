@@ -390,7 +390,14 @@ EOF;
                 if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
                     $this->text .= "<td>";
                     $projs = array();
-                    foreach($me->leadership() as $proj){
+                    $projects = array();
+                    foreach($me->leadership() as $p){
+                        $projects[$p->getName()] = $p;
+                    }
+                    foreach($me->getThemeProjects() as $p){
+                        $projects[$p->getName()] = $p;
+                    }
+                    foreach($projects as $proj){
                         if($proj->getType() != 'Administrative'){
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }

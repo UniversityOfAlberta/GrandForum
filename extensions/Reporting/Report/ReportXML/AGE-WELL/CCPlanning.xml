@@ -10,6 +10,24 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TL">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="cc1" permissions="rw" />
+            <SectionPermission id="cc2" permissions="rw" />
+            <SectionPermission id="cc3" permissions="rw" />
+            <SectionPermission id="cc4" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TC">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="cc1" permissions="rw" />
+            <SectionPermission id="cc2" permissions="rw" />
+            <SectionPermission id="cc3" permissions="rw" />
+            <SectionPermission id="cc4" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
