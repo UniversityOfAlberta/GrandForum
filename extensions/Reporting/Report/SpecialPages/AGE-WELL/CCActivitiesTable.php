@@ -44,6 +44,9 @@ class CCActivitiesTable extends SpecialPage{
             </thead>
             <tbody>");
         foreach($projects as $project){
+            if($project->getType() == 'Administrative'){
+                continue;
+            }
             $wgOut->addHTML("<tr>");
             $wgOut->addHTML("<td>{$project->getName()}</td>");
         
