@@ -136,6 +136,7 @@ abstract class AbstractReportItem {
     
     // Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($item){
+        $item = $this->varSubstitute($item);
         $this->blobSubItem = $item;
     }
 
