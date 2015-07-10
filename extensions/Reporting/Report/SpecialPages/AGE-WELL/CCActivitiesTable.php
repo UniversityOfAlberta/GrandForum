@@ -95,7 +95,7 @@ class CCActivitiesTable extends SpecialPage{
         $wgOut->addHTML("</tbody>
         </table>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#projectTable').dataTable();
+            $('#projectTable').dataTable({'iDisplayLength': 100});
         </script>");
     }
     
