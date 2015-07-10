@@ -863,7 +863,14 @@ our trainees moving into receptor industries and government agencies represent a
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-                
+                <p>The following is a preview of the combined version of the CC Activity plans.  When the PDF is generated, five different PDFs will be created:</p>
+                <ol>
+                    <li>A combined PDF of all four CC Activities.</li>
+                    <li>CC1 K-MOB Activities</li>
+                    <li>CC2 TECH-TRANS Activities</li>
+                    <li>CC3 T-WORK Activities</li>
+                    <li>CC4 TRAIN Activities</li>
+                </ol>
             ]]>
         </Instructions>
         <ReportItem id="report_review" type="ReviewReportItem">
@@ -873,7 +880,14 @@ our trainees moving into receptor industries and government agencies represent a
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
-
+                <p>When the PDF is generated, five different PDFs will be created:</p>
+                <ol>
+                    <li>A combined PDF of all four CC Activities.</li>
+                    <li>CC1 K-MOB Activities</li>
+                    <li>CC2 TECH-TRANS Activities</li>
+                    <li>CC3 T-WORK Activities</li>
+                    <li>CC4 TRAIN Activities</li>
+                </ol>
             ]]>
         </Instructions>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
