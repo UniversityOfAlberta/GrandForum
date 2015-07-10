@@ -45,7 +45,7 @@
                 <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE">
                     <![CDATA[
                         <h3>How will you achieve your knowledge mobilization objectives?</h3>
-                            <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_1,CC_1_ACHEIVE,0,0,{$project_id})}</div>
+                            <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_1,CC_1_ACHIEVE,0,0,{$project_id})}</div>
                             {$item}
                     ]]>
                 </ReportItem>

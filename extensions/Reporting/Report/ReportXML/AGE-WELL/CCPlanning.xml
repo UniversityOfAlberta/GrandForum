@@ -152,49 +152,69 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>Involvement of Knowledge Users and Partners in Research is crucial: "a dynamic and iterative process that includes synthesis, dissemination, exchange and ethically sound application of knowledge to improve the health of Canadians, provide more effective health services and products and strengthen the health care system." <a target='_blank' href='http://www.cihr-irsc.gc.ca/e/45321.html'>http://www.cihr-irsc.gc.ca/e/45321.html</a></p>
             ]]>
         </Instructions>
-        <ReportItem id="objectives" type="TextareaReportItem" blobItem="CC_1_OBJECTIVES">
+        <ReportItem id="objectives_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_1,CC_1_OBJECTIVES,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Objectives</h3>
-                    <small>
-                        <ul>
-                            <li>What are your goals for knowledge mobilization? (these could be to inform/change: knowledge/awareness, future research, attitudes, behavior(s), policy, practice(s), technology, new products)</li>
-                        </ul>
-                    </small>
-                    {$item}
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="objectives" type="TextareaReportItem" blobItem="CC_1_OBJECTIVES">
+            <![CDATA[
+                <small>
+                    <ul>
+                        <li>What are your goals for knowledge mobilization? (these could be to inform/change: knowledge/awareness, future research, attitudes, behavior(s), policy, practice(s), technology, new products)</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="mobilize_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MOBILIZE,0,0,{$project_id})}" title="Feedback">
+            <![CDATA[
+                <h3>What knowledge will you mobilize?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="mobilize" type="TextareaReportItem" blobItem="CC_1_MOBILIZE">
             <![CDATA[
-                <h3>What knowledge will you mobilize?</h3>
-                    <small>
-                        <ul>
-                            <li>What are your goals for knowledge mobilization?</li>
-                            <li>What are the main messages?</li>
-                            <li>Why are these meaningful?</li>
-                            <li>What is the potential impact?</li>
-                            <li>How will your knowledge be used?</li>
-                        </ul>
-                    </small>
-                    {$item}
+                <small>
+                    <ul>
+                        <li>What are your goals for knowledge mobilization?</li>
+                        <li>What are the main messages?</li>
+                        <li>Why are these meaningful?</li>
+                        <li>What is the potential impact?</li>
+                        <li>How will your knowledge be used?</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_PARTNERS,0,0,{$project_id})}" title="Feedback">
+            <![CDATA[
+                <h3>Who are your knowledge partners?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_1_PARTNERS">
             <![CDATA[
-                <h3>Who are your knowledge partners?</h3>
-                    <small>
-                        <ul>
-                            <li>Who is involved in mobilizing this knowledge? (these may be stakeholders from different groups: caregivers, families, government, industry, etc.)</li>
-                            <li>Are these partners involved in developing your research and/or knowledge (knowledge mobilization is often a 2-way process)?</li>
-                            <li>Describe their role in your project</li>
-                            <li>Who are the champions/key mobilizers?</li>
-                        </ul>
-                    </small>
-                    {$item}
+                <small>
+                    <ul>
+                        <li>Who is involved in mobilizing this knowledge? (these may be stakeholders from different groups: caregivers, families, government, industry, etc.)</li>
+                        <li>Are these partners involved in developing your research and/or knowledge (knowledge mobilization is often a 2-way process)?</li>
+                        <li>Describe their role in your project</li>
+                        <li>Who are the champions/key mobilizers?</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="engage_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ENGAGE,0,0,{$project_id})}" title="Feedback">
+            <![CDATA[
+                <h3>Who are you trying to reach and engage?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="engage" type="TextareaReportItem" blobItem="CC_1_ENGAGE">
             <![CDATA[
-                <h3>Who are you trying to reach and engage?</h3>
                     <small>
                         <ul>
                             <li>Who is your target audience? (e.g. community-based and not-for profit organizations, general public, health care professionals/service providers, health system administrators/managers, industry/venture capital groups, media (print, TV, etc.), patients/residents/consumers, policy makers/legislators, private sector, research funders, researchers)</li>
@@ -205,9 +225,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE">
+        <ReportItem id="achieve_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_ACHIEVE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you achieve your knowledge mobilization objectives?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE">
+            <![CDATA[
                     <small>
                         <ul>
                             <li>How will you get your messages across?</li>
@@ -222,10 +247,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expertise" type="TextareaReportItem" blobItem="CC_1_EXPERTISE">
+        <ReportItem id="expertise_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_EXPERTISE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What expertise do you need?</h3>
-                    <small>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" type="TextareaReportItem" blobItem="CC_1_EXPERTISE">
+            <![CDATA[<small>
                         <ul>
                             <li>Are all necessary knowledge users involved to achieve the stated goals?</li>
                             <li>Describe the team's ability to execute the proposed strategies</li>
@@ -235,9 +264,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="resources" type="TextareaReportItem" blobItem="CC_1_RESOURCES">
+        <ReportItem id="expertise_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_RESOURCES,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What resources do you need for your knowledge mobilization plan?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="TextareaReportItem" blobItem="CC_1_RESOURCES">
+            <![CDATA[
                     <small>
                         <ul>
                             <li>Financial resources?</li>
@@ -248,9 +282,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_1_MEASURE">
+        <ReportItem id="measure_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_MEASURE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you measure the impact of your knowledge?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_1_MEASURE">
+            <![CDATA[
                     <small>
                         The idea of innovation is to change things (practice, services, policy, attitudes, use of technologies, etc.)
                         <ul>
@@ -263,9 +302,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_1_SUPPORT">
+        <ReportItem id="support_head" type="PopupReportItem" text="{getText(RP_CC_LEADER,CC_PLANNING_1,CC_1_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How do you think AGE-WELL as an organization could help or support your knowledge mobilization efforts?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_1_SUPPORT">
+            <![CDATA[
                     <small>
                         <ul>
                             <li>Provide any ideas about support at the network level</li>
@@ -323,15 +367,25 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>We especially would like to see HQPs involved in commercialization activities and, indeed, HQPs may be the major catalyst for commercialization in some projects. Consider providing training opportunities and release time for HQPs beyond their typical disciplinary training to attend for example courses on technology commercialization.</p>
             ]]>
         </Instructions>
-        <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS">
+        <ReportItem id="products_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PRODUCTS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What products or services do you intend to commercialize? (please refer to briefing notes for detailed explanation)</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS">
+            <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="commercialize_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_COMMERCIALIZE,0,0,{$project_id})}" title="Feedback">
+            <![CDATA[
+                <h3>If your project is planning to directly commercialize a product(s):</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="commercialize" type="TextareaReportItem" blobItem="CC_2_COMMERCIALIZE">
             <![CDATA[
-                <h3>If your project is planning to directly commercialize a product(s):</h3>
                 <small>
                     <ul>
                         <li>What are the products or services you intend to bring to market?</li>
@@ -342,9 +396,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="provide" type="TextareaReportItem" blobItem="CC_2_PROVIDE">
+        <ReportItem id="provide_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PROVIDE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>If your project is providing support to commercialization within AGE-WELL:</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="provide" type="TextareaReportItem" blobItem="CC_2_PROVIDE">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What kind of commercially focused information will you provide to technology projects?</li>
@@ -356,9 +415,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_2_PARTNERS">
+        <ReportItem id="partners_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_PARTNERS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Who are your partners?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_2_PARTNERS">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Which (if any) partners are involved in the commercialization process?
@@ -371,9 +435,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="stage" type="TextareaReportItem" blobItem="CC_2_STAGE">
+        <ReportItem id="stage_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_STAGE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What stage is your product at?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="stage" type="TextareaReportItem" blobItem="CC_2_STAGE">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Is it at the preliminary design process?</li>
@@ -385,9 +454,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="market" type="TextareaReportItem" blobItem="CC_2_MARKET">
+        <ReportItem id="market_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MARKET,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What is your market?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="market" type="TextareaReportItem" blobItem="CC_2_MARKET">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Who are you targeting?</li>
@@ -401,9 +475,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ip" type="TextareaReportItem" blobItem="CC_2_IP">
+        <ReportItem id="ip_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_IP,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Intellectual property</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="TextareaReportItem" blobItem="CC_2_IP">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Have you done any patent searching to see if you have (or expect to have) any protectable IP?</li>
@@ -413,9 +492,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="acheive" type="TextareaReportItem" blobItem="CC_2_ACHIEVE">
+        <ReportItem id="achieve_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_ACHIEVE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you achieve your commercialization objectives?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_2_ACHIEVE">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Will your product require Health Canada, CE or FDA approval? If so, what class will it belong to?</li>
@@ -429,9 +513,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_2_MEASURE">
+        <ReportItem id="measure_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_MEASURE,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How will you measure the effectiveness of your commercialization activities?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_2_MEASURE">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Define a clear list of milestones for the project with deliverables due on specific dates</li>
@@ -440,9 +529,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_2_SUPPORT">
+        <ReportItem id="support_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_2,CC_2_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How do you think AGE-WELL as an organization could help or support commercialization within the network?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_2_SUPPORT">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Provide any ideas about support you would like to get from AGE-WELL to commercialize your product.</li>
@@ -470,10 +564,15 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
 <p>In addition we need to map the opportunities we have in AGE-WELL to work in transdisciplinary ways and how this can be best supported within the AGE-WELL Network. The activity plan is designed to help with the mapping exercise and the development of the support mechanisms needed to facilitate transdisciplinary working within AGE-WELL.</p>
             ]]>
         </Instructions>
-        <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
+        <ReportItem id="trans_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 1: KNOWLEDGE</h2>
                 <h3>What do you know about transdisciplinarity?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Purpose, key characteristics and features</li>
@@ -485,10 +584,15 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT">
+        <ReportItem id="adopt_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 2: EXPERIENCE</h2>
                 <h3>Have you previously worked on projects that adopted a transdisciplinary approach?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>In what ways was it transdisciplinary?</li>
@@ -500,9 +604,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK">
+        <ReportItem id="teamwork_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Please outline your experience of teamwork within large, complex projects</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What were the challenges to effective teamwork and how were these met?</li>
@@ -513,10 +622,15 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK">
+        <ReportItem id="network_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 3: IMPLEMENTATION</h2>
                 <h3>What are your plans to contribute to the wider network?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>How will you contribute to the development of the network goals?</li>
@@ -528,9 +642,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY">
+        <ReportItem id="synergy_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Synergies between projects</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What are you plans for linking in with other projects in AGE-WELL?</li>
@@ -548,9 +667,14 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT">
+        <ReportItem id="accept_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Consider:
@@ -565,10 +689,15 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT">
+        <ReportItem id="support_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h2>SECTION 4: SUPPORT AND EVALUATION</h2>
                 <h3>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Provide any ideas about support at the project, work package, crosscutting theme and
@@ -584,9 +713,14 @@ network level.
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL">
+        <ReportItem id="eval_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What are important outcomes related to transdisciplinarity?</li>
@@ -623,9 +757,14 @@ our trainees moving into receptor industries and government agencies represent a
 <p>To accomplish our training goals it is important for Project Leads to recognize that HQPs who are supported by AGE-WELL funds will need release time to participate in network activities outside of their research projects.</p>
             ]]>
         </Instructions>
-        <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN">
+        <ReportItem id="train_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_TRAIN,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>Description of type of HQP training activities will be conducted within your research project.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What are your project objectives for HQP training?</li>
@@ -636,9 +775,14 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know" type="TextareaReportItem" blobItem="CC_4_KNOW">
+        <ReportItem id="know_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_KNOW,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>The AGE-WELL training program needs to emphasize the knowledge and skills for successful knowledge mobilization, commercialization and transdisciplinary working.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="know" type="TextareaReportItem" blobItem="CC_4_KNOW">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>Do members of your research team have any particular training expertise that could be relevant? If yes please state name of team member and describe expertise</li>
@@ -656,18 +800,28 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="outcome" type="TextareaReportItem" blobItem="CC_4_OUTCOME">
+        <ReportItem id="outcome_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OUTCOME,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>An important outcome for AGE-WELL is to create training initiatives that encourage HQPs to consider the economic, social, environmental and ethical implications of their work.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcome" type="TextareaReportItem" blobItem="CC_4_OUTCOME">
+            <![CDATA[
                 <small>
                     List any suggestions you have for training that would address these considerations.
                 </small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="industry" type="TextareaReportItem" blobItem="CC_4_INDUSTRY">
+        <ReportItem id="industry_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_INDUSTRY,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>The majority of our HQPs will not pursue academic careers but will be employed by industry or government or start their own business.</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="industry" type="TextareaReportItem" blobItem="CC_4_INDUSTRY">
+            <![CDATA[
                 <small>
                     <ul>
                         <li>What skills will these trainees need to be successful?</li>
@@ -677,15 +831,25 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="other" type="TextareaReportItem" blobItem="CC_4_OTHER">
+        <ReportItem id="other_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_OTHER,0,0,{$project_id})}" title="Feedback">
             <![CDATA[
                 <h3>What other knowledge, skills or training should AGE-WELL as an organization be providing to HQPs within the network?</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="TextareaReportItem" blobItem="CC_4_OTHER">
+            <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="measure_head" type="PopupReportItem" text="{getText(RP_CC_LEADER, CC_PLANNING_4,CC_4_MEASURE,0,0,{$project_id})}" title="Feedback">
+            <![CDATA[
+                <h3>How should we measure the effectiveness of the HQP training program?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_4_MEASURE">
             <![CDATA[
-                <h3>How should we measure the effectiveness of the HQP training program?</h3>
                 <small>
                     <ul>
                         <li>How should HQP training be evaluated? List any potential measures/indicators.</li>

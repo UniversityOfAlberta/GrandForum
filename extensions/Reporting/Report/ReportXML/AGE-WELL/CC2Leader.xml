@@ -63,7 +63,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="acheive" type="TextareaReportItem" blobItem="CC_2_ACHIEVE">
+                <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_2_ACHIEVE">
                     <![CDATA[
                         <h3>How will you achieve your commercialization objectives?</h3>
                         <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_2,CC_2_ACHIEVE,0,0,{$project_id})}</div>

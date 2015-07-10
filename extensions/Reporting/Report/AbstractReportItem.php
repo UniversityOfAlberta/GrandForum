@@ -195,6 +195,7 @@ abstract class AbstractReportItem {
         else{
             $postId = str_replace(" ", "", $parent->name).$postId;
         }
+        $postId = str_replace("-", "", $postId);
         return $postId;
     }
     
@@ -382,8 +383,12 @@ abstract class AbstractReportItem {
                 $f = $e[0];
                 $a = explode(",", str_replace(")", "", $e[1]));
                 foreach($a as $key => $arg){
+                    $arg = trim($arg);
                     if(defined($arg)){
                         $a[$key] = constant($arg);
+                    }
+                    else{
+                        $a[$key] = $arg;
                     }
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
