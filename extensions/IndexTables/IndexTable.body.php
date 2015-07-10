@@ -255,11 +255,11 @@ class IndexTable {
 				    break;
 			    case 'Projects':
 			        $wgOut->setPageTitle("Current Projects");
-				    $this->generateProjectsTable('Active', 'all');
+				    $this->generateProjectsTable('Active', 'Research');
 				    break;
 				case 'CompletedProjects':
 			        $wgOut->setPageTitle("Completed Projects");
-				    $this->generateProjectsTable('Ended', 'all');
+				    $this->generateProjectsTable('Ended', 'Research');
 				    break;
 				case 'AdminProjects':
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
