@@ -14,7 +14,7 @@ class IndexTable {
 	var $text = "";
 	
 	static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle;
+        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles;
         $me = Person::newFromWgUser();
         if($config->getValue('projectsEnabled')){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
@@ -44,59 +44,13 @@ class IndexTable {
             }
         }
         $peopleSubTab = TabUtils::createSubTab("People");
-        if($me->isLoggedIn()){
-            $selected = ($lastRole == HQP || $wgTitle->getText() == "ALL HQP" || ($wgTitle->getNSText() == HQP && !($me->isRole(HQP) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQP, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQP", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(NI)) > 0){
-            $selected = ($lastRole == NI || $wgTitle->getText() == "ALL NI" || ($wgTitle->getNSText() == NI && !($me->isRole(NI) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NI", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(ISAC)) > 0){
-            $selected = ($lastRole == ISAC || $wgTitle->getText() == "ALL ".ISAC || ($wgTitle->getNSText() == ISAC && !($me->isRole(ISAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(ISAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".ISAC, "$selected");
-        }
-        
-        if(count(Person::getAllPeople(CAC)) > 0){
-            $selected = ($lastRole == CAC || $wgTitle->getText() == "ALL ".CAC || ($wgTitle->getNSText() == CAC && !($me->isRole(CAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(CAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".CAC, "$selected");
-        }
-        
-        if(count(Person::getAllPeople(IAC)) > 0){
-            $selected = ($lastRole == IAC || $wgTitle->getText() == "ALL ".IAC || ($wgTitle->getNSText() == IAC && !($me->isRole(IAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(IAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_".IAC, "$selected");
-        }
-        
-        if(count(Person::getAllPeople(EXTERNAL)) > 0){
-            $selected = ($lastRole == EXTERNAL || $wgTitle->getText() == "ALL External" || ($wgTitle->getNSText() == EXTERNAL && !($me->isRole(EXTERNAL) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(EXTERNAL, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_External", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(NCE)) > 0){
-            $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL NCE Rep" || ($wgTitle->getNSText() == NCE && !($me->isRole(NCE) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(NCE, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_NCE_Rep", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(HQPAC)) > 0){
-            $selected = ($lastRole == HQPAC || $wgTitle->getText() == "ALL HQPAC" || ($wgTitle->getNSText() == HQPAC && !($me->isRole(HQPAC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(HQPAC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_HQPAC", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(BOD)) > 0){
-            $selected = ($lastRole == NCE || $wgTitle->getText() == "ALL BOD" || ($wgTitle->getNSText() == BOD && !($me->isRole(BOD) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(BOD, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_BOD", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(RMC)) > 0){
-            $selected = ($lastRole == RMC || $wgTitle->getText() == "ALL RMC" || ($wgTitle->getNSText() == RMC && !($me->isRole(RMC) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(RMC, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_RMC", "$selected");
-        }
-        
-        if(count(Person::getAllPeople(STAFF)) > 0){
-            $selected = ($lastRole == STAFF || $wgTitle->getText() == "ALL Staff" || ($wgTitle->getNSText() == STAFF && !($me->isRole(STAFF) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-            $peopleSubTab['dropdown'][] = TabUtils::createSubTab(STAFF, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Staff", "$selected");
+        $roles = array_values($wgRoles);
+        sort($roles);
+        foreach($roles as $role){
+            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role))){
+                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+            }
         }
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
@@ -179,8 +133,8 @@ class IndexTable {
 	}
 
 	function generateTable($out, $parseroutput){
-		global $wgTitle, $wgOut, $wgUser, $config;
-		$me = Person::newFromId($wgUser->getId());
+		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles;
+		$me = Person::newFromWgUser();
 		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
@@ -199,50 +153,6 @@ class IndexTable {
                 });
             </script>");
 			switch ($wgTitle->getText()) {
-			    case 'ALL '.HQP:
-			        $wgOut->setPageTitle("Highly Qualified Personnel");
-				    $this->generatePersonTable(HQP);
-				    break;
-			    case 'ALL '.NI:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
-				    $this->generatePersonTable(NI, 1);
-				    break;
-				case 'ALL '.ISAC:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', ISAC));
-				    $this->generatePersonTable(ISAC);
-				    break;
-				case 'ALL '.IAC:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', IAC));
-				    $this->generatePersonTable(ISAC);
-				    break;
-				case 'ALL '.CAC:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', CAC));
-				    $this->generatePersonTable(ISAC);
-				    break;
-				case 'ALL '.EXTERNAL:
-			        $wgOut->setPageTitle("External Members");
-				    $this->generatePersonTable(EXTERNAL);
-				    break;
-				case 'ALL '.NCE:
-			        $wgOut->setPageTitle("NCE Reps");
-				    $this->generatePersonTable(NCE);
-				    break;
-				case 'ALL '.BOD:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', BOD));
-				    $this->generatePersonTable(BOD);
-				    break;
-				case 'ALL '.HQPAC:
-				    $wgOut->setPageTitle($config->getValue('roleDefs', HQPAC));
-				    $this->generatePersonTable(HQPAC);
-				    break;
-				case 'ALL '.RMC:
-			        $wgOut->setPageTitle($config->getValue('roleDefs', RMC));
-				    $this->generateRMCTable();
-				    break;
-				case 'ALL '.STAFF:
-				    $wgOut->setPageTitle($config->getValue('roleDefs', STAFF));
-				    $this->generatePersonTable(STAFF);
-				    break;
 				case 'Multimedia':
 				    $wgOut->setPageTitle("Multimedia");
 				    $this->generateMaterialsTable();
@@ -270,7 +180,13 @@ class IndexTable {
 				    $this->generateThemesTable();
 				    break;
 			    default:
-				    return true;
+			        foreach($wgRoles as $role){
+                        if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
+                            $wgOut->setPageTitle($config->getValue('roleDefs', $role));
+				            $this->generatePersonTable($role);
+                        }
+                    }
+				    break;
 			}
 			TabUtils::clearActions();
 			$wgOut->addHTML($this->text);
@@ -505,35 +421,6 @@ EOF;
 		return true;
 	}
 	
-	private function generateRMCTable(){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
-		$data = Person::getAllPeople(RMC);
-
-        $this->text .= "Below are all the current ".RMC." in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
-		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Name</th><th>Roles</th></tr></thead><tbody>";
-		foreach($data as $person){
-		    $roles = $person->getRoles();
-			$this->text .= "
-<tr>
-<td align='left'>
-<a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
-</td>
-<td align='left'>
-";
-            foreach($roles as $role){
-				$this->text .= "{$role->getRole()}, ";
-			}
-			if(count($person->getRoles()) > 0){
-				$pos = strrpos($this->text, ", ");
-				$this->text = substr($this->text, 0, $pos);
-			}
-			$this->text .= "</tr>";
-		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
-		return true;
-	}
-
 	function generateMaterialsTable(){
 	    global $wgServer, $wgScriptPath;
 	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
