@@ -7,7 +7,7 @@ $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
 $wgSpecialPageGroups['HQPRegister'] = 'network-tools';
 
-$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
+//$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
 
 function runHQPRegister($par) {
     HQPRegister::execute($par);

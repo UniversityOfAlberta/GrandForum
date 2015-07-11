@@ -37,10 +37,10 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        if($person->isRole(HQP."-Candidate")){
+        /*if($person->isRole(HQP."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("HQP Application", "{$url}HQPApplication", $selected);
-        }
+        }*/
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
             $projects = array();
             foreach($person->leadership() as $project){
