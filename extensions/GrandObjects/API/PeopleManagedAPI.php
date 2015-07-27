@@ -5,7 +5,7 @@ class PeopleManagedAPI extends RESTAPI {
     function doGET(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $people = array();
+            $people = array($me->getReversedName() => $me);
             foreach($me->getRelations(SUPERVISES, true) as $rel){
                 // Get the list of Supervises
                 $hqp = $rel->getUser2();

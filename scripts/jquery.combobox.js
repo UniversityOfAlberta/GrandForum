@@ -54,6 +54,12 @@
               item: ui.item.option
             });
             $(invis).attr('value', ui.item.option.value);
+            $("option", element).prop('selected', false);
+            $("option", element).filter(function() {
+                //may want to use $.trim in here
+                return $(this).text() == ui.item.option.value; 
+            }).prop('selected', true);
+            element.trigger('change');
         });
         
         $(this.input).on('keyup', function(event, ui){
@@ -65,10 +71,22 @@
             });
             if(!found){
                 $(invis).attr('value', $(event.target).val());
+                var option = $("<option>");
+                option.addClass('extra');
+                option.html($(event.target).val());
+                option.prop('selected', true);
+                $("option.extra", element).remove();
+                element.append(option);
             }
             else{
                 $(invis).attr('value', found);
+                $("option", element).prop('selected', false);
+                $("option", element).filter(function() {
+                    //may want to use $.trim in here
+                    return $(this).text() == found; 
+                }).prop('selected', true);
             }
+            element.trigger('change');
         });
         
         $(this.input).on('change', function(event, ui){
@@ -80,10 +98,22 @@
             });
             if(!found){
                 $(invis).attr('value', $(event.target).val());
+                var option = $("<option>");
+                option.addClass('extra');
+                option.html($(event.target).val());
+                option.prop('selected', true);
+                $("option.extra", element).remove();
+                element.append(option);
             }
             else{
                 $(invis).attr('value', found);
+                $("option", element).prop('selected', false);
+                $("option", element).filter(function() {
+                    //may want to use $.trim in here
+                    return $(this).text() == found; 
+                }).prop('selected', true);
             }
+            element.trigger('change');
         });
         $(this.input).trigger('change');
       },

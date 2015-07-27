@@ -195,13 +195,18 @@ HTML.Select = function(view, attr, options){
     var el = HTML.Element("<select />", options);
     $(el).attr('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
+    var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";
         if(val.split(":")[0] == opt){
             selected = "selected='selected'";
+            foundSelected = true;
         }
         $(el).append("<option " + selected + ">" + opt + "</option>");
     });
+    if(!foundSelected){
+        $(el).append("<option selected>" + val.split(":")[0] + "</option>");
+    }
     var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());

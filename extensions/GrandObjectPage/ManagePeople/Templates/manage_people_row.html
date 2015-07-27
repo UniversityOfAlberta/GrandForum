@@ -17,7 +17,9 @@
     <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
 </td>
 <td align="center">
-    <span id="editRelations" class="edit-icon" title="Edit Relations"></span>
+    <% if(me.get('id') != id){ %>
+        <span id="editRelations" class="edit-icon" title="Edit Relations"></span>
+    <% } %>
 </td>
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Universities"></span>
