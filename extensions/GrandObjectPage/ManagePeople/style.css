@@ -9,3 +9,15 @@ span#infinity {
 span#infinity:hover {
     cursor: pointer;
 }
+
+table.wikitable tr.even {
+    background: #FFFFFF;
+}
+
+table.wikitable tr.odd {
+    background: #F2F2F2;
+}
+
+table.wikitable tr.deleted {
+    background: #FEB8B8;
+}

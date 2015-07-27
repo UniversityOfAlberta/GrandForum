@@ -71,9 +71,15 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         if(relations.length > 0){
             this.$("#relation_rows").empty();
         }
-        relations.each($.proxy(function(relation){
+        relations.each($.proxy(function(relation, i){
             var view = new ManagePeopleEditRelationsRowView({model: relation});
             this.$("#relation_rows").append(view.render());
+            if(i % 2 == 0){
+                view.$el.addClass('even');
+            }
+            else{
+                view.$el.addClass('odd');
+            }
         }, this));
     },
     
@@ -115,10 +121,10 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$el.css('background', '#FEB8B8');
+            this.$el.addClass('deleted');
         }
         else{
-            this.$el.css('background', '#FFFFFF');
+            this.$el.removeClass('deleted');
         }
     },
    

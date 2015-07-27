@@ -73,9 +73,15 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         if(this.projects.length > 0){
             this.$("#project_rows").empty();
         }
-        this.projects.each($.proxy(function(project){
+        this.projects.each($.proxy(function(project, i){
             var view = new ManagePeopleEditProjectsRowView({model: project});
             this.$("#project_rows").append(view.render());
+            if(i % 2 == 0){
+                view.$el.addClass('even');
+            }
+            else{
+                view.$el.addClass('odd');
+            }
         }, this));
     },
     
@@ -117,10 +123,10 @@ ManagePeopleEditProjectsRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$el.css('background', '#FEB8B8');
+            this.$el.addClass('deleted');
         }
         else{
-            this.$el.css('background', '#FFFFFF');
+            this.$el.removeClass('deleted');
         }
     },
    

@@ -72,9 +72,15 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         if(this.universities.length > 0){
             this.$("#university_rows").empty();
         }
-        this.universities.each($.proxy(function(university){
+        this.universities.each($.proxy(function(university, i){
             var view = new ManagePeopleEditUniversitiesRowView({model: university});
             this.$("#university_rows").append(view.render());
+            if(i % 2 == 0){
+                view.$el.addClass('even');
+            }
+            else{
+                view.$el.addClass('odd');
+            }
         }, this));
     },
     
@@ -116,10 +122,10 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$el.css('background', '#FEB8B8');
+            this.$el.addClass('deleted');
         }
         else{
-            this.$el.css('background', '#FFFFFF');
+            this.$el.removeClass('deleted');
         }
     },
    

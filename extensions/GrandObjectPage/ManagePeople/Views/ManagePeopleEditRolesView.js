@@ -73,9 +73,15 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         if(this.roles.length > 0){
             this.$("#role_rows").empty();
         }
-        this.roles.each($.proxy(function(role){
+        this.roles.each($.proxy(function(role, i){
             var view = new ManagePeopleEditRolesRowView({model: role});
             this.$("#role_rows").append(view.render());
+            if(i % 2 == 0){
+                view.$el.addClass('even');
+            }
+            else{
+                view.$el.addClass('odd');
+            }
         }, this));
     },
     
@@ -117,10 +123,10 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
     
     update: function(){
         if(this.model.get('deleted') == "true"){
-            this.$el.css('background', '#FEB8B8');
+            this.$el.addClass('deleted');
         }
         else{
-            this.$el.css('background', '#FFFFFF');
+            this.$el.removeClass('deleted');
         }
     },
    
