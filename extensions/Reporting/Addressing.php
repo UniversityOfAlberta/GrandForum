@@ -51,6 +51,8 @@ define('RP_TRANS',              104);
  */
 define('RP_HQP_APPLICATION',    200);
 define('RP_CC_PLANNING',        201);
+define('RP_CC_LEADER',          202);
+define('RP_HQP_REVIEW',         203);
 
 /*
  * Second-level identifiers: report section.
@@ -88,6 +90,8 @@ define('HQP_RESACTIVITY',		7);
 
 define('HQP_APPLICATION_FORM',  1);
 define('HQP_APPLICATION_DOCS',  2);
+
+define('HQP_REVIEW',            1);
 
 define('CC_PLANNING_1',         1);
 define('CC_PLANNING_2',         2);
@@ -283,6 +287,14 @@ define('HQP_APPLICATION_EVIDENCE',  4);
 define('HQP_APPLICATION_TRANS1',    5);
 define('HQP_APPLICATION_TRANS2',    6);
 define('HQP_APPLICATION_CV',        7);
+
+define('HQP_REVIEW_OVERALL_COMM',   1);
+define('HQP_REVIEW_QUALITY',        2);
+define('HQP_REVIEW_QUALITY_COMM',   3);
+define('HQP_REVIEW_GOALS',          4);
+define('HQP_REVIEW_GOALS_COMM',     5);
+define('HQP_REVIEW_TRAIN',          6);
+define('HQP_REVIEW_TRAIN_COMM',     7);
 
 define('CC_1_OBJECTIVES',   1);
 define('CC_1_MOBILIZE',     2);

@@ -136,6 +136,7 @@ abstract class AbstractReportItem {
     
     // Sets the Blob Sub-Item of this AbstractReportItem
     function setBlobSubItem($item){
+        $item = $this->varSubstitute($item);
         $this->blobSubItem = $item;
     }
 
@@ -195,6 +196,7 @@ abstract class AbstractReportItem {
         else{
             $postId = str_replace(" ", "", $parent->name).$postId;
         }
+        $postId = str_replace("-", "", $postId);
         return $postId;
     }
     
@@ -370,8 +372,30 @@ abstract class AbstractReportItem {
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
                 $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
-                $regex = '/{\$'.$m.'}/';
-                $cdata = preg_replace($regex, nl2br($v), $cdata);
+                $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
+            }
+        }
+        
+        preg_match_all('/{(.+?)}/', $cdata, $matches);
+        foreach($matches[1] as $k => $m){
+            $e = explode('(', $m);
+            if(isset($e[1])){
+                // Function call
+                $f = $e[0];
+                $a = explode(",", str_replace(")", "", $e[1]));
+                foreach($a as $key => $arg){
+                    $arg = trim($arg);
+                    if(defined($arg)){
+                        $a[$key] = constant($arg);
+                    }
+                    else{
+                        $a[$key] = $arg;
+                    }
+                }
+                if(isset(ReportItemCallback::$callbacks[$f])){
+                    $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
+                    $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                }
             }
         }
         

@@ -530,10 +530,7 @@ class ReportXMLParser {
                 $item->setBlobItem($i);
             }
             if(isset($attributes->blobSubItem)){
-                if(!defined($attributes->blobSubItem)){
-                    $this->errors[] = "Blob Sub-Item '{$attributes->blobSubItem}' does not exist for ReportItem, using null";
-                }
-                $i = (defined($attributes->blobSubItem)) ? constant($attributes->blobSubItem) : null;
+                $i = (defined($attributes->blobSubItem)) ? constant($attributes->blobSubItem) : $attributes->blobSubItem;
                 $item->setBlobSubItem($i);
             }
             foreach($attributes as $key => $value){

@@ -5,6 +5,8 @@ $wgSpecialPages['Report'] = 'Report'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
+require_once("CCActivitiesTable.php");
+
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
@@ -24,6 +26,8 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Reviews"] = TabUtils::createTab("My Reviews");
+        $tabs["Plans"] = TabUtils::createTab("My CC Activity Plans");
         $tabs["Applications"] = TabUtils::createTab("HQP Application");
         return true;
     }
@@ -33,15 +37,47 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        if($person->isRole(HQP."-Candidate")){
+        /*if($person->isRole(HQP."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("HQP Application", "{$url}HQPApplication", $selected);
-        }
-        if($person->isRole(PL)){
+        }*/
+        if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
+            $projects = array();
             foreach($person->leadership() as $project){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning")) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("CC Planning: {$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
+                $projects[$project->getName()] = $project;
             }
+            foreach($person->getThemeProjects() as $project){
+                $projects[$project->getName()] = $project;
+            }
+            foreach($projects as $project){
+                if($project->getType() != 'Administrative'){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCPlanning" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
+                }
+                else{
+                    $report = "";
+                    switch($project->getName()){
+                        case "CC1 K-MOB":
+                            $report = "CC1Leader";
+                            break;
+                        case "CC2 TECH-TRANS":
+                            $report = "CC2Leader";
+                            break;
+                        case "CC3 T-WORK":
+                            $report = "CC3Leader";
+                            break;
+                        case "CC4 TRAIN":
+                            $report = "CC4Leader";
+                            break;
+                    }
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == $report)) ? "selected" : false;
+                    $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}{$report}&project={$project->getName()}", $selected);
+                }
+            }
+        }
+        if(count($person->getEvaluates("HQP-2015-07-10")) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Competition 2015-07-10", "{$url}HQPReview", $selected);
         }
         return true;
     }

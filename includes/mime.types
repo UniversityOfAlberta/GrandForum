@@ -59,7 +59,7 @@ application/xhtml+xml xhtml xht
 application/xslt+xml xslt
 application/xml xml xsl xsd kml
 application/xml-dtd dtd
-application/zip zip jar xpi sxc stc sxd std sxi sti sxm stm sxw stw
+application/zip zip jar xpi sxc stc sxd std sxi sti sxm stm sxw stw doc docx xls xlsx
 application/x-rar rar
 audio/basic au snd
 audio/midi mid midi kar

@@ -125,7 +125,8 @@ class ReportItemCallback {
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
-            "index" => "getIndex"
+            "index" => "getIndex",
+            "getText" => "getText"
         );
     
     var $reportItem;
@@ -1320,6 +1321,13 @@ class ReportItemCallback {
             $i++;
         }
         return 0;
+    }
+    
+    function getText($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return $blb->getData();
     }
     
     function getPostId(){

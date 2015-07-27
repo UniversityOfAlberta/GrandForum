@@ -1756,6 +1756,9 @@ class Person extends BackboneModel {
         if($this->isThemeLeader()){
             $roleNames[] = TL;
         }
+        if($this->isThemeCoordinator()){
+            $roleNames[] = TC;
+        }
         foreach($roleNames as $key => $role){
             if($role == INACTIVE){
                 if($this->isProjectLeader()){
@@ -2516,6 +2519,14 @@ class Person extends BackboneModel {
         if(($role == PL || $role == 'PL') && $this->isProjectLeader()){
             $roles[] = PL;
             $roles[] = 'PL';
+        }
+        if(($role == TL || $role == 'TL') && $this->isThemeLeader()){
+            $roles[] = TL;
+            $roles[] = 'TL';
+        }
+        if(($role == TC || $role == 'TC') && $this->isThemeCoordinator()){
+            $roles[] = TC;
+            $roles[] = 'TC';
         }
         if($role == EVALUATOR && $this->isEvaluator()){
             $roles[] = EVALUATOR;
@@ -3468,6 +3479,7 @@ class Person extends BackboneModel {
                                         array('challenge_id' => IN($themeIds)));
             foreach($data as $row){
                 $project = Project::newFromId($row['project_id']);
+                $projects[$project->getName()] = $project;
             }
         }
         return $projects;
@@ -3723,7 +3735,7 @@ class Person extends BackboneModel {
             if($row['type'] == "Project" || $row['type'] == "SAB"){
                 $subs[] = Project::newFromId($row['sub_id']);
             }
-            else if($row['type'] == "NI"){
+            else{
                 $subs[] = Person::newFromId($row['sub_id']);
             }
         }

@@ -688,6 +688,16 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
+                        else if($this->project != null && ($perm['perm'] == TC || $perm['perm'] == TL)){
+                            $project_objs = $me->getThemeProjects();
+                            if(count($project_objs) > 0){
+                                foreach($project_objs as $project){
+                                    if($project->getId() == $this->project->getId()){
+                                        $rResult = true;
+                                    }
+                                }
+                            }
+                        }
                         else{
                             if(strstr($perm['perm'], "+") !== false){
                                 $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm'])), $perm['start'], $perm['end']));
@@ -700,7 +710,7 @@ abstract class AbstractReport extends SpecialPage {
                     case "Project":
                         $nProjectTags++;
                         if($this->project != null){
-                            if(isset($perm['perm']['deleted'])){
+                            if(isset($perm['perm']['deleted']) && $perm['perm']['deleted'] !== null){
                                 $pResult = ($pResult || (($perm['perm']['deleted'] && 
                                            $this->project->isDeleted() && 
                                            substr($this->project->getEffectiveDate(), 0, 4) >= substr($perm['start'], 0, 4) && 
@@ -709,7 +719,7 @@ abstract class AbstractReport extends SpecialPage {
                                            !$this->project->isDeleted())));
                             }
                             else if(isset($perm['perm']['project'])){
-                                $pResult = ($pResult || $this->project->getName() == $perm['project']);
+                                $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
                         }
                         break;

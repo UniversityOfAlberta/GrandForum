@@ -56,5 +56,9 @@ define('RPTP_TRANS',            204);
  */
 define('RPTP_HQP_APPLICATION',  300);
 define('RPTP_CC_PLANNING',      301);
+define('RPTP_CC1_PLANNING',     302);
+define('RPTP_CC2_PLANNING',     303);
+define('RPTP_CC3_PLANNING',     304);
+define('RPTP_CC4_PLANNING',     305);
 
 ?>

@@ -84,7 +84,7 @@ class HQPRegisterTable extends SpecialPage{
         $wgOut->addHTML("</tbody></table>");
         
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#hqpRegisterTable').dataTable();
+            $('#hqpRegisterTable').dataTable({'iDisplayLength': 100});
         </script>");
     }
     

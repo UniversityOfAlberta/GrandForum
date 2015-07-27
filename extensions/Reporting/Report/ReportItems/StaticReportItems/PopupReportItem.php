@@ -15,6 +15,7 @@ class PopupReportItem extends StaticReportItem {
         
         if($text == "" && $url == ""){
             $item = $this->processCData("");
+            $wgOut->addHTML($item);
             return;
         }
         

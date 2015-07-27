@@ -30,6 +30,9 @@ class DummyReport extends AbstractReport{
                 case RP_EVAL_PROJECT:
                     $reportType = "RMCProjectReview";
                     break;
+                case RP_CC_PLANNING:
+                    $reportType = "CCPlanning";
+                    break;
             }
         }
     
