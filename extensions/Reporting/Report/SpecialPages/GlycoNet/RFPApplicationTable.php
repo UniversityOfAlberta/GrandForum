@@ -45,7 +45,7 @@ class RFPApplicationTable extends SpecialPage{
     
     function addTable($rp=RP_CATALYST, $type='catalyst'){
         global $wgOut;
-        $nis = Person::getAllPeople(NI);
+        $nis = array_merge(Person::getAllPeople(NI), Person::getAllCandidates(NI));
         $wgOut->addHTML("
             <div id='{$type}'>
             <table id='{$type}Table' frame='box' rules='all'>
