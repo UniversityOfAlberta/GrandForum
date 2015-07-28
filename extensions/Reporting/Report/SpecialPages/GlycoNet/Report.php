@@ -57,11 +57,11 @@ class Report extends AbstractReport{
                 }
             }
         }*/
-        if($person->isRole(NI) || $person->isRoleAtLeast(MANAGER)){
+        if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Catalyst", "{$url}CatalystReport", $selected);
         }
-        if($person->isRole(NI) || $person->isRoleAtLeast(MANAGER)){
+        if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
         }
