@@ -51,6 +51,9 @@ class Role extends BackboneModel {
 	}
 	
 	function create(){
+	    $me = Person::newFromWgUser();
+	    $person = $this->getPerson();
+	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::insert('grand_roles',
 	                                  array('user_id'    => $this->user,
 	                                        'role'       => $this->getRole(),
@@ -58,6 +61,8 @@ class Role extends BackboneModel {
 	                                        'end_date'   => $this->getEndDate(),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
+	    Role::$cache = array();
+	    Person::$rolesCache = array();
 	    if($status){
             $data = DBFunctions::select(array('grand_roles'),
                                         array('id'),
@@ -67,13 +72,22 @@ class Role extends BackboneModel {
             if(count($data) > 0){
                 $id = $data[0]['id'];
                 $this->id = $id;
+                Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
+                $supervisors = $person->getSupervisors();
+                if(count($supervisors) > 0){
+                    foreach($supervisors as $supervisor){
+                        Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} {$person->getReversedName()} assumes the role '{$this->getRole()}'", "{$person->getUrl()}");
+                    }
+                }
             }
         }
-	    Role::$cache = array();
+        
+        MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
 	
 	function update(){
+	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::update('grand_roles',
 	                                  array('role'       => $this->getRole(),
 	                                        'start_date' => $this->getStartDate(),
@@ -81,14 +95,31 @@ class Role extends BackboneModel {
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
+	    Person::$rolesCache = array();
+	    
+        MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
 	
 	function delete(){
+	    $me = Person::newFromWgUser();
+	    $person = $this->getPerson();
+	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
-	    return $status;
+	    Person::$rolesCache = array();
+	    if($status){
+	        Notification::addNotification($me, $person, "Role Removed", "You are no longer '{$this->getRole()}'", "{$person->getUrl()}");
+	        $supervisors = $person->getSupervisors();
+            if(count($supervisors) > 0){
+                foreach($supervisors as $supervisor){
+                    Notification::addNotification($me, $supervisor, "Role Removed", "{$person->getReversedName()} is no longer '{$this->getRole()}'", "{$person->getUrl()}");
+                }
+            }
+	    }
+        MailingList::subscribeAll($this->getPerson());
+	    return false;
 	}
 	
 	function exists(){

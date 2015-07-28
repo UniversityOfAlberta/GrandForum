@@ -69,7 +69,7 @@ class ProjectDescriptionAPI extends API{
                                   'full_name' => $fullName,
                                   'themes' => "{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}",
                                   'description' => $_POST['description'],
-                                  'long_description' => $_POST['long_description'],
+                                  'long_description' => @$_POST['long_description'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();

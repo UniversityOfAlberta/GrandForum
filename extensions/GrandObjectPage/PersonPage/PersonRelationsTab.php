@@ -29,7 +29,7 @@ class PersonRelationsTab extends AbstractTab {
                     }
                     $this->html .= "<h3>Supervisors</h3>";
                     $this->html .= "<table class='wikitable sortable' width='60%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Projects</th><th>Last Name</th><th>First Name</th></tr>";
+                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr>";
                     foreach($person->getSupervisors(true) as $supervisor){
                         // TODO: These loops are a little inneficient, it should probably be extracted to a function, and optimized
                         foreach($supervisor->getRelations("Supervises", true) as $r){
@@ -46,15 +46,9 @@ class PersonRelationsTab extends AbstractTab {
                                     $position = $hqp->getUniversity();
                                 }
                                 $position = $position['position'];
-                                
-                                $projects = $r->getProjects();
-                                $proj_names = array();
-                                foreach($projects as $p){
-                                    $proj_names[] = $p->getName();
-                                }
-                                $proj_names = implode(', ', $proj_names);
+
                                 $this->html .= 
-                                "<tr><td>$start_date</td><td>$end_date</td><td>$position</td><td>$proj_names</td>
+                                "<tr><td>$start_date</td><td>$end_date</td><td>$position</td>
                                 <td><a href='{$supervisor->getUrl()}'>{$supervisor->getLastName()}</a></td>
                                 <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td></tr>";
                             }
@@ -69,7 +63,7 @@ class PersonRelationsTab extends AbstractTab {
                         $this->html .= "<td style='padding-right:25px;' valign='top'>";
                         $this->html .= "<h3>Supervises</h3>";
                         $this->html .= "<table class='wikitable sortable' width='60%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Projects</th><th>Last Name</th><th>First Name</th></tr>";
+                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr>";
                         $relations = $person->getRelations("Supervises", true);
                         foreach($relations as $r){
                             $hqp =  $r->getUser2();
@@ -83,15 +77,9 @@ class PersonRelationsTab extends AbstractTab {
                                 $position = $hqp->getUniversity();
                             }
                             $position = $position['position'];
-                            $projects = $r->getProjects();
-                            $proj_names = array();
-                            foreach($projects as $p){
-                                $proj_names[] = $p->getName();
-                            }
-                            $proj_names = implode(', ', $proj_names);
                             
                             $this->html .= 
-                            "<tr><td>$start_date</td><td>$end_date</td><td>$position</td><td>$proj_names</td>
+                            "<tr><td>$start_date</td><td>$end_date</td><td>$position</td>
                             <td><a href='{$hqp->getUrl()}'>{$hqp->getLastName()}</a></td>
                             <td><a href='{$hqp->getUrl()}'>{$hqp->getFirstName()}</a></td>";
                             $this->html .= "</tr>";
@@ -103,19 +91,14 @@ class PersonRelationsTab extends AbstractTab {
                         $this->html .= "<td style='padding-right:25px;' valign='top'>";
                         $this->html .= "<h3>Works With</h3>";
                         $this->html .= "<table class='wikitable sortable' width='40%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                        <tr><th>Start Date</th><th>End Date</th><th>Projects</th><th>Last Name</th><th>First Name</th></tr>";
+                                        <tr><th>Start Date</th><th>End Date</th><th>Last Name</th><th>First Name</th></tr>";
             
                         foreach($person->getRelations('Works With', true) as $relation){
                             $start_date = substr($relation->getStartDate(), 0, 10);
                             $end_date = substr($relation->getEndDate(), 0, 10);
                             $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
-                            $projects = $relation->getProjects();
-                            $proj_names = array();
-                            foreach($projects as $p){
-                                $proj_names[] = $p->getName();
-                            }
-                            $proj_names = implode(', ', $proj_names);
-                            $this->html .= "<tr><td>$start_date</td><td>$end_date</td><td>$proj_names</td>
+
+                            $this->html .= "<tr><td>$start_date</td><td>$end_date</td>
                                             <td><a href='{$relation->getUser2()->getUrl()}'>{$relation->getUser2()->getLastName()}</a></td>
                                             <td><a href='{$relation->getUser2()->getUrl()}'>{$relation->getUser2()->getFirstName()}</a></td></tr>";
                         }

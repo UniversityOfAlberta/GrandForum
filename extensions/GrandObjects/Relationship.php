@@ -105,7 +105,7 @@ class Relationship extends BackboneModel {
     
     function create(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1){
+        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::insert('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
@@ -124,6 +124,8 @@ class Relationship extends BackboneModel {
                 if(count($data) > 0){
                     $this->id = $data[0]['id'];
                     Relationship::$cache = array();
+                    Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                    Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and {$this->getUser1()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
                     return true;
                 }
             }
@@ -133,7 +135,7 @@ class Relationship extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1){
+        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::update('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
@@ -152,10 +154,12 @@ class Relationship extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1){
+        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
             if($status){
+                Notification::addNotification($me, $this->getUser1(), "Relation Deleted", "You and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                Notification::addNotification($me, $this->getUser2(), "Relation Deleted", "You and {$this->getUser1()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
                 Relationship::$cache = array();
                 return true;
             }

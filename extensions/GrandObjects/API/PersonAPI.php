@@ -154,15 +154,14 @@ class PersonProjectsAPI extends RESTAPI {
            !in_array($project->getName(), $allowedProjects)){
             $this->throwError("You are not allowed to add this person to that project");
         }
+        MailingList::unsubscribeAll($person);
         $status = DBFunctions::insert('grand_project_members',
                                       array('user_id'    => $person->getId(),
                                             'project_id' => $project->getId(),
                                             'start_date' => $this->POST('startDate'),
                                             'end_date'   => $this->POST('endDate'),
                                             'comment'    => $this->POST('comment')));
-        if(!$status){
-            $this->throwError("The project <i>{$project->getName()}</i> could not be created");
-        }
+
         $data = DBFunctions::select(array('grand_project_members'),
                                     array('id'),
                                     array('project_id' => $project->getId(),
@@ -172,6 +171,8 @@ class PersonProjectsAPI extends RESTAPI {
         if(count($data) > 0){
             $this->params['personProjectId'] = $data[0]['id'];
         }
+        $person->projects = null;
+        MailingList::subscribeAll($person);
         return $this->doGET();
     }
     
@@ -190,12 +191,15 @@ class PersonProjectsAPI extends RESTAPI {
            !in_array($project->getName(), $allowedProjects)){
             $this->throwError("You are not allowed to add this person to that project");
         }
+        MailingList::unsubscribeAll($person);
         $status = DBFunctions::update('grand_project_members',
                                       array('project_id' => $project->getId(),
                                             'start_date' => $this->POST('startDate'),
                                             'end_date'   => $this->POST('endDate'),
                                             'comment'    => $this->POST('comment')),
                                       array('id' => $this->getParam('personProjectId')));
+        $person->projects = null;
+        MailingList::subscribeAll($person);
         if(!$status){
             $this->throwError("The project <i>{$project->getName()}</i> could not be updated");
         }
@@ -221,8 +225,11 @@ class PersonProjectsAPI extends RESTAPI {
         else{
             $this->throwError("This Project does not exist");
         }
+        MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_project_members',
                             array('id' => $this->getParam('personProjectId')));
+        $person->projects = null;
+        MailingList::subscribeAll($person);
         return false;
     }
 }
@@ -276,7 +283,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                       '`default`' => 0));
             
         }
-        
+       
         $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
         
@@ -297,7 +304,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                 $position_id = $id;
             }
         }
-        
+        MailingList::unsubscribeAll($person);
         DBFunctions::insert('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
@@ -315,6 +322,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(count($data) > 0){
             $this->params['personUniversityId'] = $data[0]['id'];
         }
+        MailingList::subscribeAll($person);
         return $this->doGET();
     }
     
@@ -371,7 +379,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                 $position_id = $id;
             }
         }
-        
+        MailingList::unsubscribeAll($person);
         DBFunctions::update('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
@@ -380,19 +388,21 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'start_date' => $start_date,
                                   'end_date' => $end_date),
                             array('id' => EQ($personUniversityId)));
+        MailingList::subscribeAll($person);
         return $this->doGET();
     }
     
     function doDELETE(){
         $personUniversityId = $this->getParam('personUniversityId');
-
+        $person = Person::newFromId($this->getParam('id'));
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
-
+        MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_user_university',
                             array('id' => $personUniversityId));
+        MailingList::subscribeAll($person);
         return false;
     }
 }
@@ -419,7 +429,6 @@ class PersonRelationsAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $person = Person::newFromId($this->getParam('id'));
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");

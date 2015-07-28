@@ -574,7 +574,7 @@ class Person extends BackboneModel {
                 }
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
-                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                         $people[] = $person;
                     }
                 }
@@ -637,7 +637,7 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
                 }
             }
@@ -1066,7 +1066,7 @@ class Person extends BackboneModel {
      */
     function getId(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return 0;
         }
         return $this->id;
@@ -1144,7 +1144,7 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC))){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI))){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
         return "";
@@ -1742,7 +1742,7 @@ class Person extends BackboneModel {
      */
     function getRoleString(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return "";
         }
         $roles = $this->getRoles();
