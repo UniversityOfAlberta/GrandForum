@@ -1080,7 +1080,7 @@ abstract class AbstractReport extends SpecialPage {
             }
         }
         
-        if($realPerson->isRoleAtLeast(MANAGER)){
+        if($realPerson->isRoleAtLeast(STAFF)){
             $pageAllowed = true;
         }
         else{
