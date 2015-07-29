@@ -131,7 +131,7 @@ function impersonate(){
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
-        if($realPerson->isRoleAtLeast(STAFF)){
+        if($realPerson->isRoleAtLeast(STAFF) && ($realPerson->isRoleAtLeast(MANAGER) || !$person->isRoleAtLeast(MANAGER))){
             $pageAllowed = true;
         }
         wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
