@@ -26,7 +26,7 @@ class HQPReviewTable extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
-            header('Content-Disposition: attachment; filename="HQP Review.xls"');
+            header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
             echo HQPReviewTable::generateHTML($_GET['year'], $_GET['key']);
             exit;
         }
