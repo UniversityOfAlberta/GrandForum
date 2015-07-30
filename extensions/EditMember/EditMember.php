@@ -523,7 +523,13 @@ class EditMember extends SpecialPage{
                 }
                 else{
                     if(is_numeric($project)){
-                        $project = Project::newFromId($project)->getName();
+                        $project = Project::newFromId($project);
+                        if($project != null){
+                            $project = $project->getName();
+                        }
+                        else{
+                            $project = "";
+                        }
                     }
                     $output .= "-{$project}<br />\n";
                 }
@@ -531,7 +537,13 @@ class EditMember extends SpecialPage{
             foreach($projects as $project){
                 if($project != ""){
                     if(is_numeric($project)){
-                        $project = Project::newFromId($project)->getName();
+                        $project = Project::newFromId($project);
+                        if($project != null){
+                            $project = $project->getName();
+                        }
+                        else{
+                            $project = "";
+                        }
                     }
                     $output .= "+{$project}<br />\n";
                 }
