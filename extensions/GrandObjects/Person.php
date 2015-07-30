@@ -585,7 +585,7 @@ class Person extends BackboneModel {
                 self::generateThemeLeaderCache();
                 self::generateLeaderCache();
                 if(isset(self::$themeLeaderCache[$filter][$row]) ||
-                   isset(self::$leaderCache[$row])){
+                   ($filter == PL && isset(self::$leaderCache[$row]))){
                     $person = Person::newFromId($row);
                     if($person->getName() != "WikiSysop"){
                         if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
