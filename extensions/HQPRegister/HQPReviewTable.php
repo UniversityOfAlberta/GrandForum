@@ -30,17 +30,34 @@ class HQPReviewTable extends SpecialPage{
             echo HQPReviewTable::generateHTML($_GET['year'], $_GET['key']);
             exit;
         }
-        $wgOut->addHTML("<a class='button' href='$wgServer$wgScriptPath/index.php/Special:HQPReviewTable?download&year=2015&key=HQP-2015-07-10' target='_blank'>Downlaod as Spreadsheet</a>");
-        $wgOut->addHTML("<div style='overflow-x: auto;'>");
-        $wgOut->addHTML(HQPReviewTable::generateHTML(2015, "HQP-2015-07-10"));
+        $data = DBFunctions::select(array('grand_eval'),
+                                    array('DISTINCT type', 'year'),
+                                    array('type' => LIKE('HQP-%')));
+        $wgOut->addHTML("<div id='tabs'>");
+        $wgOut->addHTML("<ul>");
+        foreach($data as $row){
+            $label = str_replace("HQP-", "", $row['type']);
+            $wgOut->addHTML("<li><a href='#{$row['type']}'>{$label}</a></li>");
+        }
+        $wgOut->addHTML("</ul>");
+        foreach($data as $row){
+            $wgOut->addHTML(HQPReviewTable::generateHTML($row['year'], $row['type'], true));
+        }
         $wgOut->addHTML("</div>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('#tabs').tabs();
+        </script>");
     }
     
     
-    function generateHTML($year, $evalKey){
+    function generateHTML($year, $evalKey, $container=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $candidates = Person::getAllEvaluates($evalKey, $year);
         $html = "";
+        if($container){
+            $html .= "<div id='{$evalKey}' style='overflow-x: auto;'>";
+            $html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:HQPReviewTable?download&year={$year}&key={$evalKey}' target='_blank'>Downlaod as Spreadsheet</a>";
+        }
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='HQPReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
@@ -109,6 +126,9 @@ class HQPReviewTable extends SpecialPage{
             }
         }
         $html .= "</tbody></table>";
+        if($container){
+            $html .= "</div>";
+        }
         return $html;
     }
     
