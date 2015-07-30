@@ -10,6 +10,7 @@ class Person extends BackboneModel {
     static $rolesCache = array();
     static $universityCache = array();
     static $leaderCache = array();
+    static $themeLeaderCache = array();
     static $aliasCache = array();
     static $authorshipCache = array();
     static $namesCache = array();
@@ -358,6 +359,26 @@ class Person extends BackboneModel {
         }
     }
     
+    /*
+     * Caches the resultset of the theme leaders
+     */
+    static function generateThemeLeaderCache(){
+        if(count(self::$themeLeaderCache) == 0){
+            $sql = "SELECT *
+                    FROM grand_theme_leaders
+                    WHERE co_lead = 'False'
+                    AND (end_date = '0000-00-00 00:00:00'
+                         OR end_date > CURRENT_TIMESTAMP)";
+            $data = DBFunctions::execSQL($sql);
+            self::$themeLeaderCache[TL] = array();
+            self::$themeLeaderCache[TC] = array();
+            foreach($data as $row){
+                $type = ($row['coordinator'] == 'True') ? TC : TL;
+                self::$themeLeaderCache[$type][$row['user_id']][] = $row;
+            }
+        }
+    }
+    
     /**
      * Caches the resultset of the user universities
      */
@@ -560,6 +581,19 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
+            if($filter == TL || $filter == TC || $filter == PL){
+                self::generateThemeLeaderCache();
+                self::generateLeaderCache();
+                if(isset(self::$themeLeaderCache[$filter][$row]) ||
+                   isset(self::$leaderCache[$row])){
+                    $person = Person::newFromId($row);
+                    if($person->getName() != "WikiSysop"){
+                        if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                            $people[] = $person;
+                        }
+                    }
+                }
+            }
             if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
                 if($filter != null && $filter != "all"){
                     $found = false;
@@ -998,13 +1032,13 @@ class Person extends BackboneModel {
     }
     
     function isThemeLeader(){
-        $themes = $this->getLeadThemes();
-        return (count($themes) > 0);
+        self::generateThemeLeaderCache();
+        return (isset(self::$themeLeaderCache[TL][$this->getId()]));
     }
     
     function isThemeCoordinator(){
-        $themes = $this->getCoordThemes();
-        return (count($themes) > 0);
+        self::generateThemeLeaderCache();
+        return (isset(self::$themeLeaderCache[TC][$this->getId()]));
     }
     
     function isThemeLeaderOf($project){
@@ -2380,6 +2414,18 @@ class Person extends BackboneModel {
 
     // Returns whether this Person is of type $role or not.
     function isRole($role){
+        if($role == PL || $role == 'PL'){
+            return $this->isProjectLeader();
+        }
+        if($role == TL || $role == 'TL'){
+            return $this->isThemeLeader();
+        }
+        if($role == TC || $role == 'TC'){
+            return $this->isThemeCoordinator();
+        }
+        if($role == EVALUATOR){
+            return $this->isEvaluator();
+        }
         $roles = array();
         $role_objs = $this->getRoles();
         if(count($role_objs) > 0){
@@ -2389,21 +2435,6 @@ class Person extends BackboneModel {
         }
         else{
             return false;
-        }
-        if(($role == PL || $role == 'PL') && $this->isProjectLeader()){
-            $roles[] = PL;
-            $roles[] = 'PL';
-        }
-        if(($role == TL || $role == 'TL') && $this->isThemeLeader()){
-            $roles[] = TL;
-            $roles[] = 'TL';
-        }
-        if(($role == TC || $role == 'TC') && $this->isThemeCoordinator()){
-            $roles[] = TC;
-            $roles[] = 'TC';
-        }
-        if($role == EVALUATOR && $this->isEvaluator()){
-            $roles[] = EVALUATOR;
         }
         if($this->isCandidate()){
             foreach($roles as $key => $r){
@@ -3269,15 +3300,13 @@ class Person extends BackboneModel {
         }
     }
     
-    function getLeadProjects($history=false){
+    function getLeadProjects(){
         $sql = "SELECT l.*
                 FROM grand_project_leaders l
                 WHERE l.user_id = '{$this->id}'
-                AND l.type = 'leader'\n";
-        if(!$history){
-            $sql .= "AND (l.end_date = '0000-00-00 00:00:00'
-                          OR l.end_date > CURRENT_TIMESTAMP)";
-        }
+                AND l.type = 'leader'
+                AND (l.end_date = '0000-00-00 00:00:00'
+                     OR l.end_date > CURRENT_TIMESTAMP)";
         $data = DBFunctions::execSQL($sql);
         $projects = array();
         foreach($data as $row){
@@ -3289,49 +3318,26 @@ class Person extends BackboneModel {
         return $projects;
     }
     
-    function getLeadThemes($history=false){
-        if(!$history && isset($this->themesCache['currentLead'])){
-            return $this->themesCache['currentLead'];
-        }
-        $sql = "SELECT *
-                FROM grand_theme_leaders
-                WHERE user_id = '{$this->id}'
-                AND co_lead = 'False'
-                AND coordinator = 'False'\n";
-        if(!$history){
-            $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                          OR end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
+    function getLeadThemes(){
         $themes = array();
-        foreach($data as $row){
-            $themes[$row['theme']] = Theme::newFromId($row['theme']);
-        }
-        if(!$history){
-            $this->themesCache['currentLead'] = &$themes;
+        self::generateThemeLeaderCache();
+        if(isset(self::$themeLeaderCache[TL][$this->getId()])){
+            $data = self::$themeLeaderCache[TL][$this->getId()];
+            foreach($data as $row){
+                $themes[$row['theme']] = Theme::newFromId($row['theme']);
+            }
         }
         return $themes;
     }
     
-    function getCoordThemes($history=false){
-        if(!$history && isset($this->coordCache['currentLead'])){
-            return $this->coordCache['currentLead'];
-        }
-        $sql = "SELECT *
-                FROM grand_theme_leaders
-                WHERE user_id = '{$this->id}'
-                AND coordinator = 'True'\n";
-        if(!$history){
-            $sql .= "AND (end_date = '0000-00-00 00:00:00'
-                          OR end_date > CURRENT_TIMESTAMP)";
-        }
-        $data = DBFunctions::execSQL($sql);
+    function getCoordThemes(){
         $themes = array();
-        foreach($data as $row){
-            $themes[$row['theme']] = Theme::newFromId($row['theme']);
-        }
-        if(!$history){
-            $this->coordCache['currentLead'] = &$themes;
+        self::generateThemeLeaderCache();
+        if(isset(self::$themeLeaderCache[TC][$this->getId()])){
+            $data = self::$themeLeaderCache[TC][$this->getId()];
+            foreach($data as $row){
+                $themes[$row['theme']] = Theme::newFromId($row['theme']);
+            }
         }
         return $themes;
     }
