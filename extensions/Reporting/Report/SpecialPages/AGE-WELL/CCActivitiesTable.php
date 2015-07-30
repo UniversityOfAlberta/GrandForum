@@ -29,6 +29,7 @@ class CCActivitiesTable extends SpecialPage{
     
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
+        $year = 2015;
         $projects = Project::getAllProjects();
         $wgOut->addHTML("
             <table id='projectTable' frame='box' rules='all'>
@@ -71,19 +72,19 @@ class CCActivitiesTable extends SpecialPage{
                 $pdf = PDF::newFromToken($check[0]['token']);
                 $pdfUrl = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
             }
-            if(isset($check1[0])){
+            if(isset($check1[0]) && self::checkSection($project, $year, CC_PLANNING_1)){
                 $pdf1 = PDF::newFromToken($check1[0]['token']);
                 $pdf1Url = "<a class='button' href='{$pdf1->getUrl()}'>Download</a>";
             }
-            if(isset($check2[0])){
+            if(isset($check2[0]) && self::checkSection($project, $year, CC_PLANNING_2)){
                 $pdf2 = PDF::newFromToken($check2[0]['token']);
                 $pdf2Url = "<a class='button' href='{$pdf2->getUrl()}'>Download</a>";
             }
-            if(isset($check3[0])){
+            if(isset($check3[0]) && self::checkSection($project, $year, CC_PLANNING_3)){
                 $pdf3 = PDF::newFromToken($check3[0]['token']);
                 $pdf3Url = "<a class='button' href='{$pdf3->getUrl()}'>Download</a>";
             }
-            if(isset($check4[0])){
+            if(isset($check4[0]) && self::checkSection($project, $year, CC_PLANNING_4)){
                 $pdf4 = PDF::newFromToken($check4[0]['token']);
                 $pdf4Url = "<a class='button' href='{$pdf4->getUrl()}'>Download</a>";
             }
@@ -100,6 +101,22 @@ class CCActivitiesTable extends SpecialPage{
         $wgOut->addHTML("<script type='text/javascript'>
             $('#projectTable').dataTable({'iDisplayLength': 100});
         </script>");
+    }
+    
+    static function checkSection($project, $year, $section){
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('data'),
+                                    array('proj_id' => EQ($project->getId()),
+                                          'year' => EQ($year),
+                                          'rp_type' => EQ(RP_CC_PLANNING),
+                                          'rp_section' => EQ($section)));
+        foreach($data as $row){
+            if($row['data'] != ""){
+                // At least one of the fields was filled out
+                return true;
+            }
+        }
+        return false;
     }
     
     static function createSubTabs(&$tabs){
