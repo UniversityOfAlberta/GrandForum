@@ -20,7 +20,7 @@ function getUserMode($action, $page){
             echo json_encode($json);
             exit;
         }
-        else if(FROZEN && !$me->isRoleAtLeast(MANAGER)){
+        else if(FROZEN && !$me->isRoleAtLeast(STAFF)){
             $json = array('mode' => 'frozen',
                           'message' => "The Forum is currently not available for edits during the RMC review-and-deliberation period.");
             header('Content-Type: application/json');
@@ -131,7 +131,7 @@ function impersonate(){
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
-        if($realPerson->isRoleAtLeast(MANAGER)){
+        if($realPerson->isRoleAtLeast(STAFF) && ($realPerson->isRoleAtLeast(MANAGER) || !$person->isRoleAtLeast(MANAGER))){
             $pageAllowed = true;
         }
         wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));

@@ -468,43 +468,4 @@ class ReportBlob {
 		return $ret;
 	}
 
-
-	/// Returns a template for structured blobs, or null if #blobtype is not
-	/// a structured blob.
-	public static function get_template($blobtype) {
-		// TODO: these keys could be constants/defines too, to ensure that
-		// nowhere in the code different keys (eg: not-applicable versus
-		// na versus NA or any other variation that will lead to issues in
-		// a near future).
-		switch ($blobtype) {
-		case BLOB_OPTIONANDTEXT:
-			return array('selected' => '', 'text' => '');
-		case BLOB_TEXTANDAPPROVE:
-			return array('approved' => array(), 'text' => '');
-		case BLOB_ARTIFACT:
-			return array('title' => '', 'description' => '',
-				'primary' => '', 'secondary' => '', 'tertiary' => '');
-		case BLOB_PUBLICATION:
-			return array('page-id' => '', 'not-applicable' => '',
-				'primary' => '', 'secondary' => '', 'tertiary' => '');
-		case BLOB_NEWMILESTONE:
-			return array('assessment' => '', 'description' => '',
-				'title' => '', 'month' => '', 'year' => '');
-		case BLOB_MILESTONESTATUS:
-			return array('assessment' => '', 'abandoned' => '',
-				'complete' => '', 'description' => '',
-				'status' => '', 'month' => '', 'year' => '');
-		case BLOB_CURRENTMILESTONE:
-			return array('assessment' => '', 'description' => '',
-				'not-applicable' => '', 'status' => '',
-				'title' => '', 'month' => '', 'year' => '',
-				'primary' => '', 'secondary' => '');
-		case BLOB_CONTRIBUTION:
-			return array('cash' => '', 'description' => '',	'inkind' => '',
-				'internal' => '', 'source' => '', 'type' => '',
-				'primary' => '', 'secondary' => '', 'tertiary' => '');
-		}
-
-		return null;
-	}
 }

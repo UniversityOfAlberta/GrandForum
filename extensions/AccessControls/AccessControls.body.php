@@ -182,9 +182,8 @@ function onUserCan2(&$title, &$user, $action, &$result) {
     
 	//only staff+ can create pages in the main namespace
 	if (($action == 'create' || $action == 'edit') && !$egNamespaceAllowPagesInMainNS && 
-	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK) && $person->isRoleAtLeast(STAFF)) {
-		$role = $title->getNsText();
-		$name = $title->getText();
+	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK || 
+	     $title->getNamespace() == NS_HELP || $title->getNamespace() == NS_HELP) && $person->isRoleAtLeast(STAFF)) {
 		return true;
 	}
 	

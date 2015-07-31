@@ -14,7 +14,7 @@ class IndexTable {
 	var $text = "";
 	
 	static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles;
+        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         if($config->getValue('projectsEnabled')){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
@@ -44,7 +44,7 @@ class IndexTable {
             }
         }
         $peopleSubTab = TabUtils::createSubTab("People");
-        $roles = array_values($wgRoles);
+        $roles = array_values($wgAllRoles);
         sort($roles);
         foreach($roles as $role){
             if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role))){
@@ -133,7 +133,7 @@ class IndexTable {
 	}
 
 	function generateTable($out, $parseroutput){
-		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles;
+		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles;
 		$me = Person::newFromWgUser();
 		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
@@ -180,7 +180,7 @@ class IndexTable {
 				    $this->generateThemesTable();
 				    break;
 			    default:
-			        foreach($wgRoles as $role){
+			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
                             $wgOut->setPageTitle($config->getValue('roleDefs', $role));
 				            $this->generatePersonTable($role);

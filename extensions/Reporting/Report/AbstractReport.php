@@ -1080,10 +1080,7 @@ abstract class AbstractReport extends SpecialPage {
             }
         }
         
-        if($realPerson->isRoleAtLeast(MANAGER)){
-            $pageAllowed = true;
-        }
-        else{
+        if(!$pageAllowed){
             $leadership = $realPerson->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
             if(count($leadership) > 0){
                 foreach($leadership as $proj){
