@@ -71,9 +71,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     
     addRole: function(){
         this.roles.add(new Role({name: "HQP", userId: this.person.get('id')}));
-        _.delay($.proxy(function(){
-            this.$el.scrollTop(this.el.scrollHeight+100)
-        }, this), 100);
+        this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){

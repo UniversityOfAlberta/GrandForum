@@ -71,9 +71,7 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     addProject: function(){
         var project = _.first(allowedProjects);
         this.projects.add(new PersonProject({name: project, personId: this.person.get('id')}));
-        _.delay($.proxy(function(){
-            this.$el.scrollTop(this.el.scrollHeight+100)
-        }, this), 100);
+        this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){

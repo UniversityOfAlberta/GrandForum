@@ -1,8 +1,9 @@
 (function( $ ) {
     $.widget( "custom.combobox", {
       _create: function() {
-        var interval = setInterval($.proxy(function(){
-            if(this.element.is(":visible")){
+        var interval = null;
+        var createFn = $.proxy(function(){
+            if(this.element.is(":visible") || this.element.css('width') != '0px'){
                 var next = this.element.next();
                 if(next.hasClass('custom-combobox')){
                     next.remove();
@@ -17,7 +18,13 @@
                 clearInterval(interval);
                 interval = null;
             }
-        }, this), 10);
+        }, this);
+        if(this.element.is(":visible") || this.element.css('width') != '0px'){
+            createFn();
+        }
+        else{
+            var interval = setInterval(createFn, 10);
+        }
       },
  
       _createAutocomplete: function() {
