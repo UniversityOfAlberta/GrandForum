@@ -2,10 +2,12 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 
     relations: null,
     person: null,
+    relationViews: null,
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
+        this.relationViews = new Array();
         this.template = _.template($('#edit_relations_template').html());
         this.model.ready().then($.proxy(function(){
             this.relations = this.model;
@@ -20,8 +22,9 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         setInterval($.proxy(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
-                    my: "center bottom",
-                    at: "center center"
+                    my: "center center",
+                    at: "center center",
+                    offset: "0 -75%"
                 });
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
@@ -29,8 +32,9 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 	    }, this), 100);
 	    $(window).resize($.proxy(function(){
 	        this.$el.dialog("option","position", {
-                my: "center bottom",
-                at: "center center"
+                my: "center center",
+                at: "center center",
+                offset: "0 -75%"
             });
 	    }, this));
     },
@@ -64,27 +68,26 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     addRelation: function(){
         this.relations.add(new PersonRelation({type: 'Works With', user1: me.get('id'), user2: this.person.get('id')}));
+        _.delay($.proxy(function(){
+            this.$el.scrollTop(this.el.scrollHeight+100)
+        }, this), 100);
     },
     
     addRows: function(){
         var relations = new Backbone.Collection(this.relations.where({'user2': this.person.get('id')}));
-        if(relations.length > 0){
-            this.$("#relation_rows").empty();
-        }
         relations.each($.proxy(function(relation, i){
-            var view = new ManagePeopleEditRelationsRowView({model: relation});
-            this.$("#relation_rows").append(view.render());
-            if(i % 2 == 0){
-                view.$el.addClass('even');
-            }
-            else{
-                view.$el.addClass('odd');
+            if(this.relationViews[i] == null){
+                var view = new ManagePeopleEditRelationsRowView({model: relation});
+                this.$("#relation_rows").append(view.render());
+                if(i % 2 == 0){
+                    view.$el.addClass('even');
+                }
+                else{
+                    view.$el.addClass('odd');
+                }
+                this.relationViews[i] = view;
             }
         }, this));
-    },
-    
-    events: {
-        "click #add": "addRelation"
     },
     
     render: function(){

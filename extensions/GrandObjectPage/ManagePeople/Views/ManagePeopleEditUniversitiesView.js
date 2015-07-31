@@ -2,11 +2,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 
     universities: null,
     person: null,
+    universityViews: null,
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
         this.template = _.template($('#edit_universities_template').html());
+        this.universityViews = new Array();
         
         this.model.ready().then($.proxy(function(){
             this.universities = this.model;
@@ -21,8 +23,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         setInterval($.proxy(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
-                    my: "center bottom",
-                    at: "center center"
+                    my: "center center",
+                    at: "center center",
+                    offset: "0 -75%"
                 });
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
@@ -30,8 +33,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 	    }, this), 100);
 	    $(window).resize($.proxy(function(){
 	        this.$el.dialog("option","position", {
-                my: "center bottom",
-                at: "center center"
+                my: "center center",
+                at: "center center",
+                offset: "0 -75%"
             });
 	    }, this));
     },
@@ -66,26 +70,25 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     addUniversity: function(){
         var university = "Unknown";
         this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
+        _.delay($.proxy(function(){
+            this.$el.scrollTop(this.el.scrollHeight+100)
+        }, this), 100);
     },
     
     addRows: function(){
-        if(this.universities.length > 0){
-            this.$("#university_rows").empty();
-        }
         this.universities.each($.proxy(function(university, i){
-            var view = new ManagePeopleEditUniversitiesRowView({model: university});
-            this.$("#university_rows").append(view.render());
-            if(i % 2 == 0){
-                view.$el.addClass('even');
-            }
-            else{
-                view.$el.addClass('odd');
+            if(this.universityViews[i] == null){
+                var view = new ManagePeopleEditUniversitiesRowView({model: university});
+                this.$("#university_rows").append(view.render());
+                if(i % 2 == 0){
+                    view.$el.addClass('even');
+                }
+                else{
+                    view.$el.addClass('odd');
+                }
+                this.universityViews[i] = view;
             }
         }, this));
-    },
-    
-    events: {
-        "click #add": "addUniversity"
     },
     
     render: function(){

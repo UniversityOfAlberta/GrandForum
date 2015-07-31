@@ -2,10 +2,12 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 
     roles: null,
     person: null,
+    roleViews: null,
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
+        this.roleViews = new Array();
         this.listenTo(this.model, "change", this.render);
         this.template = _.template($('#edit_roles_template').html());
         this.model.ready().then($.proxy(function(){
@@ -21,8 +23,9 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         setInterval($.proxy(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
-                    my: "center bottom",
-                    at: "center center"
+                    my: "center center",
+                    at: "center center",
+                    offset: "0 -75%"
                 });
 	            dims.w = this.$el.width();
 	            dims.h = this.$el.height();
@@ -30,8 +33,9 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 	    }, this), 100);
 	    $(window).resize($.proxy(function(){
 	        this.$el.dialog("option","position", {
-                my: "center bottom",
-                at: "center center"
+                my: "center center",
+                at: "center center",
+                offset: "0 -75%"
             });
 	    }, this));
     },
@@ -67,26 +71,25 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     
     addRole: function(){
         this.roles.add(new Role({name: "HQP", userId: this.person.get('id')}));
+        _.delay($.proxy(function(){
+            this.$el.scrollTop(this.el.scrollHeight+100)
+        }, this), 100);
     },
     
     addRows: function(){
-        if(this.roles.length > 0){
-            this.$("#role_rows").empty();
-        }
         this.roles.each($.proxy(function(role, i){
-            var view = new ManagePeopleEditRolesRowView({model: role});
-            this.$("#role_rows").append(view.render());
-            if(i % 2 == 0){
-                view.$el.addClass('even');
-            }
-            else{
-                view.$el.addClass('odd');
+            if(this.roleViews[i] == null){
+                var view = new ManagePeopleEditRolesRowView({model: role});
+                this.$("#role_rows").append(view.render());
+                if(i % 2 == 0){
+                    view.$el.addClass('even');
+                }
+                else{
+                    view.$el.addClass('odd');
+                }
+                this.roleViews[i] = view;
             }
         }, this));
-    },
-    
-    events: {
-        "click #add": "addRole"
     },
     
     render: function(){

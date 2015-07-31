@@ -99,6 +99,14 @@ ManagePeopleRowView = Backbone.View.extend({
 	            this.editRoles.undelegateEvents();
 	        }, this),
 	        buttons: {
+	            "+": { 
+	                text: "Add Role", 
+	                click: $.proxy(function(e){
+	                    this.editRoles.addRole();
+	                }, this), 
+	                disabled: (allowedRoles.length == 0),
+	                style: "position:absolute;left:0;"
+	            },
 	            "Save": $.proxy(function(e){
 	                this.editRoles.saveAll();
                     this.rolesDialog.dialog('close');
@@ -128,6 +136,14 @@ ManagePeopleRowView = Backbone.View.extend({
 	            this.editProjects.undelegateEvents();
 	        }, this),
 	        buttons: {
+	            "+": { 
+	                text: "Add Project", 
+	                click: $.proxy(function(e){
+	                    this.editProjects.addProject();
+	                }, this),
+	                disabled: (allowedProjects.length == 0),
+	                style: "position:absolute;left:0;"
+	            },
 	            "Save": $.proxy(function(e){
 	                this.editProjects.saveAll();
                     this.projectsDialog.dialog('close');
@@ -157,6 +173,13 @@ ManagePeopleRowView = Backbone.View.extend({
 	            this.editRelations.undelegateEvents();
 	        }, this),
 	        buttons: {
+	            "+": { 
+	                text: "Add Relationship", 
+	                click: $.proxy(function(e){
+	                    this.editRelations.addRelation();
+	                }, this), 
+	                style: "position:absolute;left:0;"
+	            },
 	            "Save": $.proxy(function(e){
 	                this.editRelations.saveAll();
                     this.relationsDialog.dialog('close');
@@ -186,6 +209,13 @@ ManagePeopleRowView = Backbone.View.extend({
 	            this.editUniversities.undelegateEvents();
 	        }, this),
 	        buttons: {
+	            "+": { 
+	                text: "Add University", 
+	                click: $.proxy(function(e){
+	                    this.editUniversities.addUniversity();
+	                }, this), 
+	                style: "position:absolute;left:0;"
+	            },
 	            "Save": $.proxy(function(e){
 	                this.editUniversities.saveAll();
                     this.universitiesDialog.dialog('close');

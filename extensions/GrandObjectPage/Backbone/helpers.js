@@ -54,8 +54,10 @@ function HTML(){}
 HTML.Element = function(html, options){
     var el = $(html);
     for(oId in options){
-        var option = options[oId];
-        $(el).attr(oId, option);
+        if(oId != 'options'){
+            var option = options[oId];
+            $(el).attr(oId, option);
+        }
     }
     return el;
 }
