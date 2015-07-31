@@ -176,7 +176,7 @@ HTML.Radio = function(view, attr, options){
 HTML.DatePicker = function(view, attr, options){
     var el = HTML.Element("<input type='datepicker' />", options);
     $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr));
+    $(el).attr('value', HTML.Value(view, attr).substr(0, 10));
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());

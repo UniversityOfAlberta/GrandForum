@@ -249,6 +249,19 @@ class PersonUniversitiesAPI extends RESTAPI {
         }
         else{
             // All Universities
+            $newUniversities = array();
+            foreach($universities as $uni){
+                if($uni['endDate'] == '0000-00-00 00:00:00'){
+                    // Till the end of time
+                    $newUniversities['9999-99-99 99:99:99_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                }
+                else{
+                    $newUniversities[$uni['endDate'].'_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                }
+            }
+            ksort($newUniversities);
+            $newUniversities = array_reverse($newUniversities);
+            $universities = array_values($newUniversities);
             return json_encode($universities);
         }
     }
