@@ -588,7 +588,7 @@ class Person extends BackboneModel {
                    ($filter == PL && isset(self::$leaderCache[$row]))){
                     $person = Person::newFromId($row);
                     if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                             $people[] = $person;
                         }
                     }
