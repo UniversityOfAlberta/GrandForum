@@ -335,6 +335,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(count($data) > 0){
             $this->params['personUniversityId'] = $data[0]['id'];
         }
+        $person->universityDuring = array();
         MailingList::subscribeAll($person);
         return $this->doGET();
     }
@@ -401,6 +402,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'start_date' => $start_date,
                                   'end_date' => $end_date),
                             array('id' => EQ($personUniversityId)));
+        $person->universityDuring = array();
         MailingList::subscribeAll($person);
         return $this->doGET();
     }
@@ -415,6 +417,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_user_university',
                             array('id' => $personUniversityId));
+        $person->universityDuring = array();
         MailingList::subscribeAll($person);
         return false;
     }

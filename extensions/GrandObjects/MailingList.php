@@ -227,8 +227,15 @@ class MailingList extends BackboneModel {
                         $results['projResult'] = $projResult;
                         break;
                     case "LOC":
-                        $uni = University::newFromName($person->getUni());
-                        $locResult = ($locResult || ($uni->getId() == $value));
+                        $found = false;
+                        foreach($person->getCurrentUniversities() as $uni){
+                            $uni = University::newFromName($uni['university']);
+                            if($uni->getId() == $value){
+                                $found = true;
+                                break;
+                            }
+                        }
+                        $locResult = ($locResult || $found);
                         $results['locResult'] = $locResult;
                         break;
                 }

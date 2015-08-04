@@ -1637,6 +1637,14 @@ class Person extends BackboneModel {
         return null;
     }
     
+    /*
+     * Returns an array of Universities that this Person is currently at
+     * @return array The current Universities this Person is at
+     */
+    function getCurrentUniversities(){
+        return $this->getUniversitiesDuring(date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
+    }
+    
     /**
      * Returns all the Universities that this Person was at between the given range
      * @param string $startRange The start date to look at

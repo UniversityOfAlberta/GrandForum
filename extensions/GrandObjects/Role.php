@@ -63,6 +63,7 @@ class Role extends BackboneModel {
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    $this->getPerson()->roles = null;
 	    if($status){
             $data = DBFunctions::select(array('grand_roles'),
                                         array('id'),
@@ -96,6 +97,7 @@ class Role extends BackboneModel {
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    $this->getPerson()->roles = null;
 	    
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
@@ -109,6 +111,7 @@ class Role extends BackboneModel {
 	                                  array('id' => EQ($this->getId())));
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    $this->getPerson()->roles = null;
 	    if($status){
 	        Notification::addNotification($me, $person, "Role Removed", "You are no longer '{$this->getRole()}'", "{$person->getUrl()}");
 	        $supervisors = $person->getSupervisors();
