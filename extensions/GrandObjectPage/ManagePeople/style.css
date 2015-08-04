@@ -10,6 +10,21 @@ span#infinity:hover {
     cursor: pointer;
 }
 
+div.ui-dialog-content {
+    padding: 0 !important;
+}
+
+div.ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 0.5em 1em 0.5em !important;
+}
+
+table.wikitable {
+    border: hidden !important;
+    margin: 0;
+    padding: 0;
+}
+
 table.wikitable tr.even {
     background: #FFFFFF;
 }

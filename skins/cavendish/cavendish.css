@@ -1030,6 +1030,10 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     border-radius: 0 !important;
 }
 
+.ui-dialog {
+    padding: 2px;
+}
+
 .ui-dialog-buttonset {
     position: relative;
     width: 100%;
