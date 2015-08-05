@@ -53,21 +53,11 @@ class HQPRegisterTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
-            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_SUP, 0);
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
-            $blob->load($addr);
-            $supervisor = $blob->getData();
-            
-            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_LVL, 0);
-            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
-            $blob->load($addr);
-            $level = $blob->getData();
+            $supervisor = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_SUP);
+            $level = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_LVL);
             
             if($level == 'Other:'){
-                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_LVL_OTH, 0);
-                $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $candidate->getId(), 0);
-                $blob->load($addr);
-                $level = $blob->getData();
+                $level = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_OTH);
             }
             
             $wgOut->addHTML("<tr>");
@@ -86,6 +76,13 @@ class HQPRegisterTable extends SpecialPage{
         $wgOut->addHTML("<script type='text/javascript'>
             $('#hqpRegisterTable').dataTable({'iDisplayLength': 100});
         </script>");
+    }
+    
+    static function getBlobValue($year, $candidateId, $item){
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $item, 0);
+        $blob = new ReportBlob(BLOB_TEXT, $year, $candidateId, 0);
+        $blob->load($addr);
+        return nl2br($blob->getData());
     }
     
     static function createSubTabs(&$tabs){

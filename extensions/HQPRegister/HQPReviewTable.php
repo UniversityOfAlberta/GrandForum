@@ -56,18 +56,21 @@ class HQPReviewTable extends SpecialPage{
         $html = "";
         if($container){
             $html .= "<div id='{$evalKey}' style='overflow-x: auto;'>";
-            $html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:HQPReviewTable?download&year={$year}&key={$evalKey}' target='_blank'>Downlaod as Spreadsheet</a>";
+            $html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:HQPReviewTable?download&year={$year}&key={$evalKey}' target='_blank'>Download as Spreadsheet</a>";
         }
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='HQPReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='4' style='background: #FFFFFF;'></th>
+                    <th colspan='7' style='background: #FFFFFF;'></th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Scholarly Merit & Quality of Proposed Research</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Fit with AGE-WELL Goals and Priorities</th>
                     <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Quality of Training Environment</th>
                 </tr>
                 <tr>
                     <th>HQP</th>
+                    <th>University</th>
+                    <th>Level</th>
+                    <th>Project</th>
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
                     <th>Overall Comments</th>
@@ -98,14 +101,14 @@ class HQPReviewTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
-            $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
-            $html .= "<td rowspan='$nEval' align='right'>{$candidate->getNameForForms()}</td>";
-            $html .= "<td rowspan='$nEval' align='center'>{$button}</td>";
+            
             foreach($evaluators as $key => $eval){
-                if($key != 0){
-                    $html .= "<tr style='background:{$background};'>";
+                $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_LVL);
+                if($level == 'Other:'){
+                    $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_OTH);
                 }
-                
+                $uni = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_UNI);
+                $project = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_PROJ);
                 $overall = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_OVERALL_COMM);
                 $quality = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_QUALITY);
                 $qualityComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_QUALITY_COMM);
@@ -114,6 +117,12 @@ class HQPReviewTable extends SpecialPage{
                 $train = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_TRAIN);
                 $trainComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_TRAIN_COMM);
             
+                $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
+                $html .= "<td align='right'>{$candidate->getNameForForms()}</td>";
+                $html .= "<td align='right'>{$uni}</td>";
+                $html .= "<td align='right'>{$level}</td>";
+                $html .= "<td align='right'>{$project}</td>";
+                $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
                 $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$quality}</td>";
