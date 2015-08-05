@@ -101,14 +101,14 @@ class HQPReviewTable extends SpecialPage{
                 $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
             }
             
+            $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_LVL);
+            if($level == 'Other:'){
+                $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_OTH);
+            }
+            $uni = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_UNI);
+            $project = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_PROJ);
             
             foreach($evaluators as $key => $eval){
-                $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_LVL);
-                if($level == 'Other:'){
-                    $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_OTH);
-                }
-                $uni = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_UNI);
-                $project = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_PROJ);
                 $overall = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_OVERALL_COMM);
                 $quality = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_QUALITY);
                 $qualityComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_QUALITY_COMM);
