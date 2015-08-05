@@ -153,7 +153,7 @@ function toggleBackup(){
 }
 
 function showConflictError(data){
-    alert("Some of the fields could not save.  A change was made to at least one of the fields after this section was loaded.  This may have been caused by multiple browser sessions being opened at the same time.  Please go and close any other browser or tabs that you have open to the GRAND reporting page.\n\nAfter clicking 'Ok', you will be returned to the conflicting section and the conflicting fields will be highlighted.  Any field which was not conflicting, has been saved already.");
+    alert("Some of the fields could not save.  A change was made to at least one of the fields after this section was loaded.  This may have been caused by multiple browser sessions being opened at the same time.  Please go and close any other browser or tabs that you have open to the " + networkName + " reporting page.\n\nAfter clicking 'Ok', you will be returned to the conflicting section and the conflicting fields will be highlighted.  Any field which was not conflicting, has been saved already.");
     for(index in data){
         var postId = data[index].postId;
         var value = data[index].value;

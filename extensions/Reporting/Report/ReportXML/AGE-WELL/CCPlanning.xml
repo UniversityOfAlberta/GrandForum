@@ -176,7 +176,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="objectives" type="TextareaReportItem" blobItem="CC_1_OBJECTIVES">
+        <ReportItem id="objectives" type="TextareaReportItem" blobItem="CC_1_OBJECTIVES" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -192,7 +192,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="mobilize" type="TextareaReportItem" blobItem="CC_1_MOBILIZE">
+        <ReportItem id="mobilize" type="TextareaReportItem" blobItem="CC_1_MOBILIZE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -212,7 +212,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_1_PARTNERS">
+        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_1_PARTNERS" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -231,7 +231,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="engage" type="TextareaReportItem" blobItem="CC_1_ENGAGE">
+        <ReportItem id="engage" type="TextareaReportItem" blobItem="CC_1_ENGAGE" rich="true">
             <![CDATA[
                     <small>
                         <ul>
@@ -249,7 +249,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE">
+        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_1_ACHIEVE" rich="true">
             <![CDATA[
                     <small>
                         <ul>
@@ -271,7 +271,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="expertise" type="TextareaReportItem" blobItem="CC_1_EXPERTISE">
+        <ReportItem id="expertise" type="TextareaReportItem" blobItem="CC_1_EXPERTISE" rich="true">
             <![CDATA[<small>
                         <ul>
                             <li>Are all necessary knowledge users involved to achieve the stated goals?</li>
@@ -288,7 +288,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="resources" type="TextareaReportItem" blobItem="CC_1_RESOURCES">
+        <ReportItem id="resources" type="TextareaReportItem" blobItem="CC_1_RESOURCES" rich="true">
             <![CDATA[
                     <small>
                         <ul>
@@ -306,7 +306,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_1_MEASURE">
+        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_1_MEASURE" rich="true">
             <![CDATA[
                     <small>
                         The idea of innovation is to change things (practice, services, policy, attitudes, use of technologies, etc.)
@@ -326,7 +326,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_1_SUPPORT">
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_1_SUPPORT" rich="true">
             <![CDATA[
                     <small>
                         <ul>
@@ -391,7 +391,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS">
+        <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS" rich="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -402,7 +402,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="commercialize" type="TextareaReportItem" blobItem="CC_2_COMMERCIALIZE">
+        <ReportItem id="commercialize" type="TextareaReportItem" blobItem="CC_2_COMMERCIALIZE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -420,7 +420,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="provide" type="TextareaReportItem" blobItem="CC_2_PROVIDE">
+        <ReportItem id="provide" type="TextareaReportItem" blobItem="CC_2_PROVIDE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -439,7 +439,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_2_PARTNERS">
+        <ReportItem id="partners" type="TextareaReportItem" blobItem="CC_2_PARTNERS" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -459,7 +459,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="stage" type="TextareaReportItem" blobItem="CC_2_STAGE">
+        <ReportItem id="stage" type="TextareaReportItem" blobItem="CC_2_STAGE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -478,7 +478,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="market" type="TextareaReportItem" blobItem="CC_2_MARKET">
+        <ReportItem id="market" type="TextareaReportItem" blobItem="CC_2_MARKET" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -499,7 +499,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="ip" type="TextareaReportItem" blobItem="CC_2_IP">
+        <ReportItem id="ip" type="TextareaReportItem" blobItem="CC_2_IP" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -516,7 +516,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_2_ACHIEVE">
+        <ReportItem id="achieve" type="TextareaReportItem" blobItem="CC_2_ACHIEVE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -537,7 +537,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_2_MEASURE">
+        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_2_MEASURE" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -553,7 +553,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_2_SUPPORT">
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_2_SUPPORT" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -589,7 +589,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
+        <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -609,7 +609,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT">
+        <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -628,7 +628,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK">
+        <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -647,7 +647,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK">
+        <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -666,7 +666,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY">
+        <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -691,7 +691,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT">
+        <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -714,7 +714,7 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT">
+        <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -737,7 +737,7 @@ network level.
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL">
+        <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -781,7 +781,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN">
+        <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -799,7 +799,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know" type="TextareaReportItem" blobItem="CC_4_KNOW">
+        <ReportItem id="know" type="TextareaReportItem" blobItem="CC_4_KNOW" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -824,7 +824,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="outcome" type="TextareaReportItem" blobItem="CC_4_OUTCOME">
+        <ReportItem id="outcome" type="TextareaReportItem" blobItem="CC_4_OUTCOME" rich="true">
             <![CDATA[
                 <small>
                     List any suggestions you have for training that would address these considerations.
@@ -838,7 +838,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="industry" type="TextareaReportItem" blobItem="CC_4_INDUSTRY">
+        <ReportItem id="industry" type="TextareaReportItem" blobItem="CC_4_INDUSTRY" rich="true">
             <![CDATA[
                 <small>
                     <ul>
@@ -855,7 +855,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="other" type="TextareaReportItem" blobItem="CC_4_OTHER">
+        <ReportItem id="other" type="TextareaReportItem" blobItem="CC_4_OTHER" rich="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -866,7 +866,7 @@ our trainees moving into receptor industries and government agencies represent a
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_4_MEASURE">
+        <ReportItem id="measure" type="TextareaReportItem" blobItem="CC_4_MEASURE" rich="true">
             <![CDATA[
                 <small>
                     <ul>

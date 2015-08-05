@@ -230,6 +230,17 @@ EOF;
         return $html;
     }
     
+    function getBlobValue(){
+        $value = parent::getBlobValue();
+        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            if(strstr($value, "<p>") === false){
+                $value = "<p>".$value."</p>";
+                $value = nl2br($value);
+            }
+        }
+        return $value;
+    }
+    
     function getLimit(){
         return $this->getAttr('limit', 0);
     }
