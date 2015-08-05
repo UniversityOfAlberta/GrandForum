@@ -1095,6 +1095,12 @@ class EditMember extends SpecialPage{
         $me = Person::newFromWgUser();
         $user = Person::newFromId($wgUser->getId());
         $myProjects = $user->getProjects(false, true);
+        $themeProjects = $user->getThemeProjects();
+        foreach($myProjects as $project){
+            $themeProjects[$project->getName()] = $project;
+        }
+        ksort($themeProjects);
+        $myProjects = $themeProjects;
         if(!isset($_GET['name'])){
             return;
         }

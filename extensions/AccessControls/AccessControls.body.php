@@ -153,7 +153,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   }
   
   // Check public sections of wiki page
-  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action = 'read'){
+  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
       if($article != null){
           $text = $article->getText();
