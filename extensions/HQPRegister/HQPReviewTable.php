@@ -119,9 +119,9 @@ class HQPReviewTable extends SpecialPage{
             
                 $html .= "<tr style='border-top: 2px solid #AAAAAA;background:{$background};'>";
                 $html .= "<td align='right'>{$candidate->getNameForForms()}</td>";
-                $html .= "<td align='right'>{$uni}</td>";
-                $html .= "<td align='right'>{$level}</td>";
-                $html .= "<td align='right'>{$project}</td>";
+                $html .= "<td>{$uni}</td>";
+                $html .= "<td>{$level}</td>";
+                $html .= "<td>{$project}</td>";
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
