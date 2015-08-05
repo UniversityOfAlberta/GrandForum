@@ -77,6 +77,12 @@ class PersonPage {
                         }
                     }
                 }
+                foreach($me->getThemeProjects() as $project){
+                    if($person->isMemberOf($project)){
+                        $isSupervisor = true;
+                        break;
+                    }
+                }
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor));
