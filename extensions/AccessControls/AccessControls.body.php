@@ -286,6 +286,21 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	$allowedGroups = getExtraPermissions($title);
 	$allowedGroups[] = $title->getNamespace();
 
+    $nsText = "";
+    if(strstr($title->getText(), ":") !== false){
+        $exploded = explode(":", $title->getText());
+        $nsText = @$exploded[0];
+    }
+    
+    $userGroups = $user->getGroups();
+    
+    foreach($userGroups as $group){
+        if($nsText == $group){
+            $result = true;
+            return true;
+        }
+    }
+
 	foreach ($allowedGroups as $index => $group){
 	  if (isPublicNS($group)) {
 	    $result = true;
@@ -297,8 +312,6 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	      }
 	  }
 	}
-
-	$userGroups = $user->getGroups();
 	
 	$userNS = UserNamespaces::getUserNamespace($user);
 	if($wgExtraNamespaces != null){

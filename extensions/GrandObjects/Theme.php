@@ -123,7 +123,7 @@ class Theme {
      */
     function getUrl(){
         global $wgServer, $wgScriptPath, $config;
-        return "{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$this->getAcronym()} - {$this->getName()}";
+        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getAcronym()}:{$this->getName()}";
     }
     
     /**

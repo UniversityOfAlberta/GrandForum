@@ -15,6 +15,9 @@ class GrandAccess {
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }
+	    foreach(array_merge($me->getLeadThemes(), $me->getCoordThemes()) as $theme){
+	        $aRights[$i++] = $theme->getAcronym();
+	    }
 	    foreach($me->getThemeProjects() as $project){
 	        $aRights[$i++] = $project->getName();
 	    }
@@ -71,6 +74,9 @@ class GrandAccess {
 	            $aRights[$i++] = $role->getRole();
 	            $user->mGroups[] = $role->getRole().'_Wiki';
 	        }
+	    }
+	    foreach($aRights as $right){
+	        $user->mGroups[] = $right;
 	    }
 	    if($user->isLoggedIn()){
 	        $user->mGroups[] = "Poster";
