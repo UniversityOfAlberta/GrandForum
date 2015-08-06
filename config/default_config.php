@@ -234,6 +234,7 @@
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
     $config->setConst("PL",         "PL");
+    $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
     $config->setConst("TC",         "TC");
     $config->setConst("RMC",        "RMC");
@@ -263,6 +264,7 @@
         $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('PL')             => "Project Leader",
+        $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
         $config->getConst('RMC')            => "Research Management Comittee",
