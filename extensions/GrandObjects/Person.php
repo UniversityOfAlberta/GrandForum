@@ -581,12 +581,15 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
-            if($filter == TL || $filter == TC || $filter == PL){
+            if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
                 self::generateThemeLeaderCache();
                 self::generateLeaderCache();
                 if(isset(self::$themeLeaderCache[$filter][$row]) ||
-                   ($filter == PL && isset(self::$leaderCache[$row]))){
+                   (($filter == PL || $filter == APL) && isset(self::$leaderCache[$row]))){
                     $person = Person::newFromId($row);
+                    if($filter == APL && !$person->isRole(APL)){
+                        continue;
+                    }
                     if($person->getName() != "WikiSysop"){
                         if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
                             $people[] = $person;
@@ -2416,6 +2419,15 @@ class Person extends BackboneModel {
     function isRole($role){
         if($role == PL || $role == 'PL'){
             return $this->isProjectLeader();
+        }
+        if($role == APL){
+            $leadership = $this->leadership();
+            foreach($leadership as $proj){
+                if($proj->getType() == 'Administrative'){
+                    return true;
+                }
+            }
+            return false;
         }
         if($role == TL || $role == 'TL'){
             return $this->isThemeLeader();
