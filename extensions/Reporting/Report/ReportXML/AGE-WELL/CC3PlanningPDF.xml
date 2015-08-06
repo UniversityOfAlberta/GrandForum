@@ -72,5 +72,7 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_3_ATTACH" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
     </ReportSection>
 </Report>

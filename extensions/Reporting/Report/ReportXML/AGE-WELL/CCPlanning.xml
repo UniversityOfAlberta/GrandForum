@@ -336,6 +336,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                     {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CC_1_ATTACH" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Additional Materials</h3>
+                <small>If you have any additional materials, you can upload a pdf attachement</small><br />
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc2" tooltip="Commercialization and Technology Transfer" name="CC2 TECH-TRANS" blobSection="CC_PLANNING_2" type="EditableReportSection">
         <Instructions>
@@ -563,6 +570,13 @@ Each Crosscutting Activity is made up of a team including CC leads, Scientific D
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CC_2_ATTACH" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Additional Materials</h3>
+                <small>If you have any additional materials, you can upload a pdf attachement</small><br />
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc3" tooltip="Transdisciplinary Working" name="CC3 T-WORK" blobSection="CC_PLANNING_3" type="EditableReportSection">
         <Instructions>
@@ -749,6 +763,13 @@ network level.
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CC_3_ATTACH" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Additional Materials</h3>
+                <small>If you have any additional materials, you can upload a pdf attachement</small><br />
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc4" tooltip="Training and Mentorship" name="CC4 TRAIN" blobSection="CC_PLANNING_4" type="EditableReportSection">
         <Instructions>
@@ -874,6 +895,13 @@ our trainees moving into receptor industries and government agencies represent a
                         <li>How should this information be collected?</li>
                     </ul>
                 </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attach" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CC_4_ATTACH" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Additional Materials</h3>
+                <small>If you have any additional materials, you can upload a pdf attachement</small><br />
                 {$item}
             ]]>
         </ReportItem>

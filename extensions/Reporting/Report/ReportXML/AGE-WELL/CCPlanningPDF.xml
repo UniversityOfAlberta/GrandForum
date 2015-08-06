@@ -77,6 +77,8 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_1_ATTACH" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc2" tooltip="Commercialization and Technology Transfer" name="CC2 TECH-TRANS: Commercialization and Technology Transfer" blobSection="CC_PLANNING_2" type="EditableReportSection">
         <ReportItem id="products" type="TextareaReportItem" blobItem="CC_2_PRODUCTS">
@@ -139,6 +141,8 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_2_ATTACH" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc3" tooltip="Transdisciplinary Working" name="CC3 T-WORK: Transdisciplinary Working" blobSection="CC_PLANNING_3" type="EditableReportSection">
         <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
@@ -193,6 +197,8 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_3_ATTACH" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
     </ReportSection>
     <ReportSection id="cc4" tooltip="Training and Mentorship" name="CC4 TRAIN: Training and Mentorship" blobSection="CC_PLANNING_4" type="EditableReportSection" pagebreak="false">
         <ReportItem id="train" type="TextareaReportItem" blobItem="CC_4_TRAIN">
@@ -230,6 +236,8 @@
                 <h4>How should we measure the effectiveness of the HQP training program?</h4>
                 {$item}<br />
             ]]>
+        </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_4_ATTACH" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>
 </Report>

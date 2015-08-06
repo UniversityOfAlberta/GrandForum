@@ -305,6 +305,7 @@ define('CC_1_EXPERTISE',    6);
 define('CC_1_RESOURCES',    7);
 define('CC_1_MEASURE',      8);
 define('CC_1_SUPPORT',      9);
+define('CC_1_ATTACH',       10);
 
 define('CC_2_PRODUCTS',     1);
 define('CC_2_COMMERCIALIZE',2);
@@ -316,6 +317,7 @@ define('CC_2_IP',           7);
 define('CC_2_ACHIEVE',      8);
 define('CC_2_MEASURE',      9);
 define('CC_2_SUPPORT',      10);
+define('CC_2_ATTACH',       11);
 
 define('CC_3_TRANS',        1);
 define('CC_3_ADOPT',        2);
@@ -325,6 +327,7 @@ define('CC_3_SYNERGY',      5);
 define('CC_3_ACCEPT',       6);
 define('CC_3_SUPPORT',      7);
 define('CC_3_EVAL',         8);
+define('CC_3_ATTACH',       9);
 
 define('CC_4_TRAIN',        1);
 define('CC_4_KNOW',         2);
@@ -332,6 +335,7 @@ define('CC_4_OUTCOME',      3);
 define('CC_4_INDUSTRY',     4);
 define('CC_4_OTHER',        5);
 define('CC_4_MEASURE',      6);
+define('CC_4_ATTACH',       7);
 
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
