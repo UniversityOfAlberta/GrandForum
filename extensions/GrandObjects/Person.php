@@ -268,7 +268,12 @@ class Person extends BackboneModel {
                                                    'number'),
                                              array('primary_indicator' => EQ(1)));
             foreach($phoneData as $row){
-                $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
+                if($row['area_code'] == ""){
+                    $phoneNumbers[$row['user_id']] = $row['number'];
+                }
+                else{
+                    $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
+                }
             }
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
@@ -1131,7 +1136,7 @@ class Person extends BackboneModel {
     function getPhoneNumber(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
-            return "{$this->phone}";
+            return trim("{$this->phone}");
         }
         return "";
     }

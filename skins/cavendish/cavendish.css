@@ -1316,6 +1316,11 @@ input.other_option:focus {
 .large_card .card_description {
     margin-left:  5px;
     margin-right: 5px;
+    line-height: 16px;
+}
+
+.large_card .card_description h1 {
+    line-height: 18px;
 }
 
 .large_card #roles {

@@ -140,6 +140,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
@@ -159,6 +160,8 @@ class PersonProfileTab extends AbstractEditableTab {
                 $api->processParams(array());
                 $api->doAction(true);
             }
+            $api = new UserPhoneAPI();
+            $api->doAction(true);
             $api = new UserTwitterAccountAPI();
             $api->doAction(true);
             $api = new UserWebsiteAPI();
@@ -421,6 +424,10 @@ EOF;
                             <tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Phone Number:</b></td>
+                                <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
                             </tr>
                         </table></td>";
     }
