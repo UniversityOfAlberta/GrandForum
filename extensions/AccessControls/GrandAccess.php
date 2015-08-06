@@ -6,10 +6,10 @@ class GrandAccess {
 
     static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues;
-        if(isset($alreadyDone[$user->getId()])){
+        if(isset(self::$alreadyDone[$user->getId()])){
             return true;
         }
-        $alreadyDone[$user->getId()] = true;
+        self::$alreadyDone[$user->getId()] = true;
 	    $me = Person::newFromId($user->getId());
 	    $i = 1000;
 	    $oldRights = $aRights;
