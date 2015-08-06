@@ -145,7 +145,9 @@ class HQPReviewTable extends SpecialPage{
         $addr = ReportBlob::create_address(RP_HQP_REVIEW, HQP_REVIEW, $item, $candidateId);
         $blob = new ReportBlob(BLOB_TEXT, $year, $evalId, 0);
         $blob->load($addr);
-        return nl2br($blob->getData());
+        $value = nl2br($blob->getData());
+        $value = str_replace("<br", "<br style='mso-data-placement:same-cell'", $value);
+        return $value;
     }
     
     static function createSubTabs(&$tabs){
