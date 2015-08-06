@@ -355,13 +355,18 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
+		$contactHeader = "";
 		$projectsHeader = "";
         if($me->isRoleAtLeast(MANAGER)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
+        }
+        if($me->isLoggedIn() && 
+           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues(SD))){
+            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone Number</th>";
         }
         if($config->getValue('projectsEnabled')){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -375,7 +380,8 @@ EOF;
                                     <th style='white-space: nowrap;'>University</th>
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
-                                    $idHeader</tr>
+                                    {$contactHeader}
+                                    {$idHeader}</tr>
                                 </thead>
                                 <tbody>
 ";
@@ -411,6 +417,10 @@ EOF;
             $this->text .= "<td align='left'>{$university['university']}</td>";
             $this->text .= "<td align='left'>{$university['department']}</td>";
             $this->text .= "<td align='left'>{$university['position']}</td>";
+            if($contactHeader != ''){
+                $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+            }
 			if($me->isRoleAtLeast(MANAGER)){
 			    $this->text .= "<td>{$person->getId()}</td>";
 			}
