@@ -21,6 +21,10 @@ class GrandAccess {
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }
+	    if($me->isThemeLeader() || $me->isThemeCoordinator()){
+	        $aRights[$i++] = TL;
+	        $aRights[$i++] = TC;
+	    }
 	    foreach(array_merge($me->getLeadThemes(), $me->getCoordThemes()) as $theme){
 	        $aRights[$i++] = $theme->getAcronym();
 	    }
@@ -30,6 +34,7 @@ class GrandAccess {
 	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	        $aRights[$i++] = PL;
+	        $aRights[$i++] = TL;
 	    }
 	    $leadership = $me->leadership();
 	    if(count($leadership) > 0){

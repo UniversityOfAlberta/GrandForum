@@ -135,6 +135,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
+    GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
@@ -293,7 +294,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
     }
     
     $userGroups = $user->getGroups();
-    
+
     foreach($userGroups as $group){
         if($nsText == $group){
             $result = true;
@@ -334,13 +335,11 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	$result = (count(array_intersect($allowedGroups, $userGroups)) > 0);
-	
 	if ($result) {
-	    
 		return true;
 	}
 	else {
-		if ($user->getId() != 0 && $action == 'read') {
+		if ($user->getId() != 0 && $action == 'read' && ($title->getNamespace() < 100 || isPublicNS($title->getNamespace()))) {
 			return true;
 		}
 		else {

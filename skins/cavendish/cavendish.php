@@ -850,6 +850,7 @@ class CavendishTemplate extends QuickTemplate {
 		    if(isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
+		    $me = Person::newFromWgUser();
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
@@ -859,6 +860,9 @@ class CavendishTemplate extends QuickTemplate {
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Management Office", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
 	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
 	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
+	                $resources['links'][1004] = TabUtils::createToolboxLink("Workpackage Coordinator", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
+	            }
 	            
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }

@@ -63,7 +63,7 @@ if ($egAnProtectUploads){
     $match = substr(strstr($filename, '!'),1);
     $unarchivedTitle =  Title::makeTitleSafe( NS_IMAGE, $match);
   }
-  
+  str_replace("File:", "", $unarchivedTitle);
   if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
     wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
     $errorFile = 'extensions/AccessControls/images/errorFile.gif';
