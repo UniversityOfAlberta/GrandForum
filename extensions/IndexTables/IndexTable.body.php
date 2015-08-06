@@ -209,7 +209,7 @@ class IndexTable {
         if($type != "Administrative"){
             $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
         }
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th>Project Id</th>";
         }
         $data = Project::getAllProjectsEver();
@@ -226,7 +226,7 @@ class IndexTable {
                 if($type != "Administrative"){
                     $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
                 }
-                if($me->isRoleAtLeast(MANAGER)){
+                if($idHeader){
                     $this->text .= "<td>{$proj->getId()}</td>\n";
                 }
                 $this->text .= "</tr>\n";
@@ -361,12 +361,12 @@ EOF;
 		$idHeader = "";
 		$contactHeader = "";
 		$projectsHeader = "";
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
         if($me->isLoggedIn() && 
            ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues(SD))){
-            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone Number</th>";
+            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
         if($config->getValue('projectsEnabled')){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -421,7 +421,7 @@ EOF;
                 $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
-			if($me->isRoleAtLeast(MANAGER)){
+			if($idHeader != ''){
 			    $this->text .= "<td>{$person->getId()}</td>";
 			}
 			$this->text .= "</tr>";
