@@ -47,7 +47,7 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         sort($roles);
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role))){
+            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }

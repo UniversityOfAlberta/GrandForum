@@ -305,7 +305,6 @@ if(file_exists("project_members.csv")){
             if(count($cells) > 1){
                 $username = $cells[0];
                 $project = $cells[1];
-                echo $project."\n";
                 if($project != ""){
                     addUserProject($username, $project);
                 }

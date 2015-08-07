@@ -578,9 +578,10 @@ class Person extends BackboneModel {
     /**
      * Returns an array of People of the type $filter
      * @param string $filter The role to filter by
+     * @param boolean $idOnly Whether or not to only include the id, rather than instantiating a Person object (may result in slightly different results!)
      * @return array The array of People of the type $filter
      */
-    static function getAllPeople($filter=null){
+    static function getAllPeople($filter=null, $idOnly=false){
         $me = Person::newFromWgUser();
         self::generateAllPeopleCache();
         self::generateRolesCache();
@@ -597,7 +598,12 @@ class Person extends BackboneModel {
                     }
                     if($person->getName() != "WikiSysop"){
                         if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
-                            $people[] = $person;
+                            if($idOnly){
+                                $people[] = $row;
+                            }
+                            else{
+                                $people[] = $person;
+                            }
                         }
                     }
                 }
@@ -613,6 +619,10 @@ class Person extends BackboneModel {
                     if(!$found){
                         continue;
                     }
+                }
+                if($idOnly){
+                    $people[] = $row;
+                    continue;
                 }
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
