@@ -199,15 +199,15 @@ if(file_exists("people.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $lname = trim($cells[0]);
-                $fname = trim($cells[1]);
-                $role = trim($cells[2]);
-                $website = trim($cells[3]);
-                $university = trim($cells[4]);
-                $department = trim($cells[5]);
-                $title = trim($cells[6]);
-                $email = trim($cells[7]);
-                $profile = trim($cells[8]);
+                $lname = @trim($cells[0]);
+                $fname = @trim($cells[1]);
+                $role = @trim($cells[2]);
+                $website = @trim($cells[3]);
+                $university = @trim($cells[4]);
+                $department = @trim($cells[5]);
+                $title = @trim($cells[6]);
+                $email = @trim($cells[7]);
+                $profile = @trim($cells[8]);
                 $username = str_replace(" ", "", str_replace("'", "", "$fname.$lname"));
                 
                 User::createNew($username, array('real_name' => "$fname $lname", 

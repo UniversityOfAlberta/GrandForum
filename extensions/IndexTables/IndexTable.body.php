@@ -365,7 +365,7 @@ EOF;
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
         if($me->isLoggedIn() && 
-           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues(SD))){
+           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
         if($config->getValue('projectsEnabled')){
