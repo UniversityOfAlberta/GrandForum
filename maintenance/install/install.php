@@ -16,6 +16,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     $_POST['phase'] = $phase;
     $_POST['effective_date'] = $effective_date;
     $_POST['description'] = $description;
+    $_POST['long_description'] = "";
     $_POST['challenge'] = Theme::newFromName($challenge)->getId();
     $_POST['parent_id'] = $parent_id;
     $_POST['problem'] = $problem;
@@ -304,7 +305,7 @@ if(file_exists("project_members.csv")){
             if(count($cells) > 1){
                 $username = $cells[0];
                 $project = $cells[1];
-                
+                echo $project."\n";
                 if($project != ""){
                     addUserProject($username, $project);
                 }
