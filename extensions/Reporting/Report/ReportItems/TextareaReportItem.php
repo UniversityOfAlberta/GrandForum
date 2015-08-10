@@ -233,7 +233,7 @@ EOF;
     function getBlobValue(){
         $value = parent::getBlobValue();
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            if(strstr($value, "<p>") === false){
+            if(strstr($value, "<p>") === false && trim($value) != ""){
                 $value = "<p>".$value."</p>";
                 $value = nl2br($value);
             }
