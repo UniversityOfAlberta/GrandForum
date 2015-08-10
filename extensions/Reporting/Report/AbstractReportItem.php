@@ -236,6 +236,8 @@ abstract class AbstractReportItem {
     
     private function stripBlob($value){
         $value = str_replace(chr(0xC2).chr(0xA0), "&nbsp;", $value);
+        $value = str_replace("&lt", "<", $value);
+        $value = str_replace("&gt;", ">", $value);
         $value = trim($value);
         return $value;
     }
