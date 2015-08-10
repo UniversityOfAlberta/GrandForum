@@ -212,19 +212,19 @@ abstract class AbstractReportItem {
                     return array();
                 }
                 if(isset($_POST['oldData'][$this->getPostId()]) &&
-                   trim($_POST['oldData'][$this->getPostId()]) == trim($_POST[$this->getPostId()])){
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
                    // Don't save, but also don't display an error
                    return array();
                 }
                 else if(isset($_POST['oldData'][$this->getPostId()]) && 
-                   trim($_POST['oldData'][$this->getPostId()]) != trim($this->getBlobValue()) &&
-                   trim($_POST[$this->getPostId()]) != trim($this->getBlobValue())){
-                    if(trim($_POST['oldData'][$this->getPostId()]) != trim($_POST[$this->getPostId()])){
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
+                   $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
+                    if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
                         // Conflict in blob values
                         return array(array('postId' => $this->getPostId(), 
-                                           'value' => trim($this->getBlobValue()),
-                                           'postValue' => trim($_POST[$this->getPostId()]),
-                                           'oldValue' => trim($_POST['oldData'][$this->getPostId()]),
+                                           'value' => $this->stripBlob($this->getBlobValue()),
+                                           'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
+                                           'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
                                            'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                     }
                 }
@@ -232,6 +232,12 @@ abstract class AbstractReportItem {
             $this->setBlobValue($_POST[$this->getPostId()]);
         }
         return array();
+    }
+    
+    private function stripBlob($value){
+        $value = str_replace(chr(0xC2).chr(0xA0), "&nbsp;", $value);
+        $value = trim($value);
+        return $value;
     }
 
     // Gets the Blob of this item
