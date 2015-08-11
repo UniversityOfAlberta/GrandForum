@@ -110,7 +110,7 @@ EOF;
         if(count($labels) > 0 && $labels[0] != ""){
             $item .= "<tr>";
             foreach($labels as $j => $label){
-                $item .= "<th style='width:{$sizes[$j]}px;'>{$label}</th>";
+                $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
             }
             $item .= "<th style='width:51px;'></th></tr>";
         }
