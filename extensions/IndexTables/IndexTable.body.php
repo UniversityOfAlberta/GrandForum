@@ -107,9 +107,9 @@ class IndexTable {
                                                                 "$selected");
         }
         
-        if(Wiki::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
-            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
+        if(Wiki::newFromTitle("{$config->getValue('networkName')}_Conferences")->exists()){
+            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}_Conferences", "$selected");
         }
         return true;
     }
