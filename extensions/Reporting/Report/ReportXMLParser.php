@@ -301,6 +301,9 @@ class ReportXMLParser {
                 if(isset($attributes->name)){
                     $section->setName("{$attributes->name}");
                 }
+                if(isset($attributes->title)){
+                    $section->setTitle("{$attributes->title}");
+                }
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
@@ -452,7 +455,7 @@ class ReportXMLParser {
             foreach($newData as $value){
                 foreach($children as $c){
                     if($c->getName() == "ReportItem"){
-                        $item = $this->parseReportItem($itemset, $c);
+                        $item = $this->parseReportItem($itemset, $c, $value);
                     }
                     else if($c->getName() == "ReportItemSet"){
                         $item = $this->parseReportItemSet($itemset, $c, $value);
@@ -480,7 +483,7 @@ class ReportXMLParser {
     }
 
     // Parses the <ReportItem> element of the XML
-    function parseReportItem(&$section, $node){
+    function parseReportItem(&$section, $node, $value=array()){
         $attributes = $node->attributes();
         $item = $section->getReportItemById("{$attributes->id}");
         if(isset($attributes->type) || $item != null){
@@ -514,6 +517,18 @@ class ReportXMLParser {
             }
             if(isset($attributes->private)){
                 $item->setPrivate(strtolower($attributes->private) == "true");
+            }
+            if(isset($value['project_id'])){
+                $item->setProjectId($value['project_id']);
+            }
+            if(isset($value['milestone_id'])){
+                $item->setMilestoneId($value['milestone_id']);
+            }
+            if(isset($value['product_id'])){
+                $item->seProductId($value['product_id']);
+            }
+            if(isset($value['person_id'])){
+                $item->setPersonId($value['person_id']);
             }
             if(isset($attributes->blobType)){
                 if(!defined($attributes->blobType)){

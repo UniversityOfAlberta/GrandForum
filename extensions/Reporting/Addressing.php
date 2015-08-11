@@ -47,12 +47,20 @@ define('RP_SAB_REPORT',         102);
 define('RP_CATALYST',           103);
 define('RP_TRANS',              104);
 /*
- * AGE-WELLL
+ * AGE-WELL
  */
 define('RP_HQP_APPLICATION',    200);
 define('RP_CC_PLANNING',        201);
 define('RP_CC_LEADER',          202);
 define('RP_HQP_REVIEW',         203);
+
+/*
+ * TVN
+ */
+define('RP_FINAL_PROJECT',      300);
+define('RP_IFP_PROGRESS',       301);
+define('RP_PROGRESS',           302);
+define('RP_SSA_FINAL_PROGRESS', 303);
 
 /*
  * Second-level identifiers: report section.
@@ -65,8 +73,8 @@ define('SEC_NONE',              0);
 
 define('RES_EFFORT',			1);
 define('RES_MILESTONES',		12); // Used to be '2', but moved into RES_RESACTIVITY ('12')
-define('RES_PEOPLE_INTERACT',		3);
-define('RES_PROJECT_INTERACT',		4);
+define('RES_PEOPLE_INTERACT',	3);
+define('RES_PROJECT_INTERACT',	4);
 define('RES_IMPACT',			5);
 define('RES_HQPSELECTION',		6);
 define('RES_HQPREPORT',			7);
@@ -190,6 +198,16 @@ define('CAT_MILESTONES',2);
 define('CAT_SUPPORT',   3);
 define('CAT_CCV',       4);
 define('CAT_COMM',      5);
+
+// Second level for TVN Final Project Report
+define('FINAL_INFORMATION',     1);
+define('FINAL_MILESTONES',      2);
+define('FINAL_RESEARCH',        3);
+define('FINAL_KTEE',            4);
+define('FINAL_PARTNERS',        5);
+define('FINAL_NETWORK',         6);
+define('FINAL_PLANNING',        7);
+define('FINAL_ALIGN',           8);
 
 /*
  * Third-level identifiers: question within a section.
@@ -496,6 +514,35 @@ define('CAT_CCV_UPLOAD9',           9);
 define('CAT_CCV_UPLOAD10',          10);
 
 define('CAT_COMM_UPLOAD',           1);
+
+/* These are used for TVN Project Reports */
+define('FINAL_INFORMATION_ROLE',    1);
+define('FINAL_INFORMATION_TIME',    2);
+define('FINAL_INFORMATION_STATUS',  3);
+
+define('FINAL_MIL_UPLOAD',   1);
+
+define('FINAL_RES_KEY',         1);
+define('FINAL_RES_SUMMARY',     2);
+define('FINAL_RES_ABSTRACT',    3);
+define('FINAL_RES_REVIEW',      4);
+
+define('FINAL_KTEE_SUCCESS',    1);
+
+define('FINAL_PART_CONTR',      1);
+define('FINAL_PART_DESC',       2);
+
+define('FINAL_NET_ACTIVITY',    1);
+
+define('FINAL_PLAN_THEMES',     1);
+define('FINAL_PLAN_PRIORITIES', 2);
+define('FINAL_PLAN_SYNTH',      3);
+define('FINAL_PLAN_CREATION',   4);
+define('FINAL_PLAN_TRANS',      5);
+
+define('FINAL_ALIGN_MULTI',     1);
+define('FINAL_ALIGN_CHALLENGE', 2);
+define('FINAL_ALIGN_LEADER',    3);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

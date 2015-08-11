@@ -7,6 +7,7 @@ abstract class AbstractReportSection {
     var $instructions;
     var $permissions;
     var $name;
+    var $title;
     var $sec;
     var $items;
     var $attributes;
@@ -27,6 +28,7 @@ abstract class AbstractReportSection {
         $this->id = "";
         $this->instructions = "";
         $this->name = "";
+        $this->title = "";
         $this->tooltip = "";
         $this->sec = SEC_NONE;
         $this->items = array();
@@ -218,6 +220,12 @@ abstract class AbstractReportSection {
     // Sets the Name of this AbstractReportSection
     function setName($name){
         $this->name = $name;
+        $this->title = $name;
+    }
+    
+    // Sets the Title of this AbstractReportSection
+    function setTitle($title){
+        $this->title = $title;
     }
     
     // Sets the tooltip 
@@ -347,25 +355,7 @@ abstract class AbstractReportSection {
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $projectName = "";
-        $phase = "";
         $number = "";
-        if($this->getParent()->person != null && $this->getParent()->person->getId() != 0){
-            $projectName .= ": ".$this->getParent()->person->getNameForForms();
-        }
-        if($this->getParent()->project != null){
-            $projectName .= ": ".$this->getParent()->project->getName();
-            /*if($this->getParent()->project->isSubProject()){
-                $phase = " ({$this->getParent()->project->getParent()->getName()}";
-            }
-            else{
-                $phase = " (Phase {$this->getParent()->project->getPhase()}";
-            }
-            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
-                $phase .= ", Final Report";
-            }
-            $phase .= ")";*/
-        }
         if(count($this->number) > 0){
             $numbers = array();
             foreach($this->number as $n){
@@ -373,7 +363,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}</div>
+        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->title}</div>
         <hr />
         <div id='reportBody'>");
         if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
@@ -412,7 +402,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->name)}</h1></center>");
+        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->title)}</h1></center>");
         if($this->previewOnly){
             $wgOut->addHTML("<span style='color:#FF0000;'>(This section is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Provide the full details here. This section will be provided to your project leaders to assist with their project reporting.)</span>");
         }

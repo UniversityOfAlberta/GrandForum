@@ -48,25 +48,7 @@ class EditableReportSection extends AbstractReportSection {
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
         }
-        $projectName = "";
-        $phase = "";
         $number = "";
-        if($this->getParent()->person != null && $this->getParent()->person->getId() != 0){
-            $projectName .= ": ".$this->getParent()->person->getNameForForms();
-        }
-        if($this->getParent()->project != null){
-            $projectName .= ": ".$this->getParent()->project->getName();
-            /*if($this->getParent()->project->isSubProject()){
-                $phase = " ({$this->getParent()->project->getParent()->getName()}";
-            }
-            else{
-                $phase = " (Phase {$this->getParent()->project->getPhase()}";
-            }
-            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
-                $phase .= ", Final Report";
-            }
-            $phase .= ")";*/
-        }
         if(count($this->number) > 0){
             $numbers = array();
             foreach($this->number as $n){
@@ -74,12 +56,9 @@ class EditableReportSection extends AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        if($this->getParent()->project != null){
-            $projectName = ": ".$this->getParent()->project->getName();
-        }
         
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                            <div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
+                            <div id='reportHeader'>{$number}{$this->title}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'>Progress ({$this->getPercentComplete()}%)</span></span></div>
                              <hr />
                              <div id='reportBody'>");
                              

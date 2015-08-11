@@ -923,10 +923,14 @@ abstract class AbstractReport extends SpecialPage {
         if(!$this->showInstructions){
             $instructionsHide = "style='display:none;'";
         }
+        $instructions = trim($this->currentSection->getInstructions());
+        if($instructions == ""){
+            $instructionsHide = "style='display:none;'";
+        }
         $wgOut->addHTML("   <div $instructionsHide id='instructionsToggle' class='highlights-text'>.<br />.<br />.</div>\n");
         $wgOut->addHTML("   <div $instructionsHide id='reportInstructions' class='displayTableCell'><div><div>
                                 <span id='instructionsHeader'>Instructions</span>
-                                {$this->currentSection->getInstructions()}
+                                {$instructions}
                             </div></div></div>\n");
         
         $wgOut->addHTML("</div>\n");

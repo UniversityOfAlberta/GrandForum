@@ -1,6 +1,7 @@
 function setProgress(id, percent){
     if($("#" + id).hasClass('selectedReportTab')){
         $("#reportProgressBar").width(percent + "%");
+        $("#reportProgressLabel").text("Progress (" + percent + "%)");
     }
 }
 

@@ -174,6 +174,14 @@ $(document).ready(function(){
                 });
             }
             ajaxInstructions = $.get(href + '&showInstructions', function(response){
+                if(response.trim() == ""){
+                    $("#instructionsToggle").hide();
+                    $("#reportInstructions").hide();
+                }
+                else{
+                    $("#instructionsToggle").show();
+                    $("#reportInstructions").show();
+                }
                 $("#reportInstructions > div > div").html("<span id='instructionsHeader'>Instructions</span>" + response);
                 $("#reportInstructions").animate({'opacity' : 1}, animationTime);
             });

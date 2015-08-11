@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" ajax="true" personId="0">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="partnerships" permissions="rw" />
+            <SectionPermission id="network" permissions="rw" />
+            <SectionPermission id="alignment" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="information" tooltip="Project and Team Information" name="Project Information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
+        <ReportItem id="information" type="StaticReportItem">
+            <![CDATA[
+                <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
+                <b>Project Title:&nbsp;</b>{$project_full_name}<br />
+                <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="StaticReportItem">
+            <![CDATA[
+                <h3>Project Team and Roles</h3>
+                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  If someone has left the team since the last reporting period, please include originally planned project role and enter “Withdrawn since [date] due to [reason]” in the “Role in project” column.  Include Trainees and other HQP participating in the project, but you must also detail these in the accompanying HQP/Trainee Database update template.</span>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Team Member and<br />Institution/Organization</th>
+                        <th>Role in project</th>
+                        <th>% of time<br />dedicated to Project</th>
+                        <th>Status<br /><small>(Indicate original,<br /> removed, or new member)</small></th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funded_head" type="StaticReportItem">
+            <![CDATA[
+                <tr>
+                    <th colspan='4'>TVN Funded Investigators</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="CI,PL" blobIndex="personId">
+            <ReportItem id="funded_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
+                <![CDATA[
+                    <td>{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="nonfunded_head" type="StaticReportItem">
+            <![CDATA[
+                <tr>
+                    <th colspan='4'>Non-TVN Funded Investigators</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="AR">
+            <ReportItem id="nonfunded_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
+                <![CDATA[
+                    <td>{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqp_head" type="StaticReportItem">
+            <![CDATA[
+                <tr>
+                    <th colspan='4'>Other</th>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP">
+            <ReportItem id="hqp_row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
+                <![CDATA[
+                    <td>{$item}</td></tr>
+                ]]>
+            </ReportItem> 
+        </ReportItemSet>
+        <ReportItem id="people_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Milestones" title="Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="Project Milestones and Deliverables" type="ReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>Milestones (provide as a single Excel file)</h3>
+                <p>Guidelines:
+                    <ul>
+                        <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored.</li>
+                        <li><b><i>The project leader is responsible for combining all of the milestones into a single excel file.</i></b></li>
+                    </ul>
+                </p>
+            ]]>
+        </Instructions>
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+            <![CDATA[
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="research" name="Research Findings" blobSection="FINAL_RESEARCH" tooltip="Research Findings" type="EditableReportSection">
+        <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_RES_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Key Findings & Achievements</h3>
+                <p>Please provide the key findings and achievements of your project in one or two sentences.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true">
+            <![CDATA[
+                <h3>Executive Summary</h3>
+                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites) (Maximum 500 words).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_ABSTRACT" rich="true">
+            <![CDATA[
+                <h3>Scientific Abstract</h3>
+                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study (Maximum 500 words).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_REVIEW" rich="true">
+            <![CDATA[
+                <h3>Scientific Review</h3>
+                <p>Please provide a full scientific review of your research methodology, research findings, discussion and conclusion(s).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee" name="KTEE" tooltip="Knowledge and Technology Exchange and Exploitation" title="Knowledge and Technology Exchange and Exploitation" blobSection="FINAL_KTEE" type="EditableReportSection">
+        <ReportItem id="success" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_KTEE_SUCCESS" rich="true">
+            <![CDATA[
+                <h3>Successes in KTEE</h3>
+                <p>Describe the successes in the domain of KTEE achieved over this final reporting period. Provide specific examples (e.g. new products, processes or services with commercial potential; social innovations that have contributed to public policy in Canada; collaborations in technology, market development and/or public policy development).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="products" type="StaticReportItem">
+            <![CDATA[
+                <h3>Dissemination of Project Research Results</h3>
+                <p>Coming Soon, this will probably be a dashboard, but I'm not sure yet...</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" name="Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application? Y/N?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|125|150" class="wikitable">
+            <![CDATA[
+                <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
+<p style='line-height:1em'><small>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</small></p>
+<p style='line-height:1em'><small>Tri-Agency Financial Administration Guide on the acceptable use of grant funds can be found at <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-guideAdminFinancier/FundsUse-UtilisationSubventions_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-guideAdminFinancier/FundsUse-UtilisationSubventions_eng.asp</a>.</small></p>
+<p style='line-height:1em'><small>To calculate in-kind contribution amounts, please consult tri-council guidelines: <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp</a>.</small></p>
+{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="TextareaReportiTem" blobItem="FINAL_PART_DESC" rich="true">
+            <![CDATA[
+                <h3>Describe your partnership activities for this final reporting period.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="network" name="Networking Activites" blobSection="FINAL_NETWORK" type="EditableReportSection">
+        <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
+            <![CDATA[
+                <h3>Team Meetings & Exchanges</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="planning" name="Networking Planning" tooltip="Network Planning Information" title="Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
+        <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
+            <![CDATA[
+                <h3>Research Themes</h3>
+                <p><small>Which TVN research themes does your project most closely fall under?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="priorities" type="RadioReportItem" blobItem="FINAL_PLAN_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
+            <![CDATA[
+                <h3>Strategic Priorities</h3>
+                <p><small>Which TVN strategic priorities does your project most closely fall under?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_synth" type="TextReportItem" blobItem="FINAL_PLAN_SYNTH" width="30px">
+            <![CDATA[
+                <h3>Knowledge Continuum</h3>
+                <p><small>Please indicate the percentage of your project that addressed the following activities on the knowledge continuum:</small></p>
+                {$item}% Knowledge synthesis<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_creation" type="TextReportItem" blobItem="FINAL_PLAN_CREATION" width="30px">
+            <![CDATA[
+                {$item}% Knowledge creation<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_trans" type="TextReportItem" blobItem="FINAL_PLAN_TRANS" width="30px">
+            <![CDATA[
+                {$item}% Knowledge translation/mobilization
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="alignment" name="NCE Alignment" tooltip="Alignment with NCE Mission" title="Alignment with NCE Mission" blobSection="FINAL_ALIGN" type="EditableReportSection">
+        <ReportItem id="multi" type="TextareaReportItem" blobItem="FINAL_ALIGN_MULTI" rich="true">
+            <![CDATA[
+                <p>TVN is a network funded by the federal Networks of Centres of Excellence (NCE) and as such must align with the mission and requirements of NCE.</p>
+                <p>Now that your project is complete, please provide a succinct update to each question below explaining how this research aligns with NCE requirements.</p>
+                <h3>How has multidisciplinary and/or multisectoral collaborations enhanced this research?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="TextareaReportItem" blobItem="FINAL_ALIGN_CHALLENGE" rich="true">
+            <![CDATA[
+                <h3>How has (or will) this research program address new and emerging ethical, legal, regulatory and social challenges?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="leader" type="TextareaReportItem" blobItem="FINAL_ALIGN_LEADER" rich="true">
+            <![CDATA[
+                <h3>Now that your project is complete, has (or will) this research contribute to Canada’s visibility and reputation for international leadership?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

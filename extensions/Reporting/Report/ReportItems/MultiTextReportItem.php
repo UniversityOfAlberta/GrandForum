@@ -18,6 +18,21 @@ class MultiTextReportItem extends AbstractReportItem {
         return $indices;
     }
     
+    function getNComplete(){
+        $values = $this->getBlobValue();
+        if(isset($values[-1])){
+            unset($values[-1]);
+        }
+        if(count($values) > 0){
+            return 1;
+        }
+        return 0;
+    }
+    
+    function getNFields(){
+        return 1;
+    }
+    
     function render(){
         global $wgOut;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
@@ -26,6 +41,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
+        $class = $this->getAttr('class', '');
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
@@ -53,6 +69,9 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "textarea"){
+                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
+                        }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
@@ -77,7 +96,7 @@ EOF;
                 else{
                     $("#add_{$this->getPostId()}").prop('disabled', false);
                 }
-                if($("#table_{$this->getPostId()} tr.obj").length == 0){
+                if($("#table_{$this->getPostId()} tr.obj").length == 0 && "$class" != "wikitable"){
                     $("#table_{$this->getPostId()}").hide();
                 }
                 else{
@@ -87,13 +106,13 @@ EOF;
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
-        $item .= "<table id='table_{$this->getPostId()}' cellpadding='0' cellspacing='0'>";
+        $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
         if(count($labels) > 0 && $labels[0] != ""){
             $item .= "<tr>";
-            foreach($labels as $label){
-                $item .= "<th>{$label}</th>";
+            foreach($labels as $j => $label){
+                $item .= "<th style='width:{$sizes[$j]}px;'>{$label}</th>";
             }
-            $item .= "<th></th></tr>";
+            $item .= "<th style='width:51px;'></th></tr>";
         }
         $i = 0;
         foreach($values as $i => $value){
@@ -109,6 +128,9 @@ EOF;
                         asort($names);
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
                         $item .= "<td>".$combobox->render()."</td>";
+                    }
+                    else if(strtolower(@$types[$j]) == "textarea"){
+                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
                     }
                     else{
                         $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' style='width:{$sizes[$j]}px;' /></td>";
@@ -127,14 +149,15 @@ EOF;
             }
             $item .= "</tr>";
         }
-        
-        $item .= "</table>";
         if($multiple){
+            $item .= "<tfoot><tr><td colspan='".(count($indices)+1)."'>";
             $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
             $item .= "<script type='text/javascript'>
                 updateTable{$this->getPostId()}();
             </script>";
+            $item .= "</td></tr></tfoot>";
         }
+        $item .= "</table>";
         $item = $this->processCData($item);
         $wgOut->addHTML("$item");
     }

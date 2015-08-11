@@ -174,8 +174,13 @@
     display:inline-block;
     float:right;
     position: relative;
-    font-size:14px;
+    font-size:12px;
+    line-height: 13px;
     font-weight:bold;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 2px #000000;
+    width:100%;
+    text-align: center;
 }
 
 #reportProgress {
