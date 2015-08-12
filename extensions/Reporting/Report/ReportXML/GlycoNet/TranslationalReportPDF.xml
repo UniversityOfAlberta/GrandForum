@@ -133,7 +133,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.ms-excel" structure="GLYCONET_BUDGET_STRUCTURE" downloadOnly="true">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" structure="GLYCONET_BUDGET_STRUCTURE" downloadOnly="true">
             <![CDATA[
                 {$item}<br /><br />
             ]]>
