@@ -379,6 +379,13 @@ class Project extends BackboneModel {
     }
     
     function toArray(){
+        $leaders = $this->getLeaders();
+        $leads = array();
+        foreach($leaders as $leader){
+            $leads[] = array('id' => $leader->getId(),
+                             'name' => $leader->getReversedName(),
+                             'url' => $leader->getUrl());
+        }
         $subProjects = $this->getSubProjects();
         $subs = array();
         foreach($subProjects as $sub){
@@ -397,6 +404,7 @@ class Project extends BackboneModel {
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
+                       'leaders' => $leads,
                        'subprojects' => $subs,
                        'startDate' => $this->getCreated(),
                        'endDate' => $this->getDeleted());
