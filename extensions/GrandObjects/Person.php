@@ -2567,6 +2567,16 @@ class Person extends BackboneModel {
                 return true;
             }
         }
+        if($wgRoleValues[TL] >= $wgRoleValues[$role]){
+            if($this->isThemeLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[TC] >= $wgRoleValues[$role]){
+            if($this->isThemeCoordinator()){
+                return true;
+            }
+        }
         return false;
     }
     
