@@ -41,7 +41,7 @@ class MultiTextReportItem extends AbstractReportItem {
         $types = explode("|", $this->getAttr('types', ''));
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
-        $class = $this->getAttr('class', '');
+        $class = $this->getAttr('class', 'wikitable');
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
