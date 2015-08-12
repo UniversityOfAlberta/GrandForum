@@ -2896,6 +2896,35 @@ class Person extends BackboneModel {
         }
     }
     
+    /*
+     * Returns and array of Person objects who this Person can delegate
+     * @return array The list of People who this Person can delegate
+     */
+    function getDelegates(){
+        $data = DBFunctions::select(array('grand_delegate'),
+                                    array('user_id'),
+                                    array('delegate' => EQ($this->getId())));
+        $people = array();
+        foreach($data as $row){
+            $people[] = Person::newFromId($row['user_id']);   
+        }
+        return $people;
+    }
+    
+    /*
+     * Returns whether or not this Person is a delegate for the given Person
+     * @param Person
+     * @return boolean Whether or not this Person is a delegate for the given Person
+     */
+    function isDelegateFor($person){
+        foreach($this->getDelegates() as $delegate){
+            if($delegate->getId() == $person->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      * @param string $category The category of Paper to get

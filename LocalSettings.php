@@ -208,6 +208,7 @@ $wgMaxShellMemory = 402400;
 $wgPasswordReminderResendTime = 0.25;
 $wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
+$wgDelegating = false;
 $wgRealUser;
 
 if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {

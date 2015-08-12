@@ -5,7 +5,7 @@ $wgSpecialPages['Impersonate'] = 'Impersonate'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['Impersonate'] = $dir . 'SpecialImpersonate.i18n.php';
 $wgSpecialPageGroups['Impersonate'] = 'network-tools';
 
-$wgHooks['SubLevelTabs'][] = 'Impersonate::createSubTabs';
+$wgHooks['ToolboxLinks'][] = 'Impersonate::createDelegateLink';
 
 function runImpersonate($par) {
   Impersonate::execute($par);
@@ -15,7 +15,7 @@ class Impersonate extends SpecialPage {
 
 	function Impersonate() {
 	    global $wgOut, $wgServer, $wgScriptPath;
-	    SpecialPage::__construct("Impersonate", MANAGER.'+', true, 'runImpersonate');
+	    SpecialPage::__construct("Impersonate", null, true, 'runImpersonate');
 	    $wgOut->addScript("<script type='text/javascript'>
 	        $(document).ready(function(){
 	            $('#button').val('Impersonate');
@@ -41,21 +41,39 @@ class Impersonate extends SpecialPage {
 	    </script>");
 	}
 	
+	function userCanExecute($user){
+	    global $wgImpersonate, $wgDelegate;
+	    if($wgImpersonate || $wgDelegate){
+	        return false;
+	    }
+        $person = Person::newFromUser($user);
+        return ($person->isRoleAtLeast(MANAGER) || count($person->getDelegates()) > 0);
+    }
+	
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-	    $user = Person::newFromId($wgUser->getId());
+	    $user = Person::newFromWgUser();
 	    $wgOut->addScript('<script type="text/javascript">
 	                        var sort = "first";
 	                        var allPeople = new Array(');
-	    $allPeople = Person::getAllPeople('all');
-	    $i = 0;
-	    $names = array();
-	    foreach($allPeople as $person){
-	        $names[] = $person->getName();
-	    }
-        foreach(Person::getAllStaff() as $person){
-            $names[] = $person->getName();
-            $allPeople[] = $person;
+	    $allPeople = array();
+	    if($user->isRoleAtLeast(MANAGER)){
+	        $allPeople = Person::getAllPeople('all');
+	        $i = 0;
+	        $names = array();
+	        foreach($allPeople as $person){
+	            $names[] = $person->getName();
+	        }
+            foreach(Person::getAllStaff() as $person){
+                $names[] = $person->getName();
+                $allPeople[] = $person;
+            }
+        }
+        else if(count($user->getDelegates()) > 0){
+            $allPeople = $user->getDelegates();
+            foreach($allPeople as $person){
+                $names[] = $person->getName();
+            }
         }
 	    $wgOut->addScript('\''.implode("','", $names).'\');
 	    var oldOptions = Array();
@@ -261,19 +279,24 @@ class Impersonate extends SpecialPage {
 	    $wgOut->addHTML("</select>
 	            </td></tr>
 	            <tr><td>
-	        <input type='button' id='button' name='next' value='Go To User&#39;s Page' />
+	        <input type='button' id='button' name='next' value='Impersonate' />
 	    </form></td></tr></table>");
 	}
 	
-	static function createSubTabs(&$tabs){
-	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-	    $person = Person::newFromWgUser($wgUser);
-	    if($person->isRoleAtLeast(MANAGER)){
-	        $selected = @($wgTitle->getText() == "Impersonate") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate", $selected);
-	    }
-	    return true;
+	static function createDelegateLink(&$toolbox){
+        global $wgImpersonating, $wgDelegating, $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if(!$wgImpersonating && !$wgDelegating && count($me->getDelegates()) > 0){
+            $link = TabUtils::createToolboxLink("Delegate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
+            $toolbox['Other']['links'][] = $link;
+        }
+        else if(!$wgImpersonating && !$wgDelegating && $me->isRoleAtLeast(MANAGER)){
+            $link = TabUtils::createToolboxLink("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate");
+            $toolbox['Other']['links'][] = $link;
+        }
+        return true;
     }
+	
 }
 
 ?>
