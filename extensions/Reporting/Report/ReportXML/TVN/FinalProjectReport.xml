@@ -11,7 +11,7 @@
             <SectionPermission id="alignment" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="information" tooltip="Project and Team Information" name="Project Information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="information" tooltip="1a. Project and Team Information" name="Project Information" title="1a. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
@@ -128,7 +128,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" name="Milestones" title="Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="Project Milestones and Deliverables" type="ReportSection">
+    <ReportSection id="milestones" name="Milestones" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
         <Instructions>
             <![CDATA[
                 <h3>Milestones (provide as a single Excel file)</h3>
@@ -149,7 +149,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="research" name="Research Findings" blobSection="FINAL_RESEARCH" tooltip="Research Findings" type="EditableReportSection">
+    <ReportSection id="research" name="Research Findings" title="2. Research Findings" blobSection="FINAL_RESEARCH" tooltip="2. Research Findings" type="EditableReportSection">
         <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_RES_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Key Findings & Achievements</h3>
@@ -179,7 +179,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktee" name="KTEE" tooltip="Knowledge and Technology Exchange and Exploitation" title="Knowledge and Technology Exchange and Exploitation" blobSection="FINAL_KTEE" type="EditableReportSection">
+    <ReportSection id="ktee" name="KTEE" tooltip="3. Knowledge and Technology Exchange and Exploitation" title="3. Knowledge and Technology Exchange and Exploitation" blobSection="FINAL_KTEE" type="EditableReportSection">
         <ReportItem id="success" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_KTEE_SUCCESS" rich="true">
             <![CDATA[
                 <h3>Successes in KTEE</h3>
@@ -194,7 +194,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" name="Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
+    <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
         <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application? Y/N?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|125|150" class="wikitable">
             <![CDATA[
                 <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
@@ -211,7 +211,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activites" blobSection="FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="engage" name="Engagement" title="5. Patient/Citizen Engagement" tooltip="5. Patient/Citizen Engagement" blobSection="FINAL_ENGAGE" type="EditableReportSection">
+        <ReportItem id="engage" type="TextareaReportiTem" blobItem="FINAL_ENGAGE_PATIENT" rich="true">
+            <![CDATA[
+                <p>A well designed research project necessarily involves a project team that is composed of patients, patient’s families, caregivers, knowledge users, HQP and researchers.  All of these individuals should be meaningful involved and integral in the planning and execution of the research project , and/or in assisting in the interpretation and translation/mobilization of research findings.  With this in mind please describe the role/activities that each patient, patient family member and other informal caregiver played in the planning and execution of the project, along with their role in the interpretation of, and dissemination of research findings.  Please also reference Section 1a Project Team and Roles table if applicable.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="network" name="Networking Activites" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
@@ -219,7 +227,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="planning" name="Networking Planning" tooltip="Network Planning Information" title="Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
+    <ReportSection id="planning" name="Networking Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
         <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Research Themes</h3>
@@ -252,7 +260,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="alignment" name="NCE Alignment" tooltip="Alignment with NCE Mission" title="Alignment with NCE Mission" blobSection="FINAL_ALIGN" type="EditableReportSection">
+    <ReportSection id="alignment" name="NCE Alignment" tooltip="8. Alignment with NCE Mission" title="8. Alignment with NCE Mission" blobSection="FINAL_ALIGN" type="EditableReportSection">
         <ReportItem id="multi" type="TextareaReportItem" blobItem="FINAL_ALIGN_MULTI" rich="true">
             <![CDATA[
                 <p>TVN is a network funded by the federal Networks of Centres of Excellence (NCE) and as such must align with the mission and requirements of NCE.</p>

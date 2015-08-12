@@ -205,9 +205,10 @@ define('FINAL_MILESTONES',      2);
 define('FINAL_RESEARCH',        3);
 define('FINAL_KTEE',            4);
 define('FINAL_PARTNERS',        5);
-define('FINAL_NETWORK',         6);
-define('FINAL_PLANNING',        7);
-define('FINAL_ALIGN',           8);
+define('FINAL_ENGAGE',          6);
+define('FINAL_NETWORK',         7);
+define('FINAL_PLANNING',        8);
+define('FINAL_ALIGN',           9);
 
 /*
  * Third-level identifiers: question within a section.
@@ -531,6 +532,8 @@ define('FINAL_KTEE_SUCCESS',    1);
 
 define('FINAL_PART_CONTR',      1);
 define('FINAL_PART_DESC',       2);
+
+define('FINAL_ENGAGE_PATIENT',  1);
 
 define('FINAL_NET_ACTIVITY',    1);
 
