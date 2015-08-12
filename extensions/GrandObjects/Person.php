@@ -1051,12 +1051,12 @@ class Person extends BackboneModel {
     
     function isThemeLeader(){
         self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TL][$this->getId()]));
+        return (isset(self::$themeLeaderCache[TL][$this->id]));
     }
     
     function isThemeCoordinator(){
         self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TC][$this->getId()]));
+        return (isset(self::$themeLeaderCache[TC][$this->id]));
     }
     
     function isThemeLeaderOf($project){
@@ -2568,16 +2568,14 @@ class Person extends BackboneModel {
                 return true;
             }
         }
-        if($me->isLoggedIn()){
-            if($wgRoleValues[TL] >= $wgRoleValues[$role]){
-                if($this->isThemeLeader()){
-                    return true;
-                }
+        if($wgRoleValues[TL] >= $wgRoleValues[$role]){
+            if($this->isThemeLeader()){
+                return true;
             }
-            if($wgRoleValues[TC] >= $wgRoleValues[$role]){
-                if($this->isThemeCoordinator()){
-                    return true;
-                }
+        }
+        if($wgRoleValues[TC] >= $wgRoleValues[$role]){
+            if($this->isThemeCoordinator()){
+                return true;
             }
         }
         return false;
