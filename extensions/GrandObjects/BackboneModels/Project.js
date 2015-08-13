@@ -30,6 +30,7 @@ Project = Backbone.Model.extend({
         longDescription: '',
         status: '',
         type: '',
+        theme: '',
         phase: '',
         url: '',
         deleted: '',

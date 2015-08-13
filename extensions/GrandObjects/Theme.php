@@ -10,7 +10,7 @@ class Theme {
     
     var $id;
     var $acronym;
-    var $name;
+    var $name = "";
     var $description;
     var $phase;
     var $color;
