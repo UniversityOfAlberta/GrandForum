@@ -383,7 +383,7 @@ class Project extends BackboneModel {
         $leads = array();
         foreach($leaders as $leader){
             $leads[] = array('id' => $leader->getId(),
-                             'name' => $leader->getReversedName(),
+                             'name' => $leader->getNameForForms(),
                              'url' => $leader->getUrl());
         }
         $subProjects = $this->getSubProjects();
