@@ -394,7 +394,7 @@ class Project extends BackboneModel {
                             'url' => $sub->getUrl());
         }
         $challenge = $this->getChallenge();
-        $theme = $challenge->getName();
+        $theme = $challenge->getAcronym();
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
