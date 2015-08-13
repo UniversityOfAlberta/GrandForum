@@ -210,6 +210,15 @@ define('FINAL_NETWORK',         7);
 define('FINAL_PLANNING',        8);
 define('FINAL_ALIGN',           9);
 
+// Second level for TVN Progress Report
+define('PROG_INFORMATION',      1);
+define('PROG_MILESTONES',       2);
+define('PROG_KTEE',             3);
+define('PROG_PARTNERS',         4);
+define('PROG_ENGAGE',           5);
+define('PROG_NETWORK',          6);
+define('PROG_PLANNING',         7);
+
 /*
  * Third-level identifiers: question within a section.
  *
@@ -517,6 +526,7 @@ define('CAT_CCV_UPLOAD10',          10);
 define('CAT_COMM_UPLOAD',           1);
 
 /* These are used for TVN Project Reports */
+// Final Report
 define('FINAL_INFORMATION_ROLE',    1);
 define('FINAL_INFORMATION_TIME',    2);
 define('FINAL_INFORMATION_STATUS',  3);
@@ -546,6 +556,30 @@ define('FINAL_PLAN_TRANS',      5);
 define('FINAL_ALIGN_MULTI',     1);
 define('FINAL_ALIGN_CHALLENGE', 2);
 define('FINAL_ALIGN_LEADER',    3);
+
+// Progress Report
+define('PROG_INFORMATION_ROLE',    1);
+define('PROG_INFORMATION_TIME',    2);
+define('PROG_INFORMATION_STATUS',  3);
+
+define('PROG_MIL_UPLOAD',       1);
+define('PROG_MIL_CHALLENGE',    2);
+define('PROG_MIL_ACHIEVE',      3);
+
+define('PROG_KTEE_SUCCESS',     1);
+
+define('PROG_PART_CONTR',       1);
+define('PROG_PART_DESC',        2);
+
+define('PROG_ENGAGE_PATIENT',   1);
+
+define('PROG_NET_ACTIVITY',     1);
+
+define('PROG_PLAN_THEMES',     1);
+define('PROG_PLAN_PRIORITIES', 2);
+define('PROG_PLAN_SYNTH',      3);
+define('PROG_PLAN_CREATION',   4);
+define('PROG_PLAN_TRANS',      5);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

@@ -129,17 +129,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" name="Milestones" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
-        <Instructions>
-            <![CDATA[
-                <h3>Milestones (provide as a single Excel file)</h3>
-                <p>Guidelines:
-                    <ul>
-                        <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored.</li>
-                        <li><b><i>The project leader is responsible for combining all of the milestones into a single excel file.</i></b></li>
-                    </ul>
-                </p>
-            ]]>
-        </Instructions>
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <p>
@@ -223,6 +212,7 @@
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
+                <p>Identify any networking activity your project team undertook during this final reporting period and describe the outcomes as they relate to the completion of your project and to the development of collaborations.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -230,6 +220,7 @@
     <ReportSection id="planning" name="Networking Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
         <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
+                <p>Please assess your project against the following.</p>
                 <h3>Research Themes</h3>
                 <p><small>Which TVN research themes does your project most closely fall under?</small></p>
                 {$item}
