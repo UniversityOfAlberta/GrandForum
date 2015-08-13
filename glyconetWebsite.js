@@ -24,6 +24,7 @@ function isNumeric(n) {
 }
 
 var firstTab = getUrlVars()["tab"];
+var firstPerson = getUrlVars()["person"];
 if(firstTab == "" || firstTab == undefined){
     firstTab = "main-page";
 }
@@ -142,7 +143,7 @@ function initTab(role, selector, tabSelector, fields, cols){
                 // Don't include incomplete people
                 continue;
             }
-            var html = "<div class='tshowcase-box ts-col_" + cols + "' id='" + id + "'>" + 
+            var html = "<div class='tshowcase-box ts-col_" + cols + "' id='" + id + "' data-id='" + person.id + "'>" + 
                        "<div class='tshowcase-inner-box'>" + 
                        "<div class='tshowcase-box-photo ts-rounded ts-white-border' style='height:105px;position:relative;cursor:pointer;'>" +
                        "<div class='overlay' style='width:80px;height:105px;background:#126480;opacity:0.2;display:none;position:absolute;top:0;left:0;'></div>" + 
@@ -181,10 +182,18 @@ function initTab(role, selector, tabSelector, fields, cols){
             // Click Profile
             var id = jQuery(e.currentTarget).parent().parent().attr('id');
             var person = response[id];
-            jQuery(selector + "_tab").fadeOut();
-            jQuery(selector + "_tab > h1").fadeOut();
-            jQuery(".gdl-right-sidebar").hide();
-            jQuery(".gdl-page-float-left").animate({width: jQuery(".page-wrapper").width() + "px"});
+            if(firstPerson == "" || firstPerson == undefined){
+                jQuery(selector + "_tab").fadeOut();
+                jQuery(selector + "_tab > h1").fadeOut();
+                jQuery(".gdl-right-sidebar").hide();
+                jQuery(".gdl-page-float-left").animate({width: jQuery(".page-wrapper").width() + "px"});
+            }
+            else{
+                jQuery(selector + "_tab").hide();
+                jQuery(selector + "_tab > h1").hide();
+                jQuery(".gdl-right-sidebar").hide();
+                jQuery(".gdl-page-float-left").animate({width: jQuery(".page-wrapper").width() + "px"}, 0);
+            }
             jQuery(".gdl-page-item").width("100%");
             jQuery(".gdl-page-item > div").width("100%");
             jQuery(".gdl-page-content iframe").each(function(i, el){
@@ -193,8 +202,14 @@ function initTab(role, selector, tabSelector, fields, cols){
             jQuery("img.throbber").show();
             jQuery("iframe" + selector + "_frame")[0].contentWindow.location.replace(person.url + '?embed&font=Lato,Arial,Verdana');
             jQuery("iframe" + selector + "_frame").show();
-            jQuery(".back_button").show();
+            if(firstPerson == "" || firstPerson == undefined){
+                jQuery(".back_button").show();
+            }
         });
+        
+        if(firstPerson != "" && firstPerson != undefined){
+            jQuery("#" + firstTab + " " + selector + "_tab div[data-id=" + firstPerson + "] .tshowcase-box-photo").click();
+        }
     });
 }
 
