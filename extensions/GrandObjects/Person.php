@@ -1051,12 +1051,12 @@ class Person extends BackboneModel {
     
     function isThemeLeader(){
         self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TL][$this->getId()]));
+        return (isset(self::$themeLeaderCache[TL][$this->id]));
     }
     
     function isThemeCoordinator(){
         self::generateThemeLeaderCache();
-        return (isset(self::$themeLeaderCache[TC][$this->getId()]));
+        return (isset(self::$themeLeaderCache[TC][$this->id]));
     }
     
     function isThemeLeaderOf($project){
@@ -2552,6 +2552,7 @@ class Person extends BackboneModel {
     // Returns whether or not the Person has a role of at least the given role
     function isRoleAtLeast($role){
         global $wgRoleValues;
+        $me = Person::newFromWgUser();
         if($this->isCandidate()){
             return false;
         }
@@ -2564,6 +2565,16 @@ class Person extends BackboneModel {
         }
         if($wgRoleValues[PL] >= $wgRoleValues[$role]){
             if($this->isProjectLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[TL] >= $wgRoleValues[$role]){
+            if($this->isThemeLeader()){
+                return true;
+            }
+        }
+        if($wgRoleValues[TC] >= $wgRoleValues[$role]){
+            if($this->isThemeCoordinator()){
                 return true;
             }
         }

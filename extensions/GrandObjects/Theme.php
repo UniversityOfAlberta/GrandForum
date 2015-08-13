@@ -9,8 +9,8 @@ class Theme {
     static $cache = array();
     
     var $id;
-    var $acronym;
-    var $name;
+    var $acronym = "";
+    var $name = "";
     var $description;
     var $phase;
     var $color;

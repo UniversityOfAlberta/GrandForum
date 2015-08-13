@@ -30,9 +30,11 @@ Project = Backbone.Model.extend({
         longDescription: '',
         status: '',
         type: '',
+        theme: '',
         phase: '',
         url: '',
         deleted: '',
+        leaders: new Array(),
         subprojects: new Array(),
         startDate: '',
         endDate: ''
