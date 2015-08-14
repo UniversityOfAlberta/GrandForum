@@ -166,7 +166,7 @@ class Person extends BackboneModel {
      */
     static function newFromNameLike($name){
         $name = Person::cleanName($name);
-        $name = strtolower($name);
+        $name = unaccentChars(strtolower($name));
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
@@ -300,9 +300,9 @@ class Person extends BackboneModel {
                     $row['phone'] = $phoneNumbers[$row['user_id']];
                 }
                 $exploded = explode(".", $row['user_name']);
-                $firstName = ($row['first_name'] != "") ? $row['first_name'] : @$exploded[0];
-                $lastName = ($row['last_name'] != "") ? $row['last_name'] : @$exploded[1];
-                $middleName = $row['middle_name'];
+                $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @unaccentChars($exploded[0]);
+                $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @unaccentChars($exploded[1]);
+                $middleName = unaccentChars($row['middle_name']);
                 self::$idsCache[$row['user_id']] = $row;
                 self::$namesCache[strtolower($row['user_name'])] = $row;
                 self::$namesCache[strtolower("$firstName $lastName")] = $row;
@@ -311,7 +311,7 @@ class Person extends BackboneModel {
                 self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
                 self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                    self::$namesCache[strtolower(str_replace("&nbsp;", " ", $row['user_real_name']))] = $row;
+                    self::$namesCache[unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])))] = $row;
                 }
                 if($middleName != ""){
                     self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
