@@ -19,6 +19,10 @@ class MultiTextReportItem extends AbstractReportItem {
     }
     
     function getNComplete(){
+        $opt = $this->getAttr('optional', '0');
+        if($opt == '1' || $opt == 'true'){
+            return 0;
+        }
         $values = $this->getBlobValue();
         if(isset($values[-1])){
             unset($values[-1]);
@@ -30,6 +34,10 @@ class MultiTextReportItem extends AbstractReportItem {
     }
     
     function getNFields(){
+        $opt = $this->getAttr('optional', '0');
+        if($opt == '1' || $opt == 'true'){
+            return 0;
+        }
         return 1;
     }
     
