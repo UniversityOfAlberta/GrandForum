@@ -11,6 +11,7 @@
             <SectionPermission id="capacity" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="supervisor" permissions="r" />
         </Role>
     </Permissions>
     <ReportSection id="milestones" name="Milestones" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
@@ -247,7 +248,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" options="Excellent|Very good|Good|Inadequate" rich="true">
+        <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" rich="true">
             <![CDATA[
                 <h3>Please elaborate:</h3>
                 {$item}
