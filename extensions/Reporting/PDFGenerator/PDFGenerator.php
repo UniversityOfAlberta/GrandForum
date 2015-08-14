@@ -162,7 +162,7 @@ abstract class PDFGenerator {
 "/(&clubs;)/",
 "/(&hearts;)/",
 "/(&diams;)/");
-        $str = preg_replace($specials, "<span style='font-family: DejaVu Sans !important;'>$1</span>", $str);
+        $str = preg_replace($specials, "<span style='font-family: DejaVu Sans !important; line-height:50%;'>$1</span>", $str);
         return $str;
     }
     
@@ -322,6 +322,15 @@ EOF;
 		    
 		    #pdfBody .belowLine {
 		        display: none;
+		    }
+		    
+		    #pdfBody sup {
+		        font-size: 0.8em;
+		        vertical-align: top;
+		    }
+		    
+		    #pdfBody sub {
+		        font-size: 0.8em;
 		    }";
         }
         
@@ -486,6 +495,7 @@ EOF;
 		    #pdfBody p {
 		        margin: 0;
 		    }
+
 		    
 		    #pdfBody small, #pdfBody .small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
@@ -634,6 +644,7 @@ if ( isset($pdf) ) {
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
+            $html = PDFGenerator::replaceSpecial($html);
             echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
