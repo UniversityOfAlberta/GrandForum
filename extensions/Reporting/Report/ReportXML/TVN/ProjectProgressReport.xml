@@ -137,7 +137,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
+        <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Other Challenges*</h3>
                 <p>If applicable, describe any challenges encountered by the project team (research, management, partnership, training, etc.) during the reporting period and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>

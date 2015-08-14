@@ -61,6 +61,7 @@ define('RP_FINAL_PROJECT',      300);
 define('RP_IFP_PROGRESS',       301);
 define('RP_PROGRESS',           302);
 define('RP_SSA_FINAL_PROGRESS', 303);
+define('RP_IFP_FINAL_PROJECT',  304);
 
 /*
  * Second-level identifiers: report section.
@@ -218,6 +219,18 @@ define('PROG_PARTNERS',         4);
 define('PROG_ENGAGE',           5);
 define('PROG_NETWORK',          6);
 define('PROG_PLANNING',         7);
+
+// Second level for TVN IFP Final Project Report
+define('IFP_FINAL_MILESTONES',  1);
+define('IFP_FINAL_KTEE',        2);
+define('IFP_FINAL_EXTERNAL',    3);
+define('IFP_FINAL_MENTORSHIP',  4);
+define('IFP_FINAL_COLLAB',      5);
+define('IFP_FINAL_CAPACITY',    7);
+define('IFP_FINAL_PARTNERS',    8);
+define('IFP_FINAL_NETWORK',     9);
+define('IFP_FINAL_COMMENTS',    10);
+define('IFP_FINAL_SUPERVISOR',  11);
 
 /*
  * Third-level identifiers: question within a section.
@@ -580,6 +593,47 @@ define('PROG_PLAN_PRIORITIES', 2);
 define('PROG_PLAN_SYNTH',      3);
 define('PROG_PLAN_CREATION',   4);
 define('PROG_PLAN_TRANS',      5);
+
+// IFP Final Report
+define('IFP_FINAL_MIL_UPLOAD',      1);
+define('IFP_FINAL_MIL_CHALLENGE',   2);
+define('IFP_FINAL_MIL_KEY',         3);
+define('IFP_FINAL_MIL_SUMMARY',     4);
+define('IFP_FINAL_MIL_ABSTRACT',    5);
+define('IFP_FINAL_MIL_REVIEW',      6);
+define('IFP_FINAL_MIL_THEMES',      7);
+define('IFP_FINAL_MIL_PRIORITIES',  8);
+define('IFP_FINAL_MIL_CARE',        9);
+define('IFP_FINAL_MIL_IMPACT',      10);
+define('IFP_FINAL_MIL_SYNTH',       11);
+define('IFP_FINAL_MIL_CREATION',    12);
+define('IFP_FINAL_MIL_TRANS',       13);
+
+define('IFP_FINAL_KTEE_SUCCESS',    1);
+
+define('IFP_FINAL_EXTERNAL_PLACEMENT',  1);
+
+define('IFP_FINAL_MENTORSHIP_PROGRAM',  1);
+
+define('IFP_FINAL_COLLAB_MILESTONE',    1);
+define('IFP_FINAL_COLLAB_PROGRESS',     2);
+define('IFP_FINAL_COLLAB_BENEFITS',     3);
+
+define('IFP_FINAL_CAPACITY_ACTIVITY',   1);
+define('IFP_FINAL_CAPACITY_ACADEMIC',   2);
+define('IFP_FINAL_CAPACITY_EMPLOYMENT', 3);
+
+define('IFP_FINAL_PARTNERS_FUNDING',    1);
+
+define('IFP_FINAL_NETWORK_MEETING',     1);
+
+define('IFP_FINAL_COMMENTS_FEEDBACK',   1);
+
+define('IFP_FINAL_SUP_MULTI',           1);
+define('IFP_FINAL_SUP_SOCIAL',          2);
+define('IFP_FINAL_SUP_LEADER',          3);
+define('IFP_FINAL_SUP_ASSESSMENT',      4);
+define('IFP_FINAL_SUP_ELABORATE',       5);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
