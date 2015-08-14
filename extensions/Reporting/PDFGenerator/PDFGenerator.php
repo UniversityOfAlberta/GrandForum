@@ -625,10 +625,10 @@ if ( isset($pdf) ) {
   $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
   // Center the text
-  $nameWidth = Font_Metrics::get_text_width("'.$headerName.' ", $font, $size);
+  $nameWidth = Font_Metrics::get_text_width("'.utf8_encode($headerName).' ", $font, $size);
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
-  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.$headerName.'", $font, $size, $color, 0.01);
+  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
   $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
@@ -643,7 +643,6 @@ if ( isset($pdf) ) {
         $html = str_replace("“", '"', $html);
         $html = str_replace("”", '"', $html);
         $html = PDFGenerator::replaceSpecial($html);
-        $html = str_replace("&alpha;", "<span style='font-family: DejaVu Sans !important;'>&alpha;</span>", $html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
         $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".(PDFGenerator::cmToPixels($margins['top'] - 0.5)+($fontSize*1.6))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
