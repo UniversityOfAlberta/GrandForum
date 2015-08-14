@@ -331,7 +331,8 @@ EOF;
 		    
 		    #pdfBody sub {
 		        font-size: 0.8em;
-		    }";
+		    }
+		    ";
         }
         
 		$header .= "
@@ -495,7 +496,6 @@ EOF;
 		    #pdfBody p {
 		        margin: 0;
 		    }
-
 		    
 		    #pdfBody small, #pdfBody .small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
@@ -563,6 +563,11 @@ EOF;
             
             #pdfBody .tinymce p {
                 margin-bottom: ".($fontSize)."px;
+            }
+            
+            #pdfBody .tinymce p strong {
+                page-break-after: avoid;
+                page-break-before: avoid;
             }
             
             #pdfBody .tinymce ol, #pdfBody .tinymce ul {
