@@ -6,10 +6,16 @@ class MultiTextReportItem extends AbstractReportItem {
         $indices = array();
         foreach($labels as $label){
             $index = strtolower($label);
+            $index = strip_tags($index);
             $index = str_replace("-", "", $index);
             $index = str_replace(" ", "", $index);
             $index = str_replace(".", "", $index);
             $index = str_replace("'", "", $index);
+            $index = str_replace("(", "", $index);
+            $index = str_replace(")", "", $index);
+            $index = str_replace("[", "", $index);
+            $index = str_replace("]", "", $index);
+            $index = str_replace(",", "", $index);
             if($index == ""){
                 $index = "_";
             }
