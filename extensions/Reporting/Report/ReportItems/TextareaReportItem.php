@@ -222,6 +222,7 @@ EOF;
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
             $blobValue = str_replace("</p>", "<br /><br style='font-size:1em;' />", $blobValue);
             $blobValue = str_replace("<p>", "", $blobValue);
+            $blobValue = str_replace_last("<br /><br style='font-size:1em;' />", "", $blobValue);
             $html .= "<div class='tinymce'>$blobValue</div>";
         }
         else{
