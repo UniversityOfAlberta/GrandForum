@@ -55,7 +55,7 @@ class RFPApplicationTable extends SpecialPage{
                     <th width='1%'>Last&nbsp;Name</th>
                     <th width='1%'>Email</th>
                     <th>Project Title</th>
-                    <th width='1%'>Generation&nbsp;Date</th>
+                    <th width='1%'>Generation&nbsp;Date (MST)</th>
                     <th width='1%'>PDF&nbsp;Download</th>
                 </tr>
             </thead>
@@ -75,7 +75,7 @@ class RFPApplicationTable extends SpecialPage{
                 $wgOut->addHTML("<tr>");
                 $wgOut->addHTML("<td>{$ni->getFirstName()}</td><td>{$ni->getLastName()}</td><td><a href='mailto:{$ni->getEmail()}'>{$ni->getEmail()}</a></td>");
                 $wgOut->addHTML("<td>{$title}</td>");
-                $wgOut->addHTML("<td style='white-space:nowrap;'>".time2date($generated)."</td>");
+                $wgOut->addHTML("<td style='white-space:nowrap;'>".time2date($generated, 'F j, Y h:m:s')."</td>");
                 $wgOut->addHTML("<td align='center'><a class='button' href='{$pdf->getUrl()}'>Download</a></td>");
                 $wgOut->addHTML("</tr>");
             }
