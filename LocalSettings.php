@@ -327,6 +327,14 @@ function str_replace_first($search, $replace, $subject) {
     return $subject;
 }
 
+function str_replace_last($search, $replace, $subject) {
+    $pos = strrpos($subject, $search);
+    if($pos !== false) {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+    return $subject;
+}
+
 function str_replace_every_other($needle, $replace, $haystack, &$count=null, $replace_first=true) {
     $count = 0;
     $offset = strpos($haystack, $needle);
