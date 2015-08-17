@@ -172,7 +172,7 @@ class EditRelations extends SpecialPage{
 	    foreach($relations as $relation){
 	        $names[] = $relation->getUser2()->getNameForForms();
 	    }
-	    $allHQP = Person::getAllPeople(HQP);
+	    $allHQP = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
 	    foreach($allHQP as $hqp){
 	        if($person->getId() != $hqp->getId()){
 	            if(array_search($hqp->getNameForForms(), $names) === false){
