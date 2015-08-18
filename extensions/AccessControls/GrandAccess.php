@@ -37,6 +37,7 @@ class GrandAccess {
 	    if($me->isRoleAtLeast(STAFF)){
 	        $aRights[$i++] = PL;
 	        $aRights[$i++] = TL;
+	        $aRights[$i++] = TC;
 	    }
 	    $leadership = $me->leadership();
 	    if(count($leadership) > 0){
