@@ -57,6 +57,9 @@ class ReportItemCallback {
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
             "report_has_started" => "getReportHasStarted",
             // People
+            "my_name" => "getMyName",
+            "my_first_name" => "getMyFirstName",
+            "my_last_name" => "getMyLastName",
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
@@ -727,6 +730,21 @@ class ReportItemCallback {
             }
         }
         return $hqp_comments;
+    }
+    
+    function getMyName(){
+        $person = $this->reportItem->getReport()->person;
+        return $person->getNameForForms();
+    }
+    
+    function getMyFirstName(){
+        $person = $this->reportItem->getReport()->person;
+        return $person->getFirstName();
+    }
+    
+    function getMyLastName(){
+        $person = $this->reportItem->getReport()->person;
+        return $person->getLastName();
     }
     
     function getUserUrl(){

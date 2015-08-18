@@ -243,6 +243,9 @@ define('IFP_PROG_PLANNING',     8);
 define('IFP_PROG_COMMENTS',     9);
 define('IFP_PROG_SUPERVISOR',   10);
 
+// SSA Final Report
+define('SSA_REPORT',            1);
+
 /*
  * Third-level identifiers: question within a section.
  *
@@ -680,6 +683,23 @@ define('IFP_PROG_COMMENTS_FEEDBACK',    1);
 
 define('IFP_PROG_SUP_ASSESSMENT',       1);
 define('IFP_PROG_SUP_ELABORATE',        2);
+
+// SSA Report
+define('SSA_START',         1);
+define('SSA_END',           2);
+define('SSA_TIME',          3);
+define('SSA_NO',            4);
+define('SSA_ANOTHER',       5);
+define('SSA_ACHIEVEMENTS',  6);
+define('SSA_PRIORITIES',    7);
+define('SSA_THEMES',        8);
+define('SSA_CARE',          9);
+define('SSA_IMPACT',        10);
+define('SSA_SYNTH',         11);
+define('SSA_CREATION',      12);
+define('SSA_MOBILIZATION',  13);
+define('SSA_INSTITUTION',   14);
+
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
