@@ -77,7 +77,7 @@
                     </table>
                 ]]>
             </ReportItem>
-            <ReportItem id="achievements" type="TextareaReportItem" rich="true" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS">
+            <ReportItem id="achievements" type="TextareaReportItem" rich="true" height="400px" blobType="BLOB_TEXT" blobItem="SSA_ACHIEVEMENTS">
                 <![CDATA[
                     <h3>Describe the student’s major research activities and related key achievements over this reporting period and if applicable, emphasize collaborative achievements.</h3>
                     {$item}
