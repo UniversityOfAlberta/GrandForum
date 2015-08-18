@@ -60,8 +60,8 @@
             </ReportItem>
             <ReportItem id="fulltime_no" type="TextReportItem" blobType="BLOB_TEXT" blobItem="SSA_NO">
                 <![CDATA[
-                    If no, # hours per week?<br />
-                    {$item}
+                        If no, # hours per week?<br />
+                        {$item}
                     </td>
                 ]]>
             </ReportItem>
