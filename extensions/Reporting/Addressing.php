@@ -232,6 +232,17 @@ define('IFP_FINAL_NETWORK',     9);
 define('IFP_FINAL_COMMENTS',    10);
 define('IFP_FINAL_SUPERVISOR',  11);
 
+// Second level for TVN IFP Progress Report
+define('IFP_PROG_MILESTONES',   1);
+define('IFP_PROG_MENTORSHIP',   2);
+define('IFP_PROG_COLLAB',       3);
+define('IFP_PROG_CAPACITY',     5);
+define('IFP_PROG_PARTNERS',     6);
+define('IFP_PROG_NETWORK',      7);
+define('IFP_PROG_PLANNING',     8);
+define('IFP_PROG_COMMENTS',     9);
+define('IFP_PROG_SUPERVISOR',   10);
+
 /*
  * Third-level identifiers: question within a section.
  *
@@ -634,6 +645,41 @@ define('IFP_FINAL_SUP_SOCIAL',          2);
 define('IFP_FINAL_SUP_LEADER',          3);
 define('IFP_FINAL_SUP_ASSESSMENT',      4);
 define('IFP_FINAL_SUP_ELABORATE',       5);
+
+// IFP Progress Report
+define('IFP_PROG_MIL_UPLOAD',           1);
+define('IFP_PROG_MIL_CHALLENGE',        2);
+define('IFP_PROG_MIL_PLACEMENT',        3);
+
+define('IFP_PROG_MENTORSHIP_FREQ',      1);
+define('IFP_PROG_MENTORSHIP_TIMES',     2);
+define('IFP_PROG_MENTORSHIP_PFSS',      3);
+define('IFP_PROG_MENTORSHIP_PROGRAM',   4);
+
+define('IFP_PROG_COLLAB_MILESTONE',     1);
+define('IFP_PROG_COLLAB_PROGRESS',      2);
+define('IFP_PROG_COLLAB_BENEFITS',      3);
+
+define('IFP_PROG_CAPACITY_ACTIVITY',    1);
+define('IFP_PROG_CAPACITY_ACADEMIC',    2);
+define('IFP_PROG_CAPACITY_EMPLOYMENT',  3);
+
+define('IFP_PROG_PARTNERS_FUNDING',     1);
+
+define('IFP_PROG_NETWORK_MEETING',      1);
+
+define('IFP_PROG_PLAN_THEMES',          1);
+define('IFP_PROG_PLAN_PRIORITIES',      2);
+define('IFP_PROG_PLAN_CARE',            3);
+define('IFP_PROG_PLAN_IMPACT',          4);
+define('IFP_PROG_PLAN_SYNTH',           5);
+define('IFP_PROG_PLAN_CREATION',        6);
+define('IFP_PROG_PLAN_TRANS',           7);
+
+define('IFP_PROG_COMMENTS_FEEDBACK',    1);
+
+define('IFP_PROG_SUP_ASSESSMENT',       1);
+define('IFP_PROG_SUP_ELABORATE',        2);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

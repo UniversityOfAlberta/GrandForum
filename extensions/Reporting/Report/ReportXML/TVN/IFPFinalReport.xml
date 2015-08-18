@@ -9,6 +9,7 @@
             <SectionPermission id="collab" permissions="rw" />
             <SectionPermission id="dissemination" permissions="rw" />
             <SectionPermission id="capacity" permissions="rw" />
+            <SectionPermission id="partners" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="supervisor" permissions="r" />
