@@ -6,7 +6,7 @@ class HQPExitTab extends AbstractEditableTab {
     var $visibility;
 
     function HQPExitTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Moved On");
+        parent::AbstractEditableTab("HQP Alumni");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -58,7 +58,7 @@ class HQPExitTab extends AbstractEditableTab {
                     }
                 }
             }
-            $wgMessage->addSuccess("The 'Moved On' information for {$this->person->getNameForForms()} has been updated");
+            $wgMessage->addSuccess("The 'HQP Alumni' information for {$this->person->getNameForForms()} has been updated");
         }
         if($this->visibility['isSupervisor']){
             Notification::addNotification($me, $this->person, "Profile Change", "Your profile has been edited by {$me->getNameForForms()}.", "{$this->person->getUrl()}");
@@ -259,7 +259,7 @@ EOF;
                                                                "country" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
-                $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Moved On\"' /><br />";
+                $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' /><br />";
             }
             else{
                 if(count($movedOn) > 0){
