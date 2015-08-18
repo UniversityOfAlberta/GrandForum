@@ -283,7 +283,7 @@ EOF;
                     }
                 }
                 else{
-                    $this->html .= "{$person->getNameForForms()} does not have any moved on or graduation information yet.";
+                    $this->html .= "{$person->getNameForForms()} does not have any alumni information yet.";
                 }
             }
         }
