@@ -16,6 +16,12 @@ class ProjectPage {
         $name = ($wgTitle != null) ? str_replace("_Talk", "", $wgTitle->getNsText()) : "";
         $name = str_replace("_", " ", $name);
         $title = ($wgTitle != null) ? $wgTitle->getText() : "";
+        if($name == ""){
+            // Namespace probably doesn't exist
+            $exploded = explode(":", $title);
+            $name = @$exploded[0];
+            $title = @$exploded[1];
+        }
         $theme = Theme::newFromName($name);
         if($theme != null && $theme->getAcronym() != "" && $title == "Information"){
             $projects = $theme->getProjects();
