@@ -173,6 +173,22 @@ class Theme {
         }
         return $leaders;
     }
+    
+    /*
+     * Returns all of the Projects in this Theme
+     * @return array The Projects in this Theme
+     */
+    function getProjects(){
+        $return = array();
+        $projects = Project::getAllProjects();
+        foreach($projects as $project){
+            if($project->getChallenge()->getAcronym() == $this->getAcronym()){
+                $return[$project->getName()] = $project;
+            }
+        }
+        ksort($return);
+        return $return;
+    }
 
 }
 
