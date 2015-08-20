@@ -226,6 +226,7 @@ define('IFP_FINAL_KTEE',        2);
 define('IFP_FINAL_EXTERNAL',    3);
 define('IFP_FINAL_MENTORSHIP',  4);
 define('IFP_FINAL_COLLAB',      5);
+define('IFP_FINAL_DISS',        6);
 define('IFP_FINAL_CAPACITY',    7);
 define('IFP_FINAL_PARTNERS',    8);
 define('IFP_FINAL_NETWORK',     9);
@@ -236,6 +237,7 @@ define('IFP_FINAL_SUPERVISOR',  11);
 define('IFP_PROG_MILESTONES',   1);
 define('IFP_PROG_MENTORSHIP',   2);
 define('IFP_PROG_COLLAB',       3);
+define('IFP_PROG_DISS',         4);
 define('IFP_PROG_CAPACITY',     5);
 define('IFP_PROG_PARTNERS',     6);
 define('IFP_PROG_NETWORK',      7);
@@ -566,6 +568,7 @@ define('FINAL_RES_ABSTRACT',    3);
 define('FINAL_RES_REVIEW',      4);
 
 define('FINAL_KTEE_SUCCESS',    1);
+define('FINAL_KTEE_TECH',       2);
 
 define('FINAL_PART_CONTR',      1);
 define('FINAL_PART_DESC',       2);
@@ -594,6 +597,7 @@ define('PROG_MIL_CHALLENGE',    2);
 define('PROG_MIL_ACHIEVE',      3);
 
 define('PROG_KTEE_SUCCESS',     1);
+define('PROG_KTEE_TECH',        2);
 
 define('PROG_PART_CONTR',       1);
 define('PROG_PART_DESC',        2);
@@ -633,6 +637,8 @@ define('IFP_FINAL_COLLAB_MILESTONE',    1);
 define('IFP_FINAL_COLLAB_PROGRESS',     2);
 define('IFP_FINAL_COLLAB_BENEFITS',     3);
 
+define('IFP_FINAL_DISS_OTHER',          1);
+
 define('IFP_FINAL_CAPACITY_ACTIVITY',   1);
 define('IFP_FINAL_CAPACITY_ACADEMIC',   2);
 define('IFP_FINAL_CAPACITY_EMPLOYMENT', 3);
@@ -662,6 +668,8 @@ define('IFP_PROG_MENTORSHIP_PROGRAM',   4);
 define('IFP_PROG_COLLAB_MILESTONE',     1);
 define('IFP_PROG_COLLAB_PROGRESS',      2);
 define('IFP_PROG_COLLAB_BENEFITS',      3);
+
+define('IFP_PROG_DISS_OTHER',           1);
 
 define('IFP_PROG_CAPACITY_ACTIVITY',    1);
 define('IFP_PROG_CAPACITY_ACADEMIC',    2);

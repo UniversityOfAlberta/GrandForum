@@ -176,13 +176,18 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="products" type="StaticReportItem">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h3>Dissemination of Project Research Results</h3>
+                {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
-            <![CDATA[{$item}]]>
+        <ReportItem id="tech" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_KTEE_TECH" rich="true">
+            <![CDATA[
+                <h2>Technology Exchange & Commercialization</h2>
+                <p>Please provide information regarding any commercialization activities that have arisen from the research during this reporting period or since project award.</p>
+                {$item}
+            ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">

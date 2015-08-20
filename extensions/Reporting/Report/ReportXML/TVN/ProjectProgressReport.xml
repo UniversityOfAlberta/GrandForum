@@ -161,10 +161,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="products" type="StaticReportItem">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h3>Dissemination of Project Research Results</h3>
-                <p>Coming Soon, this will probably be a dashboard, but I'm not sure yet...</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="tech" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_KTEE_TECH" rich="true">
+            <![CDATA[
+                <h2>Technology Exchange & Commercialization</h2>
+                <p>Please provide information regarding any commercialization activities that have arisen from the research during this reporting period or since project award.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>

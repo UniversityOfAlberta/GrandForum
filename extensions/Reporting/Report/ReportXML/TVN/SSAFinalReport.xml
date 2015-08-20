@@ -163,7 +163,7 @@
             <ReportItem id="institution" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_INSTITUTION" mimeType="application/pdf" fileSize="2">
                 <![CDATA[
                     <i style='font-size:1.5em;'>To be completed by Host Institution</i>
-                    <p>Download <a href='{$wgServer}{$wgScriptPath}/index.php/data/SSA Institution.doc'>SSA Institution Template</a> and have the student's institution fill out the form, and then upload it as a pdf.</p>
+                    <p>Download <a href='{$wgServer}{$wgScriptPath}/data/SSA Institution.doc'>SSA Institution Template</a> and have the student's institution fill out the form, and then upload it as a pdf.</p>
                     {$item}
                 ]]>
             </ReportItem>

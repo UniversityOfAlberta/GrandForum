@@ -98,11 +98,17 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dissemination" name="Dissemination" tooltip="4. Dissemination of Fellowship Work" title="4. Dissemination of Fellowship Work" type="ReportSection">
-        <ReportItem id="desc" type="StaticReportItem" >
+    <ReportSection id="dissemination" name="Dissemination" tooltip="4. Dissemination of Fellowship Work" title="4. Dissemination of Fellowship Work" blobSection="IFP_PROG_DISS" type="ReportSection">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <h3>Key ideas</h3>
-                <p>Coming Soon, this will probably be a dashboard, but I'm not sure yet...</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_DISS_OTHER" rich="true">
+            <![CDATA[
+                <h2>Other Accomplishments</h2>
+                <p>Please list other accomplishments not captured above. These may include technology exchange, commercialization and knowledge exploitation and exchange activities (e.g.  work related to policy changes).</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
