@@ -7,6 +7,10 @@ class DashboardReportItem extends StaticReportItem {
 		$table = ($this->getAttr("table", "true") == "true");
 		$details = ($this->getAttr("details", "true") == "true");
 		$limit = $this->getAttr("limit", "0");
+		if($table == false){
+		    $this->renderForPDF();
+		    return;
+		}
         $dashboard = $this->createDashboard();
         $dashboard = $this->filterCols($dashboard);
         $dashboard = $this->filterRows($dashboard);

@@ -11,7 +11,7 @@ abstract class PublicationCell extends DashboardCell {
             foreach($values as $item){
                 $paper = Paper::newFromId($item);
                 $status = $paper->getStatus();
-                $value = $this->getTypeValue($paper->getType());
+                $value = $paper->getCCVType();
                 $data = $paper->getData();
                 $extra = 0;
                 if(!isset($data['peer_reviewed']) || $data['peer_reviewed'] == "No"){
@@ -20,35 +20,38 @@ abstract class PublicationCell extends DashboardCell {
                 switch($status){
                     case "Peer Reviewed":
                     case "Published":
-                        $newValues[0+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][0+$extra][] = $item;
                         break;
                     case "Not Peer Reviewed":
                     case "To Appear":
-                        $newValues[2+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][2+$extra][] = $item;
                         break;
                     case "Under Revision":
-                        $newValues[4+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][4+$extra][] = $item;
                         break;
                     case "Submitted":
-                        $newValues[6+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][6+$extra][] = $item;
                         break;
                     case "Rejected":
-                        $newValues[8+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][8+$extra][] = $item;
                         break;
                     default:
-                        $newValues[10+$extra][$type][$value][] = $item;
+                        $newValues[$type][$value][10+$extra][] = $item;
                         break;
                 }
+
             }
         }
         $values = array();
         ksort($newValues);
-        foreach($newValues as $value){
-            foreach($value as $type => $items){
+        foreach($newValues as $type => $value){
+            ksort($value);
+            foreach($value as $items){
                 ksort($items);
                 foreach($items as $t){
-                    foreach($t as $item)
-                    $values[$type][] = $item;
+                    foreach($t as $item){
+                        $values[$type][] = $item;
+                    }
                 }
             }
         }

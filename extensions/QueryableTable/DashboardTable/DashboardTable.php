@@ -171,6 +171,8 @@ class DashboardTable extends QueryableTable{
 	// Similar to render(), but used specifically for when printing PDFs
 	// The Dashboard details are expanded below the table
 	function renderForPDF($table=true, $details=true){
+	    $dir = dirname(__FILE__);
+	    require_once($dir . '/../../../Classes/SmartDomDocument/SmartDomDocument.php');
 	    $me = Person::newFromWgUser();
 	    $html = "";
 	    if($table){
@@ -263,8 +265,7 @@ class DashboardTable extends QueryableTable{
                                             $firstTimeType[$position] = true;
                                         }
                                     }
-                                    if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
-                                        $cell instanceof PublicationCell){
+                                    if($cell instanceof PublicationCell){
                                         $paper = Paper::newFromId($item);
                                         $type = $paper->getCCVType();
                                         if(!isset($firstTimeType[$type])){
@@ -278,8 +279,7 @@ class DashboardTable extends QueryableTable{
                                     $details .= "<li>".$row."</li>\n";
                                 }
                             }
-                            if(($cell->label == "Publications" || $cell->label == "Artifacts") && 
-                                $cell instanceof PublicationCell){
+                            if($cell instanceof PublicationCell){
                                 $details .= "</ul></li>\n";
                             }
                             if(($cell->label == "HQP") && $cell instanceof PersonHQPCell){

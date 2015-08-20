@@ -446,10 +446,13 @@ class Paper extends BackboneModel{
      */
     static function structure(){
         global $config, $IP;
+        $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
+        $fileTime = filemtime($fileName);
         if(!Cache::exists("product_structure")){
-            $file = file_get_contents("$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml");
+            $file = file_get_contents($fileName);
             $parser = simplexml_load_string($file);
-            $categories = array('categories' => array());
+            $categories = array('categories' => array(),
+                                'time' => $fileTime);
             foreach($parser->children() as $category){
                 $cattrs = $category->attributes();
                 $cname = "{$cattrs->category}";
@@ -457,6 +460,8 @@ class Paper extends BackboneModel{
                     $tattrs = $type->attributes();
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
+                    $ccvType = "{$tattrs->ccv_name}";
+                    $ccvType = ($ccvType == "") ? $tname : $ccvType;
                     if(trim("{$tattrs->status}") != ""){
                         $tstatus = explode("|", "{$tattrs->status}");
                     }
@@ -465,6 +470,7 @@ class Paper extends BackboneModel{
                     }
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
+                                                                               'type' => $ccvType,
                                                                                'ccv_status' => array());
                     foreach($type->children() as $child){
                         if($child->getName() == "data"){
@@ -510,6 +516,10 @@ class Paper extends BackboneModel{
         }
         else{
             $categories = Cache::fetch("product_structure");
+            if(!isset($categories['time']) || $categories['time'] < $fileTime){
+                Cache::delete("product_structure");
+                return self::structure();
+            } 
         }
         return $categories;
     }
@@ -1003,33 +1013,13 @@ class Paper extends BackboneModel{
     /**
      * Returns the 'CCV' type of this Paper
      * @return string The 'CCV' type of this Paper
-     * TODO: Change this to use the Products.xml once it is used
      */
     function getCCVType(){
-        switch($this->getType()){
-            case "Aesthetic Object":
-                return "Aesthetic Object";
-            case "Device/Machine":
-                return "Device/Machine";
-            case "Open Software":
-                return "Open Software";
-            case "Patent":
-                return "Patent";
-            case "Startup Company":
-                return "Startup Company";
-            case "Repository":
-                return "Repository";
-            case "Journal Paper":
-                return "Journals";
-            case "Book Chapter":
-                return "Book Chapters";
-            case "Conference Paper":
-            case "Collections Paper":
-            case "Proceedings Paper":
-                return "Conference Publications";
-            default:
-                return "Other";
+        $structure = $this->structure();
+        if(isset($structure['categories'][$this->getCategory()]['types'][$this->getType()])){
+            return $structure['categories'][$this->getCategory()]['types'][$this->getType()]['type'];
         }
+        return $this->getType();
     }
     
     /**
@@ -1164,8 +1154,6 @@ class Paper extends BackboneModel{
             if(empty($vn)){
                 $vn = ArrayUtil::get_string($data, 'published_in');
             }
-        }
-        if(($type == "Journal Paper")){
             $volume = ArrayUtil::get_string($data, 'volume');
             $number = ArrayUtil::get_string($data, 'number');
             if(!empty($volume)){
@@ -1175,18 +1163,23 @@ class Paper extends BackboneModel{
                 $vn .= "($number)";
             }
         }
-        if($type == "Book Chapter"){
-            $vn .= ArrayUtil::get_string($data, 'book_title');
+        else {
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'event_title');
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'journal_title');
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'book_title');
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'owner');
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'assignor');
         }
+        
 
         $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
             $pg = "{$pg}pp.";
         }
         else{
-            $pg = "(no pages)";
+            $pg = "";
         }
-        $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
+        $pb = ArrayUtil::get_string($data, 'publisher', '');
 
         $peer_rev = "";
         if($showPeerReviewed && $category == "Publication"){
@@ -1206,20 +1199,20 @@ class Paper extends BackboneModel{
         }
         $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
-        if( in_array($type, array('Book', 'Book Chapter', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            if(($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
-                $vn = ":&nbsp;$vn";
-            }
-       		$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn},&nbsp;{$pg}&nbsp;{$pb}
-       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
-    	}
-    	else{
-    	    if($vn != ""){
-    	        $vn = ":&nbsp;$vn";
-            }
-        	$citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>&nbsp;{$type}{$vn}
-        	             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+        if($vn != "" && ($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
+            $vn = "$vn,";
         }
+        if($vn != ""){
+            $vn = "&nbsp;{$vn}";
+        }
+        if($pg != ""){
+            $pg = "&nbsp;{$pg}";
+        }
+        if($pb != ""){
+            $pb = "&nbsp;{$pb}";
+        }
+        $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
+       		         <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         return trim($citation);
     }
 
@@ -1244,8 +1237,8 @@ class Paper extends BackboneModel{
             if (!(strlen($pg) > 0)){
                 $completeness['pages'] = false;
             }
-            $pb = ArrayUtil::get_string($data, 'publisher', '(no publisher)');
-            if($pb == '(no publisher)'){
+            $pb = ArrayUtil::get_string($data, 'publisher', '');
+            if($pb == ''){
                 $completeness['publisher'] = false;
             }
         }

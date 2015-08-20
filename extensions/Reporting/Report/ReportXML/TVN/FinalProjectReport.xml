@@ -179,8 +179,10 @@
         <ReportItem id="products" type="StaticReportItem">
             <![CDATA[
                 <h3>Dissemination of Project Research Results</h3>
-                <p>Coming Soon, this will probably be a dashboard, but I'm not sure yet...</p>
             ]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">

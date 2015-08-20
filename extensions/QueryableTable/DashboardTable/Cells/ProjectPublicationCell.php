@@ -97,9 +97,7 @@ abstract class ProjectPublicationCell extends PublicationCell {
             }
             $this->setValues($values);
         }
-        if($this->category == "Publication" || $this->category == "Artifact"){
-            $this->sortByStatus();
-        }
+        $this->sortByStatus();
     }
 }
 ?>

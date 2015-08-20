@@ -37,7 +37,7 @@
                     
                 ]]>
             </ReportItem>
-            <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START">
+            <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="SSA_START" blobSubItem="{$user_id}">
                 <![CDATA[
                     <tr>
                         <td><b>Date student started working</b></td>
