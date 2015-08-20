@@ -19,7 +19,7 @@ class CCActivitiesTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD) || $person->isRole(APL) || $person->getName() == "Alisa.Grigorovich");
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD) || $person->isRole(APL));
     }
 
     function execute($par){
