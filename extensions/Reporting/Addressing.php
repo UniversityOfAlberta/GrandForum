@@ -220,6 +220,7 @@ define('PROG_PARTNERS',         4);
 define('PROG_ENGAGE',           5);
 define('PROG_NETWORK',          6);
 define('PROG_PLANNING',         7);
+define('PROG_BUDGET',           8);
 
 // Second level for TVN IFP Final Project Report
 define('IFP_FINAL_MILESTONES',  1);
@@ -614,6 +615,8 @@ define('PROG_PLAN_PRIORITIES', 2);
 define('PROG_PLAN_SYNTH',      3);
 define('PROG_PLAN_CREATION',   4);
 define('PROG_PLAN_TRANS',      5);
+
+define('PROG_BUD_UPLOAD',       1);
 
 // IFP Final Report
 define('IFP_FINAL_MIL_UPLOAD',      1);

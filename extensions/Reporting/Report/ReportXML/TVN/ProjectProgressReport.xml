@@ -243,4 +243,35 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="budget" name="Financial Report" tooltip="8. Financial Report" title="8. Financial Report" type="ReportSection" blobSection="PROG_BUDGET">
+        <Instructions>
+            <![CDATA[
+                <ol>
+                    <li>General: This Financial Reporting form contains four (3) tabs.
+                        <ol>
+                            <li>Actual Expenditures up to March 31, 2015</li>
+                            <li>Supporting Detailed Information for TVN funds spent</li>
+                            <li>Supporting Detailed Information for Matching (Cash/In-kind) Contributions from Internal/External sources</li>
+                        </ol>
+                    </li>
+                    <li>The shaded cells are locked to protect the template and the formulas. Please enter your figures and explanations in the clear cells provided in each tab.<br />
+                        <small><b>NOTE:</b> TVN's fiscal year runs from April 1 to March 31, therefore, your budget/expenditure figures should match to the TVN fiscal year (e.g. a project with 1-year budget/expenditure may be covered by 2 TVN fiscal years).</small>
+                    </li>
+                    <li>Financial Report ending March 31, 2014 TVN total expenditures incurred should equal Approved Form 300 box 11B. Form 300 for year ending March 31, 2015 should be posted to the FDSR system by May 1, 2015.</li>
+                    <li>Specific details of each field from Summary should be provided on the 3rd tab 'TVN funds spent Details' and the 4th tab 'Partner Contribution Details' accordingly.</li>
+                    <li><b>Partner Contribution Details:</b><br />
+                        <p>Detailed information should be provided by <b><u>one table per each source of funding</u></b>.</p>
+                        <p>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</p>
+                        <p>Tri-Agency Financial Administration Guide on the acceptable use of grant funds can be found <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-guideAdminFinancier/FundsUse-UtilisationSubventions_eng.asp' taret='_blank'>here</a>.</p>
+                        <p>To calculate in-kind contribution amounts, please consult <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>tri-council guidelines</a>.</p>
+                    </li>
+                </ol>
+            ]]>
+        </Instructions>
+        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN Budget.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>
