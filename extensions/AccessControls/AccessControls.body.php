@@ -122,6 +122,14 @@ function onUserCanExecute($special, $subpage){
     return true;
 }
 
+function checkCreateUser($out, $skin){
+    global $wgTitle;
+    if($wgTitle->getNsText().":".$wgTitle->getText() == "Special:UserLogin/signup"){
+        $out->showPermissionsErrorPage(array(array("badaccess-group0")), 'createaccount');
+    }
+    return true;
+}
+
 /**
  * handler for the userCan hook; tells mediawiki whether the given user is allowed to perform the given action to the given title
  *

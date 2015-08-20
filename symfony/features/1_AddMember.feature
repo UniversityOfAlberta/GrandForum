@@ -3,6 +3,10 @@ Feature: AddMember
     As a User I need to be able to request users
     As an Admin I need to be able to accept users
 
+    Scenario: Anon trying to create an account (should be disabled)
+        Given I am on "index.php/Special:Userlogin/signup"
+        Then I should see "Permission error"
+
     Scenario: HQP trying to request a user (should not be allowed to)
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         Then I should not see "Add Member"
