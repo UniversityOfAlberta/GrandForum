@@ -4,7 +4,7 @@ class UploadReportItem extends AbstractReportItem {
 
     function render(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-        if(isset($_GET['fileUploadForm']) && $_GET['fileUploadForm'] == $this->getId()){
+        if(isset($_GET['fileUploadForm']) && $_GET['fileUploadForm'] == $this->getPostId()){
             $this->fileUploadForm();
         }
         $projectGet = "";
@@ -20,15 +20,15 @@ class UploadReportItem extends AbstractReportItem {
         $section = $this->getSection();
         
         $html = "<script type='text/javascript'>
-                                function alertsize_{$this->getId()}(pixels){
+                                function alertsize_{$this->getPostId()}(pixels){
                                     $('#reportMain > div').stop();
-                                    $('#fileFrame{$this->getId()}').height(pixels);
-                                    $('#fileFrame{$this->getId()}').css('max-height', pixels);
+                                    $('#fileFrame{$this->getPostId()}').height(pixels);
+                                    $('#fileFrame{$this->getPostId()}').css('max-height', pixels);
                                 }
                             </script>";
         $html .= "<div>";
         
-        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getId()}' frameborder='0' style='border-width:0;height:65px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getId()}{$projectGet}{$year}'></iframe></div>";
+        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;'' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
         $html .= "</div>";
         
         $item = $this->processCData($html);
@@ -72,7 +72,7 @@ class UploadReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
                     <script type='text/javascript'>
                         function load_page() {
-                            parent.alertsize_{$this->getId()}($(\"body > div\").height() + 10);
+                            parent.alertsize_{$this->getPostId()}($(\"body > div\").height() + 10);
                         }
                     </script>
                     <style type='text/css'>
@@ -108,7 +108,7 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_POST['upload'])){
             $this->save();
         }
-        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
                             <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
                         </form>";
