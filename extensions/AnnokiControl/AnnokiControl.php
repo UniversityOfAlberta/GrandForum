@@ -194,7 +194,8 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "BlockList" || $key == "Activeusers" || 
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
-             $key == "Recentchangeslinked" || $key == "Tags")){
+             $key == "Recentchangeslinked" || $key == "Tags" ||
+             $key == "CreateAccount")){
             unset($aSpecialPages[$key]);
             continue;
         }

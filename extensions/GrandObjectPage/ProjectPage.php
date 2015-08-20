@@ -4,11 +4,41 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
+$wgHooks['ParserBeforeInternalParse'][] = array($projectPage, 'processTheme');
 
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
+
+    function processTheme($parser, $text, $state){
+        global $wgTitle;
+        $name = ($wgTitle != null) ? str_replace("_Talk", "", $wgTitle->getNsText()) : "";
+        $name = str_replace("_", " ", $name);
+        $title = ($wgTitle != null) ? $wgTitle->getText() : "";
+        if($name == ""){
+            // Namespace probably doesn't exist
+            $exploded = explode(":", $title);
+            $name = @$exploded[0];
+            $title = @$exploded[1];
+        }
+        $theme = Theme::newFromName($name);
+        if($theme != null && $theme->getAcronym() != "" && $title == "Information"){
+            $projects = $theme->getProjects();
+            $projectHTML = array();
+            foreach($projects as $project){
+                $url = str_replace(" ", "_", $project->getUrl());
+                $projectHTML[] = "[{$url} {$project->getName()}]";
+            }
+            if(count($projectHTML) > 0){
+                $text = str_replace("== Projects ==\n", "== Projects ==\n<ul><li>".implode("</li><li>", $projectHTML)."</li></ul>", $text);
+            }
+            else{
+                $text = str_replace("== Projects ==\n", "", $text);
+            }
+        }
+        return true;
+    }
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
@@ -73,7 +103,7 @@ class ProjectPage {
                 $isLead = $project->userCanEdit();
             }
             
-            $isMember = ($me->isMemberOf($project) || $project->getType() == 'Administrative');
+            $isMember = ($project != null && ($me->isMemberOf($project) || $project->getType() == 'Administrative'));
             
             //Adding support for GET['edit']
             if(isset($_GET['edit'])){
