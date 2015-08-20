@@ -14,12 +14,14 @@ define('HEAD3', -107);
 define('HEAD4', -108);
 define('HEAD1_ROW', -109);
 define('HEAD2_ROW', -110);
+define('STRING', -111);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
 $cellTypes[NA] = "NACell";
 $cellTypes[BLANK] = "BlankCell";
 $cellTypes[READ] = "ReadCell";
+$cellTypes[STRING] = "StringCell";
 $cellTypes[HEAD] = "HeadCell";
 $cellTypes[HEAD_ROW] = "HeadRowCell";
 $cellTypes[HEAD1] = "Head1Cell";
@@ -539,8 +541,8 @@ abstract class QueryableTable {
 	    if ($this->status()){
 			if (!$this->isError()) {
 				// All OK.
-				$ret .= "<li>" .
-					"Please verify that the budget preview below is correct. If not, please contact support.</li>";
+				/*$ret .= "<li>" .
+					"Please verify that the budget preview below is correct. If not, please contact support.</li>";*/
 			}
 			else {
 				$ret .= "<li>Please verify that the budget preview below is correct. If not, please contact support.<br />

@@ -210,6 +210,7 @@ define('FINAL_ENGAGE',          6);
 define('FINAL_NETWORK',         7);
 define('FINAL_PLANNING',        8);
 define('FINAL_ALIGN',           9);
+define('FINAL_BUDGET',          10);
 
 // Second level for TVN Progress Report
 define('PROG_INFORMATION',      1);
@@ -586,6 +587,8 @@ define('FINAL_PLAN_TRANS',      5);
 define('FINAL_ALIGN_MULTI',     1);
 define('FINAL_ALIGN_CHALLENGE', 2);
 define('FINAL_ALIGN_LEADER',    3);
+
+define('FINAL_BUD_UPLOAD',      1);
 
 // Progress Report
 define('PROG_INFORMATION_ROLE',    1);
