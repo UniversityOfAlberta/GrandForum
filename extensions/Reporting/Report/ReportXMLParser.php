@@ -436,6 +436,9 @@ class ReportXMLParser {
         if(isset($data['product_id'])){
             $itemset->setProductId($data['product_id']);
         }
+        if(isset($data['extra'])){
+            $itemset->setExtra($data['extra']);
+        }
         if(isset($data['person_id'])){
             $itemset->setPersonId($data['person_id']);
         }
@@ -467,6 +470,7 @@ class ReportXMLParser {
                     $item->setMilestoneId($value['milestone_id']);
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
+                    $item->setExtra($value['extra']);
                     foreach($value['misc'] as $key=>$val){
                         $item->setAttribute("{$key}", "{$val}");
                     }
@@ -529,6 +533,9 @@ class ReportXMLParser {
             }
             if(isset($value['person_id'])){
                 $item->setPersonId($value['person_id']);
+            }
+            if(isset($value['extra'])){
+                $item->setExtra($value['extra']);
             }
             if(isset($attributes->blobType)){
                 if(!defined($attributes->blobType)){

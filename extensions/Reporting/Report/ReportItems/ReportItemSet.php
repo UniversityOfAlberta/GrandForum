@@ -21,6 +21,7 @@ abstract class ReportItemSet extends AbstractReportItem{
                        'person_id' => $this->personId,
                        'product_id' => $this->productId,
                        'misc' => array(),
+                       'extra' => array(),
                        'item_id' => null);
         return $tuple;
     }

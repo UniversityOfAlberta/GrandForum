@@ -115,6 +115,7 @@ class ReportItemCallback {
             // RMC
             "rmc_project_rank" => "getRMCProjectRank",
             "rmc_project_confidence" => "getRMCProjectConfidence",
+            "rmc_project_feedback" => "getRMCProjectFeedback",
             // HQP Application
             "hqp_application_uni" => "getHQPApplicationUni",
             "hqp_application_program" => "getHQPApplicationProgram", 
@@ -129,7 +130,10 @@ class ReportItemCallback {
             "id" => "getId",
             "name" => "getName",
             "index" => "getIndex",
-            "getText" => "getText"
+            "extraIndex" => "getExtraIndex",
+            "getText" => "getText",
+            "getArray" => "getArray",
+            "getExtra" => "getExtra"
         );
     
     var $reportItem;
@@ -1243,6 +1247,27 @@ class ReportItemCallback {
         return "";
     }
     
+    function getRMCProjectFeedback(){
+        $rp = RP_PROJ_REVIEW;
+        $section = PROJ_REVIEW_FEEDBACK;
+        $blobId = PROJ_FEEDBACK_COMM;
+        $subId = "{$this->getUserId()}0{$this->getExtraIndex()}";
+        $projectId = $this->getProjectId();
+        $people = array_merge(Person::getAllPeople(RMC),
+                              Person::getAllPeople(STAFF),
+                              Person::getAllPeople(MANAGER),
+                              Person::getAllPeople(SD));
+        $comments = array();
+        foreach($people as $person){
+            $personId = $person->getId();
+            $comment = $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+            if($comment != ""){
+                $comments[] = "<li>{$comment}</li>";
+            }
+        }
+        return "<ul>".implode("\n", $comments)."</ul>";
+    }
+    
     function getHQPApplicationUni(){
         $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_UNI, 0);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
@@ -1341,11 +1366,36 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getExtraIndex(){
+        $set = $this->reportItem->getSet();
+        foreach($set->getData() as $index => $item){
+            if($item['extra'] == $this->reportItem->extra){
+                return $index;
+            }
+        }
+        return 0;
+    }
+    
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return $blb->getData();
+    }
+    
     function getText($rp, $section, $blobId, $subId, $personId, $projectId){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
         return $blb->getData();
+    }
+    
+    function getExtra($index){
+        $set = $this->reportItem->extra;
+        if(isset($set[$index])){
+            return $set[$index];
+        }
+        return "";
     }
     
     function getPostId(){

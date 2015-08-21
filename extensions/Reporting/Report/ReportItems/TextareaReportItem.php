@@ -129,7 +129,7 @@ class TextareaReportItem extends AbstractReportItem {
 EOF;
         }
         $item .= <<<EOF
-            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};" 
+            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};resize: vertical;" 
                         name="{$this->getPostId()}">$value</textarea>
 EOF;
         return $item;

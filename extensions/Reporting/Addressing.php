@@ -53,6 +53,8 @@ define('RP_HQP_APPLICATION',    200);
 define('RP_CC_PLANNING',        201);
 define('RP_CC_LEADER',          202);
 define('RP_HQP_REVIEW',         203);
+define('RP_PROJ_REVIEW',        204);
+define('RP_PROJ_FEEDBACK',      205);
 
 /*
  * TVN
@@ -106,6 +108,11 @@ define('CC_PLANNING_1',         1);
 define('CC_PLANNING_2',         2);
 define('CC_PLANNING_3',         3);
 define('CC_PLANNING_4',         4);
+
+define('PROJ_REVIEW_COMMENTS',  1);
+define('PROJ_REVIEW_FEEDBACK',  2);
+
+define('PROJ_FEEDBACK_COMMENTS', 1);
 
 define('LDR_SUMMARY',			1);
 define('LDR_MILESTONESTATUS',		2);
@@ -395,6 +402,10 @@ define('CC_4_INDUSTRY',     4);
 define('CC_4_OTHER',        5);
 define('CC_4_MEASURE',      6);
 define('CC_4_ATTACH',       7);
+
+define('PROJ_REVIEW_COMM',     1);
+
+define('PROJ_FEEDBACK_COMM',   1);
 
 define('CHAMP_REPRESENT', 1);
 define('CHAMP_ACTIVITY', 2);
