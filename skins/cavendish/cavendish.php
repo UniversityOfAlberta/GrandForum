@@ -861,7 +861,7 @@ class CavendishTemplate extends QuickTemplate {
 	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
 	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
 	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
-	                $resources['links'][1004] = TabUtils::createToolboxLink("Workpackage Coordinator", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
+	                $resources['links'][1004] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
 	            }
 	            
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
