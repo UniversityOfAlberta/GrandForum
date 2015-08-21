@@ -3680,12 +3680,16 @@ class Person extends BackboneModel {
 
         foreach($data as $row){
             if($row['type'] == "Project" || $row['type'] == "SAB"){
-                $subs[] = Project::newFromId($row['sub_id']);
+                $project = Project::newFromId($row['sub_id']);
+                $subs[$project->getName()] = $project;
             }
             else{
-                $subs[] = Person::newFromId($row['sub_id']);
+                $person = Person::newFromId($row['sub_id']);
+                $subs[$person->getReversedName()] = $person;
             }
         }
+        ksort($subs);
+        $subs = array_values($subs);
         return $subs;
     }
 
