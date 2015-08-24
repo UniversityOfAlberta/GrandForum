@@ -42,7 +42,7 @@
                 </ReportItem>
                 <ReportItem id="feedback" type="StaticReportItem">
                     <![CDATA[
-                            <td>
+                            <td valign='top'>
                                 {$rmc_project_feedback}
                             </td>
                         </tr>
