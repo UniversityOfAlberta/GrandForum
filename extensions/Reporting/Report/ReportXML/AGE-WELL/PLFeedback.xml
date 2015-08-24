@@ -12,7 +12,7 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="feedback" tooltip="Project Feedback" name="Project Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
+    <ReportSection id="feedback" name="Project Feedback" tooltip="{$project_name} Feedback" title="{$project_name} Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
         <ReportItem id="table_head" type="StaticReportItem">
             <![CDATA[
                 <table class='wikitable'>
