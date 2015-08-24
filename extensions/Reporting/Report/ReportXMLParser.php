@@ -599,15 +599,6 @@ function encode_binary_data($str){
     if($result !== false && base64_decode($result) === $str){
         return $result;
     }
-    /* DON'T NEED THIS ANYMORE, BUT WILL KEEP IT FOR REFERENCE FOR A WHILE
-    $string = array();
-    $value = utf8_encode($str);
-    for($i = 0; $i < strlen($value); $i++){
-        $ord = ord($value[$i]);
-        $string[] = $ord;
-    }
-    return implode(" ", $string);
-    */
 }
 
 function decode_binary_data($str){

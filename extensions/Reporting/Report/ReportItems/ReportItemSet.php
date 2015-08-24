@@ -184,7 +184,8 @@ abstract class ReportItemSet extends AbstractReportItem{
         $values = array();
         foreach($this->items as $item){
             $id = $item->id;
-            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}";
+            $extraId = $item->getExtraIndex();
+            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
             if($item->id == ""){
                 $id = "none";
             }
@@ -196,7 +197,8 @@ abstract class ReportItemSet extends AbstractReportItem{
     function setBlobValue($values){
         foreach($this->items as $item){
             $id = $item->id;
-            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}";
+            $extraId = $item->getExtraIndex();
+            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
             if($item->id == ""){
                 $id = "none";
             }
