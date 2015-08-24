@@ -128,9 +128,15 @@ class TextareaReportItem extends AbstractReportItem {
             </script>
 EOF;
         }
+        $divHeight = "";
+        if(strtolower($this->getAttr('rich', 'false')) != 'true'){
+            $divHeight = "height:{$height};";
+        }
         $item .= <<<EOF
-            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};resize: vertical;" 
+            <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
+                <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};resize: vertical;margin:0;" 
                         name="{$this->getPostId()}">$value</textarea>
+            </div>
 EOF;
         return $item;
     }

@@ -35,7 +35,7 @@
                 </ReportItem>
                 <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
                     <![CDATA[
-                        <td>
+                        <td valign='top'>
                             {$item}
                         </td>
                     ]]>
