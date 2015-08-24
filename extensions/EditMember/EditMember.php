@@ -594,7 +594,7 @@ class EditMember extends SpecialPage{
         $wgOut->addScript('<script type="text/javascript">
                             var sort = "first";
                             var allPeople = new Array(');
-        $allPeople = Person::getAllPeople('all');
+        $allPeople = array_merge(Person::getAllPeople('all'), Person::getAllCandidates('all'));
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
