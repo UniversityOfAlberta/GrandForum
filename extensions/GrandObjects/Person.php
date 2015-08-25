@@ -925,7 +925,9 @@ class Person extends BackboneModel {
     function isAllowedToEdit($person){
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
            (($this->isRole(NI) && !$this->isProjectLeader() && $person->isRoleAtLeast(NI)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP)) || // Handles PL
+            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC)) || // Handles PL
+            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC)) || // Handles TL
+            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC)) || // Handles TC
             ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
