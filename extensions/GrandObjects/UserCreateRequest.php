@@ -14,6 +14,7 @@ class UserCreateRequest {
     var $email;
     var $roles;
     var $projects;
+    var $candidate;
     var $created;
     var $ignored;
     var $lastModified;
@@ -58,6 +59,7 @@ class UserCreateRequest {
             $this->email = $data[0]['wpEmail'];
             $this->roles = $data[0]['wpUserType'];
             $this->projects = $data[0]['wpNS'];
+            $this->candidate = $data[0]['candidate'];
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
@@ -94,6 +96,14 @@ class UserCreateRequest {
     
     function getProjects(){
         return $this->projects;
+    }
+    
+    function getCandidate($transformed=false){
+        if($transformed){
+            if($this->candidate == 1) return "Yes";
+            return "No";
+        }
+        return $this->candidate;
     }
     
     function isCreated(){

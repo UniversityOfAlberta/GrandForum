@@ -94,6 +94,13 @@ class RequestUserAPI extends API{
 		$wpRealName = isset($_POST['wpRealName']) ? $_POST['wpRealName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
+		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
+		if($candidate == "Yes" || $candidate == "1"){
+		    $candidate = 1;
+		}
+		else {
+		    $candidate = 0;
+		}
 		DBFunctions::insert('grand_user_request',
 		                    array('requesting_user' => $requesting_user,
 		                          'wpName' => $wpName,
@@ -101,6 +108,7 @@ class RequestUserAPI extends API{
 		                          'wpRealName' => $wpRealName,
 		                          'wpUserType' => $wpUserType,
 		                          'wpNS' => $wpNS,
+		                          'candidate' => $candidate,
 		                          'created' => 0));
 		
 		$me = Person::newFromId($requesting_user);

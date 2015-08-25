@@ -55,6 +55,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
+                $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
                     $nss = implode(", ", $_POST['wpNS']);
@@ -96,14 +97,14 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Staff</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Status</th>
+                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Staff</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Candidate</th> <th>Status</th>
                         </tr></thead><tbody>\n");
         }
         else{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View History</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Accept</th> <th>Ignore</th>
+                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Candidate</th> <th>Accept</th> <th>Ignore</th>
                         </tr></thead><tbody>\n");
         }
     
@@ -151,7 +152,7 @@ class AddMember extends SpecialPage{
             if($history){
                 $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
             }
-            $wgOut->addHTML("<td align='left'> {$request->getEmail()}</td> <td>{$request->getRoles()}</td> <td align='left'>{$request->getProjects()}</td> 
+            $wgOut->addHTML("<td align='left'> {$request->getEmail()}</td> <td>{$request->getRoles()}</td> <td align='left'>{$request->getProjects()}</td> <td>{$request->getCandidate(true)}</td>
                         <form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
                             <input type='hidden' name='id' value='{$request->getId()}' />
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
@@ -159,6 +160,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
+                            <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='wpSendMail' value='true' />");
             if($history){
                 if($request->isCreated()){
@@ -255,6 +257,11 @@ class AddMember extends SpecialPage{
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
         
+        $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
+        $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
+        $candRow = new FormTableRow("cand_row");
+        $candRow->append($candLabel)->append($candField);
+        
         $titles = array_merge(array(""), Person::getAllPartnerTitles());
         $organizations = array_merge(array(""), Person::getAllPartnerNames());
         $depts = array_merge(array(""), Person::getAllPartnerDepartments());
@@ -301,6 +308,7 @@ class AddMember extends SpecialPage{
                   //->append($positionRow)
                   //->append($deptRow)
                   ->append($projectsRow)
+                  ->append($candRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
