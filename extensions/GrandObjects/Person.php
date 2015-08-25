@@ -923,11 +923,27 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
+        if($this->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+            return true;
+        }
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+            return true;
+        }
+        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+            return true;
+        }
+        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        return false;
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
            (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC)) || // Handles TC
+            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
+            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
+            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
             ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
