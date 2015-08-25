@@ -740,7 +740,11 @@ class Person extends BackboneModel {
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
     function Person($data){
+        global $wgUser;
         if(count($data) > 0){
+            if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
+                return;
+            }
             $this->id = @$data[0]['user_id'];
             $this->name = @$data[0]['user_name'];
             $this->realname = @$data[0]['user_real_name'];
