@@ -7,9 +7,9 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Manager">
             <SectionPermission id="feedback" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+        <!--Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="feedback" permissions="rw" />
-        </Role>
+        </Role-->
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SD">
             <SectionPermission id="feedback" permissions="rw" />
         </Role>
