@@ -25,13 +25,15 @@ if(project != ""){
         $("#project-description").html(response.description);
         $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project + '/members/NI', function(people){
             var length = 0;
+            var nis = new Array();
             $.each(people, function(i, person){
                 if($.inArray(person.fullName, leaderNames) == -1){
                     length++;
-                    $("#project-nis ul").append("<li><a href='http://canadianglycomics.ca/people/?tab=network-investigators&person=" + person.id + "'>" + person.fullName + "</a></li>");
+                    nis.push("<a href='http://canadianglycomics.ca/people/?tab=network-investigators&person=" + person.id + "'>" + person.fullName + "</a>");
                 }
             });
             if(length > 0){
+                $("#project-nis").append(nis.join(", "));
                 $("#project-nis").show();
             }
         });
@@ -54,7 +56,7 @@ else{
                 $.each(project.leaders, function(i, leader){
                     leaders.push(leader.name);
                 });
-                $("#project-list").append("<div style='margin-bottom:10px;'><a href='?page_id=6158&project=" + project.id + "'>" + project.fullname + "</a><br /><span style='font-weight:bold;'>Project Leader:</span>&nbsp;" + leaders.join('; ') + "</div>");
+                $("#project-list").append("<div style='margin-bottom:10px;'><a href='?project=" + project.id + "'>" + project.fullname + "</a><br /><span style='font-weight:bold;'>Project Leader:</span>&nbsp;" + leaders.join(', ') + "</div>");
             });
             $("#project-list").append("<hr />");
         });
