@@ -95,7 +95,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function handleEdit(){
         global $wgOut, $wgMessage;
         $_POST['project'] = $this->project->getName();
-        $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
+        $_POST['fullName'] = @$_POST['fullName'];
         $_POST['description'] = @$_POST['description'];
         $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
