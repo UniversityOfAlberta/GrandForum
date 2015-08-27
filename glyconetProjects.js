@@ -13,7 +13,7 @@ if(project != ""){
     $("#project-page").show();
     $("#project-list").hide();
     $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project, function(response){
-        
+        $("#project-image").html("<img style='width:100%;border-radius:10px;' src='http://canadianglycomics.ca/wp-content/uploads/" + response.theme.replace(/ /g, '-') + ".jpg' />");
         $("#project-title").html(response.fullname);
         var leaders = new Array();
         var leaderNames = new Array();
