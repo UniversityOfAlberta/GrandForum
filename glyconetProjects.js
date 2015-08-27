@@ -15,6 +15,7 @@ if(project != ""){
     $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project, function(response){
         $("#project-image").html("<img style='width:100%;border-radius:10px;' src='http://canadianglycomics.ca/wp-content/uploads/" + response.theme.replace(/ /g, '-') + ".jpg' />");
         $("#project-title").html(response.fullname);
+        $(".gdl-page-title").html("<a style='color: #0e4c61;' href='http://canadianglycomics.ca/projects/'>Projects</a> » " + response.name);
         var leaders = new Array();
         var leaderNames = new Array();
         $.each(response.leaders, function(i, leader){
