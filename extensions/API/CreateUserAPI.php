@@ -84,19 +84,34 @@ class CreateUserAPI extends API{
 			    Person::$aliasCache = array();
 			    Person::$idsCache = array();
 			    $person = Person::newFromName($_POST['wpName']);
-			    
 			    if($person != null && $person->getName() != null){
-			        $defaultUni = Person::getDefaultUniversity();
-			        $unis = array_flip(Person::getAllUniversities());
-			        $defaultPos = Person::getDefaultPosition();
-			        $poss = array_flip(Person::getAllPositions());
-			        DBFunctions::insert('grand_user_university',
-			                            array('user_id' => $person->getId(),
-			                                  'university_id' => $unis[$defaultUni],
-			                                  'position_id' => $poss[$defaultPos]));
+			        if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
+			            $_POST['title'] = $_POST['position'];
+			            $_POST['user_name'] = $person->getName();
+			            $api = new UserUniversityAPI();
+                        $api->doAction(true);
+			        }
+			        else{
+			            $defaultUni = Person::getDefaultUniversity();
+			            $unis = array_flip(Person::getAllUniversities());
+			            $defaultPos = Person::getDefaultPosition();
+			            $poss = array_flip(Person::getAllPositions());
+			            DBFunctions::insert('grand_user_university',
+			                                array('user_id' => $person->getId(),
+			                                      'university_id' => $unis[$defaultUni],
+			                                      'position_id' => $poss[$defaultPos]));
+			        }
 		            DBFunctions::update('mw_user',
 		                                array('candidate' => $_POST['candidate']),
 		                                array('user_id' => EQ($person->id)));
+		            if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
+		                // Adds the role subtype if it is set
+		                foreach($_POST['subtype'] as $subtype){
+		                    DBFunctions::insert('grand_role_subtype',
+		                                        array('user_id' => $person->id,
+		                                              'sub_role' => $subtype));
+		                }
+		            }
 			        Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
 			        $data = DBFunctions::select(array('grand_notifications'),
 			                                    array('id'),
