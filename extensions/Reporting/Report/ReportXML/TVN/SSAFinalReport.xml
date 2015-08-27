@@ -1,12 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SSA Final Report" reportType="RP_SSA_FINAL_PROGRESS" ajax="true">
+<Report name="HQP Final Report" reportType="RP_SSA_FINAL_PROGRESS" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="institution" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="Final Report">
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="SSA_HQP" name="HQP Trainees">
+        <ReportItem id="table_head" type="StaticReportItem">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <th colspan='9'>Demographic Information</th>
+                        <th rowspan='2'>HQP Category</th>
+                        <th rowspan='2'>Participating in the TVN Training Program? (Y/N)</th>
+                        <th colspan='3'>Additional Information</th>
+                        <th rowspan='2'>Did The Student Graduate?</th>
+                        <th rowspan='2'>Did The Student Gain Employment?</th>
+                        <th rowspan='2'>If yes, please indicate where they were employed?</th>
+                    </tr>
+                    <tr>
+                        <th>Grant Title</th>
+                        <th>Surname(s)</th>
+                        <th>Given Name(s)</th>
+                        <th>University Attended</th>
+                        <th>Gender</th>
+                        <th>Start Date</th>
+                        <th>Canadian (including Permanent Resident)?</th>
+                        <th>Trainee Term (Months)</th>
+                        <th>Term Completed (Months)</th>
+                        <th>Other Training Experiences provided</th>
+                        <th>Otherwise unavailable in academic/employment setting</th>
+                        <th>Thesis completed</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="students" type="PersonSupervisesReportItemSet">
+            <ReportItem id="grant" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td></td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="last_name" type="StaticReportItem">
+                <![CDATA[
+                    <td align='right'>{$user_last_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="first_name" type="StaticReportItem">
+                <![CDATA[
+                    <td align='left'>{$user_first_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="uni" type="StaticReportItem">
+                <![CDATA[
+                    <td>{$user_uni}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="gender" type="StaticReportItem">
+                <![CDATA[
+                    <td>{$user_gender}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="start" type="CalendarReportItem" width="80px">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="canadian" type="TextReportItem" width="80px" blobItem="2">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="SSA Report">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
                 <p>For final funding to be released, the following conditions must be met by September 30, 2015:</p>
