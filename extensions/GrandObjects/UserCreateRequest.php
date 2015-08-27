@@ -14,6 +14,9 @@ class UserCreateRequest {
     var $email;
     var $roles;
     var $projects;
+    var $university;
+    var $department;
+    var $position;
     var $candidate;
     var $created;
     var $ignored;
@@ -59,6 +62,9 @@ class UserCreateRequest {
             $this->email = $data[0]['wpEmail'];
             $this->roles = $data[0]['wpUserType'];
             $this->projects = $data[0]['wpNS'];
+            $this->university = $data[0]['university'];
+            $this->department = $data[0]['department'];
+            $this->position = $data[0]['position'];
             $this->candidate = $data[0]['candidate'];
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
@@ -96,6 +102,18 @@ class UserCreateRequest {
     
     function getProjects(){
         return $this->projects;
+    }
+    
+    function getUniversity(){
+        return $this->university;
+    }
+    
+    function getDepartment(){
+        return $this->department;
+    }
+    
+    function getPosition(){
+        return $this->position;
     }
     
     function getCandidate($transformed=false){

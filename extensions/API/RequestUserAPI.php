@@ -8,6 +8,10 @@ class RequestUserAPI extends API{
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
+        $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
+        $this->addPOST("university",false, "", "");
+        $this->addPOST("department",false, "", "");
+        $this->addPOST("position",false, "", "");
     }
 
     function processParams($params){
@@ -94,6 +98,9 @@ class RequestUserAPI extends API{
 		$wpRealName = isset($_POST['wpRealName']) ? $_POST['wpRealName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
+		$university = isset($_POST['university']) ? $_POST['university'] : "";
+		$department = isset($_POST['department']) ? $_POST['department'] : "";
+		$position = isset($_POST['position']) ? $_POST['position'] : "";
 		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
 		if($candidate == "Yes" || $candidate == "1"){
 		    $candidate = 1;
@@ -108,6 +115,9 @@ class RequestUserAPI extends API{
 		                          'wpRealName' => $wpRealName,
 		                          'wpUserType' => $wpUserType,
 		                          'wpNS' => $wpNS,
+		                          'university' => $university,
+		                          'department' => $department,
+		                          'position' => $position,
 		                          'candidate' => $candidate,
 		                          'created' => 0));
 		

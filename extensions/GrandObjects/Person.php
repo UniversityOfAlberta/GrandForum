@@ -2014,6 +2014,17 @@ class Person extends BackboneModel {
         return $roles;        
     }
     
+    function getSubRoles(){
+        $roles = array();
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $roles[] = $row['sub_role'];
+        }
+        return $roles;
+    }
+    
     function getProjectHistory($groupBySubs=false){
         $projects = array();
         $tmpProjects = array();
