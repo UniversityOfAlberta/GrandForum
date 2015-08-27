@@ -8,7 +8,7 @@ class PersonProfileTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonProfileTab($person, $visibility){
-        parent::AbstractEditableTab("Profile");
+        parent::AbstractEditableTab("Bio");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -110,7 +110,11 @@ class PersonProfileTab extends AbstractEditableTab {
                         $src_width = imagesx($src_image);
                         $src_height = imagesy($src_image);
                         $dst_width = 100;
-                        $dst_height = 132;
+                        $dst_height = ($src_height*100)/$src_width;
+                        if($dst_height > 132){
+                            $dst_height = 132;
+                            $dst_width = ($src_width*132)/$src_height;
+                        }
                         $dst_image = imagecreatetruecolor($dst_width, $dst_height);
                         imagealphablending($dst_image, true);
                         
@@ -413,7 +417,7 @@ EOF;
                                 <td><input type='file' name='photo' /></td>
                             </tr>
                             <tr>
-                                <td></td><td><small><li>The image will be scaled to 100x132.</li>
+                                <td></td><td><small><li>For best results, the image should be 100x132</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>

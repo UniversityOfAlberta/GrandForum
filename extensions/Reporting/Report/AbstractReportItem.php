@@ -20,6 +20,7 @@ abstract class AbstractReportItem {
     var $projectId;
     var $milestoneId;
     var $productId;
+    var $extra;
     var $private;
     var $deleted;
     var $blobItem;
@@ -41,6 +42,7 @@ abstract class AbstractReportItem {
         $this->projectId = 0;
         $this->milestoneId = 0;
         $this->productId = 0;
+        $this->extra = array();
         $this->private = false;
         $this->deleted = false;
         $this->reportCallback = new ReportItemCallback($this);
@@ -111,9 +113,14 @@ abstract class AbstractReportItem {
         $this->milestoneId = $id;
     }
     
-    // Sets the Product ID of this AbstractRepotItem
+    // Sets the Product ID of this AbstractReportItem
     function setProductId($id){
         $this->productId = $id;
+    }
+    
+    // Sets the extra data of this AbstractReportItem
+    function setExtra($extra){
+        $this->extra = $extra;
     }
     
     // Sets whether or not this item should be treated as private or not
@@ -185,13 +192,24 @@ abstract class AbstractReportItem {
         return 1;
     }
     
+    function getExtraIndex(){
+        $set = $this->getSet();
+        foreach($set->getData() as $index => $item){
+            if($item['extra'] == $this->extra){
+                return $index;
+            }
+        }
+        return 0;
+    }
+    
     function getPostId(){
         $parent = $this->getParent();
         if($this instanceof AbstractReportItem){
             $postId = str_replace("\"", "", str_replace("]", "", str_replace("[", "", str_replace("'", "", "_{$this->getId()}"))));
         }
         if(!($parent instanceof AbstractReportSection)){
-            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}".$postId;
+            $extraId = $this->getExtraIndex();
+            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
         }
         else{
             $postId = str_replace(" ", "", $parent->name).$postId;
@@ -399,7 +417,12 @@ abstract class AbstractReportItem {
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
                     $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
-                    $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                    if(is_array($v)){
+                        $cdata = str_replace("{".$m."}", serialize($v), $cdata);
+                    }
+                    else{
+                        $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                    }
                 }
             }
         }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Review Feedback" reportType="RP_PROJ_FEEDBACK" personId="0" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="feedback" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TL">
+            <SectionPermission id="feedback" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TC">
+            <SectionPermission id="feedback" permissions="rw" />
+        </Role>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
+    </Permissions>
+    <ReportSection id="feedback" name="Project Feedback" tooltip="{$project_name} Feedback" title="{$project_name} Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
+        <ReportItem id="table_head" type="StaticReportItem">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <th width="37.5%">Reviewer Comment</th>
+                        <th width="37.5%">My Responses</th>
+                        <th width="25%">Additional Reviewer Feedback</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="reviewers" type="ProjectReviewersReportItemSet">
+            <ReportItemSet id="comments" type="ArrayReportItemSet" array="{getArray(RP_PROJ_REVIEW,PROJ_REVIEW_COMMENTS,PROJ_REVIEW_COMM,0,{$user_id},{$project_id})}" index="comments">
+                <ReportItem id="comments" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td valign='top'>
+                                <p>{getExtra(comment)}</p>
+                            </td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
+                    <![CDATA[
+                        <td valign='top'>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="feedback" type="StaticReportItem">
+                    <![CDATA[
+                            <td valign='top'>
+                                {$rmc_project_feedback}
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItem id="table_foot" type="StaticReportItem">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

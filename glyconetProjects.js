@@ -13,8 +13,9 @@ if(project != ""){
     $("#project-page").show();
     $("#project-list").hide();
     $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project, function(response){
-        
+        $("#project-image").html("<img style='width:100%;border-radius:10px;' src='http://canadianglycomics.ca/wp-content/uploads/" + response.theme.replace(/ /g, '-') + ".jpg' />");
         $("#project-title").html(response.fullname);
+        $(".gdl-page-title").html("<a style='color: #0e4c61;' href='http://canadianglycomics.ca/projects/'>Projects</a> » " + response.name);
         var leaders = new Array();
         var leaderNames = new Array();
         $.each(response.leaders, function(i, leader){
@@ -25,13 +26,15 @@ if(project != ""){
         $("#project-description").html(response.description);
         $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project + '/members/NI', function(people){
             var length = 0;
+            var nis = new Array();
             $.each(people, function(i, person){
                 if($.inArray(person.fullName, leaderNames) == -1){
                     length++;
-                    $("#project-nis ul").append("<li><a href='http://canadianglycomics.ca/people/?tab=network-investigators&person=" + person.id + "'>" + person.fullName + "</a></li>");
+                    nis.push("<a href='http://canadianglycomics.ca/people/?tab=network-investigators&person=" + person.id + "'>" + person.fullName + "</a>");
                 }
             });
             if(length > 0){
+                $("#project-nis").append(nis.join(", "));
                 $("#project-nis").show();
             }
         });
@@ -54,7 +57,7 @@ else{
                 $.each(project.leaders, function(i, leader){
                     leaders.push(leader.name);
                 });
-                $("#project-list").append("<div style='margin-bottom:10px;'><a href='?page_id=6158&project=" + project.id + "'>" + project.fullname + "</a><br /><span style='font-weight:bold;'>Project Leader:</span>&nbsp;" + leaders.join('; ') + "</div>");
+                $("#project-list").append("<div style='margin-bottom:10px;'><a href='?project=" + project.id + "'>" + project.fullname + "</a><br /><span style='font-weight:bold;'>Project Leader:</span>&nbsp;" + leaders.join(', ') + "</div>");
             });
             $("#project-list").append("<hr />");
         });

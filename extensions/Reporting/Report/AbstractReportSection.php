@@ -219,17 +219,20 @@ abstract class AbstractReportSection {
     
     // Sets the Name of this AbstractReportSection
     function setName($name){
+        $name = $this->varSubstitute($name);
         $this->name = $name;
         $this->title = $name;
     }
     
     // Sets the Title of this AbstractReportSection
     function setTitle($title){
+        $title = $this->varSubstitute($title);
         $this->title = $title;
     }
     
     // Sets the tooltip 
     function setTooltip($tooltip){
+        $tooltip = $this->varSubstitute($tooltip);
         $this->tooltip = $tooltip;
     }
 

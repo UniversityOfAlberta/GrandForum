@@ -594,7 +594,7 @@ class EditMember extends SpecialPage{
         $wgOut->addScript('<script type="text/javascript">
                             var sort = "first";
                             var allPeople = new Array(');
-        $allPeople = Person::getAllPeople('all');
+        $allPeople = array_merge(Person::getAllPeople('all'), Person::getAllCandidates('all'));
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
@@ -1047,10 +1047,10 @@ class EditMember extends SpecialPage{
                ($role != NCE   || $user->isRoleAtLeast(MANAGER)) && 
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
-                if($user->isRole(NI) && $role == HQP && $person->isRole(HQP) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
+                if($user->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
                 }
-                else if($person->isRole($role)){
+                else if($person->isRole($role) || $person->isRole($role."-Candidate")){
                     $boxes .= "checked onChange='addComment(this, false)' class='already'";
                 }
                 if($role == HQP){

@@ -35,7 +35,7 @@ class TextareaReportItem extends AbstractReportItem {
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
                         menubar: false,
-                        plugins: 'link image contextmenu charmap lists table paste wordcount',
+                        plugins: 'link image charmap lists table paste wordcount',
                         toolbar: [
                             'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                         ],
@@ -128,9 +128,15 @@ class TextareaReportItem extends AbstractReportItem {
             </script>
 EOF;
         }
+        $divHeight = "";
+        if(strtolower($this->getAttr('rich', 'false')) != 'true'){
+            $divHeight = "height:{$height};";
+        }
         $item .= <<<EOF
-            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};" 
+            <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
+                <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};resize: vertical;margin:0;" 
                         name="{$this->getPostId()}">$value</textarea>
+            </div>
 EOF;
         return $item;
     }

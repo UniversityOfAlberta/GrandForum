@@ -740,7 +740,11 @@ class Person extends BackboneModel {
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
     function Person($data){
+        global $wgUser;
         if(count($data) > 0){
+            if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
+                return;
+            }
             $this->id = @$data[0]['user_id'];
             $this->name = @$data[0]['user_name'];
             $this->realname = @$data[0]['user_real_name'];
@@ -919,9 +923,27 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
+        if($this->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+            return true;
+        }
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+            return true;
+        }
+        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+            return true;
+        }
+        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        return false;
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && !$this->isProjectLeader() && $person->isRoleAtLeast(NI)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && !$person->isRole(HQP)) || // Handles PL
+           (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
+            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
+            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
+            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
             ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
@@ -1990,6 +2012,17 @@ class Person extends BackboneModel {
             $roles[] = new Role(array(0 => $row));
         }
         return $roles;        
+    }
+    
+    function getSubRoles(){
+        $roles = array();
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $roles[] = $row['sub_role'];
+        }
+        return $roles;
     }
     
     function getProjectHistory($groupBySubs=false){
@@ -3680,12 +3713,16 @@ class Person extends BackboneModel {
 
         foreach($data as $row){
             if($row['type'] == "Project" || $row['type'] == "SAB"){
-                $subs[] = Project::newFromId($row['sub_id']);
+                $project = Project::newFromId($row['sub_id']);
+                $subs[$project->getName()] = $project;
             }
             else{
-                $subs[] = Person::newFromId($row['sub_id']);
+                $person = Person::newFromId($row['sub_id']);
+                $subs[$person->getReversedName()] = $person;
             }
         }
+        ksort($subs);
+        $subs = array_values($subs);
         return $subs;
     }
 

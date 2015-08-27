@@ -278,6 +278,9 @@ class CavendishTemplate extends QuickTemplate {
             }
 		    
 		    function unaccentChars(str){
+		        if(str == undefined){
+		            str = "";
+		        }
 		        var dict = {'Š':'S', 'š':'s', 'Ð':'Dj','Ž':'Z', 'ž':'z', 'À':'A', 'Á':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',
                             'Å':'A', 'Æ':'A', 'Ç':'C', 'È':'E', 'É':'E', 'Ê':'E', 'Ë':'E', 'Ì':'I', 'Í':'I', 'Î':'I',
                             'Ï':'I', 'Ñ':'N', 'Ò':'O', 'Ó':'O', 'Ô':'O', 'Õ':'O', 'Ö':'O', 'Ø':'O', 'Ù':'U', 'Ú':'U',
@@ -861,7 +864,7 @@ class CavendishTemplate extends QuickTemplate {
 	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
 	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
 	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
-	                $resources['links'][1004] = TabUtils::createToolboxLink("Workpackage Coordinator", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
+	                $resources['links'][1004] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
 	            }
 	            
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));

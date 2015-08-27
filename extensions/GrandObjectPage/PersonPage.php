@@ -113,11 +113,11 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
+                    $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
-                }
-                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
-                    $tabbedPage->addTab(new HQPProjectTab($person, $visibility));
                 }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));

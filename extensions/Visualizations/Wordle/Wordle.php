@@ -110,11 +110,13 @@ class Wordle extends Visualization {
                 setInterval(function(){
                     if($("#vis{$this->index}").is(":visible") && maxWidth != $("#vis{$this->index}").width() && Math.abs(maxWidth - $("#vis{$this->index}").width()) > 25){
                         maxWidth = $("#vis{$this->index}").width();
-                        for(fId in data){
-                            var f = data[fId].freq;
-                            data[fId].size = 10 + (f - minF)/(maxF - minF)*Math.max(50, Math.min(100, (maxWidth*0.1)));
+                        if(maxWidth > 0){
+                            for(fId in data){
+                                var f = data[fId].freq;
+                                data[fId].size = 10 + (f - minF)/(maxF - minF)*Math.max(50, Math.min(100, (maxWidth*0.1)));
+                            }
+                            doCloud();
                         }
-                        doCloud();
                     }
                 }, 100);
             }

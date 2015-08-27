@@ -95,7 +95,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function handleEdit(){
         global $wgOut, $wgMessage;
         $_POST['project'] = $this->project->getName();
-        $_POST['fullName'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['fullName']));
+        $_POST['fullName'] = @$_POST['fullName'];
         $_POST['description'] = @$_POST['description'];
         $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
@@ -376,7 +376,7 @@ EOF;
                 $('textarea[name=description]').tinymce({
                     theme: 'modern',
                     menubar: false,
-                    plugins: 'link image contextmenu charmap lists table paste wordcount',
+                    plugins: 'link image charmap lists table paste wordcount',
                     toolbar: [
                         'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
                     ],
