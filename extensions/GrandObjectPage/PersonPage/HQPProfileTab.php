@@ -1,12 +1,12 @@
 <?php
 
-class HQPProjectTab extends AbstractEditableTab {
+class HQPProfileTab extends AbstractEditableTab {
 
     var $person;
     var $visibility;
 
-    function HQPProjectTab($person, $visibility){
-        parent::AbstractEditableTab("HQP CRP");
+    function HQPProfileTab($person, $visibility){
+        parent::AbstractEditableTab("HQP Profile");
         $this->person = $person;
         $this->visibility = $visibility;
     }
