@@ -376,7 +376,7 @@ EOF;
                 $('textarea[name=description]').tinymce({
                     theme: 'modern',
                     menubar: false,
-                    plugins: 'link image contextmenu charmap lists table paste wordcount',
+                    plugins: 'link image charmap lists table paste wordcount',
                     toolbar: [
                         'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
                     ],
