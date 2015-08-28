@@ -73,6 +73,7 @@ class ReportItemCallback {
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
+            "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
@@ -826,6 +827,12 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
         return $university['university'];
+    }
+    
+    function getUserNationality(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $nationality = $person->getNationality();
+        return $nationality;
     }
     
     function getUserSupervisors(){

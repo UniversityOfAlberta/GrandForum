@@ -711,6 +711,17 @@ define('IFP_PROG_SUP_ASSESSMENT',       1);
 define('IFP_PROG_SUP_ELABORATE',        2);
 
 // SSA Report
+define('SSA_HQP_GRANT',     1);
+define('SSA_HQP_START',     2);
+define('SSA_HQP_TERM',      3);
+define('SSA_HQP_COMPLETED', 4);
+define('SSA_HQP_TRAIN',     5);
+define('SSA_HQP_EXP',       6);
+define('SSA_HQP_THESIS',    7);
+define('SSA_HQP_GRAD',      8);
+define('SSA_HQP_EMPL',      9);
+define('SSA_HQP_WHERE',     10);
+
 define('SSA_START',         1);
 define('SSA_END',           2);
 define('SSA_TIME',          3);
