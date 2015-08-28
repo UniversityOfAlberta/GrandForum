@@ -165,7 +165,7 @@
                 </ul>
             ]]>
         </ReportItem>
-        <ReportItemSet id="students" type="PersonSupervisesReportItemSet">
+        <ReportItemSet id="students" type="PersonSupervisesReportItemSet" pos="Summer Student">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="identity_head" type="StaticReportItem">
                     <![CDATA[
