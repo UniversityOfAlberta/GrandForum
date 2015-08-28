@@ -347,7 +347,7 @@ EOF;
         
         $people = $project->getAllPeople($role);
         if(count($people) > 0){
-            $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize($config->getValue('roleDefs', $role))."</span></h2>";
+            $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
         }
         $this->html .= "<ul>";
         foreach($people as $p){
