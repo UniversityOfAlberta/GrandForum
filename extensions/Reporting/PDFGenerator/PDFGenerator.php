@@ -667,6 +667,7 @@ if ( isset($pdf) ) {
         //$pdfStr = $dompdf->output();
         $pdfStr = PDFGenerator::processChapters($dompdf, $name);
         unset($dompdf);
+        Image_Cache::clear();
         $GLOBALS['footnotes'] = array();
         $GLOBALS["nFootnotesProcessed"] = 0;
         return array('html' => $finalHTML, 'pdf' => $pdfStr);
