@@ -34,8 +34,21 @@ class Report extends AbstractReport{
         if($person->isRole(PL)){
             foreach($person->leadership() as $project){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
+                
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
+                
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (IFP Update)", "{$url}IFPProgressReport&project={$project->getName()}", $selected);
+                
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (IFP Final)", "{$url}IFPFinalReport&project={$project->getName()}", $selected);
             }
+        }
+        if($person->isRole(NI)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("HQP Report", "{$url}HQPReport", $selected);
         }
         return true;
     }

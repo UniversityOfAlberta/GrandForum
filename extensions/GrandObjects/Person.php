@@ -1912,7 +1912,10 @@ class Person extends BackboneModel {
         else if($this->leadershipOf($project)){
             return PL;
         }
-        return NI;
+        else if($this->isRole(HQP)){
+            return HQP;
+        }
+        return $this->getType();
     }
     
     // Returns the first role that this Person had, null if this Person has never had any Roles

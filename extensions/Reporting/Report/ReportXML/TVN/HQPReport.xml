@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="HQP Final Report" reportType="RP_SSA_FINAL_PROGRESS" ajax="true">
+<Report name="HQP Report" reportType="RP_SSA_FINAL_PROGRESS" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="hqp" permissions="rw" />
@@ -7,76 +7,152 @@
         </Role>
     </Permissions>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="SSA_HQP" name="HQP Trainees">
-        <ReportItem id="table_head" type="StaticReportItem">
-            <![CDATA[
-                <table class='wikitable'>
-                    <tr>
-                        <th colspan='9'>Demographic Information</th>
-                        <th rowspan='2'>HQP Category</th>
-                        <th rowspan='2'>Participating in the TVN Training Program? (Y/N)</th>
-                        <th colspan='3'>Additional Information</th>
-                        <th rowspan='2'>Did The Student Graduate?</th>
-                        <th rowspan='2'>Did The Student Gain Employment?</th>
-                        <th rowspan='2'>If yes, please indicate where they were employed?</th>
-                    </tr>
-                    <tr>
-                        <th>Grant Title</th>
-                        <th>Surname(s)</th>
-                        <th>Given Name(s)</th>
-                        <th>University Attended</th>
-                        <th>Gender</th>
-                        <th>Start Date</th>
-                        <th>Canadian (including Permanent Resident)?</th>
-                        <th>Trainee Term (Months)</th>
-                        <th>Term Completed (Months)</th>
-                        <th>Other Training Experiences provided</th>
-                        <th>Otherwise unavailable in academic/employment setting</th>
-                        <th>Thesis completed</th>
-                    </tr>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet">
-            <ReportItem id="grant" type="StaticReportItem">
-                <![CDATA[
-                    <tr><td></td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="last_name" type="StaticReportItem">
-                <![CDATA[
-                    <td align='right'>{$user_last_name}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="first_name" type="StaticReportItem">
-                <![CDATA[
-                    <td align='left'>{$user_first_name}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="uni" type="StaticReportItem">
-                <![CDATA[
-                    <td>{$user_uni}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="gender" type="StaticReportItem">
-                <![CDATA[
-                    <td>{$user_gender}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="start" type="CalendarReportItem" width="80px">
-                <![CDATA[
-                    <td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="canadian" type="TextReportItem" width="80px" blobItem="2">
-                <![CDATA[
-                    <td>{$item}</td>
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="demographic_head" type="StaticReportItem">
+                    <![CDATA[
+                        <h3>Demographic Information</h3>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grant" type="TextReportItem" width="300px" blobType="BLOB_TEXT" blobItem="SSA_HQP_GRANT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Grant Title:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="uni" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>University Attended:</td>
+                            <td>{$user_uni}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="category" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>HQP Category:</td>
+                            <td>{$user_level}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="gender" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Gender:</td>
+                            <td>{$user_gender}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="start" type="CalendarReportItem" width="80px" blobType="BLOB_TEXT" blobItem="SSA_HQP_START" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Start Date:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nationality" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Nationality:</td>
+                            <td>{$user_nationality}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_TERM" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Trainee Term:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Term Completed:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                        <h3>Publications and Dissemination of Research</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_PUBLIC_PROFILE_STRUCTURE" table="false" details="true" totalOnly="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                        <h3>Additional Information</h3>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="training" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" options="Yes">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Participating in the TVN Training Program?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="experiences" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EXP" blobSubItem="{$user_id}" options="Yes">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Other Training Experiences provided:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="thesis" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_THESIS" blobSubItem="{$user_id}" options="Yes">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Thesis Completed:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grad" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_GRAD" blobSubItem="{$user_id}" options="Yes">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Graduate?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="empl" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EMPL" blobSubItem="{$user_id}" options="Yes">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Gain Employment?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="where" type="TextReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_WHERE" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'><small>If yes, please indicate where they were employed?</small></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_foot" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="table_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="SSA Report">
         <ReportItem id="instructions" type="StaticReportItem">
@@ -87,13 +163,13 @@
                     <li>the “Learning Plan” document you submitted at the time of application must be completed, signed and received by TVN</li>
                     <li>the SSA Exit Survey must be completed AFTER attendance of the 2015 TVN Annual Conference (September 27-29, 2015). The survey can be found at <a href='http://queensu.fluidsurveys.com/surveys/tvn/hqp-exit-survey/?TEST_DATA=' target='_blank'>Exit Survey</a></li>
                 </ul>
-                <i style='font-size:1.5em;'>To be completed by Supervisor</i>
             ]]>
         </ReportItem>
-        <ReportItemSet id="students" type="PersonSupervisesReportItemSet">
+        <ReportItemSet id="students" type="PersonSupervisesReportItemSet" pos="Summer Student">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="identity_head" type="StaticReportItem">
                     <![CDATA[
+                        <i style='font-size:1.5em;'>To be completed by Supervisor</i>
                         <table class='wikitable'>
                             <tr>
                                 <td style='width:150px;'><b>Student Last Name</b></td>

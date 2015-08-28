@@ -12,7 +12,7 @@
             <SectionPermission id="partners" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="supervisor" permissions="r" />
+            <SectionPermission id="supervisor" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="milestones" name="Milestones" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
