@@ -96,6 +96,10 @@ class AddMember extends SpecialPage{
         if(isset($_GET['history']) && $_GET['history'] == true){
             $history = true;
         }
+        $hqpType = "";
+        if($config->getValue('networkName') == "AGE-WELL"){
+            $hqpType = "<th>HQP Type</th>";
+        }
         if($history){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
@@ -121,7 +125,7 @@ class AddMember extends SpecialPage{
                             <th>User Type</th>
                             <th>Projects</th>
                             <th>Institution</th>
-                            <th>HQP Type</th>
+                            {$hqpType}
                             <th>Candidate</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");

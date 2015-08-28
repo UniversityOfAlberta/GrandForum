@@ -63,6 +63,7 @@ class ReportItemCallback {
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
+            "user_gender" => "getUserGender",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
@@ -759,6 +760,11 @@ class ReportItemCallback {
     function getUserEmail(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getEmail();
+    }
+    
+    function getUserGender(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getGender();
     }
     
     function getUserName(){

@@ -256,6 +256,7 @@ define('IFP_PROG_SUPERVISOR',   10);
 
 // SSA Final Report
 define('SSA_REPORT',            1);
+define('SSA_HQP',               2);
 
 /*
  * Third-level identifiers: question within a section.
