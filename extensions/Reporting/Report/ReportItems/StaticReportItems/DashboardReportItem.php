@@ -66,7 +66,7 @@ class DashboardReportItem extends StaticReportItem {
 	}
 	
 	function createDashboard(){
-	    $person = $this->getReport()->person;
+	    $person = Person::newFromId($this->personId);
 	    $project = Project::newFromId($this->projectId);
 	    $struct = constant($this->getAttr("structure", "NI_REPORT_STRUCTURE"));
 		if($project != null && $struct >= PROJECT_PUBLIC_STRUCTURE){
