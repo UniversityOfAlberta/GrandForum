@@ -625,6 +625,7 @@ class EditMember extends SpecialPage{
                 }
             }
             var n = 0;
+            var tmpDom = $("<select>");
             for(i = 0; i < allPeople.length; i++){
                 var val = allPeople[i];
                 var valSelect = "";
@@ -645,11 +646,12 @@ class EditMember extends SpecialPage{
                 }
                 if(unaccentChars(val.replace(/\./g, " ")).regexIndexOf(unaccentChars(value)) != -1 || (typeof oldOptions[valSelect] != "undefined" && unaccentChars(oldOptions[valSelect].attr("class")).regexIndexOf(unaccentChars(value)) != -1)){
                     if(typeof oldOptions[valSelect] != "undefined"){
-                        oldOptions[valSelect].appendTo($("#names"));
+                        oldOptions[valSelect].appendTo(tmpDom);
                     }
                     n++;
                 }
             }
+            $("#names").html(tmpDom.html());
             if(n == 0){
                 if(typeof oldOptions["no"] != "undefined"){
                     oldOptions["no"].appendTo($("#names"));
@@ -705,7 +707,6 @@ class EditMember extends SpecialPage{
             if(no.length > 0){
                 oldOptions["no"] = no;
             }
-            filterResults($("#search").val());
             
             $("#search").keypress(function(event) {
                 if(event.keyCode == 40){        //DOWN
@@ -744,7 +745,7 @@ class EditMember extends SpecialPage{
                          Select a user from the list below, and then click the 'Next' button.  You can filter out the selection box by searching a name or project below.<table>
                             <tr><td>
                                 <a href='javascript:sortBy(\"first\");'>Sort by First Name</a> | <a href='javascript:sortBy(\"last\");'>Sort by Last Name</a><br />
-                                <b>Search:</b> <input style='width:100%;' id='search' type='text' onKeyUp='filterResults(this.value);' />
+                                <b>Search:</b> <input style='width:100%;' id='search' type='text' />
                             </td></tr>
                             <tr><td>
                             <form action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
