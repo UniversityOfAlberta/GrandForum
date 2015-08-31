@@ -85,7 +85,7 @@
                         <h3>Publications and Dissemination of Research</h3>
                     ]]>
                 </ReportItem>
-                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_PUBLIC_PROFILE_STRUCTURE" table="false" details="true" totalOnly="true">
+                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
                     <![CDATA[
                         {$item}
                     ]]>
