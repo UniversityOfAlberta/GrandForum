@@ -1524,7 +1524,7 @@ class Paper extends BackboneModel{
 
     function toArray(){
         $me = Person::newFromWgUser();
-        if(false && Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             return $json;
