@@ -1259,6 +1259,14 @@ input.other_option:focus {
     font-size: 85%;
 }
 
+span.noshow {
+    display: none;
+}
+
+select span.noshow {
+    display: inline-block;
+}
+
 /* Backbone Cards */
 
 .small_card {

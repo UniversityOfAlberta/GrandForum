@@ -33,7 +33,8 @@
                  .replace(/\`/g, '')
                  .replace(/\&amp\;/g, '')
                  .replace(/\&/g, '')
-                 .replace(/\;/g, '');
+                 .replace(/\;/g, '')
+                 .replace(/"/g, '');
         return str;
     }
     
@@ -74,7 +75,7 @@
             if(!skip){
                 if(this.customAllowed){
                     var customName = document.createElement("option");
-                    customName.innerHTML = value;
+                    customName.innerHTML = "&quot;" + value + "&quot;";
                     customName.setAttribute("class", "custom");
                     customName.setAttribute("style", "font-style: italic;");
                     $(customName).attr("selected", "true");
@@ -126,10 +127,14 @@
     this.init = function(){
         var obj = this;
         $.each($("#" + this.id).children(".left").children(), function(index, value){
-            obj.leftArray[index] = $(value).html();
+            $(".noshow", $(value)).replaceWith("\"");
+            var val = $(value).html();
+            obj.leftArray[index] = val;
         });
         $.each($("#" + this.id).children(".right").children(), function(index, value){
-            obj.rightArray[index] = $(value).html();
+            $(".noshow", $(value)).replaceWith("\"");
+            var val = $(value).html();
+            obj.rightArray[index] = val;
         });
         this.values = this.leftArray.concat(this.rightArray);
         var customMessage = "";
@@ -155,7 +160,10 @@
         var leftBuffer = "";
         for(index in this.leftArray){
             try{
-                var value = this.leftArray[index].replace(/\./g, " ");
+                var value = this.leftArray[index];
+                if(value.indexOf("\"") == -1){
+                    value = value.replace(/\./g, " ");
+                }
                 if(value != ""){
                     leftBuffer += "<option id=\'" + this.id + this.cleanId(value) + "\'>" + value + "</option>";
                 }
@@ -167,7 +175,10 @@
         var rightBuffer = "";
         for(index in this.rightArray){
             try{
-                var value = this.rightArray[index].replace(/\./g, " ");
+                var value = this.rightArray[index];
+                if(value.indexOf("\"") == -1){
+                    value = value.replace(/\./g, " ");
+                }
                 if(value != ""){
                     rightBuffer += "<option id=\'" + this.id + this.cleanId(value) + "\'>" + value + "</option>";
                 }

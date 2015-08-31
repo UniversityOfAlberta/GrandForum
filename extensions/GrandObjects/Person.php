@@ -1403,9 +1403,9 @@ class Person extends BackboneModel {
     // Returns a name usable in forms.
     function getNameForForms($sep = ' ') {
         if (!empty($this->realname))
-            return str_replace("&nbsp;", " ", ucfirst($this->realname));
+            return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
-            return trim($this->getFirstName()." ".$this->getLastName());
+            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
     
     // Returns the user's profile.

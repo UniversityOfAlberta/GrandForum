@@ -1170,7 +1170,6 @@ class Paper extends BackboneModel{
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'owner');
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'assignor');
         }
-        
 
         $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
@@ -1525,7 +1524,7 @@ class Paper extends BackboneModel{
 
     function toArray(){
         $me = Person::newFromWgUser();
-        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+        if(false && Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             return $json;
