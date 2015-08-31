@@ -11,6 +11,7 @@
             <SectionPermission id="alignment" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
         </Role>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="information" tooltip="1a. Project and Team Information" name="Project Information" title="1a. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">

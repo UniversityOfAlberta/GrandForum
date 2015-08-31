@@ -13,6 +13,7 @@
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="supervisor" permissions="r" />
         </Role>
+        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="milestones" name="Milestones" title="1. Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" tooltip="1. Fellowship Project Progress" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">

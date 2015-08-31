@@ -615,8 +615,9 @@ class EditMember extends SpecialPage{
         function filterResults(value){
             $.each($("#names").children().not("#no"), function(index, value){
                 var valSelect = value.id;
-                oldOptions[valSelect] = $("#" + valSelect).detach();
+                oldOptions[valSelect] = $(value).detach();
             });
+            
             if(value == ""){
                 var no = $("#no").detach();
                 if(no.length > 0){

@@ -43,6 +43,7 @@ class EvolveProjectTab extends ProjectTab {
         $create->getElementById("evolve_status_row")->remove();
         $create->getElementById("evolve_bigbet_row")->remove();
         $create->getElementById("evolve_phase_row")->remove();
+        $create->getElementById("evolve_champ_row")->remove();
 
         $form->append($create);
         return $form;
