@@ -345,6 +345,13 @@ class Project extends BackboneModel {
         return (count($data) > 0);
     }
     
+    static function areThereAdminProjects(){
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                    array('id'),
+                                    array('type' => EQ('Administrative')));
+        return (count($data) > 0);
+    }
+    
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
     function Project($data){

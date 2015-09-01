@@ -73,14 +73,7 @@ class IndexTable {
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
         
-        $adminProjects = array();
-        $projects = Project::getAllProjects();
-        foreach($projects as $project){
-            if($project->getType() == 'Administrative'){
-                $adminProjects[$project->getName()] = $project;
-            }
-        }
-        
+       
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -89,7 +82,7 @@ class IndexTable {
             $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
         }
         
-        if(count($adminProjects) > 0){
+        if(Project::areThereAdminProjects()){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
             $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
