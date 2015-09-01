@@ -3242,16 +3242,15 @@ class Person extends BackboneModel {
     // Returns an array of projects that this person is a leader or co-leader.
     function leadership($history=false) {
         $ret = array();
+        $res = array();
         if(!$history){
             if(isset($this->leadershipCache['current'])){
                 return $this->leadershipCache['current'];
             }
-            $res = DBFunctions::execSQL("SELECT project_id
-                                         FROM grand_project_leaders l, grand_project p
-                                         WHERE l.project_id = p.id
-                                         AND l.user_id = '{$this->id}'
-                                         AND (l.end_date = '0000-00-00 00:00:00'
-                                              OR l.end_date > CURRENT_TIMESTAMP)");
+            self::generateLeaderCache();
+            if(isset(self::$leaderCache[$this->getId()])){
+                $res = self::$leaderCache[$this->getId()];
+            }
         }
         else{
             if(isset($this->leadershipCache['history'])){
