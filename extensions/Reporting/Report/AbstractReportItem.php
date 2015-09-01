@@ -194,7 +194,7 @@ abstract class AbstractReportItem {
     
     function getExtraIndex(){
         $set = $this->getSet();
-        foreach($set->getData() as $index => $item){
+        foreach($set->getCachedData() as $index => $item){
             if($item['extra'] == $this->extra){
                 return $index;
             }
