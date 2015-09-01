@@ -38,6 +38,18 @@ if(project != ""){
                 $("#project-nis").show();
             }
         });
+        $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project + '/members/Collaborator', function(people){
+            var length = 0;
+            var collabs = new Array();
+            $.each(people, function(i, person){
+                length++;
+                collabs.push("<a href='http://canadianglycomics.ca/people/?tab=collaborators&person=" + person.id + "'>" + person.fullName + "</a>");
+            });
+            if(length > 0){
+                $("#project-collaborators").append(collabs.join(", "));
+                $("#project-collaborators").show();
+            }
+        });
     });
 }
 else{
