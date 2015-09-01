@@ -299,10 +299,12 @@ class Person extends BackboneModel {
                 if(isset($phoneNumbers[$row['user_id']])){
                     $row['phone'] = $phoneNumbers[$row['user_id']];
                 }
-                $exploded = explode(".", $row['user_name']);
-                $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @unaccentChars($exploded[0]);
-                $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @unaccentChars($exploded[1]);
+                $exploded = explode(".", unaccentChars($row['user_name']));
+                
+                $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
+                $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
                 $middleName = unaccentChars($row['middle_name']);
+                
                 self::$idsCache[$row['user_id']] = $row;
                 self::$namesCache[strtolower($row['user_name'])] = $row;
                 self::$namesCache[strtolower("$firstName $lastName")] = $row;
