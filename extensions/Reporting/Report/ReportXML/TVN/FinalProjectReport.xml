@@ -148,17 +148,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>Executive Summary</h3>
-                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites) (Maximum 500 words).</p>
+                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_ABSTRACT" rich="true">
+        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_ABSTRACT" rich="true" limit="500">
             <![CDATA[
                 <h3>Scientific Abstract</h3>
-                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study (Maximum 500 words).</p>
+                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study.</p>
                 {$item}
             ]]>
         </ReportItem>
