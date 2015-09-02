@@ -104,7 +104,8 @@ class Inflect
         'rice',
         'information',
         'equipment',
-        'press'
+        'press',
+        'intellectual property'
     );
 
 	/**
