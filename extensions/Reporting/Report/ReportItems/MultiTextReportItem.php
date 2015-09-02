@@ -92,7 +92,7 @@ EOF;
                         else if(strstr(strtolower(@$types[$j]), "select") !== false){
                             $item .= @"\"<td align='center'><select class='raw' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
-                            preg_match("/.*\((.*)\)/", $types[$j], $matches);
+                            preg_match("/^Select\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[1]);
                             foreach($matches as $match){
                                 $match = trim($match);
@@ -167,11 +167,11 @@ EOF;
                     else if(strstr(strtolower(@$types[$j]), "select") !== false){
                         $item .= @"<td align='center'><select class='raw' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
-                        preg_match("/.*\((.*)\)/", $types[$j], $matches);
+                        preg_match("/^Select\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[1]);
                         foreach($matches as $match){
                             $match = trim($match);
-                            if($match == $value[$index]){
+                            if($match == @$value[$index]){
                                 $item .= "<option selected>{$match}</option>";
                             }
                             else{

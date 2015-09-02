@@ -77,7 +77,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="collab" name="Collaborative Project" tooltip="3. Online Collaborative Project" title="3. Online Collaborative Project" blobSection="IFP_PROG_COLLAB" type="EditableReportSection">
-        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status&lt;br /&gt;&lt;small&gt;(completed, on track, delayed, not started)&lt;/small&gt;" types="Text|Textarea|Text" sizes="175|200|125" multiple="true">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed, On Track, Not Started)" sizes="175|200|125" multiple="true">
             <![CDATA[
                 <h3>Status of OCP Milestones</h3>
                 <p>Outline in the table below milestones and research outputs as indicated in the group learning plan or subsequent amendments, and their status of completion.</p>
@@ -114,7 +114,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="capacity" name="Capacity Update" tooltip="5. Capacity Update" title="5. Capacity Update" blobSection="IFP_PROG_CAPACITY" type="EditableReportSection">
-        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_CAPACITY_ACTIVITY" labels="Type of Activity&lt;br /&gt;&lt;small&gt;Non-Fellowship Research Commitments, Course Commitments (instructor or student), Professional Practice, Other Commitments&lt;/small&gt;|Activity|Expected Time Commitment|Duration" types="Text|Text|Text|Text" sizes="175|175|125|125" multiple="true">
+        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" sizes="175|175|125|125" multiple="true">
             <![CDATA[
                 <p>The TVN Interdisciplinary Fellowship Program is designed to be rigorous and challenging, and requires ongoing dedication. The program required a regular and substantial time commitment over a two-year period.</p>
                 <p>In your application package, you listed all known and anticipated activities that you expected over the course of the fellowship, and agreed to update TVN with any changes.  Please note any changes below.</p>
@@ -135,7 +135,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partners" name="Partnerships" tooltip="6. Partnerships and other Funding" title="6. Partnerships and other Funding" blobSection="IFP_PROG_PARTNERS" type="EditableReportSection">
-        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest&lt;br /&gt;&lt;small&gt;(Y or N)&lt;/small&gt;|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding&lt;br /&gt;&lt;small&gt;(Cash contribution, In-kind contribution; Other - e.g. scholarship, salary, research grand, etc. (please specify)&lt;/small&gt;|Was this funding received as a result of your TVN funding?&lt;br /&gt;&lt;small&gt;(Y or N)&lt;/small&gt;|Year*|Amount" types="Text|Text|Text|Text" sizes="150|50|125|125|50|50|75" multiple="true">
+        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding&lt;br /&gt;&lt;small&gt;(Cash contribution, In-kind contribution; Other - e.g. scholarship, salary, research grand, etc. (please specify)&lt;/small&gt;|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|Text|Text|Select(Yes,No)|Integer|Integer" sizes="150|50|125|125|50|50|75" multiple="true">
             <![CDATA[
                 <p>The TVN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however TVN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
                 <p>Details on in-kind and financial partnership contributions must also be identified. Partnership contributions must be from NCE-eligible partners and cover NCE-eligible expenses. Please consult the <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a> regarding eligibility and valuation of in-kind contributions and then consult with your supervisor’s host institution’s research services unit for assistance if you still have questions.  Calculation of in-kind contribution amounts must adhere to <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a>.</p>
@@ -186,19 +186,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know_synth" type="TextReportItem" blobItem="IFP_PROG_PLAN_SYNTH" width="30px">
+        <ReportItem id="know_synth" type="IntegerReportItem" min="0" max="100" blobItem="IFP_PROG_PLAN_SYNTH" width="30px">
             <![CDATA[
                 <h3>Knowledge Continuum</h3>
                 <p><small>Please indicate the percentage of your project that addresses the following activities on the knowledge continuum:</small></p>
                 {$item}% Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_creation" type="TextReportItem" blobItem="IFP_PROG_PLAN_CREATION" width="30px">
+        <ReportItem id="know_creation" type="IntegerReportItem" min="0" max="100" blobItem="IFP_PROG_PLAN_CREATION" width="30px">
             <![CDATA[
                 {$item}% Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_trans" type="TextReportItem" blobItem="IFP_PROG_PLAN_TRANS" width="30px">
+        <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="IFP_PROG_PLAN_TRANS" width="30px">
             <![CDATA[
                 {$item}% Knowledge translation/mobilization
             ]]>

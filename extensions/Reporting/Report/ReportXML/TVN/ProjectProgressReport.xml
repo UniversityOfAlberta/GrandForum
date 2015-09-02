@@ -52,7 +52,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -82,7 +82,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -112,7 +112,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -177,7 +177,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="PROG_PARTNERS" type="EditableReportSection">
-        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application? Y/N?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|125|150" class="wikitable">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|100|150" types="Text|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
             <![CDATA[
                 <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
 <p style='line-height:1em'><small>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</small></p>
@@ -226,19 +226,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know_synth" type="TextReportItem" blobItem="PROG_PLAN_SYNTH" width="30px">
+        <ReportItem id="know_synth" type="IntegerReportItem" min="0" max="100" blobItem="PROG_PLAN_SYNTH" width="30px">
             <![CDATA[
                 <h3>Knowledge Continuum</h3>
                 <p><small>Please indicate the percentage of your project that addressed the following activities on the knowledge continuum:</small></p>
                 {$item}% Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_creation" type="TextReportItem" blobItem="PROG_PLAN_CREATION" width="30px">
+        <ReportItem id="know_creation" type="IntegerReportItem" min="0" max="100" blobItem="PROG_PLAN_CREATION" width="30px">
             <![CDATA[
                 {$item}% Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_trans" type="TextReportItem" blobItem="PROG_PLAN_TRANS" width="30px">
+        <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="PROG_PLAN_TRANS" width="30px">
             <![CDATA[
                 {$item}% Knowledge translation/mobilization
             ]]>
