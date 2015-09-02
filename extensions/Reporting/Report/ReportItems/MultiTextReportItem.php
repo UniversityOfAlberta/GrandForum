@@ -83,8 +83,22 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "integer"){
+                            $item .= @"\"<td><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
+                        }
+                        else if(strstr(strtolower(@$types[$j]), "select") !== false){
+                            $item .= @"\"<td align='center'><select class='raw' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $matches = array();
+                            preg_match("/.*\((.*)\)/", $types[$j], $matches);
+                            $matches = @explode(",", $matches[1]);
+                            foreach($matches as $match){
+                                $match = trim($match);
+                                $item .= "<option>{$match}</option>";
+                            }
+                            $item .= "</select></td>\" + \n";
                         }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
@@ -93,7 +107,7 @@ EOF;
         $item .= <<<EOF
                         "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
                     "</tr>");
-                $("#table_{$this->getPostId()} tr.obj:last select").combobox();
+                $("#table_{$this->getPostId()} tr.obj:last select:not(.raw)").combobox();
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
@@ -116,6 +130,7 @@ EOF;
                 else{
                     $("#table_{$this->getPostId()}").show();
                 }
+                $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
             }
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
@@ -143,8 +158,27 @@ EOF;
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
                         $item .= "<td>".$combobox->render()."</td>";
                     }
+                    else if(strtolower(@$types[$j]) == "integer"){
+                        $item .= @"<td><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                    }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "select") !== false){
+                        $item .= @"<td align='center'><select class='raw' name='{$this->getPostId()}[$i][$index]'>";
+                        $matches = array();
+                        preg_match("/.*\((.*)\)/", $types[$j], $matches);
+                        $matches = @explode(",", $matches[1]);
+                        foreach($matches as $match){
+                            $match = trim($match);
+                            if($match == $value[$index]){
+                                $item .= "<option selected>{$match}</option>";
+                            }
+                            else{
+                                $item .= "<option>{$match}</option>";
+                            }
+                        }
+                        $item .= "</select></td>";
                     }
                     else{
                         $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' style='width:{$sizes[$j]}px;' /></td>";
