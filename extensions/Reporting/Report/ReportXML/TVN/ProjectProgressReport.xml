@@ -143,7 +143,7 @@
                 <h3>Other Challenges*</h3>
                 <p>If applicable, describe any challenges encountered by the project team (research, management, partnership, training, etc.) during the reporting period and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
                 {$item}
-                <small style='color:#FF0000;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.</small>
+                <small>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.</small>
             ]]>
         </ReportItem>
         <ReportItem id="acheive" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_ACHIEVE" rich="true">
@@ -177,7 +177,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="PROG_PARTNERS" type="EditableReportSection">
-        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|100|150" types="Text|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="200|150|75|100|100|100" types="Text|ComboBox(University, Federal dept./agency, Provincial dept./agency, Industry)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
             <![CDATA[
                 <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
 <p style='line-height:1em'><small>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</small></p>

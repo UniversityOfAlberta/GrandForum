@@ -89,11 +89,16 @@ EOF;
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
                         }
-                        else if(strstr(strtolower(@$types[$j]), "select") !== false){
-                            $item .= @"\"<td align='center'><select class='raw' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                        else if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                                strstr(strtolower(@$types[$j]), "combobox") !== false){
+                            $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                            $item .= @"\"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
-                            preg_match("/^Select\((.*)\)$/i", $types[$j], $matches);
-                            $matches = @explode(",", $matches[1]);
+                            preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                            $matches = @explode(",", $matches[2]);
+                            if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                                $item .= @"<option selected>{$value[$index]}</option>";
+                            }
                             foreach($matches as $match){
                                 $match = trim($match);
                                 $item .= "<option>{$match}</option>";
@@ -132,6 +137,9 @@ EOF;
                 }
                 $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
             }
+            $(document).ready(function(){
+                $("#table_{$this->getPostId()} select:not(.raw)").combobox();
+            });
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
@@ -164,11 +172,16 @@ EOF;
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
                     }
-                    else if(strstr(strtolower(@$types[$j]), "select") !== false){
-                        $item .= @"<td align='center'><select class='raw' name='{$this->getPostId()}[$i][$index]'>";
+                    else if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                            strstr(strtolower(@$types[$j]), "combobox") !== false){
+                        $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                        $item .= @"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
-                        preg_match("/^Select\((.*)\)$/i", $types[$j], $matches);
-                        $matches = @explode(",", $matches[1]);
+                        preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                        $matches = @explode(",", $matches[2]);
+                        if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                            $item .= @"<option selected>{$value[$index]}</option>";
+                        }
                         foreach($matches as $match){
                             $match = trim($match);
                             if($match == @$value[$index]){
