@@ -369,7 +369,15 @@ abstract class AbstractReportSection {
         $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->title}</div>
         <hr />
         <div id='reportBody'>");
-
+        if(!$this->checkPermission('w')){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#reportMain textarea').prop('disabled', 'disabled');
+                    $('#reportMain input').prop('disabled', 'disabled');
+                    $('#reportMain button').prop('disabled', 'disabled');
+                });
+            </script>");
+        }
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
@@ -381,13 +389,6 @@ abstract class AbstractReportSection {
 
         //Close up the Section and render
         $wgOut->addHTML("</div></div>");
-        if(!$this->checkPermission('w')){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#reportMain textarea').prop('disabled', 'disabled');
-                $('#reportMain input').prop('disabled', 'disabled');
-                $('#reportMain button').prop('disabled', 'disabled');
-            </script>");
-        }
     }
     
     function renderForPDF(){

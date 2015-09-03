@@ -61,7 +61,18 @@ class EditableReportSection extends AbstractReportSection {
                             <div id='reportHeader'>{$number}{$this->title}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'>Progress ({$this->getPercentComplete()}%)</span></span></div>
                              <hr />
                              <div id='reportBody'>");
-
+        if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#reportMain textarea').prop('disabled', 'disabled');
+                    $('#reportMain input').prop('disabled', 'disabled');
+                    $('#reportMain button').prop('disabled', 'disabled');
+                    $('#reportMain select').prop('disabled', 'disabled');
+                    $('#reportMain a.custom-combobox-toggle').hide();
+                    console.log('disable');
+                });
+            </script>");
+        }
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
@@ -87,13 +98,6 @@ class EditableReportSection extends AbstractReportSection {
                                 <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />{$saveText}
                              </div>
                          </form></div>\n");
-        if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#reportMain textarea').prop('disabled', 'disabled');
-                $('#reportMain input').prop('disabled', 'disabled');
-                $('#reportMain button').prop('disabled', 'disabled');
-            </script>");
-        }
     }
     
     // Returns the percentage of completion for this section

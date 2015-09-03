@@ -146,6 +146,15 @@ class BudgetReportItem extends AbstractReportItem {
                         parent.alertreload();
                     </script>";
         }
+        if(!$this->getSection()->checkPermission('w')){
+            echo "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('textarea').prop('disabled', 'disabled');
+                    $('input').prop('disabled', 'disabled');
+                    $('button').prop('disabled', 'disabled');
+                });
+            </script>";
+        }
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>

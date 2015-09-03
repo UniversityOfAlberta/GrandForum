@@ -108,6 +108,15 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_POST['upload'])){
             $this->save();
         }
+        if(!$this->getSection()->checkPermission('w')){
+            echo "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('textarea').prop('disabled', 'disabled');
+                    $('input').prop('disabled', 'disabled');
+                    $('button').prop('disabled', 'disabled');
+                });
+            </script>";
+        }
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
                             <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB

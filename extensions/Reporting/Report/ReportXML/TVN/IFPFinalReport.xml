@@ -2,7 +2,7 @@
 <Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" ajax="true" personId="0">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="milestones" permissions="r" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="external" permissions="rw" />
             <SectionPermission id="mentorship" permissions="rw" />
@@ -13,6 +13,20 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="supervisor" permissions="r" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="ktee" permissions="r" />
+            <SectionPermission id="external" permissions="r" />
+            <SectionPermission id="mentorship" permissions="r" />
+            <SectionPermission id="collab" permissions="r" />
+            <SectionPermission id="dissemination" permissions="r" />
+            <SectionPermission id="capacity" permissions="r" />
+            <SectionPermission id="partners" permissions="r" />
+            <SectionPermission id="network" permissions="r" />
+            <SectionPermission id="comments" permissions="r" />
+            <SectionPermission id="supervisor" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />

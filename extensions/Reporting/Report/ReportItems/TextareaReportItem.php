@@ -34,8 +34,13 @@ class TextareaReportItem extends AbstractReportItem {
                 }
                 $(document).ready(function(){
                     $('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    var readOnly = false;
+                    if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
+                        readOnly = true;
+                    }
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
+                        readonly: readOnly,
                         menubar: false,
                         plugins: 'link image charmap lists table paste wordcount',
                         toolbar: [
