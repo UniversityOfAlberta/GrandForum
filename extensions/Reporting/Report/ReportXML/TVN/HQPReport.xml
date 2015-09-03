@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="HQP Report" reportType="RP_SSA_FINAL_PROGRESS" ajax="true">
+<Report name="HQP Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="HQPReport" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="SSA_HQP" name="HQP Trainees">
@@ -318,5 +319,10 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
     </ReportSection>
 </Report>

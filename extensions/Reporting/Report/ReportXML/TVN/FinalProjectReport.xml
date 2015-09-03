@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" ajax="true" personId="0">
+<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" pdfFiles="FinalProjectReport" ajax="true" personId="0">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="information" permissions="rw" />
@@ -10,6 +10,7 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
@@ -311,6 +312,11 @@
             <![CDATA[
                 {$item}
             ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
 </Report>
