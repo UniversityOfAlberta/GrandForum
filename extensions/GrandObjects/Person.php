@@ -594,6 +594,15 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
+            if($filter == INACTIVE && !isset(self::$rolesCache[$row])){
+                $person = Person::newFromId($row);
+                if($idOnly){
+                    $people[] = $row;
+                }
+                else{
+                    $people[] = $person;
+                }
+            }
             if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
                 self::generateThemeLeaderCache();
                 self::generateLeaderCache();
