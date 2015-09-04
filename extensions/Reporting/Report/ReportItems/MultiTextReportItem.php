@@ -224,12 +224,14 @@ EOF;
     }
     
     function renderForPDF(){
-        global $wgOut;
+        global $wgOut, $config;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $showHeader = $this->getAttr('showHeader', 'true');
+        $showCount = $this->getAttr('showCount', 'false');
+        $showBullets = $this->getAttr('showBullets', 'false');
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
         if($values == null){
@@ -245,6 +247,9 @@ EOF;
                 $item = "<table id='table_{$this->getPostId()}' cellspacing='1' style='border: none;' width='100%'>";
                 if(strtolower($showHeader) == 'true'){
                     $item .= " <tr>";
+                    if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
+                        $item .= "<th style='width:1px;'>&nbsp;</th>";
+                    }
                     foreach($labels as $label){
                         $item .= "<th align='center'>{$label}</th>";
                     }
@@ -259,6 +264,13 @@ EOF;
             foreach($values as $i => $value){
                 if($i > -1 && $count < $maxEntries){
                     $item .= "<tr class='obj'>";
+                    if(strtolower($showCount) == 'true'){
+                        $item .= "<td style='width:1px;' valign='top'><b>{$i}.</b></td>";
+                    }
+                    if(strtolower($showBullets) == 'true'){
+                        $fontSize = ($config->getValue('pdfFontSize')*DPI_CONSTANT);
+                        $item .= "<td style='width:1px;' valign='top'><b style='display: block;margin:".($fontSize/2)."px 0 0 0;'>•</b></td>";
+                    }
                     foreach($indices as $j => $index){
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
                         $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";

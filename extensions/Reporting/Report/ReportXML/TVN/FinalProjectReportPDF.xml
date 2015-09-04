@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" pdfFiles="FinalProjectReportPDF" ajax="true" personId="0">
-    <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="partnerships" permissions="rw" />
-            <SectionPermission id="network" permissions="rw" />
-            <SectionPermission id="alignment" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
-    </Permissions>
+<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" ajax="true" personId="0">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                    <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="information" tooltip="1a. Project and Team Information" name="Project Information" title="1a. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
@@ -26,8 +18,8 @@
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>
-                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  If someone has left the team since the last reporting period, please include originally planned project role and enter “Withdrawn since [date] due to [reason]” in the “Role in project” column.  Include Trainees and other HQP participating in the project, but you must also detail these in the accompanying HQP/Trainee Database update template.</span>
-                <table class='wikitable'>
+                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  If someone has left the team since the last reporting period, please include originally planned project role and enter “Withdrawn since [date] due to [reason]” in the “Role in project” column.  Include Trainees and other HQP participating in the project, but you must also detail these in the accompanying HQP/Trainee Database update template.</span><br /><br />
+                <table class='wikitable' width='100%' frame='box' rules='all'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
                         <th>Role in project</th>
@@ -62,7 +54,7 @@
             </ReportItem>
             <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
                 <![CDATA[
-                    <td>{$item}</td></tr>
+                    <td align='center'>{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -92,7 +84,7 @@
             </ReportItem>
             <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
                 <![CDATA[
-                    <td>{$item}</td></tr>
+                    <td align='center'>{$item}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -122,7 +114,7 @@
             </ReportItem>
             <ReportItem id="status" type="SelectReportItem" options="Original|Removed|New Member" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_STATUS">
                 <![CDATA[
-                    <td>{$item}</td></tr>
+                    <td align='center'>{$item}</td></tr>
                 ]]>
             </ReportItem> 
         </ReportItemSet>
@@ -135,18 +127,14 @@
     <ReportSection id="milestones" name="Milestones" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
             <![CDATA[
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
-                </p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="research" name="Research Findings" title="2. Research Findings" blobSection="FINAL_RESEARCH" tooltip="2. Research Findings" type="EditableReportSection">
-        <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_RES_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
+        <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_RES_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" showHeader="false" showBullets="true" class="wikitable">
             <![CDATA[
                 <h3>Key Findings & Achievements</h3>
-                <p>Please provide the key findings and achievements of your project in one or two sentences.</p>
                 {$item}
             ]]>
         </ReportItem>
