@@ -1,6 +1,6 @@
 <?php
 
-//require_once("InactiveUsers.php");
+require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
