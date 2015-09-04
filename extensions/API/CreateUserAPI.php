@@ -101,9 +101,6 @@ class CreateUserAPI extends API{
 			                                      'university_id' => $unis[$defaultUni],
 			                                      'position_id' => $poss[$defaultPos]));
 			        }
-		            DBFunctions::update('mw_user',
-		                                array('candidate' => $_POST['candidate']),
-		                                array('user_id' => EQ($person->id)));
 		            if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
 		                // Adds the role subtype if it is set
 		                foreach($_POST['subtype'] as $subtype){

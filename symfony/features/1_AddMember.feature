@@ -34,6 +34,27 @@ Feature: AddMember
         And "new.user@behat-test.com" should be subscribed to "test-hqps"
         And unsubscribe "new.user@behat-test.com" from "test-hqps"
         
+    Scenario: NI Requesting a candidate user
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Add Member"
+        And I fill in "first_name_field" with "New"
+        And I fill in "last_name_field" with "Candidate"
+        And I fill in "email_field" with "new.candidate@behat-test.com"
+        And I check "role_field_HQP"
+        And I check "project_field_Phase2Project1"
+        And I check "project_field_Phase2Project1SubProject1"
+        And I check "Yes" from "cand_field"
+        And I press "Submit Request"
+        Then I should see "User Creation Request Submitted"
+        
+    Scenario: Admin Accepting request
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I follow "status_notifications"
+        And I follow "User Creation Request"
+        And I press "Accept"
+        Then I should see "User created successfully"
+        And "new.candidate@behat-test.com" should not be subscribed to "test-hqps"
+        
     Scenario: NI Requesting another user (will get a warning)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Member"
