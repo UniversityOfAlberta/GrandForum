@@ -123,3 +123,11 @@ Feature: AddMember
         And I press "Ignore"
         Then I should not see "Ààè.Öå"
         
+    Scenario: Staff Requesting a user with no roles
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Add Member"
+        And I fill in "first_name_field" with "Test"
+        And I fill in "last_name_field" with "UserNoRoles"
+        And I fill in "email_field" with "test.usernoroles@behat-test.com"
+        And I press "Submit Request"
+        Then I should not see "The field 'Roles' must not be empty"
