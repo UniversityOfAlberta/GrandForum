@@ -862,9 +862,9 @@ class CavendishTemplate extends QuickTemplate {
 
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
 	            for($year=date('Y'); $year >= 2014; $year--){
-	                $title = "{$config->getValue('networkName')}_Annual_Conference_{$year}";
-	                if(Wiki::newFromTitle("{$config->getValue('networkName')}_Annual_Conference_{$year}")->exists()){
-	                    $resources['links'][1002] = TabUtils::createToolboxLink("{$year} Conference", "$wgServer$wgScriptPath/index.php/Conference:{$title}");
+	                $title = "Conference:{$config->getValue('networkName')}_Annual_Conference_{$year}";
+	                if(Wiki::newFromTitle("{$title}")->exists()){
+	                    $resources['links'][1002] = TabUtils::createToolboxLink("{$year} Conference", "$wgServer$wgScriptPath/index.php/{$title}");
 	                    break;
 	                }
 	            }
