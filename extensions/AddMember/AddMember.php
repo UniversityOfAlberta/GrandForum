@@ -248,7 +248,7 @@ class AddMember extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
         
         $roleValidations = VALIDATE_NOT_NULL;
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(STAFF)){
             $roleValidations = VALIDATE_NOTHING;
         }
         $roleOptions = array();
