@@ -160,10 +160,10 @@ class UserMailer {
 	 * @throws MWException
 	 * @return Status object
 	 */
-	public static function send( $to, $from, $subject, $body, $replyto = null, $contentType = 'text/html; charset=UTF-8' ) {
+	public static function send( $to, $from, $subject, $body, $replyto = null, $contentType = 'text/plain; charset=UTF-8' ) {
 		global $wgSMTP, $wgEnotifMaxRecips, $wgAdditionalMailParams, $wgAllowHTMLEmail;
-		if($contentType == 'text/html; charset=UTF-8'){
-		    $body = nl2br($body);
+		if(strstr($body, "<html>") !== false || $contentType == 'text/html; charset=UTF-8'){
+		    $contentType = 'text/html; charset=UTF-8';
 		}
 		$mime = null;
 		if ( !is_array( $to ) ) {

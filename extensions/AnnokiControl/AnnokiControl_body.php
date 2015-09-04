@@ -25,6 +25,7 @@ class AnnokiControl extends SpecialPage {
 
   function onMessagesPreLoad($title, &$message) {
     switch(strtolower($title)){
+        case "passwordreset-emailtext-ip":
         case "passwordremindertext":
             $message = 'A new password has been requested for {{SITENAME}} ($4). A temporary password for user
 "$2" has been created and was set to "$3".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
