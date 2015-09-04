@@ -861,10 +861,17 @@ class CavendishTemplate extends QuickTemplate {
 	            $resources = TabUtils::createToolboxHeader("Resources");
 
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
-	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
-	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            for($year=date('Y'); $year >= 2014; $year--){
+	                $title = "{$config->getValue('networkName')}_Annual_Conference_{$year}";
+	                if(Wiki::newFromTitle("{$config->getValue('networkName')}_Annual_Conference_{$year}")->exists()){
+	                    $resources['links'][1002] = TabUtils::createToolboxLink("{$year} Conference", "$wgServer$wgScriptPath/index.php/Conference:{$title}");
+	                    break;
+	                }
+	            }
+	            $resources['links'][1003] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
+	            $resources['links'][1004] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
 	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
-	                $resources['links'][1004] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
+	                $resources['links'][1005] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
 	            }
 	            
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
