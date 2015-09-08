@@ -89,19 +89,19 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
-                <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH">
+                <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="weakness" type="TextareaReportItem"  blobType="BLOB_TEXT" blobItem="SAB_REVIEW_WEAKNESS">
+                <ReportItem id="weakness" type="TextareaReportItem"  blobType="BLOB_TEXT" blobItem="SAB_REVIEW_WEAKNESS" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Weaknesses</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="ranking" type="RadioReportItem" orientation="vertical" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_RANKING" options="High|Medium|Low">
+                <ReportItem id="ranking" type="RadioReportItem" orientation="vertical" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_RANKING" blobSubItem="{$user_id}" options="High|Medium|Low">
                     <![CDATA[
                         <h2>Proposal Ranking</h2>
                         {$item}
