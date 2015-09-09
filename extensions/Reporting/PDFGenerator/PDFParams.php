@@ -65,5 +65,6 @@ define('RPTP_CC4_PLANNING',     305);
  * TVN
  */
 define('RPTP_FINAL_PROJECT',    400);
+define('RPTP_PROGRESS',         401);
 
 ?>

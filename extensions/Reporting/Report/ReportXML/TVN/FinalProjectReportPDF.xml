@@ -7,7 +7,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="information" tooltip="1a. Project and Team Information" name="Project Information" title="1a. Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <h4 style='font-size:1.40em;'>{$this_year} Final Project Report</h4><br />
@@ -166,7 +166,6 @@
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <h3>Dissemination of Project Research Results</h3>
                 {$item}
             ]]>
         </ReportItem>
