@@ -352,6 +352,10 @@ EOF;
 		        text-align: justify;
 		    }
 		    
+		    #pdfBody table {
+		        text-align: initial;
+		    }
+		    
 		    #pdfBody .wikitable {
 		        border: none;
 		    }

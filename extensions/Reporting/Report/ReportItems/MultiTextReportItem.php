@@ -228,10 +228,24 @@ EOF;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
-        $sizes = explode("|", $this->getAttr('sizes', ''));
+        $types = explode("|", $this->getAttr('types', ''));
+        $sizes = $this->getAttr('sizes', '');
+        if($sizes != ""){
+            $sizes = explode("|", $sizes);
+        }
+        else{
+            $sizes = array();
+        }
         $showHeader = $this->getAttr('showHeader', 'true');
         $showCount = $this->getAttr('showCount', 'false');
         $showBullets = $this->getAttr('showBullets', 'false');
+        $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
+        $rules = "";
+        $frame = "";
+        if($class == 'wikitable'){
+            $rules = "all";
+            $frame = "box";
+        }
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
         if($values == null){
@@ -244,7 +258,7 @@ EOF;
         $item = "";
         if($max > -1){
             if(count($labels) > 0 && $labels[0] != ""){
-                $item = "<table id='table_{$this->getPostId()}' cellspacing='1' style='border: none;' width='100%'>";
+                $item = "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
                 if(strtolower($showHeader) == 'true'){
                     $item .= " <tr>";
                     if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
@@ -273,7 +287,13 @@ EOF;
                     }
                     foreach($indices as $j => $index){
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
-                        $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                           strstr(strtolower(@$types[$j]), "combobox") !== false){
+                           $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else{
+                            $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
                     }
                     $item .= "</tr>";
                     $count++;
