@@ -931,7 +931,7 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
 <p>
-You must have cookies enabled to log in to $wgSiteName.<br />
+You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
 Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
