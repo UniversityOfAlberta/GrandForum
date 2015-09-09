@@ -78,6 +78,7 @@ class TextareaReportItem extends AbstractReportItem {
                             }
                         }
                     });
+                    initResizeEvent();
                 });
             </script>";
         }
