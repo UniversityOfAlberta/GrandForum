@@ -67,5 +67,6 @@ define('RPTP_CC4_PLANNING',     305);
 define('RPTP_FINAL_PROJECT',    400);
 define('RPTP_PROGRESS',         401);
 define('RPTP_IFP_FINAL_PROJECT',402);
+define('RPTP_IFP_PROGRESS',     403);
 
 ?>
