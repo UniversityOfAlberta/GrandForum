@@ -6,6 +6,10 @@ Feature: AddMember
     Scenario: Anon trying to create an account (should be disabled)
         Given I am on "index.php/Special:Userlogin/signup"
         Then I should see "Permission error"
+        
+    Scenario: Anon trying to create an account 2 (should be disabled)
+        Given I am on "index.php?title=Special:UserLogin&action=submitlogin&type=login&returnto=Help%3AContents&type=signup"
+        Then I should see "Permission error"
 
     Scenario: HQP trying to request a user (should not be allowed to)
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
