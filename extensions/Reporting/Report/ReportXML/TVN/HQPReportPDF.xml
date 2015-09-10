@@ -233,7 +233,7 @@
                             <td style='white-space:nowrap;'>{$item}<br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="fulltime_no" type="TextReportItem" blobType="BLOB_TEXT" blobItem="SSA_NO" blobSubItem="{$user_id}" optional="true">
+                <ReportItem id="fulltime_no" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_NO" blobSubItem="{$user_id}" optional="true" min="0" max="100">
                     <![CDATA[
                             If no, # hours per week?<br />
                             {$item}
@@ -300,19 +300,19 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="synth" type="TextReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_SYNTH" blobSubItem="{$user_id}">
+                <ReportItem id="synth" type="IntegerReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_SYNTH" blobSubItem="{$user_id}" min="0" max="100">
                     <![CDATA[
                         </table><br />
                         <h4>Knowledge Activities</h4>
                         {$item}% Knowledge synthesis<br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="creation" type="TextReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_CREATION" blobSubItem="{$user_id}">
+                <ReportItem id="creation" type="IntegerReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_CREATION" blobSubItem="{$user_id}" min="0" max="100">
                     <![CDATA[
                         {$item}% Knowledge creation<br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="mobilization" type="TextReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_MOBILIZATION" blobSubItem="{$user_id}">
+                <ReportItem id="mobilization" type="IntegerReportItem" width="50px" blobType="BLOB_TEXT" blobItem="SSA_MOBILIZATION" blobSubItem="{$user_id}" min="0" max="100">
                     <![CDATA[
                         {$item}% Knowledge mobilization<br /><br />
                     ]]>
