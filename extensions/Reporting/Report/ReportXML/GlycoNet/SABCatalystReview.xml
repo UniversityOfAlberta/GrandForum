@@ -53,6 +53,30 @@
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Person>
+        <Person id="2111">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2112">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2113">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2114">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2115">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="405">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
