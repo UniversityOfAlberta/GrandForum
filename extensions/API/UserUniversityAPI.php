@@ -45,14 +45,14 @@ class UserUniversityAPI extends API{
         }
         $universities = Person::getAllUniversities();
         foreach($universities as $id => $uni){
-            if($uni == $_POST['university']){
+            if(unaccentChars(strtolower($uni)) == unaccentChars(strtolower($_POST['university']))){
                 $_POST['university'] = $id;
                 break;
             }
         }
         $positions = Person::getAllPositions();
         foreach($positions as $id => $pos){
-            if($pos == $_POST['title']){
+            if(unaccentChars(strtolower($pos)) == unaccentChars(strtolower($_POST['title']))){
                 $_POST['title'] = $id;
                 break;
             }
