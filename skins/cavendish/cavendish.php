@@ -876,6 +876,9 @@ class CavendishTemplate extends QuickTemplate {
 	            
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
+	        }
 	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
 	        $i = 0;
