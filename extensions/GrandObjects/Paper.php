@@ -33,7 +33,6 @@ class Paper extends BackboneModel{
     var $ccv_id;
     var $bibtex_id;
     var $reported = array();
-    
     /**
      * Returns a new Paper from the given id
      * @param integer $id The id of the Paper
@@ -687,6 +686,21 @@ class Paper extends BackboneModel{
         }
         return $authors;
     }
+
+    /** Returns an integer of the citation count of this Paper
+     * @param string $type Name of website that the citation count is from
+    */
+    function getCitationCount($type){
+      $paperId = $this->getId();
+      $sql = "SELECT citation_count FROM grand_product_citations
+	     WHERE type like '$type' AND product_id = $paperId";
+      $data = DBFunctions::execSQL($sql);
+      if(count($data) == 0){
+          return 0;
+      } 
+      return $data[0]['citation_count'];
+    }
+
     
     /**
      * Returns an array of authors who wrote this Paper
@@ -779,6 +793,7 @@ class Paper extends BackboneModel{
         }
         return $this->authors;
     }
+
     
     function getAuthorNames(){
         $authors = array();

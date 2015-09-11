@@ -4,6 +4,7 @@ require_once('PersonPage/PersonProfileTab.php');
 require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
+
 $personPage = new PersonPage();
 $wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
 $wgHooks['userCan'][] = array($personPage, 'userCanExecute');
@@ -133,7 +134,8 @@ class PersonPage {
                 }
                 $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
-                $tabbedPage->showPage();
+		$tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
+		$tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);
                 $wgOut->output();
