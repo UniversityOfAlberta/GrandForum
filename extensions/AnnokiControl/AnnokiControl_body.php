@@ -25,6 +25,9 @@ class AnnokiControl extends SpecialPage {
 
   function onMessagesPreLoad($title, &$message) {
     switch(strtolower($title)){
+        case "mediawarning": 
+            $message = "";
+            break;
         case "passwordreset-emailtext-ip":
             $message = 'A new password has been requested for {{SITENAME}} ($4). A temporary password has been made for the following user:
 
