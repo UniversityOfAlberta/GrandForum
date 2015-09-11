@@ -184,7 +184,27 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'wikipage':
-                $results = json_decode(file_get_contents("{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json"));
+                $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                // get http header for cookies
+                curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                curl_setopt($ch, CURLOPT_HEADER, 1);
+
+                // forward current cookies to curl
+                $cookies = array();
+                foreach($_COOKIE as $key => $value){
+                    if ($key != 'Array'){
+                        $cookies[] = $key . '=' . $value;
+                    }
+                }
+                curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
+                $response = curl_exec($ch);
+                curl_close($ch);
+                list($header, $body) = explode("\r\n\r\n", $response, 2);
+                $results = json_decode($body);
                 $blacklistedNamespaces = array('Publication',
                                                'Artifact',
                                                'Presentation',
