@@ -190,8 +190,7 @@ class GlobalSearchAPI extends RESTAPI {
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
                 // get http header for cookies
-                curl_setopt($ch, CURLOPT_VERBOSE, 1);
-                curl_setopt($ch, CURLOPT_HEADER, 1);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
 
                 // forward current cookies to curl
                 $cookies = array();
@@ -203,8 +202,7 @@ class GlobalSearchAPI extends RESTAPI {
                 curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
                 $response = curl_exec($ch);
                 curl_close($ch);
-                list($header, $body) = explode("\r\n\r\n", $response, 2);
-                $results = json_decode($body);
+                $results = json_decode($response);
                 $blacklistedNamespaces = array('Publication',
                                                'Artifact',
                                                'Presentation',
