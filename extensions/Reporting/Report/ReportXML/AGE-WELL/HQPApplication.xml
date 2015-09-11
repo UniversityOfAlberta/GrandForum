@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="HQP Application" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="true">
+<Report name="HQP Application" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
+            <SectionPermission id="background" permissions="r" />
+            <SectionPermission id="application" permissions="r" />
+            <SectionPermission id="documents" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Person id="812">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        </Role>
+        </Person>
     </Permissions>
     <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
         <Instructions>

@@ -352,12 +352,17 @@ class Person extends BackboneModel {
      */
     static function generateLeaderCache(){
         if(count(self::$leaderCache) == 0){
-            $sql = "SELECT *
-                    FROM grand_project_leaders l, grand_project p
+            $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
+                    FROM grand_project_leaders l, grand_project p, (
+                        SELECT *
+                        FROM grand_project_status
+                        ORDER BY evolution_id DESC) s
                     WHERE l.type = 'leader'
                     AND p.id = l.project_id
+                    AND p.id = s.project_id
                     AND (l.end_date = '0000-00-00 00:00:00'
-                         OR l.end_date > CURRENT_TIMESTAMP)";
+                         OR l.end_date > CURRENT_TIMESTAMP)
+                    GROUP BY s.project_id, l.user_id";
             $data = DBFunctions::execSQL($sql);
             self::$leaderCache[-1][] = array();
             foreach($data as $row){
@@ -391,17 +396,17 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $data = DBFunctions::select(array('grand_user_university' => 'uu',
-                                              'grand_universities' => 'u',
-                                              'grand_positions' => 'p'),
-                                        array('user_id','university_name','department','position','end_date'),
-                                        array('u.university_id' => EQ(COL('uu.university_id')),
-                                              'uu.position_id' => EQ(COL('p.position_id'))));
+            $sql = "SELECT user_id, university_name, department, position, end_date
+                    FROM (SELECT * 
+                          FROM grand_user_university 
+                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) 
+                         uu, grand_universities u, grand_positions p 
+                    WHERE u.university_id = uu.university_id
+                    AND uu.position_id = p.position_id
+                    GROUP BY user_id";
+            $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                if(!isset(self::$universityCache[$row['user_id']]) || 
-                   (self::$universityCache[$row['user_id']]['date'] != '0000-00-00 00:00:00' && 
-                    self::$universityCache[$row['user_id']]['date'] <= $row['end_date']) || // Get the most recent
-                   $row['end_date'] == '0000-00-00 00:00:00'){
+                if(!isset(self::$universityCache[$row['user_id']])){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
                               "department" => $row['department'],
@@ -589,6 +594,15 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
+            if($filter == INACTIVE && !isset(self::$rolesCache[$row])){
+                $person = Person::newFromId($row);
+                if($idOnly){
+                    $people[] = $row;
+                }
+                else{
+                    $people[] = $person;
+                }
+            }
             if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
                 self::generateThemeLeaderCache();
                 self::generateLeaderCache();
@@ -2474,11 +2488,9 @@ class Person extends BackboneModel {
             return $this->isProjectLeader();
         }
         if($role == APL){
-            $leadership = $this->leadership();
-            foreach($leadership as $proj){
-                if($proj->getType() == 'Administrative'){
-                    return true;
-                }
+            $leadership = $this->leadership(false, true, 'Administrative');
+            if(count($leadership) > 0){
+                return true;
             }
             return false;
         }
@@ -3239,39 +3251,47 @@ class Person extends BackboneModel {
                      'end_date'   => '0000-00-00 00:00:00');
     }
     
-    // Returns an array of projects that this person is a leader or co-leader.
-    function leadership($history=false) {
+    /*
+     * Returns an array of Projects that this Person is a leader or co-leader of
+     * @param boolean $history Whether or not to include the entire leadership history
+     * @param boolean $idsOnly Whether or not to just return the ids of the Projects
+     * @param string $type The type of Project (ie. 'Administrative', 'Research')
+     * @return array The array of Projects
+     */
+    function leadership($history=false, $idsOnly=false, $type='') {
         $ret = array();
+        $res = array();
         if(!$history){
-            if(isset($this->leadershipCache['current'])){
-                return $this->leadershipCache['current'];
+            self::generateLeaderCache();
+            if(isset(self::$leaderCache[$this->getId()])){
+                $res = self::$leaderCache[$this->getId()];
             }
-            $res = DBFunctions::execSQL("SELECT project_id
-                                         FROM grand_project_leaders l, grand_project p
-                                         WHERE l.project_id = p.id
-                                         AND l.user_id = '{$this->id}'
-                                         AND (l.end_date = '0000-00-00 00:00:00'
-                                              OR l.end_date > CURRENT_TIMESTAMP)");
         }
         else{
             if(isset($this->leadershipCache['history'])){
                 return $this->leadershipCache['history'];
             }
-            $res = DBFunctions::execSQL("SELECT project_id
+            $res = DBFunctions::execSQL("SELECT id
                                          FROM grand_project_leaders l, grand_project p
                                          WHERE l.project_id = p.id
                                          AND l.user_id = '{$this->id}'");
         }
         foreach ($res as &$row) {
-            $project = Project::newFromId($row['project_id']);
-            if($project != null && $project->getName() != "" && !$project->isDeleted()){
-                $ret[] = $project;
+            if($idsOnly){
+                if($type == '' || !isset($row['type']) || $type == $row['type']){
+                    $ret[] = $row['id'];
+                }
+            }
+            else{
+                if($type == '' || !isset($row['type']) || $type == $row['type']){
+                    $project = Project::newFromId($row['id']);
+                    if($project != null && $project->getName() != "" && !$project->isDeleted()){
+                        $ret[] = $project;
+                    }
+                }
             }
         }
-        if(!$history){
-            $this->leadershipCache['current'] = $ret;
-        }
-        else{
+        if($history){
             $this->leadershipCache['history'] = $ret;
         }
         return $ret;

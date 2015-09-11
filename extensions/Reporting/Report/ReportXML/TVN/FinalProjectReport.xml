@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" ajax="true" personId="0">
+<Report name="Final Project Report" reportType="RP_FINAL_PROJECT" pdfFiles="FinalProjectReportPDF" ajax="true" personId="0">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="information" permissions="rw" />
@@ -10,6 +10,8 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
@@ -53,7 +55,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -83,7 +85,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -113,7 +115,7 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="time" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
+            <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -148,17 +150,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>Executive Summary</h3>
-                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites) (Maximum 500 words).</p>
+                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_ABSTRACT" rich="true">
+        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_ABSTRACT" rich="true" limit="500">
             <![CDATA[
                 <h3>Scientific Abstract</h3>
-                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study (Maximum 500 words).</p>
+                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -193,7 +195,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
-        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner and Type of partner &lt;small&gt;(i.e. indicate university, federal or provincial dept./agency, industry etc..)&lt;/small&gt;|Included in original application? Y/N?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="250|75|100|125|150" class="wikitable">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="200|150|75|100|100|100" types="Text|ComboBox(University, Federal dept./agency, Provincial dept./agency, Industry)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
             <![CDATA[
                 <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
 <p style='line-height:1em'><small>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</small></p>
@@ -242,19 +244,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know_synth" type="TextReportItem" blobItem="FINAL_PLAN_SYNTH" width="30px">
+        <ReportItem id="know_synth" type="IntegerReportItem" min="0" max="100" blobItem="FINAL_PLAN_SYNTH" width="30px">
             <![CDATA[
                 <h3>Knowledge Continuum</h3>
                 <p><small>Please indicate the percentage of your project that addressed the following activities on the knowledge continuum:</small></p>
                 {$item}% Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_creation" type="TextReportItem" blobItem="FINAL_PLAN_CREATION" width="30px">
+        <ReportItem id="know_creation" type="IntegerReportItem" min="0" max="100" blobItem="FINAL_PLAN_CREATION" width="30px">
             <![CDATA[
                 {$item}% Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_trans" type="TextReportItem" blobItem="FINAL_PLAN_TRANS" width="30px">
+        <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="FINAL_PLAN_TRANS" width="30px">
             <![CDATA[
                 {$item}% Knowledge translation/mobilization
             ]]>
@@ -312,5 +314,18 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

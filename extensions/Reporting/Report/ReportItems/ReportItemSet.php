@@ -6,12 +6,14 @@ abstract class ReportItemSet extends AbstractReportItem{
     var $blobIndex;
     var $count;
     var $iteration;
+    var $cached;
 
     // Creates a new ReportItemSet
     function ReportItemSet(){
         $this->items = array();
         $this->blobIndex = "";
         $this->reportCallback = new ReportItemCallback($this);
+        $this->cached = null;
     }
     
     // Creates an empty tuple, with all values of this object
@@ -24,6 +26,13 @@ abstract class ReportItemSet extends AbstractReportItem{
                        'extra' => array(),
                        'item_id' => null);
         return $tuple;
+    }
+    
+    function getCachedData(){
+        if($this->cached == null){
+            $this->cached = $this->getData();
+        }
+        return $this->cached;
     }
     
     // This function must return an array of arrays in the form of array(array('project_id','person_id','milestone_id'))

@@ -3,6 +3,7 @@
       _create: function() {
         var interval = setInterval($.proxy(function(){
             if(this.element.is(":visible")){
+                
                 var next = this.element.next();
                 if(next.hasClass('custom-combobox')){
                     next.remove();
@@ -14,6 +15,12 @@
                 this.element.hide();
                 this._createAutocomplete();
                 this._createShowAllButton();
+                if($(this.element).attr('disabled')){
+                    this.input.prop('disabled', 'disabled');
+                    $("a", $(this.wrapper)).addClass('disabledButton').unbind().click(function(e){
+                        e.preventDefault();
+                    });
+                }
                 clearInterval(interval);
                 interval = null;
             }

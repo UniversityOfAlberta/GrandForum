@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" ajax="true" personId="0">
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReportPDF" ajax="true" personId="0">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
-            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="milestones" permissions="r" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="external" permissions="rw" />
             <SectionPermission id="mentorship" permissions="rw" />
@@ -12,7 +12,24 @@
             <SectionPermission id="partners" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="supervisor" permissions="r" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="ktee" permissions="r" />
+            <SectionPermission id="external" permissions="r" />
+            <SectionPermission id="mentorship" permissions="r" />
+            <SectionPermission id="collab" permissions="r" />
+            <SectionPermission id="dissemination" permissions="r" />
+            <SectionPermission id="capacity" permissions="r" />
+            <SectionPermission id="partners" permissions="r" />
+            <SectionPermission id="network" permissions="r" />
+            <SectionPermission id="comments" permissions="r" />
             <SectionPermission id="supervisor" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
@@ -47,17 +64,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_SUMMARY" rich="true">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>Executive Summary</h3>
-                <p>Provide a non-confidential Executive Summary in lay terms of your project findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites) (Maximum 500 words).</p>
+                <p>Provide a non-confidential Executive Summary in lay terms of your project findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_ABSTRACT" rich="true">
+        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_ABSTRACT" rich="true" limit="500">
             <![CDATA[
                 <h3>Scientific Abstract</h3>
-                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study (Maximum 500 words).</p>
+                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -98,19 +115,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="know_synth" type="TextReportItem" blobItem="IFP_FINAL_MIL_SYNTH" width="30px">
+        <ReportItem id="know_synth" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_SYNTH" width="30px">
             <![CDATA[
                 <h3>Knowledge Continuum</h3>
                 <p><small>Please indicate the percentage of your project that addresses the following activities on the knowledge continuum:</small></p>
                 {$item}% Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_creation" type="TextReportItem" blobItem="IFP_FINAL_MIL_CREATION" width="30px">
+        <ReportItem id="know_creation" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_CREATION" width="30px">
             <![CDATA[
                 {$item}% Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="know_trans" type="TextReportItem" blobItem="IFP_FINAL_MIL_TRANS" width="30px">
+        <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_TRANS" width="30px">
             <![CDATA[
                 {$item}% Knowledge translation/mobilization
             ]]>
@@ -126,7 +143,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="external" name="External Placement" tooltip="3. External Placement" title="3. External Placement" blobSection="IFP_FINAL_EXTERNAL" type="EditableReportSection">
-        <ReportItem id="success" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_EXTERNAL_PLACEMENT" labels="Placement Deliverables|Description of Deliverable|Status&lt;br /&gt;&lt;small&gt;(Deliverable completed or incomplete)&lt;/small&gt;" types="Text|Textarea|Text" sizes="175|200|125" multiple="true">
+        <ReportItem id="success" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_EXTERNAL_PLACEMENT" labels="Placement Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Complete, Incomplete)" sizes="175|200|125" multiple="true">
             <![CDATA[
                 <p>List the activities or deliverables completed for your external placement. (If you and your placement supervisor have completed the external placement evaluations, please include as deliverables.)</p>
                 {$item}
@@ -143,7 +160,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="collab" name="Collaborative Project" tooltip="5. Online Collaborative Project" title="5. Online Collaborative Project" blobSection="IFP_FINAL_COLLAB" type="EditableReportSection">
-        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status&lt;br /&gt;&lt;small&gt;(completed, on track, delayed, not started)&lt;/small&gt;" types="Text|Textarea|Text" sizes="175|200|125" multiple="true">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed, On Track, Not Started)" sizes="175|200|125" multiple="true">
             <![CDATA[
                 <h3>List OCP Milestones</h3>
                 <p>Describe the milestones and research outputs as indicated in the group learning plan or subsequent amendments, and their status of completion. (All completed outputs need to be uploaded on to Desire2Learn).</p>
@@ -180,7 +197,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="capacity" name="Capacity Update" tooltip="7. Capacity Update" title="7. Capacity Update" blobSection="IFP_FINAL_CAPACITY" type="EditableReportSection">
-        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_CAPACITY_ACTIVITY" labels="Type of Activity&lt;br /&gt;&lt;small&gt;Non-Fellowship Research Commitments, Course Commitments (instructor or student), Professional Practice, Other Commitments&lt;/small&gt;|Activity|Expected Time Commitment|Duration" types="Text|Text|Text|Text" sizes="175|175|125|125" multiple="true">
+        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" sizes="175|175|125|125" multiple="true">
             <![CDATA[
                 <p>The TVN Interdisciplinary Fellowship Program is designed to be rigorous and challenging, and requires ongoing dedication. The program required a regular and substantial time commitment over a two-year period.</p>
                 <p>In your application package, you listed all known and anticipated activities that you expected over the course of the fellowship, and agreed to update TVN with any changes.  Please note any changes below.</p>
@@ -201,7 +218,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partners" name="Partnerships" tooltip="8. Partnerships and other Funding" title="8. Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
-        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest&lt;br /&gt;&lt;small&gt;(Y or N)&lt;/small&gt;|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding&lt;br /&gt;&lt;small&gt;(Cash contribution, In-kind contribution; Other - e.g. scholarship, salary, research grand, etc. (please specify)&lt;/small&gt;|Was this funding received as a result of your TVN funding?&lt;br /&gt;&lt;small&gt;(Y or N)&lt;/small&gt;|Year*|Amount" types="Text|Text|Text|Text" sizes="150|50|125|125|50|50|75" multiple="true">
+        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
             <![CDATA[
                 <p>The TVN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however TVN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
                 <p>Details on in-kind and financial partnership contributions must also be identified. Partnership contributions must be from NCE-eligible partners and cover NCE-eligible expenses. Please consult the <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a> regarding eligibility and valuation of in-kind contributions and then consult with your supervisor’s host institution’s research services unit for assistance if you still have questions.  Calculation of in-kind contribution amounts must adhere to <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a>.</p>
@@ -262,5 +279,18 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

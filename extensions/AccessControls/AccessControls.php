@@ -31,7 +31,8 @@ $wgGroupPermissions['user']['delete'] = true;
 $wgGroupPermissions['user']['browsearchive'] = true;
 $wgGroupPermissions['user']['undelete'] = true;
 $wgGroupPermissions['user']['deletedhistory'] = true;
-$wgGroupPermissions['*']['createaccount'] = true;
+$wgGroupPermissions['user']['createaccount'] = true;
+$wgGroupPermissions['*']['createaccount'] = false;
 
 $wgExtensionFunctions[] = "initializeAccessControls";
 $wgExtensionFunctions[] = "UploadProtection::initUploadFiles";
@@ -49,7 +50,6 @@ $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
-$wgHooks['BeforePageDisplay'][] = 'checkCreateUser';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 

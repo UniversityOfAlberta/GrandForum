@@ -61,4 +61,13 @@ define('RPTP_CC2_PLANNING',     303);
 define('RPTP_CC3_PLANNING',     304);
 define('RPTP_CC4_PLANNING',     305);
 
+/*
+ * TVN
+ */
+define('RPTP_FINAL_PROJECT',    400);
+define('RPTP_PROGRESS',         401);
+define('RPTP_IFP_FINAL_PROJECT',402);
+define('RPTP_IFP_PROGRESS',     403);
+define('RPTP_SSA_FINAL_REPORT', 404);
+
 ?>

@@ -1,9 +1,11 @@
 function initResizeEvent(){
-    $('#reportMain > div > div').resize(function(){
+    var fn = function(){
         var paddingHeight = parseInt($('#reportMain > div > div').css('padding-top')) + parseInt($('#reportMain > div > div').css('padding-bottom'));
         $('#reportMain > div').height($('#reportMain > div > div').height() + paddingHeight);
         $('#reportInstructions > div').css('max-height', $('#reportMain > div').height());
-    });
+    }
+    $('#reportMain > div > div').resize(fn);
+    fn();
 }
 
 function setAutosave(enabled){

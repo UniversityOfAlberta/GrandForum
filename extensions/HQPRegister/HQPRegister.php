@@ -101,7 +101,7 @@ class HQPRegister extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -116,8 +116,11 @@ class HQPRegister extends SpecialPage{
             $_POST['wpUserType'] = HQP;
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
-            
+            $wgGroupPermissions['*']['createaccount'] = true;
+            GrandAccess::$alreadyDone = array();
             $result = APIRequest::doAction('CreateUser', false);
+            $wgGroupPermissions['*']['createaccount'] = false;
+            GrandAccess::$alreadyDone = array();
             if($result){
                 $form->reset();
                 $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");

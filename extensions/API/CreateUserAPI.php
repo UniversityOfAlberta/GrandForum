@@ -77,6 +77,9 @@ class CreateUserAPI extends API{
             $wgRequest->setSessionData('wpCreateaccountToken', LoginForm::getCreateaccountToken());
             $wgRequest->setVal('wpCreateaccountToken', LoginForm::getCreateaccountToken());
 			$specialUserLogin = new LoginForm($wgRequest);
+			$specialUserLogin->getUser()->mRights = null;
+			$specialUserLogin->getUser()->mEffectiveGroups = null;
+			GrandAccess::$alreadyDone = array();
 			$tmpUser = User::newFromName($_POST['wpName']);
 			if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
 			    Person::$cache = array();
@@ -101,9 +104,6 @@ class CreateUserAPI extends API{
 			                                      'university_id' => $unis[$defaultUni],
 			                                      'position_id' => $poss[$defaultPos]));
 			        }
-		            DBFunctions::update('mw_user',
-		                                array('candidate' => $_POST['candidate']),
-		                                array('user_id' => EQ($person->id)));
 		            if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
 		                // Adds the role subtype if it is set
 		                foreach($_POST['subtype'] as $subtype){

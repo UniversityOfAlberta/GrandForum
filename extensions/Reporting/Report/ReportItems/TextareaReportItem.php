@@ -5,10 +5,12 @@ class TextareaReportItem extends AbstractReportItem {
     function render(){
         global $wgOut, $wgServer, $wgScriptPath;
         $item = $this->getHTML();
-        if($this->getlimit() > 0){
+        $limit = $this->getLimit();
+        if($limit > 0 && !strtolower($this->getAttr('rich', 'false')) == 'true'){
             $item .= "<script type='text/javascript'>
                 $(document).ready(function(){
                     var strlen = $('textarea[name={$this->getPostId()}]').val().length;
+                    if(
                     changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
                 });
             </script>";
@@ -32,8 +34,13 @@ class TextareaReportItem extends AbstractReportItem {
                 }
                 $(document).ready(function(){
                     $('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    var readOnly = false;
+                    if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
+                        readOnly = true;
+                    }
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
+                        readonly: readOnly,
                         menubar: false,
                         plugins: 'link image charmap lists table paste wordcount',
                         toolbar: [
@@ -54,8 +61,24 @@ class TextareaReportItem extends AbstractReportItem {
                                 $(el).css('width', el.naturalWidth/$imgConst);
                                 $(el).css('height', el.naturalHeight/$imgConst);
                             });
+                        },
+                        setup: function(ed){
+                            if('$limit' > 0){
+                                var updateCount = function(){
+                                    _.delay(function(){
+                                        var words = $('.mce-wordcount', $(ed.editorContainer)).text().replace('Words:', '').trim();
+                                        changeColor{$this->getPostId()}(null, words);
+                                        $('#{$this->getPostId()}_chars_left').text(words);
+                                    }, 100);
+                                };
+                                ed.on('keydown', updateCount);
+                                ed.on('keyup', updateCount);
+                                ed.on('change', updateCount);
+                                ed.on('init', updateCount);
+                            }
                         }
                     });
+                    initResizeEvent();
                 });
             </script>";
         }
@@ -80,9 +103,14 @@ class TextareaReportItem extends AbstractReportItem {
         $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
         $height = $this->calculateHeight($limit);
+        $rich = strtolower($this->getAttr('rich', 'false'));
         $item = "";
         if($limit > 0){
             $recommended = $this->getAttr('recommended', false);
+            $words = "characters";
+            if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+                $words = "words";
+            }
             if($recommended){
                 $type = "recommended";
             }
@@ -91,7 +119,7 @@ class TextareaReportItem extends AbstractReportItem {
             }
             
             $item =<<<EOF
-            <p id='limit_{$this->getPostId()}'><span class="pdf_hide inlineMessage">(currently <span id="{$this->getPostId()}_chars_left">0</span> characters out of a {$type} {$limit})</span></p>
+            <p id='limit_{$this->getPostId()}'><span class="pdf_hide inlineMessage">(currently <span id="{$this->getPostId()}_chars_left">0</span> {$words} out of a {$type} {$limit})</span></p>
             <script type='text/javascript'>
                 function changeColor{$this->getPostId()}(element, strlen){
                     var type = "{$type}";
@@ -113,17 +141,19 @@ class TextareaReportItem extends AbstractReportItem {
                     }
                 }
                 $(document).ready(function(){
-                    $('textarea[name={$this->getPostId()}]').off('limit');
-                    $('textarea[name={$this->getPostId()}]').off('keyup');
-                    $('textarea[name={$this->getPostId()}]').off('keypress');
-                    $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
-                    
-                    $('textarea[name={$this->getPostId()}]').keypress(function(){
-                        changeColor{$this->getPostId()}(this, $(this).val().length);
-                    });
-                    $('textarea[name={$this->getPostId()}]').keyup(function(){
-                        changeColor{$this->getPostId()}(this, $(this).val().length);
-                    });
+                    if('$rich' != 'true'){
+                        $('textarea[name={$this->getPostId()}]').off('limit');
+                        $('textarea[name={$this->getPostId()}]').off('keyup');
+                        $('textarea[name={$this->getPostId()}]').off('keypress');
+                        $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
+                        
+                        $('textarea[name={$this->getPostId()}]').keypress(function(){
+                            changeColor{$this->getPostId()}(this, $(this).val().length);
+                        });
+                        $('textarea[name={$this->getPostId()}]').keyup(function(){
+                            changeColor{$this->getPostId()}(this, $(this).val().length);
+                        });
+                    }
                 });
             </script>
 EOF;

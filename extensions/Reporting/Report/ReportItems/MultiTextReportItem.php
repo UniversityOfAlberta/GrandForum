@@ -83,8 +83,27 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "integer"){
+                            $item .= @"\"<td><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
+                        }
+                        else if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                                strstr(strtolower(@$types[$j]), "combobox") !== false){
+                            $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                            $item .= @"\"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $matches = array();
+                            preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                            $matches = @explode(",", $matches[2]);
+                            if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                                $item .= @"<option selected>{$value[$index]}</option>";
+                            }
+                            foreach($matches as $match){
+                                $match = trim($match);
+                                $item .= "<option>{$match}</option>";
+                            }
+                            $item .= "</select></td>\" + \n";
                         }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
@@ -93,7 +112,7 @@ EOF;
         $item .= <<<EOF
                         "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
                     "</tr>");
-                $("#table_{$this->getPostId()} tr.obj:last select").combobox();
+                $("#table_{$this->getPostId()} tr.obj:last select:not(.raw)").combobox();
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
@@ -116,7 +135,11 @@ EOF;
                 else{
                     $("#table_{$this->getPostId()}").show();
                 }
+                $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
             }
+            $(document).ready(function(){
+                $("#table_{$this->getPostId()} select:not(.raw)").combobox();
+            });
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
@@ -143,8 +166,32 @@ EOF;
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
                         $item .= "<td>".$combobox->render()."</td>";
                     }
+                    else if(strtolower(@$types[$j]) == "integer"){
+                        $item .= @"<td><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                    }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                            strstr(strtolower(@$types[$j]), "combobox") !== false){
+                        $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
+                        $item .= @"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
+                        $matches = array();
+                        preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                        $matches = @explode(",", $matches[2]);
+                        if(array_search(@$value[$index], $matches) === false && @$value[$index] != ""){
+                            $item .= @"<option selected>{$value[$index]}</option>";
+                        }
+                        foreach($matches as $match){
+                            $match = trim($match);
+                            if($match == @$value[$index]){
+                                $item .= "<option selected>{$match}</option>";
+                            }
+                            else{
+                                $item .= "<option>{$match}</option>";
+                            }
+                        }
+                        $item .= "</select></td>";
                     }
                     else{
                         $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' style='width:{$sizes[$j]}px;' /></td>";
@@ -177,12 +224,28 @@ EOF;
     }
     
     function renderForPDF(){
-        global $wgOut;
+        global $wgOut, $config;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
-        $sizes = explode("|", $this->getAttr('sizes', ''));
+        $types = explode("|", $this->getAttr('types', ''));
+        $sizes = $this->getAttr('sizes', '');
+        if($sizes != ""){
+            $sizes = explode("|", $sizes);
+        }
+        else{
+            $sizes = array();
+        }
         $showHeader = $this->getAttr('showHeader', 'true');
+        $showCount = $this->getAttr('showCount', 'false');
+        $showBullets = $this->getAttr('showBullets', 'false');
+        $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
+        $rules = "";
+        $frame = "";
+        if($class == 'wikitable'){
+            $rules = "all";
+            $frame = "box";
+        }
         $indices = $this->getIndices($labels);
         $values = $this->getBlobValue();
         if($values == null){
@@ -195,9 +258,12 @@ EOF;
         $item = "";
         if($max > -1){
             if(count($labels) > 0 && $labels[0] != ""){
-                $item = "<table id='table_{$this->getPostId()}' cellspacing='1' style='border: none;' width='100%'>";
+                $item = "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
                 if(strtolower($showHeader) == 'true'){
                     $item .= " <tr>";
+                    if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
+                        $item .= "<th style='width:1px;'>&nbsp;</th>";
+                    }
                     foreach($labels as $label){
                         $item .= "<th align='center'>{$label}</th>";
                     }
@@ -212,9 +278,22 @@ EOF;
             foreach($values as $i => $value){
                 if($i > -1 && $count < $maxEntries){
                     $item .= "<tr class='obj'>";
+                    if(strtolower($showCount) == 'true'){
+                        $item .= "<td style='width:1px;' valign='top'><b>{$i}.</b></td>";
+                    }
+                    if(strtolower($showBullets) == 'true'){
+                        $fontSize = ($config->getValue('pdfFontSize')*DPI_CONSTANT);
+                        $item .= "<td style='width:1px;' valign='top'><b style='display: block;margin:".($fontSize/2)."px 0 0 0;'>•</b></td>";
+                    }
                     foreach($indices as $j => $index){
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
-                        $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        if(strstr(strtolower(@$types[$j]), "select") !== false || 
+                           strstr(strtolower(@$types[$j]), "combobox") !== false){
+                           $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else{
+                            $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
                     }
                     $item .= "</tr>";
                     $count++;

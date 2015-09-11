@@ -194,7 +194,7 @@ abstract class AbstractReportItem {
     
     function getExtraIndex(){
         $set = $this->getSet();
-        foreach($set->getData() as $index => $item){
+        foreach($set->getCachedData() as $index => $item){
             if($item['extra'] == $this->extra){
                 return $index;
             }
@@ -359,6 +359,13 @@ abstract class AbstractReportItem {
                     $parent = $parent->getParent();
                 }
                 $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
+                if(is_array($value)){
+                    foreach($value as $k => $v){
+                        if((is_array($v) && implode("", $v) == "") || $v == ""){
+                            unset($value[$k]);
+                        }
+                    }
+                }
                 eval("\$blob_data$accessStr = \$value;");
                 $blob->store($blob_data, $blob_address);
                 break;

@@ -5,14 +5,14 @@ jQuery.fn.forceNumeric = function (options) {
             if($(target).val() == ""){
                 return;
             }
-            $(target).val(Math.min(options.max, $(target).val()));
+            $(target).val(Math.min(options.max, $(target).val().replace(/,/g, '')));
         }
         
         var validateMin = function(target){
             if($(target).val() == ""){
                 return;
             }
-            $(target).val(Math.max(options.min, $(target).val()));
+            $(target).val(Math.max(options.min, $(target).val().replace(/,/g, '')));
         }
         
         if(options.max != undefined && options.max != ""){

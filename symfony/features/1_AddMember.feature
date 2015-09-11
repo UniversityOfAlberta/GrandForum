@@ -6,6 +6,10 @@ Feature: AddMember
     Scenario: Anon trying to create an account (should be disabled)
         Given I am on "index.php/Special:Userlogin/signup"
         Then I should see "Permission error"
+        
+    Scenario: Anon trying to create an account 2 (should be disabled)
+        Given I am on "index.php?title=Special:UserLogin&action=submitlogin&type=login&returnto=Help%3AContents&type=signup"
+        Then I should see "Permission error"
 
     Scenario: HQP trying to request a user (should not be allowed to)
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
@@ -33,6 +37,27 @@ Feature: AddMember
         Then I should see "User created successfully"
         And "new.user@behat-test.com" should be subscribed to "test-hqps"
         And unsubscribe "new.user@behat-test.com" from "test-hqps"
+        
+    Scenario: NI Requesting a candidate user
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Add Member"
+        And I fill in "first_name_field" with "New"
+        And I fill in "last_name_field" with "Candidate"
+        And I fill in "email_field" with "new.candidate@behat-test.com"
+        And I check "role_field_HQP"
+        And I check "project_field_Phase2Project1"
+        And I check "project_field_Phase2Project1SubProject1"
+        And I check "Yes" from "cand_field"
+        And I press "Submit Request"
+        Then I should see "User Creation Request Submitted"
+        
+    Scenario: Admin Accepting request
+        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
+        When I follow "status_notifications"
+        And I follow "User Creation Request"
+        And I press "Accept"
+        Then I should see "User created successfully"
+        And "new.candidate@behat-test.com" should not be subscribed to "test-hqps"
         
     Scenario: NI Requesting another user (will get a warning)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -102,3 +127,11 @@ Feature: AddMember
         And I press "Ignore"
         Then I should not see "Ààè.Öå"
         
+    Scenario: Staff Requesting a user with no roles
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Add Member"
+        And I fill in "first_name_field" with "Test"
+        And I fill in "last_name_field" with "UserNoRoles"
+        And I fill in "email_field" with "test.usernoroles@behat-test.com"
+        And I press "Submit Request"
+        Then I should not see "The field 'Roles' must not be empty"

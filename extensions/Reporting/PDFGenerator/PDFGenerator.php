@@ -161,8 +161,9 @@ abstract class PDFGenerator {
 "/(&spades;)/",
 "/(&clubs;)/",
 "/(&hearts;)/",
+"/(&#9210;)/",
 "/(&diams;)/");
-        $str = preg_replace($specials, "<span style='font-family: DejaVu Sans !important; line-height:50%;'>$1</span>", $str);
+        $str = preg_replace($specials, "<span style='font-family:  DejaVuSans !important; line-height:50%;'>$1</span>", $str);
         return $str;
     }
     
@@ -349,6 +350,28 @@ EOF;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		        text-align: justify;
+		    }
+		    
+		    #pdfBody table {
+		        text-align: initial;
+		    }
+		    
+		    #pdfBody .wikitable {
+		        border: none;
+		    }
+		    
+		    #pdfBody .wikitable th {
+		        background: #EEEEEE;
+		        padding: ".(1*DPI_CONSTANT)."px;
+		    }
+		    
+		    #pdfBody .wikitable td {
+		        background: #FFFFFF;
+		        padding: ".(1*DPI_CONSTANT)."px;
+		    }
+		    
+		    #pdfBody th {
+		        text-align: center;
 		    }
 		    
 		    /* Messages */

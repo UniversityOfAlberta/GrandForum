@@ -46,6 +46,8 @@ define('RP_SAB_REVIEW',         101);
 define('RP_SAB_REPORT',         102);
 define('RP_CATALYST',           103);
 define('RP_TRANS',              104);
+define('RP_SAB_CAT_REVIEW',     105);
+
 /*
  * AGE-WELL
  */
