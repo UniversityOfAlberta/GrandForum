@@ -297,7 +297,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $ignore = array('sysop', 'bureaucrat', 'bot');
    
    foreach ($groups as $index => $ns) {
-     if (!in_array($ns, $ignore) && in_array($ns, $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
+     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
        $namespaces[] = $ns;
      }
    }
