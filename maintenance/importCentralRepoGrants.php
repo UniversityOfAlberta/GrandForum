@@ -46,6 +46,7 @@
                                                 continue;
                                         }
 					$idArray = array($id);
+					$searchStatement = "SELECT * FROM grand_contributions WHERE id = ";
 					$statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
