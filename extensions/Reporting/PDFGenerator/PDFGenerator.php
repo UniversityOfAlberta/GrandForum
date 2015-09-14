@@ -200,6 +200,12 @@ abstract class PDFGenerator {
             }
         }
         
+        $tds = $dom->getElementsByTagName("td");
+        for($i=0; $i<$tds->length; $i++){
+            $td = $tds->item($i);
+            $td->setAttribute('width', '');
+        }
+        
         $divs = $dom->getElementsByTagName('div');
         $nInfo = 0;
         foreach($divs as $div){
