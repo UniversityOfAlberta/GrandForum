@@ -170,7 +170,6 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
-
 		    self::checkTotals($budget, $person, $this->getReport()->year);
 		    $errors = self::checkDeletedProjects($budget, $person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
@@ -246,6 +245,9 @@ class BudgetReportItem extends AbstractReportItem {
 	}
 	
 	static function checkTotals($budget, $person, $year){
+	    if(constant($this->getAttr('structure', 'REPORT2_STRUCTURE')) != REPORT2_STRUCTURE){
+	        return;
+	    }
         $projects = @$budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls[1];
         $total = 0;
         $alreadyUsed = array();
