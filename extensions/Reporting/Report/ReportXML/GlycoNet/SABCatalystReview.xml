@@ -53,23 +53,23 @@
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Person>
+        <Person id="2107">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2108">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2109">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
+        <Person id="2110">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
         <Person id="2111">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-        </Person>
-        <Person id="2112">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-        </Person>
-        <Person id="2113">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-        </Person>
-        <Person id="2114">
-            <SectionPermission id="materials" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-        </Person>
-        <Person id="2115">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Person>
