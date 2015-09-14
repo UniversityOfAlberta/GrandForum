@@ -163,7 +163,7 @@ abstract class PDFGenerator {
 "/(&hearts;)/",
 "/(&#9210;)/",
 "/(&diams;)/");
-        $str = preg_replace($specials, "<span style='font-family:  DejaVuSans !important; line-height:50%;'>$1</span>", $str);
+        $str = preg_replace($specials, "<span style='font-family:  dejavu sans !important; line-height:50%;'>$1</span>", $str);
         return $str;
     }
     
