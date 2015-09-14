@@ -55,7 +55,7 @@ $budgetStructures[NETWORK_BUDGET_STRUCTURE] = array(array());
 
 $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
     array(array(HEAD1,      READ,            NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),
-          array(HEAD1,      V_PERS_NOT_NULL, NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),
+          array(HEAD1,      READ,            NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),
           array(HEAD1,      READ,            NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),
           array(BLANK,      NA,              NA,          NA,          NA,          NA,     NA,     NA,         NA,          NA,          NA,          NA,          NA,          NA,          NA,          NA),
           array(HEAD1_ROW,  NA,              NA,          NA,          NA,          BLANK,  NA,     HEAD1_ROW,  NA,          NA,          NA,          NA,          NA,          NA,          NA,          NA),
