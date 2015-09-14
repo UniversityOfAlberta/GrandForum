@@ -190,7 +190,9 @@ abstract class PDFGenerator {
         for($i=0; $i<$as->length; $i++){
             $a = $as->item($i);
             if($a->getAttribute('class') != 'anchor' && 
-               $a->getAttribute('class') != 'externalLink'){
+               $a->getAttribute('class') != 'mce-item-anchor' &&
+               $a->getAttribute('class') != 'externalLink' && 
+               $a->textContent != ""){
                 $i--;
                 DOMRemove($a);
             }
