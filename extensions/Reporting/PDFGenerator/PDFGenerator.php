@@ -166,6 +166,13 @@ abstract class PDFGenerator {
         $str = preg_replace($specials, "<span style='font-family:  dejavu sans !important; line-height:50%;'>$1</span>", $str);
         $str = str_replace("&#8209;", "-", $str);
         $str = str_replace("&#61485;", "~", $str);
+        preg_match_all("/<strong>(.*?)<\/strong>/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
+            $str = str_replace($match, $match1, $str);
+        }
+        //$str = str_replace("<strong>", "<span>", $str);
+        //$str = str_replace("</strong>", "</span>", $str);
         return $str;
     }
     
@@ -598,7 +605,7 @@ EOF;
                 margin-bottom: ".($fontSize)."px;
             }
             
-            #pdfBody .tinymce p strong {
+            #pdfBody .tinymce strong {
                 page-break-after: avoid;
                 page-break-before: avoid;
             }
