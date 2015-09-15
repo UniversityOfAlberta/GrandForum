@@ -103,6 +103,7 @@ define('HQP_RESACTIVITY',		7);
 
 define('HQP_APPLICATION_FORM',  1);
 define('HQP_APPLICATION_DOCS',  2);
+define('HQP_APPLICATION_EPIC',  3);
 
 define('HQP_REVIEW',            1);
 
@@ -356,6 +357,39 @@ define('HQP_APPLICATION_EVIDENCE',  4);
 define('HQP_APPLICATION_TRANS1',    5);
 define('HQP_APPLICATION_TRANS2',    6);
 define('HQP_APPLICATION_CV',        7);
+
+define('HQP_EPIC_ORIENTATION_DESC', 1);
+define('HQP_EPIC_ORIENTATION_HQP',  2);
+define('HQP_EPIC_ORIENTATION_NMO',  3);
+define('HQP_EPIC_ORIENTATION_SUP',  4);
+define('HQP_EPIC_TRAINING_DESC',    5);
+define('HQP_EPIC_TRAINING_HQP',     6);
+define('HQP_EPIC_TRAINING_NMO',     7);
+define('HQP_EPIC_TRAINING_SUP',     8);
+define('HQP_EPIC_WORKSHOP_DESC',    9);
+define('HQP_EPIC_WORKSHOP_HQP',     10);
+define('HQP_EPIC_WORKSHOP_NMO',     11);
+define('HQP_EPIC_WORKSHOP_SUP',     12);
+define('HQP_EPIC_WEB_DESC',         13);
+define('HQP_EPIC_WEB_HQP',          14);
+define('HQP_EPIC_WEB_NMO',          15);
+define('HQP_EPIC_WEB_SUP',          16);
+define('HQP_EPIC_BLOG_DESC',        17);
+define('HQP_EPIC_BLOG_HQP',         18);
+define('HQP_EPIC_BLOG_NMO',         19);
+define('HQP_EPIC_BLOG_SUP',         20);
+define('HQP_EPIC_SELF_DESC',        21);
+define('HQP_EPIC_SELF_HQP',         22);
+define('HQP_EPIC_SELF_NMO',         23);
+define('HQP_EPIC_SELF_SUP',         24);
+define('HQP_EPIC_PUBS_DESC',        25);
+define('HQP_EPIC_PUBS_HQP',         26);
+define('HQP_EPIC_PUBS_NMO',         27);
+define('HQP_EPIC_PUBS_SUP',         28);
+define('HQP_EPIC_REP_DESC',         29);
+define('HQP_EPIC_REP_HQP',          30);
+define('HQP_EPIC_REP_NMO',          31);
+define('HQP_EPIC_REP_SUP',          32);
 
 define('HQP_REVIEW_OVERALL_COMM',   1);
 define('HQP_REVIEW_QUALITY',        2);

@@ -115,6 +115,10 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                }
+                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
@@ -125,9 +129,6 @@ class PersonPage {
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }

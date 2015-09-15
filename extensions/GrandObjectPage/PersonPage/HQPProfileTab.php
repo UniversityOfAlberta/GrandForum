@@ -45,7 +45,6 @@ class HQPProfileTab extends AbstractEditableTab {
            !$this->visibility['isMe']){
             return "";
         }
-        $this->html .= "<h2>Core Research Program Highly Qualified Personnel Application</h2>";
         $this->html .= "<h3>Statement of Research Focus</h3>";
         $this->html .= "<p>{$research}</p>";
         $this->html .= "<h3>Statement of Training Focus</h3>";
