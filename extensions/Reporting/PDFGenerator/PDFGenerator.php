@@ -167,6 +167,7 @@ abstract class PDFGenerator {
         $str = str_replace("&#8209;", "-", $str);
         $str = str_replace("&#61485;", "~", $str);
         $str = str_replace("&#8208;", "-", $str);
+        $str = str_replace("‐", "-", $str);
         /*preg_match_all("/<strong>(.*?)<\/strong>/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
