@@ -17,7 +17,7 @@ class HQPEpicTab extends AbstractEditableTab {
         $position = strtolower($this->person->getPosition());
         if($position == "phd" || $position == "phd student" ||
            $position == "pdf" || $position == "post-doctoral fellow" ||
-           $position == "master's" || $postion == "master's student" || $position == "masters" || $position == "masters student" ||
+           $position == "master's" || $position == "master's student" || $position == "masters" || $position == "masters student" ||
            $this->person->isSubRole("Affiliate HQP")){
             return ($this->visibility['isMe'] || 
                     $this->visibility['isSupervisor'] ||
@@ -36,7 +36,7 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($position == "pdf" || $position == "post-doctoral fellow"){
             $this->generatePDF();
         }
-        else if($position == "master's" || $postion == "master's student" || $position == "masters" || $position == "masters student"){
+        else if($position == "master's" || $position == "master's student" || $position == "masters" || $position == "masters student"){
             $this->generateMasters();
         }
         else if($this->person->isSubRole("Affiliate HQP")){
