@@ -40,7 +40,7 @@ class HQPEpicTab extends AbstractEditableTab {
             $this->generateMasters();
         }
         else if($this->person->isSubRole("Affiliate HQP")){
-            $this->generateAffiliates();
+            $this->generateAffiliate();
         }
     }
     
