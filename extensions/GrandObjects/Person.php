@@ -2033,6 +2033,10 @@ class Person extends BackboneModel {
         return $roles;        
     }
     
+    /*
+     * Returns an array of the subRoles that this Person is in
+     * @return array The subRoles that this Person is in
+     */
     function getSubRoles(){
         $roles = array();
         $data = DBFunctions::select(array('grand_role_subtype'),
@@ -2042,6 +2046,16 @@ class Person extends BackboneModel {
             $roles[] = $row['sub_role'];
         }
         return $roles;
+    }
+    
+    /*
+     * Returns whether or not this Person is in the subRole or not
+     * @param string $subRole The subrole to check
+     * @return boolean Whether or not this Person is in the subRole or not
+     */
+    function isSubRole($subRole){
+        $roles = $this->getSubRoles();
+        return (array_search($subRole, $roles) !== false);
     }
     
     function getProjectHistory($groupBySubs=false){

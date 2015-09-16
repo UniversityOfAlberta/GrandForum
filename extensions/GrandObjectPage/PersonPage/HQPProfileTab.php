@@ -60,6 +60,9 @@ class HQPProfileTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $config;
+        if(!$this->userCanView()){
+            return "";
+        }
         $research = $this->getBlobValue(HQP_APPLICATION_RESEARCH);
         $train    = $this->getBlobValue(HQP_APPLICATION_TRAIN);
         $bio      = $this->getBlobValue(HQP_APPLICATION_BIO);
@@ -164,7 +167,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
         $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
         
-        header("Location: {$this->person->getUrl()}?tab=hqp-crp");
+        header("Location: {$this->person->getUrl()}?tab=hqp-profile");
         exit;
     }
     

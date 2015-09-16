@@ -85,7 +85,7 @@ class PersonPage {
                 }
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
-                $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor));
+                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
                 $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
@@ -101,7 +101,6 @@ class PersonPage {
                 /*
                  * Start the PersonPage
                  */
-                
                 $visibility = array();
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
