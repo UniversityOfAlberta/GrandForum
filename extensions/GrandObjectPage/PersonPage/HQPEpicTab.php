@@ -15,7 +15,7 @@ class HQPEpicTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         // Only allow the user, supervisors, and STAFF+ to view the tab
         $position = strtolower($this->person->getPosition());
-        if($position == "phd" || $position == "phd student" ||
+        if($position == "phd" || $position == "phd student" || $position == "phd candidate" ||
            $position == "pdf" || $position == "post-doctoral fellow" ||
            $position == "master's" || $position == "master's student" || $position == "masters" || $position == "masters student" ||
            $this->person->isSubRole("Affiliate HQP")){
@@ -30,7 +30,7 @@ class HQPEpicTab extends AbstractEditableTab {
             return "";
         }
         $position = strtolower($this->person->getPosition());
-        if($position == "phd" || $position == "phd student"){
+        if($position == "phd" || $position == "phd student" || $position == "phd candidate"){
             $this->generatePhD();
         }
         else if($position == "pdf" || $position == "post-doctoral fellow"){
