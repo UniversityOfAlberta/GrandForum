@@ -132,7 +132,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" name="Milestones" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
+    <ReportSection id="milestones" name="Research Progress" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <p>
@@ -228,7 +228,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="planning" name="Networking Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
+    <ReportSection id="planning" name="Network Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
         <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <p>Please assess your project against the following.</p>
@@ -309,7 +309,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN Budget.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN Budget.xlsx" budgetText="Financial Report">
             <![CDATA[
                 {$item}
             ]]>

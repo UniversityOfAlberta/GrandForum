@@ -212,7 +212,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="planning" name="Networking Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="PROG_PLANNING" type="EditableReportSection">
+    <ReportSection id="planning" name="Network Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="PROG_PLANNING" type="EditableReportSection">
         <ReportItem id="themes" type="RadioReportItem" blobItem="PROG_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life (EOL) Care/Advance Care Planning (ACP)Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <p>Please assess your project against the following.</p>
@@ -271,7 +271,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN Budget.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN Budget.xlsx" budgetText="Financial Report">
             <![CDATA[
                 {$item}
             ]]>
