@@ -54,7 +54,8 @@ class MyMailingLists extends SpecialPage{
     
     static function createTab(&$tabs){
         global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        if($wgUser->isLoggedIn()){
+        $me = Person::newFromWgUser();
+        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
             $selected = "";
             if($wgTitle->getNSText() == "Mail" || 
                ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){
