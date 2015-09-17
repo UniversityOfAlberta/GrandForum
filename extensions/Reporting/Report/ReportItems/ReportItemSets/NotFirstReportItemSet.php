@@ -14,8 +14,9 @@ class NotFirstReportItemSet extends ReportItemSet {
             if($this->milestoneId == $tuple['milestone_id'] &&
                $this->projectId == $tuple['project_id'] &&
                $this->personId == $tuple['person_id'] &&
-               $this->productId == $tuple['product_id']){
-                $first = true;  
+               $this->productId == $tuple['product_id'] &&
+               $this->extra == $tuple['extra']){
+                $first = true;
             }
             break;    
         }
