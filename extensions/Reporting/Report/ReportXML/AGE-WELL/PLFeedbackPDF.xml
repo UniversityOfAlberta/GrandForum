@@ -7,7 +7,7 @@
                     <img class='logo' style="margin-top:0;position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png?3' />
                 </div>
                 <div style="margin-top:0;"><h4 style='font-size:1.5em;'>{$project_name} Review Feedback</h4></div>
-                <br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
     </ReportSection>
