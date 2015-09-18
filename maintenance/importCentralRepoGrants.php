@@ -1,6 +1,6 @@
 <?php
 	/**used to transfer data from centralrepo to main database.**/
-
+	$wgUser=User::newFromName("Admin");
 	require_once( "commandLine.inc" );
 	$servername = "199.116.235.47";
 	$username = "new_root";
@@ -46,7 +46,14 @@
                                                 continue;
                                         }
 					$idArray = array($id);
-					$searchStatement = "SELECT * FROM grand_contributions WHERE id = ";
+					$searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '$name' AND
+								`start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00' AND 
+								`users` = '".serialize($idArray)."'";
+					$datacheck = DBFunctions::execSQL($searchStatement);
+					print_r($datacheck);
+					if(count($datacheck)>0){
+						continue;
+					}
 					$statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
@@ -65,6 +72,13 @@
 						continue;
 					}
 					$idArray = array($id);
+					$searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '".str_replace("'","&#39;",$name)."' AND
+                                                                `start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00'
+								AND `users` = '".serialize($idArray)."'";
+                                        $datacheck = DBFunctions::execSQL($searchStatement);
+                                        if(count($datacheck)>0){
+                                                continue;
+                                        }
 					$statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
@@ -128,6 +142,13 @@
 						continue;
 					}
 					$idArray = array($id);
+                                        $searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '".str_replace("'","&#39;",$name)."' AND
+                                                                `start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00' 
+                                                                AND `users` = '".serialize($idArray)."'";
+                                        $datacheck = DBFunctions::execSQL($searchStatement);
+                                        if(count($datacheck)>0){
+                                                continue;
+                                        }
                                         $statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
@@ -145,7 +166,14 @@
 						continue;
 					}
                                         $idArray = array($id);
-                                        $statement = "INSERT INTO grand_contributions(`id`,`name`,
+                                        $searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '".str_replace("'","&#39;",$name)."' AND
+                                                                `start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00' 
+                                                                AND `users` = '".serialize($idArray)."'";
+                                        $datacheck = DBFunctions::execSQL($searchStatement);
+                                        if(count($datacheck)>0){
+                                                continue;
+                                        }
+					$statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
                                                 '$startDate-01-01 00:00:00', 
@@ -167,7 +195,6 @@
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
-				print_r($row);
                                 $fullname = $row["full_name"];
                                 $email = $row["email"];
                                 $description = $row["crsh_program_code"];
@@ -188,6 +215,13 @@
                                                 continue;
                                         }
 					$idArray = array($id);
+                                        $searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '".str_replace("'","&#39;",$name)."' AND
+                                                                `start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00' 
+                                                                AND `users` = '".serialize($idArray)."'";
+                                        $datacheck = DBFunctions::execSQL($searchStatement);
+                                        if(count($datacheck)>0){
+                                                continue;
+                                        }
                                         $statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 
@@ -205,6 +239,13 @@
                                                 continue;
                                         }
 					$idArray = array($id);
+                                        $searchStatement = "SELECT * FROM grand_contributions WHERE `name` like '".str_replace("'","&#39;",$name)."' AND
+                                                                `start_date` = '$startDate-01-01 00:00:00' AND `end_date`= '$endDate-01-01 00:00:00' 
+                                                                AND `users` = '".serialize($idArray)."'";
+                                        $datacheck = DBFunctions::execSQL($searchStatement);
+                                        if(count($datacheck)>0){
+                                                continue;
+                                        }
                                         $statement = "INSERT INTO grand_contributions(`id`,`name`,
                                                 `users`, `description`, `start_date`, `end_date`, `access_id`) VALUES
                                                 ($count,'".str_replace("'","&#39;",$name)."','".serialize($idArray)."','".str_replace("'","&#39;",$description)."', 

@@ -6,7 +6,7 @@ class PersonContributionsTab extends AbstractTab {
     var $visibility;
 
     function PersonContributionsTab($person, $visibility){
-        parent::AbstractTab("Contributions");
+        parent::AbstractTab("Grants");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -17,19 +17,19 @@ class PersonContributionsTab extends AbstractTab {
 	}
         $contributions = $this->person->getContributions();
 	   $this->html .= "<table id='contributions_table' frame='box' rules='all'>
-			<thead><tr><th>name</th>
-			<th>partner</th>
-			<th>start date</th>
-			<th>end date</th>
-			<th>cash</th>
-			<th>in kind</th>
-			<th>total</th></tr></thead><tbody>";
+			<thead><tr><th style='white-space:nowrap;'>Name</th>
+			<th style='white-space:nowrap;'>Partner</th>
+			<th style='white-space:nowrap;'>Start Date</th>
+			<th style='white-space:nowrap;'>End Date</th>
+			<th style='white-space:nowrap;'>Cash</th>
+			<th style='white-space:nowrap;'>In Kind</th>
+			<th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
 	foreach($contributions as $contribution){
 	$partners = $contribution->getPartners();
 	    $this->html .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
 				<td>{$partners[0]->getOrganization()}</td>
-				<td>".time2date($contribution->getStartDate(), "Y-m-d")."</td>
-				<td>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
+				<td style='white-space:nowrap;'>".time2date($contribution->getStartDate(), "Y-m-d")."</td>
+				<td style='white-space:nowrap;'>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
 				<td align=right>$".number_format($contribution->getCash())."</td>
 				<td align=right>$".number_format($contribution->getKind())."</td>
 				 <td align=right>$".number_format($contribution->getTotal())."</td></tr>";}

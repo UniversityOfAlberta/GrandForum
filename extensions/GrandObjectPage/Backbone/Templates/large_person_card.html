@@ -30,6 +30,13 @@
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
                 </tr>
             <% } %>
+            <% if(ldap != "" && ldap != "http://" && singleUniversity){ %>
+                <tr>
+                    <td width="100">LDAP&nbsp;</td>
+                    <td style="color:#333333;"><a href="<%= ldap %>" target="_blank"><%= parseUrl(ldap).hostname %></a></td>
+                </tr>
+            <% } %>
+
             <% if(phone != "" && phone != "http://"){ %>
                 <tr>
                     <td width="100">Phone Number&nbsp;</td>

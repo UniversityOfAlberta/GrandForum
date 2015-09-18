@@ -146,7 +146,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['twitter'] = @$_POST['twitter'];
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
-            $_POST['nationality'] = @$_POST['nationality'];
+            $_POST['ldap'] = @$_POST['ldap'];
+	    $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
@@ -170,7 +171,9 @@ class PersonProfileTab extends AbstractEditableTab {
             $api->doAction(true);
             $api = new UserWebsiteAPI();
             $api->doAction(true);
-            $api = new UserNationalityAPI();
+            $api = new UserLdapAPI();
+            $api->doAction(true);
+	    $api = new UserNationalityAPI();
             $api->doAction(true);
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -407,6 +410,7 @@ EOF;
     }
     
     function showEditPhoto($person, $visibility){
+	global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
         $this->html .= "<div id=\"special_links\"></div>";
@@ -424,8 +428,14 @@ EOF;
                             <tr>
                                 <td align='right'><b>Website URL:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+	if($config->getValue('singleUniversity')){
+		$this->html .= "<tr>
+                                <td align='right'><b>LDAP URL:</b></td>
+                                <td><input type='text' size='30' name='ldap' value='".str_replace("'", "&#39;", $person->getLdap())."' /></td>
+                            </tr>";
+	}
+	$this->html .=  "<tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>

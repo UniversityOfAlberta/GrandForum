@@ -236,6 +236,7 @@ class CavendishTemplate extends QuickTemplate {
 		    
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
+                    singleUniversity = <?php var_export($config->getValue('singleUniversity')); ?>;		    
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";

@@ -354,6 +354,8 @@ EOF;
 		$idHeader = "";
 		$contactHeader = "";
 		$projectsHeader = "";
+		$universityHeader = "";
+		$ldapHeader = "";
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
@@ -364,15 +366,22 @@ EOF;
         if($config->getValue('projectsEnabled')){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
+	if(!$config->getValue('singleUniversity')){
+	   $universityHeader = "<th style='white-space: nowrap;'>University</th>";
+	}
+	else{
+	   $ldapHeader = "<th style='white-space: nowrap; '>LDAP</th>";
+	}
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
 		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
                                     {$projectsHeader}
-                                    <th style='white-space: nowrap;'>University</th>
+				    {$universityHeader}
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
+				    {$ldapHeader}
                                     {$contactHeader}
                                     {$idHeader}</tr>
                                 </thead>
@@ -407,10 +416,19 @@ EOF;
 			    $this->text .= "<td align='left'>".implode("<br />", $projs)."</td>";
 			}
 			$university = $person->getUniversity();
-            $this->text .= "<td align='left'>{$university['university']}</td>";
-            $this->text .= "<td align='left'>{$university['department']}</td>";
+	    if(!$config->getValue('singleUniversity')){
+            	$this->text .= "<td align='left'>{$university['university']}</td>";
+            }
+	    $this->text .= "<td align='left'>{$university['department']}</td>";
             $this->text .= "<td align='left'>{$university['position']}</td>";
-            if($contactHeader != ''){
+            if($config->getValue('singleUniversity')){
+		$this->text .= "<td align='left'>";
+		if($person->ldap != ""){
+		    $this->text .="<a href='{$person->getLdap()}' target='_blank'>LDAP</a>";
+		}
+		$this->text .= "</td>";
+	    }
+	    if($contactHeader != ''){
                 $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }

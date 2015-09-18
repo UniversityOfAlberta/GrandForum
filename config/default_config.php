@@ -78,7 +78,10 @@
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
-    
+   
+    // Whether or not the forum only contains one university
+    $config->setValue("singleUniversity",false);
+ 
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
     

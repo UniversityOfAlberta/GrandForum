@@ -28,6 +28,7 @@ class Person extends BackboneModel {
     var $photo;
     var $twitter;
     var $website;
+    var $ldap;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -61,7 +62,6 @@ class Person extends BackboneModel {
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
-    
     /**
      * Returns a new Person from the given id
      * @param int $id The id of the person
@@ -289,6 +289,7 @@ class Person extends BackboneModel {
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
+					      'ldap_url',
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
@@ -778,7 +779,8 @@ class Person extends BackboneModel {
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
-            $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->ldap = @$data[0]['ldap_url'];
+	    $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
             $this->historyHqps = null;
@@ -818,6 +820,7 @@ class Person extends BackboneModel {
                       'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
+		      'ldap' => $this->getLdap(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $university,
@@ -859,7 +862,8 @@ class Person extends BackboneModel {
             $status = DBFunctions::update('mw_user', 
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
-                                          'user_gender' => $this->getGender(),
+                                          'ldap_url' => $this->getLdap(),
+					  'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -900,6 +904,7 @@ class Person extends BackboneModel {
                                           'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
+					  'ldap_url' => $this->getLdap(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1225,6 +1230,13 @@ class Person extends BackboneModel {
             $this->website = 'http://'.$this->website;
         }
         return $this->website;
+    }
+
+    function getLdap(){
+	if (preg_match("#https?://#", $this->ldap) === 0){
+	    $this->ldap = 'http://'.$this->ldap;
+	}
+	return $this->ldap;
     }
     
     /**
