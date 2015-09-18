@@ -3799,7 +3799,7 @@ class Person extends BackboneModel {
 
     // Returns a list of the evaluators who are evaluating this Person
     // Provide type 
-    function getEvaluators($type='Researcher', $year = YEAR){
+    function getEvaluators($year = YEAR, $type='Researcher'){
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE sub_id = '{$this->id}'

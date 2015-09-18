@@ -50,6 +50,7 @@ define('RPTP_SAB_REPORT',       201);
 define('RPTP_RMC_PROJ_REPORT',  202);
 define('RPTP_CATALYST',         203);
 define('RPTP_TRANS',            204);
+define('RPTP_SAB_CAT_REPORT',   205);
 
 /*
  * AGE-WELL

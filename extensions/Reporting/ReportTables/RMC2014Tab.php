@@ -359,7 +359,7 @@ EOF;
             $ni = Person::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2013);
+            $evaluators = $ni->getEvaluators(2013, $type);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){
@@ -603,7 +603,7 @@ EOF;
             $ni = Person::newFromId($ni_id);
             //$ni_id = $ni->getId();
             //$ni_name = $ni->getReversedName();
-            $evaluators = $ni->getEvaluators($type, 2013);
+            $evaluators = $ni->getEvaluators(2013, $type);
 
             $rowspan = count($evaluators);
             if($rowspan == 0){

@@ -90,7 +90,7 @@ class HQPReviewTable extends SpecialPage{
             else{
                 $background = "#EEEEEE";
             }
-            $evaluators = $candidate->getEvaluators($evalKey, $year);
+            $evaluators = $candidate->getEvaluators($year, $evalKey);
             $nEval = count($evaluators);
 
             $report = new DummyReport("HQPApplication", $candidate, null, $year);
