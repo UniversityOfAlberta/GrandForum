@@ -860,9 +860,7 @@ class CavendishTemplate extends QuickTemplate {
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $resources = TabUtils::createToolboxHeader("Resources");
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
-	            if($me->isRole(HQP) || $me->isRoleAtLeast(STAFF)){
-	                $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
-	            }
+	            $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
 	            for($year=date('Y'); $year >= 2014; $year--){
 	                $title = "Conference:{$config->getValue('networkName')}_Annual_Conference_{$year}";
 	                if(Wiki::newFromTitle("{$title}")->exists()){
