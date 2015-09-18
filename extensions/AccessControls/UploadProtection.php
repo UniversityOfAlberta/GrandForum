@@ -175,6 +175,7 @@ class UploadProtection {
     global $egAnnokiTablePrefix;
     $dbr =& wfGetDB( DB_SLAVE );
     $imageName = self::sanitize($imageName); //selectField does not sanitize
+    $imageName = str_replace("_", " ", $imageName);
     return $dbr->selectField("${egAnnokiTablePrefix}upload_permissions", 'nsName', 'upload_name=\''.$imageName.'\' OR upload_name=\'File:'.$imageName."'");
   }
 
