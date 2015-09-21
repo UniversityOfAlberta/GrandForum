@@ -43,7 +43,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="CI,PL" blobIndex="personId">
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId">
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -73,7 +73,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="AR">
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI">
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
