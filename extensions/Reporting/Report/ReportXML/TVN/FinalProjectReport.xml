@@ -167,6 +167,7 @@
                 <h2>Incomplete, Deleted or New Milestones/Deliverables</h2>
                 <p>If applicable, explain why a milestone/deliverable was not completed, deleted, or why a new milestones/deliverable was added.</p>
                 {$item}
+                <small style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.</small>
             ]]>
         </ReportItem>
     </ReportSection>
