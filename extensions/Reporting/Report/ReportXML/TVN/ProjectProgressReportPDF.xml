@@ -265,11 +265,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="PROG_HQP" name="HQP Trainees" pagebreak="false">
-        <ReportItem id="bookmark" type="BookmarkReportItem" title="HQP Trainees">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
             <ReportItemSet id="notfirst" type="NotFirstReportItemSet">
                 <ReportItem id="pagebreak" type="PageBreakReportItem">

@@ -222,6 +222,7 @@ define('FINAL_NETWORK',         7);
 define('FINAL_PLANNING',        8);
 define('FINAL_ALIGN',           9);
 define('FINAL_BUDGET',          10);
+define('FINAL_HQP',             11);
 
 // Second level for TVN Progress Report
 define('PROG_INFORMATION',      1);
