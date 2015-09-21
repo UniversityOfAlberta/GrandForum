@@ -33,7 +33,7 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="milestones" name="Milestones" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
+    <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
@@ -102,6 +102,7 @@
                 <h2>Other Challenges</h2>
                 <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during the fellowship and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
                 {$item}
+                <small style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via <a href='mailto:training@tvn-nce.ca'>training@tvn-nce.ca</a>.</small>
             ]]>
         </ReportItem>
         <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
