@@ -41,18 +41,65 @@
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="IFP_FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Status of Project Milestone</h3>
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
-                </p>
+                <h2>Milestones</h2>
+                <p>List all milestones as approved in your original proposal/learning plan and their status of completion. </p>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="incomplete" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_INCOMPLETE" labels="Incomplete or New Milestone|Reasons for Incompletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>Deleted or New Milestones</h2>
+                <p>If applicable, explain why a milestone was not completed, or why new milestones were added.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELAYED" labels="Delayed Milestone|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>Delayed Milestones</h2>
+                <p>If applicable, explain why a milestone was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Deliverables</h2>
+                <p>List all milestones as approved in your original proposal/learning plan and their status of completion. </p>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELETED" labels="Incomplete or New Deliverable|Reasons for Incompletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>Incomplete or Deleted Deliverables</h2>
+                <p>If applicable, explain why a deliverable was not completed, or why new deliverables were added.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELAYED2" labels="Delayed Deliverable|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>Delayed Deliverables</h2>
+                <p>If applicable, explain why a deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Other Challenges</h3>
+                <h2>Other Challenges</h2>
                 <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during the fellowship and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
                 {$item}
             ]]>
@@ -185,7 +232,6 @@
     <ReportSection id="dissemination" name="Dissemination" tooltip="6. Dissemination of Fellowship Work" blobSection="IFP_FINAL_DISS" title="6. Dissemination of Fellowship Work" type="EditableReportSection">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <small>To add products, go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</small>
                 {$item}
             ]]>
         </ReportItem>

@@ -7,7 +7,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="false">
+    <ReportSection id="information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="true">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <h4 style='font-size:1.40em;'>{$this_year} Final Project Report</h4><br />
@@ -125,8 +125,37 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" title="Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" type="ReportSection">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
             <![CDATA[
+                <h2>Milestones</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)"  multiple="true" class="wikitable">
+            <![CDATA[
+                <br /><br />
+                <h2>Deliverables</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="incomplete" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_MIL_INCOMPLETE" rich="true" optional="true">
+            <![CDATA[
+                <br /><br />
+                <h2>Incomplete, Deleted or New Milestones/Deliverables</h2>
                 {$item}
             ]]>
         </ReportItem>

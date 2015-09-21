@@ -125,20 +125,55 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" title="Research Progress" blobSection="PROG_MILESTONES" type="EditableReportSection">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROG_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
             <![CDATA[
+                <h2>Milestones</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" multiple="true" class="wikitable">
+            <![CDATA[
+                <br /><br />
+                <h2>Deliverables</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="incomplete" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_INCOMPLETE" rich="true" optional="true">
+            <![CDATA[
+                <br /><br />
+                <h2>Incomplete, Deleted or New Milestones/Deliverables</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_DELAYED" rich="true" optional="true">
+            <![CDATA[
+                <h2>Delayed Milestones/Deliverables</h2>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Other Challenges</h3>
+                <h2>Other Challenges</h2>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="acheive" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_ACHIEVE" rich="true">
             <![CDATA[
-                <h3>Activities and Key Achievements</h3>
+                <h2>Activities and Key Achievements</h2>
                 {$item}
             ]]>
         </ReportItem>

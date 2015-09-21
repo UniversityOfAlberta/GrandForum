@@ -639,7 +639,11 @@ define('FINAL_INFORMATION_ROLE',    1);
 define('FINAL_INFORMATION_TIME',    2);
 define('FINAL_INFORMATION_STATUS',  3);
 
-define('FINAL_MIL_UPLOAD',   1);
+define('FINAL_MIL_MILESTONES1',     1);
+define('FINAL_MIL_MILESTONES2',     2);
+define('FINAL_MIL_DELIVERABLES1',   3);
+define('FINAL_MIL_DELIVERABLES2',   4);
+define('FINAL_MIL_INCOMPLETE',      5);
 
 define('FINAL_RES_KEY',         1);
 define('FINAL_RES_SUMMARY',     2);
@@ -673,9 +677,14 @@ define('PROG_INFORMATION_ROLE',    1);
 define('PROG_INFORMATION_TIME',    2);
 define('PROG_INFORMATION_STATUS',  3);
 
-define('PROG_MIL_UPLOAD',       1);
-define('PROG_MIL_CHALLENGE',    2);
-define('PROG_MIL_ACHIEVE',      3);
+define('PROG_MIL_MILESTONES1',      1);
+define('PROG_MIL_MILESTONES2',      4);
+define('PROG_MIL_DELIVERABLES1',    5);
+define('PROG_MIL_DELIVERABLES2',    6);
+define('PROG_MIL_INCOMPLETE',       7);
+define('PROG_MIL_DELAYED',          8);
+define('PROG_MIL_CHALLENGE',        2);
+define('PROG_MIL_ACHIEVE',          3);
 
 define('PROG_KTEE_SUCCESS',     1);
 define('PROG_KTEE_TECH',        2);
@@ -696,19 +705,26 @@ define('PROG_PLAN_TRANS',      5);
 define('PROG_BUD_UPLOAD',       1);
 
 // IFP Final Report
-define('IFP_FINAL_MIL_UPLOAD',      1);
-define('IFP_FINAL_MIL_CHALLENGE',   2);
-define('IFP_FINAL_MIL_KEY',         3);
-define('IFP_FINAL_MIL_SUMMARY',     4);
-define('IFP_FINAL_MIL_ABSTRACT',    5);
-define('IFP_FINAL_MIL_REVIEW',      6);
-define('IFP_FINAL_MIL_THEMES',      7);
-define('IFP_FINAL_MIL_PRIORITIES',  8);
-define('IFP_FINAL_MIL_CARE',        9);
-define('IFP_FINAL_MIL_IMPACT',      10);
-define('IFP_FINAL_MIL_SYNTH',       11);
-define('IFP_FINAL_MIL_CREATION',    12);
-define('IFP_FINAL_MIL_TRANS',       13);
+define('IFP_FINAL_MIL_MILESTONES1',     1);
+define('IFP_FINAL_MIL_MILESTONES2',     14);
+define('IFP_FINAL_MIL_INCOMPLETE',      15);
+define('IFP_FINAL_MIL_DELAYED',         16);
+define('IFP_FINAL_MIL_DELIVERABLES1',   17);
+define('IFP_FINAL_MIL_DELIVERABLES2',   18);
+define('IFP_FINAL_MIL_DELETED',         19);
+define('IFP_FINAL_MIL_DELAYED2',        20);
+define('IFP_FINAL_MIL_CHALLENGE',       2);
+define('IFP_FINAL_MIL_KEY',             3);
+define('IFP_FINAL_MIL_SUMMARY',         4);
+define('IFP_FINAL_MIL_ABSTRACT',        5);
+define('IFP_FINAL_MIL_REVIEW',          6);
+define('IFP_FINAL_MIL_THEMES',          7);
+define('IFP_FINAL_MIL_PRIORITIES',      8);
+define('IFP_FINAL_MIL_CARE',            9);
+define('IFP_FINAL_MIL_IMPACT',          10);
+define('IFP_FINAL_MIL_SYNTH',           11);
+define('IFP_FINAL_MIL_CREATION',        12);
+define('IFP_FINAL_MIL_TRANS',           13);
 
 define('IFP_FINAL_KTEE_SUCCESS',    1);
 
@@ -739,7 +755,9 @@ define('IFP_FINAL_SUP_ASSESSMENT',      4);
 define('IFP_FINAL_SUP_ELABORATE',       5);
 
 // IFP Progress Report
-define('IFP_PROG_MIL_UPLOAD',           1);
+define('IFP_PROG_MIL_MILESTONES',       1);
+define('IFP_PROG_MIL_DELETED',          4);
+define('IFP_PROG_MIL_DELAYED',          5);
 define('IFP_PROG_MIL_CHALLENGE',        2);
 define('IFP_PROG_MIL_PLACEMENT',        3);
 

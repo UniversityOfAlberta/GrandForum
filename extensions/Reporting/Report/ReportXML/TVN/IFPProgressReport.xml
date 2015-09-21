@@ -32,7 +32,7 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="milestones" name="Milestones" title="1. Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" tooltip="1. Fellowship Project Progress" type="EditableReportSection">
+    <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" tooltip="1. Fellowship Project Progress" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
@@ -40,12 +40,27 @@
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="IFP_PROG_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_MILESTONES" labels="Project Deliverables|Description of Milestones and Deliverables|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Status of Project Milestone</h3>
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
+                <h2>Status of Project Milestone and Deliverables</h2>
+                <p>Outline in the table below milestones & deliverables as approved in your original proposal/learning plan and their status.  
+                   Also, list any milestones/deliverables that were amended, removed/deleted or added since the approval of your original proposal.  
+                   New milestones & deliverables should be highlighted and details should be presented in the next section as to why new milestones were necessary for the completion of the project.
                 </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_DELETED" labels="Deleted or New Milestone or Deliverable|Reasons for Deletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h3>Deleted or New Milestones/Deliverables</h3>
+                <p>If applicable, explain why a milestone/deliverable was deleted, or why a new milestones/deliverable was added.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_DELAYED" labels="Delayed Milestone or Deliverable|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h3>Delayed Milestones/Deliverables*</h3>
+                <p>If applicable, explain why a milestone/deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -54,7 +69,7 @@
                 <h3>Other Challenges*</h3>
                 <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during this reporting period and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
                 {$item}
-                <small>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via training@tvn-nce.ca.</small>
+                <small style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via <a href='mailto:training@tvn-nce.ca'>training@tvn-nce.ca</a>.</small>
             ]]>
         </ReportItem>
         <ReportItem id="placement" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_PLACEMENT" rich="true">

@@ -132,11 +132,46 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" name="Research Progress" title="2. Research Progress" blobSection="PROG_MILESTONES" tooltip="2. Research Progress" type="EditableReportSection">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="PROG_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
+                <p>List all milestones and deliverables as approved in the original proposal and any subsequent amendments, and their status of completion.  
+                   Also, list any milestones/deliverables that were removed/deleted or added since the approval of the original proposal.
                 </p>
+                <h2>Milestones</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Deliverables</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="incomplete" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_INCOMPLETE" rich="true" optional="true">
+            <![CDATA[
+                <h2>Incomplete, Deleted or New Milestones/Deliverables</h2>
+                <p>If applicable, explain why a milestone/deliverable was deleted, or why a new milestones/deliverable was added.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_DELAYED" rich="true" optional="true">
+            <![CDATA[
+                <h2>Delayed Milestones/Deliverables*</h2>
+                <p>If applicable, explain why a milestone/deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -145,7 +180,7 @@
                 <h3>Other Challenges*</h3>
                 <p>If applicable, describe any challenges encountered by the project team (research, management, partnership, training, etc.) during the reporting period and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
                 {$item}
-                <small>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.</small>
+                <small style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.</small>
             ]]>
         </ReportItem>
         <ReportItem id="acheive" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_MIL_ACHIEVE" rich="true">

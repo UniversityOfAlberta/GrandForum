@@ -16,15 +16,9 @@
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="IFP_PROG_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h3>Status of Project Milestone</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Other Challenges*</h3>
+                <h3>Other Challenges</h3>
                 {$item}
             ]]>
         </ReportItem>

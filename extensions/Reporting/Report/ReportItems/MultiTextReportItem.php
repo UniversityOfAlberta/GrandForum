@@ -194,7 +194,8 @@ EOF;
                         $item .= "</select></td>";
                     }
                     else{
-                        $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$value[$index]}' style='width:{$sizes[$j]}px;' /></td>";
+                        $val = str_replace("'", "&#39;", $value[$index]);
+                        $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
                     }
                 }
                 if($multiple){
