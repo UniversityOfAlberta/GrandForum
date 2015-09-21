@@ -185,6 +185,7 @@
     <ReportSection id="dissemination" name="Dissemination" tooltip="6. Dissemination of Fellowship Work" blobSection="IFP_FINAL_DISS" title="6. Dissemination of Fellowship Work" type="EditableReportSection">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
+                <small>To add products, go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</small>
                 {$item}
             ]]>
         </ReportItem>

@@ -183,6 +183,8 @@
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h3>Dissemination of Project Research Results</h3>
+                <small>To add products, go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  
+                       Make sure that the product is associated with the project '{$project_name}'.</small>
                 {$item}
             ]]>
         </ReportItem>
