@@ -109,7 +109,7 @@ class Contribution {
         $me = Person::newFromWgUser();
         $sql = "SELECT DISTINCT id
                 FROM `grand_contributions`
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
+                WHERE (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
         foreach($data as $row){

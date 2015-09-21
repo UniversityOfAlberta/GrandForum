@@ -108,7 +108,7 @@
 	*/
 	static function newFromId($id){
 	      //check if exists in cache for easy access
-	    if(isset(self::$cache[$id]){
+	    if(isset(self::$cache[$id])){
 	    	return self::$cache[$id];
 	    }
             $sql = "SELECT * 
@@ -116,7 +116,7 @@
 		    WHERE `id` = '$id'";
 	    $data = DBFunctions::execSQL($sql);
 	    $course = new Course($data);
-	    $self::$cache[$course->id] = &$course;
+	    //$self::$cache[$course->id] = &$course;
 	    return $course;
 	} 
 	
@@ -130,13 +130,14 @@
 	static function newFromSubjectCatalog($subject, $catalog){
 	    $sql = "SELECT *
 		   FROM grand_courses
-		   WHERE `Subject` LIKE '$subject'
-		   AND `Catalog` LIKE '$catalog'";
-	    $datas = DBFunctions::execSQL($sql);
+		   WHERE `Subject` LIKE '%$subject%'
+		   AND `Catalog` LIKE '%$catalog%'";
+	    $data = array('hello','hi');
+	    $data = DBFunctions::execSQL($sql);
 	    $courses = array();
-	    $foreach ($datas as $data){
-		$course = new Course(array($data));
-	        $self::$cache[$course->id] = &$course;
+	    foreach($data as $row){
+		$course = new Course(array($row));
+	        //$self::$cache[$course->id] = &$course;
 		array_push($courses, $course);
 	    }
 	    return $courses;
@@ -194,7 +195,7 @@
 					  'Career' => $this->career,
 					  'Consent' => $this->consent,
 					  'Course Descr' => $this->courseDescr,
-					  'Max Units' => $this->maxUnits
+					  'Max Units' => $this->maxUnits),
 				      true);
 	    	if($status){
 		    //Commit transaction
@@ -255,7 +256,7 @@
                                           	    'Career' => $this->career,
                                           	    'Consent' => $this->consent,
                                           	    'Course Descr' => $this->courseDescr,
-                                          	    'Max Units' => $this->maxUnits
+                                          	    'Max Units' => $this->maxUnits),
                                       		array('id' => EQ($this->id)),
 						array(),
 						true);
@@ -267,6 +268,29 @@
 	    return false;
 	}
 
+	function getAllCourses(){
+	    $sql = "SELECT DISTINCT(id)
+		   FROM `grand_courses`";
+	    $data = DBFunctions::execSQL($sql);
+	    $courses = array();
+	    foreach($data as $row){
+	        $courses[] = Course::newFromId($row['id']);
+	    }
+	    return $courses;
+	}
+
+	function toarray(){
+		//TODO:implement function
+	}
+        function delete(){
+                //TODO:implement function
+        }
+        function exists(){
+                //TODO:implement function
+        }
+        function getCacheId(){
+                //TODO:implement function
+        }
 
 
     }   
@@ -274,4 +298,4 @@
 
 
 
->
+?>
