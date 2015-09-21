@@ -188,6 +188,28 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 		return true;
 	}
 	
+	if($person->isRoleAtLeast(STAFF)){
+	    $result = true;
+	    return true;
+	}
+	
+	// TODO: A Hack to allow special access rules for AGE-WELL
+	if($title->getNSText() == "HQP_Wiki" && $title->getText() == "HQP Resources"){
+	    if($action == 'create' || $action == 'edit'){
+	        if($person->isRole(HQP) || $person->isRoleAtLeast(STAFF)){
+	            $result = true;
+	            return true;
+	        }
+	    }
+	    else if($action == 'read'){
+	        // Allow everyone to read
+	        if($person->isLoggedIn()){
+	            $result = true;
+	            return true;
+	        }
+	    }
+	}
+	
 	//sysops are allowed to do anything (if we reach here then the action is not creating/moving a new page
 	if (in_array('sysop', $user->getGroups()) || in_array('Management', $user->getGroups())) {
 		$result = true;
