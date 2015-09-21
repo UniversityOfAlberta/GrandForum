@@ -69,10 +69,11 @@ class DashboardReportItem extends StaticReportItem {
 	    $person = Person::newFromId($this->personId);
 	    $project = Project::newFromId($this->projectId);
 	    $struct = constant($this->getAttr("structure", "NI_REPORT_STRUCTURE"));
-		if($project != null && $struct >= PROJECT_PUBLIC_STRUCTURE){
+	    $tableType = strtolower($this->getAttr("tableType", ""));
+		if(($project != null && $struct >= PROJECT_PUBLIC_STRUCTURE) && $tableType != "person"){
             $dashboard = new DashboardTable($struct, $project);
         }
-        else{
+        else {
             $dashboard = new DashboardTable($struct, $person);
         }
         if($project != null && $project->getName() != null && 

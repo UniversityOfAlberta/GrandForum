@@ -257,11 +257,175 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" title="Financial Report" type="ReportSection" blobSection="PROG_BUDGET" pagebreak="false">
+    <ReportSection id="budget" title="Financial Report" type="ReportSection" blobSection="PROG_BUDGET" pagebreak="true">
         <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN Budget.xlsx" downloadOnly="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="PROG_HQP" name="HQP Trainees" pagebreak="false">
+        <ReportItem id="bookmark" type="BookmarkReportItem" title="HQP Trainees">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
+            <ReportItemSet id="notfirst" type="NotFirstReportItemSet">
+                <ReportItem id="pagebreak" type="PageBreakReportItem">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}" level="2">
+                <ReportItem id="bookmark" type="SubBookmarkReportItem" title="{$user_name}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="demographic_head" type="StaticReportItem">
+                    <![CDATA[
+                        <h3>Demographic Information</h3>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grant" type="TextReportItem" width="300px" blobType="BLOB_TEXT" blobItem="SSA_HQP_GRANT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Grant Title:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="uni" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>University Attended:</td>
+                            <td>{$user_uni}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="category" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>HQP Category:</td>
+                            <td>{$user_level}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="gender" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Gender:</td>
+                            <td>{$user_gender}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="start" type="CalendarReportItem" width="80px" blobType="BLOB_TEXT" blobItem="SSA_HQP_START" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Start Date:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nationality" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Nationality:</td>
+                            <td>{$user_nationality}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_TERM" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Trainee Term:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Term Completed:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table><br />
+                        <h3>Publications and Dissemination of Research</h3>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="Person">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table><br />
+                        <h3>Additional Information</h3>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="training" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Participating in the TVN Training Program?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="experiences" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EXP" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Other Training Experiences provided:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="thesis" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_THESIS" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Thesis Completed:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grad" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_GRAD" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Graduate?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="empl" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EMPL" blobSubItem="{$user_id}" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Gain Employment?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="where" type="TextReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_WHERE" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'><small>If yes, please indicate where they were employed?</small></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_foot" type="StaticReportItem">
+                    <![CDATA[
+                        </table><br />
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
 </Report>

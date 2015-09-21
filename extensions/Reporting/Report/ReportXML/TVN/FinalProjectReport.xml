@@ -10,6 +10,7 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>

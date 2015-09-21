@@ -154,15 +154,27 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="academic" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_ACADEMIC" rich="true">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_ACADEMIC" orientation="vertical" options="No|Yes">
             <![CDATA[
-                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)? If so, please provide details.</h3>
+                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="employment" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_EMPLOYMENT" rich="true">
+        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_ACADEMIC_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_EMPLOYMENT" orientation="vertical" options="No|Yes">
             <![CDATA[
                 <h3>Have you obtained employment? If so, please provide details.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_EMPLOYMENT_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details</b></p>
                 {$item}
             ]]>
         </ReportItem>

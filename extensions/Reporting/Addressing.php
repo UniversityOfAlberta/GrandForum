@@ -232,6 +232,7 @@ define('PROG_ENGAGE',           5);
 define('PROG_NETWORK',          6);
 define('PROG_PLANNING',         7);
 define('PROG_BUDGET',           8);
+define('PROG_HQP',              9);
 
 // Second level for TVN IFP Final Project Report
 define('IFP_FINAL_MILESTONES',  1);
@@ -740,7 +741,9 @@ define('IFP_FINAL_DISS_OTHER',          1);
 
 define('IFP_FINAL_CAPACITY_ACTIVITY',   1);
 define('IFP_FINAL_CAPACITY_ACADEMIC',   2);
+define('IFP_FINAL_CAPACITY_ACADEMIC_DETAILS', 4);
 define('IFP_FINAL_CAPACITY_EMPLOYMENT', 3);
+define('IFP_FINAL_CAPACITY_EMPLOYMENT_DETAILS', 5);
 
 define('IFP_FINAL_PARTNERS_FUNDING',    1);
 
@@ -774,7 +777,9 @@ define('IFP_PROG_DISS_OTHER',           1);
 
 define('IFP_PROG_CAPACITY_ACTIVITY',    1);
 define('IFP_PROG_CAPACITY_ACADEMIC',    2);
+define('IFP_PROG_CAPACITY_ACADEMIC_DETAILS', 4);
 define('IFP_PROG_CAPACITY_EMPLOYMENT',  3);
+define('IFP_PROG_CAPACITY_EMPLOYMENT_DETAILS', 5);
 
 define('IFP_PROG_PARTNERS_FUNDING',     1);
 
