@@ -79,7 +79,7 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
     <p>
     The project may also support one of AGE-WELL’s four Crosscutting activities - Knowledge Mobilization, Commercialization, Transdisciplinarity and HQP Training.</p>
-    <p>In this section please should describe:</p>
+    <p>In this section please describe:</p>
     <ol>
         <li>How does your research connect to research foci of the AGE-WELL NCE?</li>
         <li>Why is your project important?</li>
@@ -90,7 +90,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->html .= "<textarea name='research' style='height:200px;'>{$research}</textarea>";
         $this->html .= "<h3>Statement of Training Focus (for research associates and trainees in professional programs) (½ page)</h3>
 <small>
-    <p>In this section please should describe:</p>
+    <p>In this section please describe:</p>
     <ol>
         <li>How does your training program and/or background relate to the AGE-WELL NCE?</li>
         <li>What is the expected impact of your work?</li>
