@@ -8,7 +8,6 @@
             <SectionPermission id="mentorship" permissions="rw" />
             <SectionPermission id="collab" permissions="rw" />
             <SectionPermission id="dissemination" permissions="rw" />
-            <SectionPermission id="capacity" permissions="rw" />
             <SectionPermission id="partners" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
@@ -23,7 +22,6 @@
             <SectionPermission id="mentorship" permissions="r" />
             <SectionPermission id="collab" permissions="r" />
             <SectionPermission id="dissemination" permissions="r" />
-            <SectionPermission id="capacity" permissions="r" />
             <SectionPermission id="partners" permissions="r" />
             <SectionPermission id="network" permissions="r" />
             <SectionPermission id="comments" permissions="r" />
@@ -39,34 +37,6 @@
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
                 <b>Project Title:&nbsp;</b>{$project_full_name}<br />
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
-            <![CDATA[
-                <h2>Milestones</h2>
-                <p>List all milestones as approved in your original proposal/learning plan and their status of completion. </p>
-                <h3>Year 1</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
-            <![CDATA[
-                <h3>Year 2</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="incomplete" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_INCOMPLETE" labels="Incomplete or New Milestone|Reasons for Incompletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
-            <![CDATA[
-                <h2>Deleted or New Milestones</h2>
-                <p>If applicable, explain why a milestone was not completed, or why new milestones were added.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELAYED" labels="Delayed Milestone|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
-            <![CDATA[
-                <h2>Delayed Milestones</h2>
-                <p>If applicable, explain why a milestone was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
-                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
@@ -108,7 +78,7 @@
         <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Key Findings & Achievements</h3>
-                <p>Please provide the key findings and achievements of your project in one or two sentences.</p>
+                <p>Please provide the key findings and achievements of your personal fellowship project in one or two sentences.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -119,17 +89,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_ABSTRACT" rich="true" limit="500">
-            <![CDATA[
-                <h3>Scientific Abstract</h3>
-                <p>Please provide a scientific abstract describing the hypothesis, project’s major research findings and conclusion and its significance to your scientific field of study.</p>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_REVIEW" rich="true">
             <![CDATA[
-                <h3>Scientific Review</h3>
-                <p>Please provide a full scientific review of your research methodology, research findings, discussion and conclusion(s).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
+                <h3>Scientific Summary</h3>
+                <p>Please provide a scientific summary of your personal fellowship project findings, description and justification of your research methodology, and discussion and conclusion(s).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -244,40 +207,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="capacity" name="Capacity Update" tooltip="7. Capacity Update" title="7. Capacity Update" blobSection="IFP_FINAL_CAPACITY" type="EditableReportSection">
-        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" sizes="175|175|125|125" multiple="true">
-            <![CDATA[
-                <p>The TVN Interdisciplinary Fellowship Program is designed to be rigorous and challenging, and requires ongoing dedication. The program required a regular and substantial time commitment over a two-year period.</p>
-                <p>In your application package, you listed all known and anticipated activities that you expected over the course of the fellowship, and agreed to update TVN with any changes.  Please note any changes below.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_ACADEMIC" orientation="vertical" options="No|Yes">
-            <![CDATA[
-                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_ACADEMIC_DETAILS" rich="true" optional="true">
-            <![CDATA[
-                <p><b>If so, please provide details.</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_EMPLOYMENT" orientation="vertical" options="No|Yes">
-            <![CDATA[
-                <h3>Have you obtained employment? If so, please provide details.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_EMPLOYMENT_DETAILS" rich="true" optional="true">
-            <![CDATA[
-                <p><b>If so, please provide details</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="partners" name="Partnerships" tooltip="8. Partnerships and other Funding" title="8. Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
+    <ReportSection id="partners" name="Partnerships" tooltip="7. Partnerships and other Funding" title="7. Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
         <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
             <![CDATA[
                 <p>The TVN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however TVN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
@@ -289,7 +219,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activities" tooltip="9. Networking Activities" title="9. Networking Activities" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking Activities" tooltip="8. Networking Activities" title="8. Networking Activities" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
@@ -298,7 +228,31 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="comments" name="Comments and Feedback" tooltip="10. Comments and Feedback" title="10. Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+    <ReportSection id="comments" name="Comments and Feedback" tooltip="9. Status Update, Comments and Feedback" title="9. Status Update, Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Have you obtained employment? If so, please provide details.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="feedback" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_FEEDBACK" rich="true">
             <![CDATA[
                 <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist TVN in improving the program in the future.</p>
@@ -307,7 +261,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="supervisor" name="Supervisor Review" tooltip="11. Supervisor Review" title="11. Supervisor Review" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
+    <ReportSection id="supervisor" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
         <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" rich="true">
             <![CDATA[
                 <i style='font-size:1.2em;'>This section is to be completed by the Fellowship Supervisor</i>

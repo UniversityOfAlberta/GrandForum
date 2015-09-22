@@ -154,7 +154,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_ACADEMIC" orientation="vertical" options="No|Yes">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_ACADEMIC" orientation="vertical" options="Yes|No">
             <![CDATA[
                 <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
                 {$item}
@@ -166,7 +166,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_EMPLOYMENT" orientation="vertical" options="No|Yes">
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_CAPACITY_EMPLOYMENT" orientation="vertical" options="Yes|No">
             <![CDATA[
                 <h3>Have you obtained employment? If so, please provide details.</h3>
                 {$item}

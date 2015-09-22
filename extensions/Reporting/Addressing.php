@@ -242,7 +242,6 @@ define('IFP_FINAL_EXTERNAL',    3);
 define('IFP_FINAL_MENTORSHIP',  4);
 define('IFP_FINAL_COLLAB',      5);
 define('IFP_FINAL_DISS',        6);
-define('IFP_FINAL_CAPACITY',    7);
 define('IFP_FINAL_PARTNERS',    8);
 define('IFP_FINAL_NETWORK',     9);
 define('IFP_FINAL_COMMENTS',    10);
@@ -740,17 +739,15 @@ define('IFP_FINAL_COLLAB_BENEFITS',     3);
 
 define('IFP_FINAL_DISS_OTHER',          1);
 
-define('IFP_FINAL_CAPACITY_ACTIVITY',   1);
-define('IFP_FINAL_CAPACITY_ACADEMIC',   2);
-define('IFP_FINAL_CAPACITY_ACADEMIC_DETAILS', 4);
-define('IFP_FINAL_CAPACITY_EMPLOYMENT', 3);
-define('IFP_FINAL_CAPACITY_EMPLOYMENT_DETAILS', 5);
-
 define('IFP_FINAL_PARTNERS_FUNDING',    1);
 
 define('IFP_FINAL_NETWORK_MEETING',     1);
 
-define('IFP_FINAL_COMMENTS_FEEDBACK',   1);
+define('IFP_FINAL_COMMENTS_FEEDBACK',           1);
+define('IFP_FINAL_COMMENTS_ACADEMIC',           2);
+define('IFP_FINAL_COMMENTS_ACADEMIC_DETAILS',   3);
+define('IFP_FINAL_COMMENTS_EMPLOYMENT',         4);
+define('IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS', 5);
 
 define('IFP_FINAL_SUP_MULTI',           1);
 define('IFP_FINAL_SUP_SOCIAL',          2);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true">
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true" personId="0">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -16,35 +16,8 @@
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
-            <![CDATA[
-                <h2>Milestones</h2>
-                <h3>Year 1</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
-            <![CDATA[
-                <h3>Year 2</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="incomplete" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_INCOMPLETE" labels="Incomplete or New Milestone|Reasons for Incompletion or Addition" types="Text|Textarea" multiple="true" class="wikitable" optional="true">
-            <![CDATA[
-                <br /><br />
-                <h2>Deleted or New Milestones</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELAYED" labels="Delayed Milestone|Solution/Way Forward" types="Text|Textarea" multiple="true" class="wikitable" optional="true">
-            <![CDATA[
-                <h2>Delayed Milestones</h2>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" multiple="true" class="wikitable">
             <![CDATA[
-                <br /><br />
                 <h2>Deliverables</h2>
                 <h3>Year 1</h3>
                 {$item}
@@ -87,15 +60,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_ABSTRACT" rich="true" limit="500">
-            <![CDATA[
-                <h3>Scientific Abstract</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_REVIEW" rich="true">
             <![CDATA[
-                <h3>Scientific Review</h3>
+                <h3>Scientific Summary</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -200,37 +167,6 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="capacity" title="Capacity Update" blobSection="IFP_FINAL_CAPACITY" type="EditableReportSection">
-        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" multiple="true" class="wikitable">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_ACADEMIC" orientation="vertical" options="No|Yes">
-            <![CDATA[
-                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_ACADEMIC_DETAILS" rich="true" optional="true">
-            <![CDATA[
-                <p><b>If so, please provide details.</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_EMPLOYMENT" orientation="vertical" options="No|Yes">
-            <![CDATA[
-                <h3>Have you obtained employment? If so, please provide details.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_EMPLOYMENT_DETAILS" rich="true" optional="true">
-            <![CDATA[
-                <p><b>If so, please provide details</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="partners" title="Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
         <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" multiple="true" class="wikitable">
             <![CDATA[
@@ -247,7 +183,31 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="comments" title="Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+    <ReportSection id="comments" title="Status Update, Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Have you obtained employment? If so, please provide details.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="feedback" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_FEEDBACK" rich="true">
             <![CDATA[
                 {$item}
