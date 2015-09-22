@@ -387,7 +387,26 @@ class ContributionPage {
                     if($edit){
                         $description = isset($_POST['description']) ? $_POST['description'] : $contribution->getDescription();
                         $wgOut->addHTML("<textarea style='height:175px; width:650px;' name='description'>$description</textarea>");
-                    }
+			$keywords = $contribution->getKeywords();
+			$words = implode(",",$keywords);
+			$wgOut->addScript("<script type='text/javascript'><link href='http://aehlke.github.io/tag-it/css/jquery.tagit.css' rel='stylesheet' type='text/css'>
+                                           <link href='http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css' rel='stylesheet' type='text/css'>
+                                           <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' type='text/javascript' charset='utf-8'></script>
+                                           <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js' type='text/javascript' charset='utf-8'></script>
+                                           <script src='http://aehlke.github.io/tag-it/js/tag-it.js' type='text/javascript' charset='utf-8'></script>
+                                           <script>                          
+                                           $(function(){
+                                                $('#words').tagit({
+                                                                     singleField: true,
+                                                                     removeConfirmation: true
+                                                                    });
+                                           });
+                                           </script></script>");
+
+			   $wgOut->addHTML("<table>
+                                    <tr><td><b>Keywords:</b></td><td><input type='text' id='words' name='keywords' value='$words'></td></tr>
+					");
+		    }
                     else{
                         $wgOut->addWikiText($contribution->getDescription());
                     }

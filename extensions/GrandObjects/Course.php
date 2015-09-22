@@ -279,6 +279,18 @@
 	    return $courses;
 	}
 
+	function getUserCourses($id){
+	    $sql = "SELECT DISTINCT course_id
+		   FROM `grand_user_courses`
+	  	   WHERE (user_id = '$id')";
+	    $data = DBFunctions::execSQL($sql);
+	    $courses = array();
+	    foreach($data as $row){
+		$courses[] = Course::newFromId($row['course_id']);
+	    }
+	    return $courses;
+	}
+
 	function toarray(){
 		//TODO:implement function
 	}

@@ -22,6 +22,7 @@ class Contribution {
     var $cash;
     var $kind;
     var $description;
+    var $keywords;
     var $access_id;
     var $start_date;
     var $end_date;
@@ -41,8 +42,8 @@ class Contribution {
                 WHERE id = '$id'
                 AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
                 ORDER BY rev_id DESC LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
-        $contribution = new Contribution($data);
+	$data = DBFunctions::execSQL($sql);
+	$contribution = new Contribution($data);
         self::$cache["id$id"] = &$contribution;
         return $contribution;
     }
@@ -98,7 +99,8 @@ class Contribution {
             $this->kind = array();
             $this->unknown = array();
             $this->description = $data[0]['description'];
-            $this->access_id = $data[0]['access_id'];
+            $this->keywords = unserialize($data[0]['keywords']);
+	    $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
@@ -561,7 +563,21 @@ class Contribution {
     function getDescription(){
         return $this->description;
     }
-    
+
+    //Returns an array of keywords of this Contribution
+    function getKeywords(){
+        $rev = $this->rev_id;
+        $sql = "SELECT keywords FROM grand_contributions
+                WHERE rev_id = '$rev'";
+        $data = DBFunctions::execSQL($sql);
+        $keywords = array();
+        if(count($data)>0){
+            $words = unserialize($data[0]['keywords']);
+	    $keywords = explode(",",$words);
+        }
+        return $keywords;
+
+    } 
     /**
      * Returns the access id of this Contribution
      * @return int The user id who has access to this Contribution

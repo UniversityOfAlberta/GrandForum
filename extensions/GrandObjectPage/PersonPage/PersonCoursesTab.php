@@ -12,15 +12,21 @@ class PersonCoursesTab extends AbstractTab {
     }
 
     function generateBody(){
-        if(!$this->visibility['isMe']){
-                return "";
-        }
-        $contributions = $this->person->getContributions();
-           $this->html .= "<table id='courses_table' frame='box' rules='all'>
+        $courses = $this->person->getCourses();
+        $this->html .= "<table id='courses_table' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
                         <th style='white-space:nowrap;'>Number</th>
                         <th style='white-space:nowrap;'>Catalog Description</th>
                         <th style='white-space:nowrap;'>USRIs</th></tr></thead><tbody>";
+
+	foreach($courses as $course){
+	    $this->html .= "<tr>";
+	    $this->html .= "<td>{$course->subject}</td>";
+	    $this->html .= "<td>{$course->catalog}</td>";
+            $this->html .= "<td>{$course->courseDescr}</td>";
+            $this->html .= "<td></td>";
+
+	}
         $this->html .= "</table></tbody><script type='text/javascript'>
                         $('#courses_table').dataTable();
         </script>";

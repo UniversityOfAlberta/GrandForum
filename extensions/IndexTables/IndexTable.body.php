@@ -43,16 +43,25 @@ class IndexTable {
                 }
             }
         }
-        $peopleSubTab = TabUtils::createSubTab("People");
         $roles = array_values($wgAllRoles);
-        sort($roles);
-        foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
-                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+        if(count($roles) == 1){
+              $role = $roles[0];
+              if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
+                    $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
+                    !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                    $peopleSubTab = TabUtils::createSubTab('People', "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+              }
+        }
+        elseif(count($roles)>1){
+            sort($roles);
+            foreach($roles as $role){
+                if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
+                    $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
+                    !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                    $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                }
             }
         }
-        
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
         if($wgUser->isLoggedIn()){
@@ -72,7 +81,12 @@ class IndexTable {
             }
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
-        
+        $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
+        $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
+        $tabs['Main']['subtabs'][] = $grantSubTab;
+        $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
+        $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
+        $tabs['Main']['subtabs'][] = $grantSubTab;
        
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
@@ -172,6 +186,13 @@ class IndexTable {
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
 				    $this->generateThemesTable();
 				    break;
+                            case 'ALL Grants':
+                                $wgOut->setPageTitle("Grants");
+                                $this->generateGrantsTable();
+                                break;
+                            case 'ALL Courses':
+                                $wgOut->setPageTitle("Courses");
+                                $this->generateCoursesTable();
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
@@ -508,6 +529,69 @@ EOF;
 	    </script>";
 	    return true;
 	}
+        /*
+         * Generates the Table for the Grants
+         * Consists of the following columns
+         * Title | Co-grantees | Cash | In Kind | Total 
+         */
+        private function generateGrantsTable(){
+           $contributions = Contribution::getAllContributions();
+           $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                        <thead><tr><th style='white-space:nowrap;'>Title</th>
+                        <th style='white-space:nowrap;'>Keywords</th>
+                        <th style='white-space:nowrap;'>Co-grantees</th>
+                        <th style='white-space:nowrap;'>Cash</th>
+                        <th style='white-space:nowrap;'>In Kind</th>
+                        <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
+
+        $names = array();
+        foreach($contributions as $contribution){
+            $partners = $contribution->getPartners();
+            foreach($contribution->getPeople() as $author){
+               if($author->getId() != 0 && $author->getUrl() != ""){
+                    $url = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
+                    if(!in_array($url,$names)){
+                    $names[] = $url;}
+               }
+               else{
+                    if(!in_array($author->getNameForForms(),$names)){
+                    $names[] = $author->getNameForForms();}
+               }
+            }
+
+            $this->text .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
+                                <td>{$partners[0]->getOrganization()}</td>
+                                <td style='white-space:nowrap;'>".implode(", ", $names)."</td>
+                                <td align=right>$".number_format($contribution->getCash())."</td>
+                                <td align=right>$".number_format($contribution->getKind())."</td>
+                                 <td align=right>$".number_format($contribution->getTotal())."</td></tr>";
+          }
+          $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
+
+        return true;
+
+
+        }
+        private function generateCoursesTable(){
+           $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                        <thead><tr><th style='white-space:nowrap;'>Title</th>
+                        <th style='white-space:nowrap;'>Number</th>
+                        <th style='white-space:nowrap;'>Catalog Description</th>
+                        </tr></thead><tbody>";
+
+           $courses = Course::getAllCourses();
+           foreach($courses as $course){
+                $this->text .= "<tr><td>$course->subject</td>
+                                <td>$course->catalog</td>
+                                <td>$course->courseDescr</td></tr>";
+
+
+
+           }
+           $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
+
+        return true;
+        }
 }
 
 ?>

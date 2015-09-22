@@ -12,9 +12,6 @@ class PersonPublicationsTab extends AbstractTab {
     }
 
     function generateBody(){
-	if(!$this->visibility['isMe']){
-		return "";
-	}
         $contributions = $this->person->getContributions();
 	   $this->html .= $this->showTable($this->person, $this->visibility);
     }
@@ -27,7 +24,7 @@ class PersonPublicationsTab extends AbstractTab {
             $string = "<table id='personPubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Keywords</th><th>Coauthors</th><th>Year</th><th>MetaData</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -49,9 +46,10 @@ class PersonPublicationsTab extends AbstractTab {
 
                 $string .= "<tr>";
                 $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
-                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
+                $string .= "<td></td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
+                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
+		$string .= "<td></td>";
 
                 $string .= "</tr>";
             }

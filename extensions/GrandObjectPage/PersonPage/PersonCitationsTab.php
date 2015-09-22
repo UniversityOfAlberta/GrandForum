@@ -12,9 +12,6 @@ class PersonCitationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        if(!$this->visibility['isMe']){
-                return "";
-        }
         $papers = $this->person->getPapers();
            $this->html .= "<table id='citation_table' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Publication</th>

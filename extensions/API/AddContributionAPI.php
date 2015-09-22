@@ -16,6 +16,9 @@ class AddContributionAPI extends API{
         $this->addPOST("cash", true, "The amount of money was contributed via Cash", "1000");
         $this->addPOST("start_date", true, "start_date that this contribution was made", "2011-04-01");
         $this->addPOST("end_date", true, "end_date that this contribution goes until", "2013-04-01");
+	$this->addPost("keywords", true, "keywords of this contribution that can be used for searching purposes", "green");
+
+
     }
 
     function processParams($params){
@@ -46,6 +49,12 @@ class AddContributionAPI extends API{
             $id = ($part->getOrganization() != "") ? $part->getId() : "";
             $_POST['partners'][] = array("name" => $name, "id" => $id);
         }
+
+	$keywords = explode(",", $_POST['keywords']);
+	$_POST['keywords'] = array();
+	foreach($keywords as $keyword){
+	    $POST['keywords'][] = $keyword;
+	}
     }
 
     function doAction($noEcho=false){
@@ -75,6 +84,7 @@ class AddContributionAPI extends API{
                                       'name' => $_POST['title'],
                                       'users' => serialize($_POST['users']),
                                       'description' => $_POST['description'],
+				      'keywords' => serialize($_POST['keywords']),
                                       'access_id' => $_POST['access_id'],
                                       'start_date' => $_POST['start_date'],
                                       'end_date' => $_POST['end_date']));
@@ -170,6 +180,7 @@ class AddContributionAPI extends API{
                                       'name' => $_POST['title'],
                                       'users' => serialize($_POST['users']),
                                       'description' => $_POST['description'],
+				      'keywords' => serialize($_POST['keywords']),
                                       'access_id' => $_POST['access_id'],
                                       'start_date' => $_POST['start_date'],
                                       'end_date' => $_POST['end_date']));
