@@ -73,6 +73,17 @@ class DeleteProjectMemberAPI extends API{
                 AND ug_group = '{$project->getName()}'";
         DBFunctions::execSQL($sql, true);
         
+        foreach($person->getRoles() as $role){
+            DBFunctions::delete('grand_role_projects',
+                                array('role_id' => EQ($role->getId()),
+                                      'project_id' => EQ($project->getId())));
+            foreach($project->getAllPreds() as $pred){
+                DBFunctions::delete('grand_role_projects',
+                                    array('role_id' => EQ($role->getId()),
+                                          'project_id' => EQ($pred->getId())));
+            }
+        }
+        
         foreach($project->getAllPreds() as $pred){
             $sql = "UPDATE grand_project_members
                     SET `comment` = '$comment',
