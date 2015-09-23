@@ -86,7 +86,7 @@ class ProjectMainTab extends AbstractEditableTab {
         }
 
         $this->showPeople();
-        $this->showChampions();
+        //$this->showChampions();
         $this->showDescription();
         
         return $this->html;
@@ -111,32 +111,6 @@ class ProjectMainTab extends AbstractEditableTab {
 
         if(isset($_POST['challenge_id'])){
             APIRequest::doAction('ProjectChallenge', true);
-        }
-        
-        // Deleting Champions
-        if(isset($_POST['champ_del'])){
-            foreach($_POST['champ_del'] as $key => $id){
-                $champ = Person::newFromId($id);
-                $_POST['role'] = $this->project->getName();
-                $_POST['user'] = $champ->getName();
-                $_POST['comment'] = "Automatic Removal";
-                MailingList::unsubscribeAll($champ);
-                APIRequest::doAction('DeleteProjectMember', true);
-                MailingList::subscribeAll($champ);
-            }
-        }
-        
-        // Adding New Champions
-        if(isset($_POST['champ_name'])){
-            foreach($_POST['champ_name'] as $key => $name){
-                if($name != ""){
-                    $_POST['role'] = $this->project->getName();
-                    $_POST['user'] = $name;
-                    $champ = Person::newFromName($name);
-                    APIRequest::doAction('AddProjectMember', true);
-                    MailingList::subscribeAll($champ);
-                }
-            }
         }
         
         if(isset($_POST['acronym'])){
@@ -219,104 +193,6 @@ EOF;
             $this->html .= "<h4>{$challenge->getAcronym()}</h4>";
         }   
     }
-    
-    function showChampions(){
-        global $wgUser, $wgServer, $wgScriptPath;
-        
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $project = $this->project;
-
-        $champions = array();
-        $derivedChamps = array();
-        foreach($project->getChampions() as $champ){
-            $champions[$champ['user']->getId()] = $champ;
-        }
-        if(!$project->isSubProject()){
-            foreach($project->getSubProjects() as $sub){
-                foreach($sub->getChampions() as $champ){
-                    if(!isset($derivedChamps[$champ['user']->getId()])){
-                        $derivedChamps[$champ['user']->getId()] = $champ;
-                    }
-                    $derivedChamps[$champ['user']->getId()]['subs'][] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
-                    unset($champions[$champ['user']->getId()]);
-                }
-            }
-        }
-
-        $this->html .= "<h2><span class='mw-headline'>".Inflect::pluralize(CHAMP)."</span></h2>";
-        if($edit){
-            $this->showEditChampions($champions);
-        }
-        else{
-            if(!count($champions) == 0){
-                foreach($champions as $champion){
-                    $subs = "";
-                    if(isset($champion['subs'])){
-                        $subs = " (".implode(", ", $champion['subs']).")";
-                    }
-                    $this->html .= "
-                    <h3><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a>$subs</h3>
-                    <table cellspacing='0' cellpadding='2' style='margin-left:15px;'>";
-                    if($wgUser->isLoggedIn() && $champion['user']->getEmail() != ""){
-                        $this->html .= "<tr><td><strong>Email:</strong></td><td>{$champion['user']->getEmail()}</td></tr>";
-                    }
-                    if($champion['title'] != ""){
-                        $this->html .= "<tr><td><strong>Title:</strong></td><td>{$champion['title']}</td></tr>";
-                    }
-                    if($champion['org'] != ""){
-                        $this->html .= "<tr><td><strong>Organization:</strong></td><td>{$champion['org']}</td></tr>";
-                    }
-                    $this->html .= "</table>";
-                }
-            }
-        }
-        
-        if(!$project->isSubProject()){
-            if(count($derivedChamps) > 0){
-                $this->html .= "<p>The following are Champions of {$project->getName()}'s sub-projects</p><ul>";
-                foreach($derivedChamps as $champion){
-                    $this->html .= "<li><a href='{$champion['user']->getUrl()}'>{$champion['user']->getNameForForms()}</a> (".implode(", ", $champion['subs']).")</li>";
-                }
-                $this->html .= "</ul>";
-            }
-        }
-        if(!$edit){
-            if(count($champions) == 0 && count($derivedChamps) == 0){
-                $this->html .= "<strong>N/A</strong>";
-            }
-        }
-    }
-    
-    function showEditChampions($champions){
-        $this->html .= "<table>";
-        if(count($champions) > 0){
-            $this->html .= "<tr><th></th><th>Delete?</th></tr>";
-        }
-        foreach($champions as $champ){
-            $user = $champ['user'];
-            $this->html .= "<tr>
-                    <td style='padding-left:6px;'><b>{$user->getNameForForms()}</b></td>
-                    <td align='center'><input type='checkbox' name='champ_del[]' value='{$user->getId()}' /></td>
-                </tr>";
-        }
-        $names = array("");
-        $people = Person::getAllPeople(CHAMP);
-        foreach($people as $person){
-            $names[$person->getName()] = $person->getNameForForms();
-        }
-        asort($names);
-
-        $plusMinus = new PlusMinus("champ_plusminus");
-        $table = new FormTable("champ_table");
-        
-        $combo = new ComboBox("champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
-        
-        $table->append($combo);
-        $plusMinus->append($table);
-        $this->html .= "<tr><td>";
-        $this->html .= $plusMinus->render();
-        $this->html .= "</td><td></td></tr></table>";
-    }
 
     function showPeople(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
@@ -334,7 +210,12 @@ EOF;
             if($wgUser->isLoggedIn()){
                 $this->showRole(HQP);
             }
-            $this->html .= "</td></tr></table>";
+            $this->html .= "</td></tr>";
+            $this->html .= "<tr><td valign='top' width='50%'>";
+            $this->showRole(CHAMP);
+            $this->html .= "</td><td width='50%' valign='top'>";
+            $this->showRole(EXTERNAL);
+            $this->html .= "</td></table>";
         }
     }
     

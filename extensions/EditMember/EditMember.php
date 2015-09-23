@@ -47,6 +47,15 @@ class EditMember extends SpecialPage{
                                                 });
                             });
                             
+                            function qualifyProjects(box){
+                                if($(box).is(':checked')){
+                                    $(box).next().next().show();
+                                }
+                                else{
+                                    $(box).next().next().hide();
+                                }
+                            }
+                            
                             function addComment(box, cannotchange){
                                 if(cannotchange){
                                     if(!$(box).is(':checked') && $(box).hasClass('already')){
@@ -62,7 +71,23 @@ class EditMember extends SpecialPage{
                                         $(box).next().slideUp('fast');
                                     }
                                 }
-                            }  
+                            }
+                            
+                            function openRoleProjects(roleId){
+                                $('div#role_' + roleId + '_projects').dialog({
+                                    width: 650,
+                                    buttons: {
+                                        'Ok': function(){
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                }).parent().appendTo($('#editMember'));
+                                $('div#role_' + roleId + '_projects').dialog('option','position', {
+                                    my: 'center center',
+                                    at: 'center center',
+                                    offset: '0 -75%'
+                                });
+                            }
                            </script>");
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
@@ -168,48 +193,31 @@ class EditMember extends SpecialPage{
             
             // Roles Request
             $other = "";
-            if(isset($_POST['reason']) && $_POST['reason'] == "graduated" && strstr($r_comments, HQP."::") !== false && isset($_POST['thesis'])){
-                $other = array("reason" => $_POST['reason'], 
-                               "thesisId" => $_POST['thesis'],
-                               "thesisTitle" => Paper::newFromId($_POST['thesis'])->getTitle());
-            }
-            else if(isset($_POST['reason']) && $_POST['reason'] == "movedOn" && strstr($r_comments, HQP."::") !== false){
-                $other = array("reason" => $_POST['reason'],
-                               "where" => str_replace("'", "&#39;", $_POST['employer']));
-            }
             $processOthers = true;
-            if(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != ""){
-                $_POST['user'] = $person->getName();
-                if($person->isRole(HQP) && strstr(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE'), '-'.HQP) !== false){
-                    // Skip the request, go straight to making the change, but still add the request for logging this history
-                    
-                    // Check whether the HQP is being 'promoted' or not
-                    if(strstr(EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE'), "+") === false ){
-                        // The only action is removing the HQP role, so go ahead and do the HQP Inactivation
-                        EditMember::processHQPInactivation($person, $r_nss, $r_comments, $r_effectiveDates, $other);
-                        $person = Person::newFromName($_POST['user']);
-                        $processOthers = false;
-                    }
-                    EditMember::processHQPMovedOn();
+            $roleProjects = @serialize($_POST['role_projects']);
+            $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
+            if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
+                $message .= "<ul>";
+                foreach($_POST['role_projects'] as $r => $projects){
+                    $message .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
                 }
-                if($processOthers && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
-                    DBFunctions::insert('grand_role_request',
-                                        array('effective_date' => EditMember::parse($r_effectiveDates),
-                                              'requesting_user' => EditMember::parse($wgUser->getId()),
-                                              'current_role' => EditMember::parse($r_current),
-                                              'role' => EditMember::parse($r_nss),
-                                              'comment' => EditMember::parse($r_comments),
-                                              'other' => serialize($other),
-                                              'user' => EditMember::parse($person->getId()),
-                                              'type' => 'ROLE',
-                                              'created' => 0,
-                                              '`ignore`' => 0));
-                    Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
-                }
+                $message .= "</ul>";
             }
-            if($processOthers && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "" && EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE') != "-".INACTIVE."<br />\n"){
-                $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
-            }
+            
+            $_POST['user'] = $person->getName();
+            DBFunctions::insert('grand_role_request',
+                                array('effective_date' => EditMember::parse($r_effectiveDates),
+                                      'requesting_user' => EditMember::parse($wgUser->getId()),
+                                      'current_role' => EditMember::parse($r_current),
+                                      'role' => EditMember::parse($r_nss),
+                                      'role_projects' => $roleProjects,
+                                      'comment' => EditMember::parse($r_comments),
+                                      'other' => serialize($other),
+                                      'user' => EditMember::parse($person->getId()),
+                                      'type' => 'ROLE',
+                                      'created' => 0,
+                                      '`ignore`' => 0));
+            Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
             if($message != ""){
                 $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
             }
@@ -386,108 +394,6 @@ class EditMember extends SpecialPage{
             }
         }
         return substr($return,0,-2);
-    }
-    
-    // Performs the HQPInactivation
-    // * Logs this action in the grand_role_request table
-    // * Adds the request for the HQP to fill out their HQP Inactivation report
-    private function processHQPInactivation($person, &$r_nss, &$r_comments, &$r_effectiveDates, &$other){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgMessage;
-        $me = Person::newFromId($wgUser->getId());
-        DBFunctions::insert('grand_role_request',
-                            array('effective_date' => EditMember::parse($r_effectiveDates),
-                                  'staff' => 0,
-                                  'requesting_user' => EditMember::parse($wgUser->getId()),
-                                  'role' => EditMember::parse($r_nss),
-                                  'comment' => EditMember::parse($r_comments),
-                                  'other' => serialize($other), 
-                                  'user' => EditMember::parse($person->getId()),
-                                  'type' => 'ROLE',
-                                  'created' => 1,
-                                  '`ignore`' => 0));
-        $comment = "";
-        $exploded = explode("HQP::", $r_comments);
-        if(isset($exploded[1])){
-            $exploded = explode("::", $exploded[1]);
-            if(isset($exploded[0])){
-                $comment = $exploded[0];
-                // Remove the HQP comment from the request
-                $r_comments = str_replace(HQP."::".$comment." ::", "", $r_comments);
-                $r_comments = str_replace(HQP."::".$comment."::", "", $r_comments);
-                $r_comments = str_replace(HQP."::".$comment, "", $r_comments);
-            }
-        }
-        $exploded = explode("HQP::", $r_effectiveDates);
-        $date = "";
-        if(isset($exploded[1])){
-            $exploded = explode("::", $exploded[1]);
-            if(isset($exploded[0])){
-                $date = $exploded[0];
-                // Remove the HQP dates from the request
-                $r_effectiveDates = str_replace(HQP."::".$date." ::", "", $r_effectiveDates);
-                $r_effectiveDates = str_replace(HQP."::".$date."::", "", $r_effectiveDates);
-                $r_effectiveDates = str_replace(HQP."::".$date, "", $r_effectiveDates);
-            }
-        }
-        // Remove the HQP removal information from the request
-        $other = "";
-        //unset($_POST['r_wpNS'][HQP]);
-        //$r_nss = str_replace(HQP.", ", "", $r_nss);
-        //$r_nss = str_replace(", ".HQP, "", $r_nss);
-        //$r_nss = str_replace(HQP, "", $r_nss);
-        $_POST['r_wpNS'][] = HQP;
-        $r_nss = implode(", ", $_POST['r_wpNS']);
-        $nss = array();
-        foreach($person->getRoles() as $role){
-            if($role->getRole() != HQP){
-                $nss[] = $role->getRole();
-            }
-        }
-        $_POST['current_role'] = HQP;
-        $_POST['role'] = implode(", ", $nss);
-        $_POST['comment'] = HQP.'::'.$comment;
-        $_POST['effectiveDates'] = HQP.'::'.$date;
-        $_POST['user'] = $person->getId();
-        $_POST['requesting_user'] = $me->getId();
-        $_POST['type'] = 'ROLE';
-        $_POST['id'] = '-1';
-        
-        $wgUser = User::newFromId(4); // Pretend to be Admin for a second
-        EditMember::handleAdminAccept();
-        $wgUser = User::newFromId($me->getId()); // Reset to current user
-        
-        Person::$cache = array();
-        $person = Person::newFromId($_POST['user']);
-        $year = substr($date, 0, 4);
-        if($year == YEAR){
-            Notification::addNotification($me, $person, "HQP Report", "{$me->getNameForForms()} has inactivated your account.  You will still have access to your HQP report until the end of the year.  You should fill in this report as soon as possible.", "$wgServer$wgScriptPath/index.php/Special:Report?report=HQPReport", true);
-            $wgOut->addHTML("{$person->getNameForForms()} has been sent a notification to fill out their HQP Report.  When they have completed the report, you will be notified.<br />");
-        }
-    }
-    
-    // Changes/Inserts the data in the moved on/thesis tables if needed
-    private function processHQPMovedOn(){
-        global $wgMessage;
-        $person = Person::newFromId($_POST['user']);
-        $_POST['id'] = "new";
-        if(isset($_POST['where']) || 
-           isset($_POST['studies']) || 
-           isset($_POST['employer']) || 
-           isset($_POST['city']) || 
-           isset($_POST['country'])){
-            $_POST['where'] = @str_replace("'", "&#39;", $_POST['where']);
-            $_POST['studies'] = @str_replace("'", "&#39;", $_POST['studies']);
-            $_POST['employer'] = @str_replace("'", "&#39;", $_POST['employer']);
-            $_POST['city'] = @str_replace("'", "&#39;", $_POST['city']);
-            $_POST['country'] = @str_replace("'", "&#39;", $_POST['country']);
-            $_POST['effective_date'] = @str_replace("'", "&#39;", $_POST['r_datepicker'][HQP]);
-            APIRequest::doAction('AddHQPMovedOn', true);
-            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s moved on information added.");
-        }
-        if(isset($_POST['thesis'])){
-            APIRequest::doAction('AddHQPThesis', true);
-            $wgMessage->addInfo("<b>{$person->getNameForForms()}</b>'s thesis added.");
-        }
     }
     
     // Generates a more human readable form for the string used to add/remove roles
@@ -848,6 +754,16 @@ class EditMember extends SpecialPage{
             else{
                 $diff = EditMember::roleDiff(Person::newFromId($row['user']), $row['current_role'], $row['role'], $row['type']);
             }
+            $roleProjects = unserialize($row['role_projects']);
+            
+            if(is_array($roleProjects) && count($roleProjects) > 0){
+                $diff .= "<ul>";
+                foreach($roleProjects as $r => $projs){
+                    $diff .= "<li>{$r}<ul><li>".implode("</li><li>", $projs)."</li></ul></li>";
+                }
+                $diff .= "</ul>";
+            }
+            
             $dates = explode("::", $row['effective_date']);
             foreach($dates as $key => $date){
                 if($key % 2 == 0 && is_numeric($date)){
@@ -871,10 +787,11 @@ class EditMember extends SpecialPage{
                     $comments[$key] = $proj->getName();
                 }
             }
-            $wgOut->addHTML("<td align='left'>".$diff."</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
+            $wgOut->addHTML("<td align='left'>{$diff}</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
                         <form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
                             <input type='hidden' name='current_role' value='{$row['current_role']}' />
                             <input type='hidden' name='role' value='{$row['role']}' />
+                            <input type='hidden' name='role_projects' value='{$row['role_projects']}' />
                             <input type='hidden' name='comment' value='{$row['comment']}' />
                             <input type='hidden' name='effectiveDates' value='{$row['effective_date']}' />
                             <input type='hidden' name='user' value='{$row['user']}' />
@@ -912,7 +829,7 @@ class EditMember extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
+        $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
         <p>Select the Roles and Projects to which <b>{$person->getReversedName()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  Removing an HQP from the HQP role, the action will not require any approval, however all other actions will need to be approved by an Administrator.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
@@ -953,7 +870,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<br />
                          <input type='hidden' name='name' value='{$_GET['name']}' />
-                         <input type='submit' name='submit' value='Submit Request' />
+                         <input type='submit' name='submit' value='Submit Request' onSubmit />
                          </form>");
     }
     
@@ -964,82 +881,23 @@ class EditMember extends SpecialPage{
             return;
         }
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $wgOut->addHTML("<table><tr>
+        $wgOut->addHTML("<table style='min-width:300px;'><tr>
                         <td class='mw-input'>");
         $boxes = "";
-        if($person->isRole(HQP)){
-            $wgOut->addScript("<script type='text/javascript'>
-                var theses = Array();\n");
-            $theses = $person->getPapers();
-            foreach($theses as $thesis){
-                $title = $thesis->getTitle();
-                if(strlen($thesis->getTitle()) > 50){
-                    $title = substr($title, 0, 50)."...";
-                }
-                $wgOut->addScript("theses[{$thesis->getId()}] = '$title';\n");
-            }
-            $partners = array();
-            foreach(Partner::getAllPartners() as $partner){
-                $partners[] = $partner->getOrganization();
-            }
-            $universities = array();
-            foreach(Person::getAllUniversities() as $uni){
-                $universities[] = $uni;
-            }
-            $wgOut->addScript("
-                var partners = [\"".implode("\",\n\"", $partners)."\"];
-                var universities = [\"".implode("\",\n\"", $universities)."\"];
-                
-                function updateStep2(){
-                    var reason = $('input[name=reason]:checked').val();
-                    if(reason == 'graduated'){
-                        var options = '<option value=\"No Thesis\">No Thesis</option>';
-                        for(index in theses){
-                            if(index != 'indexOf'){
-                                options += '<option value=\"' + index + '\">' + theses[index] + '</option>';
-                            }
-                        }
-                        var text = \"<tr><td valign='top' align='right'>Thesis:</td><td><select name='thesis'>\" + options + \"</select><br /><small>If The thesis is not in the list, then you can <a target='_blank' href='$wgServer$wgScriptPath/index.php/Special:AddPublicationPage'>add it</a> and then <a href='javascript:history.go(0);'>reload</a> this page.</small></td></tr>\" +
-                                   \"<tr><td align='right'>Further&nbsp;Studies&nbsp;at:</td><td><input type='text' id='studies' size='25' name='studies' /></td></tr>\" +
-                                   \"<tr><td align='right'>Employed&nbsp;by:</td><td><input type='text' id='employer' name='employer' size='25' /></td></tr>\" +
-                                   \"<tr><td align='right' valign='top'>Location:</td><td></tr><tr><td align='right'>City:</td><td><input type='text' id='city' name='city' size='25' /></td></tr><td align='right'>Country:</td><td><input type='text' id='country' name='country' size='25' /></td></tr>\";
-                        $('#step2').html(text);
-                        $('#employer').autocomplete({
-                            source: partners
-                        });
-                        $('#country').autocomplete({
-                            source: countries
-                        });
-                        $('#studies').autocomplete({
-                            source: universities
-                        });
-                    }
-                    else if(reason == 'movedOn'){
-                        var text = \"<tr><td align='right'>Further&nbsp;Studies&nbsp;at:</td><td><input type='text' id='studies' size='25' name='studies' /></td></tr>\" +
-                                   \"<tr><td align='right'>Employed&nbsp;by:</td><td><input type='text' id='employer' name='employer' size='25' /></td></tr>\" +
-                                   \"<tr><td align='right' valign='top'>Location:</td><td></tr><tr><td align='right'>City:</td><td><input type='text' id='city' name='city' size='25' /></td></tr><td align='right'>Country:</td><td><input type='text' id='country' name='country' size='25' /></td></tr>\";
-                        $('#step2').html(text);
-                        $('#employer').autocomplete({
-                            source: partners
-                        });
-                        $('#country').autocomplete({
-                            source: countries
-                        });
-                        $('#studies').autocomplete({
-                            source: universities
-                        });
-                    }
-                    $('#step3').show();
-                }
-                
-                $(document).ready(function(){
-                    updateStep2();
-                });                           
-            </script>");
-        }
+        $projects = "";
+        
         $wgRolesCopy = $wgRoles;
         asort($wgRolesCopy);
+        $projs = Project::getAllProjects();
         foreach($wgRolesCopy as $role){
+            $r = $person->getRole($role);
+            $roleId = str_replace(" ", "-", $role);
+            if($r->getId() != 0){
+                $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='float:right; cursor: pointer;'>[Projects]</a>";
+            }
+            else{
+                $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='display: none; float:right; cursor: pointer;'>[Projects]</a>";
+            }
             if(($role != ISAC  || $user->isRoleAtLeast(STAFF)) &&
                ($role != IAC   || $user->isRoleAtLeast(STAFF)) &&
                ($role != CAC   || $user->isRoleAtLeast(STAFF)) &&
@@ -1050,43 +908,26 @@ class EditMember extends SpecialPage{
                ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($user->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
-                    $boxes .= "checked onChange='addComment(this, true)' class='already'"; //Prevent un-check
+                    $boxes .= "checked onChange='qualifyProjects(this);addComment(this, true);' class='already'"; //Prevent un-check
                 }
                 else if($person->isRole($role) || $person->isRole($role."-Candidate")){
-                    $boxes .= "checked onChange='addComment(this, false)' class='already'";
-                }
-                if($role == HQP){
-                    $boxes .= " /> {$config->getValue('roleDefs', $role)}<div style='display:none; padding-left:30px;'>
-                                            <fieldset><legend>Reasoning</legend>
-                                            <table>
-                                            <tr id='step1'>
-                                                <td colspan='2'><input type='radio' name='reason' value='graduated' onChange='updateStep2()' /> Graduated</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan='2'><input type='radio' name='reason' value='movedOn' onChange='updateStep2()' /> Moved On</td>
-                                            </tr>
-                                            <tbody id='step2'>
-                                                
-                                            </tbody>
-                                            <tr style='display:none;' id='step3'>
-                                                <td align='right' style='width:0px;'>Date&nbsp;Effective:</td><td><input type='text' class='datepicker' id='datepicker{$role}' name='r_datepicker[$role]' /></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan='2'>Additional Comments:<br /><textarea name='r_comment[".$role."]' cols='15' rows='4' style='height:auto;' ></textarea></td>
-                                            </tr>
-                                        </table>
-                                        </fieldset>
-                                        </div><br />";
+                    $boxes .= "checked onChange='qualifyProjects(this);addComment(this, false);' class='already'";
                 }
                 else{
-                    $boxes .= " /> {$config->getValue('roleDefs', $role)}<div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date&nbsp;Effective:<input type='text' class='datepicker' id='datepicker{$role}' name='r_datepicker[$role]' /></p>Additional Comments:<br /><textarea name='r_comment[".$role."]' cols='15' rows='4' style='height:auto;' ></textarea></fieldset></div><br />";
+                    $boxes .= "onChange='qualifyProjects(this);' ";
                 }
+                $boxes .= " /> {$config->getValue('roleDefs', $role)} <div style='display:none; padding-left:30px;'><fieldset><legend>Reasoning</legend><p>Date&nbsp;Effective:<input type='text' class='datepicker' id='datepicker{$role}' name='r_datepicker[$role]' /></p>Additional Comments:<br /><textarea name='r_comment[".$role."]' cols='15' rows='4' style='height:auto;' ></textarea></fieldset></div>{$projectLink}<br />";
             }
             else{
                 if($person->isRole($role)){
                     $boxes .= "<input type='hidden' name='r_wpNS[]' value='".$role."' />";
                 }
             }
+            $roleProjects = new Collection($r->getProjects());
+            $projList = new ProjectList("role_projects[{$roleId}]", "Projects", $roleProjects->pluck('name'), $projs);
+            $projList->attr('reasons', false);
+            $projList->attr('expand', false);
+            $boxes .= "<div class='role_projects' id='role_{$roleId}_projects' style='display:none;white-space:nowrap;width:600px;' title='Qualify Role with Projects'>{$projList->render()}</div>";
         }
         $wgOut->addHTML($boxes);
         $wgOut->addHTML("</td></tr></table>\n");
@@ -1369,6 +1210,7 @@ class EditMember extends SpecialPage{
             $effectiveDates = explode("::", $_POST['effectiveDates']);
             $current = explode(", ", $_POST['current_role']);
             $roles = explode(", ", $_POST['role']);
+            $roleProjects = unserialize($_POST['role_projects']);
             foreach($current as $role){
                 // Unsubscribe user from all of his project lists
                 $unsubscribed[$role] = true;
@@ -1405,7 +1247,23 @@ class EditMember extends SpecialPage{
                 APIRequest::doAction('DeleteRole', true);
                 $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> removed from $key");
             }
+            foreach($person->getRoles() as $role){
+                DBFunctions::delete('grand_role_projects',
+                                    array('role_id' => EQ($role->getId())));
+                if(is_array($roleProjects) && isset($roleProjects[$role->getRole()])){
+                    foreach($roleProjects[$role->getRole()] as $project){
+                        $proj = Project::newFromName($project);
+                        DBFunctions::insert('grand_role_projects',
+                                            array('role_id' => $role->getId(),
+                                                  'project_id' => $proj->getId()));
+                        $_POST['name'] = $person->getName();
+                        $_POST['role'] = $project;
+                        APIRequest::doAction('AddProjectMember', true);
+                    }
+                }
+            }
         }
+        
         DBFunctions::update('grand_role_request',
                             array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
                                   'staff' => $user->getId(),

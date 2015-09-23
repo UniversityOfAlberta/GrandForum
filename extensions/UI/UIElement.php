@@ -115,7 +115,7 @@ abstract class UIElement {
     // Sets the value of an attribute
     // If $value is null, the value of the attr is instead returned
     function attr($attr, $value=null){
-        if($value == null){
+        if($value === null){
             if(isset($this->attr[$attr])){
                 return $this->attr[$attr];
             }

@@ -1864,6 +1864,15 @@ class Person extends BackboneModel {
         return implode(", ", $roleNames);
     }
     
+    function getRole($role){
+        foreach($this->getRoles() as $r){
+            if($r->getRole() == $role){
+                return $r;
+            }
+        }
+        return new Role(array());
+    }
+    
     // Returns an array of roles that the user is a part of
     // If history is set to true, then all the roles regardless of date are included
     function getRoles($history=false){
@@ -2497,7 +2506,7 @@ class Person extends BackboneModel {
     }
 
     // Returns whether this Person is of type $role or not.
-    function isRole($role){
+    function isRole($role, $project=null){
         if($role == PL || $role == 'PL'){
             return $this->isProjectLeader();
         }
@@ -2521,7 +2530,19 @@ class Person extends BackboneModel {
         $role_objs = $this->getRoles();
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         else{
@@ -2535,7 +2556,7 @@ class Person extends BackboneModel {
         return (array_search($role, $roles) !== false);
     }
     
-    function isRoleOn($role, $date){
+    function isRoleOn($role, $date, $project=null){
         $roles = array();
         $role_objs = $this->getRolesOn($date);
         if($role == PL || $role == "PL"){
@@ -2546,7 +2567,19 @@ class Person extends BackboneModel {
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){
@@ -2564,7 +2597,7 @@ class Person extends BackboneModel {
     }
     
     // Returns whether this Person is of type $role or not during a specific period
-    function isRoleDuring($role, $startRange, $endRange){
+    function isRoleDuring($role, $startRange, $endRange, $project=null){
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
         if($role == PL || $role == "PL"){
@@ -2575,7 +2608,19 @@ class Person extends BackboneModel {
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){

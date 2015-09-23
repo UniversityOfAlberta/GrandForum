@@ -693,7 +693,7 @@ EOF;
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(ADMIN)){
+            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter, $this)) || $person->isRoleDuring($filter, $created, "9999", $this)) && !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
         }
@@ -748,7 +748,7 @@ EOF;
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange, $this)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -784,7 +784,7 @@ EOF;
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
+            else if(($filter == null || $person->isRoleOn($filter, $date, $this)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
