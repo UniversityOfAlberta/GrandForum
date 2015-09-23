@@ -74,12 +74,15 @@ Feature: EditMember
         And I press "Next"
         And I uncheck "role_HQP"
         And I press "Submit Request"
-        Then I should see "removed from HQP"
+        Then I should see "The user HQP ToBeInactivated has been requested to have the following role changes:"
+        And I should see "-HQP"
         
     Scenario: Admin Accepting request
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "status_notifications"
         And I follow "User Role Request"
+        And I press "Accept"
+        Then I should see "removed from HQP"
         And I press "Accept"
         Then I should see "added to Phase2Project2"
         

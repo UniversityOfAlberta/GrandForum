@@ -190,34 +190,35 @@ class EditMember extends SpecialPage{
                 Notification::addNotification("", $me, "Project Change Pending", "{$person->getNameForForms()}'s projects have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
                 $message .= EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT');
             }
-            
-            // Roles Request
-            $other = "";
-            $processOthers = true;
-            $roleProjects = @serialize($_POST['role_projects']);
-            $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
-            if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
-                $message .= "<ul>";
-                foreach($_POST['role_projects'] as $r => $projects){
-                    $message .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
+            else{
+                // Roles Request
+                $other = "";
+                $processOthers = true;
+                $roleProjects = @serialize($_POST['role_projects']);
+                $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
+                if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
+                    $message .= "<ul>";
+                    foreach($_POST['role_projects'] as $r => $projects){
+                        $message .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
+                    }
+                    $message .= "</ul>";
                 }
-                $message .= "</ul>";
+                
+                $_POST['user'] = $person->getName();
+                DBFunctions::insert('grand_role_request',
+                                    array('effective_date' => EditMember::parse($r_effectiveDates),
+                                          'requesting_user' => EditMember::parse($wgUser->getId()),
+                                          'current_role' => EditMember::parse($r_current),
+                                          'role' => EditMember::parse($r_nss),
+                                          'role_projects' => $roleProjects,
+                                          'comment' => EditMember::parse($r_comments),
+                                          'other' => serialize($other),
+                                          'user' => EditMember::parse($person->getId()),
+                                          'type' => 'ROLE',
+                                          'created' => 0,
+                                          '`ignore`' => 0));
+                Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
             }
-            
-            $_POST['user'] = $person->getName();
-            DBFunctions::insert('grand_role_request',
-                                array('effective_date' => EditMember::parse($r_effectiveDates),
-                                      'requesting_user' => EditMember::parse($wgUser->getId()),
-                                      'current_role' => EditMember::parse($r_current),
-                                      'role' => EditMember::parse($r_nss),
-                                      'role_projects' => $roleProjects,
-                                      'comment' => EditMember::parse($r_comments),
-                                      'other' => serialize($other),
-                                      'user' => EditMember::parse($person->getId()),
-                                      'type' => 'ROLE',
-                                      'created' => 0,
-                                      '`ignore`' => 0));
-            Notification::addNotification("", $me, "Role Change Pending", "{$person->getNameForForms()}'s roles have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
             if($message != ""){
                 $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
             }
