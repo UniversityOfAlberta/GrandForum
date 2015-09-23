@@ -831,7 +831,7 @@ class EditMember extends SpecialPage{
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
-        <p>Select the Roles and Projects to which <b>{$person->getReversedName()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  Removing an HQP from the HQP role, the action will not require any approval, however all other actions will need to be approved by an Administrator.</p>");
+        <p>Select the Roles and Projects to which <b>{$person->getReversedName()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
                         <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
