@@ -55,23 +55,21 @@ class IndexTable {
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
-        //if($wgUser->isLoggedIn()){
-            $selected = ($wgTitle->getText() == "Products" || 
-                         $wgTitle->getText() == "Multimedia" ||
-                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
-            $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-            $structure = Product::structure();
-            $categories = array_keys($structure['categories']);
-            foreach($categories as $category){
-                if(Product::countByCategory($category) > 0){
-                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
-                }
+        $selected = ($wgTitle->getText() == "Products" || 
+                     $wgTitle->getText() == "Multimedia" ||
+                     $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
+        $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
+        $structure = Product::structure();
+        $categories = array_keys($structure['categories']);
+        foreach($categories as $category){
+            if(Product::countByCategory($category) > 0){
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
             }
-            if(Material::countByCategory() > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
-            }
-            $tabs['Main']['subtabs'][] = $productsSubTab;
-        //}
+        }
+        if(Material::countByCategory() > 0){
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
+        }
+        $tabs['Main']['subtabs'][] = $productsSubTab;
         
        
         $themesColl = new Collection(Theme::getAllThemes());
