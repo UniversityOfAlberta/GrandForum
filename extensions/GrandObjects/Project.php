@@ -743,7 +743,7 @@ EOF;
             $person = Person::newFromId($id);
             if($filter == AR || $filter == CI || $filter == PL){
                 if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
+                    ($filter == CI && $person->isRoleDuring(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
                     ($filter == PL && $person->leadershipOf($this)))){
                     $people[$person->getId()] = $person;
                 }
