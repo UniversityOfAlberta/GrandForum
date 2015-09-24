@@ -85,6 +85,13 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
+                    <![CDATA[
+                        <h3>Dissemination of Research</h3>
+                        <small>To add products, go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</small>
+                        {$item}
+                    ]]>
+                </ReportItem>
                 <ReportItem id="assessment_head" type="StaticReportItem">
                     <![CDATA[
                         <h3>Please assess your student’s activities/project against the following</h3>
