@@ -135,6 +135,7 @@ class ReportItemCallback {
             "index" => "getIndex",
             "extraIndex" => "getExtraIndex",
             "getText" => "getText",
+            "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra"
         );
@@ -1405,7 +1406,19 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
-        return $blb->getData();
+        return nl2br($blb->getData());
+    }
+    
+    function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        $blobValue = $blb->getData();
+        
+        $blobValue = str_replace("</p>", "<br /><br style='font-size:1em;' />", $blobValue);
+        $blobValue = str_replace("<p>", "", $blobValue);
+        $blobValue = str_replace_last("<br /><br style='font-size:1em;' />", "", $blobValue);
+        return "<div class='tinymce'>$blobValue</div>";
     }
     
     function getExtra($index){

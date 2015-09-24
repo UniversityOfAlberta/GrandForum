@@ -428,7 +428,7 @@ abstract class AbstractReportItem {
                         $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                     }
                     else{
-                        $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                        $cdata = str_replace("{".$m."}", $v, $cdata);
                     }
                 }
             }

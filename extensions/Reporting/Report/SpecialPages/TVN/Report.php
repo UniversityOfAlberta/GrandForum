@@ -49,6 +49,16 @@ class Report extends AbstractReport{
                     break;
                 }
             }
+            foreach($hqps as $hqp){
+                if($hqp->isSubRole("IFP")){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFPProgressReport", $selected);
+                    
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
+                    break;
+                }
+            }
         }
         if($person->isSubRole('IFP')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;

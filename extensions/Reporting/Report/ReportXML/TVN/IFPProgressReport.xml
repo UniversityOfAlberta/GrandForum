@@ -11,24 +11,27 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="planning" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
-            <SectionPermission id="supervisor" permissions="r" />
+            <SectionPermission id="supervisor1" permissions="r" />
+            <SectionPermission id="supervisor2" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
-            <SectionPermission id="milestones" permissions="r" />
-            <SectionPermission id="ktee" permissions="r" />
-            <SectionPermission id="external" permissions="r" />
-            <SectionPermission id="mentorship" permissions="r" />
-            <SectionPermission id="collab" permissions="r" />
-            <SectionPermission id="dissemination" permissions="r" />
-            <SectionPermission id="capacity" permissions="r" />
-            <SectionPermission id="partners" permissions="r" />
-            <SectionPermission id="network" permissions="r" />
-            <SectionPermission id="comments" permissions="r" />
-            <SectionPermission id="supervisor" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="ktee" permissions="" />
+            <SectionPermission id="external" permissions="" />
+            <SectionPermission id="mentorship" permissions="" />
+            <SectionPermission id="collab" permissions="" />
+            <SectionPermission id="dissemination" permissions="" />
+            <SectionPermission id="capacity" permissions="" />
+            <SectionPermission id="partners" permissions="" />
+            <SectionPermission id="network" permissions="" />
+            <SectionPermission id="planning" permissions="" />
+            <SectionPermission id="comments" permissions="" />
+            <SectionPermission id="supervisor1" permissions="" />
+            <SectionPermission id="supervisor2" permissions="rw" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" tooltip="1. Fellowship Project Progress" type="EditableReportSection">
@@ -255,20 +258,45 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="supervisor" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_PROG_SUPERVISOR" type="EditableReportSection">
-        <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ASSESSMENT" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
+    <ReportSection id="supervisor1" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_PROG_SUPERVISOR" type="ReportSection">
+        <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
                 <i style='font-size:1.2em;'>This section is to be completed by the Fellowship Supervisor</i>
-                <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
-                {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ELABORATE" rich="true">
-            <![CDATA[
-                <h3>Please elaborate:</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet">
+            <ReportItem id="assessment" type="StaticReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+                <![CDATA[
+                    <h2>{$user_name}</h2>
+                    <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                    <i>{getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
+                ]]>
+            </ReportItem>
+            <ReportItem id="elaborate" type="StaticReportItem">
+                <![CDATA[
+                    <h3>Please elaborate:</h3>
+                    {getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ELABORATE,{$parent_id},{$user_id},0)}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_PROG_SUPERVISOR" type="EditableReportSection">
+        <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
+                    <![CDATA[
+                        <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ELABORATE" blobSubItem="{$user_id}" rich="true">
+                    <![CDATA[
+                        <h3>Please elaborate:</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
