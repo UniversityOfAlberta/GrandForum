@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReportPDF" ajax="true" personId="0">
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReportPDF" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP" subType="IFP">
             <SectionPermission id="milestones" permissions="r" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="external" permissions="rw" />
@@ -29,14 +29,11 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
-                <b>Project Title:&nbsp;</b>{$project_full_name}<br />
-                <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
+                <b>Name:&nbsp;</b>{$user_name}<br />
             ]]>
         </ReportItem>
         <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" sizes="200|300|125" multiple="true" class="wikitable">
@@ -194,7 +191,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="dissemination" name="Dissemination" tooltip="6. Dissemination of Fellowship Work" blobSection="IFP_FINAL_DISS" title="6. Dissemination of Fellowship Work" type="EditableReportSection">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 {$item}
             ]]>
