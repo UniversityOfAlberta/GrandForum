@@ -55,7 +55,7 @@ class IndexTable {
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
-        if($wgUser->isLoggedIn()){
+        //if($wgUser->isLoggedIn()){
             $selected = ($wgTitle->getText() == "Products" || 
                          $wgTitle->getText() == "Multimedia" ||
                          $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
@@ -71,7 +71,7 @@ class IndexTable {
                 $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
             }
             $tabs['Main']['subtabs'][] = $productsSubTab;
-        }
+        //}
         
        
         $themesColl = new Collection(Theme::getAllThemes());
