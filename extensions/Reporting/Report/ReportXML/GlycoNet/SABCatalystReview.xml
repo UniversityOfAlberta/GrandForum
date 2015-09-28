@@ -81,6 +81,10 @@
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Person>
+        <Person id="2116">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
