@@ -8,7 +8,7 @@ $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the s
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
 $wgSpecialPageGroups['HQPRegister'] = 'network-tools';
 
-//$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
+$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
 
 function runHQPRegister($par) {
     HQPRegister::execute($par);
@@ -22,10 +22,10 @@ class HQPRegister extends SpecialPage{
         $me = Person::newFromWgUser();
         if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
             if(!$me->isLoggedIn()){
-                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
+                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an Affiliate HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
             }
             else if($me->isRole(HQP.'-Candidate')){
-                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
+                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an Affiliate HQP in {$config->getValue('networkName')} then please fill out the <a href='{$me->getUrl()}?tab=hqp-profile'>HQP Application form</a>.</p>";
             }
         }
         return true;
