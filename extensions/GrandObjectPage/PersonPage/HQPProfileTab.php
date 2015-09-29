@@ -37,6 +37,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO));
         $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN));
         $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
         if($research    == "" &&
            $train       == "" &&
            $bio         == "" &&
@@ -55,6 +56,8 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->html .= "<p>{$align}</p>";
         $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries?</h3>";
         $this->html .= "<p>{$boundary}</p>";
+        $this->html .= "<h3>CV</h3>";
+        $this->html .= "<p>{$cv}</p>";
         return $this->html;
     }
     
@@ -123,24 +126,34 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
 </small>";
         $this->html .= "<textarea name='boundary' style='height:200px;'>{$boundary}</textarea>";
-        
+        $this->html .= "<h3>CV Upload</h3>
+        <input type='file' name='cv' accept='.pdf' /><br />";
         return $this->html;
     }
     
-    function getBlobValue($blobItem){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM){
+        global $wgServer, $wgScriptPath;
         $year = 0; // Don't have a year so that it remains the same each year
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $blobItem, 0);
-        $result = $blb->load($addr);
+        $blb = new ReportBlob($type, $year, $personId, $projectId);
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+        $result = $blb->load($addr, true);
         $data = $blb->getData();
+        
+        if($type == BLOB_RAW){
+            $data = json_decode($data);
+            $mime = $data->type;
+            $md5 = $blb->getMD5();
+            return "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+        }
+        
         $year = date('Y');
         while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
             // If it is empty, check to see if there was an entry for one of the other years
-            $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
-            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $blobItem, 0);
+            $blb = new ReportBlob($type, $year, $personId, $projectId);
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
             $result = $blb->load($addr);
             $data = $blb->getData();
             $year--;
@@ -148,13 +161,26 @@ class HQPProfileTab extends AbstractEditableTab {
         return $data;
     }
     
-    function saveBlobValue($blobItem, $value){
+    function saveBlobValue($blobItem, $value, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM){
+        if($type == BLOB_RAW){
+            $contents = base64_encode(file_get_contents($value['tmp_name']));
+            $hash = md5($contents);
+            $name = $value['name'];
+            $size = $value['size'];
+            $fileType = $value['type'];
+            $data = array('name' => $name,
+                          'type' => $fileType,
+                          'size' => $size,
+                          'hash' => $hash,
+                          'file' => $contents);
+            $value = json_encode($data);
+        }
         $year = 0; // Don't have a year so that it remains the same each year
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $blobItem, 0);
+        $blb = new ReportBlob($type, $year, $personId, $projectId);
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
         $blb->store($value, $addr);
     }
     
@@ -166,6 +192,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_BIO,        $_POST['bio']);
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
         $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
+        $this->saveBlobValue(HQP_APPLICATION_CV,         $_FILES['cv'], BLOB_RAW, HQP_APPLICATION_DOCS);
         
         header("Location: {$this->person->getUrl()}?tab=hqp-profile");
         exit;
