@@ -192,7 +192,9 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_BIO,        $_POST['bio']);
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
         $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
-        $this->saveBlobValue(HQP_APPLICATION_CV,         $_FILES['cv'], BLOB_RAW, HQP_APPLICATION_DOCS);
+        if(isset($_FILES['cv']) && $_FILES['cv']['size'] > 0){
+            $this->saveBlobValue(HQP_APPLICATION_CV,     $_FILES['cv'], BLOB_RAW, HQP_APPLICATION_DOCS);
+        }
         
         header("Location: {$this->person->getUrl()}?tab=hqp-profile");
         exit;
