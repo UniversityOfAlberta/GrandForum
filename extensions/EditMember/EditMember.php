@@ -194,8 +194,8 @@ class EditMember extends SpecialPage{
             $other = "";
             $processOthers = true;
             $roleProjects = @serialize($_POST['role_projects']);
-            $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
-            $roleMessage = "";
+            $roleMessage = EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
+            $roleProjectMessage = "";
             if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
                 foreach($_POST['role_projects'] as $r => $projects){
                     sort($projects);
@@ -208,14 +208,15 @@ class EditMember extends SpecialPage{
                         $skip = ($pNames === $projects);
                     }
                     if(!$skip){
-                        $roleMessage .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
+                        $roleProjectMessage .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
                     }
                 }
             }
-            if($roleMessage != ""){
-                $message .= "<ul>{$roleMessage}</ul>";
+            if($roleProjectMessage != ""){
+                $roleMessage .= "<ul>{$roleProjectMessage}</ul>";
             }
-            if($message != ""){
+            $message .= $roleMessage;
+            if($roleMessage != ""){
                 $_POST['user'] = $person->getName();
                 DBFunctions::insert('grand_role_request',
                                     array('effective_date' => EditMember::parse($r_effectiveDates),
