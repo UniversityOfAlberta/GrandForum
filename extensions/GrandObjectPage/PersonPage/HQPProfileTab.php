@@ -142,7 +142,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $result = $blb->load($addr, true);
         $data = $blb->getData();
         
-        if($type == BLOB_RAW){
+        if($type == BLOB_RAW && $data != null){
             $data = json_decode($data);
             $mime = $data->type;
             $md5 = $blb->getMD5();
