@@ -190,20 +190,32 @@ class EditMember extends SpecialPage{
                 Notification::addNotification("", $me, "Project Change Pending", "{$person->getNameForForms()}'s projects have been requested to be changed.  Once an admin sees this request they will review and accept it", "");
                 $message .= EditMember::roleDiff($person, $p_current, $p_nss, 'PROJECT');
             }
-            else{
-                // Roles Request
-                $other = "";
-                $processOthers = true;
-                $roleProjects = @serialize($_POST['role_projects']);
-                $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
-                if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
-                    $message .= "<ul>";
-                    foreach($_POST['role_projects'] as $r => $projects){
-                        $message .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
+            // Roles Request
+            $other = "";
+            $processOthers = true;
+            $roleProjects = @serialize($_POST['role_projects']);
+            $message .= EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
+            $roleMessage = "";
+            if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
+                foreach($_POST['role_projects'] as $r => $projects){
+                    sort($projects);
+                    $role = $person->getRole($r);
+                    $skip = false;
+                    if($role != null){
+                        $ps = new Collection($role->getProjects());
+                        $pNames = $ps->pluck('name');
+                        sort($pNames);
+                        $skip = ($pNames === $projects);
                     }
-                    $message .= "</ul>";
+                    if(!$skip){
+                        $roleMessage .= "<li>{$r}<ul><li>".implode("</li><li>", $projects)."</li></ul></li>";
+                    }
                 }
-                
+            }
+            if($roleMessage != ""){
+                $message .= "<ul>{$roleMessage}</ul>";
+            }
+            if($message != ""){
                 $_POST['user'] = $person->getName();
                 DBFunctions::insert('grand_role_request',
                                     array('effective_date' => EditMember::parse($r_effectiveDates),
@@ -224,6 +236,45 @@ class EditMember extends SpecialPage{
             }
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
             if($user->isRoleAtLeast(STAFF)){
+                // Sub-Role Changes
+                $subRoles = @$_POST['sub_wpNS'];
+                if(!is_array($subRoles)){
+                    $subRoles = array();
+                }
+                $subKeys = array_flip($subRoles);
+                $currentSubRoles = $person->getSubRoles();
+                // Removing Sub-Roles
+                foreach($currentSubRoles as $subRole){
+                    if(!isset($subKeys[$subRole])){
+                        DBFunctions::delete('grand_role_subtype',
+                                            array('user_id' => EQ($person->getId()),
+                                                  'sub_role' => EQ($subRole)));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a {$subRole}");
+                    }
+                }
+                // Adding Sub-Roles
+                foreach($subRoles as $subRole){
+                    if(!$person->isSubRole($subRole)){
+                        DBFunctions::insert('grand_role_subtype',
+                                            array('user_id' => EQ($person->getId()),
+                                                  'sub_role' => EQ($subRole)));
+                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
+                    }
+                }
+                
+                if(isset($_POST['candidate']) && !$person->isCandidate()){
+                    DBFunctions::update('mw_user',
+                                        array('candidate' => '1'),
+                                        array('user_id' => EQ($person->getId())));
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
+                }
+                else if(!isset($_POST['candidate']) && $person->isCandidate()){
+                    DBFunctions::update('mw_user',
+                                        array('candidate' => '0'),
+                                        array('user_id' => EQ($person->getId())));
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
+                }
+                
                 // Project Leadership Changes
                 $pl = array();
                 $pm = array();
@@ -837,8 +888,9 @@ class EditMember extends SpecialPage{
                         <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
                         <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Project Leadership</a></li>
-                             <li><a id='ThemesTab' href='#tabs-4'>{$config->getValue('projectThemes')} Leaders</a></li>");
+            $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Sub-Roles</a></li>
+                             <li><a id='LeadershipTab' href='#tabs-4'>Project Leadership</a></li>
+                             <li><a id='ThemesTab' href='#tabs-5'>{$config->getValue('projectThemes')} Leaders</a></li>");
         }
         $wgOut->addHTML("
                     </ul>");
@@ -862,9 +914,12 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("</div>");
         if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<div id='tabs-3'>");
-                                EditMember::generatePLFormHTML($wgOut);
+                                EditMember::generateSubRoleFormHTML($wgOut);
             $wgOut->addHTML("</div>
                              <div id='tabs-4'>");
+                                EditMember::generatePLFormHTML($wgOut);
+            $wgOut->addHTML("</div>
+                             <div id='tabs-5'>");
                                 EditMember::generateTLFormHTML($wgOut);
             $wgOut->addHTML("</div>");
         }
@@ -931,6 +986,36 @@ class EditMember extends SpecialPage{
             $boxes .= "<div class='role_projects' id='role_{$roleId}_projects' style='display:none;white-space:nowrap;width:600px;' title='Qualify Role with Projects'>{$projList->render()}</div>";
         }
         $wgOut->addHTML($boxes);
+        $wgOut->addHTML("</td></tr></table>\n");
+    }
+    
+    function generateSubRoleFormHTML($wgOut){
+        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
+        $user = Person::newFromId($wgUser->getId());
+        if(!isset($_GET['name'])){
+            return;
+        }
+        $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
+        $wgOut->addHTML("<table style='min-width:300px;'><tr>
+                        <td class='mw-input'>");
+        $boxes = "";
+        $projects = "";
+        
+        $subRoles = array("Competition Funded HQP",
+                          "Project Funded HQP",
+                          "WP/CC Funded HQP",
+                          "Affiliate HQP",
+                          "Alumni HQP");
+        asort($subRoles);
+        $projs = Project::getAllProjects();
+        foreach($subRoles as $role){
+            $checked = ($person->isSubRole($role)) ? " checked" : "";
+            $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='sub_wpNS[]' value='".$role."' $checked />&nbsp;{$role}<br />";            
+        }
+        $wgOut->addHTML($boxes);
+        $wgOut->addHTML("<hr />");
+        $checked = ($person->isCandidate()) ? " checked" : "";
+        $wgOut->addHTML("&nbsp;<input id='candidate' type='checkbox' name='candidate' value='true' $checked />&nbsp;Candidate?");
         $wgOut->addHTML("</td></tr></table>\n");
     }
     
