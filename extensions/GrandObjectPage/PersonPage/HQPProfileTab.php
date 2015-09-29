@@ -142,6 +142,16 @@ class HQPProfileTab extends AbstractEditableTab {
         $result = $blb->load($addr, true);
         $data = $blb->getData();
         
+        $year = date('Y');
+        while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
+            // If it is empty, check to see if there was an entry for one of the other years
+            $blb = new ReportBlob($type, $year, $personId, $projectId);
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+            $result = $blb->load($addr, true);
+            $data = $blb->getData();
+            $year--;
+        }
+        
         if($type == BLOB_RAW && $data != null){
             $data = json_decode($data);
             $mime = $data->type;
@@ -149,15 +159,6 @@ class HQPProfileTab extends AbstractEditableTab {
             return "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
         }
         
-        $year = date('Y');
-        while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
-            // If it is empty, check to see if there was an entry for one of the other years
-            $blb = new ReportBlob($type, $year, $personId, $projectId);
-            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-            $result = $blb->load($addr);
-            $data = $blb->getData();
-            $year--;
-        }
         return $data;
     }
     
