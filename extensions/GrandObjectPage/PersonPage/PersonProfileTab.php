@@ -554,17 +554,31 @@ EOF;
         else{
             $universities = new Collection(University::getAllUniversities());
             $uniNames = $universities->pluck('name');
-            $positions = Person::getAllPositions();
+            if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+                $positions = Person::getAllPositions();
+            }
+            else{
+                $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+            }
             $myPosition = "";
             foreach($positions as $key => $position){
                 if($university['position'] == $position){
                     $myPosition = $key;
                 }
             }
+            if($myPosition == ""){
+                $positions[] = $university['position'];
+                $myPosition = count($positions) - 1;
+            }
             $departments = Person::getAllDepartments();
             $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
             sort($organizations);
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+                $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            }
+            else{
+                $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+            }
             $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
             $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
             $titleCombo->attr('style', 'max-width: 250px;');
