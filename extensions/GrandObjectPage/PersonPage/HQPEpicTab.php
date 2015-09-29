@@ -15,9 +15,9 @@ class HQPEpicTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         // Only allow the user, supervisors, and STAFF+ to view the tab
         $position = strtolower($this->person->getPosition());
-        if($position == "phd" || $position == "phd student" || $position == "phd candidate" ||
-           $position == "pdf" || $position == "post-doctoral fellow" ||
-           $position == "master's" || $position == "master's student" || $position == "masters" || $position == "masters student" ||
+        if($position == "graduate student - doctoral" ||
+           $position == "graduate student - master's" ||
+           $position == "post-doctoral fellow" ||
            $this->person->isSubRole("Affiliate HQP") || 
            $this->person->isSubRole("WP/CC Funded HQP")){
             return ($this->visibility['isMe'] || 
@@ -37,14 +37,14 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($this->person->isSubRole("WP/CC Funded HQP")){
             $this->generateWPCC();
         }
-        else if($position == "phd" || $position == "phd student" || $position == "phd candidate"){
+        else if($position == "graduate student - doctoral"){
             $this->generatePhD();
         }
-        else if($position == "pdf" || $position == "post-doctoral fellow"){
-            $this->generatePDF();
-        }
-        else if($position == "master's" || $position == "master's student" || $position == "masters" || $position == "masters student"){
+        else if($position == "graduate student - master's"){
             $this->generateMasters();
+        }
+        else if($position == "post-doctoral fellow"){
+            $this->generatePDF();
         }
     }
     
