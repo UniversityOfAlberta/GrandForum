@@ -37,6 +37,7 @@ class HQPRegisterTable extends SpecialPage{
                     <th width='1%'>Last&nbsp;Name</th>
                     <th width='1%'>Email</th>
                     <th>Registration Date</th>
+                    <th>University</th>
                     <th>Level</th>
                     <th>Application</th>
                 </tr>
@@ -75,6 +76,7 @@ class HQPRegisterTable extends SpecialPage{
             $wgOut->addHTML("<td>{$candidate->getLastName()}</td>");
             $wgOut->addHTML("<td><a href='mailto:{$candidate->getEmail()}'>{$candidate->getEmail()}</a></td>");
             $wgOut->addHTML("<td>".time2date($candidate->getRegistration(), 'Y-m-d')."</td>");
+            $wgOut->addHTML("<td>{$candidate->getUni()}</td>");
             $wgOut->addHTML("<td>{$candidate->getPosition()}</td>");
             $wgOut->addHTML("<td align='center'>{$application}</td>");
             $wgOut->addHTML("</tr>");
