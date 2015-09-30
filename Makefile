@@ -1,3 +1,3 @@
 docs: FORCE
-	doxygen dox.conf
+	doxygen docs/dox.conf
 FORCE:
