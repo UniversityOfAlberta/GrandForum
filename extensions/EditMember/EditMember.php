@@ -264,16 +264,20 @@ class EditMember extends SpecialPage{
                 }
                 
                 if(isset($_POST['candidate']) && !$person->isCandidate()){
+                    MailingList::unsubscribeAll($person);
                     DBFunctions::update('mw_user',
                                         array('candidate' => '1'),
                                         array('user_id' => EQ($person->getId())));
+                    $person->candidate = true;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
                 }
                 else if(!isset($_POST['candidate']) && $person->isCandidate()){
                     DBFunctions::update('mw_user',
                                         array('candidate' => '0'),
                                         array('user_id' => EQ($person->getId())));
+                    $person->candidate = false;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
+                    MailingList::subscribeAll($person);
                 }
                 
                 // Project Leadership Changes
@@ -889,7 +893,7 @@ class EditMember extends SpecialPage{
                         <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
                         <li><a id='ProjectsTab' href='#tabs-2'>Projects</a></li>");
         if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<li><a id='LeadershipTab' href='#tabs-3'>Sub-Roles</a></li>
+            $wgOut->addHTML("<li><a id='SubRolesTab' href='#tabs-3'>Sub-Roles</a></li>
                              <li><a id='LeadershipTab' href='#tabs-4'>Project Leadership</a></li>
                              <li><a id='ThemesTab' href='#tabs-5'>{$config->getValue('projectThemes')} Leaders</a></li>");
         }

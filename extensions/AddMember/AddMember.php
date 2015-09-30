@@ -91,7 +91,7 @@ class AddMember extends SpecialPage{
     }
     
     function generateViewHTML($wgOut){
-        global $wgScriptPath, $wgServer, $config;
+        global $wgScriptPath, $wgServer, $config, $wgEnableEmail;
         $history = false;
         if(isset($_GET['history']) && $_GET['history'] == true){
             $history = true;
@@ -190,6 +190,7 @@ class AddMember extends SpecialPage{
                                 <input type='checkbox' name='subtype[]' value='Alumni HQP' />Alumni HQP
                              </td>");
             }
+            $wpSendMail = ($wgEnableEmail) ? "true" : "false";
             $wgOut->addHTML("
                         <td>{$request->getCandidate(true)}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
@@ -202,7 +203,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
-                            <input type='hidden' name='wpSendMail' value='true' />");
+                            <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){
                 if($request->isCreated()){
                     $wgOut->addHTML("<td>Accepted</td>");

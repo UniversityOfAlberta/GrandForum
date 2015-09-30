@@ -103,11 +103,19 @@ $wgEnableEmail      = true;
 $wgEnableUserEmail  = true; # UPO
 
 $wgEmergencyContact = $config->getValue('supportEmail');
-$wgPasswordSender = $config->getValue('siteName').' <'.$config->getValue('supportEmail').'>';
+$wgPasswordSender = $config->getValue('supportEmail');
 
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+
+if(TESTING){
+    $wgEnableEmail      = false;
+    $wgEnableUserEmail  = false; # UPO
+    $wgEmailAuthentication = false;
+    $wgEnotifUserTalk = false; # UPO
+    $wgEnotifWatchlist = false; # UPO
+}
 
 # MySQL specific settings
 $wgDBprefix         = "mw_";
