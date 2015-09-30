@@ -27,7 +27,6 @@ class HQPRegisterTable extends SpecialPage{
         HQPRegisterTable::generateHTML($wgOut);
     }
     
-    
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $candidates = Person::getAllCandidates(HQP);
@@ -39,25 +38,35 @@ class HQPRegisterTable extends SpecialPage{
                     <th width='1%'>Email</th>
                     <th>Registration Date</th>
                     <th>Level</th>
-                    <th>Supervisor</th>
-                    <th>Application PDF</th>
+                    <th>Application</th>
                 </tr>
             </thead>
             <tbody>");
         foreach($candidates as $candidate){
-            $report = new DummyReport("HQPApplication", $candidate);
-            $check = $report->getLatestPDF();
-            $button = "";
-            if(isset($check[0])){
-                $pdf = PDF::newFromToken($check[0]['token']);
-                $button = "<a class='button' href='{$pdf->getUrl()}'>Download PDF</a>";
+            $tab = new HQPProfileTab($candidate, array('isMe' => true, 'isSupervisor' => true));
+            
+            $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH));
+            $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN));
+            $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO));
+            $align    = nl2br($tab->getBlobValue(HQP_APPLICATION_ALIGN));
+            $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY));
+            $cv       = $tab->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
+            $application = "";
+            if($research != "" ||
+               $train != "" ||
+               $bio != "" ||
+               $align != "" ||
+               $boundary != "" ||
+               $cv != ""){
+                $application .= "<button onClick='$(\"#app_{$candidate->getId()}\").dialog({width:800, maxHeight:600, height:600});'>Application</button>"; 
+                
+                $tab->generateBody();
+                $application .= "<div title='{$candidate->getNameForForms()}' id='app_{$candidate->getId()}' style='display:none;'><small><input type='text' size='1' style='position:absolute;top:-500px;' />";
+                $application .= $tab->html;
+                $application .= "</small></div>";
             }
-            
-            $supervisor = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_SUP);
-            $level = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_LVL);
-            
-            if($level == 'Other:'){
-                $level = $this->getBlobValue(REPORTING_YEAR, $candidate->getId(), HQP_APPLICATION_OTH);
+            else{
+                continue;
             }
             
             $wgOut->addHTML("<tr>");
@@ -66,9 +75,8 @@ class HQPRegisterTable extends SpecialPage{
             $wgOut->addHTML("<td>{$candidate->getLastName()}</td>");
             $wgOut->addHTML("<td><a href='mailto:{$candidate->getEmail()}'>{$candidate->getEmail()}</a></td>");
             $wgOut->addHTML("<td>".time2date($candidate->getRegistration(), 'Y-m-d')."</td>");
-            $wgOut->addHTML("<td>{$level}</td>");
-            $wgOut->addHTML("<td>{$supervisor}</td>");
-            $wgOut->addHTML("<td align='center'>{$button}</td>");
+            $wgOut->addHTML("<td>{$candidate->getPosition()}</td>");
+            $wgOut->addHTML("<td align='center'>{$application}</td>");
             $wgOut->addHTML("</tr>");
         }
         $wgOut->addHTML("</tbody></table>");

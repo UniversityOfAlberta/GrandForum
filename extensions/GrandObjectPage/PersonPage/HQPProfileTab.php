@@ -71,6 +71,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $bio      = $this->getBlobValue(HQP_APPLICATION_BIO);
         $align    = $this->getBlobValue(HQP_APPLICATION_ALIGN);
         $boundary = $this->getBlobValue(HQP_APPLICATION_BOUNDARY);
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
 
         $this->html .= "<h3>Statement of Research Focus (for HQP completing a research program) (½ page)</h3>
 <small>
@@ -127,6 +128,7 @@ class HQPProfileTab extends AbstractEditableTab {
 </small>";
         $this->html .= "<textarea name='boundary' style='height:200px;'>{$boundary}</textarea>";
         $this->html .= "<h3>CV Upload</h3>
+        <p>{$cv}</p>
         <input type='file' name='cv' accept='.pdf' /><br />";
         return $this->html;
     }
