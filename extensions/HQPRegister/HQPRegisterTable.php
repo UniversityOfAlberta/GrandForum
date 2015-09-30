@@ -61,7 +61,7 @@ class HQPRegisterTable extends SpecialPage{
                 $application .= "<button onClick='$(\"#app_{$candidate->getId()}\").dialog({width:800, maxHeight:600, height:600});'>Application</button>"; 
                 
                 $tab->generateBody();
-                $application .= "<div title='{$candidate->getNameForForms()}' id='app_{$candidate->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-500px;height:1px;float:right;' />";
+                $application .= "<div title='{$candidate->getNameForForms()}' id='app_{$candidate->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";
                 $application .= $tab->html;
                 $application .= "</small></div>";
             }
