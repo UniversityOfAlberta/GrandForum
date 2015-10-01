@@ -119,9 +119,6 @@ $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
-$egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
-                                                'path' => "$IP/extensions/Acknowledgements/Acknowledgements.php");
-
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 

@@ -126,9 +126,6 @@ class PersonPage {
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                if(isExtensionEnabled('Acknowledgements')){
-                    $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
-                }
                 $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();

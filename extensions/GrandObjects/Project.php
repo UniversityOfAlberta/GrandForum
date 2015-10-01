@@ -866,9 +866,9 @@ EOF;
         $people = $this->getAllPeople(CHAMP);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }
@@ -884,9 +884,9 @@ EOF;
         $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }
@@ -901,9 +901,9 @@ EOF;
         $people = $this->getAllPeopleOn(CHAMP, $date);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }

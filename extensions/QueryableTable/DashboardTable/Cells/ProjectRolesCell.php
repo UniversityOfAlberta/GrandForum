@@ -21,7 +21,7 @@ class ProjectRolesCell extends Cell{
         if(isset($params[2])){
             $person = Person::newFromName($params[2]);
             $values = array();
-            $leads = $person->getLeadProjects();
+            $leads = $person->leadership();
             foreach($leads as $lead){
                 if($lead->getId() == $table->obj->getId()){
                     if($table->obj->isSubProject()){

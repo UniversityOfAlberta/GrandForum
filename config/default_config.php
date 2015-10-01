@@ -119,7 +119,6 @@
         'PublicVisualizations',
         //'Survey',
         'Duplicates',
-        //'Acknowledgements',
         //'AllocatedBudgets',
         'ProjectEvolution',
         //'ScreenCapture',
@@ -133,9 +132,7 @@
                                                'ReportStats'            => false,
                                                'CreatePDF'              => false,
                                                'ReportArchive'          => false,
-                                               'ReviewerConflicts'      => false,
                                                'ReviewResults'          => false,
-                                               'SanityChecks'           => false,
                                                'AdminVisualizations'    => false));
     
     // What social links to have in the top header

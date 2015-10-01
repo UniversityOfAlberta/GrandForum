@@ -308,11 +308,7 @@ class AddMember extends SpecialPage{
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
-        
-        $titles = array_merge(array(""), Person::getAllPartnerTitles());
-        $organizations = array_merge(array(""), Person::getAllPartnerNames());
-        $depts = array_merge(array(""), Person::getAllPartnerDepartments());
-        
+               
         $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
         $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");

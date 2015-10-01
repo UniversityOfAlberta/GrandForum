@@ -310,7 +310,7 @@ EOF;
 			
 			foreach ($champs as $champ){
 				if( $receiver->relatedTo($champ, "Works With") ){
-					if( $partner_name = $champ->getPartnerName() ){
+					if( $partner_name = $champ->getUni() ){
 						if(!in_array($partner_name, $partner_arr)){
 							$partner_arr[] = $partner_name;
 						}                            

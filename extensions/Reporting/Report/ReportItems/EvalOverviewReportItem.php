@@ -34,12 +34,12 @@ class EvalOverviewReportItem extends AbstractReportItem {
         $text_question = EVL_OTHERCOMMENTS;
 
         if($type == "NI"){
-            $subs = $person->getEvaluateNIs();
+            $subs = $person->getEvaluates('NI');
             $report_url = "EvalNIReport";
             $section_url = "NI+Overview";
         }
         else if($type == "Project"){
-            $subs = $person->getEvaluateProjects();
+            $subs = $person->getEvaluates('Projects');
             $report_url = "EvalProjectReport";
             $section_url = "Project+Overview";
             $radio_questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY);
@@ -415,12 +415,12 @@ EOF;
 
         $questions = array();
         if($type == "NI"){
-            $subs = $person->getEvaluateNIs();
+            $subs = $person->getEvaluates('NI');
             $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_MANAGEMENT, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
             $questions2 = array(EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_MANAGEMENT_COM, EVL_REPORTQUALITY_COM);
         }
         else if($type == "Project"){
-            $subs = $person->getEvaluateProjects();
+            $subs = $person->getEvaluates('Project');
             $questions = array(EVL_OVERALLSCORE, EVL_CONFIDENCE, EVL_EXCELLENCE, EVL_HQPDEVELOPMENT, EVL_NETWORKING, EVL_KNOWLEDGE, EVL_REPORTQUALITY, EVL_OTHERCOMMENTS);
             $questions2 = array(EVL_EXCELLENCE_COM, EVL_HQPDEVELOPMENT_COM, EVL_NETWORKING_COM, EVL_KNOWLEDGE_COM, EVL_REPORTQUALITY_COM);
             $project_id = $reportSubItem;

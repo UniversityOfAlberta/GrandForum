@@ -1026,19 +1026,17 @@ class ReportItemCallback {
     }
     
     function getChampOrg(){
-        $person = Person::newFromId($this->reportItem->personId);
-        return $person->getPartnerName();
+        return $this->getUserUni();
     }
     
     function getChampTitle(){
-        $person = Person::newFromId($this->reportItem->personId);
-        return $person->getPartnerTitle();
+        return $this->getUserLevel();
     }
     
     function getChampSubTitle(){
         $person = Person::newFromId($this->reportItem->personId);
-        $org = $person->getPartnerName();
-        $title = $person->getPartnerTitle();
+        $org = $person->getUni();
+        $title = $person->getPosition();
         if($org != "" && $title != ""){
             return "$org, $title";
         }

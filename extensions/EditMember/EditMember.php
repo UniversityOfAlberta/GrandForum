@@ -291,7 +291,7 @@ class EditMember extends SpecialPage{
             
                 $currentPL = array();
                 // Removing Project Leaders
-                foreach($person->getLeadProjects() as $project){
+                foreach($person->leadership() as $project){
                     if(!isset($pl[$project->getName()])){
                         // Remove Project Leadership
                         $_POST['co_lead'] = 'False';
@@ -1168,7 +1168,7 @@ class EditMember extends SpecialPage{
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $projects = Project::getAllProjects();
         
-        $leadProjects = new Collection($person->getLeadProjects());
+        $leadProjects = new Collection($person->leadership());
         $myLeadProjects = $leadProjects->pluck('name');
 
         $wgOut->addHTML("<h2>Project Leader</h2>");
