@@ -22,11 +22,6 @@ class DeleteProjectAPI extends API{
 	       )){
 	        return;
 	    }
-	    $theme1 = $project->getTheme(1);
-	    $theme2 = $project->getTheme(2);
-	    $theme3 = $project->getTheme(3);
-	    $theme4 = $project->getTheme(4);
-	    $theme5 = $project->getTheme(5);
 		
 	    $nsId = $project->getId();
 	        
@@ -51,7 +46,6 @@ class DeleteProjectAPI extends API{
 	        $_POST['project'] = $project->getName();
 	        $_POST['description'] = $project->getDescription();
 	        $_POST['long_description'] = $project->getLongDescription();
-	        //$_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
 	        APIRequest::doAction('ProjectDescription', true);
 	        //MailingList::removeMailingList($project);
 	    }

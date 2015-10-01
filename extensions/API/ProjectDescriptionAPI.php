@@ -6,7 +6,6 @@ class ProjectDescriptionAPI extends API{
         $this->addPOST("project",true,"The name of the project","MEOW");
 	    $this->addPOST("description",true,"The short overview for this project","MEOW is great");
 	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");
-	    $this->addPOST("themes",false,"The theme distribution of this project", "10,20,30,20,20");
 	    $this->addPOST("fullName",false,"The full name of the project", "Media Enabled Organizational Workflow");
     }
 
@@ -43,13 +42,6 @@ class ProjectDescriptionAPI extends API{
 		    return $error;
 		}
 		
-		if(isset($_POST['themes'])){
-		    $themes = explode(",", $_POST['themes']);
-		}
-		else{
-		    $themes = array($project->getTheme(1), $project->getTheme(2), $project->getTheme(3), $project->getTheme(4), $project->getTheme(5));
-		}
-		
 		if(isset($_POST['fullName'])){
 		    $fullName = $_POST['fullName'];
 		}
@@ -67,7 +59,6 @@ class ProjectDescriptionAPI extends API{
                             array('project_id' => $project->getId(),
                                   'evolution_id' => $project->evolutionId,
                                   'full_name' => $fullName,
-                                  'themes' => "{$themes[0]}\n{$themes[1]}\n{$themes[2]}\n{$themes[3]}\n{$themes[4]}",
                                   'description' => $_POST['description'],
                                   'long_description' => $_POST['long_description'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),

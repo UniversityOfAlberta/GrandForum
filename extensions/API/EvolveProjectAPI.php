@@ -24,11 +24,6 @@ class EvolveProjectAPI extends API{
 	        return;
 	    }
 	    $oldProject = Project::newFromName($_POST['project']);
-	    $theme1 = $oldProject->getTheme(1);
-	    $theme2 = $oldProject->getTheme(2);
-	    $theme3 = $oldProject->getTheme(3);
-	    $theme4 = $oldProject->getTheme(4);
-	    $theme5 = $oldProject->getTheme(5);
 	    
 	    if(!isset($_POST['action']) || $_POST['action'] == ""){
 	        $_POST['action'] = "EVOLVE";
@@ -85,10 +80,6 @@ class EvolveProjectAPI extends API{
 	    if($stat){
 	        Project::$cache = array();
 	        $project = Project::newFromId($nsId);
-	        /*$_POST['project'] = $_POST['acronym'];
-	        $_POST['description'] = @DBFunctions::escape($oldProject->getDescription());
-	        $_POST['themes'] = "{$theme1},{$theme2},{$theme3},{$theme4},{$theme5}";
-	        APIRequest::doAction('ProjectDescription', true);*/
 	        //MailingList::createMailingList($project);
 	    }
 	    DBFunctions::commit();

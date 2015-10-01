@@ -132,42 +132,6 @@ class ProjectMainTab extends AbstractEditableTab {
     function canEdit(){
         return $this->project->userCanEdit();
     }
-    
-    function showThemes(){
-        global $wgServer, $wgScriptPath;
-        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        
-        $this->html .= "<h2><span class='mw-headline'>Theme Distribution</span></h2>";
-        $themes = $this->project->getThemes();
-        $i = 1;
-        
-        $this->html .= "<table><tr>";
-        foreach($themes['values'] as $theme){
-            if($i > 1){
-                $this->html .= "<td><ul><li></li></ul></td>";
-            }
-            $this->html .= "<td align='right'>";
-            if($edit){
-                $this->html .= "{$themes['names'][$i]}";
-            }
-            else{
-                $this->html .= "<a href='{$wgServer}{$wgScriptPath}/index.php/Grand:Theme{$i}_-_".IndexTable::getThemeFullName($i).
-                               "'>" . $themes['names'][$i] . "</a>";
-            }
-            $this->html .= "</td><td>";
-            
-            if($edit){
-                $this->html .= "<input id='t{$i}' onKeyUp='stripAlphaChars(this.id)' type='text' size='2' name='t$i' value='{$themes['values'][$i]}' /> %";
-            }
-            else{
-                $this->html .= "{$themes['values'][$i]}%";
-            }
-            $this->html .= "</td>";
-            
-            $i++;
-        }
-        $this->html .= "</tr></table>";
-    }
 
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
