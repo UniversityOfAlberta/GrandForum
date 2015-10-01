@@ -33,7 +33,6 @@ class EvaluationTable extends SpecialPage {
     
     static function show(){
         require_once('RMC2015Tab.php');
-        require_once('Nominations.php');
 
         $init_tabs = array('2015' => 0);
         $init_tab = $init_tabs[REPORTING_YEAR];
