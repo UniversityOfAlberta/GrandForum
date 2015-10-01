@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FEC" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="information" tooltip="Information" name="Information" title="Information" blobSection="FEC_INFORMATION" type="EditableReportSection">
+        <ReportItem id="information" type="StaticReportItem">
+            <![CDATA[
+            	<table class='wikitable'>
+            	<tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
+                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
+	    <![CDATA[
+		<tr><td><b>Year of PhD:</b></td><td>{$item}</td></tr>
+	    ]]>
+	</ReportItem>
+        <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
+             <![CDATA[
+                 <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$item}</td></tr>
+             ]]>
+        </ReportItem>
+        <ReportItem id="gradCount" type="StaticReportItem">
+            <![CDATA[
+            	<tr><td><b>Graduate Students(Supervised or Co-supervised):</b></td><td>10</td></tr>
+                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>1</tr></td>
+	    	</table>
+	    ]]>
+	</ReportItem>
+	<ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
+	    <![CDATA[
+	    	<h2>Responsibilities Variation</h2>
+	    	Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
+	    	<div style='margin-left:25px;'>{$item}</div>
+	    ]]>
+	</ReportItem>
+	<ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Text|Text" multiple="true" optional="true">
+	    <![CDATA[
+		<h2>Leaves</h2>
+		{$item}
+	    ]]>
+	</ReportItem>
+	<ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
+	    <![CDATA[
+		<h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
+		{$item}
+	    ]]>
+	</ReportItem>
+    </ReportSection>
+    <ReportSection id="courses" tooltip="Courses" name="Courses" title="Courses" blobSection="FEC_COURSES" type="EditableReportSection">
+	<ReportItem id="coursesheader" type="StaticReportItem">
+	    <![CDATA[
+		<h2>Courses</h2>
+		<table class='wikitable' style='width:100%;'><thead><tr><th>Term</th>
+		<th>Subject</th>
+		<th>Number</th>
+		<th>Comp.</th>
+		<th>Section</th>
+		<th>Enroll.</th>
+		<th>%</th></tr></thead><tbody>
+	    ]]>
+	</ReportItem>
+	<ReportItemSet id="courses" type="PersonCoursesReportItemSet">
+	     <ReportItem id="row" type="StaticReportItem">
+	     	<![CDATA[
+
+	             <tr><td>{$course_term}</td>
+	             <td align='center'>{$course_subject}</td>
+                     <td align='center'>{$course_number}</td>
+                     <td align='center'>{$course_comp}</td>
+                     <td align='center'>{$course_section}</td>
+                     <td align='center'>{$course_enroll}</td>
+	             <td align='center'>{$course_enroll_percent}</td></tr>                         
+
+            	]]>
+	     </ReportItem>
+	</ReportItemSet>
+	<ReportItem id="coursesfooter" type="StaticReportItem">
+	    <![CDATA[
+	    	</tbody></table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

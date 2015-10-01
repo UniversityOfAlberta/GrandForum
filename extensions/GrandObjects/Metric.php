@@ -22,7 +22,13 @@
 	var $sciverse_cited_by_count;
 	var $sciverse_doc_count;
 	var $change_date;	
-	
+	var $gs_id;
+	var $gs_hindex_5_years;
+	var $gs_i10_index_5_years;
+	var $gs_hindex;
+	var $gs_i10_index;
+	var $gs_change_date;
+
 	// constructor
 	function Metric($data){
 	    $this->id = $data[0]['id'];
@@ -43,8 +49,6 @@
             $this->sciverse_cited_by_count = $data[0]['sciverse_cited_by_count'];
 	    $this->sciverse_doc_count = $data[0]['sciverse_doc_count'];
 	    $this->change_date = $data[0]['change_date'];
-
-
 	}
 
 	/**
@@ -62,7 +66,6 @@
 	    $metric = new Metric($data);
 	    return $metric;
 	}
-
 
 	/**
 	 * Returns an array of all the recent metrics in the database
@@ -82,7 +85,6 @@
 	    return $metrics;
 	}
 
-
 	/**
          * Returns the user's most recent metric in the database
          * return Metric The most recent Metric of the user.
@@ -101,12 +103,5 @@
             }
 	    return $metric;
 	}
-
-
     }
-
-
-
-
-
 ?>

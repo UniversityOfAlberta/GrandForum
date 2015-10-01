@@ -24,7 +24,7 @@ class PersonPublicationsTab extends AbstractTab {
             $string = "<table id='personPubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Keywords</th><th>Coauthors</th><th>Year</th><th>MetaData</th>
+                        <th>Title</th><th>Keywords</th><th>Coauthors</th><th>Year</th><th>MetaData</th><th>Scopus Citations</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -50,6 +50,7 @@ class PersonPublicationsTab extends AbstractTab {
                 $string .= "<td>".implode(", ", $names)."</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
 		$string .= "<td></td>";
+                $string .= "<td>{$paper->getCitationCount("Sciverse Scopus")}</td>";
 
                 $string .= "</tr>";
             }

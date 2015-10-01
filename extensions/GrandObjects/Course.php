@@ -303,7 +303,16 @@
         function getCacheId(){
                 //TODO:implement function
         }
-
+	
+	function getStartDate(){
+	    $date = strtotime("01 January 1900 +{$this->startDate} days");
+	    return date("Y-m-d", $date);
+	}
+        
+	function getEndDate(){
+            $date = strtotime("01 January 1900 +{$this->endDate} days");
+            return date("Y-m-d", $date);
+        }
 
     }   
 

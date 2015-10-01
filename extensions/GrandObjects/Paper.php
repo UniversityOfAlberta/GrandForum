@@ -32,6 +32,7 @@ class Paper extends BackboneModel{
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
+    var $central_repo_id;
     var $reported = array();
     /**
      * Returns a new Paper from the given id
@@ -546,6 +547,7 @@ class Paper extends BackboneModel{
             $this->authorsWaiting = true;
             $this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
+	    $this->central_repo_id = $data[0]['central_repo_id'];
         }
     }
     
@@ -701,7 +703,22 @@ class Paper extends BackboneModel{
       return $data[0]['citation_count'];
     }
 
-    
+    /** Returns an integer of the total citation count of this Paper
+     * @Return integer The total citation count.
+    */
+    function getTotalCitationCount(){
+        $sciverseCount = $this->getCitationCount("Sciverse Scopus");
+	$scholarCount = $this->getCitationCount("Google Scholar");
+	$total = $sciverseCount + $scholarCount;
+	return $total; 
+    }
+
+    /** Returns id associated with the central repo of this paper
+    */
+    function getCentralRepoId(){
+    	return $this->central_repo_id;
+    }
+
     /**
      * Returns an array of authors who wrote this Paper
      * @param boolean $evaluate Whether or not to ignore the cache
@@ -1347,6 +1364,7 @@ class Paper extends BackboneModel{
                                                 'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id,
+						'central_repo_id' => $this->central_repo_id,
                                                 'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),
                                           true);
             // Get the Product Id

@@ -20,10 +20,10 @@ class PersonDataQualityTab extends AbstractTab {
                 "<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#dataQualityAccordion').accordion({autoHeight: false, collapsible: true});
+                    $('#citationAccordion').accordion({autoHeight: false, collapsible: true});
                     $('#duplicateProductsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
                     $('#hqpErrorsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
                     $('#productErrorsAccordion').accordion({autoHeight: false, collapsible: true, header: 'h4'});
-                   
                     $('.ui-accordion .ui-accordion-header a.accordion_hdr_lnk').click(function() {
                       window.location = $(this).attr('href');
                       return false;

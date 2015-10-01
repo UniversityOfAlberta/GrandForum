@@ -184,20 +184,21 @@ class Person extends BackboneModel {
      */
     static function newFromAlias($alias) {
         // Normalize the alias: trim, remove duplicate spaces / dots, and strip HTML.
-        $alias = preg_replace(
+	$alias = preg_replace(
                 array('/\s+/', '/\.+/', '/\s*\.+\s*/', '/<[^>]*>/'),
                 array(' ', '.', '. ', ''),
                 $alias);
         $alias = trim($alias);
-        
+	
         if (array_key_exists($alias, self::$cache)) {
-            return self::$cache[$alias];
+	     return self::$cache[$alias];
         }
         else {
+	    self::generateNamesCache();
             self::generateAliasCache();
             $aliases = self::$aliasCache;
             if(isset($aliases[$alias]) && isset(self::$idsCache[$aliases[$alias]])){
-                $data = array(self::$idsCache[$aliases[$alias]]);
+	        $data = array(self::$idsCache[$aliases[$alias]]);
             }
             else{
                 $data = array();
@@ -212,14 +213,13 @@ class Person extends BackboneModel {
             // Check again the cache, in case the alias is an alternate
             // for an already-instantiated user.
             $id = $data[0]['user_id'];
-            if (array_key_exists($id, self::$cache)) {
+	    if (array_key_exists($id, self::$cache)) {
                 // Mark this alias too.
                 self::$cache[$alias] = self::$cache[$id];
                 return self::$cache[$id];
             }
-
             $person = new Person($data);
-            self::$cache[$alias] = &$person;
+	    self::$cache[$alias] = &$person;
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
             return $person;
@@ -250,7 +250,7 @@ class Person extends BackboneModel {
                                               'u.user_id'),
                                         array('ua.user_id' => EQ(COL('u.user_id')),
                                               'u.deleted' => NEQ(1)));
-            foreach($data as $row){
+	    foreach($data as $row){
                 self::$aliasCache[$row['alias']] = $row['user_id'];
             }
         }
@@ -3910,6 +3910,22 @@ class Person extends BackboneModel {
             return true;
         }
         return false;
+    }
+
+    function getCourses(){
+	$courses = Course::getUserCourses($this->id);
+	return $courses;
+    }
+
+    function getMetric(){
+	$metric = Metric::getUserMetric($this->id);
+	return $metric;
+
+    }
+    
+    function getGsMetric(){
+	$gsMetric = GsMetric::getUserMetric($this->id);
+	return $gsMetric;
     }
 }
 ?>

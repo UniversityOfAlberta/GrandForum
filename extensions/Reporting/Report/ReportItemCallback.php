@@ -24,7 +24,15 @@ class ReportItemCallback {
             "project_champions" => "getProjectChampions",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
-            // Milestones
+            // Courses
+	    "course_term" => "getCourseTerm",
+	    "course_subject" => "getCourseSubject",
+	    "course_number" => "getCourseNumber",
+	    "course_comp" => "getCourseComp",
+	    "course_section" => "getCourseSection",
+	    "course_enroll" => "getCourseEnroll",    
+	    "course_enroll_percent" => "getCourseEnrollPercent",	
+	    // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
             "milestone_oldtitle" => "getMilestoneOldTitle",
@@ -351,6 +359,41 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $newProjects);
+    }
+
+    function getCourseTerm(){
+	$course = Course::newFromId($this->reportItem->projectId);
+	return $course->shortDesc;
+    }
+
+    function getCourseSubject(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->subject;
+    }
+
+    function getCourseNumber(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->catalog;
+    }
+
+    function getCourseComp(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->component;
+    }
+
+    function getCourseSection(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->sect;
+    }
+
+    function getCourseEnroll(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->totEnrl;
+    }
+
+    function getCourseEnrollPercent(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return ($course->totEnrl/max(1,$course->capEnrl))*100;
     }
     
     function getMilestoneId(){

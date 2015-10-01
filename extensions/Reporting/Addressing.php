@@ -68,6 +68,12 @@ define('RP_SSA_FINAL_PROGRESS', 303);
 define('RP_IFP_FINAL_PROJECT',  304);
 
 /*
+ * FEC
+ */
+define('RP_FEC', 400);
+
+
+/*
  * Second-level identifiers: report section.
  *
  * These comprise high-level parts within a report, such as personal information,
@@ -259,6 +265,12 @@ define('IFP_PROG_SUPERVISOR',   10);
 // SSA Final Report
 define('SSA_REPORT',            1);
 define('SSA_HQP',               2);
+
+//FEC Report
+define('FEC_INFORMATION', 1);
+
+
+
 
 /*
  * Third-level identifiers: question within a section.
@@ -740,6 +752,12 @@ define('SSA_MOBILIZATION',  13);
 define('SSA_INSTITUTION',   14);
 
 
+//FEC Report
+define('FEC_INFO_PHD', 1);
+define('FEC_INFO_APPOINTMENT', 2);
+define('FEC_INFO_RESP', 3);
+define('FEC_INFO_LEAVES', 4);
+define('FEC_INFO_REASONS', 5);
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
  * to identify a user ID or project ID, which is the focus of the evaluation.
