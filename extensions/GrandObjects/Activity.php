@@ -5,7 +5,7 @@ class Activity {
     var $id;
     var $name;
     
-    /*
+    /**
      * Returns the Activity with the given id
      * @param integer $id The id of the Activity
      * @return Activity The Activity with the given id
@@ -17,7 +17,7 @@ class Activity {
         return new Activity($data);
     }
     
-    /*
+    /**
      * Returns the Activity with the given name
      * NOTE: The names need not be unique(although usually will be), so this may not return the desired row
      * @param string $id The name of the Activity
@@ -30,7 +30,7 @@ class Activity {
         return new Activity($data);
     }
     
-    /*
+    /**
      * Constructs a new Activity from the given DB resultset
      * @param array $data the DB resultset
      */
@@ -41,7 +41,7 @@ class Activity {
         }
     }
     
-    /*
+    /**
      * Returns the id of this Activity
      * @return integer The id of this Activity
      */
@@ -49,7 +49,7 @@ class Activity {
         return $this->id;
     }
     
-    /*
+    /**
      * Returns the name of this Activity
      * @return string The name of this Activity
      */

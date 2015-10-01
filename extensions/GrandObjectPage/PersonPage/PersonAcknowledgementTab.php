@@ -16,7 +16,7 @@ class PersonAcknowledgementTab extends AbstractTab {
         return $this->html;
     }
     
-    /*
+    /**
      * Displays the list of Acknowledgements for this user
      */
     function showAcks($person, $visibility){

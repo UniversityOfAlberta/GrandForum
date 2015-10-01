@@ -187,7 +187,7 @@ class PersonProfileTab extends AbstractEditableTab {
         return $error;
     }
     
-    /*
+    /**
      * Displays the profile for this user
      */
     function showProfile($person, $visibility){
@@ -382,7 +382,7 @@ EOF;
         return $string;
     }
    
-    /*
+    /**
      * Displays the profile for this user
      */
     function showCCV($person, $visibility){
@@ -395,7 +395,7 @@ EOF;
         }
     }
     
-    /*
+    /**
      * Displays the photo for this person
      */
     function showPhoto($person, $visibility){
@@ -436,7 +436,7 @@ EOF;
                         </table></td>";
     }
     
-   /*
+   /**
     * Displays the contact information for this person
     */
     function showContact($person, $visibility){

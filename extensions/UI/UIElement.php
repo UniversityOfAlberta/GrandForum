@@ -24,7 +24,7 @@ function initValidations(){
 
 initValidations();
 
-/*
+/**
  * This class is to help make creating forms easier to make,
  * by reducing the amount of code (and code duplication) required
  * on Special pages.  This class will allow for automatic cleanup of POST variables, 
@@ -80,40 +80,60 @@ abstract class UIElement {
         }
         return $value;
     }
-    
-    // Returns this UIElement's parent
+
+    /**
+     * Returns this UIElement's parent
+     * @return UIElement this UIElement's parent
+     */
     function parent(){
         return $this->parent;
     }
     
-    // Inserts $element before this UIElement
+    /**
+     * Inserts another UIElement before this UIElement
+     * @param UIElement $element The UIElement to insert
+     */
     function insertBefore($element){
         if($this->parent() != null){
             $this->parent()->insertBefore($element, $this->id);
         }
     }
     
-    // Inserts $element after this UIElement
+    /**
+     * Inserts another UIElement before this UIElement
+     * @param UIElement $element
+     */
     function insertAfter($element){
         if($this->parent() != null){
             $this->parent()->insertAfter($element, $this->id);
         }
     }
     
-    // Removes this UIElement from it's parent
+    /**
+     * Removes this UIElement from it's parent
+     */
     function remove(){
         if($this->parent() != null){
             $this->parent()->remove($this->id);
         }
     }
     
-    // Include the html in the dom, but make it invisible
+    /**
+     * Hides the html in the dom for this UIElement
+     */
     function hide(){
         $this->attr('style', 'display:none;');
     }
     
     // Sets the value of an attribute
     // If $value is null, the value of the attr is instead returned
+    /**
+     * Sets the value of an attribute
+     * If the $value is null, the value of the attr is instead returned
+     * @param string $attr The attribute to set/return
+     * @param string $value The value of the attribute
+     * @return Returns the value of the attribute
+     */
     function attr($attr, $value=null){
         if($value === null){
             if(isset($this->attr[$attr])){
@@ -129,7 +149,10 @@ abstract class UIElement {
         }
     }
     
-    // Returns a string for the attributes as html attributes
+    /**
+     * Returns a string for the attributes as html attributes
+     * @return string The attributes as html attributes
+     */
     protected function renderAttr(){
         $str = "";
         if(count($this->attr) > 0){
@@ -142,7 +165,9 @@ abstract class UIElement {
     
     abstract function render();
     
-    // Resets the UIElements value to the default, and unsets the $_POST variable's index
+    /**
+     * Resets the UIElement's value to the default, and unsets the $_POST variable's index
+     */
     function reset(){
         if(isset($_POST[$this->id])){
             unset($_POST[$this->id]);
@@ -150,14 +175,22 @@ abstract class UIElement {
         $this->value = $this->default;
     }
     
+    /**
+     * Registers a validation for this UIElements
+     * @param UIValidation $validation The UIValidation to use
+     */
     function registerValidation($validation){
         if($validation instanceof UIValidation){
             $this->extraValidations[] = $validation;
         }
     }
     
-    // Returns an array containing all the failed validations
-    // if $value is false, then use the $this->value, otherwise use $value
+    /**
+     * Returns an array containing all the failed validations
+     * if $value is false, then use the $this->value, otherwise use $value
+     * @param boolean $value Whether or not to use $this->value or $value
+     * @return array An Array containing all the failed validations
+     */
     function validate($value=false){
         global $validations, $wgMessage;
         $fails = array();
@@ -238,8 +271,11 @@ abstract class UIElement {
         return $fails;
     }
     
-    // Sets the specified POST value to this UIElement's value
-    // (used for preparing API calls)
+    /**
+     * Sets the specified POST value to this UIElement's value
+     * (used for preparing API calls)
+     * @param string $index The POST value to set
+     */
     function setPOST($index){
         if(is_array($this->value)){
             foreach($this->value as $key => $value){
@@ -251,6 +287,11 @@ abstract class UIElement {
         }
     }
     
+    /**
+     * Checks whether a validation is set or not
+     * @param int $validation Which validation to check for (use constants ie. VALIDATE_NOSPACES)
+     * @return boolean Whether or not the validation is set or not
+     */
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
     }

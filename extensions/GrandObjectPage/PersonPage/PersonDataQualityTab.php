@@ -85,7 +85,7 @@ EOF;
     
     
     
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getProfileChecks($errors){
@@ -107,7 +107,7 @@ EOF;
 
     }
 
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getHqpChecks($errors){
@@ -145,7 +145,7 @@ EOF;
 
     }
 
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getProductChecks($errors){

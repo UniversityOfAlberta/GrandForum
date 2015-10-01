@@ -977,7 +977,7 @@ EOF;
         return $ret;
     }
     
-    /*
+    /**
      * Returns whether or not the logged in user can edit this project
      * @return boolean Whether or not the logged in user can edit this project
      */
@@ -1568,7 +1568,7 @@ EOF;
         return $alloc;
     }
     
-    /*
+    /**
      * Returns the allocated Budget for this Project
      * @param integer $year The allocation year
      * @return Budget A new allocated Budget

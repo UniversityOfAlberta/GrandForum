@@ -98,9 +98,7 @@ class PersonPage {
                     $_POST['submit'] = "Edit Main";
                 }
                 
-                /*
-                 * Start the PersonPage
-                 */
+                // Start the PersonPage
                 $visibility = array();
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
@@ -171,7 +169,7 @@ class PersonPage {
         return true;
     }
     
-    /*
+    /**
      * Displays the title for this person
      */
     function showTitle($person, $visibility){

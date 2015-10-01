@@ -371,7 +371,7 @@ class Person extends BackboneModel {
         }
     }
     
-    /*
+    /**
      * Caches the resultset of the theme leaders
      */
     static function generateThemeLeaderCache(){
@@ -447,7 +447,7 @@ class Person extends BackboneModel {
         }
     }
     
-    /*
+    /**
      * Caches the partial resultset of the mw_user table
      */
     static function generateAllPeopleCache(){
@@ -933,7 +933,7 @@ class Person extends BackboneModel {
         global $wgSitename;
     }
     
-    /*
+    /**
      * Returns whether or not this Person is allowed to edit the specified Person
      * @param Person $person The Person to edit
      * @return Person Whether or not this Person is allowd to edit the specified Person
@@ -1051,7 +1051,7 @@ class Person extends BackboneModel {
         return false;
     }
     
-    /*
+    /**
      * Returns whether or not this Person has been funded on the given Project
      * @param Project $project The Project that the Person has been funded
      * @param string $year The year in which the Person has been funded
@@ -1919,7 +1919,7 @@ class Person extends BackboneModel {
         return $this->roles;
     }
     
-    /*
+    /**
      * Returns the role that this Person is on the given Project
      * @param Project $project The Project to check the roles of
      * @param integer $year The year to check
@@ -2042,7 +2042,7 @@ class Person extends BackboneModel {
         return $roles;        
     }
     
-    /*
+    /**
      * Returns an array of the subRoles that this Person is in
      * @return array The subRoles that this Person is in
      */
@@ -2057,7 +2057,7 @@ class Person extends BackboneModel {
         return $roles;
     }
     
-    /*
+    /**
      * Returns whether or not this Person is in the subRole or not
      * @param string $subRole The subrole to check
      * @return boolean Whether or not this Person is in the subRole or not
@@ -3016,7 +3016,7 @@ class Person extends BackboneModel {
         }
     }
     
-    /*
+    /**
      * Returns and array of Person objects who this Person can delegate
      * @return array The list of People who this Person can delegate
      */
@@ -3031,7 +3031,7 @@ class Person extends BackboneModel {
         return $people;
     }
     
-    /*
+    /**
      * Returns whether or not this Person is a delegate for the given Person
      * @param Person
      * @return boolean Whether or not this Person is a delegate for the given Person
@@ -3310,7 +3310,7 @@ class Person extends BackboneModel {
                      'end_date'   => '0000-00-00 00:00:00');
     }
     
-    /*
+    /**
      * Returns an array of Projects that this Person is a leader or co-leader of
      * @param boolean $history Whether or not to include the entire leadership history
      * @param boolean $idsOnly Whether or not to just return the ids of the Projects

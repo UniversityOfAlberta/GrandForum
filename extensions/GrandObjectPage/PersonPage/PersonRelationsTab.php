@@ -16,7 +16,7 @@ class PersonRelationsTab extends AbstractTab {
         return $this->html;
     }
     
-    /*
+    /**
      * Displays all of the user's relations
      */
     function showRelations($person, $visibility){

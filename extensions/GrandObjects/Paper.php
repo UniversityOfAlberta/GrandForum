@@ -997,7 +997,7 @@ class Paper extends BackboneModel{
         return $date;
     }
     
-    /*
+    /**
      * Returns the year of this Paper
      * @return string The year of this Paper
      */

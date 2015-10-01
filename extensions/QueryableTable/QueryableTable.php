@@ -62,7 +62,7 @@ function STRUCT(){ // Useful for making multi-argument cell structures
     return $cell;
 }
 
-/*
+/**
  * This Class is designed to allow for a queryable table.  
  * Functions like select, where, join etc. can be used to create different types of tables.
  * NOTE: This class creates a mutable object, which means that any queries made upon it will modify the data.

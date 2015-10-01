@@ -187,7 +187,7 @@ class IndexTable {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the projects
 	 * Consists of the following columns
 	 * Acronym | Name 
@@ -229,7 +229,7 @@ class IndexTable {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the themes
 	 * Consists of the following columns
 	 * Theme | Name 
@@ -268,7 +268,7 @@ EOF;
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table of Admin Projects
 	 */
 	private function generateAdminTable(){
