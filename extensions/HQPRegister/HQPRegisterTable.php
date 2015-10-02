@@ -59,7 +59,8 @@ class HQPRegisterTable extends SpecialPage{
                $align != "" ||
                $boundary != "" ||
                $cv != ""){
-                $application .= "<button onClick='$(\"#app_{$candidate->getId()}\").dialog({width:800, maxHeight:600, height:600});'>Application</button>"; 
+                $star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
+                $application .= "$star<button onClick='$(\"#app_{$candidate->getId()}\").dialog({width:800, maxHeight:600, height:600});'>Application</button>"; 
                 
                 $tab->generateBody();
                 $application .= "<div title='{$candidate->getNameForForms()}' id='app_{$candidate->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";

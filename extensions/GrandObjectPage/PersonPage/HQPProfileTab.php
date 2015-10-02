@@ -133,7 +133,7 @@ class HQPProfileTab extends AbstractEditableTab {
         return $this->html;
     }
     
-    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true){
         global $wgServer, $wgScriptPath;
         $year = 0; // Don't have a year so that it remains the same each year
         $personId = $this->person->getId();
@@ -144,14 +144,16 @@ class HQPProfileTab extends AbstractEditableTab {
         $result = $blb->load($addr, true);
         $data = $blb->getData();
         
-        $year = date('Y');
-        while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
-            // If it is empty, check to see if there was an entry for one of the other years
-            $blb = new ReportBlob($type, $year, $personId, $projectId);
-            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-            $result = $blb->load($addr, true);
-            $data = $blb->getData();
-            $year--;
+        if($checkRegistration){
+            $year = date('Y');
+            while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
+                // If it is empty, check to see if there was an entry for one of the other years
+                $blb = new ReportBlob($type, $year, $personId, $projectId);
+                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+                $result = $blb->load($addr, true);
+                $data = $blb->getData();
+                $year--;
+            }
         }
         
         if($type == BLOB_RAW && $data != null){
@@ -185,6 +187,26 @@ class HQPProfileTab extends AbstractEditableTab {
         $blb = new ReportBlob($type, $year, $personId, $projectId);
         $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
         $blb->store($value, $addr);
+    }
+    
+    /**
+     * Returns whether the person has edited their HQP Profile
+     * @return boolean Whether the Person has edited their HQP Profile
+     */
+    function hasEdited(){
+        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, false);
+        
+        return ($research != null || 
+                $train != null ||
+                $bio != null ||
+                $align != null ||
+                $boundary != null ||
+                $cv != null);
     }
     
     function handleEdit(){
