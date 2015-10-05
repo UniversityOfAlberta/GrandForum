@@ -58,7 +58,7 @@ class BudgetReportItem extends AbstractReportItem {
             $link = $this->getDownloadLink();
             $html = "";
             if($data !== null && $data != ""){
-                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls'>Download&nbsp;<b>{$budgetText}</b></a>";
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
             }
             $item = $this->processCData($html);
             $wgOut->addHTML($item);

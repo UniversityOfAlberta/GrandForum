@@ -92,7 +92,7 @@ EOF;
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
                             $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                            $item .= @"\"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $item .= @"\"<td align='center'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
@@ -175,7 +175,7 @@ EOF;
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                             strstr(strtolower(@$types[$j]), "combobox") !== false){
                         $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                        $item .= @"<td align='center'><select class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
+                        $item .= @"<td align='center'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);

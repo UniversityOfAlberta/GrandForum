@@ -642,8 +642,10 @@ define('FINAL_INFORMATION_STATUS',  3);
 
 define('FINAL_MIL_MILESTONES1',     1);
 define('FINAL_MIL_MILESTONES2',     2);
+define('FINAL_MIL_MILESTONES3',     6);
 define('FINAL_MIL_DELIVERABLES1',   3);
 define('FINAL_MIL_DELIVERABLES2',   4);
+define('FINAL_MIL_DELIVERABLES3',   7);
 define('FINAL_MIL_INCOMPLETE',      5);
 
 define('FINAL_RES_KEY',         1);
@@ -653,6 +655,7 @@ define('FINAL_RES_REVIEW',      4);
 
 define('FINAL_KTEE_SUCCESS',    1);
 define('FINAL_KTEE_TECH',       2);
+define('FINAL_KTEE_UPLOAD',     3);
 
 define('FINAL_PART_CONTR',      1);
 define('FINAL_PART_DESC',       2);
@@ -661,11 +664,16 @@ define('FINAL_ENGAGE_PATIENT',  1);
 
 define('FINAL_NET_ACTIVITY',    1);
 
-define('FINAL_PLAN_THEMES',     1);
-define('FINAL_PLAN_PRIORITIES', 2);
-define('FINAL_PLAN_SYNTH',      3);
-define('FINAL_PLAN_CREATION',   4);
-define('FINAL_PLAN_TRANS',      5);
+define('FINAL_PLAN_FINDINGS',       6);
+define('FINAL_PLAN_FINDINGS_YES',   7);
+define('FINAL_PLAN_FINDINGS_NO',    8);
+define('FINAL_PLAN_ADDITIONAL',     9);
+define('FINAL_PLAN_ADDITIONAL_YES', 10);
+define('FINAL_PLAN_THEMES',         1);
+define('FINAL_PLAN_PRIORITIES',     2);
+define('FINAL_PLAN_SYNTH',          3);
+define('FINAL_PLAN_CREATION',       4);
+define('FINAL_PLAN_TRANS',          5);
 
 define('FINAL_ALIGN_MULTI',     1);
 define('FINAL_ALIGN_CHALLENGE', 2);
@@ -680,8 +688,10 @@ define('PROG_INFORMATION_STATUS',  3);
 
 define('PROG_MIL_MILESTONES1',      1);
 define('PROG_MIL_MILESTONES2',      4);
+define('PROG_MIL_MILESTONES3',      9);
 define('PROG_MIL_DELIVERABLES1',    5);
 define('PROG_MIL_DELIVERABLES2',    6);
+define('PROG_MIL_DELIVERABLES3',    10);
 define('PROG_MIL_INCOMPLETE',       7);
 define('PROG_MIL_DELAYED',          8);
 define('PROG_MIL_CHALLENGE',        2);
@@ -689,6 +699,7 @@ define('PROG_MIL_ACHIEVE',          3);
 
 define('PROG_KTEE_SUCCESS',     1);
 define('PROG_KTEE_TECH',        2);
+define('PROG_KTEE_UPLOAD',      3);
 
 define('PROG_PART_CONTR',       1);
 define('PROG_PART_DESC',        2);
@@ -697,13 +708,13 @@ define('PROG_ENGAGE_PATIENT',   1);
 
 define('PROG_NET_ACTIVITY',     1);
 
-define('PROG_PLAN_THEMES',     1);
-define('PROG_PLAN_PRIORITIES', 2);
-define('PROG_PLAN_SYNTH',      3);
-define('PROG_PLAN_CREATION',   4);
-define('PROG_PLAN_TRANS',      5);
+define('PROG_PLAN_THEMES',          1);
+define('PROG_PLAN_PRIORITIES',      2);
+define('PROG_PLAN_SYNTH',           3);
+define('PROG_PLAN_CREATION',        4);
+define('PROG_PLAN_TRANS',           5);
 
-define('PROG_BUD_UPLOAD',       1);
+define('PROG_BUD_UPLOAD',           1);
 
 // IFP Final Report
 define('IFP_FINAL_MIL_MILESTONES1',     1);
@@ -738,6 +749,7 @@ define('IFP_FINAL_COLLAB_PROGRESS',     2);
 define('IFP_FINAL_COLLAB_BENEFITS',     3);
 
 define('IFP_FINAL_DISS_OTHER',          1);
+define('IFP_FINAL_DISS_UPLOAD',         2);
 
 define('IFP_FINAL_PARTNERS_FUNDING',    1);
 
@@ -772,6 +784,7 @@ define('IFP_PROG_COLLAB_PROGRESS',      2);
 define('IFP_PROG_COLLAB_BENEFITS',      3);
 
 define('IFP_PROG_DISS_OTHER',           1);
+define('IFP_PROG_DISS_UPLOAD',          2);
 
 define('IFP_PROG_CAPACITY_ACTIVITY',    1);
 define('IFP_PROG_CAPACITY_ACADEMIC',    2);
