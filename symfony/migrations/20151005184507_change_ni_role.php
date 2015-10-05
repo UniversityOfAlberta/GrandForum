@@ -42,7 +42,7 @@ class ChangeNiRole extends AbstractMigration
             }
             else{
                 // Person is an AR
-                $this->execute("UPDATE `grand_roles` SET role = '".AR."' WHERE user_id = '$userId'");
+                $this->execute("UPDATE `grand_roles` SET role = '".AR."' WHERE user_id = '$userId' AND role = '".NI."'");
             }
         }
         
