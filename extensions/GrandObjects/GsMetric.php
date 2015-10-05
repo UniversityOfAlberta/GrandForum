@@ -7,6 +7,7 @@
 	var $id;
 	var $user_id;
 	var $start_date;
+        var $citation_count;
 	var $hindex_5_years;
 	var $i10_index_5_years;
 	var $hindex;
@@ -14,13 +15,13 @@
 	var $change_date;
 	var $gs_citations = array();
 
-
 	// constructor
 	function GsMetric($data){
 	    if(count($data)>0){
 	    	$this->id = $data[0]['id'];
 	    	$this->user_id = $data[0]['user_id'];
 	    	$this->start_date = $data[0]['start_date'];
+		$this->citation_count = $data[0]['citation_count'];
 	    	$this->hindex_5_years = $data[0]['hindex_5_years'];
 	    	$this->i10_index_5_years = $data[0]['i10_index_5_years'];
 	    	$this->hindex = $data[0]['hindex'];
@@ -82,6 +83,21 @@
 	    return $metric;
 	}
 
+	function getRecentCitationCount(){
+	    $citationCount = 0;
+	    $citationArray = $this->gs_citations;
+	    $Year = date("Y");
+	    $count = 0;
+	    while($count <= 5){
+		if(isset($citationArray[$Year])){
+		    $citationCount += $citationArray[$Year];
+		}
+		$count++;
+	        $Year--;
+	    } 
+	    return $citationCount;
+	}
+
 	/**
 	 * Returns an array of the users citations count from Google Scholar
 	 * return Array An array with a key-value pair of [year] => citation count
@@ -114,6 +130,7 @@
 		$status = DBFunctions::insert('grand_user_gsmetrics',
 					      array('user_id' => $this->user_id,
 					            'start_date' => $this->start_date,
+						    'citation_count' => $this->citation_count,
 					            'hindex_5_years' => $this->hindex_5_years,
 					            'i10_index_5_years' => $this->i10_index_5_years,
 					            'hindex' => $this->hindex,

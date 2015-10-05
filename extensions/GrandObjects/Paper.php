@@ -14,12 +14,11 @@ class Paper extends BackboneModel{
 
     var $id;
     var $category;
-    var $description;
+    var $description=false;
     var $title;
     var $type;
     var $projects = array();
     var $date;
-    var $venue;
     var $status;
     var $authors;
     var $data;
@@ -265,7 +264,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT *
+            $sql = "SELECT id, category, type, title, date, status, authors, data, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -529,11 +528,10 @@ class Paper extends BackboneModel{
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->category = $data[0]['category'];
-            $this->description = $data[0]['description'];
+            //$this->description = $data[0]['description'];
             $this->title = $data[0]['title'];
             $this->type = $data[0]['type'];
             $this->date = $data[0]['date'];
-            $this->venue = $data[0]['venue'];
             $this->status = $data[0]['status'];
             $this->deleted = $data[0]['deleted'];
             $this->access_id = $data[0]['access_id'];
@@ -545,7 +543,7 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
-            $this->data = unserialize($data[0]['data']);
+            //$this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
 	    $this->central_repo_id = $data[0]['central_repo_id'];
         }
@@ -588,7 +586,13 @@ class Paper extends BackboneModel{
      * @return string The abstract or description of this Paper
      */
     function getDescription(){
-        return $this->description;
+	if($this->description === false){
+	    $data = DBFunctions::select(array("grand_products"), array("description"), array("id"=>$this->getId()));
+	    if(count($data) >0){
+	        $this->description = $data[0]['description'];
+	    }
+	}
+	return $this->description;
     }
 
     /**
@@ -1059,7 +1063,7 @@ class Paper extends BackboneModel{
      * @return string The venue for this Paper
      */
     function getVenue(){
-        $venue = $this->venue;
+        $venue = "";
         if( empty($venue) ){
             $venue = ArrayUtil::get_string($this->data, 'venue');
         }
@@ -1355,7 +1359,6 @@ class Paper extends BackboneModel{
                                                 'type' => $this->type,
                                                 'title' => $this->title,
                                                 'date' => $this->date,
-                                                'venue' => $this->venue,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1448,7 +1451,6 @@ class Paper extends BackboneModel{
                                                 'type' => $this->type,
                                                 'title' => $this->title,
                                                 'date' => $this->date,
-                                                'venue' => $this->venue,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),

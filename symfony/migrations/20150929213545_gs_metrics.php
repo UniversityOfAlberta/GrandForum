@@ -26,6 +26,7 @@ class GsMetrics extends AbstractMigration
 	if(!$table->exists()){
 	    $table->addColumn('user_id','integer')
 		  ->addColumn('start_date', 'timestamp', array('default'=>'0000-00-00 00:00:00'))
+		  ->addColumn('citation_count','integer')
 		  ->addColumn('hindex_5_years', 'float')
 	          ->addColumn('i10_index_5_years', 'float')
 	          ->addColumn('hindex','float')
