@@ -38,11 +38,16 @@ class ChangeNiRole extends AbstractMigration
                 // Person is a CI
                 $projId = $allocations[$userId]['project_id'];
                 $this->execute("UPDATE `grand_roles` SET role = '".CI."' WHERE user_id = '$userId' AND role = '".NI."'");
-                $this->execute("INSERT INTO `grand_role_projects` (`role_id`, `project_id`) VALUES ('$roleId', '$projId')");
+                try {
+                    $this->execute("INSERT INTO `grand_role_projects` (`role_id`, `project_id`) VALUES ('$roleId', '$projId')");
+                }
+                catch(PDOException $e){
+                
+                }
             }
             else{
                 // Person is an AR
-                $this->execute("UPDATE `grand_roles` SET role = '".AR."' WHERE user_id = '$userId'");
+                $this->execute("UPDATE `grand_roles` SET role = '".AR."' WHERE user_id = '$userId' AND role = '".NI."'");
             }
         }
         
