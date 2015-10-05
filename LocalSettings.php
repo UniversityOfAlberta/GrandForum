@@ -262,11 +262,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, HQPAC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, ISAC, IAC, CAC, NCE, AR, CI, RMC, HQPAC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, PS, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, APL, TL, TC, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, AR, CI, PL, APL, TL, TC, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 
 function unaccentChars($str){

@@ -61,6 +61,8 @@ class GrandAccess {
 	    if($me->isRole(NI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
+	        $aRights[$i++] = "NI";
+	        $aRights[$i++] = "NI+";
 	    }
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){

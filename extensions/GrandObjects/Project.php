@@ -684,14 +684,13 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this)))){
-                    $people[$person->getId()] = $person;
-                }
+            if($filter == PL && $person->leadershipOf($this)){
+                $people[$person->getId()] = $person;
             }
-            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter, $this)) || $person->isRoleDuring($filter, $created, "9999", $this)) && !$person->isRole(ADMIN)){
+            else if(($filter == null || 
+                     ($currentDate >= $created && $person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
+                     ($person->isRoleDuring($filter, $created, "9999", $this) && !$person->leadershipOf($this))) && 
+                    !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
         }
@@ -739,14 +738,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRoleDuring(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this)))){
-                    $people[$person->getId()] = $person;
-                }
+            if($filter == PL && $person->leadershipOf($this)){
+                $people[$person->getId()] = $person;
             }
-            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange, $this)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            else if(($filter == null || 
+                     ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                    ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -775,14 +772,12 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
-                    $people[$person->getId()] = $person;
-                }
+            if($filter == PL && $person->leadershipOf($this)){
+                $people[$person->getId()] = $person;
             }
-            else if(($filter == null || $person->isRoleOn($filter, $date, $this)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
+            else if(($filter == null || 
+                     ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
+                    ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
