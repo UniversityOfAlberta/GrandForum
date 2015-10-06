@@ -146,5 +146,18 @@ class Role extends BackboneModel {
 	    }
 	    return $this->projects;
 	}
+	
+	function hasProject($project){
+	    $projects = $this->getProjects();
+	    if(count($projects) == 0){
+	        return true;
+	    }
+	    foreach($projects as $proj){
+	        if($proj->getId() == $project->getId()){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }
 ?>
