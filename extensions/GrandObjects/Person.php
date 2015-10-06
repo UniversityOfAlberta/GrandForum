@@ -593,6 +593,11 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
+        if($filter == NI){
+            $ars = self::getAllPeople(AR);
+            $cis = self::getAllPeople(CI);
+            return array_merge($ars, $cis);
+        }
         $me = Person::newFromWgUser();
         self::generateAllPeopleCache();
         self::generateRolesCache();
