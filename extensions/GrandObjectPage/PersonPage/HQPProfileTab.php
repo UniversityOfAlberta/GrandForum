@@ -37,6 +37,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO));
         $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN));
         $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
         if($research    == "" &&
            $train       == "" &&
            $bio         == "" &&
@@ -45,7 +46,6 @@ class HQPProfileTab extends AbstractEditableTab {
            !$this->visibility['isMe']){
             return "";
         }
-        $this->html .= "<h2>Core Research Program Highly Qualified Personnel Application</h2>";
         $this->html .= "<h3>Statement of Research Focus</h3>";
         $this->html .= "<p>{$research}</p>";
         $this->html .= "<h3>Statement of Training Focus</h3>";
@@ -56,30 +56,34 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->html .= "<p>{$align}</p>";
         $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries?</h3>";
         $this->html .= "<p>{$boundary}</p>";
+        $this->html .= "<h3>CV</h3>";
+        $this->html .= "<p>{$cv}</p>";
         return $this->html;
     }
     
     function generateEditBody(){
         global $config;
+        if(!$this->userCanView()){
+            return "";
+        }
         $research = $this->getBlobValue(HQP_APPLICATION_RESEARCH);
         $train    = $this->getBlobValue(HQP_APPLICATION_TRAIN);
         $bio      = $this->getBlobValue(HQP_APPLICATION_BIO);
         $align    = $this->getBlobValue(HQP_APPLICATION_ALIGN);
         $boundary = $this->getBlobValue(HQP_APPLICATION_BOUNDARY);
-        
-        $this->html .= "<h2>Core Research Program Highly Qualified Personnel Application</h2>";
-        $this->html .= "<h3>Statement of Research Focus</h3>
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
+
+        $this->html .= "<h3>Statement of Research Focus (for HQP completing a research program) (½ page)</h3>
 <small>
-    <p>AGE-WELL is inviting trainees and other highly qualified personnel in the broad area of technology and aging. The research project may be linked to one of AGE-WELL’s eight Research Workpackages, but does not need to limited to these.  Research should address at least one of our key research questions: </p>
+    <p>Your research project may be linked to one of AGE-WELL’s eight Research Workpackages, but does not need to limited to these. Research should address at least one of our key research questions:</p>
     <ol>
         <li>What are the needs of older adults and caregivers?</li>
         <li>What technology-based systems and services should be used to meet those needs?</li>
         <li>How can we foster innovation in the technology and aging sector?</li>
     </ol>
     <p>
-    The project may also support one of AGE-WELL’s four Crosscutting activities- Knowledge Mobilization, Commercialization, Transdisciplinarity and HQP Training. 
-    </p>
-    <p>In this section, applicants should describe:</p>
+    The project may also support one of AGE-WELL’s four Crosscutting activities - Knowledge Mobilization, Commercialization, Transdisciplinarity and HQP Training.</p>
+    <p>In this section please describe:</p>
     <ol>
         <li>How does your research connect to research foci of the AGE-WELL NCE?</li>
         <li>Why is your project important?</li>
@@ -88,18 +92,16 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
 </small>";
         $this->html .= "<textarea name='research' style='height:200px;'>{$research}</textarea>";
-        $this->html .= "<h3>Statement of Training Focus</h3>
+        $this->html .= "<h3>Statement of Training Focus (for research associates and trainees in professional programs) (½ page)</h3>
 <small>
-    <p>AGE-WELL is inviting trainees and other highly qualified personnel in the broad area of technology and aging, including students in professional programs (i.e. non-thesis bases programs) such as gerontology and allied health. The training program and the work being undertaken may be linked to one of AGE-WELL’s eight Research Workpackages, but does not need to limited to these.</p>
-
-    <p>In this section, applicants should describe:</p>
+    <p>In this section please describe:</p>
     <ol>
         <li>How does your training program and/or background relate to the AGE-WELL NCE?</li>
         <li>What is the expected impact of your work?</li>
     </ol>
 </small>";
         $this->html .= "<textarea name='train' style='height:200px;'>{$train}</textarea>";
-        $this->html .= "<h3>Biography and Career Goals</h3>
+        $this->html .= "<h3>Biography and Career Goals (½ page)</h3>
 <small>
     <p>In this section briefly describe:</p>
     <ol>
@@ -109,46 +111,102 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
 </small>";
         $this->html .= "<textarea name='bio' style='height:200px;'>{$bio}</textarea>";
-        $this->html .= "<h3>Alignment of research, training, and/or career goals to the mission and goals of AGE-WELL</h3>
+        $this->html .= "<h3>Alignment of research, training, and/or career goals to the mission and goals of AGE-WELL (½ page)</h3>
 <small>
-    <p>Successful applications will need to be aligned with the key strategic goals of AGE-WELL. Applicants are strongly encouraged to familiarize themselves with the document called AGE-WELL Network Goals available on the <a target='_blank' href='{$config->getValue('networkSite')}'>AGE-WELL website</a></p>
+    <p>AGE-WELL HQP will need to be aligned with the key strategic goals of AGE-WELL and are strongly encouraged to familiarize themselves with the document called AGE-WELL Network Goals available on the <a target='_blank' href='{$config->getValue('networkSite')}'>AGE-WELL website</a></p>
 
-<p>Applicants will need to demonstrate that their research, training, and/or career goals has potential for real world impact.  In this section, describe how these goals fits with AGE-WELL’s vision and strategic goals.</p>
+<p>HQP will need to demonstrate that their research, training, and/or career goals has potential for real world impact. In this section, describe how these goals fit with AGE-WELL’s vision and strategic goals.</p>
 </small>";
         $this->html .= "<textarea name='align' style='height:200px;'>{$align}</textarea>";
-        $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries?</h3>
+        $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries (½ page)</h3>
 <small>
-    <p>Transdisciplinary working - that is working across and with other disciplines than your own – is an important aspect of AGE-WELL.  In this section please address the following:</p>
+    <p>Transdisciplinary working - that is working across and with other disciplines than your own – is an important aspect of AGE-WELL. In this section please address the following:</p>
     <ol>
         <li>Describe networking that may occur across disciplines and sites within AGE-WELL.</li>
         <li>How does your work and goals link with other projects/activities in the AGE-WELL Network?</li>
     </ol>
 </small>";
         $this->html .= "<textarea name='boundary' style='height:200px;'>{$boundary}</textarea>";
-        
+        $this->html .= "<h3>CV Upload</h3>
+        <p>{$cv}</p>
+        <input type='file' name='cv' accept='.pdf' /><br />";
         return $this->html;
     }
     
-    function getBlobValue($blobItem){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true){
+        global $wgServer, $wgScriptPath;
         $year = 0; // Don't have a year so that it remains the same each year
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $blobItem, 0);
-        $result = $blb->load($addr);
+        $blb = new ReportBlob($type, $year, $personId, $projectId);
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+        $result = $blb->load($addr, true);
         $data = $blb->getData();
+        
+        if($checkRegistration){
+            $year = date('Y');
+            while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
+                // If it is empty, check to see if there was an entry for one of the other years
+                $blb = new ReportBlob($type, $year, $personId, $projectId);
+                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+                $result = $blb->load($addr, true);
+                $data = $blb->getData();
+                $year--;
+            }
+        }
+        
+        if($type == BLOB_RAW && $data != null){
+            $data = json_decode($data);
+            $mime = $data->type;
+            $md5 = $blb->getMD5();
+            return "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+        }
+        
         return $data;
     }
     
-    function saveBlobValue($blobItem, $value){
+    function saveBlobValue($blobItem, $value, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM){
+        if($type == BLOB_RAW){
+            $contents = base64_encode(file_get_contents($value['tmp_name']));
+            $hash = md5($contents);
+            $name = $value['name'];
+            $size = $value['size'];
+            $fileType = $value['type'];
+            $data = array('name' => $name,
+                          'type' => $fileType,
+                          'size' => $size,
+                          'hash' => $hash,
+                          'file' => $contents);
+            $value = json_encode($data);
+        }
         $year = 0; // Don't have a year so that it remains the same each year
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $blobItem, 0);
+        $blb = new ReportBlob($type, $year, $personId, $projectId);
+        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
         $blb->store($value, $addr);
+    }
+    
+    /**
+     * Returns whether the person has edited their HQP Profile
+     * @return boolean Whether the Person has edited their HQP Profile
+     */
+    function hasEdited(){
+        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, false);
+        
+        return ($research != null || 
+                $train != null ||
+                $bio != null ||
+                $align != null ||
+                $boundary != null ||
+                $cv != null);
     }
     
     function handleEdit(){
@@ -159,8 +217,11 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_BIO,        $_POST['bio']);
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
         $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
+        if(isset($_FILES['cv']) && $_FILES['cv']['size'] > 0){
+            $this->saveBlobValue(HQP_APPLICATION_CV,     $_FILES['cv'], BLOB_RAW, HQP_APPLICATION_DOCS);
+        }
         
-        header("Location: {$this->person->getUrl()}?tab=hqp-crp");
+        header("Location: {$this->person->getUrl()}?tab=hqp-profile");
         exit;
     }
     

@@ -384,7 +384,6 @@ EOF;
         $description = substr($description, 0, 250);
       }
      
-      //$themes = $project->getThemes();
       $title = "<a href='{$wgServer}{$wgScriptPath}/index.php/{$name}:Main'>". $name ."</a>";
       //echo $description ."<br>";
 

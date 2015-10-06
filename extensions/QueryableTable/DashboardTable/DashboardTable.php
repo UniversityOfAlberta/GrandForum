@@ -229,7 +229,7 @@ class DashboardTable extends QueryableTable{
                     if($cell instanceof DashboardCell){
                         foreach($cell->values as $type => $values){
                             $extra = ($type == "All") ? "" : ' / '.$type;
-                            $details .= "<h2>{$cell->label}$extra</h2><div><ul>\n";
+                            $details .= "<h3 style='margin:0;'>{$cell->label}$extra</h3><div><ul>\n";
                             $firstTimeType = array();
                             foreach($values as $item){
                                 $items = (is_array($item)) ? $item : array($item);

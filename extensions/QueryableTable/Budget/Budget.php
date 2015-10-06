@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This Class is designed to allow for a queryable Budget.  
  * Functions like select, where, join and cube etc. can be used to create different types of budgets.
  * NOTE: This class creates an immutable object(unless accessing the instance variables directly),

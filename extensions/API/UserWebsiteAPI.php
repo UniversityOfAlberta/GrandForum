@@ -2,7 +2,7 @@
 
 class UserWebsiteAPI extends API{
 
-    function UserTwitterAccountAPI(){
+    function UserWebsiteAccountAPI(){
         $this->addPOST("website", true, "The url of a website", "http://www.mywebsite.com");
     }
 

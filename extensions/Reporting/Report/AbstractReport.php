@@ -656,7 +656,7 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && $perm['perm'] == CHAMP && $me->isRole(CHAMP)){
+                        if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
                             }
@@ -668,7 +668,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == "Leadership")){
+                        else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -678,7 +678,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == "SUB-PL")){
+                        else if($this->project != null && ($perm['perm']['role'] == "SUB-PL")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -688,7 +688,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == TC || $perm['perm'] == TL)){
+                        else if($this->project != null && ($perm['perm']['role'] == TC || $perm['perm']['role'] == TL)){
                             $project_objs = $me->getThemeProjects();
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -699,12 +699,15 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         else{
-                            if(strstr($perm['perm'], "+") !== false){
-                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm'])), $perm['start'], $perm['end']));
+                            if(strstr($perm['perm']['role'], "+") !== false){
+                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
                             }
                             else{
-                                $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                                $rResult = ($rResult || $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']));
                             }
+                        }
+                        if($perm['perm']['subType'] != ""){
+                            $rResult = ($rResult && ($me->isSubRole($perm['perm']['subType'])));
                         }
                         break;
                     case "Project":

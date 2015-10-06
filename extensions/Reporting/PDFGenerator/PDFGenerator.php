@@ -163,7 +163,21 @@ abstract class PDFGenerator {
 "/(&hearts;)/",
 "/(&#9210;)/",
 "/(&diams;)/");
-        $str = preg_replace($specials, "<span style='font-family:  DejaVuSans !important; line-height:50%;'>$1</span>", $str);
+        $str = preg_replace($specials, "<span style='font-family: dejavu sans !important; line-height:50%;'>$1</span>", $str);
+        $str = str_replace("&#8209;", "-", $str);
+        $str = str_replace("&#61485;", "~", $str);
+        $str = str_replace("&#8208;", "-", $str);
+        $str = str_replace("&#9472;", "-", $str);
+        $str = str_replace("&#64257;", "fi", $str);
+        $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
+        $str = str_replace("‐", "-", $str);
+        /*preg_match_all("/<strong>(.*?)<\/strong>/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
+            $str = str_replace($match, $match1, $str);
+        }*/
+        //$str = str_replace("<strong>", "<span>", $str);
+        //$str = str_replace("</strong>", "</span>", $str);
         return $str;
     }
     
@@ -190,10 +204,18 @@ abstract class PDFGenerator {
         for($i=0; $i<$as->length; $i++){
             $a = $as->item($i);
             if($a->getAttribute('class') != 'anchor' && 
-               $a->getAttribute('class') != 'externalLink'){
+               $a->getAttribute('class') != 'mce-item-anchor' &&
+               $a->getAttribute('class') != 'externalLink' && 
+               $a->textContent != ""){
                 $i--;
                 DOMRemove($a);
             }
+        }
+        
+        $tds = $dom->getElementsByTagName("td");
+        for($i=0; $i<$tds->length; $i++){
+            $td = $tds->item($i);
+            $td->setAttribute('width', '');
         }
         
         $divs = $dom->getElementsByTagName('div');
@@ -588,7 +610,7 @@ EOF;
                 margin-bottom: ".($fontSize)."px;
             }
             
-            #pdfBody .tinymce p strong {
+            #pdfBody .tinymce strong {
                 page-break-after: avoid;
                 page-break-before: avoid;
             }

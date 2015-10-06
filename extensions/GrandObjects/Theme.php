@@ -134,7 +134,7 @@ class Theme {
         return $this->color;
     }
     
-    /*
+    /**
      * Returns all of the leaders regardless of their type
      * @return array An array of all leaders
      */
@@ -154,7 +154,7 @@ class Theme {
         return $leaders;
     }
     
-    /*
+    /**
      * Returns all of the leaders regardless of their type
      * @return array An array of all leaders
      */
@@ -174,7 +174,7 @@ class Theme {
         return $leaders;
     }
     
-    /*
+    /**
      * Returns all of the Projects in this Theme
      * @return array The Projects in this Theme
      */

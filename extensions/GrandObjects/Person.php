@@ -53,7 +53,6 @@ class Person extends BackboneModel {
     var $historyHqps;
     var $contributions;
     var $multimedia;
-    var $acknowledgements;
     var $aliases = false;
     var $budgets = array();
     var $leadershipCache = array();
@@ -228,6 +227,11 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Removes certain characters from a person's name to help matching
+     * @param string $name The name to clean
+     * @return string The cleaned up name
+     */
     static function cleanName($name){
         $name = preg_replace("/\(.*\)/", "", $name);
         $name = str_replace("'", "", $name);
@@ -372,7 +376,7 @@ class Person extends BackboneModel {
         }
     }
     
-    /*
+    /**
      * Caches the resultset of the theme leaders
      */
     static function generateThemeLeaderCache(){
@@ -448,7 +452,7 @@ class Person extends BackboneModel {
         }
     }
     
-    /*
+    /**
      * Caches the partial resultset of the mw_user table
      */
     static function generateAllPeopleCache(){
@@ -713,46 +717,6 @@ class Person extends BackboneModel {
         }
         return $people;
     }
-    
-    /// Returns an array of registered evaluators (Person instances).
-    /// Optionally, user IDs can be filtered out from the query as a single
-    /// ID as a string, or an array of user IDs.
-    static function getAllEvaluators($filterout = 4) {
-        if (is_array($filterout)) {
-            $managers = Person::getAllPeople(MANAGER);
-            foreach($managers as $manager){
-                $filterout[] = $manager->getId();
-            }
-            $filterout = implode(',', $filterout);
-        }
-        if (strlen($filterout) > 0)
-            $filterout = "WHERE user_id NOT IN ({$filterout})";
-
-        $ret = array();
-        $data = DBFunctions::execSQL("SELECT DISTINCT user_id FROM grand_eval {$filterout};");
-        foreach ($data as &$q){
-            $ret[$q['user_id']] = Person::newFromId($q['user_id']);
-        }
-        return $ret;
-    }
-
-    static function getAllProjectManagers() {
-        $ret = array();
-        $sql = "SELECT pl.user_id FROM grand_project_leaders pl, mw_user u
-                WHERE pl.user_id NOT IN (4, 150)
-                AND pl.type='manager'
-                AND u.user_id = pl.user_id
-                AND u.deleted != '1'
-                AND (pl.end_date = '0000-00-00 00:00:00'
-                     OR pl.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        
-        foreach ($data as &$row){
-            $ret[$row['user_id']] = Person::newFromId($row['user_id']);
-        }
-
-        return $ret;
-    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
@@ -795,20 +759,7 @@ class Person extends BackboneModel {
         if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
         }
-        if($this->isRole(CHAMP)){
-            $university = $this->getPartnerName();
-            $department = $this->getPartnerDepartment();
-            $position = $this->getPartnerTitle();
-            
-            $university = ($university != "") ? $university : $this->getUni();
-            $department = ($department != "") ? $department : $this->getDepartment();
-            $position = ($position != "") ? $position : $this->getPosition();
-        }
-        else{
-            $university = $this->getUni();
-            $department = $this->getDepartment();
-            $position = $this->getPosition();
-        }
+
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -823,9 +774,9 @@ class Person extends BackboneModel {
 		      'ldap' => $this->getLdap(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
-                      'university' => $university,
-                      'department' => $department,
-                      'position' => $position,
+                      'university' => $this->getUni(),
+                      'department' => $this->getDepartment(),
+                      'position' => $this->getPosition(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $publicProfile,
                       'url' => $this->getUrl());
@@ -938,7 +889,7 @@ class Person extends BackboneModel {
         global $wgSitename;
     }
     
-    /*
+    /**
      * Returns whether or not this Person is allowed to edit the specified Person
      * @param Person $person The Person to edit
      * @return Person Whether or not this Person is allowd to edit the specified Person
@@ -972,7 +923,10 @@ class Person extends BackboneModel {
         return true;
     }
     
-    // Returns the Mediawiki User object for this Person
+    /**
+     * Returns the Mediawiki User object for this Person
+     * @return User The Mediawiki User object for this Person
+     */
     function getUser(){
         if($this->user == null){
             $this->user = User::newFromId($this->id);
@@ -981,56 +935,28 @@ class Person extends BackboneModel {
         return $this->user;
     }
     
-    // Returns whether or not this Person is logged in or not
+    /**
+     * Returns whether or not this Person is logged in or not
+     * @return boolean Whether or not this Person is logged in or not
+     */
     function isLoggedIn(){
         $user = $this->getUser();
         return $user->isLoggedIn();
     }
     
-    // Returns when the user registered
+    /**
+     * Returns when the User registered
+     * @return string The string representing the date that this user Registered
+     */
     function getRegistration(){
         return $this->getUser()->getRegistration();
     }
-    
-    // Returns an array of names similar to this Person's name
-    function getSimilarNames(){
-        $sql = "SELECT authors
-                FROM grand_products";
-        $authorRows = DBFunctions::execSQL($sql);
-        $possibleNames = array();
-        foreach($authorRows as $authors){
-            if($authors['authors'] != ""){
-                $authors = unserialize($authors['authors']);
-                foreach($authors as $author){
-                    if($author != ""){
-                        $authorN = $author;
-                        $authorN = str_replace("  ", " ", $authorN);
-                        $exploded = explode(".", str_replace(" ", "", $author));
-                        if(count($exploded) > 1 && $exploded[1] != ""){
-                            $authorN = str_replace(".", ".*", $authorN);
-                        }
-                        else{
-                            $authorN = str_replace(".", "\.", $authorN);
-                        }
-                        $authorN = str_replace(" ", ".*", $authorN);
-                        if(preg_match("/.*$authorN.*/", $this->name) > 0){
-                            $possibleNames[] = $author;
-                        }
-                    }
-                }
-            }
-        }
-        $sql = "SELECT alias
-                FROM mw_user_aliases
-                WHERE user_id = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        foreach($data as $row){
-            $possibleNames[] = $row['alias'];
-        }
-        return $possibleNames;
-    }
-    
-    // Returns whether this Person is a member of the given Project or not
+      
+    /**
+     * Returns whether this Person is a member of the given Project or not
+     * @param Project $project The Project to check
+     * @return boolean Whether or not this Person is currently a member of the given Project
+     */
     function isMemberOf($project){
         $projects = $this->getProjects(false, true);
         if(count($projects) > 0 && $project != null){
@@ -1043,7 +969,13 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns whether this Person is a member of the given Project during the given dates
+    /**
+     * Returns whether this Person is a member of the given Project during the given dates
+     * @param Project $project The Project to check
+     * @param string $start The start date
+     * @param string $end The end date
+     * @return boolean Whether or not this Person is a member of the given Project
+     */
     function isMemberOfDuring($project, $start, $end){
         $projects = $this->getProjectsDuring($start, $end);
         if(count($projects) > 0 && $project != null){
@@ -1056,7 +988,7 @@ class Person extends BackboneModel {
         return false;
     }
     
-    /*
+    /**
      * Returns whether or not this Person has been funded on the given Project
      * @param Project $project The Project that the Person has been funded
      * @param string $year The year in which the Person has been funded
@@ -1092,16 +1024,29 @@ class Person extends BackboneModel {
         return $diff;
     }
     
+    /**
+     * Returns whether or not this Person is theme leader
+     * @return boolean Whether or not this Person is a theme leader
+     */
     function isThemeLeader(){
         self::generateThemeLeaderCache();
         return (isset(self::$themeLeaderCache[TL][$this->id]));
     }
     
+    /**
+     * Returns whether or not this Person is a theme coodinator
+     * @return boolean Whether or not this Person is a theme coodinator
+     */
     function isThemeCoordinator(){
         self::generateThemeLeaderCache();
         return (isset(self::$themeLeaderCache[TC][$this->id]));
     }
     
+    /**
+     * Returns whether or not this Person is a theme leader of the given Project
+     * @param Project $project The Project to check
+     * @return boolean Whether or not this Person is a theme leader of the given Project
+     */
     function isThemeLeaderOf($project){
         $themes = $this->getLeadThemes();
         $challenge = $project->getChallenge();
@@ -1113,6 +1058,11 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns whether or not this Person is a theme coodinator of the given Project
+     * @param Project $project The Project to check
+     * @return boolean Whether or not this Person is a theme coordinator of the given Project
+     */
     function isThemeCoordinatorOf($project){
         $themes = $this->getCoordThemes();
         $challenge = $project->getChallenge();
@@ -1124,6 +1074,11 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns whether or not this Person is a champion of the given Project
+     * @param Project $project The Project to check
+     * @return boolean Whether or not this Person is a champion of the given Project
+     */
     function isChampionOf($project){
         $champs = $project->getChampions();
         foreach($champs as $champ){
@@ -1134,6 +1089,12 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns whether or not this Person is a champion of the given Project on the given date
+     * @param Project $project The Project to check
+     * @param string $date The date that the Person was on the Project
+     * @return boolean Whether or not this Person is a champion of the Project
+     */
     function isChampionOfOn($project, $date){
         $champs = $project->getChampionsOn($date);
         foreach($champs as $champ){
@@ -1144,6 +1105,13 @@ class Person extends BackboneModel {
         return false;
     }
     
+    /**
+     * Returns whether or not this Person is a champion of the given Project between the given dates
+     * @param Project $project The Project to check
+     * @param string $start The start date that the Person was on the Project
+     * @param string $end The end date that the Person was on the Project
+     * @return boolean Whether or not this Person is a champion of the Project
+     */
     function isChampionOfDuring($project, $start, $end){
         $champs = $project->getChampionsDuring($start, $end);
         foreach($champs as $champ){
@@ -1167,17 +1135,26 @@ class Person extends BackboneModel {
         return $this->id;
     }
     
-    // Returns the name of this Person
+    /**
+     * Returns the user name of this Person
+     * @return string The user name of this Person
+     */
     function getName(){
         return $this->name;
     }
     
-    // Returns the real name of this Person
+    /**
+     * Returns the real name of this Person
+     * @return string The real name of this Person
+     */
     function getRealName(){
         return $this->realname;
     }
     
-    // Returns the email of this Person
+    /**
+     * Returns the email address of this Person
+     * @return string The email address of this Person
+     */
     function getEmail(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
@@ -1186,6 +1163,10 @@ class Person extends BackboneModel {
         return "";
     }
     
+    /**
+     * Returns the phone number of this Person
+     * @return string The phone number of this Person
+     */
     function getPhoneNumber(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
@@ -1194,8 +1175,10 @@ class Person extends BackboneModel {
         return "";
     }
     
-    // Returns the gender of this Person
-    // Will be either "Male" "Female" or ""
+    /**
+     * Returns the gender of this Person
+     * @return string The gender of this Person
+     */
     function getGender(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
@@ -1204,7 +1187,10 @@ class Person extends BackboneModel {
         return "";
     }
     
-    // Returns the nationality of this Person
+    /**
+     * Returns the nationality of this Person
+     * @return string The nationality of this Person
+     */
     function getNationality(){
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
@@ -1252,7 +1238,11 @@ class Person extends BackboneModel {
         return "";
     }
     
-    // Returns the path to a photo of this Person if it exists
+    /**
+     * Returns the path to a photo of this Person if it exists
+     * @param boolen $cached Whether or not to use a cached version
+     * @return string The path to a photo of this Person
+     */
     function getPhoto($cached=false){
         global $wgServer, $wgScriptPath;
         if($this->photo == null || !$cached){
@@ -1269,13 +1259,19 @@ class Person extends BackboneModel {
         return $this->photo;
     }
     
-    // Returns the name of this Person with dots and spaces replaced by underscores.
+    /**
+     * Returns the name of this Person with dots replaced by spaces
+     * @return string The name of this Person with dots replaced by spaces
+     */
     function getNameForPost(){
         $repl = array('.' => '_', ' ' => '_');
         return strtr($this->name, $repl);
     }
     
-    // Returns an array of the name in the form ["first", "last"]
+    /**
+     * Returns an array of the name in the form ["first", "last"]
+     * @return array An array containing the first and last names
+     */
     function splitName(){
         if(!empty($this->realname)){
             $names = explode(" ", $this->realname);
@@ -1417,6 +1413,10 @@ class Person extends BackboneModel {
         return $telephones;
     }
     
+    /**
+     * Returns a this Person's name in the form "Last, First"
+     * @return string This Person's name in the form "Last, First"
+     */
     function getReversedName(){
         $first = $this->getFirstName();
         $last = $this->getLastName();
@@ -1428,7 +1428,10 @@ class Person extends BackboneModel {
         }
     }
 
-    // Returns a name usable in forms.
+    /**
+     * Returns a name usable in forms ("First Last" usually)
+     * @return string A name usable in forms
+     */
     function getNameForForms($sep = ' ') {
         if (!empty($this->realname))
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
@@ -1438,6 +1441,11 @@ class Person extends BackboneModel {
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
+    /**
+     * Returns the text from this Person's profile
+     * @param boolean $private If tru, then it grabs the private version, otherwise it gets the public
+     * @return string This Person's profile text
+     */
     function getProfile($private=false){
         if($private){
             return $this->privateProfile;
@@ -1447,8 +1455,10 @@ class Person extends BackboneModel {
         }
     }
     
-    // Returns the moved on row for when HQPs are inactivated
-    // Returns an array of key/value pairs representing the DB row
+    /**
+     * Returns the moved on row for when this HQP was inactivated
+     * @return array An array of key/value pairs representing the DB row
+     */
     function getMovedOn(){
         $sql = "SELECT *
                 FROM `grand_movedOn`
@@ -1467,6 +1477,10 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Returns all of the moved on rows for when this HQP was inactivated
+     * @return array An array of moved on rows
+     */
     function getAllMovedOn(){
         $sql = "SELECT *
                 FROM `grand_movedOn`
@@ -1494,9 +1508,13 @@ class Person extends BackboneModel {
         return array();
     }
 
-    // Returns the moved on row for when HQPs are inactivated
-    // Returns an array of key/value pairs representing the DB row
-    function getAllMovedOnDuring($startRange, $endRange){
+    /**
+     * Returns the people who moved on between the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array An array of People
+     */
+    static function getAllMovedOnDuring($startRange, $endRange){
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
                 WHERE date_created BETWEEN '$startRange' AND '$endRange'";
@@ -1538,8 +1556,10 @@ class Person extends BackboneModel {
         return $paper;
     }
 
-    // Returns the date that degree was started 
-    // Currently set to the supervision start date
+    /**
+     * Returns when this Person's degree started (NOTE: This is a guesstimate)
+     * @return string The date that this Person's degree started
+     */
     function getDegreeStartDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('start_date'),
@@ -1550,8 +1570,10 @@ class Person extends BackboneModel {
         return NULL;
     }
 
-    // Returns the date that degree was received
-    // Currently set to the supervision end date
+    /**
+     * Returns when this Person's degree ended (NOTE: This is a guesstimate)
+     * @return string The date that this Person's degree started
+     */
     function getDegreeReceivedDate($guess = true){
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
@@ -1645,16 +1667,28 @@ class Person extends BackboneModel {
         return $this->university;
     }
 
+    /**
+     * Returns the name of the University that this Person is at
+     * @return string The name of the University
+     */
     function getUni(){
         $university = $this->getUniversity();
         return (isset($university['university'])) ? $university['university'] : "Unknown";
     }
-
+    
+    /**
+     * Returns the name of the Department that this Person is at
+     * @return string The name of the Department
+     */
     function getDepartment(){
         $university = $this->getUniversity();
         return (isset($university['department'])) ? $university['department'] : "Unknown";
     }
-
+    
+    /**
+     * Returns the name of the Position/Title that this Person is
+     * @return string The name of the Postion/Title
+     */
     function getPosition(){
         $university = $this->getUniversity();
         return (isset($university['position'])) ? $university['position'] : "Unkown";
@@ -1800,7 +1834,10 @@ class Person extends BackboneModel {
         return "Other";
     }
     
-    // Returns an array of Strings, representing each user group name
+    /**
+     * Returns an array of groups that this Person is in
+     * @return array The groups that this Person is in
+     */
     function getGroups(){
         if($this->groups == null){
             $uTable = getTableName("user");
@@ -1819,6 +1856,10 @@ class Person extends BackboneModel {
         return $this->groups;
     }
     
+    /**
+     * Returns an array of rights that this Person has
+     * @return array The rights that this Person has
+     */
     function getRights(){
         $user = $this->getUser();
         if($user->mRights == null){
@@ -1828,8 +1869,10 @@ class Person extends BackboneModel {
         return $user->mRights;
     }
     
-    // Returns what type of Person this is.  This is determined on the Person's user page, and the namespace it is in.
-    // Since a person may belong to multiple roles, this only picks one of those roles.  This method may be useful for making urls for a PersonPage
+    /**
+     * Returns one of the roles that this person is
+     * @return string One of the roles that this person is
+     */
     function getType(){
         $roles = $this->getRoles();
         if($roles != null && count($roles) > 0){
@@ -1876,8 +1919,25 @@ class Person extends BackboneModel {
         return implode(", ", $roleNames);
     }
     
-    // Returns an array of roles that the user is a part of
-    // If history is set to true, then all the roles regardless of date are included
+    /**
+     * Returns the Role object that matches the name of the role
+     * @param string $role The name of the role
+     * @return Role The role of this Person
+     */
+    function getRole($role){
+        foreach($this->getRoles() as $r){
+            if($r->getRole() == $role){
+                return $r;
+            }
+        }
+        return new Role(array());
+    }
+    
+    /**
+     * Returns all of this Person's Roles
+     * @param boolean $history Whether or not to include all the history of roles
+     * @param array The Roles this Person has
+     */
     function getRoles($history=false){
         if($history !== false && $this->id != null){
             $this->roles = array();
@@ -1922,7 +1982,7 @@ class Person extends BackboneModel {
         return $this->roles;
     }
     
-    /*
+    /**
      * Returns the role that this Person is on the given Project
      * @param Project $project The Project to check the roles of
      * @param integer $year The year to check
@@ -1946,7 +2006,10 @@ class Person extends BackboneModel {
         return $this->getType();
     }
     
-    // Returns the first role that this Person had, null if this Person has never had any Roles
+    /**
+     * Returns the first role that this Person had
+     * @return Role The first role that this Person had, null if this Person has never had any Roles
+     */
     function getFirstRole(){
         $roles = $this->getRoles(true);
         if(count($roles) > 0){
@@ -1955,7 +2018,10 @@ class Person extends BackboneModel {
         return null;
     }
     
-    // Returns the last role that this Person had before they were Inactivated, null if this Person has never had any Roles
+    /**
+     * Returns the last role that this Person had
+     * @return Role The last role that this Person had, null if this Person has never had any Roles
+     */
     function getLastRole(){
         $roles = $this->getRoles(true);
         if(count($roles) > 0){
@@ -1964,7 +2030,11 @@ class Person extends BackboneModel {
         return null;
     }
     
-    // Checks whether the Person's last role was $role
+    /**
+     * Checks whether this Person's last Role was the given role
+     * @param string $role The name of the role
+     * @return boolean Whether this Person's last Role was the given role
+     */
     function wasLastRole($role){
         $lastRole = $this->getLastRole();
         if($lastRole != null && $lastRole->getRole() == $role){
@@ -1973,7 +2043,11 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Checks whether the Person's last role was at least $role
+    /**
+     * Checks whether this Person's last Role was at least the given role
+     * @param string $role The name of the role
+     * @return boolean Whether this Person's last Role was at least the given role
+     */
     function wasLastRoleAtLeast($role){
         global $wgRoleValues;
         if($this->getRoles() != null){
@@ -1985,7 +2059,11 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Checks whether the Person's last role was at most $role
+    /**
+     * Checks whether this Person's last Role was at most the given role
+     * @param string $role The name of the role
+     * @return boolean Whether this Person's last Role was at most the given role
+     */
     function wasLastRoleAtMost($role){
         global $wgRoleValues;
         if($this->getRoles() != null){
@@ -1996,9 +2074,13 @@ class Person extends BackboneModel {
         }
         return false;
     }
-    
-    // Returns an array of roles that the user is a part of
-    // During a given range.
+
+    /**
+     * Returns the Roles this Person had between the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array The Roles this Person had between the given dates
+     */
     function getRolesDuring($startRange, $endRange){
         if($this->id == 0){
             return array();
@@ -2028,6 +2110,11 @@ class Person extends BackboneModel {
         return $roles; 
     }
     
+    /**
+     * Returns the Roles this Person had on the given date
+     * @param string $date The date to check
+     * @return array The Roles this Person had on the given date
+     */
     function getRolesOn($date){
         if($this->id == 0){
             return array();
@@ -2045,6 +2132,10 @@ class Person extends BackboneModel {
         return $roles;        
     }
     
+    /**
+     * Returns an array of the subRoles that this Person is in
+     * @return array The subRoles that this Person is in
+     */
     function getSubRoles(){
         $roles = array();
         $data = DBFunctions::select(array('grand_role_subtype'),
@@ -2056,6 +2147,21 @@ class Person extends BackboneModel {
         return $roles;
     }
     
+    /**
+     * Returns whether or not this Person is in the subRole or not
+     * @param string $subRole The subrole to check
+     * @return boolean Whether or not this Person is in the subRole or not
+     */
+    function isSubRole($subRole){
+        $roles = $this->getSubRoles();
+        return (array_search($subRole, $roles) !== false);
+    }
+    
+    /**
+     * Returns all of the Projects that this Person has been a member of
+     * @param boolean $groupBySubs Whether or not to group by sub-projects
+     * @return array The Projects that this Person has been a member of
+     */
     function getProjectHistory($groupBySubs=false){
         $projects = array();
         $tmpProjects = array();
@@ -2091,9 +2197,13 @@ class Person extends BackboneModel {
         }
         return $projects;
     }
-    
-    // Returns an array of Projects that this Person is a part of
-    // If history is set to true, then all the Projects regardless of date are included
+
+    /**
+     * Returns an array of Projects that this Person is a part of
+     * @param boolean $history Whether or not to include the full history
+     * @param boolean $allowProposed Whether or not to include proposed projects
+     * @return array The Projects that this Person is a part of
+     */
     function getProjects($history=false, $allowProposed=false){
         $projects = array();
         if(($this->projects == null || $history) && $this->id != null){
@@ -2134,9 +2244,14 @@ class Person extends BackboneModel {
         }
         return $projects;
     }
-    
-    // Returns an array of Projects that this Person is a part of
-    // TODO: This might be slow.
+
+    /**
+     * Returns an array of Projects that this Person is a part of between the given dates
+     * @param string $start The start date
+     * @param string $end The end date
+     * @param boolean $allowProposed Whether or not to include proposed Projects
+     * @return array The Projects that this Person is a part of
+     */
     function getProjectsDuring($start, $end, $allowProposed=false){
         if(isset($this->projectCache[$start.$end])){
             return $this->projectCache[$start.$end];
@@ -2163,68 +2278,12 @@ class Person extends BackboneModel {
         return $projectsDuring;
     }
     
-    static function getAllPartnerNames(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'));
-        $names = array();
-        foreach($data as $row){
-            $names[$row['partner']] = $row['partner'];
-        }
-        return $names;
-    }
-    
-    static function getAllPartnerTitles(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'));
-        $titles = array();
-        foreach($data as $row){
-            $titles[$row['title']] = $row['title'];
-        }
-        return $titles;
-    }
-    
-    static function getAllPartnerDepartments(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'));
-        $depts = array();
-        foreach($data as $row){
-            $depts[$row['department']] = $row['department'];
-        }
-        return $depts;
-    }
-    
-    // Returns the name of the partner of this user
-    function getPartnerName(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->id)));
-        if(count($data) > 0){
-            return $data[0]['partner'];
-        }
-        return "";
-    }
-    
-    function getPartnerTitle(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->id)));
-        if(count($data) > 0){
-            return $data[0]['title'];
-        }
-        return "";      
-    }
-    
-    function getPartnerDepartment(){
-        $data = DBFunctions::select(array('grand_champion_partners'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->id)));
-        if(count($data) > 0){
-            return $data[0]['department'];
-        }
-        return "";      
-    }
-    
-    // Returns the number of months an HQP has been a part of a project for(Based on data from 2010)
+    /**
+     * Returns the number of months an HQP has been a part of a project
+     * TODO: This need to be updated! (it was used for 2010)
+     * @param Project $project The Project the HQP was on
+     * @return string The number of months
+     */
     function getHQPMonth($project){
         $sql = "SELECT months 
                 FROM grand_hqp_months
@@ -2239,6 +2298,13 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Returns the Relationships this Person has between the given dates
+     * @param string $type The type of Relationship
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array The Relationships this Person has
+     */
     function getRelationsDuring($type='all', $startRange, $endRange){
         $type = DBFunctions::escape($type);
         $startRange = DBFunctions::escape($startRange);
@@ -2270,8 +2336,12 @@ class Person extends BackboneModel {
         return $relations;
     }
     
-    // Returns an array of relations for this Person of the given type
-    // If history is set to true, then all the relations regardless of date are included
+    /**
+     * Returns the Relationships this Person has
+     * @param string $type The type of Relationship
+     * @param boolean $history Whether or not to include the full history of Relationships
+     * @return array The Relationships this Person has
+     */
     function getRelations($type='all', $history=false){
         if($type == "all"){
             $sql = "SELECT id, type
@@ -2328,42 +2398,11 @@ class Person extends BackboneModel {
         //}
         return $this->relations[$type];
     }
-    
-    // Returns an array of relations for this Person of the given type
-    // If history is set to true, then all the relations regardless of date are included
-    function getStudents($type='all', $history=false){
-        $supervision = array();
 
-        $sql = "SELECT r.id, r.type, r.user2
-                FROM grand_relations r, mw_user u1, mw_user u2
-                WHERE r.user1 = '{$this->id}'
-                AND u1.user_id = r.user1
-                AND u2.user_id = r.user2
-                AND u1.deleted != '1'
-                AND u2.deleted != '1'
-                AND r.type = 'Supervises'";
-        if(!$history){
-            $sql .= "AND start_date >= end_date";
-        }
-        $data = DBFunctions::execSQL($sql);
-
-        $students = array();
-        foreach($data as $row){
-            // if($type == "all"){
-            // }
-            // else if($type == "Masters"){
-            // }
-            // else if($type == "PhD"){
-            // }
-
-            $students[] = Person::newFromId($row['user2']);
-        }
-        
-        return $students;
-     
-    }
-
-    // Returns the contributions this person has made
+    /**
+     * Returns this Person's Contributions
+     * @return array This Person's Contributions
+     */
     function getContributions(){
         if($this->contributions == null){
             $this->contributions = array();
@@ -2386,7 +2425,11 @@ class Person extends BackboneModel {
         return $this->contributions;
     }
     
-    // Returns the contributions this person has made during the given year
+    /**
+     * Returns the Contributions this Person has made during the given year
+     * @param string $year The year of the Contribution
+     * @return array The Contribution this Person has made
+     */
     function getContributionsDuring($year){
         $contribs = array();
         foreach($this->getContributions() as $contrib){
@@ -2397,7 +2440,10 @@ class Person extends BackboneModel {
         return $contribs;
     }
     
-    // Returns an array of Multimedia involved by this Person
+    /**
+     * Returns the Multimedia this Person has made
+     * @return array the Multimedia this Person has made
+     */
     function getMultimedia(){
         if($this->multimedia == null){
             $this->multimedia = array();
@@ -2441,21 +2487,6 @@ class Person extends BackboneModel {
         return $array;
     }
     
-    // Returns an array of Acknowledgements uploaded by this Person
-    function getAcknowledgements(){
-        if($this->acknowledgements == null){
-            $this->acknowledgements = array();
-            $sql = "SELECT `id`
-                    FROM `grand_acknowledgements`
-                    WHERE user_id = '{$this->id}'";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->acknowledgements[] = Acknowledgement::newFromId($row['id']);
-            }
-        }
-        return $this->acknowledgements;
-    }
-    
     function isCandidate(){
         return $this->candidate;
     }
@@ -2473,29 +2504,42 @@ class Person extends BackboneModel {
     
     /**
      * Returns whether or not this person is a Student
-     * @return boolean Returns whether or not his person is a Student
+     * @return boolean Whether or not his person is a Student
      */
     function isStudent(){
         if($this->isRole(HQP)){
             $uni = $this->getUniversity();
-            if(strtolower($uni['position']) == 'undergraduate' ||
-               strtolower($uni['position']) == 'masters student' ||
-               strtolower($uni['position']) == 'phd student' ||
-               strtolower($uni['position']) == 'postdoc'){
+            if(strtolower($uni['position']) == "graduate student - master's" ||
+               strtolower($uni['position']) == "graduate student - doctoral" ||
+               strtolower($uni['position']) == "post-doctoral fellow" ||
+               strtolower($uni['position']) == 'undergraduate' ||
+               strtolower($uni['position']) == 'summer student'){
                 return true;
             }
         }
         return false;
     }
-    
-    // Returns whether this Person is the same as $wgUser
+
+    /**
+     * Returns whether this Person is the same as $wgUser
+     * @return boolean Whether this Person is the same as $wgUser
+     */
     function isMe(){
         global $wgUser;
         return ($wgUser->getId() == $this->getId());
     }
 
-    // Returns whether this Person is of type $role or not.
-    function isRole($role){
+    /**
+     * Returns whether this Person is the given role (on the given optional project)
+     * @param string $role The role of this Person
+     * @param Project $project The Project the Person is a role on
+     * @return boolean Whether or not the Person is the given role
+     */
+    function isRole($role, $project=null){
+        if($role == NI){
+            return ($this->isRole(AR, $project) || 
+                    $this->isRole(CI, $project));
+        }
         if($role == PL || $role == 'PL'){
             return $this->isProjectLeader();
         }
@@ -2519,7 +2563,19 @@ class Person extends BackboneModel {
         $role_objs = $this->getRoles();
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         else{
@@ -2533,7 +2589,18 @@ class Person extends BackboneModel {
         return (array_search($role, $roles) !== false);
     }
     
-    function isRoleOn($role, $date){
+    /**
+     * Returns whether this Person is the given role on the given date (on the given optional project)
+     * @param string $role The role of this Person
+     * @param string $data The date of the role
+     * @param Project $project The Project the Person is a role on
+     * @return boolean Whether or not the Person is the given role
+     */
+    function isRoleOn($role, $date, $project=null){
+        if($role == NI){
+            return ($this->isRoleOn(AR, $date, $project) || 
+                    $this->isRoleOn(CI, $date, $project));
+        }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
         if($role == PL || $role == "PL"){
@@ -2544,7 +2611,19 @@ class Person extends BackboneModel {
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){
@@ -2561,8 +2640,19 @@ class Person extends BackboneModel {
         return (array_search($role, $roles) !== false);
     }
     
-    // Returns whether this Person is of type $role or not during a specific period
-    function isRoleDuring($role, $startRange, $endRange){
+    /**
+     * Returns whether this Person is the given role between the given dates (on the given optional project)
+     * @param string $role The role of this Person
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @param Project $project The Project the Person is a role on
+     * @return boolean Whether or not the Person is the given role
+     */
+    function isRoleDuring($role, $startRange, $endRange, $project=null){
+        if($role == NI){
+            return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
+                    $this->isRoleDuring(CI, $startRange, $endRange, $project));
+        }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
         if($role == PL || $role == "PL"){
@@ -2573,7 +2663,19 @@ class Person extends BackboneModel {
         }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
-                $roles[] = $r->getRole();
+                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $skip = true;
+                    foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $roles[] = $r->getRole();
+                }
             }
         }
         if($role == EVALUATOR && $this->isEvaluator()){
@@ -2590,8 +2692,19 @@ class Person extends BackboneModel {
         return (array_search($role, $roles) !== false);
     }
     
+    /**
+     * Returns whether this Person was at least the given role between the given dates
+     * @param string $role The role of this Person
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return boolean Whether or not the Person is the given role
+     */
     function isRoleAtLeastDuring($role, $startRange, $endRange){
         global $wgRoleValues;
+        if($role == NI){
+            return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
+                    $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
+        }
         if($this->isCandidate()){
             return false;
         }
@@ -2611,9 +2724,17 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns whether or not the Person has a role of at least the given role
+    /**
+     * Returns whether this Person is at least the given role
+     * @param string $role The role of this Person
+     * @return boolean Whether or not the Person is the given role
+     */
     function isRoleAtLeast($role){
         global $wgRoleValues;
+        if($role == NI){
+            return ($this->isRoleAtLeast(AR) || 
+                    $this->isRoleAtLeast(CI));
+        }
         $me = Person::newFromWgUser();
         if($this->isCandidate()){
             return false;
@@ -2643,9 +2764,17 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns whether or not the Person has a role of at most the given role
+    /**
+     * Returns whether this Person is at most the given role
+     * @param string $role The role of this Person
+     * @return boolean Whether or not the Person is the given role
+     */
     function isRoleAtMost($role){
         global $wgRoleValues;
+        if($role == NI){
+            return ($this->isRoleAtMost(AR) || 
+                    $this->isRoleAtMost(CI));
+        }
         if($this->isCandidate()){
             return true;
         }
@@ -2663,7 +2792,10 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns an array of Person(s) who requested this User, or an empty array if there was no such Person
+    /**
+     * Returns the People who requested this Person, or an empty array if no one Requested
+     * @return array The People who requested this Person
+     */
     function getCreators(){
         $data = DBFunctions::select(array('grand_user_request'),
                                     array('DISTINCT requesting_user'),
@@ -2677,6 +2809,10 @@ class Person extends BackboneModel {
         return $creators;
     }
     
+    /**
+     * Returns the People that this Person has requested to be created
+     * @return array The People that this Person has requested to be created
+     */
     function getRequestedMembers(){
         $data = DBFunctions::select(array('grand_user_request'),
                                     array('DISTINCT wpName'),
@@ -2689,6 +2825,11 @@ class Person extends BackboneModel {
         return $members;
     }
 
+    /**
+     * Returns this Person's HQP
+     * @param mixed $history Whether or not to include all HQP in history (can also be a specific date)
+     * @return array This Person's HQP
+     */
     function getHQP($history=false){
         if($history !== false && $this->id != null){
             $this->roles = array();
@@ -2739,6 +2880,12 @@ class Person extends BackboneModel {
         return $this->hqps;
     }
     
+    /**
+     * Returns this Person's Champions between the given dates (based on the Works With relation)
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array This Person's Champions
+     */
     function getChampionsDuring($startRange, $endRange){
         $champions = array();
         $relations = $this->getRelations(WORKS_WITH, true);
@@ -2760,6 +2907,12 @@ class Person extends BackboneModel {
         return $champions;
     }
     
+    /**
+     * Returns this Person's HQP during the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array This Person's HQP
+     */
     function getHQPDuring($startRange, $endRange){
         if(isset($this->hqpCache[$startRange.$endRange])){
             return $this->hqpCache[$startRange.$endRange];
@@ -2793,6 +2946,11 @@ class Person extends BackboneModel {
         return $hqps;
     }
     
+    /**
+     * Returns this Person's Supervisors
+     * @param mixed $history Whether or not to include all Supervisors in history (can also be a specific date)
+     * @return array This Person's Supervisors
+     */
     function getSupervisors($history=false){
         if($history !== false && $this->id != null){
             $this->roles = array();
@@ -2832,6 +2990,12 @@ class Person extends BackboneModel {
         return array_values($people);
     }
     
+    /**
+     * Returns this Person's Supervisors between the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return array This Person's Supervisors
+     */
     function getSupervisorsDuring($startRange, $endRange){
         $sql = "SELECT *
                 FROM grand_relations
@@ -2858,61 +3022,11 @@ class Person extends BackboneModel {
         return $sups;
     }
 
-    function getSupervisedOnProjects($history=false){
-        if($history !== false && $this->id != null){
-            $this->roles = array();
-            if($history === true){
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user2 = '{$this->id}'
-                        AND type = 'Supervises'";
-            }
-            else{
-                $sql = "SELECT *
-                        FROM grand_relations
-                        WHERE user2 = '{$this->id}'
-                        AND type = 'Supervises'
-                        AND start_date <= '{$history}'
-                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
-            }
-            $data = DBFunctions::execSQL($sql);
-            $projects = array();
-            $project_ids = array();
-            foreach($data as $row){
-                if(!empty($row['projects'])){
-                    $p_ids = unserialize($row['projects']);
-                    foreach($p_ids as $p_id){
-                        if(!in_array($p_id, $project_ids)){
-                            $projects[] = Project::newFromId($p_id);
-                            $project_ids[] = $p_id;
-                        }
-                    }
-                }
-            }
-            return $projects;
-        }
-        $sql = "SELECT *
-                FROM grand_relations
-                WHERE user2 = '{$this->id}'
-                AND type = 'Supervises'
-                AND start_date > end_date";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        $project_ids = array();
-        foreach($data as $row){
-            if(!empty($row['projects'])){
-                $p_ids = unserialize($row['projects']);
-                foreach($p_ids as $p_id){
-                    if(!in_array($p_id, $project_ids)){
-                        $projects[] = Project::newFromId($p_id);
-                        $project_ids[] = $p_id;
-                    }
-                }
-            }
-        }
-        return $projects;
-    }
-
+    /**
+     * Returns whether this Person is a supervisor
+     * @param mixed $history Whether or not to include the full history (can also be a specific date)
+     * @return boolean Whether this Person is a supervisor
+     */
     function isSupervisor($history=false){
         if($history !== false && $this->id != null){
             $this->roles = array();
@@ -2941,35 +3055,30 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         return count($data);
     }
-    
-    // Returns True, if this Person is related to another given Person, through a given relationship
-    // Returns False, if no such relationship found
-    // Returns Null, if there is a problem with the given Person
-    //TODO: Perhaps will need to implement history argument
+
+    /**
+     * Returns whether or not this person is related to another Person through a given relationship
+     * @param Person $person The Person that this Person is related to
+     * @param string $relationship The type of Relationship
+     * @return boolean Whether or not this Person is related to another Person
+     */
     function relatedTo($person, $relationship){
         if( $person instanceof Person ){
             $person_id = $person->getId();
-            $sql = "SELECT *
-                    FROM grand_relations
-                    WHERE user1 = '{$this->id}'
-                    AND user2 = '{$person_id}'
-                    AND type = '$relationship'
-                    AND start_date > end_date";
-                
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0){
-                return true;
-            }
-            else{
-                return false;
-            }     
+            $data = DBFunctions::select(array('grand_relations'),
+                                        array('*'),
+                                        array('user1' => EQ($this->getId()),
+                                              'user2' => EQ($person->getId()),
+                                              'type' => EQ($relationship),
+                                              'start_date' => GT(COL('end_date'))));
+            return (count($data) > 0);   
         }
         else{
             return null;
         }
     }
     
-    /*
+    /**
      * Returns and array of Person objects who this Person can delegate
      * @return array The list of People who this Person can delegate
      */
@@ -2984,7 +3093,7 @@ class Person extends BackboneModel {
         return $people;
     }
     
-    /*
+    /**
      * Returns whether or not this Person is a delegate for the given Person
      * @param Person
      * @return boolean Whether or not this Person is a delegate for the given Person
@@ -3107,6 +3216,10 @@ class Person extends BackboneModel {
         return $papersArray;
     }
     
+    /**
+     * Returns when this Person's top products were last updated
+     * @return string When this Person's to products were last updated
+     */
     function getTopProductsLastUpdated(){
         $data = DBFunctions::select(array('grand_top_products'),
                                     array('changed'),
@@ -3118,6 +3231,10 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Returns the list of this Person's top products
+     * @return array This Person's top products
+     */
     function getTopProducts(){
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
@@ -3171,52 +3288,6 @@ class Person extends BackboneModel {
         return $coauthors;
     }
     
-    // Returns a list of GRAND posters created by this user, or this user's HQP
-    function getGrandPosters(){
-        $posters = array();
-        $hqps = array();
-        if(!$this->isRole(HQP)){
-            foreach($this->getHQP() as $hqp){
-                $hqps[] = $hqp->getName();
-            }
-        }
-        foreach($hqps as $hqp){
-            $sql = "SELECT p1.*
-                    FROM `mw_templatelinks` t, `mw_pagelinks`, mw_page p1, mw_page p2, mw_an_extranamespaces ns, mw_user u
-                    WHERE pl_from = p1.page_id
-                    AND pl_namespace = ns.nsId
-                    AND pl_title = p2.page_title
-                    AND pl_title = u.user_name
-                    AND t.tl_from = p1.page_id
-                    AND t.tl_title = 'Poster'
-                    AND u.user_name = '{$hqp}'
-                    AND u.deleted != '1'";
-             $data = DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                foreach($data as $row){
-                    $posters[$row['page_id']] = $row;
-                }
-            }
-        }
-        $sql = "SELECT p1.*
-                FROM `mw_templatelinks` t, `mw_pagelinks`, mw_page p1, mw_page p2, mw_an_extranamespaces ns, mw_user u
-                WHERE pl_from = p1.page_id
-                AND pl_namespace = ns.nsId
-                AND pl_title = p2.page_title
-                AND pl_title = u.user_name
-                AND t.tl_from = p1.page_id
-                AND t.tl_title = 'Poster'
-                AND u.user_name = '{$this->name}'
-                AND u.deleted != '1'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            foreach($data as $row){
-                $posters[$row['page_id']] = $row;
-            }
-        }
-        return $posters;
-    }
-    
     /**
      * Returns the date that this person became leader of the given Project
      * @param Project $project The Project that this person is/was a leader of
@@ -3263,7 +3334,7 @@ class Person extends BackboneModel {
                      'end_date'   => '0000-00-00 00:00:00');
     }
     
-    /*
+    /**
      * Returns an array of Projects that this Person is a leader or co-leader of
      * @param boolean $history Whether or not to include the entire leadership history
      * @param boolean $idsOnly Whether or not to just return the ids of the Projects
@@ -3309,8 +3380,12 @@ class Person extends BackboneModel {
         return $ret;
     }
     
-    // Returns an array of projects that the user is a leader of
-    // During a given range. If no range is provided, the range for the current year is given
+    /**
+     * Returns an array of Projects that this Person is a leader of between the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return The Projects that this Person is a leader of
+     */
     function leadershipDuring($startRange, $endRange){
         if(isset($this->leadershipCache[$startRange.$endRange])){
             return $this->leadershipCache[$startRange.$endRange];
@@ -3340,6 +3415,11 @@ class Person extends BackboneModel {
         return $projects;
     }
     
+    /**
+     * Returns an array of Projects that this Person is a leader of on the given date
+     * @param string $date The date this Person was a leader of
+     * @return The Projects that this Person is a leader of
+     */
     function leadershipOn($date){
         if(isset($this->leadershipCache[$date])){
             return $this->leadershipCache[$date];
@@ -3363,7 +3443,12 @@ class Person extends BackboneModel {
         return $projects;
     } 
     
-    // Returns true if this person is a leader or co-leader of a given project, false otherwise
+    /**
+     * Returns whether or not this Person is a leader of a given Project
+     * @param mixed $project The Project object (or name)
+     * @param string $type The type of leadership (depricated)
+     * @return boolean Whether or not this Person is a leader of a given Project
+     */
     function leadershipOf($project, $type=null) {
         if($project instanceof Project){
             $p = $project;
@@ -3400,7 +3485,10 @@ class Person extends BackboneModel {
         return false;
     }
     
-    // Returns true if the person is a leader of at least one project
+    /**
+     * Returns whether or not this Person is a leader of at least one Project
+     * @return boolean Whether or not this Person is a leader
+     */
     function isProjectLeader(){
         if($this->isProjectLeader != null){
             return $this->isProjectLeader;
@@ -3415,6 +3503,12 @@ class Person extends BackboneModel {
         return $this->isProjectLeader;
     }
     
+    /**
+     * Returns whether or not this Person was a leader between the given dates
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @return boolean Whether or not this Person was a leader
+     */
     function isProjectLeaderDuring($startRange, $endRange){
         $sql = "SELECT p.id
                 FROM grand_project_leaders l, grand_project p
@@ -3437,24 +3531,10 @@ class Person extends BackboneModel {
         }
     }
     
-    function getLeadProjects(){
-        $sql = "SELECT l.*
-                FROM grand_project_leaders l
-                WHERE l.user_id = '{$this->id}'
-                AND l.type = 'leader'
-                AND (l.end_date = '0000-00-00 00:00:00'
-                     OR l.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            $projects[$project->getName()] = $project;
-        }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
-    }
-    
+    /**
+     * Returns the Themes that this Person is a leader of
+     * @return array The Themes that this Person is a leader of
+     */
     function getLeadThemes(){
         $themes = array();
         self::generateThemeLeaderCache();
@@ -3467,6 +3547,10 @@ class Person extends BackboneModel {
         return $themes;
     }
     
+    /**
+     * Returns the Themes that this Person is a coordinator of
+     * @return array The Themes that this Person is a coordinator of
+     */
     function getCoordThemes(){
         $themes = array();
         self::generateThemeLeaderCache();
@@ -3667,18 +3751,12 @@ class Person extends BackboneModel {
         }
         return "";
     }
-
-    function isUnassignedEvaluator(){
-        $current_evals = array(17,563,152,25,90,27,28,564,32,565,566,36,38,41,48,55,60,61,150,717,1263,1316,1317);
-        if(in_array($this->id, $current_evals)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
     
-    // Returns true if the person is an evaluator
+    /**
+     * Returns whether or not this Person is an evaluator on the given Year
+     * @param string $year The year this Person was an evaluator
+     * @return boolean Whether or not this Person is an evaluator
+     */
     function isEvaluator($year = YEAR){
         if(!isset($this->isEvaluator[$year])){
             $sql = "SELECT *
@@ -3696,7 +3774,11 @@ class Person extends BackboneModel {
 	    return $this->isEvaluator[$year];
     }
     
-    // Returns the list of Evaluation Submissions for this person
+    /**
+     * Returns the list of evaluation assignments for this Person
+     * @param string $year The year for the assignments
+     * @return array The evaluation assignments for this Person
+     */
     function getEvaluateSubs($year = YEAR){
         $sql = "SELECT *
                 FROM grand_eval
@@ -3716,6 +3798,12 @@ class Person extends BackboneModel {
         return $subs;
     }
     
+    /**
+     * Returns all of the evaluation assignments
+     * @param string $type The type of assignment
+     * @param string $year The year for the assignments
+     * @return array The evaluation assignments
+     */
     static function getAllEvaluates($type, $year = YEAR){
         $type = DBFunctions::escape($type);
         
@@ -3737,6 +3825,12 @@ class Person extends BackboneModel {
         return $subs;
     }
 
+    /**
+     * Returns all of the evaluation assignments for this Person
+     * @param string $type The type of assignment
+     * @param string $year The year for the assignments
+     * @return array The evaluation assignments for this Person
+     */
     function getEvaluates($type, $year = YEAR){
         $type = DBFunctions::escape($type);
         
@@ -3763,41 +3857,13 @@ class Person extends BackboneModel {
         return $subs;
     }
 
-    function getEvaluateNIs($year = YEAR){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE user_id = '{$this->id}'
-                AND type = 'NI'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            if($row['type'] == "NI"){
-                $subs[] = Person::newFromId($row['sub_id']);
-            }
-        }
-        return $subs;
-    }
-    
-    function getEvaluateProjects($year = YEAR){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE user_id = '{$this->id}'
-                AND type = 'Project'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            if($row['type'] == "Project"){
-                $subs[] = Project::newFromId($row['sub_id']);
-            }
-        }
-        return $subs;
-    }
-
-    // Returns a list of the evaluators who are evaluating this Person
-    // Provide type 
-    function getEvaluators($type='Researcher', $year = YEAR){
+    /**
+     * Returns a list of the evaluators who are evaluating this Person
+     * @param string $year The year of the evaluation
+     * @param string $type The type of evaluation
+     * @return array The list of People who are evaluating this Person
+     */
+    function getEvaluators($year = YEAR, $type='Researcher'){
         $sql = "SELECT *
                 FROM grand_eval
                 WHERE sub_id = '{$this->id}'
@@ -3858,6 +3924,11 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Returns whether or not this Person received the given Contribution
+     * @param Contribution $contribution The Contribution
+     * @return boolean Whether or not this Person received the given Contribution
+     */
     function isReceiverOf($contribution){
         if($contribution instanceof Contribution){
             $con_people = $contribution->getPeople();
@@ -3881,6 +3952,14 @@ class Person extends BackboneModel {
         }
     }
     
+    /**
+     * Returns whether or not this Person has the specified reporting ticket
+     * @param mised $project The report's Project (can also be an id or name)
+     * @param string $year The year of the report
+     * @param string $reportType The type of report
+     * @param string $ticket The ticket string
+     * @return boolean Whether or not this Person has the specified reporting ticket
+     */
     function hasReportingTicket($project, $year, $reportType, $ticket){
         $year = str_replace("'", "", $year);
         $ticket = str_replace("'", "", $ticket);

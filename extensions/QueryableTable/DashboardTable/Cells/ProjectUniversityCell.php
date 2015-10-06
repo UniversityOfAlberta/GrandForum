@@ -20,11 +20,8 @@ class ProjectUniversityCell extends Cell{
         }
         if(isset($params[2])){
             $person = Person::newFromName($params[2]);
-            $uni = $person->getPartnerName();
-            $dept = $person->getPartnerTitle();
-            
-            $uni = ($uni == "") ? $person->getUni() : $uni;
-            $dept = ($dept == "") ? $person->getDepartment() : $dept;
+            $uni = $person->getUni();
+            $dept = $person->getPosition();
             
             $university = University::newFromName($uni);
             if($university->getName() != ""){

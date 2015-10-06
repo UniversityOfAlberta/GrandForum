@@ -6,6 +6,7 @@ class BudgetReportItem extends AbstractReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 		$template = $this->getAttr('template', 'GRAND Researcher Budget Request (2015-16).xls');
+		$budgetText = $this->getAttr('budgetText', 'Budget');
 		if(isset($_GET['downloadBudget'])){
 		    $data = $this->getBlobValue();
 		    if($data != null){
@@ -43,20 +44,21 @@ class BudgetReportItem extends AbstractReportItem {
                                 }
                             </script>");
 		$wgOut->addHTML("<div>");
-		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>Budget Template</a></li></ul>");
-		$wgOut->addHTML("<h2>Budget Upload</h2>
+		$wgOut->addHTML("<h2>Download {$budgetText} Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>");
+		$wgOut->addHTML("<h2>{$budgetText} Upload</h2>
 		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
 	function renderForPDF(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+	    $budgetText = $this->getAttr('budgetText', 'Budget');
 	    if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
 	        $data = $this->getBlobValue();
             $link = $this->getDownloadLink();
             $html = "";
             if($data !== null && $data != ""){
-                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls'>Download&nbsp;<b>Budget</b></a>";
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
             }
             $item = $this->processCData($html);
             $wgOut->addHTML($item);
@@ -68,7 +70,9 @@ class BudgetReportItem extends AbstractReportItem {
 		        $budget = new Budget("XLS", $structure, $data);
 		        $budget = $this->filterCols($budget);
 		        $budget = $budget->copy()->filterCols(V_PROJ, array(""));
-		        self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
+		        if($structure == REPORT2_STRUCTURE){
+		            self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
+		        }
 		        $errors = self::checkDeletedProjects($budget, $this->getReport()->person, $this->getReport()->year);
 		        foreach($errors as $key => $error){
 	                $budget->errors[0][] = $error;
@@ -79,7 +83,7 @@ class BudgetReportItem extends AbstractReportItem {
 		        $wgOut->addHTML($budget->renderForPDF());
 		    }
 		    else{
-		        $wgOut->addHTML("You have not yet uploaded a budget");
+		        $wgOut->addHTML("You have not yet uploaded a ".strtolower($budgetText));
 		    }
 		}
 	}
@@ -87,6 +91,7 @@ class BudgetReportItem extends AbstractReportItem {
 	function budgetUploadForm(){
 	    global $wgServer, $wgScriptPath;
 	    $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+	    $budgetText = $this->getAttr('budgetText', 'Budget');
 	    if(isset($_POST['upload'])){
 	        $this->save();
 	    }
@@ -170,8 +175,9 @@ class BudgetReportItem extends AbstractReportItem {
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
-
-		    self::checkTotals($budget, $person, $this->getReport()->year);
+		    if($structure == REPORT2_STRUCTURE){
+		        self::checkTotals($budget, $person, $this->getReport()->year);
+		    }
 		    $errors = self::checkDeletedProjects($budget, $person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
@@ -182,7 +188,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    echo $budget->render();
 		}
 		else{
-		    echo "You have not yet uploaded a budget";
+		    echo "You have not yet uploaded a ".strtolower($budgetText);
 		}
 		echo "      </div>
 		        </body>

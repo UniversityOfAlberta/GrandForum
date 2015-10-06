@@ -43,7 +43,7 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data != ""){
             $json = json_decode($data);
             $name = $json->name;
-            $html = "<a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a>";
+            $html = "<p><a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a></p><br />";
         }
         $item = $this->processCData($html);
         $wgOut->addHTML($item);

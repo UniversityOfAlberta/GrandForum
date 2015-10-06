@@ -91,7 +91,7 @@ class AddMember extends SpecialPage{
     }
     
     function generateViewHTML($wgOut){
-        global $wgScriptPath, $wgServer, $config;
+        global $wgScriptPath, $wgServer, $config, $wgEnableEmail;
         $history = false;
         if(isset($_GET['history']) && $_GET['history'] == true){
             $history = true;
@@ -190,6 +190,7 @@ class AddMember extends SpecialPage{
                                 <input type='checkbox' name='subtype[]' value='Alumni HQP' />Alumni HQP
                              </td>");
             }
+            $wpSendMail = ($wgEnableEmail) ? "true" : "false";
             $wgOut->addHTML("
                         <td>{$request->getCandidate(true)}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
@@ -202,7 +203,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
-                            <input type='hidden' name='wpSendMail' value='true' />");
+                            <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){
                 if($request->isCreated()){
                     $wgOut->addHTML("<td>Accepted</td>");
@@ -300,18 +301,14 @@ class AddMember extends SpecialPage{
 
         $projects = Project::getAllProjects();
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Master's", "PhD", "PDF", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
-        
-        $titles = array_merge(array(""), Person::getAllPartnerTitles());
-        $organizations = array_merge(array(""), Person::getAllPartnerNames());
-        $depts = array_merge(array(""), Person::getAllPartnerDepartments());
-        
+               
         $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
         $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");

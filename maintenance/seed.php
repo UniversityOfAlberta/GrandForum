@@ -209,16 +209,16 @@ createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Re
 
 addUserRole("Manager.User1", MANAGER);
 addUserRole("Staff.User1", STAFF);
-addUserRole("PL.User1", NI);
-addUserRole("TL.User1", NI);
+addUserRole("PL.User1", CI);
+addUserRole("TL.User1", CI);
 addUserRole("RMC.User1", RMC);
-addUserRole("RMC.User1", NI);
+addUserRole("RMC.User1", CI);
 addUserRole("RMC.User2", RMC);
 addUserRole("CHAMP.User1", CHAMP);
 addUserRole("CHAMP.User2", CHAMP);
-addUserRole("NI.User1", NI);
-addUserRole("NI.User2", NI);
-addUserRole("NI.User3", NI);
+addUserRole("NI.User1", CI);
+addUserRole("NI.User2", CI);
+addUserRole("NI.User3", CI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);

@@ -6,7 +6,17 @@ class TabUtils {
 
     static $customActions = array();
     
-    static function createTab($text, $href="", $selected=false){
+    /**
+     * Creates and returns a top level tab that can be appended to the $tabs global
+     * \code
+     * $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Top Tab");
+     * \endcode
+     * @param string $text The text that will show up on the tab
+     * @param string $href The url that the go to 
+     * @param string $selected Whether the tab is currently selected or not (should be "selected" if true)
+     * @return array The array of tab information ['id', 'text', 'href', 'selected', 'subtabs']
+     */
+    static function createTab($text, $href="", $selected=""){
         return array('id' => "lnk-".htmlspecialchars($text),
                      'text' => $text,
                      'href' => $href,
@@ -14,18 +24,46 @@ class TabUtils {
                      'subtabs' => array());
     }
     
-    static function createSubTab($text, $href="", $selected=false){
+    /**
+     * Creates and returns a sub-level tab that can be appended to a top level tab in the $tabs global
+     * SubTabs can also be appended to the dropdowns of other SubTabs
+     * \code
+     * $GLOBALS['tabs']['Main']['subtabs'][] = TabUtils::createSubTab("Sub Tab", "{$url}", "$selected");
+     * \endcode
+     * @param string $text The text that will show up on the tab
+     * @param string $href The url that the go to 
+     * @param string $selected Whether the tab is currently selected or not (should be "selected" if true)
+     * @return array The array of tab information ['text', 'href', 'selected', 'dropdown']
+     */
+    static function createSubTab($text, $href="", $selected=""){
         return array('text' => $text,
                      'href' => $href,
                      'selected' => $selected,
                      'dropdown' => array());
     }
     
+    /**
+     * Creates and returns a toolbox header that can be appended to the $toolbox global
+     * \code
+     * $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Header");
+     * \endcode
+     * @param string $text The text that will show up on the header
+     * @return array The array of header information ['text', 'links']
+     */
     static function createToolboxHeader($text){
         return array('text' => $text, 
                      'links' => array());
     }
     
+    /**
+     * Creates and returns a toolbox link that can be appended to a header in the $toolbox global
+     * \code
+     * $GLOBALS['toolbox']['Other'][] = TabUtils::createToolboxLink("Toolbox Link", "{$url}");
+     * \endcode
+     * @param string $text The text that will show up on the link
+     * @param string $href $href The url that the go to
+     * @return array The array of link information ['text', 'href']
+     */
     static function createToolboxLink($text, $href){
         return array('text' => $text,
                      'href' => $href);

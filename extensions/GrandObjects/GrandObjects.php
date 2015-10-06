@@ -4,6 +4,7 @@ require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
 require_once("Blob.php");
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
+define("MENTORS", 'Mentors');
 
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');

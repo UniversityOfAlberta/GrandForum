@@ -10,7 +10,11 @@ class UIElementArray extends UIElement {
         $this->elements = array();
     }
     
-    // Prepends $element to the beginning this UIElementArray
+    /**
+     * Prepends the UIElement to the beginning of this UIElementArray
+     * @param UIElement $element The element to append
+     * @return UIElementArray this UIElementArray
+     */
     function prepend($element){
         $newArray = array();
         $newArray[] = $element;
@@ -19,14 +23,21 @@ class UIElementArray extends UIElement {
         return $this;
     }
     
-    // Appends $element to the end of this UIElementArray
+    /**
+     * Appends the UIElement to the end of this UIElementArray
+     * @param UIElement $element The element to append
+     * @return UIElementArray this UIElementArray
+     */
     function append($element){
         $this->elements[] = $element;
         $element->parent = $this;
         return $this;
     }
     
-    // Removes the UIElement with the id $elementId
+    /**
+     * Removes the UIElement with the given id
+     * @param string $elementId The id of the UIElement to remove
+     */
     function remove($elementId=""){
         if($elementId == "" && $this->parent()){
             $this->parent()->remove($this->id);
@@ -43,7 +54,12 @@ class UIElementArray extends UIElement {
         $this->elements = $newArray;
     }
     
-    // Inserts $element before the UIElement with the id $beforeId
+    /**
+     * Inserts a UIElement before the UIElement with the given id
+     * @param UIElement $element The UIElement to insert
+     * @param string $beforeId The id of the UIElement to add before
+     * @return UIElementArray this UIElementArray
+     */
     function insertBefore($element, $beforeId){
         $newElements = array();
         foreach($this->elements as $el){
@@ -57,7 +73,12 @@ class UIElementArray extends UIElement {
         return $this;
     }
     
-    // Inserts $element after the UIElement with the id $afterId
+    /**
+     * Inserts a UIElement after the UIElement with the given id
+     * @param UIElement $element The UIElement to insert
+     * @param string $beforeId The id of the UIElement to add after
+     * @return UIElementArray this UIElementArray
+     */
     function insertAfter($element, $afterId){
         $newElements = array();
         foreach($this->elements as $el){
@@ -71,8 +92,12 @@ class UIElementArray extends UIElement {
         return $this;
     }
     
-    // Returns the element with the id $id
-    // If there are two elements with the same id, the first one is returned
+    /**
+     * Returns the UIElement with the given id
+     * If there are two elements with the same id, the first one is returned
+     * @param string $id The id of the UIElement
+     * @return UIElement The UIElement with the given id
+     */
     function getElementById($id){
         foreach($this->elements as $element){
             if($element->id == $id){
@@ -88,8 +113,12 @@ class UIElementArray extends UIElement {
         return null;
     }
     
-    // Returns the element with the name $name
-    // If there are two elements with the same name, the first one is returned
+    /**
+     * Returns the UIElement with the given name
+     * If there are two elements with the same name, the first one is returned
+     * @param string $name The name of the UIElement
+     * @return UIElement The UIElement with the given name
+     */
     function getElementByName($name){
         foreach($this->elements as $element){
             if($element->name == $name){

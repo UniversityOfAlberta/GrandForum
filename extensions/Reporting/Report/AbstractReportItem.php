@@ -302,7 +302,7 @@ abstract class AbstractReportItem {
         return $value;
     }
     
-    /*
+    /**
      * Returns the MD5 code for this blob
      */
     function getMD5(){
@@ -315,7 +315,7 @@ abstract class AbstractReportItem {
 	    return $md5;
     }
     
-    /*
+    /**
      * Returns the download link for this blob
      */
     function getDownloadLink(){
@@ -328,7 +328,10 @@ abstract class AbstractReportItem {
 	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}{$mime}";
     }
     
-    // Sets the Blob value for this item
+    /**
+     * Sets the Blob value for this AbstractReportItem
+     * @param mixed $value The value of this AbstractReportItem
+     */
     function setBlobValue($value){
         $report = $this->getReport();
         $section = $this->getSection();
@@ -428,7 +431,7 @@ abstract class AbstractReportItem {
                         $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                     }
                     else{
-                        $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                        $cdata = str_replace("{".$m."}", $v, $cdata);
                     }
                 }
             }

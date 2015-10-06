@@ -121,7 +121,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'addHQPThesis', new AddHQPThesisAPI());
 		$this->addAction('User Accounts', 'addHQPMovedOn', new AddHQPMovedOnAPI());
 		$this->addAction('User Accounts', 'addRelation', new AddRelationAPI());
-		$this->addAction('User Accounts', 'addUserPartner', new UserPartnerAPI());
 		$this->addAction('User Accounts', 'updateUserTwitterAccount', new UserTwitterAccountAPI());
 		$this->addAction('User Accounts', 'updateUserPhone', new UserPhoneAPI());
 		$this->addAction('User Accounts', 'updateUserWebsite', new UserWebsiteAPI());
@@ -132,7 +131,6 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserUniversity', new UserUniversityAPI());
 		$this->addAction('User Accounts', 'updateUserProfile', new UserProfileAPI());
 		$this->addAction('User Accounts', 'updateProjectRelation', new UpdateProjectRelationAPI());
-		$this->addAction('User Accounts', 'updateUserPartner', new UserPartnerAPI());
 		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());

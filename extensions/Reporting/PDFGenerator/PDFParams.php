@@ -50,6 +50,7 @@ define('RPTP_SAB_REPORT',       201);
 define('RPTP_RMC_PROJ_REPORT',  202);
 define('RPTP_CATALYST',         203);
 define('RPTP_TRANS',            204);
+define('RPTP_SAB_CAT_REPORT',   205);
 
 /*
  * AGE-WELL
@@ -60,6 +61,7 @@ define('RPTP_CC1_PLANNING',     302);
 define('RPTP_CC2_PLANNING',     303);
 define('RPTP_CC3_PLANNING',     304);
 define('RPTP_CC4_PLANNING',     305);
+define('RPTP_PL_FEEDBACK',      306);
 
 /*
  * TVN

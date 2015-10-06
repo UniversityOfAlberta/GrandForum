@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Textual blob types.
  *
  * These instruct the renderer to act accordingly.
@@ -9,7 +9,7 @@ define('BLOB_TEXT',		1);
 define('BLOB_HTML',		2);
 define('BLOB_WIKI',		3);
 
-/*
+/**
  * Structured blobs.
  *
  * Most structured blobs can be handled as arrays, which are serialized for
@@ -54,7 +54,7 @@ define('BLOB_MILESTONESTATUS',	1032);
 define('BLOB_CONTRIBUTION',	1033);
 
 
-/*
+/**
  * Binary blobs.
  *
  * These blobs hold specialized data, such as PDFs or Excel spreadsheets.
@@ -63,7 +63,7 @@ define('BLOB_PDF',		16384);
 define('BLOB_EXCEL',		16385);
 
 
-/*
+/**
  * Super special blobs.
  *
  * These are corner cases: a blob whose type is undefined.  The NULL blob should

@@ -40,6 +40,16 @@ Feature: User Profile
         And I should see "This is a new University"
         But I should not see "University of Alberta"
         
+    Scenario: Editing University info with a University which has different casing
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "My Profile"
+        And I press "Edit Bio"
+        And I fill in "combo_university" with "university of alberta"
+        And I press "Save Bio"
+        Then I should see "'Bio' updated successfully."
+        And I should see "University of Alberta"
+        But I should not see "This is a new University"
+        
     Scenario: Editing Profile text
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "My Profile"

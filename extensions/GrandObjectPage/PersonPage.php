@@ -86,7 +86,7 @@ class PersonPage {
                 }
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
-                $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor));
+                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
                 $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
@@ -99,10 +99,7 @@ class PersonPage {
                     $_POST['submit'] = "Edit Main";
                 }
                 
-                /*
-                 * Start the PersonPage
-                 */
-                
+                // Start the PersonPage
                 $visibility = array();
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
@@ -114,8 +111,12 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
+                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP) || $person->isRole(HQP."-Candidate")){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                }
+                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
@@ -181,7 +182,7 @@ class PersonPage {
         return true;
     }
     
-    /*
+    /**
      * Displays the title for this person
      */
     function showTitle($person, $visibility){

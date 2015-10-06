@@ -36,6 +36,7 @@ Extension Documentation
 
    project evolution
    messages
+   backbonepage
    userinterface
    queryabletable
    report

@@ -31,20 +31,41 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if($person->isRole(PL)){
+        $hqps = $person->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        if($person->isRole(PL) && !$person->isRole(HQP)){
             foreach($person->leadership() as $project){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
                 
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
-                
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (IFP Update)", "{$url}IFPProgressReport&project={$project->getName()}", $selected);
-                
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (IFP Final)", "{$url}IFPFinalReport&project={$project->getName()}", $selected);
             }
+        }
+        if(count($hqps) > 0){
+            foreach($hqps as $hqp){
+                if($hqp->isSubRole("SSA")){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SSA Report", "{$url}HQPReport", $selected);
+                    break;
+                }
+            }
+            foreach($hqps as $hqp){
+                if($hqp->isSubRole("IFP")){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFPProgressReport", $selected);
+                    
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
+                    break;
+                }
+            }
+        }
+        if($person->isSubRole('IFP')){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Progress", "{$url}IFPProgressReport", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
         }
         if($person->isRole(NI)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;

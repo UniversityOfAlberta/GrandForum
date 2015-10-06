@@ -10,12 +10,13 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="information" tooltip="1a. Project and Team Information" name="Project Information" title="1a. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
+    <ReportSection id="information" tooltip="1. Project and Team Information" name="Project Information" title="1. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
@@ -43,7 +44,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="CI,PL" blobIndex="personId">
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId">
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -52,7 +53,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -73,7 +74,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="AR">
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI">
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -82,7 +83,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -112,7 +113,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -132,13 +133,54 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" name="Milestones" title="1b. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1b. Project Milestones and Deliverables" type="ReportSection">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+    <ReportSection id="milestones" name="Research Progress" title="1. Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" tooltip="1. Project Milestones and Deliverables" type="EditableReportSection">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
-                <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/TVN%20Milestones.xls">milestone template</a> and upload it below.
+                <p>List all milestones and deliverables as approved in the original proposal and any subsequent amendments, and their status of completion.  
+                   Also, list any milestones/deliverables that were removed/deleted or added since the approval of the original proposal.
                 </p>
+                <h2>Milestones</h2>
+                <h3>Year 1</h3>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES3" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 3</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Deliverables</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES3" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 3</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="incomplete" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_MIL_INCOMPLETE" rich="true" optional="true">
+            <![CDATA[
+                <h2>Incomplete, Delayed, Deleted or New Milestones/Deliverables</h2>
+                <p>If applicable, explain why a milestone/deliverable was not completed, deleted, or why a new milestones/deliverable was added.</p>
+                {$item}
+                <b style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via <a href='mailto:research@tvn-nce.ca'>research@tvn-nce.ca</a>.</b>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -153,7 +195,7 @@
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>Executive Summary</h3>
-                <p>Provide a non-confidential Executive Summary in lay terms of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
+                <p>Provide a non-confidential Executive Summary in <b>lay terms</b> of your research findings and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -182,7 +224,16 @@
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <h3>Dissemination of Project Research Results</h3>
+                <h2>Dissemination of Project Research Results</h2>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  
+                   Make sure that the product is associated with the project '{$project_name}'.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="materials" type="UploadReportItem" blobItem="FINAL_KTEE_UPLOAD" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                <h3>Research Documents</h3>
+                <p>If you would like to include any research documents, please attach them below as a zip archive</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -195,7 +246,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" name="Partnerships" title="4. Partnerships" tooltip="4. Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
-        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="200|150|75|100|100|100" types="Text|ComboBox(University, Federal dept./agency, Provincial dept./agency, Industry)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" sizes="200|150|75|100|100|100" types="Text|Select(Advocacy groups,Associations,Foundations,Government - provincial,Government - federal,Provincial research offices,Not for profit organizations,Single disease associations/groups,Industry - banks and trust,Industry - life insurance,Industry - pharmaceutical and biotechnology,Industry - medical devices,Industry - other,Other)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
             <![CDATA[
                 <p>Provide a comparison of the actual cash and in-kind contributions from partners since award, with the projected commitments described in the original proposal.  Explain changes in the level of partner commitment, if any. Detailed information should also be provided in the Financial Report spreadsheet.</p>
 <p style='line-height:1em'><small>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</small></p>
@@ -211,10 +262,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="engage" name="Engagement" title="5. Patient/Citizen Engagement" tooltip="5. Patient/Citizen Engagement" blobSection="FINAL_ENGAGE" type="EditableReportSection">
+    <ReportSection id="engage" name="Citizen Engagement" title="5. Patient/Citizen Engagement" tooltip="5. Patient/Citizen Engagement" blobSection="FINAL_ENGAGE" type="EditableReportSection">
         <ReportItem id="engage" type="TextareaReportiTem" blobItem="FINAL_ENGAGE_PATIENT" rich="true">
             <![CDATA[
-                <p>A well designed research project necessarily involves a project team that is composed of patients, patient’s families, caregivers, knowledge users, HQP and researchers.  All of these individuals should be meaningful involved and integral in the planning and execution of the research project , and/or in assisting in the interpretation and translation/mobilization of research findings.  With this in mind please describe the role/activities that each patient, patient family member and other informal caregiver played in the planning and execution of the project, along with their role in the interpretation of, and dissemination of research findings.  Please also reference Section 1a Project Team and Roles table if applicable.</p>
+                <p>A well designed research project necessarily involves a project team that is composed of patients, patient’s families, caregivers, knowledge users, HQP and researchers.  All of these individuals should be meaningfully involved and integral in the planning and execution of the research project , and/or in assisting in the interpretation and translation/mobilization of research findings.  With this in mind please describe the role/activities that each patient, patient family member and other informal caregiver played in the planning and execution of the project, along with their role in the interpretation of, and dissemination of research findings.  Please also reference Section 1a Project Team and Roles table if applicable.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -228,10 +279,42 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="planning" name="Networking Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
-        <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
+    <ReportSection id="planning" name="Network Planning" tooltip="7. Network Planning Information" title="7. Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
+        <ReportItem id="findings" type="RadioReportItem" blobItem="FINAL_PLAN_FINDINGS" orientation="vertical" options="Yes|No">
             <![CDATA[
                 <p>Please assess your project against the following.</p>
+                <h3>Research Findings</h3>
+                <p><small>Have the research findings from this work been incorporated into a new grant submission for additional funding?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_FINDINGS_YES" optional="true" width="550px" height="100px">
+            <![CDATA[
+                <p><small>If Yes, which agency have you applied for additional funding and what is the funding amount requested?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings_no" type="RadioReportItem" blobItem="FINAL_PLAN_FINDINGS_NO" orientation="vertical" options="Yes|No" optional="true">
+            <![CDATA[
+                <p><small>If No, Do you anticipate submitting a grant for funding in the next 6 months?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="additional" type="RadioReportItem" blobItem="FINAL_PLAN_ADDITIONAL" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Additional Research</h3>
+                <p><small>Did this work lead to additional research funding being secured by you and/or other project team members?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="additional_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_ADDITIONAL_YES" optional="true" width="550px" height="100px">
+            <![CDATA[
+                <p><small>If Yes, please provide information on the funding agency, the total funding awarded, length of the grant and title of the grant.</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
+            <![CDATA[
                 <h3>Research Themes</h3>
                 <p><small>Which TVN research themes does your project most closely fall under?</small></p>
                 {$item}
@@ -309,11 +392,167 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN Budget.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="FINAL_HQP" name="HQP Trainees">
+        <ReportItem id="instructions" type="StaticReportItem">
+            <![CDATA[
+                <p>Click on the HQP's header and fill in any relevant information.  You may need to edit the HQP's profile in order for all of the information to show up.</p>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="demographic_head" type="StaticReportItem">
+                    <![CDATA[
+                        <h3>Demographic Information</h3>
+                        <a href='{$user_url}' target='_blank'>Profile</a>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grant" type="TextReportItem" width="300px" blobType="BLOB_TEXT" blobItem="SSA_HQP_GRANT" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Grant Title:</td>
+                            <td>{$project_name}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="uni" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>University Attended:</td>
+                            <td>{$user_uni}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="category" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>HQP Category:</td>
+                            <td>{$user_level}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="gender" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Gender:</td>
+                            <td>{$user_gender}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="start" type="CalendarReportItem" width="80px" blobType="BLOB_TEXT" blobItem="SSA_HQP_START" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Start Date:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nationality" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Nationality:</td>
+                            <td>{$user_nationality}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_TERM" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Trainee Term:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Term Completed:</td>
+                            <td>{$item} months</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                        <h2>Dissemination of Project Research Results</h2>
+                        <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  
+                           Make sure that the product is associated with the project '{$project_name}'.</p>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="person">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="additional_head" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                        <h3>Additional Information</h3>
+                        <table class='wikitable'>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="training" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Participating in the TVN Training Program?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="experiences" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EXP" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Other Training Experiences provided:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="thesis" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_THESIS" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Thesis Completed:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="grad" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_GRAD" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Graduate?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="empl" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_EMPL" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Did The Student Gain Employment?</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="where" type="TextReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_WHERE" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'><small>If yes, please indicate where they were employed?</small></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="additional_foot" type="StaticReportItem">
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

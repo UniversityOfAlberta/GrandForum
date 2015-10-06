@@ -64,22 +64,16 @@ class IndexTable {
         }
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
-        if($wgUser->isLoggedIn()){
-            $selected = ($wgTitle->getText() == "Products" || 
-                         $wgTitle->getText() == "Multimedia" ||
-                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
-            $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-            $structure = Product::structure();
-            $categories = array_keys($structure['categories']);
-            foreach($categories as $category){
-                if(Product::countByCategory($category) > 0){
-                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
-                }
+        $selected = ($wgTitle->getText() == "Products" || 
+                     $wgTitle->getText() == "Multimedia" ||
+                     $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
+        $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
+        $structure = Product::structure();
+        $categories = array_keys($structure['categories']);
+        foreach($categories as $category){
+            if(Product::countByCategory($category) > 0){
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
             }
-            if(Material::countByCategory() > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
-            }
-            $tabs['Main']['subtabs'][] = $productsSubTab;
         }
         $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
@@ -87,6 +81,11 @@ class IndexTable {
         $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
         $tabs['Main']['subtabs'][] = $grantSubTab;
+        
+	if(Material::countByCategory() > 0){
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
+        }
+        $tabs['Main']['subtabs'][] = $productsSubTab;
        
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
@@ -210,7 +209,7 @@ class IndexTable {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the projects
 	 * Consists of the following columns
 	 * Acronym | Name 
@@ -252,7 +251,7 @@ class IndexTable {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the themes
 	 * Consists of the following columns
 	 * Theme | Name 
@@ -291,7 +290,7 @@ EOF;
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table of Admin Projects
 	 */
 	private function generateAdminTable(){

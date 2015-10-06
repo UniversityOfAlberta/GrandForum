@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true" personId="0">
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -10,21 +10,40 @@
     <ReportSection id="milestones" title="Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" type="HeaderReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>{$this_year} IFP Final Project Report</h4><br />
-                <p><b><u>TVN Project File Number</u></b></p>{$project_name}<br /><br />
-                <p><b><u>Project Title</u></b></p>{$project_full_name}<br /><br />
-                <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
+                <h4 style='font-size:1.40em;'>{$this_year} IFP Progress Report</h4><br />
+                <p><b><u>Name</u></b></p>{$user_name}<br /><br />
+                <br /><br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="IFP_FINAL_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Status of Project Milestone</h3>
+                <h2>Deliverables</h2>
+                <h3>Year 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELETED" labels="Incomplete or New Deliverable|Reasons for Incompletion or Addition" types="Text|Textarea" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <br /><br />
+                <h2>Incomplete, New or Deleted Deliverables</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="delayed2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELAYED2" labels="Delayed Deliverable|Solution/Way Forward" types="Text|Textarea" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>Delayed Deliverables</h2>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" multiple="true" class="wikitable">
             <![CDATA[
-                <h3>Other Challenges</h3>
+                <h2>Other Challenges</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -40,15 +59,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_ABSTRACT" rich="true" limit="500">
-            <![CDATA[
-                <h3>Scientific Abstract</h3>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_REVIEW" rich="true">
             <![CDATA[
-                <h3>Scientific Review</h3>
+                <h3>Scientific Summary</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -113,7 +126,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="mentorship" title="Mentorship Program" blobSection="IFP_FINAL_MENTORSHIP" type="EditableReportSection">
-        <ReportItem id="mentorship" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MENTORSHIP_PROGRAM" rich="true">
+        <ReportItem id="mentorship" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MENTORSHIP_PROGRAM" rich="true" limit="500">
             <![CDATA[
                 <h3>Key ideas</h3>
                 {$item}
@@ -121,19 +134,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="collab" title="Online Collaborative Project" blobSection="IFP_FINAL_COLLAB" type="EditableReportSection">
-        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed, On Track, Not Started)" multiple="true" class="wikitable">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>List OCP Milestones</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="progress" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_PROGRESS" rich="true">
+        <ReportItem id="progress" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_PROGRESS" rich="true" limit="500">
             <![CDATA[
                 <h3>Individual Progress with the OCP</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_BENEFITS" rich="true">
+        <ReportItem id="benefits" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_BENEFITS" rich="true" limit="500">
             <![CDATA[
                 <h3>Benefits & Challenges of Interdisciplinary Collaboration</h3>
                 {$item}
@@ -141,33 +154,21 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="dissemination" title="Dissemination of Fellowship Work" blobSection="IFP_FINAL_DISS" type="EditableReportSection">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
+                <h2>Dissemination</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="materials" type="UploadReportItem" blobItem="IFP_FINAL_DISS_UPLOAD" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                <h3>Research Documents</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="other" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_DISS_OTHER" rich="true">
             <![CDATA[
                 <h2>Other Accomplishments</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="capacity" title="Capacity Update" blobSection="IFP_FINAL_CAPACITY" type="EditableReportSection">
-        <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" multiple="true" class="wikitable">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="academic" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_ACADEMIC" rich="true">
-            <![CDATA[
-                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)? If so, please provide details.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_CAPACITY_EMPLOYMENT" rich="true">
-            <![CDATA[
-                <h3>Have you obtained employment? If so, please provide details.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -188,7 +189,31 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="comments" title="Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+    <ReportSection id="comments" title="Status Update, Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Have you obtained employment? If so, please provide details.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="feedback" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_FEEDBACK" rich="true">
             <![CDATA[
                 {$item}
@@ -196,35 +221,38 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="supervisor" title="Supervisor Review" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" rich="true">
-            <![CDATA[
-                <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="social" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_SOCIAL" rich="true">
-            <![CDATA[
-                <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="leadership" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_LEADER" rich="true">
-            <![CDATA[
-                <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ASSESSMENT" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
-            <![CDATA[
-                <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" rich="true">
-            <![CDATA[
-                <h3>Please elaborate:</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet">
+            <ReportItem id="multidisciplinary" type="StaticReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+                <![CDATA[
+                    <h2>{$user_name}</h2>
+                    <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_MULTI,{$parent_id},{$user_id},0)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="social" type="StaticReportItem">
+                <![CDATA[
+                    <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_SOCIAL,{$parent_id},{$user_id},0)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="leadership" type="StaticReportItem">
+                <![CDATA[
+                    <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_LEADER,{$parent_id},{$user_id},0)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="elaborate" type="StaticReportItem">
+                <![CDATA[
+                    <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                    <i>{getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
+                ]]>
+            </ReportItem>
+            <ReportItem id="elaborate" type="StaticReportItem">
+                <![CDATA[
+                    <h3>Please elaborate:</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ELABORATE,{$parent_id},{$user_id},0)}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 </Report>

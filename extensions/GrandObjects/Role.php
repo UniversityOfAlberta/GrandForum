@@ -7,6 +7,7 @@
 class Role extends BackboneModel {
 
     static $cache = array();
+    static $projectCache = null;
 
 	var $id;
 	var $user;
@@ -14,6 +15,7 @@ class Role extends BackboneModel {
     var $startDate;
     var $endDate;
     var $comment;
+    var $projects = null;
 	
 	// Returns a new Role from the given id
 	static function newFromId($id){
@@ -26,6 +28,17 @@ class Role extends BackboneModel {
 		$role = new Role($data);
         self::$cache[$role->id] = &$role;
 		return $role;
+	}
+	
+	static function generateProjectsCache(){
+	    if(self::$projectCache == null){
+	        $data = DBFunctions::select(array('grand_role_projects'),
+	                                    array('*'));
+	        self::$projectCache = array();
+	        foreach($data as $row){
+	            self::$projectCache[$row['role_id']][] = $row['project_id'];
+	        }
+	    }
 	}
 	
 	// Constructor
@@ -119,6 +132,19 @@ class Role extends BackboneModel {
 	// Returns the comment for this Role
 	function getComment(){
 	    return $this->comment;
+	}
+	
+	function getProjects(){
+	    if($this->projects == null){
+	        self::generateProjectsCache();
+	        $this->projects = array();
+	        if(isset(self::$projectCache[$this->getId()])){
+	            foreach(self::$projectCache[$this->getId()] as $project){
+	                $this->projects[] = Project::newFromId($project);
+	            }
+	        }
+	    }
+	    return $this->projects;
 	}
 }
 ?>

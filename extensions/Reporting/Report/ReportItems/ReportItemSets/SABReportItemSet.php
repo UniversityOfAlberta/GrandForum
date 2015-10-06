@@ -6,9 +6,15 @@ class SABReportItemSet extends ReportItemSet {
         $me = Person::newFromWgUser();
         // Returns the array of SAB for that year
         $data = array();
-        $proj = Project::newFromId($this->projectId);
-        if($proj != null){
-            $evaluators = $proj->getEvaluators($this->getReport()->year, 'SAB');
+        if($this->projectId != 0){
+            $sub = Project::newFromId($this->projectId);
+        }
+        else{
+            $sub = Person::newFromId($this->personId);
+        }
+        $subType = $this->getAttr('subType', 'SAB');
+        if($sub != null){
+            $evaluators = $sub->getEvaluators($this->getReport()->year, $subType);
             foreach($evaluators as $e){
                 if($e->getId() != $me->getId()){
                     $tuple = self::createTuple();

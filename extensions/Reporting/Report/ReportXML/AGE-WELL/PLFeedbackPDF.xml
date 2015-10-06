@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Review Feedback" reportType="RP_PROJ_FEEDBACK" pdfType="RPTP_PL_FEEDBACK" personId="0" ajax="true">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div class='logo_div' style="height:0;margin-top:0;">
+                    <img class='logo' style="margin-top:0;position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png?3' />
+                </div>
+                <div style="margin-top:0;"><h4 style='font-size:1.5em;'>{$project_name} Review Feedback</h4></div>
+                <br /><br /><br /><br /><br /><br /><br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="feedback" name="Project Feedback" tooltip="{$project_name} Feedback" title="{$project_name} Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="HeaderReportSection" pagebreak="false">
+        <ReportItemSet id="reviewers" type="ProjectReviewersReportItemSet">
+            <ReportItemSet id="comments" type="ArrayReportItemSet" array="{getArray(RP_PROJ_REVIEW,PROJ_REVIEW_COMMENTS,PROJ_REVIEW_COMM,0,{$user_id},{$project_id})}" index="comments">
+                <ReportItemSet id="pagebreakset" type="NotFirstReportItemSet">
+                    <ReportItem id="pagebreak" type="PageBreakReportItem">
+                        <![CDATA[
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="comments" type="StaticReportItem">
+                    <![CDATA[
+                        <h2>Reviewer Comment</h2>
+                        <i>{getExtra(comment)}</i>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
+                    <![CDATA[
+                        <h3>My Response</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="feedback" type="StaticReportItem">
+                    <![CDATA[
+                        <h3>Additional Reviewer Feedback</h3>
+                        {$rmc_project_feedback}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

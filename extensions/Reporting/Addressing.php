@@ -47,6 +47,7 @@ define('RP_SAB_REPORT',         102);
 define('RP_CATALYST',           103);
 define('RP_TRANS',              104);
 define('RP_SAB_CAT_REVIEW',     105);
+define('RP_SAB_CAT_REPORT',     106);
 
 /*
  * AGE-WELL
@@ -109,6 +110,7 @@ define('HQP_RESACTIVITY',		7);
 
 define('HQP_APPLICATION_FORM',  1);
 define('HQP_APPLICATION_DOCS',  2);
+define('HQP_APPLICATION_EPIC',  3);
 
 define('HQP_REVIEW',            1);
 
@@ -226,6 +228,7 @@ define('FINAL_NETWORK',         7);
 define('FINAL_PLANNING',        8);
 define('FINAL_ALIGN',           9);
 define('FINAL_BUDGET',          10);
+define('FINAL_HQP',             11);
 
 // Second level for TVN Progress Report
 define('PROG_INFORMATION',      1);
@@ -236,6 +239,7 @@ define('PROG_ENGAGE',           5);
 define('PROG_NETWORK',          6);
 define('PROG_PLANNING',         7);
 define('PROG_BUDGET',           8);
+define('PROG_HQP',              9);
 
 // Second level for TVN IFP Final Project Report
 define('IFP_FINAL_MILESTONES',  1);
@@ -244,7 +248,6 @@ define('IFP_FINAL_EXTERNAL',    3);
 define('IFP_FINAL_MENTORSHIP',  4);
 define('IFP_FINAL_COLLAB',      5);
 define('IFP_FINAL_DISS',        6);
-define('IFP_FINAL_CAPACITY',    7);
 define('IFP_FINAL_PARTNERS',    8);
 define('IFP_FINAL_NETWORK',     9);
 define('IFP_FINAL_COMMENTS',    10);
@@ -359,7 +362,7 @@ define('HQP_APPLICATION_BOUNDARY',  17);
 define('HQP_APPLICATION_FUND',      18);
 define('HQP_APPLICATION_PROGRAM',   19);
 define('HQP_APPLICATION_START',     20);
-define('HQP_APPLICATION_START_OTH', 21);
+define('HQP_APPLICATION_START_OTH', 21); 
 
 define('HQP_APPLICATION_SUPPORT1',  1);
 define('HQP_APPLICATION_SUPPORT2',  2);
@@ -368,6 +371,67 @@ define('HQP_APPLICATION_EVIDENCE',  4);
 define('HQP_APPLICATION_TRANS1',    5);
 define('HQP_APPLICATION_TRANS2',    6);
 define('HQP_APPLICATION_CV',        7);
+
+define('HQP_EPIC_ORIENTATION_DESC', 1);
+define('HQP_EPIC_ORIENTATION_HQP',  2);
+define('HQP_EPIC_ORIENTATION_NMO',  3);
+define('HQP_EPIC_ORIENTATION_SUP',  4);
+define('HQP_EPIC_TRAINING_DESC',    5);
+define('HQP_EPIC_TRAINING_HQP',     6);
+define('HQP_EPIC_TRAINING_NMO',     7);
+define('HQP_EPIC_TRAINING_SUP',     8);
+define('HQP_EPIC_WORKSHOP_DESC',    9);
+define('HQP_EPIC_WORKSHOP_HQP',     10);
+define('HQP_EPIC_WORKSHOP_NMO',     11);
+define('HQP_EPIC_WORKSHOP_SUP',     12);
+define('HQP_EPIC_CORE_DESC',        33);
+define('HQP_EPIC_CORE_HQP',         34);
+define('HQP_EPIC_CORE_NMO',         35);
+define('HQP_EPIC_CORE_SUP',         36);
+define('HQP_EPIC_KTEE_DESC',        37);
+define('HQP_EPIC_KTEE_HQP',         38);
+define('HQP_EPIC_KTEE_NMO',         39);
+define('HQP_EPIC_KTEE_SUP',         40);
+define('HQP_EPIC_TRANS_DESC',       41);
+define('HQP_EPIC_TRANS_HQP',        42);
+define('HQP_EPIC_TRANS_NMO',        43);
+define('HQP_EPIC_TRANS_SUP',        44);
+define('HQP_EPIC_ETHICS_DESC',      45);
+define('HQP_EPIC_ETHICS_HQP',       46);
+define('HQP_EPIC_ETHICS_NMO',       47);
+define('HQP_EPIC_ETHICS_SUP',       48);
+define('HQP_EPIC_IMPACT_DESC',      49);
+define('HQP_EPIC_IMPACT_HQP',       50);
+define('HQP_EPIC_IMPACT_NMO',       51);
+define('HQP_EPIC_IMPACT_SUP',       52);
+define('HQP_EPIC_WEB_DESC',         13);
+define('HQP_EPIC_WEB_HQP',          14);
+define('HQP_EPIC_WEB_NMO',          15);
+define('HQP_EPIC_WEB_SUP',          16);
+define('HQP_EPIC_BLOG_DESC',        17);
+define('HQP_EPIC_BLOG_HQP',         18);
+define('HQP_EPIC_BLOG_NMO',         19);
+define('HQP_EPIC_BLOG_SUP',         20);
+define('HQP_EPIC_EXP1_DESC',        53);
+define('HQP_EPIC_EXP1_HQP',         54);
+define('HQP_EPIC_EXP1_NMO',         55);
+define('HQP_EPIC_EXP1_SUP',         56);
+define('HQP_EPIC_EXP2_DESC',        57);
+define('HQP_EPIC_EXP2_HQP',         58);
+define('HQP_EPIC_EXP2_NMO',         59);
+define('HQP_EPIC_EXP2_SUP',         60);
+define('HQP_EPIC_SELF_DESC',        21);
+define('HQP_EPIC_SELF_HQP',         22);
+define('HQP_EPIC_SELF_NMO',         23);
+define('HQP_EPIC_SELF_SUP',         24);
+define('HQP_EPIC_PUBS_DESC',        25);
+define('HQP_EPIC_PUBS_HQP',         26);
+define('HQP_EPIC_PUBS_NMO',         27);
+define('HQP_EPIC_PUBS_SUP',         28);
+define('HQP_EPIC_REP_DESC',         29);
+define('HQP_EPIC_REP_HQP',          30);
+define('HQP_EPIC_REP_NMO',          31);
+define('HQP_EPIC_REP_SUP',          32);
 
 define('HQP_REVIEW_OVERALL_COMM',   1);
 define('HQP_REVIEW_QUALITY',        2);
@@ -588,7 +652,13 @@ define('FINAL_INFORMATION_ROLE',    1);
 define('FINAL_INFORMATION_TIME',    2);
 define('FINAL_INFORMATION_STATUS',  3);
 
-define('FINAL_MIL_UPLOAD',   1);
+define('FINAL_MIL_MILESTONES1',     1);
+define('FINAL_MIL_MILESTONES2',     2);
+define('FINAL_MIL_MILESTONES3',     6);
+define('FINAL_MIL_DELIVERABLES1',   3);
+define('FINAL_MIL_DELIVERABLES2',   4);
+define('FINAL_MIL_DELIVERABLES3',   7);
+define('FINAL_MIL_INCOMPLETE',      5);
 
 define('FINAL_RES_KEY',         1);
 define('FINAL_RES_SUMMARY',     2);
@@ -597,6 +667,7 @@ define('FINAL_RES_REVIEW',      4);
 
 define('FINAL_KTEE_SUCCESS',    1);
 define('FINAL_KTEE_TECH',       2);
+define('FINAL_KTEE_UPLOAD',     3);
 
 define('FINAL_PART_CONTR',      1);
 define('FINAL_PART_DESC',       2);
@@ -605,11 +676,16 @@ define('FINAL_ENGAGE_PATIENT',  1);
 
 define('FINAL_NET_ACTIVITY',    1);
 
-define('FINAL_PLAN_THEMES',     1);
-define('FINAL_PLAN_PRIORITIES', 2);
-define('FINAL_PLAN_SYNTH',      3);
-define('FINAL_PLAN_CREATION',   4);
-define('FINAL_PLAN_TRANS',      5);
+define('FINAL_PLAN_FINDINGS',       6);
+define('FINAL_PLAN_FINDINGS_YES',   7);
+define('FINAL_PLAN_FINDINGS_NO',    8);
+define('FINAL_PLAN_ADDITIONAL',     9);
+define('FINAL_PLAN_ADDITIONAL_YES', 10);
+define('FINAL_PLAN_THEMES',         1);
+define('FINAL_PLAN_PRIORITIES',     2);
+define('FINAL_PLAN_SYNTH',          3);
+define('FINAL_PLAN_CREATION',       4);
+define('FINAL_PLAN_TRANS',          5);
 
 define('FINAL_ALIGN_MULTI',     1);
 define('FINAL_ALIGN_CHALLENGE', 2);
@@ -622,12 +698,20 @@ define('PROG_INFORMATION_ROLE',    1);
 define('PROG_INFORMATION_TIME',    2);
 define('PROG_INFORMATION_STATUS',  3);
 
-define('PROG_MIL_UPLOAD',       1);
-define('PROG_MIL_CHALLENGE',    2);
-define('PROG_MIL_ACHIEVE',      3);
+define('PROG_MIL_MILESTONES1',      1);
+define('PROG_MIL_MILESTONES2',      4);
+define('PROG_MIL_MILESTONES3',      9);
+define('PROG_MIL_DELIVERABLES1',    5);
+define('PROG_MIL_DELIVERABLES2',    6);
+define('PROG_MIL_DELIVERABLES3',    10);
+define('PROG_MIL_INCOMPLETE',       7);
+define('PROG_MIL_DELAYED',          8);
+define('PROG_MIL_CHALLENGE',        2);
+define('PROG_MIL_ACHIEVE',          3);
 
 define('PROG_KTEE_SUCCESS',     1);
 define('PROG_KTEE_TECH',        2);
+define('PROG_KTEE_UPLOAD',      3);
 
 define('PROG_PART_CONTR',       1);
 define('PROG_PART_DESC',        2);
@@ -636,28 +720,35 @@ define('PROG_ENGAGE_PATIENT',   1);
 
 define('PROG_NET_ACTIVITY',     1);
 
-define('PROG_PLAN_THEMES',     1);
-define('PROG_PLAN_PRIORITIES', 2);
-define('PROG_PLAN_SYNTH',      3);
-define('PROG_PLAN_CREATION',   4);
-define('PROG_PLAN_TRANS',      5);
+define('PROG_PLAN_THEMES',          1);
+define('PROG_PLAN_PRIORITIES',      2);
+define('PROG_PLAN_SYNTH',           3);
+define('PROG_PLAN_CREATION',        4);
+define('PROG_PLAN_TRANS',           5);
 
-define('PROG_BUD_UPLOAD',       1);
+define('PROG_BUD_UPLOAD',           1);
 
 // IFP Final Report
-define('IFP_FINAL_MIL_UPLOAD',      1);
-define('IFP_FINAL_MIL_CHALLENGE',   2);
-define('IFP_FINAL_MIL_KEY',         3);
-define('IFP_FINAL_MIL_SUMMARY',     4);
-define('IFP_FINAL_MIL_ABSTRACT',    5);
-define('IFP_FINAL_MIL_REVIEW',      6);
-define('IFP_FINAL_MIL_THEMES',      7);
-define('IFP_FINAL_MIL_PRIORITIES',  8);
-define('IFP_FINAL_MIL_CARE',        9);
-define('IFP_FINAL_MIL_IMPACT',      10);
-define('IFP_FINAL_MIL_SYNTH',       11);
-define('IFP_FINAL_MIL_CREATION',    12);
-define('IFP_FINAL_MIL_TRANS',       13);
+define('IFP_FINAL_MIL_MILESTONES1',     1);
+define('IFP_FINAL_MIL_MILESTONES2',     14);
+define('IFP_FINAL_MIL_INCOMPLETE',      15);
+define('IFP_FINAL_MIL_DELAYED',         16);
+define('IFP_FINAL_MIL_DELIVERABLES1',   17);
+define('IFP_FINAL_MIL_DELIVERABLES2',   18);
+define('IFP_FINAL_MIL_DELETED',         19);
+define('IFP_FINAL_MIL_DELAYED2',        20);
+define('IFP_FINAL_MIL_CHALLENGE',       2);
+define('IFP_FINAL_MIL_KEY',             3);
+define('IFP_FINAL_MIL_SUMMARY',         4);
+define('IFP_FINAL_MIL_ABSTRACT',        5);
+define('IFP_FINAL_MIL_REVIEW',          6);
+define('IFP_FINAL_MIL_THEMES',          7);
+define('IFP_FINAL_MIL_PRIORITIES',      8);
+define('IFP_FINAL_MIL_CARE',            9);
+define('IFP_FINAL_MIL_IMPACT',          10);
+define('IFP_FINAL_MIL_SYNTH',           11);
+define('IFP_FINAL_MIL_CREATION',        12);
+define('IFP_FINAL_MIL_TRANS',           13);
 
 define('IFP_FINAL_KTEE_SUCCESS',    1);
 
@@ -670,16 +761,17 @@ define('IFP_FINAL_COLLAB_PROGRESS',     2);
 define('IFP_FINAL_COLLAB_BENEFITS',     3);
 
 define('IFP_FINAL_DISS_OTHER',          1);
-
-define('IFP_FINAL_CAPACITY_ACTIVITY',   1);
-define('IFP_FINAL_CAPACITY_ACADEMIC',   2);
-define('IFP_FINAL_CAPACITY_EMPLOYMENT', 3);
+define('IFP_FINAL_DISS_UPLOAD',         2);
 
 define('IFP_FINAL_PARTNERS_FUNDING',    1);
 
 define('IFP_FINAL_NETWORK_MEETING',     1);
 
-define('IFP_FINAL_COMMENTS_FEEDBACK',   1);
+define('IFP_FINAL_COMMENTS_FEEDBACK',           1);
+define('IFP_FINAL_COMMENTS_ACADEMIC',           2);
+define('IFP_FINAL_COMMENTS_ACADEMIC_DETAILS',   3);
+define('IFP_FINAL_COMMENTS_EMPLOYMENT',         4);
+define('IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS', 5);
 
 define('IFP_FINAL_SUP_MULTI',           1);
 define('IFP_FINAL_SUP_SOCIAL',          2);
@@ -688,7 +780,9 @@ define('IFP_FINAL_SUP_ASSESSMENT',      4);
 define('IFP_FINAL_SUP_ELABORATE',       5);
 
 // IFP Progress Report
-define('IFP_PROG_MIL_UPLOAD',           1);
+define('IFP_PROG_MIL_MILESTONES',       1);
+define('IFP_PROG_MIL_DELETED',          4);
+define('IFP_PROG_MIL_DELAYED',          5);
 define('IFP_PROG_MIL_CHALLENGE',        2);
 define('IFP_PROG_MIL_PLACEMENT',        3);
 
@@ -702,10 +796,13 @@ define('IFP_PROG_COLLAB_PROGRESS',      2);
 define('IFP_PROG_COLLAB_BENEFITS',      3);
 
 define('IFP_PROG_DISS_OTHER',           1);
+define('IFP_PROG_DISS_UPLOAD',          2);
 
 define('IFP_PROG_CAPACITY_ACTIVITY',    1);
 define('IFP_PROG_CAPACITY_ACADEMIC',    2);
+define('IFP_PROG_CAPACITY_ACADEMIC_DETAILS', 4);
 define('IFP_PROG_CAPACITY_EMPLOYMENT',  3);
+define('IFP_PROG_CAPACITY_EMPLOYMENT_DETAILS', 5);
 
 define('IFP_PROG_PARTNERS_FUNDING',     1);
 

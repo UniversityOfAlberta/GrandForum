@@ -198,6 +198,8 @@ class ReportXMLParser {
             if($key == "Role"){
                 $attributes = $child->attributes();
                 $role = (isset($attributes->role)) ? @constant($attributes->role) : MANAGER;
+                $subType = (isset($attributes->subType)) ? $attributes->subType : "";
+                $subType = (isset($attributes->subRole)) ? $attributes->subRole : $subType;
                 if(isset($attributes->role) && @constant($attributes->role) == null){
                     $role = (string)$attributes->role;
                 }
@@ -210,7 +212,7 @@ class ReportXMLParser {
                     $this->errors[] = "Start time '{$attributes->end}' does not exist";
                 }
                 $this->parseRoleSectionPermissions($child, $role);
-                $this->report->addPermission("Role", "{$role}", "{$start}", "{$end}");
+                $this->report->addPermission("Role", array("role" => "{$role}", "subType" => "{$subType}"), "{$start}", "{$end}");
             }
             else if($key == "Project"){
                 $attributes = $child->attributes();

@@ -7,9 +7,9 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         //$person = Person::newFromId($this->personId);
         
         $type = $this->getAttr('subType', 'NI');
-        if($type == 'NI'){
+        if($type != 'SAB' && $type != 'Project'){
             //$subs = Person::getAllPeople($type);
-            $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
+            $year = $this->getReport()->year;
             $subs = Person::getAllEvaluates($type, $year);
             $sorted = array();
             foreach ($subs as $s){
@@ -19,13 +19,13 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             ksort($sorted);
             $subs = $sorted;
         }
-        else if($type == 'Project'){
+        else {
             $subs = Project::getAllProjects();
         }
         if(is_array($subs)){
             foreach($subs as $sub){
                 $tuple = self::createTuple();
-                if($type == "Project"){
+                if($type == "Project" || $type == "SAB"){
                     $tuple['project_id'] = $sub->getId();
                 }
                 else{

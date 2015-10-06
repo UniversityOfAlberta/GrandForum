@@ -1300,14 +1300,6 @@ EOF;
     <tr><th width='15%'>Name</th><th width='10%'>Type</th><th width='30%'>University</th><th width='25%'>Title</th><th width='20%'>Projects</th></tr>
 ";
         foreach($people as $hqp){
-            if($hqp->getName() == "Sandra.Tpze" ||
-               $hqp->getName() == "Beth" ||
-               $hqp->getName() == "Scott.Newsom" ||
-               $hqp->getName() == "Dinara" ||
-               $hqp->getName() == "Andrea" ||
-               $hqp->getName() == "Bardia"){
-                continue;
-            }
             $projects = $hqp->getProjects();
             $university = $hqp->getUniversity();
             $chunk .= "<tr>

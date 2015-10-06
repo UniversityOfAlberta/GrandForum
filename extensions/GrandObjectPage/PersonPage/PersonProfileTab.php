@@ -153,18 +153,11 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
-            if($this->visibility['isChampion']){
-                $_POST['partner'] = @$_POST['org'];
-                $_POST['title'] = @$_POST['title'];
-                $_POST['department'] = @$_POST['department'];
-                $api = new UserPartnerAPI();
-                $api->doAction(true);
-            }
-            else{
-                $api = new UserUniversityAPI();
-                $api->processParams(array());
-                $api->doAction(true);
-            }
+
+            $api = new UserUniversityAPI();
+            $api->processParams(array());
+            $api->doAction(true);
+
             $api = new UserPhoneAPI();
             $api->doAction(true);
             $api = new UserTwitterAccountAPI();
@@ -190,7 +183,7 @@ class PersonProfileTab extends AbstractEditableTab {
         return $error;
     }
     
-    /*
+    /**
      * Displays the profile for this user
      */
     function showProfile($person, $visibility){
@@ -385,7 +378,7 @@ EOF;
         return $string;
     }
    
-    /*
+    /**
      * Displays the profile for this user
      */
     function showCCV($person, $visibility){
@@ -398,7 +391,7 @@ EOF;
         }
     }
     
-    /*
+    /**
      * Displays the photo for this person
      */
     function showPhoto($person, $visibility){
@@ -446,7 +439,7 @@ EOF;
                         </table></td>";
     }
     
-   /*
+   /**
     * Displays the contact information for this person
     */
     function showContact($person, $visibility){
@@ -503,29 +496,6 @@ EOF;
                     </select>
                 </td>
             </tr>";
-            $partnerHTML = "";
-            if($visibility['isChampion']){
-                $partners = array();
-                foreach(Partner::getAllPartners() as $partner){
-                    $partners[] = $partner->getOrganization();
-                }
-                $wgOut->addScript("<script type='text/javascript'>
-                var partners = [\"".implode("\",\n\"", $partners)."\"];
-                
-                $(document).ready(function(){
-                    $('#partner').autocomplete({
-                        source: partners
-                    });
-                });</script>");
-                $partner = str_replace("'", "&#39;", $person->getPartnerName());
-                $partnerHTML = "<tr>
-                                 <td align='right'><b>Partner:</b></td>
-                                 <td>
-                                    <input type='text' value='{$partner}' id='partner' name='partner' />
-                                 </td>
-                                 </tr>
-                                 ";
-            }
         }
         $this->html .= "<table>
                             <tr>
@@ -535,66 +505,52 @@ EOF;
                             {$nationality}
                             {$gender}";
                             
-        if($person->isRole(CHAMP)){
-            $titles = array_merge(array(""), Person::getAllPartnerTitles());
-            $organizations = array_merge(array(""), Person::getAllPartnerNames());
-            $depts = array_merge(array(""), Person::getAllPartnerDepartments());
-            $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
-            $orgCombo = new ComboBox('org', "Institution", $person->getPartnerName(), $organizations);
-            $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
-            $orgCombo->attr('style', 'max-width: 250px;');
-            $deptCombo->attr('style', 'max-width: 250px;');
-            $titleCombo->attr('style', 'max-width: 250px;');
-            $this->html .= "<tr>
-                                <td align='right'><b>Title:</b></td>
-                                <td>{$titleCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Institution:</b></td>
-                                <td>{$orgCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Department:</b></td>
-                                <td>{$deptCombo->render()}
-                                </td>
-                            </tr>";
+        $universities = new Collection(University::getAllUniversities());
+        $uniNames = $universities->pluck('name');
+        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+            $positions = Person::getAllPositions();
         }
         else{
-            $universities = new Collection(University::getAllUniversities());
-            $uniNames = $universities->pluck('name');
-            $positions = Person::getAllPositions();
-            $myPosition = "";
-            foreach($positions as $key => $position){
-                if($university['position'] == $position){
-                    $myPosition = $key;
-                }
-            }
-            $departments = Person::getAllDepartments();
-            $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
-            sort($organizations);
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
-            $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-            $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-            $titleCombo->attr('style', 'max-width: 250px;');
-            $orgCombo->attr('style', 'max-width: 250px;');
-            $deptCombo->attr('style', 'max-width: 250px;');
-            $this->html .= "<tr>
-                                <td align='right'><b>Title:</b></td>
-                                <td>{$titleCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Institution:</b></td>
-                                <td>{$orgCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Department:</b></td>
-                                <td>{$deptCombo->render()}</td>
-                            </tr>";
+            $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
         }
+        $myPosition = "";
+        foreach($positions as $key => $position){
+            if($university['position'] == $position){
+                $myPosition = $key;
+            }
+        }
+        if($myPosition == ""){
+            $positions[] = $university['position'];
+            $myPosition = count($positions) - 1;
+        }
+        $departments = Person::getAllDepartments();
+        $organizations = $uniNames;
+        sort($organizations);
+        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+        }
+        else{
+            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+        }
+        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
+        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+        $titleCombo->attr('style', 'max-width: 250px;');
+        $orgCombo->attr('style', 'max-width: 250px;');
+        $deptCombo->attr('style', 'max-width: 250px;');
+        $this->html .= "<tr>
+                            <td align='right'><b>Title:</b></td>
+                            <td>{$titleCombo->render()}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Institution:</b></td>
+                            <td>{$orgCombo->render()}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Department:</b></td>
+                            <td>{$deptCombo->render()}</td>
+                        </tr>";
         $this->html .= "</table>";
     }
     

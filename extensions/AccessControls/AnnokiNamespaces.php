@@ -297,7 +297,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $ignore = array('sysop', 'bureaucrat', 'bot');
    
    foreach ($groups as $index => $ns) {
-     if (!in_array($ns, $ignore) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
+     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
        $namespaces[] = $ns;
      }
    }
@@ -308,7 +308,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    if ($userNS)
      $namespaces = array_merge(array($userNS), $namespaces);
 
-   $namespaces = array_merge($namespaces, self::getPublicNamespaces());
+   $namespaces = array_merge($namespaces);
 
    return array_unique($namespaces);
  }
