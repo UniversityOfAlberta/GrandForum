@@ -104,7 +104,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>

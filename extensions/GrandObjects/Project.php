@@ -684,12 +684,14 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL && $person->leadershipOf($this)){
-                $people[$person->getId()] = $person;
+            if($filter == PL){
+                if($person->leadershipOf($this)){
+                    $people[$person->getId()] = $person;
+                }
             }
             else if(($filter == null || 
-                     ($currentDate >= $created && $person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
-                     ($person->isRoleDuring($filter, $created, "9999", $this) && !$person->leadershipOf($this))) && 
+                     ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
+                     ($person->isRole($filter, $this) && !$person->leadershipOf($this))) && 
                     !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
@@ -738,8 +740,10 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL && $person->leadershipOf($this)){
-                $people[$person->getId()] = $person;
+            if($filter == PL){
+                if($person->leadershipOf($this)){
+                    $people[$person->getId()] = $person;
+                }
             }
             else if(($filter == null || 
                      ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
@@ -772,8 +776,10 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL && $person->leadershipOf($this)){
-                $people[$person->getId()] = $person;
+            if($filter == PL){
+                if($person->leadershipOf($this)){
+                    $people[$person->getId()] = $person;
+                }
             }
             else if(($filter == null || 
                      ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
