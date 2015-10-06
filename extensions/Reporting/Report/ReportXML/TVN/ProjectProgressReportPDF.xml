@@ -24,7 +24,7 @@
                         <th>Team Member and<br />Institution/Organization</th>
                         <th>Role in project</th>
                         <th>% of time<br />dedicated to Project</th>
-                        <th>Status<br /><small>(Indicate original,<br /> removed, or new member)</small></th>
+                        <th>Status</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>

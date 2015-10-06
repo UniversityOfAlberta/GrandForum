@@ -843,18 +843,40 @@ class ReportItemCallback {
     
     function getUserRoles(){
         $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
-            $roleNames[] = $role->getRole();
+            if(!($role->getRole() == NI ||
+                 $role->getRole() == AR ||
+                 $role->getRole() == CI ||
+                 $role->getRole() == HQP ||
+                 $role->getRole() == EXTERNAL ||
+                 $role->getRole() == CHAMP)){
+                continue;  
+            }
+            if($project != null && $project->getId() != 0){
+                if($role->hasProject($project)){
+                    $roleNames[] = $role->getRole();
+                }
+            }
+            else{
+                $roleNames[] = $role->getRole();
+            }
         }
         return implode(", ", $roleNames);
     }
     
     function getUserFullRoles(){
         $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $this->getUserRoles();
-        if($person->isProjectLeader()){
+        if($project != null && $project->getId() != 0){
+            if($person->leadershipOf($project)){
+                $roles .= ", PL";
+            }
+        }
+        else if($person->isProjectLeader()){
             $roles .= ", PL";
         }
         return $roles;

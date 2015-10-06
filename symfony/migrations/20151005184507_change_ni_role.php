@@ -25,31 +25,49 @@ class ChangeNiRole extends AbstractMigration
     public function up()
     {
         $allocations = array();
+        $members = array();
         $rows = $this->fetchAll("SELECT user_id, project_id FROM `grand_allocations`");
         foreach($rows as $row){
-            $allocations[$row['user_id']] = $row;
+            $allocations[$row['user_id']][$row['project_id']] = $row;
         }
         
-        $rows = $this->fetchAll("SELECT id, user_id FROM `grand_roles` WHERE role = '".NI."'");
+        $rows = $this->fetchAll("SELECT user_id, project_id FROM `grand_project_members`");
         foreach($rows as $row){
-            $roleId = $row['id'];
-            $userId = $row['user_id'];
-            if(isset($allocations[$userId])){
-                // Person is a CI
-                $projId = $allocations[$userId]['project_id'];
-                $this->execute("UPDATE `grand_roles` SET role = '".CI."' WHERE user_id = '$userId' AND role = '".NI."'");
+            $members[$row['user_id']][$row['project_id']] = $row;
+        }
+        
+        foreach($members as $userId => $member){
+            if(count($this->fetchAll("SELECT * FROM `grand_roles` WHERE role = '".NI."' AND user_id = '$userId'")) == 0){
+                continue;
+            }
+            foreach($member as $projId => $project){
                 try {
-                    $this->execute("INSERT INTO `grand_role_projects` (`role_id`, `project_id`) VALUES ('$roleId', '$projId')");
+                    if(isset($allocations[$userId][$projId])){
+                        // Person is a CI
+                        if(count($this->fetchAll("SELECT * FROM `grand_roles` WHERE role = '".CI."' AND user_id = '$userId'")) == 0){
+                            $this->execute("INSERT INTO `grand_roles` (`user_id`, `role`, `start_date`) VALUES ('$userId', '".CI."', CURRENT_TIMESTAMP)");
+                        }
+                        $this->execute("INSERT INTO `grand_role_projects` (`role_id`, `project_id`) VALUES ((SELECT id FROM `grand_roles` WHERE role = '".CI."' AND user_id = '$userId'), '$projId')");
+                    }
+                    else if(count($this->fetchAll("SELECT * 
+                                                   FROM `grand_roles` r, `grand_role_projects` rp 
+                                                   WHERE (r.role != '".NI."' AND r.role != '".AR."' AND r.role != '".CI."')
+                                                   AND r.user_id = '$userId'
+                                                   AND rp.project_id = '$projId'
+                                                   AND r.id = rp.role_id")) == 0){
+                        // Person is an AR
+                        if(count($this->fetchAll("SELECT * FROM `grand_roles` WHERE role = '".AR."' AND user_id = '$userId'")) == 0){
+                            $this->execute("INSERT INTO `grand_roles` (`user_id`, `role`, `start_date`) VALUES ('$userId', '".AR."', CURRENT_TIMESTAMP)");
+                        }
+                        $this->execute("INSERT INTO `grand_role_projects` (`role_id`, `project_id`) VALUES ((SELECT id FROM `grand_roles` WHERE role = '".AR."' AND user_id = '$userId'), '$projId')");
+                    }
                 }
                 catch(PDOException $e){
-                
+                    
                 }
             }
-            else{
-                // Person is an AR
-                $this->execute("UPDATE `grand_roles` SET role = '".AR."' WHERE user_id = '$userId' AND role = '".NI."'");
-            }
         }
+        $this->execute("DELETE FROM `grand_roles` WHERE role = '".NI."'");
         
         $rows = $this->fetchAll("SELECT MAX(nsId) as nsId FROM `mw_an_extranamespaces`");
         $nsId = $rows[0]['nsId'];
