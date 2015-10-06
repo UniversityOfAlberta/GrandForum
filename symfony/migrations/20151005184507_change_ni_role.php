@@ -77,13 +77,17 @@ class ChangeNiRole extends AbstractMigration
         else{
             $nsId = $nsId + 1;
         }
-        $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".CI."',NULL,1)");
-        $nsId++;
-        $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".CI."_Talk',NULL,1)");
-        $nsId++;
-        $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".AR."',NULL,1)");
-        $nsId++;
-        $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".AR."_Talk',NULL,1)");
+        if(count($this->fetchAll("SELECT * FROM `mw_an_extranamespaces` WHERE nsName = '".CI."'")) == 0){
+            $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".CI."',NULL,1)");
+            $nsId++;
+            $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".CI."_Talk',NULL,1)");
+            $nsId++;
+        }
+        if(count($this->fetchAll("SELECT * FROM `mw_an_extranamespaces` WHERE nsName = '".AR."'")) == 0){
+            $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".AR."',NULL,1)");
+            $nsId++;
+            $this->execute("INSERT INTO mw_an_extranamespaces (`nsId`, `nsName`, `nsUser`, `public`) VALUES ($nsId,'".AR."_Talk',NULL,1)");
+        }
     }
 
     /**
