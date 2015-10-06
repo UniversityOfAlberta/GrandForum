@@ -242,6 +242,7 @@
     $config->setConst("BOD",        "BOD");
     $config->setConst("BODC",       "BOD Chair");
     $config->setConst("CHAMP",      "Champion");
+    $config->setConst("PARTNER",    "Partner");
     $config->setConst("GOV",        "Gov");
     $config->setConst("ASD",        "ASD");
     $config->setConst("SD",         "SD");
@@ -262,6 +263,7 @@
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
+        $config->getConst('PARTNER')        => "Partner",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",
