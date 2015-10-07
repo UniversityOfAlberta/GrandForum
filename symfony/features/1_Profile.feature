@@ -60,7 +60,7 @@ Feature: User Profile
         Then I should see "'Bio' updated successfully."
         And I should see "My Private Profile"
         When I follow "status_logout"
-        And I go to "index.php/NI:NI.User1"
+        And I go to "index.php/CI:NI.User1"
         Then I should see "My Public Profile"
         
     Scenario: Checking Data Quality
