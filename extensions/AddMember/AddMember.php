@@ -97,8 +97,8 @@ class AddMember extends SpecialPage{
             $history = true;
         }
         $hqpType = "";
-        if($config->getValue('networkName') == "AGE-WELL"){
-            $hqpType = "<th>HQP Type</th>";
+        if(count($config->getValue('subRoles')) > 0 && !$history){
+            $hqpType = "<th>Sub-Role</th>";
         }
         if($history){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
@@ -180,15 +180,12 @@ class AddMember extends SpecialPage{
                              <td>{$request->getUniversity()}<br />
                                  {$request->getDepartment()}<br />
                                  {$request->getPosition()}</td> ");
-            if($config->getValue('networkName') == "AGE-WELL" && !$history){
-                $wgOut->addHTML("
-                             <td align='left' style='white-space:nowrap;'>
-                                <input type='checkbox' name='subtype[]' value='Competition Funded HQP' />Competition Funded HQP<br />
-                                <input type='checkbox' name='subtype[]' value='Project Funded HQP' />Project Funded HQP<br />
-                                <input type='checkbox' name='subtype[]' value='WP/CC Funded HQP' />WP/CC Funded HQP<br />
-                                <input type='checkbox' name='subtype[]' value='Affiliate HQP' />Affiliate HQP<br />
-                                <input type='checkbox' name='subtype[]' value='Alumni HQP' />Alumni HQP
-                             </td>");
+            if(count($config->getValue('subRoles')) > 0 && !$history){
+                $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>");
+                foreach($config->getValue('subRoles') as $subRole => $fullSubRole){
+                    $wgOut->addHTML("<input type='checkbox' name='subtype[]' value='{$subRole}' />{$fullSubRole}<br />");
+                }
+                $wgOut->addHTML("</td>");
             }
             $wpSendMail = ($wgEnableEmail) ? "true" : "false";
             $wgOut->addHTML("

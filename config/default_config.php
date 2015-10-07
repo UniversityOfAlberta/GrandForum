@@ -281,6 +281,8 @@
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));
         
+    $config->setValue("subRoles", array());
+        
     /* Other */
     $config->setValue("analyticsCode", "");
 ?>

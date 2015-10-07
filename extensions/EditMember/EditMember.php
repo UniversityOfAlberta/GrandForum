@@ -1006,16 +1006,13 @@ class EditMember extends SpecialPage{
         $boxes = "";
         $projects = "";
         
-        $subRoles = array("Competition Funded HQP",
-                          "Project Funded HQP",
-                          "WP/CC Funded HQP",
-                          "Affiliate HQP",
-                          "Alumni HQP");
+        $subRoles = $config->getValue("subRoles");
+        
         asort($subRoles);
         $projs = Project::getAllProjects();
-        foreach($subRoles as $role){
-            $checked = ($person->isSubRole($role)) ? " checked" : "";
-            $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='sub_wpNS[]' value='".$role."' $checked />&nbsp;{$role}<br />";            
+        foreach($subRoles as $subRole => $fullSubRole){
+            $checked = ($person->isSubRole($subRole)) ? " checked" : "";
+            $boxes .= "&nbsp;<input id='role_$subRole' type='checkbox' name='sub_wpNS[]' value='".$subRole."' $checked />&nbsp;{$fullSubRole}<br />";            
         }
         $wgOut->addHTML($boxes);
         $wgOut->addHTML("<hr />");
