@@ -196,7 +196,7 @@ class EditMember extends SpecialPage{
             $roleProjects = @serialize($_POST['role_projects']);
             $roleMessage = EditMember::roleDiff($person, $r_current, $r_nss, 'ROLE');
             $roleProjectMessage = "";
-            if(is_array($_POST['role_projects']) && count($_POST['role_projects'])){
+            if(isset($_POST['role_projects']) && is_array($_POST['role_projects']) && count($_POST['role_projects'])){
                 foreach($_POST['role_projects'] as $r => $projects){
                     sort($projects);
                     $role = $person->getRole($r);
