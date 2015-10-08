@@ -126,7 +126,7 @@ Feature: EditMember
         Then I should see "is now a project leader of Phase2Project5"
         When I go to "index.php/Phase2Project5:Main"
         Then I should see "User3, NI"
-        When I go to "index.php/NI:NI.User3?tab=projects"
+        When I go to "index.php/CI:NI.User3?tab=projects"
         Then I should see "Phase2Project5"
         And "ni.user3@behat-test.com" should be subscribed to "test-leaders"
         

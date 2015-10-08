@@ -873,11 +873,21 @@ class ReportItemCallback {
         $roles = $this->getUserRoles();
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
-                $roles .= ", PL";
+                if($roles != ""){
+                    $roles .= ", PL";
+                }
+                else{
+                    $roles .= "PL";
+                }
             }
         }
         else if($person->isProjectLeader()){
-            $roles .= ", PL";
+            if($roles != ""){
+                $roles .= ", PL";
+            }
+            else{
+                $roles .= "PL";
+            }
         }
         return $roles;
     }
