@@ -23,6 +23,16 @@
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="PROG_INFORMATION_START" width="100px">
+            <![CDATA[
+                <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="PROG_INFORMATION_END" width="100px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>

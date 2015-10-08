@@ -38,6 +38,16 @@
                 <b>Name:&nbsp;</b>{$user_name}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_START" width="100px">
+            <![CDATA[
+                <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_END" width="100px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
                 <h2>Deliverables</h2>

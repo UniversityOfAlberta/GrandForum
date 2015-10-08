@@ -10,7 +10,7 @@
     <ReportSection id="milestones"  title="Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" type="HeaderReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>{$this_year} IFP Progress Report</h4><br />
+                <h4 style='font-size:1.40em;'>IFP Progress Report<br />Period Ending {getText(RP_IFP_PROGRESS,IFP_PROG_MILESTONES,IFP_PROG_MIL_END,0,{$user_id},0}</h4><br />
                 <p><b><u>Name</u></b></p>{$user_name}<br /><br />
                 <br /><br /><br />
             ]]>
