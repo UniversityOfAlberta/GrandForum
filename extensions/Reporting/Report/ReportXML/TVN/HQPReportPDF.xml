@@ -158,7 +158,13 @@
                         {$item}% Knowledge mobilization<br /><br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="institution" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_INSTITUTION" mimeType="application/pdf" fileSize="2" blobSubItem="{$user_id}">
+                <ReportItem id="learning" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_LEARNING" mimeType="application/pdf" fileSize="5" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h4>Learning Plan</h4>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="institution" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_INSTITUTION" mimeType="application/pdf" fileSize="5" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h4>Host Institution</h4>
                         {$item}

@@ -835,6 +835,7 @@ define('SSA_SYNTH',         11);
 define('SSA_CREATION',      12);
 define('SSA_MOBILIZATION',  13);
 define('SSA_INSTITUTION',   14);
+define('SSA_LEARNING',      15);
 
 
 /*
