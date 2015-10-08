@@ -28,8 +28,8 @@ class PersonRelationsTab extends AbstractTab {
                         $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
                     }
                     $this->html .= "<h3>Supervisors</h3>";
-                    $this->html .= "<table class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr>";
+                    $this->html .= "<table id='relations_table' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
+                                    <thead><tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr></thead><tbody>";
                     foreach($person->getSupervisors(true) as $supervisor){
                         // TODO: These loops are a little inneficient, it should probably be extracted to a function, and optimized
                         foreach($supervisor->getRelations(SUPERVISES, true) as $r){
@@ -50,20 +50,20 @@ class PersonRelationsTab extends AbstractTab {
                                 $this->html .= 
                                 "<tr><td>$start_date</td><td>$end_date</td><td>$position</td>
                                 <td><a href='{$supervisor->getUrl()}'>{$supervisor->getLastName()}</a></td>
-                                <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td></tr>";
+                                <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td></tr></tbody>";
                             }
                         }
                     }
                     
-                    $this->html .= "</table>";
+                    $this->html .= "</table><script type='text/javascript'>$('#relations_table').dataTable()</script>";
                 }
                 else{
                     $this->html .= "<table width='100%'><tr>";
                     if(count($person->getRelations(SUPERVISES, true)) > 0){
                         $this->html .= "<td style='padding-right:25px;width:50%;' valign='top'>";
                         $this->html .= "<h3>Supervises</h3>";
-                        $this->html .= "<table class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
-                                    <tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr>";
+                        $this->html .= "<table id='relations_table' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
+                                    <thead><tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr></thead><tbody>";
                         $relations = $person->getRelations(SUPERVISES, true);
                         foreach($relations as $r){
                             $hqp =  $r->getUser2();
@@ -84,7 +84,7 @@ class PersonRelationsTab extends AbstractTab {
                             <td><a href='{$hqp->getUrl()}'>{$hqp->getFirstName()}</a></td>";
                             $this->html .= "</tr>";
                         }
-                        $this->html .= "</table>";
+                        $this->html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable()</script>";
                         $this->html .= "</td>";
                     }
                     if($visibility['isMe'] && count($person->getRelations(WORKS_WITH, true)) > 0){

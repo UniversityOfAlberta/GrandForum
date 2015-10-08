@@ -67,6 +67,7 @@
         <% } %>
     <% }, this) %>
 </table>
+<% if(projectsEnabled){ %>
 <h2>Related Projects</h2>
 <div id='productSpinner'></div>
 <div id='productProjects'>
@@ -99,6 +100,7 @@
         </tr>
     </table>
 </div>
+<%}%>
 </form>
 <% if(!this.isDialog){ %>
     <br />

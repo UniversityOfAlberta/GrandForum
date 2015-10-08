@@ -515,6 +515,22 @@
             </data>
         </Product>
         
-    </Products>    
+    </Products>  
+
+    <Awards category="Award">
+         <Award type="Award">
+             <data>
+                  <field label="URL" type="URL">url</field>
+             </data>
+         </Award>
+         <Award type="Misc">
+              <data>
+                   <field label="URL" type="URL">url</field>
+              </data>
+         </Award>
+    </Awards>
+
+
+  
 
 </Products>

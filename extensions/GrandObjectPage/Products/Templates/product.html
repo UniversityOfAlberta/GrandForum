@@ -27,8 +27,10 @@
         <% } %>
     <% }, this) %>
 </table>
-<h2>Related Projects</h2>
-<div id='productProjects'></div>
+<%if(projectsEnabled){%>
+    <h2>Related Projects</h2>
+    <div id='productProjects'></div>
+<%}%>
 <% if(parseInt(me.get('id')) > 0) { %>
     <br />
     <button id='editProduct'>Edit <%= category %></button>&nbsp;<button id='deleteProduct'>Delete <%= category %></button>

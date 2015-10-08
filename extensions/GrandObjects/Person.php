@@ -401,7 +401,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
-            $sql = "SELECT user_id, university_name, department, position, end_date
+            $sql = "SELECT user_id, university_name, department, position, end_date, research_area
                     FROM (SELECT * 
                           FROM grand_user_university 
                           ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) 
@@ -416,7 +416,8 @@ class Person extends BackboneModel {
                         array("university" => $row['university_name'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
-                              "date"       => $row['end_date']);
+                              "date"       => $row['end_date'],
+			      "research_area" => $row['research_area']);
                 }
             }
         }
@@ -3999,12 +4000,99 @@ class Person extends BackboneModel {
     function getMetric(){
 	$metric = Metric::getUserMetric($this->id);
 	return $metric;
-
     }
     
     function getGsMetric(){
 	$gsMetric = GsMetric::getUserMetric($this->id);
 	return $gsMetric;
     }
+
+/**
+     * Returns this Person's Supervisors
+     * @param mixed $history Whether or not to include all Supervisors in history (can also be a specific date)
+     * @return array This Person's Supervisors
+     */
+    function getCommittee($history=false){
+        if($history !== false && $this->id != null){
+            $this->roles = array();
+            if($history === true){
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type LIKE '%Committee%'";
+            }
+            else{
+                $sql = "SELECT *
+                        FROM grand_relations
+                        WHERE user2 = '{$this->id}'
+                        AND type LIKE '%Committee%'
+                        AND start_date <= '{$history}'
+                        AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
+            }
+            $data = DBFunctions::execSQL($sql);
+            $people = array();
+            foreach($data as $row){
+                $person = Person::newFromId($row['user1']);
+                $people[$person->getId()] = $person;
+            }
+            return array_values($people);
+        }
+        $sql = "SELECT *
+                FROM grand_relations
+                WHERE user2 = '{$this->id}'
+                AND type LIKE '%Committee%'
+                AND start_date > end_date";
+        $data = DBFunctions::execSQL($sql);
+        $people = array();
+        foreach($data as $row){
+            $person = Person::newFromId($row['user1']);
+            $people[$person->getId()] = $person;
+        }
+        return array_values($people);
+     }
+
+     function getRoleFor($hqp){
+	$sql = "SELECT `type` FROM
+		grand_relations WHERE user1 = {$this->id}
+		AND user2 = {$hqp}";
+	$data = DBFunctions::execSQL($sql);
+	return $data[0]['type'];
+	       
+     }
+    function getRelationsAll($history=false){
+            $sql = "SELECT id, type
+                    FROM grand_relations
+                    WHERE user1 = '{$this->id}'
+                    ";
+            if(!$history){
+                $sql .= "AND start_date >= end_date";
+            }
+	    $relations = array();
+            $data = DBFunctions::execSQL($sql);
+    	    foreach($data as $row){
+                $relations[] = Relationship::newFromId($row['id']);
+            }
+            return $relations; 	    
+     }
+
+
+    /**
+     * Returns a new Person from the given email (null if not found)
+     * In the event of a collision, the first user is returned
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
+    static function newFromUniversityId($id){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('university_id' => $id));
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return null;
+        }
+    }
+
 }
 ?>

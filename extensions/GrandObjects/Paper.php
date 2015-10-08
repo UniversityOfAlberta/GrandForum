@@ -21,7 +21,7 @@ class Paper extends BackboneModel{
     var $date;
     var $status;
     var $authors;
-    var $data;
+    var $data = false;
     var $lastModified;
     var $authorsWaiting;
     var $projectsWaiting;
@@ -264,7 +264,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, data, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -1068,23 +1068,23 @@ class Paper extends BackboneModel{
     function getVenue(){
         $venue = "";
         if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->data, 'venue');
+            $venue = ArrayUtil::get_string($this->getData(), 'venue');
         }
         
         if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->data, 'event_title');
+            $venue = ArrayUtil::get_string($this->getData(), 'event_title');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->data, 'conference');
+            $venue = ArrayUtil::get_string($this->getData(), 'conference');
         }
 
         if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->data, 'event_location');
+            $venue = ArrayUtil::get_string($this->getData(), 'event_location');
         }
 
         if(empty($venue)){
-            $venue = ArrayUtil::get_string($this->data, 'location');
+            $venue = ArrayUtil::get_string($this->getData(), 'location');
         }
         return $venue;
     }
@@ -1094,7 +1094,13 @@ class Paper extends BackboneModel{
      * @return array The domain specific data for this Paper
      */
     function getData(){
-        return $this->data;
+        if($this->data === false){
+            $data = DBFunctions::select(array("grand_products"), array("data"), array("id"=>$this->getId()));
+            if(count($data) >0){
+                $this->data = unserialize($data[0]['data']);
+            }
+        }
+        return $this->data;	
     }
     
     /**

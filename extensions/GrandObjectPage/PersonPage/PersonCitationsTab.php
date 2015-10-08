@@ -12,6 +12,36 @@ class PersonCitationsTab extends AbstractTab {
     }
 
     function generateBody(){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
+        $wgOut->addScript(
+                "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#citationAccordion').accordion({autoHeight: false, collapsible: true});
+                    $('.ui-accordion .ui-accordion-header a.accordion_hdr_lnk').click(function() {
+                      window.location = $(this).attr('href');
+                      return false;
+                   });
+                });
+
+
+                </script>"
+            );
+            $wgOut->addHTML(
+                "<style type='text/css'>
+                    .ui-accordion .ui-accordion-header a{
+                        display: inline !important;
+                    }
+                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk{
+                        color: blue !important;
+                        padding-left: 0 !important;
+                    }
+                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk:hover{
+                        text-decoration: underline;
+                    }
+                </style>"
+            );
+
+
         $metric = $this->person->getMetric();
 	$acm_stats = $this->getAcmStats($metric);
         $scopus_stats = $this->getScopusStats($metric);

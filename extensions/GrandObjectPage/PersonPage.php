@@ -124,19 +124,23 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
                 $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
 
-                $tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
-		$tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
-                //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
+               if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+ 		    $tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
+                }
+		$tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+                if($wgUser->isLoggedIn() && $person->isRole(NI)){
+		    $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility));
+                }
+		if($config->getValue('projectsEnabled')){
+		     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                }
+		//$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
 		if($config->getValue('projectsEnabled')){
 		    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
 		}
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }
