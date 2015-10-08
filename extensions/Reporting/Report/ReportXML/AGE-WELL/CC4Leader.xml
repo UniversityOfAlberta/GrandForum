@@ -4,6 +4,9 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+            <SectionPermission id="comments" permissions="rw" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" project="CC4 TRAIN" />
     </Permissions>
     <ReportSection id="comments" tooltip="Training and Mentorship" name="CC4 Comments" blobSection="CC_PLANNING_4" type="EditableReportSection">

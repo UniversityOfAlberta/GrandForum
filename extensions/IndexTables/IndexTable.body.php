@@ -275,7 +275,7 @@ EOF;
 	    global $wgScriptPath, $wgServer, $config;
 	    $me = Person::newFromWgUser();
 	    $activityPlans = "";
-	    if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+	    if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
 	        $activityPlans = "<th>Activity Plans</th>";
 	    }
 		$this->text .=
@@ -294,7 +294,7 @@ EOF;
                 $this->text .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>";
                 $this->text .= "<td>{$project->getFullName()}</td>";
                 $this->text .= "<td>{$leaderString}</td>";
-                if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
                     $this->text .= "<td>";
                     $projs = array();
                     $projects = array();
@@ -309,7 +309,7 @@ EOF;
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    if($me->leadershipOf($project)){
+                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
                         $report = "";
                         switch($project->getName()){
                             case "CC1 K-MOB":
