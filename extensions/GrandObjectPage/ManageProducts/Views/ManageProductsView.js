@@ -195,9 +195,11 @@ ManageProductsView = Backbone.View.extend({
     },
     
     toggleSelect: function(e){
+        var wrapper = this.$('#listTable_wrapper').detach();
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
         var checked = target.is(":checked");
+        var start = new Date();
         _.each(this.subViews, function(view){
             if(checked){
                 view.select(projectId);
@@ -206,7 +208,10 @@ ManageProductsView = Backbone.View.extend({
                 view.unselect(projectId);
             }
         });
+        wrapper.appendTo("#currentView");
         this.productChanged();
+        var end = new Date();
+        console.log(end - start);
     },
     
     deletePrivate: function(){

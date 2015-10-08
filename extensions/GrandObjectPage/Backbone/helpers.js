@@ -143,8 +143,7 @@ HTML.CheckBox = function(view, attr, options){
         }
     };
     view.delegateEvents(events);
-    $(el).wrap('div');
-    return $(el).parent().html();
+    return $(el)[0].outerHTML;
 }
 
 HTML.Radio = function(view, attr, options){
