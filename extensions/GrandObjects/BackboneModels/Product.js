@@ -168,6 +168,8 @@ Products = Backbone.Collection.extend({
             self.temp = self.temp.concat(data);
             if(_.size(data) == count){
                 // There's probably more, so keep calling
+                self.reset(self.temp, {silent: true});
+                self.trigger('partialSync');
                 self.fetchChunk(start + count, count);
             }
             else{
