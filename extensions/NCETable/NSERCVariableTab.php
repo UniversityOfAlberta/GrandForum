@@ -720,10 +720,10 @@ EOF;
         $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
                                             "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
 
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"PostDoc",
                             "Technician"=>"Tech",
                             "Other"=>"Other",
                             "Unknown"=>"Unknown");
@@ -838,10 +838,10 @@ EOF;
 
         //Setup the table structure
         $projects = array();
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"PostDoc",
                             "Technician"=>"Tech",
                             "Other"=>"Other");
 
@@ -1069,10 +1069,10 @@ EOF;
     function getHQPEmployment($people, $type){
         $movedons = $people;
         
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"PostDoc",
                             "Technician"=>"Tech",
                             "Other"=>"Other",
                             "Unknown"=>"Unknown");
