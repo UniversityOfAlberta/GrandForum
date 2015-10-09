@@ -51,7 +51,7 @@ class Bar extends Visualization {
 							responsive: false,
 							scaleShowGridLines : false
 							});
-	}, 6000)
+	}, 10000)
 	</script>
 	";
 	return $string;

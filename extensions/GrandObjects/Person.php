@@ -4018,9 +4018,8 @@ class Person extends BackboneModel {
      * @return array This Person's Supervisors
      */
     function getCommittee($history=false){
-        if($history !== false && $this->id != null){
-            $this->roles = array();
-            if($history === true){
+        if($this->id != null){
+            if($history === false){
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
@@ -4061,6 +4060,7 @@ class Person extends BackboneModel {
 		grand_relations WHERE user1 = {$this->id}
 		AND user2 = {$hqp}";
 	$data = DBFunctions::execSQL($sql);
+	print_r($data);
 	return $data[0]['type'];
 	       
      }
@@ -4097,6 +4097,13 @@ class Person extends BackboneModel {
         else{
             return null;
         }
+    }
+
+    function setUniversityId($id){
+	$status = DBFunctions::update('mw_user',
+                                    array('university_id' => $id),
+                                    array('user_name' => EQ($this->getName())));	
+	return $status;
     }
 
 }
