@@ -419,10 +419,10 @@ EOF;
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"PostDoc",
                             "Technician"=>"Tech",
                             "Other"=>"Other",
                             "Unknown"=>"Unknown");
