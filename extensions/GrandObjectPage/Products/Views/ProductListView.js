@@ -5,16 +5,21 @@ ProductListView = Backbone.View.extend({
 
     initialize: function(){
         this.model.fetch();
-        this.model.bind('partialSync', this.render, this);
-        this.model.bind('sync', this.render, this);
+        this.model.bind('partialSync', function(start){ this.renderPartial(start); }, this);
+        this.model.bind('sync', function(start){ this.renderPartial(start); }, this);
         this.model.bind('sync', this.removeThrobber, this);
         this.template = _.template($('#product_list_template').html());
     },
     
-    processData: function(){
+    processData: function(start){
         // This method is purposely not using Backbone views for performance reasons
         var data = Array();
+        var i = -1;
         _.each(this.model.toJSON(), function(model, index){
+            i++;
+            if(i < start){
+                return;
+            }
             var authors = Array();
             var projects = Array();
             _.each(model.authors, function(author, aId){
@@ -48,16 +53,22 @@ ProductListView = Backbone.View.extend({
         this.$(".throbber").hide();
     },
     
-    render: function(){
+    renderPartial: function(start){
+        if(start == undefined){
+            start = 0;
+        }
         if(this.table != undefined){
             _.defer($.proxy(function(){
-                var data = this.processData();
-                this.table.rows().remove();
+                var data = this.processData(start);
                 this.table.rows.add(data);
                 this.table.draw();
             }, this));
             return this.$el;
         }
+        return this.render();
+    },
+    
+    render: function(){
         this.$el.empty();
         this.$el.css('display', 'none');
         var templateData = {'url' : '', 'title' : ''};
@@ -72,7 +83,7 @@ ProductListView = Backbone.View.extend({
         this.$el.html(this.template(templateData));
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
-        var data = this.processData();
+        var data = this.processData(0);
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [ [0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
