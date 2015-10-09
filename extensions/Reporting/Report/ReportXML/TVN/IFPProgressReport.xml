@@ -40,6 +40,16 @@
                 <b>Name:&nbsp;</b>{$user_name}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_START" width="100px">
+            <![CDATA[
+                <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_END" width="100px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_MILESTONES" labels="Project Deliverables|Description of Milestones and Deliverables|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
             <![CDATA[
                 <h2>Status of Project Milestone and Deliverables</h2>

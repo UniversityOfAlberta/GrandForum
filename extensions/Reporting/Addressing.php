@@ -648,6 +648,8 @@ define('CAT_COMM_UPLOAD',           1);
 
 /* These are used for TVN Project Reports */
 // Final Report
+define('FINAL_INFORMATION_START',   5);
+define('FINAL_INFORMATION_END',     6);
 define('FINAL_INFORMATION_ROLE',    1);
 define('FINAL_INFORMATION_TIME',    2);
 define('FINAL_INFORMATION_STATUS',  3);
@@ -694,9 +696,11 @@ define('FINAL_ALIGN_LEADER',    3);
 define('FINAL_BUD_UPLOAD',      1);
 
 // Progress Report
-define('PROG_INFORMATION_ROLE',    1);
-define('PROG_INFORMATION_TIME',    2);
-define('PROG_INFORMATION_STATUS',  3);
+define('PROG_INFORMATION_START',    4);
+define('PROG_INFORMATION_END',      5);
+define('PROG_INFORMATION_ROLE',     1);
+define('PROG_INFORMATION_TIME',     2);
+define('PROG_INFORMATION_STATUS',   3);
 
 define('PROG_MIL_MILESTONES1',      1);
 define('PROG_MIL_MILESTONES2',      4);
@@ -729,6 +733,8 @@ define('PROG_PLAN_TRANS',           5);
 define('PROG_BUD_UPLOAD',           1);
 
 // IFP Final Report
+define('IFP_FINAL_MIL_START',           21);
+define('IFP_FINAL_MIL_END',             22);
 define('IFP_FINAL_MIL_MILESTONES1',     1);
 define('IFP_FINAL_MIL_MILESTONES2',     14);
 define('IFP_FINAL_MIL_INCOMPLETE',      15);
@@ -780,6 +786,8 @@ define('IFP_FINAL_SUP_ASSESSMENT',      4);
 define('IFP_FINAL_SUP_ELABORATE',       5);
 
 // IFP Progress Report
+define('IFP_PROG_MIL_START',            6);
+define('IFP_PROG_MIL_END',              7);
 define('IFP_PROG_MIL_MILESTONES',       1);
 define('IFP_PROG_MIL_DELETED',          4);
 define('IFP_PROG_MIL_DELAYED',          5);
@@ -847,6 +855,7 @@ define('SSA_SYNTH',         11);
 define('SSA_CREATION',      12);
 define('SSA_MOBILIZATION',  13);
 define('SSA_INSTITUTION',   14);
+define('SSA_LEARNING',      15);
 
 
 //FEC Report

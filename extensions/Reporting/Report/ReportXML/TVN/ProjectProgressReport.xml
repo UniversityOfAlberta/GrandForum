@@ -13,6 +13,19 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="partnerships" permissions="rw" />
+            <SectionPermission id="network" permissions="rw" />
+            <SectionPermission id="alignment" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="information" tooltip="1. Project and Team Information" name="Project Information" title="1. Project and Team Information" blobSection="PROG_INFORMATION" type="EditableReportSection">
@@ -21,6 +34,16 @@
                 <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
                 <b>Project Title:&nbsp;</b>{$project_full_name}<br />
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="PROG_INFORMATION_START" width="100px">
+            <![CDATA[
+                <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="PROG_INFORMATION_END" width="100px">
+            <![CDATA[
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="team" type="StaticReportItem">

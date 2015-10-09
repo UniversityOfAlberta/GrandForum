@@ -10,7 +10,7 @@
     <ReportSection id="information" title="Project and Team Information" blobSection="PROG_INFORMATION" type="HeaderReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>{$this_year} Project Progress Report</h4><br />
+                <h4 style='font-size:1.40em;'>Project Progress Report<br />Period Ending {getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id}}</h4><br />
                 <p><b><u>TVN Project File Number</u></b></p>{$project_name}<br /><br />
                 <p><b><u>Project Title</u></b></p>{$project_full_name}<br /><br />
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
