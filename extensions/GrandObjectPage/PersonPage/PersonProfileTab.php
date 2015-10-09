@@ -500,7 +500,15 @@ EOF;
             $positions = Person::getAllPositions();
         }
         else{
-            $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+            $positions = array("Other", 
+                               "Graduate Student - Master's", 
+                               "Graduate Student - Doctoral", 
+                               "Post-Doctoral Fellow", 
+                               "Research Associate", 
+                               "Research Assistant", 
+                               "Technician", 
+                               "Summer Student", 
+                               "Undergraduate Student");
         }
         $myPosition = "";
         foreach($positions as $key => $position){
