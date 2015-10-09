@@ -81,7 +81,6 @@ ProductListView = Backbone.View.extend({
 	    this.$("#listTable_length").append(showButton);
 	    this.$("#listTable_length").append(throbber);
         this.$el.css('display', 'block');
-        this.$(".throbber").show();
         return this.$el;
     }
 
