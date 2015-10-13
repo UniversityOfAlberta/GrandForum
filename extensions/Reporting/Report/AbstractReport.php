@@ -703,7 +703,11 @@ abstract class AbstractReport extends SpecialPage {
                                 $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
                             }
                             else{
-                                $rResult = ($rResult || $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']));
+                                $isMember = true;
+                                if($this->project != null && $this->project->getId() != 0){
+                                    $isMember = $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end'], $this->project);
+                                }
+                                $rResult = ($rResult || ($me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']) && $isMember));
                             }
                         }
                         if($perm['perm']['subType'] != ""){

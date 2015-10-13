@@ -10,7 +10,7 @@
     <ReportSection id="information" title="Project and Team Information" blobSection="FINAL_INFORMATION" type="HeaderReportSection" pagebreak="true">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>{$this_year} Final Project Report</h4><br />
+                <h4 style='font-size:1.40em;'>Final Project Report<br />Period Ending {getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id}}</h4><br />
                 <p><b><u>TVN Project File Number</u></b></p>{$project_name}<br /><br />
                 <p><b><u>Project Title</u></b></p>{$project_full_name}<br /><br />
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
@@ -24,7 +24,7 @@
                         <th>Team Member and<br />Institution/Organization</th>
                         <th>Role in project</th>
                         <th>% of time<br />dedicated to Project</th>
-                        <th>Status<br /><small>(Indicate original,<br /> removed, or new member)</small></th>
+                        <th>Status</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -44,7 +44,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -74,7 +74,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -104,7 +104,7 @@
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td>{$user_full_roles}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -125,20 +125,26 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" title="Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" type="ReportSection">
-        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
                 <h2>Milestones</h2>
                 <h3>Year 1</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,Not Started,Deleted,New)" multiple="true" class="wikitable">
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Year 2</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)"  multiple="true" class="wikitable">
+        <ReportItem id="milestones3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES3" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 3</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)"  multiple="true" class="wikitable">
             <![CDATA[
                 <br /><br />
                 <h2>Deliverables</h2>
@@ -146,16 +152,22 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,Incomplete,Deleted,New)" multiple="true" class="wikitable">
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Year 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES3" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Year 3</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="incomplete" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_MIL_INCOMPLETE" rich="true" optional="true">
             <![CDATA[
                 <br /><br />
-                <h2>Incomplete, Deleted or New Milestones/Deliverables</h2>
+                <h2>Incomplete, Delayed, Deleted or New Milestones/Deliverables</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -195,6 +207,13 @@
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
+                <h2>Dissemination of Project Research Results</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="materials" type="UploadReportItem" blobItem="FINAL_KTEE_UPLOAD" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                <h3>Research Documents</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -206,7 +225,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" title="Partnerships" blobSection="FINAL_PARTNERS" type="EditableReportSection">
-        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" types="Text|ComboBox(University, Federal dept./agency, Provincial dept./agency, Industry)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
+        <ReportItem id="partners_head" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_PART_CONTR" multiple="true" labels="Name of partner|Type of partner|Included in original application?|Cash and/or in-kind?|Amount of contributions|Period covered by contribution" types="Text|Select(Advocacy groups,Associations,Foundations,Government - provincial,Government - federal,Provincial research offices,Not for profit organizations,Single disease associations/groups,Industry - banks and trust,Industry - life insurance,Industry - pharmaceutical and biotechnology,Industry - medical devices,Industry - other,Other)|Select(Yes,No)|Select(Cash, In-Kind, Cash &amp; In-Kind)|Integer|Text" class="wikitable">
             <![CDATA[
                 <small>{$item}</small>
             ]]>
@@ -234,6 +253,38 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="planning" title="Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
+        <ReportItem id="findings" type="RadioReportItem" blobItem="FINAL_PLAN_FINDINGS" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Research Findings</h3>
+                <h4>Have the research findings from this work been incorporated into a new grant submission for additional funding?</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_FINDINGS_YES" optional="true" width="550px" height="100px">
+            <![CDATA[
+                <h4>If Yes, which agency have you applied for additional funding and what is the funding amount requested?</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings_no" type="RadioReportItem" blobItem="FINAL_PLAN_FINDINGS_NO" orientation="vertical" options="Yes|No" optional="true">
+            <![CDATA[
+                <h4>If No, Do you anticipate submitting a grant for funding in the next 6 months?</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="additional" type="RadioReportItem" blobItem="FINAL_PLAN_ADDITIONAL" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Additional Research</h3>
+                <h4>Did this work lead to additional research funding being secured by you and/or other project team members?</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="additional_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_ADDITIONAL_YES" optional="true" width="550px" height="100px">
+            <![CDATA[
+                <h4>If Yes, please provide information on the funding agency, the total funding awarded, length of the grant and title of the grant.</h4>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Research Themes</h3>
@@ -286,7 +337,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" title="Financial Report" type="ReportSection" blobSection="FINAL_BUDGET" pagebreak="true">
-        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN Budget.xlsx" downloadOnly="true">
+        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" template="TVN Budget.xlsx" budgetText="Financial Report" downloadOnly="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -317,7 +368,7 @@
                     <![CDATA[
                         <tr>
                             <td class='label'>Grant Title:</td>
-                            <td>{$item}</td>
+                            <td>{$project_name}</td>
                         </tr>
                     ]]>
                 </ReportItem>
@@ -380,7 +431,7 @@
                 <ReportItem id="additional_head" type="StaticReportItem">
                     <![CDATA[
                         </table><br />
-                        <h3>Publications and Dissemination of Research</h3>
+                        <h2>Publications and Dissemination of Research</h2>
                     ]]>
                 </ReportItem>
                 <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="Person">

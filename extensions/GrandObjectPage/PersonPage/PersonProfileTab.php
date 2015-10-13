@@ -335,7 +335,7 @@ EOF;
             $string = "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Date</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -356,9 +356,8 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
                 $string .= "</tr>";
@@ -501,7 +500,15 @@ EOF;
             $positions = Person::getAllPositions();
         }
         else{
-            $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+            $positions = array("Other", 
+                               "Graduate Student - Master's", 
+                               "Graduate Student - Doctoral", 
+                               "Post-Doctoral Fellow", 
+                               "Research Associate", 
+                               "Research Assistant", 
+                               "Technician", 
+                               "Summer Student", 
+                               "Undergraduate Student");
         }
         $myPosition = "";
         foreach($positions as $key => $position){
