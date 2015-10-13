@@ -579,6 +579,7 @@ ManageProductsView = Backbone.View.extend({
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
 	                        this.products.remove(ids, {silent: true});
+	                        this.products.trigger("remove");
                             this.products.add(data.created, {silent: true});
                             this.products.trigger("add");
                         }
