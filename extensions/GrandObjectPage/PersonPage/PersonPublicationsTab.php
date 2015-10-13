@@ -50,7 +50,7 @@ class PersonPublicationsTab extends AbstractTab {
                 $string .= "<td>".implode(", ", $names)."</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
 		$string .= "<td></td>";
-                $string .= "<td>{$paper->getCitationCount("Sciverse Scopus")}</td>";
+                $string .= "<td>{$paper->getTotalCitationCount()}</td>";
 
                 $string .= "</tr>";
             }

@@ -54,8 +54,32 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</table>";
+        $this->html .= $this->showEditTable($this->person, $this->visibility);
         $this->html .= "<h2>Profile</h2>";
-        $this->showEditProfile($this->person, $this->visibility);
+	$this->showEditProfile($this->person, $this->visibility);
+    	$this->html .= "<script type='text/javascript'>
+            $(document).ready(function(){
+                $('select.chosen:visible').chosen();
+                $('select.chosen').each(function(i, el){
+                    var prevVal = $(el).val();
+                    if(prevVal != ''){
+                        $('option[value=' + prevVal + ']', $('select.chosen').not(el)).prop('disabled', true);
+                    }
+                    $('select.chosen').trigger('chosen:updated');
+                    $(el).change(function(e, p){
+                        var id = $(this).val();
+                        if(prevVal != ''){
+                            $('option[value=' + prevVal + ']', $('select.chosen').not(this)).prop('disabled', false);
+                        }
+                        if(id != ''){
+                            $('option[value=' + id + ']', $('select.chosen').not(this)).prop('disabled', true);
+                        }
+                        $('select.chosen').trigger('chosen:updated');
+                        prevVal = id;
+                    });
+                });
+            });
+        </script>";
     }
     
     function canEdit(){
@@ -65,7 +89,9 @@ class PersonProfileTab extends AbstractEditableTab {
     
     function handleEdit(){
         $this->handleContactEdit();
-        $_POST['user_name'] = $this->person->getName();
+        $tab = new PersonDashboardTab($this->person, $this->visibility);
+	$tab->handleEdit();
+	$_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
         $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
         $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
@@ -332,51 +358,24 @@ EOF;
      */
     function showTable($person, $visibility){
         $me = Person::newFromWgUser();
-        $products = $person->getPapers("all", false, 'both', true, "Public");
-        $string = "";
-        if(count($products) > 0){
-            $string = "<table id='personProducts' rules='all' frame='box'>
-                <thead>
-                    <tr>
-                        <th>Title</th><th>Date</th><th>Authors</th>
-                    </tr>
-                </thead>
-                <tbody>";
-            foreach($products as $paper){
-                $projects = array();
-                foreach($paper->getProjects() as $project){
-                    $projects[] = "{$project->getName()}";
-                }
-
-                $names = array();
-                foreach($paper->getAuthors() as $author){
-                    if($author->getId() != 0 && $author->getUrl() != ""){
-                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
-                    }
-                    else{
-                        $names[] = $author->getNameForForms();
-                    }
-                }
-                
-                $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
-                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $names)."</td>";
-                
-                $string .= "</tr>";
-            }
-            $string .= "</tbody>
-                </table>
-                <script type='text/javascript'>
-                    $('#personProducts').dataTable({
-                        'order': [[ 1, 'desc' ]],
-                        'autoWidth': false
-                    });
-                </script>";
-        }
-        return $string;
+	$visibilityCopy = $visibility;
+	$visibilityCopy['isMe'] = false;
+	$tab = new PersonDashboardTab($person, $visibilityCopy);
+	$tab->showTopProducts($person, $visibilityCopy, 5);
+	$string = $tab->html;
+	return $string;
     }
-   
+
+    function showEditTable($person, $visibility){
+	$me = Person::newFromWgUser();
+	$visibilityCopy = $visibility;
+	$visibilityCopy['isMe'] = false;
+	$tab = new PersonDashboardTab($person, $visibilityCopy);
+	$tab->showEditTopProducts($person, $visibilityCopy, 5);
+	$string = $tab->html;
+	return $string;	
+    }
+ 
     /**
      * Displays the profile for this user
      */

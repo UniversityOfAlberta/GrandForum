@@ -110,12 +110,20 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     private function selectList($person, $value){
-        $allProducts = $person->getPapers('all', true, 'grand');
-        $products = array();
-        foreach($allProducts as $product){
-            $date = $product->getDate();
-            $products[$date."_{$product->getId()}"] = $product;
+	global $config;
+	if($config->getValue('projectsEnabled')){
+            $allProducts = $person->getPapers('all', true, 'grand');
         }
+	else{
+	    $allProducts = $person->getPapers('all', true, 'both', true, 'Public');
+	}
+	$products = array();
+        foreach($allProducts as $product){
+	    if($product->getAccessId() == 0){
+                 $date = $product->getDate();
+                 $products[$date."_{$product->getId()}"] = $product;
+            }
+	}
         ksort($products);
         $products = array_reverse($products);
         $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
@@ -146,8 +154,10 @@ class PersonDashboardTab extends AbstractEditableTab {
         for($i; $i < $max; $i++){
             $this->html .= $this->selectList($person, "");
         }
-        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
+	if($visibility['isMe']){
+            $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
                         <input type='submit' value='Cancel' name='submit' />";
+    	}
     }
     
     function showTopProducts($person, $visibility, $max=5){
@@ -159,7 +169,7 @@ class PersonDashboardTab extends AbstractEditableTab {
         $this->html .= "<h2>Top Research Outcomes</h2>";
         $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
         if(count($products) > 0){
-            $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;'>
+            $this->html .= "<table class='dashboard wikitable' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;'>
                                 <tr>
                                     <td align='center'><b>Year</b></td>
                                     <td align='center'><b>Category</b></td>

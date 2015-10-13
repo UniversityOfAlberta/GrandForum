@@ -700,10 +700,11 @@ class Paper extends BackboneModel{
      * @param string $type Name of website that the citation count is from
     */
     function getCitationCount($type){
-      $paperId = $this->getId();
-      $sql = "SELECT citation_count FROM grand_product_citations
-	     WHERE type like '$type' AND product_id = $paperId";
-      $data = DBFunctions::execSQL($sql);
+      $paperId = $this->id;
+      $data = DBFunctions::select(array('grand_product_citations'),
+				  array('citation_count'),
+				  array('type'=>$type,
+					'product_id'=>$paperId));
       if(count($data) == 0){
           return 0;
       } 

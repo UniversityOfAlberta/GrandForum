@@ -3162,6 +3162,7 @@ class Person extends BackboneModel {
             $paper = Paper::newFromId($pId);
             if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
                !$paper->deleted && 
+               $paper->getId() != 0 &&
                ($category == 'all' || $paper->getCategory() == $category)){
                 if($grand == 'grand' && $paper->isGrandRelated()){
                     $papersArray[] = $paper;
@@ -3174,8 +3175,9 @@ class Person extends BackboneModel {
                 }
             }
         }
-        return $papersArray;
-    }
+	return $papersArray;
+    
+	}
     
     /**
      * Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
@@ -3215,6 +3217,7 @@ class Person extends BackboneModel {
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->isGrandRelated() &&
+               $paper->getId() != 0 &&
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
             }

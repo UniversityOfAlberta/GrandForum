@@ -32,8 +32,10 @@ class Bar extends Visualization {
 <script src='".$wgServer.$wgScriptPath."/extensions/Visualizations/Bar/bar/Chart.js'></script>
 
 	<script>
-	var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-	var barChartData = {
+	window.onload = slide();
+
+	function slide(){
+	     var barChartData = {
 		labels : {$labels},
 		datasets : [
 			{
@@ -44,14 +46,22 @@ class Bar extends Visualization {
 				data : {$data}
 			},
 		]
-	}
-	window.setTimeout(function(){
-		var ctx = document.getElementById('canvas').getContext('2d');
-		window.myBar = new Chart(ctx).Bar(barChartData,{
+	     }
+	     setInterval(function(){
+		 var blank = document.createElement('canvas');
+                 var canvas = document.getElementById('canvas');
+		 blank.width = canvas.width;
+		 blank.height = canvas.height;
+		 var ctx = document.getElementById('canvas').getContext('2d');
+		 if(canvas.toDataURL() == blank.toDataURL()){
+		     window.myBar = new Chart(ctx).Bar(barChartData,{
 							responsive: false,
 							scaleShowGridLines : false
 							});
-	}, 10000)
+	         }
+	     }, 3000)
+		
+	}
 	</script>
 	";
 	return $string;
