@@ -2,7 +2,7 @@
 <Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReportPDF" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP" subType="IFP">
-            <SectionPermission id="milestones" permissions="r" />
+            <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="external" permissions="rw" />
             <SectionPermission id="mentorship" permissions="rw" />
