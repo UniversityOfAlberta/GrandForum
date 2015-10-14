@@ -213,36 +213,69 @@ ManageProductsView = Backbone.View.extend({
         this.products.each(function(product){
             if(product.get('access_id') > 0){
                 product.set('access_id', 0);
-                xhrs.push(product.save({}, {
-                    success: function(){
-                        // Save was successful, mark it as 'clean'
-                        product.dirty = false;
-                    }
-                }));
+                var duplicates = product.getDuplicates();
+                xhrs.push(duplicates.ready());
             }
         });
         $.when.apply(null, xhrs).done($.proxy(function(){
-            // Success
-            clearAllMessages();
-            addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully released");
-            this.$("#saveProducts").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.productChanged();
-        }, this)).fail($.proxy(function(e){
-            // Failure
-            clearAllMessages();
-            var list = new Array();
-            list.push("There was a problem saving the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
-            this.products.each(function(product){
+            xhrs = new Array();
+            var duplicateProducts = new Array();
+            this.products.each($.proxy(function(product){
                 if(product.dirty){
-                    list.push("<li>" + product.get('title') + "</li>");
+                    if(product.duplicates.length > 0){
+                        var newDuplicates = new Array();
+                        product.duplicates.each($.proxy(function(dupe){
+                            var myProduct = this.products.findWhere({id: dupe.get('id')});
+                            if(myProduct != undefined){
+                                // This product is in my table
+                                newDuplicates.push(myProduct);
+                            }
+                            else{
+                                // This product is someone else's
+                                newDuplicates.push(dupe);
+                            }
+                        }, this));
+                        product.duplicates.reset(newDuplicates);
+                        duplicateProducts.push(product);
+                    }
+                    else{
+                        // Save all Dirty Products
+                        xhrs.push(product.save({}, {
+                            success: function(){
+                                // Save was successful, mark it as 'clean'
+                                product.dirty = false;
+                            }
+                        }));
+                    }
                 }
-            });
-            list.push("</ul>");
-            addError(list.join(''));
-            this.$("#saveProducts").prop('disabled', false);
-            this.$(".throbber").hide();
-            this.productChanged();
+            }, this));
+            if(duplicateProducts.length > 0){
+                this.duplicatesDialog.model = duplicateProducts;
+                this.duplicatesDialog.open();
+            }
+            $.when.apply(null, xhrs).done($.proxy(function(){
+                // Success
+                clearAllMessages();
+                addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully released");
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this)).fail($.proxy(function(e){
+                // Failure
+                clearAllMessages();
+                var list = new Array();
+                list.push("There was a problem saving the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
+                this.products.each(function(product){
+                    if(product.dirty){
+                        list.push("<li>" + product.get('title') + "</li>");
+                    }
+                });
+                list.push("</ul>");
+                addError(list.join(''));
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this));
         }, this));
     },
     
