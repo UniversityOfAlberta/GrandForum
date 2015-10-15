@@ -25,7 +25,7 @@ class Bar extends Visualization {
 	$labels = $formattedData[0];
 	$data = $formattedData[1];
 	$string ="
-		<div style='width: 50%'>
+		<div id='barchart{$this->index}' style='width: 50%'>
 		<h1>Citations Per Year</h2>
 			<canvas id='canvas' height='250' width='320'></canvas>
 		</div>
@@ -47,20 +47,26 @@ class Bar extends Visualization {
 			},
 		]
 	     }
-	     setInterval(function(){
+	     var intervalId = setInterval(function(){
+		console.log('interval');
+		if($('#barchart{$this->index}').is(':visible')){
 		 var blank = document.createElement('canvas');
                  var canvas = document.getElementById('canvas');
 		 blank.width = canvas.width;
 		 blank.height = canvas.height;
 		 var ctx = document.getElementById('canvas').getContext('2d');
-		 if(canvas.toDataURL() == blank.toDataURL()){
 		     window.myBar = new Chart(ctx).Bar(barChartData,{
 							responsive: false,
 							scaleShowGridLines : false
 							});
-	         }
-	     }, 3000)
+		console.log('render');
+		clearInterval(intervalId);
+		intervalId = null;
+		}
 		
+	     }, 100)
+
+	     	
 	}
 	</script>
 	";

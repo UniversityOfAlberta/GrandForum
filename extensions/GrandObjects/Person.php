@@ -4067,14 +4067,11 @@ class Person extends BackboneModel {
 	return $data[0]['type'];
 	       
      }
-    function getRelationsAll($history=false){
+    function getRelationsAll(){
             $sql = "SELECT id, type
                     FROM grand_relations
                     WHERE user1 = '{$this->id}'
                     ";
-            if(!$history){
-                $sql .= "AND start_date >= end_date";
-            }
 	    $relations = array();
             $data = DBFunctions::execSQL($sql);
     	    foreach($data as $row){

@@ -39,11 +39,12 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         var angle = p.angle;
         var label = labels[0].attr('text');
         if(color.b == p.colorOrig.b && bcolor.b == p.bcolorOrig.b){
-            color.b += 0.25;
+            color.b += 0.125;
             color.b = Math.min(1, color.b);
             
-            bcolor.b += 0.25;
+            bcolor.b += 0.125;
             bcolor.b = Math.min(1, bcolor.b);
+	    //p.attr('fill', p.bcolor);
             p.attr('gradient', angle + "-" + bcolor + "-" + color);
         }
         if(clickable && label != "Others"){
@@ -70,12 +71,14 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         color = Raphael.rgb2hsb(color.r, color.g, color.b);
         var bcolor = Raphael.getRGB(p.colorOrig);
         bcolor = Raphael.rgb2hsb(bcolor.r, bcolor.g, bcolor.b);
-        bcolor.b = bcolor.b/2;
+        bcolor.b = bcolor.b/1.25;
         var angle = p.angle;
         
         p.color = color;
         p.bcolor = bcolor;
-        
+
+        //p.attr('fill', color);
+
         p.attr('gradient', angle + "-" + bcolor + "-" + color);
     }
     
@@ -149,19 +152,19 @@ Raphael.fn.doughnut = function (name, cx, cy, data, stroke, clickable, fn, rapha
         color = Raphael.rgb2hsb(color.r, color.g, color.b);
         var bcolor = Raphael.getRGB(legend[l]['color']);
         bcolor = Raphael.rgb2hsb(bcolor.r, bcolor.g, bcolor.b);
-        bcolor.b = bcolor.b/2;
+        bcolor.b = bcolor.b/1.25;
         
         var colorOrig = Raphael.getRGB(legend[l]['color']);
         colorOrig = Raphael.rgb2hsb(colorOrig.r, colorOrig.g, colorOrig.b);
         var bcolorOrig = Raphael.getRGB(legend[l]['color']);
         bcolorOrig = Raphael.rgb2hsb(bcolorOrig.r, bcolorOrig.g, bcolorOrig.b);
-        bcolorOrig.b = bcolorOrig.b/2;
+        bcolorOrig.b = bcolorOrig.b/1.25;
 
         var p = sector(cx, 
                        cy, 
                        angle, 
                        angle + angleplus,
-                       {gradient: angle + "-" + bcolor + "-" + color, stroke: d3.rgb(legend[l]['color']).darker(4), "stroke-width": 1},
+                       {gradient: angle+"-"+bcolor+"-"+color , stroke: "#333333", "stroke-width": 1},
                        l);
         p.color = color;
         p.bcolor = bcolor;

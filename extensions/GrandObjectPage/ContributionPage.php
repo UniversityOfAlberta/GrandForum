@@ -6,7 +6,7 @@ $wgHooks['ArticleViewHeader'][] = array($contributionPage, 'processPage');
 class ContributionPage {
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $wgTitle, $wgMessage;
+        global $wgOut, $config, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $types, $wgTitle, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
             $name = ($article != null) ? $article->getTitle()->getNsText() : "";
@@ -181,8 +181,8 @@ class ContributionPage {
                                             sum += parseInt($(val).val());
                                         }
                                     });
-                                    $('#contributionTotalPerYear').html(sum);
-                                    $('#contributionTotal').html(sum*years);
+                                    //$('#contributionTotalPerYear').html(sum);
+                                    $('#contributionTotal').html(sum);
                                 }
                                 
                                 $(document).ready(function(){
@@ -560,10 +560,10 @@ class ContributionPage {
                         $total = 0;
                     }
                     $wgOut->addHTML("<div style='background:#EEE;padding:5px;'>");
-                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: $<span id='contributionTotal'>{$total}</span> <small>($<span id='contributionTotalPerYear'>{$totalPerYear}</span>/year)</small></h3>");
+                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: $<span id='contributionTotal'>{$totalPerYear}</span> <small><span id='contributionTotalPerYear'></span></small></h3>");
                     $wgOut->addHTML("</div>");
                     
-                    if($edit || !$edit && count($contribution->getProjects()) > 0){
+                    if($config->getValue('projectsEnabled') && ($edit || !$edit && count($contribution->getProjects()) > 0)){
                         $wgOut->addWikiText("== Projects ==
                                              __NOEDITSECTION__\n");
                     }

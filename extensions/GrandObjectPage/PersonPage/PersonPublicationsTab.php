@@ -17,6 +17,7 @@ class PersonPublicationsTab extends AbstractTab {
     }
 
     function showTable($person, $visibility){
+	global $config;
         $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
@@ -24,7 +25,7 @@ class PersonPublicationsTab extends AbstractTab {
             $string = "<table id='personPubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Keywords</th><th>Coauthors</th><th>Year</th><th>MetaData</th><th>Scopus Citations</th>
+                        <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th><th>Scopus Citations</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -45,12 +46,11 @@ class PersonPublicationsTab extends AbstractTab {
                 }
 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
-                $string .= "<td></td>";
-                $string .= "<td>".implode(", ", $names)."</td>";
-                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-		$string .= "<td></td>";
-                $string .= "<td>{$paper->getTotalCitationCount()}</td>";
+                $string .= "<td>{$paper->getProperCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
+                $string  .= "<td align=center>{$paper->getCategory()}</td>";
+                $string  .= "<td align=center>{$paper->getType()}</td>";
+		$string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
+                $string .= "<td align=right>{$paper->getTotalCitationCount()}</td>";
 
                 $string .= "</tr>";
             }

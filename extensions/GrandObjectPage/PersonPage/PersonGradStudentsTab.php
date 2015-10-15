@@ -44,11 +44,11 @@ class PersonGradStudentsTab extends AbstractTab {
 
 	$this->html = "
 		<div id='supervisorAccordion'>
-		     <h3><a href='#'>Supervisor Roles</a></h3>
+		     <h3><a href='#'>Supervision</a></h3>
 		     <div>
 		     {$this->showSupervisorRelations($this->person, $this->visibility)}
 		     </div>
-		     <h3><a href='#'>Examining Commitee Roles</a></h3>
+		     <h3><a href='#'>Examining Commitee Membership</a></h3>
 		     <div>
                      {$this->showCommiteeRelations($this->person, $this->visibility)}		     
 		     </div>
@@ -80,8 +80,15 @@ class PersonGradStudentsTab extends AbstractTab {
 						<th>Role</th>
 				    </tr></thead><tbody>";
                         $relations = $person->getRelationsAll();
-                        foreach($relations as $r){
+                        $students = array();
+			foreach($relations as $r){
                             $hqp =  $r->getUser2();
+			    if(in_array($hqp->getNameForForms(), $students)){
+				continue;
+ 			    }
+		            else{
+				$students[] = $hqp->getNameForForms();
+			    }
                             $start_date = substr($r->getStartDate(), 0, 10);
                             $end_date = substr($r->getEndDate(), 0, 10);
                             $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
@@ -157,9 +164,18 @@ class PersonGradStudentsTab extends AbstractTab {
                                                 <th>Role</th>
                                     </tr></thead><tbody>";
                         $relations = $person->getRelationsAll();
-                        foreach($relations as $r){
+                        $students = array();
+			foreach($relations as $r){
                             $hqp =  $r->getUser2();
-                            $start_date = substr($r->getStartDate(), 0, 10);
+			    if(in_array($hqp->getNameForForms(), $students)){
+                                $role = $r->getType();
+				continue;
+                            }
+                            else{
+                                $students[] = $hqp->getNameForForms();
+                            }
+
+			    $start_date = substr($r->getStartDate(), 0, 10);
                             $end_date = substr($r->getEndDate(), 0, 10);
                             $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
                             $position = $hqp->getUniversity();

@@ -25,13 +25,16 @@ class PersonCoursesTab extends AbstractTab {
 	    $this->html .= "<td>{$course->subject}</td>";
 	    $this->html .= "<td>{$course->catalog}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";
-	    $this->html .= "<td></td>";
+	    $this->html .= "<td><a href='#' onclick=''>Course Evaluation</a></td><div class='dialog' id='dialog{$course->id}'>hiii</div>";
+            
 	    $this->html .= "<td style='white-space:nowrap;'>{$course->getStartDate()}</td>";
 	    $this->html .= "<td style='white-space:nowrap;'>{$course->getEndDate()}</td>";
 
 	}
         $this->html .= "</table></tbody><script type='text/javascript'>
                         $('#courses_table').dataTable();
+			
+			
         </script>";
     }
 }

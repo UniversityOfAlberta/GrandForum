@@ -251,18 +251,16 @@ class PersonVisualizationsTab extends AbstractTab {
             $legend = array();
             $i = 0;
             $legend[$i]['name'] = "Year";
-            $legend[$i++]['color'] = "#D38946";
+            $legend[$i++]['color'] = "#a6cee3";
             if($config->getValue('projectsEnabled')){
                 $legend[$i]['name'] = "Project";
                 $legend[$i++]['color'] = "#82D868";
             }
             
             $legend[$i]['name'] = "University";
-            $legend[$i++]['color'] = "#B26060";
-            if($me->isLoggedIn()){
-                $legend[$i]['name'] = "Co-authorship";
-                $legend[$i++]['color'] = "#6191B3";
-            }
+            $legend[$i++]['color'] = "#b2df8a";
+            $legend[$i]['name'] = "Co-authorship";
+            $legend[$i++]['color'] = "#fb9a99";
             
             $levels = array();
             $i = 0;
@@ -323,21 +321,19 @@ class PersonVisualizationsTab extends AbstractTab {
                 }
             }
             
-            if($me->isLoggedIn()){
-                $i++;
-                $labelIndicies = array();
-                $index = 0;
-                foreach($products as $paper){
-                    $authors = $paper->getAuthors();
-                    foreach($authors as $author){
-                        if($author->getId() != $person->getId()){
-                            if(!isset($labelIndicies[$author->getNameForForms()])){
-                                $labelIndicies[$author->getNameForForms()] = $index;
-                                $levels[$i]['labels'][] = $author->getNameForForms();
-                                $index++;
-                            }
-                            @$levels[$i]['values'][$labelIndicies[$author->getNameForForms()]]++;
+            $i++;
+            $labelIndicies = array();
+            $index = 0;
+            foreach($products as $paper){
+                $authors = $paper->getAuthors();
+                foreach($authors as $author){
+                    if($author->getId() != $person->getId()){
+                        if(!isset($labelIndicies[$author->getNameForForms()])){
+                            $labelIndicies[$author->getNameForForms()] = $index;
+                            $levels[$i]['labels'][] = $author->getNameForForms();
+                            $index++;
                         }
+                        @$levels[$i]['values'][$labelIndicies[$author->getNameForForms()]]++;
                     }
                 }
             }

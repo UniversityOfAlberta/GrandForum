@@ -11,6 +11,7 @@ class Contribution {
     var $id;
     var $name;
     var $rev_id;
+    var $project_id;
     var $people;
     var $peopleWaiting;
     var $projects;
@@ -86,7 +87,8 @@ class Contribution {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->rev_id = $data[0]['rev_id'];
-            $this->name = $data[0]['name'];
+            $this->project_id = $data[0]['project_id'];
+	    $this->name = $data[0]['name'];
             $this->people = unserialize($data[0]['users']);
             $this->peopleWaiting = true; // Lazyness
             $this->projects = array();
