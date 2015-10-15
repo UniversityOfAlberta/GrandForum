@@ -234,14 +234,14 @@ class Paper extends BackboneModel{
      * @param string $access Whether to include 'Forum' or 'Public' access
      * @return array All of the Papers
      */
-    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public'){
+    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
         global $config;
         if(!$config->getValue('projectsEnabled')){
             $grand = 'both';
         }
         $data = array();
-        if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access])){
-            return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access];
+        if(isset(self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count])){
+            return self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count];
         }
         else{
             $papers = array();
@@ -289,24 +289,28 @@ class Paper extends BackboneModel{
             }
             $sql .= "\nORDER BY p.`type`, p.`title`";
             $data = DBFunctions::execSQL($sql);
+            self::generateProductProjectsCache();
+            $i = 0;
             foreach($data as $row){
-                if(!isset(self::$cache[$row['id']])){
-                    $paper = new Paper(array($row));
-                    self::$cache[$paper->id] = $paper;
-                }
-                else{
-                    $paper = self::$cache[$row['id']];
-                }
-                if($project != "all"){
-                    $papers[] = $paper;
-                }
-                else if(($grand == 'grand' && $paper->isGrandRelated()) ||
-                        ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
-                         $grand == 'both'){
-                    $papers[] = $paper;
+                $hasProjects = (isset(self::$productProjectsCache[$row['id']]) && count(self::$productProjectsCache[$row['id']]) > 0);
+                if($project != "all" || 
+                   (($grand == 'grand' && $hasProjects) ||
+                    ($grand == 'nonGrand' && !$hasProjects) ||
+                     $grand == 'both')){
+                    if($i >= $start && $i < $start + $count){
+                        if(!isset(self::$cache[$row['id']])){
+                            $paper = new Paper(array($row));
+                            self::$cache[$paper->id] = $paper;
+                        }
+                        else{
+                            $paper = self::$cache[$row['id']];
+                        }
+                        $papers[] = $paper;
+                    }
+                    $i++;
                 }
             }
-            self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access] = $papers;
+            self::$dataCache[$project.$category.$grand.strval($onlyPublic).$access.$start.$count] = $papers;
         }
         return $papers;
     }
