@@ -653,6 +653,7 @@ ManageProductsView = Backbone.View.extend({
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                $("div.throbber", this.bibtexDialog).show();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
+	                    console.log(response);
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
@@ -677,6 +678,12 @@ ManageProductsView = Backbone.View.extend({
                             }
                         }
                         button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
+                        this.bibtexDialog.dialog('close');
+	                }, this)).fail($.proxy(function(){
+	                    clearAllMessages();
+	                    addError("There was an error importing the BibTeX references");
+	                    button.prop("disabled", false);
                         $("div.throbber", this.bibtexDialog).hide();
                         this.bibtexDialog.dialog('close');
 	                }, this));
@@ -722,6 +729,12 @@ ManageProductsView = Backbone.View.extend({
                                 addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
                             }
                             button.prop("disabled", false);
+                            $("div.throbber", this.doiDialog).hide();
+                            this.doiDialog.dialog('close');
+	                    }, this)).fail($.proxy(function(){
+	                        clearAllMessages();
+	                        addError("There was an error importing the DOI reference");
+	                        button.prop("disabled", false);
                             $("div.throbber", this.doiDialog).hide();
                             this.doiDialog.dialog('close');
 	                    }, this));
