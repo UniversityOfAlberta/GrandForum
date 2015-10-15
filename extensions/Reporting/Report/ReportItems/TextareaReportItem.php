@@ -272,10 +272,10 @@ EOF;
     function getBlobValue(){
         $value = parent::getBlobValue();
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
-            if(strstr($value, "<p>") === false && trim($value) != ""){
-                $value = "<p>".$value."</p>";
-                $value = nl2br($value);
-            }
+            // Don't alter the text in any way
+        }
+        else{
+            nl2br($value);
         }
         return $value;
     }
