@@ -74,7 +74,28 @@ class ImportBibTeXAPI extends API{
             $product->category = $category;
             $product->type = $type;
         }
-        $structure = $this->structure['categories'][$category]['types'][$type];
+        if(isset($this->structure['categories'][$category]['types'][$type])){
+            // Make sure that the type actually exists
+            $structure = $this->structure['categories'][$category]['types'][$type];
+        }
+        else{
+            $found = false;
+            foreach($this->structure['categories'] as $cat => $cats){
+                if(isset($cats['types'][$type])){
+                    // Then check if the type might exist in a different category
+                    $found = true;
+                    $product->category = $cat;
+                    $product->type = $type;
+                    $structure = $this->structure['categories'][$cat]['types'][$type];
+                    break;
+                }
+            }
+            if(!$found){
+                // If not, then use the Misc type
+                $structure = $this->structure['categories'][$category]['types']['Misc'];
+                $product->type = "Misc: {$type}";
+            }
+        }
         $me = Person::newFromWgUser();
 
         if($product->description == ""){ $product->description = @$paper['abstract']; }

@@ -705,6 +705,11 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllCandidates($filter=null){
+        if($filter == NI){
+            $ars = self::getAllCandidates(AR);
+            $cis = self::getAllCandidates(CI);
+            return array_merge($ars, $cis);
+        }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id', 'user_name'),

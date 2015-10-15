@@ -20,16 +20,6 @@ class ProductAPI extends RESTAPI {
         }
         else{
             $json = array();
-            if($this->getParam('category') != "" && 
-               $this->getParam('projectId') != "" &&
-               $this->getParam('grand') != ""){
-                $papers = Paper::getAllPapers($this->getParam('projectId'), 
-                                              $this->getParam('category'), 
-                                              $this->getParam('grand'));
-            }
-            else{
-                $papers = Paper::getAllPapers('all', 'all', 'both');
-            }
             $start = 0;
             $count = 999999999;
             if($this->getParam('start') != "" &&
@@ -37,12 +27,23 @@ class ProductAPI extends RESTAPI {
                 $start = $this->getParam('start');
                 $count = $this->getParam('count');
             }
-            $i = 0;
-            foreach($papers as $id => $paper){
-                if($i >= $start && $i < $start + $count){
-                    $json[] = $paper->toArray();
-                }
-                $i++;
+            if($this->getParam('category') != "" && 
+               $this->getParam('projectId') != "" &&
+               $this->getParam('grand') != ""){
+                $papers = Paper::getAllPapers($this->getParam('projectId'), 
+                                              $this->getParam('category'), 
+                                              $this->getParam('grand'),
+                                              true,
+                                              'Public',
+                                              $start,
+                                              $count);
+            }
+            else{
+                $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
+            }
+            
+            foreach($papers as $paper){
+                $json[] = $paper->toArray();
             }
             return large_json_encode($json);
         }

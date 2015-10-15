@@ -100,11 +100,14 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.$("#privateN").html("(" + sum + ")");
+        this.$("#releaseN").html("(" + sum + ")");
         if(sum == 0){
             this.$("#deletePrivate").prop("disabled", true);
+            this.$("#releasePrivate").prop("disabled", true);
         }
         else{
             this.$("#deletePrivate").prop("disabled", false);
+            this.$("#releasePrivate").prop("disabled", false);
         }
         
         // Change the state of the 'selectAll' checkbox
@@ -163,18 +166,6 @@ ManageProductsView = Backbone.View.extend({
         this.productChanged();
     },
     
-    cacheRows: function(){
-        if(this.table != null){
-            var rows = this.table.rows().indexes();
-            var table = this.table;
-            rows.each($.proxy(function(i, val){
-                if(this.subViews[i] != undefined){
-                    this.subViews[i].row = this.table.row(i);
-                }
-            }, this));
-        }
-    },
-    
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
@@ -182,7 +173,6 @@ ManageProductsView = Backbone.View.extend({
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.cacheRows();
 	    this.table.draw();
 	    this.table.order(order);
 	    this.table.search(searchStr);
@@ -191,6 +181,7 @@ ManageProductsView = Backbone.View.extend({
 	    this.$("#listTable_length").empty();
 	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
 	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
+        this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
 	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
     },
     
@@ -199,7 +190,6 @@ ManageProductsView = Backbone.View.extend({
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
         var checked = target.is(":checked");
-        var start = new Date();
         _.each(this.subViews, function(view){
             if(checked){
                 view.select(projectId);
@@ -210,12 +200,83 @@ ManageProductsView = Backbone.View.extend({
         });
         wrapper.appendTo("#currentView");
         this.productChanged();
-        var end = new Date();
-        console.log(end - start);
     },
     
     deletePrivate: function(){
         this.deletePrivateDialog.dialog('open');
+    },
+    
+    releasePrivate: function(){
+        this.$("#saveProducts").prop('disabled', true);
+        this.$(".throbber").show();
+        var xhrs = new Array();
+        this.products.each(function(product){
+            if(product.get('access_id') > 0){
+                product.set('access_id', 0);
+                var duplicates = product.getDuplicates();
+                xhrs.push(duplicates.ready());
+            }
+        });
+        $.when.apply(null, xhrs).done($.proxy(function(){
+            xhrs = new Array();
+            var duplicateProducts = new Array();
+            this.products.each($.proxy(function(product){
+                if(product.dirty){
+                    if(product.duplicates.length > 0){
+                        var newDuplicates = new Array();
+                        product.duplicates.each($.proxy(function(dupe){
+                            var myProduct = this.products.findWhere({id: dupe.get('id')});
+                            if(myProduct != undefined){
+                                // This product is in my table
+                                newDuplicates.push(myProduct);
+                            }
+                            else{
+                                // This product is someone else's
+                                newDuplicates.push(dupe);
+                            }
+                        }, this));
+                        product.duplicates.reset(newDuplicates);
+                        duplicateProducts.push(product);
+                    }
+                    else{
+                        // Save all Dirty Products
+                        xhrs.push(product.save({}, {
+                            success: function(){
+                                // Save was successful, mark it as 'clean'
+                                product.dirty = false;
+                            }
+                        }));
+                    }
+                }
+            }, this));
+            if(duplicateProducts.length > 0){
+                this.duplicatesDialog.model = duplicateProducts;
+                this.duplicatesDialog.open();
+            }
+            $.when.apply(null, xhrs).done($.proxy(function(){
+                // Success
+                clearAllMessages();
+                addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully released");
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this)).fail($.proxy(function(e){
+                // Failure
+                clearAllMessages();
+                var list = new Array();
+                list.push("There was a problem saving the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
+                this.products.each(function(product){
+                    if(product.dirty){
+                        list.push("<li>" + product.get('title') + "</li>");
+                    }
+                });
+                list.push("</ul>");
+                addError(list.join(''));
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this));
+        }, this));
     },
     
     saveProducts: function(){
@@ -304,6 +365,7 @@ ManageProductsView = Backbone.View.extend({
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
         "click #deletePrivate": "deletePrivate",
+        "click #releasePrivate": "releasePrivate",
         "click #addProductButton": "addProduct",
         "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
@@ -591,10 +653,12 @@ ManageProductsView = Backbone.View.extend({
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                $("div.throbber", this.bibtexDialog).show();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
+	                    console.log(response);
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
-	                        this.products.remove(ids);
+	                        this.products.remove(ids, {silent: true});
+	                        this.products.trigger("remove");
                             this.products.add(data.created, {silent: true});
                             this.products.trigger("add");
                         }
@@ -614,6 +678,12 @@ ManageProductsView = Backbone.View.extend({
                             }
                         }
                         button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
+                        this.bibtexDialog.dialog('close');
+	                }, this)).fail($.proxy(function(){
+	                    clearAllMessages();
+	                    addError("There was an error importing the BibTeX references");
+	                    button.prop("disabled", false);
                         $("div.throbber", this.bibtexDialog).hide();
                         this.bibtexDialog.dialog('close');
 	                }, this));
@@ -659,6 +729,12 @@ ManageProductsView = Backbone.View.extend({
                                 addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
                             }
                             button.prop("disabled", false);
+                            $("div.throbber", this.doiDialog).hide();
+                            this.doiDialog.dialog('close');
+	                    }, this)).fail($.proxy(function(){
+	                        clearAllMessages();
+	                        addError("There was an error importing the DOI reference");
+	                        button.prop("disabled", false);
                             $("div.throbber", this.doiDialog).hide();
                             this.doiDialog.dialog('close');
 	                    }, this));

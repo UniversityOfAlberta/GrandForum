@@ -4,6 +4,9 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+            <SectionPermission id="comments" permissions="rw" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" project="CC1 K-MOB" />
     </Permissions>
     <ReportSection id="comments" tooltip="Knowledge Mobilization and Translation" name="CC1 Comments" blobSection="CC_PLANNING_1" type="EditableReportSection">

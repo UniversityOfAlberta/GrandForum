@@ -388,6 +388,18 @@
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field bibtex="school" label="University" type="String">university</field>
+                <field label="Department" type="String">department</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
 
         <Publication type="White Paper" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
@@ -402,6 +414,33 @@
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
             <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Manual" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <title ccv_id="1790f670e1144703a04ffa6268c454c7" ccv_name="Manual Title"></title>
+            <statuses ccv_id="24f82f269eef4156aed0a1f92358c898" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field ccv_id="02b98ee969d34f129c164881b006259c" ccv_name="Volume" bibtex="volume" label="Volume" type="String">volume</field>
+                <field ccv_id="01cc51025d634ed5a72090ae92f51632" ccv_name="Edition" bibtex="volume" label="Edition" type="String">edition</field>
+                <field bibtex="series" label="Series" type="String">series</field>
+                <field ccv_id="07ae2efa7e4d4c3dbe7b908274fb4eb9" ccv_name="Number of Pages" bibtex="pages" label="Number of Pages" type="String">pages</field>
+                <field ccv_id="0bea4007dba7404ea572b009850b7db0" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field ccv_id="8ee878c89ccc43089ee35784a143dddd" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Date"></date>
+            <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
+            <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
     </Publications>
 

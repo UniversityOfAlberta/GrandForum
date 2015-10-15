@@ -146,25 +146,16 @@ ManageProductsViewRow = Backbone.View.extend({
     },
     
     render: function(){
-        /*var classes = new Array();
+        var classes = new Array();
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
-        });*/
+        });
         this.el.innerHTML = this.template(this.model.toJSON());
-        /*if(this.parent.table != null){
-            var data = new Array();
-            this.$("td").each(function(i, val){
-                data.push($(val).htmlClean().html());
-            });
-            if(this.row != null){
-                this.row.data(data);
-            }
-        }*/
-        /*if(classes.length > 0){
+        if(classes.length > 0){
             this.$("td").each(function(i, val){
                 $(val).addClass(classes[i]);
             });
-        }*/
+        }
         return this.$el;
     }
     

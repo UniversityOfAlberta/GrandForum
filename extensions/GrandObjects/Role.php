@@ -56,6 +56,7 @@ class Role extends BackboneModel {
 	function toArray(){
 	    $json = array('id' => $this->getId(),
 	                  'name' => $this->getRole(),
+	                  'fullName' => $this->getRoleFullName(),
 	                  'comment' => $this->getComment(),
 	                  'startDate' => $this->getStartDate(),
 	                  'endDate' => $this->getEndDate());
@@ -84,24 +85,8 @@ class Role extends BackboneModel {
 	
 	// Returns all distinct roles
 	static function getDistinctRoles(){
-		// $sql = "SELECT DISTINCT role FROM grand_roles";
-        
-  //       $data = DBFunctions::execSQL($sql);
-  //       $roles = array();
-  //       foreach($data as $row){
-  //           $roles[] = $row['role'];
-  //       }
-        $roles = array(
-        		'BOD' => 90,
-               	'Manager' => 80,
-               	'Champion' => 70,
-               	'RMC' => 70,
-               	'NI' => 60,
-               	'HQP' => 40,
-               	'Staff' => 30
-		);
-
-	    return $roles;
+	    global $config;
+	    return $config->getValue('roleDefs');
 	}
 
 	// Returns whether this Role is still active or not
@@ -117,6 +102,12 @@ class Role extends BackboneModel {
 	// Returns the name of this Role
 	function getRole(){
 	    return $this->role;
+	}
+	
+	// Returns the full name of this Role
+	function getRoleFullName(){
+	    global $config;
+	    return $config->getValue('roleDefs', $this->getRole());
 	}
 	
 	// Returns the startDate for this Role
