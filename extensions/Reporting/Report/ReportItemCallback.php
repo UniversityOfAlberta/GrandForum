@@ -814,11 +814,11 @@ class ReportItemCallback {
             }
             if($project != null && $project->getId() != 0){
                 if($role->hasProject($project)){
-                    $roleNames[] = $role->getRole();
+                    $roleNames[$role->getRole()] = $role->getRole();
                 }
             }
             else{
-                $roleNames[] = $role->getRole();
+                $roleNames[$role->getRole()] = $role->getRole();
             }
         }
         return implode(", ", $roleNames);
