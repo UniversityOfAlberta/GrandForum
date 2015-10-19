@@ -358,7 +358,8 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
+        <ReportItemSet id="isPL" type="IsPLReportItemSet">
+            <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
                 <![CDATA[
                     {$item}
                 ]]>
