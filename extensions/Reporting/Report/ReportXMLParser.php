@@ -6,7 +6,82 @@ class ReportXMLParser {
     var $errors;
     var $parser;
     var $report;
+    static $files = array();
+    static $pdfFiles = array();
+    static $fileMap = array();
+    static $pdfMap = array();
+    static $pdfRpMap = array();
     static $time = 0;
+    
+    static function listReports(){
+        global $config;
+        if(count(self::$files) == 0){
+            $files = array_values(array_diff(scandir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"), array('.', '..')));
+            foreach($files as $file){
+                if(strstr($file, "PDF.xml") === false){
+                    self::$files[] = $file;
+                }
+            }
+        }
+        return self::$files;
+    }
+    
+    static function listPDFs(){
+        global $config;
+        if(count(self::$pdfFiles) == 0){
+            $files = array_values(array_diff(scandir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"), array('.', '..')));
+            foreach($files as $file){
+                if(strstr($file, "PDF.xml") !== false){
+                    self::$pdfFiles[] = $file;
+                }
+            }
+        }
+        return self::$pdfFiles;
+    }
+    
+    static function findReport($rp){
+        global $config;
+        if(count(self::$fileMap) == 0){
+            $files = self::listReports();
+            foreach($files as $file){
+                $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
+                $xml = file_get_contents($fileName);
+                $parser = simplexml_load_string($xml);
+                if($parser->getName() == "Report"){
+                    $attributes = $parser->attributes();
+                    self::$fileMap[constant("{$attributes->reportType}")] = $fileName;
+                }
+            }
+        }
+        if(isset(self::$fileMap[$rp])){
+            return self::$fileMap[$rp];
+        }
+        return "";
+    }
+    
+    static function findPDFReport($rptp, $returnRp=false){
+        global $config;
+        if(count(self::$pdfMap) == 0){
+            $files = self::listPDFs();
+            foreach($files as $file){
+                $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
+                $xml = file_get_contents($fileName);
+                $parser = simplexml_load_string($xml);
+                if($parser->getName() == "Report"){
+                    $attributes = $parser->attributes();
+                    self::$pdfMap[constant("{$attributes->pdfType}")] = $fileName;
+                    self::$pdfRpMap[constant("{$attributes->pdfType}")] = constant($attributes->reportType);
+                }
+            }
+        }
+        if(!$returnRp && isset(self::$pdfMap[$rptp])){
+            return self::$pdfMap[$rptp];
+        }
+        if($returnRp && isset(self::$pdfRpMap[$rptp])){
+            return self::$pdfRpMap[$rptp];
+        }
+        return "";
+    }
     
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
     // and $report should be the Report object which is being created

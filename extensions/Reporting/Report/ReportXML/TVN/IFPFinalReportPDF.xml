@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReport" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true">
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfType="RPTP_IFP_FINAL_PROJECT" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
