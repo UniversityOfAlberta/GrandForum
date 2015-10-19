@@ -7,8 +7,11 @@
             <SectionPermission id="research" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="partnerships" permissions="rw" />
+            <SectionPermission id="engage" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
+            <SectionPermission id="planning" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
+            <SectionPermission id="priorities" permissions="rw" />
             <SectionPermission id="ni_budget" permissions="" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -21,8 +24,11 @@
             <SectionPermission id="research" permissions="" />
             <SectionPermission id="ktee" permissions="" />
             <SectionPermission id="partnerships" permissions="" />
+            <SectionPermission id="engage" permissions="" />
             <SectionPermission id="network" permissions="" />
+            <SectionPermission id="planing" permissions="" />
             <SectionPermission id="alignment" permissions="" />
+            <SectionPermission id="priorities" permissions="" />
             <SectionPermission id="ni_budget" permissions="rw" />
             <SectionPermission id="budget" permissions="" />
             <SectionPermission id="hqp" permissions="" />
