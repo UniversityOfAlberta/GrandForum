@@ -22,8 +22,8 @@ class PersonProfileTab extends AbstractEditableTab {
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
-            $this->html .= "<br />";
         }
+        $this->html .= $this->showFundedProjects($this->person, $this->visibility);
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->person->isRole(NI) || 
@@ -323,16 +323,32 @@ EOF;
         return $html;
     }
     
+    function showFundedProjects($person, $visibility){
+        global $config;
+        $html = "";
+        $projects = $person->getProjects();
+        if(count($projects) > 0){
+            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            foreach($projects as $project){
+                $html .= "<li><a href='{$project->getUrl()}'>{$project->getName()}</a></li>";
+            }
+            $html .= "</ul>";
+        }
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
      */
     function showTable($person, $visibility){
+        global $config;
         $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='personProducts' rules='all' frame='box'>
+            $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            $string .= "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>Title</th><th>Date</th><th>Authors</th>
