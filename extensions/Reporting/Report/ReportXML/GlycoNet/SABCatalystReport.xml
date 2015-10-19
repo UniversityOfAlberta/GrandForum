@@ -11,6 +11,11 @@
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Role>
+        <Person id="1911">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Person>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="project_materials_head" type="StaticReportItem">
