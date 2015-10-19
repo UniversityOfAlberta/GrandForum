@@ -26,7 +26,7 @@
             <SectionPermission id="partnerships" permissions="" />
             <SectionPermission id="engage" permissions="" />
             <SectionPermission id="network" permissions="" />
-            <SectionPermission id="planing" permissions="" />
+            <SectionPermission id="planning" permissions="" />
             <SectionPermission id="alignment" permissions="" />
             <SectionPermission id="priorities" permissions="" />
             <SectionPermission id="ni_budget" permissions="rw" />
