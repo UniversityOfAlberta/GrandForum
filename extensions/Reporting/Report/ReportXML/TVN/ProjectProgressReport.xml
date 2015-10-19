@@ -9,22 +9,25 @@
             <SectionPermission id="partnerships" permissions="rw" />
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="alignment" permissions="rw" />
+            <SectionPermission id="ni_budget" permissions="" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PI">
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="partnerships" permissions="rw" />
-            <SectionPermission id="network" permissions="rw" />
-            <SectionPermission id="alignment" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="information" permissions="" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="research" permissions="" />
+            <SectionPermission id="ktee" permissions="" />
+            <SectionPermission id="partnerships" permissions="" />
+            <SectionPermission id="network" permissions="" />
+            <SectionPermission id="alignment" permissions="" />
+            <SectionPermission id="ni_budget" permissions="rw" />
+            <SectionPermission id="budget" permissions="" />
+            <SectionPermission id="hqp" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
@@ -323,6 +326,13 @@
         <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="PROG_PLAN_TRANS" width="30px">
             <![CDATA[
                 {$item}% Knowledge translation/mobilization
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ni_budget" name="Financial Report" tooltip="Financial Report" title="Financial Report" type="ReportSection" blobSection="PROG_BUDGET">
+        <ReportItem id="upload" type="StaticReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN - PROGRESS Report.xlsx" budgetText="Financial Report">
+            <![CDATA[
+                Coming Soon...
             ]]>
         </ReportItem>
     </ReportSection>
