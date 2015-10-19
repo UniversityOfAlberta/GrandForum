@@ -41,7 +41,7 @@ class ReportStatusTable extends SpecialPage{
         foreach($nis as $ni){
             foreach($ni->getHQP() as $hqp){
                 if($hqp->isSubRole('SSA')){
-                    $ssa[] = $ni;
+                    $ssa[$ni->getId()] = $ni;
                     break;
                 }
             }
