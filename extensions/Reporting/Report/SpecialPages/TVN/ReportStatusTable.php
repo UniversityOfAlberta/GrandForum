@@ -75,6 +75,7 @@ class ReportStatusTable extends SpecialPage{
                     <th width='1%'>First&nbsp;Name</th>
                     <th width='1%'>Last&nbsp;Name</th>
                     <th width='1%'>Email</th>
+                    <th width='1%'>Started?</th>
                     <th width='1%'>Generation&nbsp;Date (MST)</th>
                     <th width='1%'>PDF&nbsp;Download</th>
                 </tr>
@@ -90,8 +91,10 @@ class ReportStatusTable extends SpecialPage{
                 $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
                 $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
             }
+            $started = ($report->hasStarted()) ? "Yes" : "No";
             $wgOut->addHTML("<tr>");
             $wgOut->addHTML("<td>{$person->getFirstName()}</td><td>{$person->getLastName()}</td><td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>");
+            $wgOut->addHTML("<td align='center'>{$started}</td>");
             $wgOut->addHTML("<td style='white-space:nowrap;'>{$generated}</td>");
             $wgOut->addHTML("<td align='center'>{$download}</td>");
             $wgOut->addHTML("</tr>");
@@ -116,6 +119,7 @@ class ReportStatusTable extends SpecialPage{
                     <th width='1%'>Last&nbsp;Name</th>
                     <th width='1%'>Email</th>
                     <th>Project Title</th>
+                    <th width='1%'>Started?</th>
                     <th width='1%'>Generation&nbsp;Date (MST)</th>
                     <th width='1%'>PDF&nbsp;Download</th>
                 </tr>
@@ -135,9 +139,11 @@ class ReportStatusTable extends SpecialPage{
                         $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
                         $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
                     }
+                    $started = ($report->hasStarted()) ? "Yes" : "No";
                     $wgOut->addHTML("<tr>");
                     $wgOut->addHTML("<td>{$leader->getFirstName()}</td><td>{$leader->getLastName()}</td><td><a href='mailto:{$leader->getEmail()}'>{$leader->getEmail()}</a></td>");
                     $wgOut->addHTML("<td>{$project->getName()}</td>");
+                    $wgOut->addHTML("<td align='center'>{$started}</td>");
                     $wgOut->addHTML("<td style='white-space:nowrap;'>{$generated}</td>");
                     $wgOut->addHTML("<td align='center'>{$download}</td>");
                     $wgOut->addHTML("</tr>");
