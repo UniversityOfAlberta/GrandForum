@@ -125,7 +125,7 @@ class ReportStatusTable extends SpecialPage{
             $leaders = array_values($project->getLeaders());
             if(isset($leaders[0])){
                 $leader = $leaders[0];
-                if($leader->isRoleAtLeast(NI)){
+                if($leader->isRole(NI)){
                     $report = new DummyReport($rp, $leader, $project);
                     $check = $report->getLatestPDF();
                     $generated = "";
