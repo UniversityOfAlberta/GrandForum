@@ -15,7 +15,12 @@
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
     session_start();
-    error_reporting(E_ALL);
+    if(phpversion() < 5.4){
+        error_reporting(E_ALL);
+    }
+    else{
+        error_reporting(E_ALL ^ E_STRICT);
+    }
     ini_set("display_errors", 1);
 
     header('Cache-Control: no-cache, no-store, must-revalidate');
