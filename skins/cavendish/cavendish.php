@@ -551,6 +551,16 @@ class CavendishTemplate extends QuickTemplate {
 		    </style>
 		    <script type="text/javascript">
 		        parent.postMessage(-1, "*");
+		        
+		        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+                var eventer = window[eventMethod];   
+                var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";   
+
+                // Listen to message from parent window
+                eventer(messageEvent,function(e) {
+                    console.log(e);
+                }, false);
+		        
 		        $(document).ready(function(){
 		            $("a").attr("target", "_blank");
 		            var height = $("#bodyContent").height();

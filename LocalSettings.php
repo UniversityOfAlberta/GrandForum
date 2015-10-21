@@ -15,7 +15,7 @@
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
     session_start();
-    if(!defined("E_STRICT")){
+    if(phpversion() < 5.4){
         error_reporting(E_ALL);
     }
     else{
