@@ -409,11 +409,12 @@ abstract class AbstractReportItem {
             }
         }
         
+        // Support nested function calls
         preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
+        // Reverse the array so that it gets the inner most first
         $matches[1] = array_reverse($matches[1]);
         
         foreach($matches[1] as $k => $m){
-            //print_r($matches[1]);
             $m = $matches[1][$k];
             $e = explode('(', $m);
             if(isset($e[1])){
