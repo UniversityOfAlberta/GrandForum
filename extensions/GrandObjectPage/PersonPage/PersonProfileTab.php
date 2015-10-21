@@ -330,7 +330,7 @@ EOF;
         if(count($projects) > 0){
             $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
             foreach($projects as $project){
-                $html .= "<li><a href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a></li>";
+                $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a></li>";
             }
             $html .= "</ul>";
         }
