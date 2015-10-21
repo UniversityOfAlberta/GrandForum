@@ -67,6 +67,7 @@ define('RP_IFP_PROGRESS',       301);
 define('RP_PROGRESS',           302);
 define('RP_SSA_FINAL_PROGRESS', 303);
 define('RP_IFP_FINAL_PROJECT',  304);
+define('RP_IFP_REVIEW',          305);
 
 /*
  * Second-level identifiers: report section.
@@ -262,6 +263,9 @@ define('IFP_PROG_SUPERVISOR',   10);
 // SSA Final Report
 define('SSA_REPORT',            1);
 define('SSA_HQP',               2);
+
+// IFP Review
+define('IFP_REVIEW',            1);
 
 /*
  * Third-level identifiers: question within a section.
@@ -845,6 +849,13 @@ define('SSA_MOBILIZATION',  13);
 define('SSA_INSTITUTION',   14);
 define('SSA_LEARNING',      15);
 
+// IFP Review
+define('IFP_REVIEW_RELEVANCE',  1);
+define('IFP_REVIEW_MOTIVATION', 2);
+define('IFP_REVIEW_CAPACITY',   3);
+define('IFP_REVIEW_SUPPORT',    4);
+define('IFP_REVIEW_REFEREE',    5);
+define('IFP_REVIEW_COMMENTS',   6);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

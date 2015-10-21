@@ -137,7 +137,8 @@ class ReportItemCallback {
             "getText" => "getText",
             "getHTML" => "getHTML",
             "getArray" => "getArray",
-            "getExtra" => "getExtra"
+            "getExtra" => "getExtra",
+            "add" => "add",
         );
     
     var $reportItem;
@@ -1437,6 +1438,10 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
         return nl2br($blb->getData());
+    }
+    
+    function add($val1, $val2){
+        return $val1 + $val2;
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
