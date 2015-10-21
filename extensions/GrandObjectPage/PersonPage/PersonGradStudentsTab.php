@@ -83,11 +83,22 @@ class PersonGradStudentsTab extends AbstractTab {
                         $students = array();
 			foreach($relations as $r){
                             $hqp =  $r->getUser2();
-			    if(in_array($hqp->getNameForForms(), $students)){
+			    $hqp_name = $hqp->getNameForForms();
+			    $role = $r->getType();
+			    $repeat_check = false;
+			    $check = array('name'=>$hqp_name, 'role'=>$role);
+			     //TODO: CHECK HERE FOR BOTH STUFF
+			    foreach($students as $student){
+				if($student['name'] == $check['name'] && $student['role'] == $check['role']){
+				    $repeat_check = true;
+				    continue;
+ 			    	}
+			    }
+			    if(!$repeat_check){
+			        $students[] = $check;
+			    }
+			    else{
 				continue;
- 			    }
-		            else{
-				$students[] = $hqp->getNameForForms();
 			    }
                             $start_date = substr($r->getStartDate(), 0, 10);
                             $end_date = substr($r->getEndDate(), 0, 10);
@@ -95,7 +106,6 @@ class PersonGradStudentsTab extends AbstractTab {
                             $position = $hqp->getUniversity();
 			    $research_area = $position['research_area'];
                             $position = $position['position'];
-			    $role = $r->getType();
 			    if($role == "Supervises"){
 				$role= "Supervisor";
 			    }
@@ -128,7 +138,7 @@ class PersonGradStudentsTab extends AbstractTab {
 
         }
         if($wgUser->isLoggedIn()){
-            if($html == ""){
+            if(true){
                 if($visibility['isMe'] || $visibility['isSupervisor']){
                     $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
                 }
@@ -211,7 +221,7 @@ class PersonGradStudentsTab extends AbstractTab {
 
         }
         if($wgUser->isLoggedIn()){
-            if($html == ""){
+            if(true){
                 if($visibility['isMe'] || $visibility['isSupervisor']){
                     $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
                 }

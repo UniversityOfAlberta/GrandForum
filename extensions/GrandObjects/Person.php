@@ -4085,7 +4085,6 @@ class Person extends BackboneModel {
             return $relations; 	    
      }
 
-
     /**
      * Returns a new Person from the given email (null if not found)
      * In the event of a collision, the first user is returned
@@ -4111,5 +4110,40 @@ class Person extends BackboneModel {
 	return $status;
     }
 
+   function getCourseEval($course_id){
+	$data = DBFunctions::select(array('grand_user_courses'),
+				    array('course_evals'),
+				    array('course_id' => $course_id,
+					  'user_id' => $this->getId()));
+	if(count($data)>0){
+	    return unserialize($data[0]['course_evals']);
+	}
+	else{
+	    return array();
+	}
+   }
+
+    /**
+     * Returns whether or not this person was ever related to another Person through a given relationship
+     * @param Person $person The Person that this Person is related to
+     * @param string $relationship The type of Relationship
+     * @return boolean Whether or not this Person is related to another Person
+     */
+    function RelatedToDuring($person, $relationship, $start_date, $end_date){
+        if( $person instanceof Person ){
+            $person_id = $person->getId();
+            $data = DBFunctions::select(array('grand_relations'),
+                                        array('*'),
+                                        array('user1' => EQ($this->getId()),
+                                              'user2' => EQ($person->getId()),
+                                              'type' => EQ($relationship),
+					      'start_date' => EQ($start_date),
+					      'end_date' => EQ($end_date)));
+            return (count($data) > 0);
+        }
+        else{
+            return null;
+        }
+    }
 }
 ?>

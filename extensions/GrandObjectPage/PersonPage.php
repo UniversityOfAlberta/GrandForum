@@ -2,6 +2,8 @@
 
 require_once('PersonPage/PersonProfileTab.php');
 require_once('PersonPage/PersonVisualizationsTab.php');
+require_once('PersonPage/PersonVisualTab.php');
+
 autoload_register('GrandObjectPage/PersonPage');
 
 
@@ -147,6 +149,7 @@ class PersonPage {
 		if($config->getValue('networkName') != 'Faculty of Science'){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
 		}
+                //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
 		$tabbedPage->showPage();
 

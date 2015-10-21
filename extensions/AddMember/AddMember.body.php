@@ -1,6 +1,7 @@
 <?php
-require_once("AddMember.php");
-
+if(isExtensionEnabled("AddMember")){
+     require_once("AddMember.php");
+}
 $userCreate = new UserCreate();
 
 $wgHooks['AddNewAccount'][] = array($userCreate, 'afterCreateUser');

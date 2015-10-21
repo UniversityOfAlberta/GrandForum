@@ -57,7 +57,7 @@ class PersonCitationsTab extends AbstractTab {
 		{$scopus_stats}
                 </div>
 		<h3><a href='#'>Google Scholar Statistics</a></h3>
-		<div>
+		<div id='gs_stats'>
 		{$gs_stats}
 		</div>
             </div>";
@@ -127,9 +127,5 @@ class PersonCitationsTab extends AbstractTab {
 	else{ $html .= "<strong>No Google Scholar Statistics Available</strong>";}
 	return $html;
     }
-
-    
 }
 ?>
-
-

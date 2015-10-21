@@ -19,7 +19,7 @@ class CreateUserAPI extends API{
     }
 
     function doAction($doEcho=true){
-        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail;
+        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication;
         $me = Person::newFromId($wgUser->getId());
         $oldWPNS = "";
         $oldWPType = "";
@@ -39,7 +39,7 @@ class CreateUserAPI extends API{
         }
         // Finished manditory checks
         $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
-        if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1"){
+        if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1" || ($me->isLoggedIn() && isExtensionEnabled("AddHqp"))){
             // First check to see if the user already exists
             $person = Person::newFromName($_POST['wpName']);
             if($person != null && $person->getName() != ""){
@@ -60,7 +60,10 @@ class CreateUserAPI extends API{
                     $wgRequest->setVal('wpCreateaccountMail', true);
                 }
                 else {
-                    $wgRequest->setVal('wpCreateaccount', true);
+                    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
+                    $wgEmailAuthentication = false;
+                    $wgEnableEmail = false;
+		    $wgRequest->setVal('wpCreateaccount', true);
                     $_POST['wpPassword'] = User::randomPassword();
                     $_POST['wpRetype'] = $_POST['wpPassword'];
                 }

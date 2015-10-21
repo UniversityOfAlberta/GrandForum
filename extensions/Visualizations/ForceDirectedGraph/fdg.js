@@ -42,12 +42,12 @@ function createFDG(width, height, id, url){
         
         var usedIds = Array();
         
-        graph.nodes.forEach(function(n, i){
-            if(i != 0){
+        _.each(_.rest(graph.nodes), function(n, i){
+           // if(i != 0){
                 if(usedIds.indexOf(n.id) == -1){
                     usedIds.push(n.id);
                     groupSummary[n.group]++;
-                }
+            //    }
             }
         });
         
@@ -68,7 +68,7 @@ function createFDG(width, height, id, url){
         });
     
         isLabeled = false;
-        graph.nodes.forEach(function(n, i){
+        _.each(graph.nodes, function(n, i){
             if(n.name != ''){
                 isLabeled = true;
             }
@@ -79,7 +79,7 @@ function createFDG(width, height, id, url){
         labelAnchors = Array();
         labelAnchorLinks = Array();
     
-        graph.nodes.forEach(function(n){
+        _.each(graph.nodes, function(n){
             labelAnchors.push({
                 node : n,
                 x : n.x,

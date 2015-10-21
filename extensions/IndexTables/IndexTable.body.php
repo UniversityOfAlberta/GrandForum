@@ -537,17 +537,18 @@ EOF;
            $contributions = Contribution::getAllContributions();
            $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
-                        <th style='white-space:nowrap;'>Keywords</th>
+                        <th style ='white-space:nowrap;'>Year</th>
+			<th style='white-space:nowrap;'>Sponsors</th>
                         <th style='white-space:nowrap;'>Co-grantees</th>
                         <th style='white-space:nowrap;'>Cash</th>
                         <th style='white-space:nowrap;'>In Kind</th>
-                        <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
+			<th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
 
-        $names = array();
         foreach($contributions as $contribution){
             $partners = $contribution->getPartners();
-            foreach($contribution->getPeople() as $author){
-               if($author->getId() != 0 && $author->getUrl() != ""){
+            $names = array();
+	    foreach($contribution->getPeople() as $author){
+		if($author->getId() != 0 && $author->getUrl() != ""){
                     $url = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
                     if(!in_array($url,$names)){
                     $names[] = $url;}
@@ -559,13 +560,14 @@ EOF;
             }
 
             $this->text .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
-                                <td>{$partners[0]->getOrganization()}</td>
+				<td align=center>{$contribution->getStartYear()}</td>
+                                <td align=center>{$partners[0]->getOrganization()}</td>
                                 <td style='white-space:nowrap;'>".implode(", ", $names)."</td>
                                 <td align=right>$".number_format($contribution->getCash())."</td>
                                 <td align=right>$".number_format($contribution->getKind())."</td>
                                  <td align=right>$".number_format($contribution->getTotal())."</td></tr>";
           }
-          $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
+          $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100, 'aaSorting':[[0,'asc'],[1,'desc']]});</script>";
 
         return true;
 

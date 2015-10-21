@@ -80,6 +80,9 @@ $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
+$egAnnokiExtensions['AddHqp'] = array('name' => 'AddHqp',
+                                         'path' => "$IP/extensions/AddHqp/AddHqp.php");
+
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
                                           
