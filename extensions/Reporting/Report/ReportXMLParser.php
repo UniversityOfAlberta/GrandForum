@@ -11,6 +11,7 @@ class ReportXMLParser {
     static $fileMap = array();
     static $pdfMap = array();
     static $pdfRpMap = array();
+    static $xmlCache = array();
     static $time = 0;
     
     static function listReports(){
@@ -39,7 +40,7 @@ class ReportXMLParser {
         return self::$pdfFiles;
     }
     
-    static function findReport($rp){
+    static function findReport($rp=null){
         global $config;
         if(count(self::$fileMap) == 0){
             $files = self::listReports();
@@ -50,6 +51,7 @@ class ReportXMLParser {
                 if($parser->getName() == "Report"){
                     $attributes = $parser->attributes();
                     self::$fileMap[constant("{$attributes->reportType}")] = $fileName;
+                    self::$xmlCache[str_replace(".xml", "", $file)] = $parser;
                 }
             }
         }
@@ -86,7 +88,10 @@ class ReportXMLParser {
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
     // and $report should be the Report object which is being created
     function ReportXMLParser($xml, $report){
-        $this->xml = $xml;
+        $this->xml = "$xml";
+        if(is_object($xml)){
+            $this->parser = $xml;
+        }
         $this->report = $report;
         $this->errors = array();
     }
@@ -193,7 +198,9 @@ class ReportXMLParser {
     
     // Parses the XML document starting at the root
     function parse(){
-        $this->parser = simplexml_load_string($this->xml);
+        if($this->parser == null){
+            $this->parser = simplexml_load_string($this->xml);
+        }
         $this->parseReport();
         $this->showErrors();
     }
