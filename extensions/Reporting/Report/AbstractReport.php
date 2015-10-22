@@ -127,14 +127,8 @@ abstract class AbstractReport extends SpecialPage {
             $exploded = explode(".", $xmlFileName);
             $exploded = explode("/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
-            ReportXMLParser::findReport();
-            if(isset(ReportXMLParser::$xmlCache[$this->xmlName])){
-                $parser = new ReportXMLParser(ReportXMLParser::$xmlCache[$this->xmlName], $this);
-            }
-            else{
-                $xml = file_get_contents($xmlFileName);
-                $parser = new ReportXMLParser($xml, $this);
-            }
+            $xml = file_get_contents($xmlFileName);
+            $parser = new ReportXMLParser($xml, $this);
             if(isset($_COOKIE['showSuccess'])){
                 unset($_COOKIE['showSuccess']);
                 setcookie('showSuccess', 'true', time()-(60*60), '/');
@@ -871,7 +865,7 @@ abstract class AbstractReport extends SpecialPage {
                             <div id='optionsDiv'>");
         $this->renderOptions();
         if($this->extends == "" && !$this->hasSubReport()){
-            //$this->renderBackup();  
+            $this->renderBackup();  
         }
         $wgOut->addHTML("</div></div>
                             </div>");
