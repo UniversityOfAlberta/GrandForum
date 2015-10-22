@@ -83,15 +83,18 @@ class ReportStatusTable extends SpecialPage{
             <tbody>");
         foreach($people as $person){
             $report = new DummyReport($rp, $person, null);
-            $check = $report->getLatestPDF();
             $generated = "";
             $download = "";
-            if(isset($check[0])){
-                $pdf = PDF::newFromToken($check[0]['token']);
-                $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
-                $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
-            }
+            
             $started = ($report->hasStarted()) ? "Yes" : "No";
+            if($started == "Yes"){
+                $check = $report->getLatestPDF();
+                if(isset($check[0])){
+                    $pdf = PDF::newFromToken($check[0]['token']);
+                    $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
+                    $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                }
+            }
             $wgOut->addHTML("<tr>");
             $wgOut->addHTML("<td>{$person->getFirstName()}</td><td>{$person->getLastName()}</td><td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>");
             $wgOut->addHTML("<td align='center'>{$started}</td>");
