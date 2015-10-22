@@ -28,7 +28,7 @@ ManageProductsViewRow = Backbone.View.extend({
         }
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
+            this.model.trigger("change", this.model);
         }
         this.setDirty(false);
     },
@@ -52,7 +52,7 @@ ManageProductsViewRow = Backbone.View.extend({
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
+            this.model.trigger("change", this.model);
         }
         this.setDirty(false);
     },
@@ -87,6 +87,7 @@ ManageProductsViewRow = Backbone.View.extend({
                 }
             }
         }
+        
         this.setDirty(true);
     },
     
