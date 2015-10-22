@@ -856,6 +856,7 @@ define('IFP_REVIEW_CAPACITY',   3);
 define('IFP_REVIEW_SUPPORT',    4);
 define('IFP_REVIEW_REFEREE',    5);
 define('IFP_REVIEW_COMMENTS',   6);
+define('IFP_REVIEW_FUNDING',    7);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
