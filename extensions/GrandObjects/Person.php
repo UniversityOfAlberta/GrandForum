@@ -2034,6 +2034,10 @@ class Person extends BackboneModel {
      * @return boolean Whether this Person's last Role was the given role
      */
     function wasLastRole($role){
+        if($role == NI){
+            return ($this->wasLastRole(AR) || 
+                    $this->wasLastRole(CI));
+        }
         $lastRole = $this->getLastRole();
         if($lastRole != null && $lastRole->getRole() == $role){
             return true;
@@ -2048,6 +2052,10 @@ class Person extends BackboneModel {
      */
     function wasLastRoleAtLeast($role){
         global $wgRoleValues;
+        if($role == NI){
+            return ($this->wasLastRoleAtLeast(AR) || 
+                    $this->wasLastRoleAtLeast(CI));
+        }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
             if($r != null && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
@@ -2064,6 +2072,10 @@ class Person extends BackboneModel {
      */
     function wasLastRoleAtMost($role){
         global $wgRoleValues;
+        if($role == NI){
+            return ($this->wasLastRoleAtMost(AR) || 
+                    $this->wasLastRoleAtMost(CI));
+        }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
             if($r != null && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
