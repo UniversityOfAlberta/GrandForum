@@ -131,15 +131,18 @@ class ReportStatusTable extends SpecialPage{
                 $leader = $leaders[0];
                 if($leader->isRole(NI, $project)){
                     $report = new DummyReport($rp, $leader, $project);
-                    $check = $report->getLatestPDF();
                     $generated = "";
                     $download = "";
-                    if(isset($check[0])){
-                        $pdf = PDF::newFromToken($check[0]['token']);
-                        $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
-                        $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
-                    }
+                    
                     $started = ($report->hasStarted()) ? "Yes" : "No";
+                    if($started == "Yes"){
+                        $check = $report->getLatestPDF();
+                        if(isset($check[0])){
+                            $pdf = PDF::newFromToken($check[0]['token']);
+                            $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
+                            $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                        }
+                    }
                     $wgOut->addHTML("<tr>");
                     $wgOut->addHTML("<td>{$leader->getFirstName()}</td><td>{$leader->getLastName()}</td><td><a href='mailto:{$leader->getEmail()}'>{$leader->getEmail()}</a></td>");
                     $wgOut->addHTML("<td>{$project->getName()}</td>");
