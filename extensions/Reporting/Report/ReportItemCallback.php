@@ -139,6 +139,7 @@ class ReportItemCallback {
             "getArray" => "getArray",
             "getExtra" => "getExtra",
             "add" => "add",
+            "subtract" => "subtract",
         );
     
     var $reportItem;
@@ -1442,6 +1443,10 @@ class ReportItemCallback {
     
     function add($val1, $val2){
         return $val1 + $val2;
+    }
+    
+    function subtract($val1, $val2){
+        return $val1 - $val2;
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
