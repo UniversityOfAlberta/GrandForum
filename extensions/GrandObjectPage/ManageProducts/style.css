@@ -10,3 +10,7 @@ tbody#productRows td:not(.checkboxCell) {
 #saveN {
     vertical-align: top;
 }
+
+#editDialog {
+    font-size: 9pt;
+}
