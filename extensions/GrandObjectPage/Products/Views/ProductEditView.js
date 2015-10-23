@@ -143,9 +143,13 @@ ProductEditView = Backbone.View.extend({
                 lastHeight = this.$el.prop("scrollHeight");
             }
         }, this), 16);
-        this.$("div.otherPopup").slideDown(function(){
+        this.$("div.otherPopup").slideDown($.proxy(function(){
             clearInterval(interval);
-        });
+            if(this.$el.prop("scrollHeight") > lastHeight){
+                this.$el.scrollTop(this.$el.scrollTop() + Math.abs(lastHeight - this.$el.prop("scrollHeight")));
+                lastHeight = this.$el.prop("scrollHeight");
+            }
+        }, this));
     },
     
     showSubprojects: function(e){
