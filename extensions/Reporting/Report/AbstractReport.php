@@ -330,10 +330,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $year = $c['year'];
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if(strcmp($tst, $largestDate) > 0){
                 $largestDate = $tst;
                 $return = array($c);
@@ -394,9 +391,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if($c['submitted'] == 1){
                 $c['status'] = "Generated/Submitted";
             }
