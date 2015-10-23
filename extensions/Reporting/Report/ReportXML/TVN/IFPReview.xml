@@ -127,7 +127,7 @@
                         </script>
                     ]]>
                 </ReportItem>
-                <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_COMMENTS" rich="true">
+                <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_COMMENTS" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
                         <p>Please provide comments here to justify your scores above</p>

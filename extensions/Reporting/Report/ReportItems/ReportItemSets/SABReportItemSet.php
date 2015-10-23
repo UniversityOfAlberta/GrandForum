@@ -13,10 +13,11 @@ class SABReportItemSet extends ReportItemSet {
             $sub = Person::newFromId($this->personId);
         }
         $subType = $this->getAttr('subType', 'SAB');
+        $includeSelf = (strtolower($this->getAttr('includeSelf', 'false')) == 'true');
         if($sub != null){
             $evaluators = $sub->getEvaluators($this->getReport()->year, $subType);
             foreach($evaluators as $e){
-                if($e->getId() != $me->getId()){
+                if($includeSelf || $e->getId() != $me->getId()){
                     $tuple = self::createTuple();
                     $tuple['person_id'] = $e->getId();
                     $data[$e->getReversedName()] = $tuple;
