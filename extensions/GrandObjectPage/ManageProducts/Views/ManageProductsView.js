@@ -173,7 +173,6 @@ ManageProductsView = Backbone.View.extend({
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();

@@ -85,7 +85,7 @@ ProductListView = Backbone.View.extend({
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
-	                                    'aaSorting': [ [0,'desc'], [1,'asc']],
+	                                    'aaSorting': [[0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
 	                                    'aaData' : data,
 	                                    'deferRender': true,
