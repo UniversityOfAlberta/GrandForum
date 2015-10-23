@@ -88,6 +88,7 @@ ProductListView = Backbone.View.extend({
 	                                    'aaSorting': [ [0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
 	                                    'aaData' : data,
+	                                    'deferRender': true,
 	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
 	    this.$("#listTable_length").append(showButton);
 	    this.$("#listTable_length").append(throbber);
