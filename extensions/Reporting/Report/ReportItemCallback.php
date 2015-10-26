@@ -1318,6 +1318,7 @@ class ReportItemCallback {
         $people = array_merge(Person::getAllPeople(RMC),
                               Person::getAllPeople(STAFF),
                               Person::getAllPeople(MANAGER),
+                              Person::getAllPeople(ADMIN),
                               Person::getAllPeople(SD));
         $comments = array();
         foreach($people as $person){
