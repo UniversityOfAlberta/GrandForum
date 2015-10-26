@@ -146,7 +146,7 @@
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
-                    <i>CC Leader Comments will be made available at a later point in time.</i>
+                    <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
                         <tr>
                             <th width="50%">My Comments</th>
@@ -267,7 +267,7 @@
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
-                    <i>CC Leader Comments will be made available at a later point in time.</i>
+                    <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
                         <tr>
                             <th width="50%">My Comments</th>
@@ -384,7 +384,7 @@
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
-                    <i>CC Leader Comments will be made available at a later point in time.</i>
+                    <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
                         <tr>
                             <th width="50%">My Comments</th>
@@ -481,7 +481,7 @@
         <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
-                    <i>CC Leader Comments will be made available at a later point in time.</i>
+                    <i>CC Leader Feedback will be made available at a later point in time.</i>
                     <table class='wikitable'>
                         <tr>
                             <th width="50%">My Comments</th>
