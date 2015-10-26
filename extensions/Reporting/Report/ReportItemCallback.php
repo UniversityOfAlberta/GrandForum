@@ -77,6 +77,7 @@ class ReportItemCallback {
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
+            "user_project_end_date" => "getUserProjectEndDate",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_research_time" => "getUserResearchTime",
@@ -909,6 +910,16 @@ class ReportItemCallback {
             return implode(", ", $projects);
         }
         return "N/A";
+    }
+    
+    function getUserProjectEndDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        $date = $project->getEndDate($person);
+        if($date != "0000-00-00 00:00:00"){
+            return time2date($project->getEndDate($person));
+        }
+        return "";
     }
     
     function getUserPhase1Projects(){

@@ -22,7 +22,7 @@
                 <small><table class='wikitable' width='100%' frame='box' rules='all'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
-                        <th>Role in project</th>
+                        <th>Role in project and<br />Date Withdrawn</th>
                         <th>% of time<br />dedicated to Project</th>
                         <th>Status</th>
                     </tr>
@@ -39,12 +39,12 @@
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -69,12 +69,12 @@
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">
@@ -99,12 +99,12 @@
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="FINAL_INFORMATION_TIME">

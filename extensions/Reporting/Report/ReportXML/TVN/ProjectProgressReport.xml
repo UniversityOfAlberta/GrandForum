@@ -56,11 +56,11 @@
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>
-                    <span>Please list all team members participating in the project, including new members added within the reporting period.  If someone has left the team within the reporting period, please include originally planned project role and enter “Withdrawn since [date] due to [reason]” in the “Role in project” column.  Include Trainees and other HQP participating in the project, but you must also detail these in the accompanying HQP/Trainee Database update template.</span>
+                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  To add or remove a member from the project, go to <a href='./Special:EditMember' target='_blank'>Edit Roles</a>.  If the person does not yet exist on the Forum, then you will need to go to <a href='Special:AddMember' target='_blank'>Add Member</a>.  Both actions require staff/admin approval so expect some delay for the table to be updated.</span>
                 <table class='wikitable'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
-                        <th>Role in project</th>
+                        <th>Role in project and<br />Date Withdrawn</th>
                         <th>% of time<br />dedicated to Project</th>
                         <th>Status<br /><small>(Indicate original,<br /> removed, or new member)</small></th>
                     </tr>
@@ -77,12 +77,12 @@
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
@@ -107,12 +107,12 @@
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
@@ -137,12 +137,12 @@
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td>{$user_name}</td>
+                        <td>{$user_name}<br /><span class='smaller'>{$user_uni}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="role" type="TextReportItem" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_ROLE">
                 <![CDATA[
-                    <td>{$user_full_roles}</td>
+                    <td>{$user_full_roles}<br /><span class='smaller'>{$user_project_end_date}</span></td>
                 ]]>
             </ReportItem>
             <ReportItem id="time" type="IntegerReportItem" min="0" max="100" blobType="BLOB_ARRAY" blobItem="PROG_INFORMATION_TIME">
