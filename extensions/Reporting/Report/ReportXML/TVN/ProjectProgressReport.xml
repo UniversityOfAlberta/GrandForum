@@ -359,7 +359,7 @@
             ]]>
         </Instructions>
         <ReportItemSet id="isPL" type="IsPLReportItemSet">
-            <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
+            <ReportItem id="upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" template="TVN - PROGRESS Report.xlsx" budgetText="Financial Report">
                 <![CDATA[
                     {$item}
                 ]]>
@@ -379,7 +379,7 @@
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet id="notIsPL" type="IsPLReportItemSet" not="true">
-            <ReportItem id="ni_upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" blobSubItem="{$user_id}" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
+            <ReportItem id="ni_upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="PROG_BUD_UPLOAD" blobSubItem="{$user_id}" template="TVN - PROGRESS Report.xlsx" budgetText="Financial Report">
                 <![CDATA[
                     {$item}
                 ]]>
