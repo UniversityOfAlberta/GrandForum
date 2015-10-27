@@ -177,15 +177,14 @@ class ImportBibTeXAPI extends API{
             $errorProducts = array();
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
-                    print_r($paper);
-                    /*$type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
+                    $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
                     $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
                     else{
                         $errorProducts[] = $paper;
-                    }*/
+                    }
                 }
             }
             else{
