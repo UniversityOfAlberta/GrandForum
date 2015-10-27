@@ -263,7 +263,7 @@ class IndexTable {
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
