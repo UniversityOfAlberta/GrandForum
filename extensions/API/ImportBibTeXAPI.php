@@ -192,7 +192,6 @@ class ImportBibTeXAPI extends API{
                 $this->addError("No BibTeX references were found");
                 return false;
             }
-            exit;
             $json = array('created' => array(),
                           'errors' => array());
             foreach($createdProducts as $product){
