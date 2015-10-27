@@ -228,6 +228,7 @@ EOF;
         global $wgOut, $config;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
         $maxEntries = $this->getAttr('max', 100);
+        $types = explode("|", $this->getAttr('types', ''));
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
         $sizes = $this->getAttr('sizes', '');
@@ -291,6 +292,9 @@ EOF;
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox") !== false){
                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else if(strtolower(@$types[$j]) == "integer"){
+                            $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else{
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
