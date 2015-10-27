@@ -113,7 +113,7 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</tbody>
         </table>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#{$type}Table').dataTable();
+            $('#{$type}Table').dataTable({'iDisplayLength': 25});
         </script>");
         $wgOut->addHTML("</div>");
     }
@@ -167,7 +167,7 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</tbody>
         </table>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#{$type}Table').dataTable();
+            $('#{$type}Table').dataTable({'iDisplayLength': 25});
         </script>
         </div>");
     }
