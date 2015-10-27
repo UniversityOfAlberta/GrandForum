@@ -886,7 +886,7 @@ class CavendishTemplate extends QuickTemplate {
 	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
 	                $resources['links'][1006] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
 	            }
-	            
+	            $resources['links'][1007] = TabUtils::createToolboxLink("Funding", "$wgServer$wgScriptPath/index.php/Network_Resources/Funding");
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
