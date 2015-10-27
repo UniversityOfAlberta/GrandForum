@@ -38,7 +38,7 @@ class ReportStatusTable extends SpecialPage{
             if($hqp->isSubRole('IFP')){
                 $ifpDeleted = false;
                 foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && substr($project->getName(), "IFP") !== false));
+                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
                 }
                 if(!$ifpDeleted){
                     $ifpProgress[] = $hqp;
