@@ -13,7 +13,9 @@ class PersonGradStudentsTab extends AbstractTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-
+        if(!$wgUser->isLoggedIn()){
+            return "";
+        }
 		$wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){

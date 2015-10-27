@@ -123,13 +123,18 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
-                $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
-
+		if($wgUser->isLoggedIn() && $person->isRole(NI)){
+		    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
+                }
+               if($wgUser->isLoggedIn() && $person->isRole(NI)){
+	    	    $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
+		}
                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
  		    $tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
                 }
-		$tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+               if($wgUser->isLoggedIn() && $person->isRole(NI)){
+		    $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+		}
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
 		    $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility));
                 }

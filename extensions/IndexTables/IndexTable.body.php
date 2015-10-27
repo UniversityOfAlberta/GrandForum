@@ -62,8 +62,7 @@ class IndexTable {
                 }
             }
         }
-        $tabs['Main']['subtabs'][] = $peopleSubTab;
-        
+            $tabs['Main']['subtabs'][] = $peopleSubTab;
         $selected = ($wgTitle->getText() == "Products" || 
                      $wgTitle->getText() == "Multimedia" ||
                      $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
@@ -77,16 +76,20 @@ class IndexTable {
         }
         $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
-        $tabs['Main']['subtabs'][] = $grantSubTab;
+        if($wgUser->isLoggedIn()){
+	    $tabs['Main']['subtabs'][] = $grantSubTab;
+	}
         $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
-        $tabs['Main']['subtabs'][] = $grantSubTab;
-        
+        if($wgUser->isLoggedIn()){
+	    $tabs['Main']['subtabs'][] = $grantSubTab;
+        }
 	if(Material::countByCategory() > 0){
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
         }
-        $tabs['Main']['subtabs'][] = $productsSubTab;
-       
+        if($wgUser->isLoggedIn()){
+            $tabs['Main']['subtabs'][] = $productsSubTab;
+        }
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -534,6 +537,10 @@ EOF;
          * Title | Co-grantees | Cash | In Kind | Total 
          */
         private function generateGrantsTable(){
+           global $wgUser,$wgOut;
+           if(!$wgUser->isLoggedIn()){
+                permissionError();
+           }
            $contributions = Contribution::getAllContributions();
            $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
@@ -574,6 +581,10 @@ EOF;
 
         }
         private function generateCoursesTable(){
+	   global $wgUser,$wgOut;
+	   if(!$wgUser->isLoggedIn()){
+		permissionError();
+	   }
            $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
                         <th style='white-space:nowrap;'>Number</th>

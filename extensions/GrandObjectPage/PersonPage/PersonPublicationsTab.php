@@ -12,6 +12,10 @@ class PersonPublicationsTab extends AbstractTab {
     }
 
     function generateBody(){
+        global $wgUser;
+        if(!$wgUser->isLoggedIn()){
+            return "";
+        }
         $contributions = $this->person->getContributions();
 	   $this->html .= $this->showTable($this->person, $this->visibility);
     }

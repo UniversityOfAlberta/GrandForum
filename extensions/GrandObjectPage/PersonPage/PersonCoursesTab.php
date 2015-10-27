@@ -12,6 +12,10 @@ class PersonCoursesTab extends AbstractTab {
     }
 
     function generateBody(){
+	global $wgUser;
+	if(!$wgUser->isLoggedIn()){
+	    return "";
+	}
         $courses = $this->person->getCourses();
         $this->html .= "<table id='courses_table' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
@@ -27,7 +31,7 @@ class PersonCoursesTab extends AbstractTab {
 	    $this->html .= "<td>{$course->catalog}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";
 	    $this->html .= "<td style='white-space:nowrap;'>";
-	    if(count($courseEval['evals'])>0){
+	    if(isset($courseEval['evals'])){
                 $this->html .= "<a href='#!' onclick='$(\"#dialog{$course->id}\").dialog({width:\"1100px\",position: { my: \"center\", at: \"center\", of: window }})'>Course Evaluation</a>
                                 <div id='dialog{$course->id}' title='Course Evaluation for {$course->subject} {$course->catalog}' style='display:none;'>";
 	        $this->html .= "<table class='dashboard wikitable'><thead>

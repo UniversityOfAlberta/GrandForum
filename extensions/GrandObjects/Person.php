@@ -61,6 +61,23 @@ class Person extends BackboneModel {
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
+    
+    var $dateOfPhd;
+    var $dateOfAppointment;
+    var $dateOfAssistant;
+    var $dateOfAssociate;
+    var $dateOfProfessor;
+    var $dateOfTenure;
+    var $dateOfRetirement;
+    var $dateOfLastDegree;
+    var $lastDegree;
+    var $publicationHistoryRefereed;
+    var $publicationHistoryBooks;
+    var $publicationHistoryPatents;
+    var $dateFso2;
+    var $dateFso3;
+    var $dateFso4;
+    
     /**
      * Returns a new Person from the given id
      * @param int $id The id of the person
@@ -468,7 +485,60 @@ class Person extends BackboneModel {
             }
         }
     }
-    
+
+    function getFecPersonalInfo(){
+	$data = DBFunctions::select(array('grand_personal_fec_info'),
+				    array('*'),
+				    array('user_id' => EQ($this->getId())));
+	if(count($data) >0){
+	    $row = $data[0];
+  	    $this->dateOfPhd = $row['date_of_phd'];
+	    $this->dateOfAppointment = $row['date_of_appointment'];
+	    $this->dateOfAssistant = $row['date_assistant'];
+            $this->dateOfAssociate = $row['date_associate'];
+            $this->dateOfProfessor = $row['date_professor'];
+            $this->dateOfTenure = $row['date_tenure'];
+            $this->dateOfRetirement = $row['date_retirement'];
+            $this->dateOfLastDegree = $row['date_last_degree'];
+            $this->lastDegree = $row['last_degree'];
+            $this->publicationHistoryRefereed = $row['publication_history_refereed'];
+            $this->publicationHistoryBooks = $row['publication_history_books'];
+            $this->publicationHistoryPatents = $row['publication_history_patents'];
+            $this->dateFso2 = $row['date_fso2'];
+            $this->dateFso3 = $row['date_fso3'];
+            $this->dateFso4 = $row['date_fso4'];
+	}
+    }
+
+    function updateFecInfo(){
+	//TODO: This can be done in another file separate from this object. Did this to save time and should
+	//fix in the future
+        $me = Person::newFromWgUser();
+        if($me->getId() == $this->getId() ||
+           $me->isRoleAtLeast(MANAGER) ||
+           $isSupervisor){
+            $status = DBFunctions::update('grand_personal_fec_info', 
+                                    array('date_of_phd' => $this->dateOfPhd,
+                                          'date_of_appointment' => $this->dateOfAppointment,
+                                          'date_assistant' => $this->dateOfAssistant,
+                                          'date_associate' => $this->dateOfAssociate,
+                                          'date_professor' => $this->dateOfProfessor,
+                                          'date_tenure' => $this->dateOfTenure,
+                                          'date_retirement' => $this->dateOfRetirement,
+                                          'date_last_degree' => $this->dateOfLastDegree,
+                                          'last_degree' => $this->lastDegree,
+                                          'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                          'publication_history_books' => $this->publicationHistoryBooks,
+					  'publication_history_patents' => $this->publicationHistoryPatents,
+                                          'date_fso2' => $this->dateFso2,
+                                          'date_fso3' => $this->dateFso3,
+                                          'date_fso4' => $this->dateFso4),
+                                    array('user_id' => EQ($this->getId())));
+        return $status;
+	}
+        return false;
+    }
+
     /**
      * Returns an array of all University names
      * @return array An array of all University names
@@ -3193,7 +3263,8 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
     function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false){
-        self::generateAuthorshipCache();
+        global $config;
+	self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
         $papers = array();
@@ -3221,7 +3292,7 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               $paper->isGrandRelated() &&
+               ($paper->isGrandRelated() || !$config->getValue("projectsEnabled")) &&
                $paper->getId() != 0 &&
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
@@ -4111,16 +4182,17 @@ class Person extends BackboneModel {
     }
 
    function getCourseEval($course_id){
-	$data = DBFunctions::select(array('grand_user_courses'),
+	$me = Person::newFromWgUser();
+	if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
+	   $data = DBFunctions::select(array('grand_user_courses'),
 				    array('course_evals'),
 				    array('course_id' => $course_id,
 					  'user_id' => $this->getId()));
-	if(count($data)>0){
+	   if(count($data)>0){
 	    return unserialize($data[0]['course_evals']);
+	   }
 	}
-	else{
-	    return array();
-	}
+	return array();
    }
 
     /**

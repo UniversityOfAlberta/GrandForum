@@ -13,7 +13,10 @@ class PersonCitationsTab extends AbstractTab {
 
     function generateBody(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-        $wgOut->addScript(
+        if(!$wgUser->isLoggedIn()){
+            return "";
+        }
+	$wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#citationAccordion').accordion({autoHeight: false, collapsible: true});

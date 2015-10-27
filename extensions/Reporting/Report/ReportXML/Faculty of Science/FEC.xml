@@ -52,6 +52,12 @@
 		{$item}
 	    ]]>
 	</ReportItem>
+        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <h2>Teaching Development And Innovation</h2>
+                  {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Courses" name="Courses" title="Courses" blobSection="FEC_COURSES" type="EditableReportSection">
 	<ReportItem id="coursesheader" type="StaticReportItem">
@@ -84,6 +90,131 @@
 	<ReportItem id="coursesfooter" type="StaticReportItem">
 	    <![CDATA[
 	    	</tbody></table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <h2>Other Teaching</h2>{$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="students" tooltip="Students" name="Students" title="Students" blobSection="FEC_STUDENTS" type="EditableReportSection">
+    	<ReportItem id="studentsheader" type="StaticReportItem">
+    	    <![CDATA[
+    	    	<h2>Students</h2>
+    	    	<table class='wikitable' style='width:100%'><thead><tr>
+    	    	    <th>Name</th>
+    	    	    <th>Resp</th>
+    	    	    <th>Awards</th>
+    	    	    <th>Role</th>
+    	    	    <th>Start Date</th>
+    	    	    <th>End Date</th>
+    	    	    <th>Status</th></tr></thead><tbody>
+    	    ]]>
+    	 </ReportItem>
+    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet">
+    	     <ReportItem id="row" type="StaticReportItem">
+    	         <![CDATA[
+    	         	<tr><td>{$hqp_name}</td>
+    	         	<td>{$hqp_position}</td>
+    	         	<td>{$hqp_awards}</td>
+    	         	<td>{$user_hqp_role}</td>
+    	         	<td>{$hqp_start_date}</td>
+    	         	<td>{$hqp_end_date}</td>
+    	         	<td>--</td></tr>
+    	         ]]>
+    	     </ReportItem>
+    	 </ReportItemSet>
+    	 <ReportItem id="studentsfooter" type="StaticReportItem">
+    	     <![CDATA[
+    	         </tbody></table>
+    	     ]]>
+         </ReportItem>
+    </ReportSection>
+    <ReportSection id="publications" tooltip="Publications" name="Publications" title="Publications" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+        <ReportItem id="productsheader" type="StaticReportItem">
+            <![CDATA[
+		<h2>Publications</h2>
+		<table class='wikitable' style='width:100%'><thead><tr>
+		<th>Refereed Type Authors Title Venue Accepted Published Pg. Eds. Vol. Issue Place Publisher DOI URL</th></tr></thead><tbody>
+	    ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet">
+	    <ReportItem id="row" type="StaticReportItem">
+	         <![CDATA[
+		     <tr><td>{$product_citation}</td></tr>
+		 ]]>
+	    </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="productsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="grants" tooltip="Research Grants" name="Research Grants" title="Research Grants" blobSection="FEC_GRANTS" type="EditableReportSection">
+        <ReportItem id ="grantsheader" type="StaticReportItem">
+            <![CDATA[
+		<h2>Grants</h2>
+		<table class='wikitable' style='width:100%'><thead><tr>
+		<th>Scope</th>
+		<th>Agency</th>
+		<th>Program</th>
+		<th>Starts</th>
+		<th>Ends</th>
+		<th>$Yearly</th>
+		<th>$Total</th>
+		<th>PI</th>
+		<th>Co-recipients</th></tr></thead><tbody>
+	    ]]>
+	</ReportItem> 
+	<ReportItemSet id="grants" type="PersonContributionsReportItemSet">
+	    <ReportItem id="row" type="StaticReportItem">
+	        <![CDATA[
+	            <tr>
+	            	<td> -- </td>
+	            	<td>{$contribution_agency}</td>
+	            	<td>{$contribution_program}</td>
+	            	<td>{$contribution_start_date}</td>
+	            	<td>{$contribution_end_date}</td>
+	            	<td>{$contribution_yearly}</td>
+	            	<td>{$contribution_total}</td>
+	            	<td> -- </td>
+	            	<td>{$contribution_recipients}</td>
+	            </tr>
+	        ]]>
+	    </ReportItem>
+	</ReportItemSet>
+	<ReportItem id="grantsfooter" type="StaticReportItem">
+	    <![CDATA[
+	        </tbody></table>
+	    ]]>
+	</ReportItem>
+	<ReportItem id="awardsReceived" type="TextareaReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_TEXT" rich="true" optional="true">
+	    <![CDATA[
+	        <h2>Awards Received</h2>{$item}
+	    ]]>
+	</ReportItem>
+    </ReportSection>
+    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_GRANTS" type="EditableReportSection">
+        <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+            	<h2>Supplementary Professional Activities</h2>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutreach" type="TextareaReportItem" blobItem="FEC_INFO_SERVICE" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+            	<h2>Service/Committees/Outreach</h2>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+            	<h2>Additional Data</h2>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+            	<h2>Footnotes</h2>{$item}
             ]]>
         </ReportItem>
     </ReportSection>

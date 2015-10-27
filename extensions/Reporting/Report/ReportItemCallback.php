@@ -31,7 +31,23 @@ class ReportItemCallback {
 	    "course_comp" => "getCourseComp",
 	    "course_section" => "getCourseSection",
 	    "course_enroll" => "getCourseEnroll",    
-	    "course_enroll_percent" => "getCourseEnrollPercent",	
+	    "course_enroll_percent" => "getCourseEnrollPercent",
+	    // Student Relation
+	    "hqp_name" => "getHqpName",
+	    "hqp_position" => "getHqpPosition",
+	    "hqp_awards" => "getHqpAwards",
+	    "user_hqp_role" => "getUserHqpRole",
+	    "hqp_start_date" => "getHqpStartDate",
+	    "hqp_end_date" => "getHqpEndDate",
+	    "hqp_status" => "getHqpStatus",
+	    // Contributions
+	    "contribution_agency" => "getContributionAgency",
+	    "contribution_program" => "getContributionProgram",
+	    "contribution_start_date" => "getContributionStartDate",
+	    "contribution_end_date" => "getContributionEndDate",
+	    "contribution_yearly" => "getContributionYearly",
+	    "contribution_total" => "getContributionTotal",
+	    "contribution_recipients" => "getContributionRecipients",
 	    // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -134,6 +150,7 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
+	    "product_citation" => "getProductCitation",
             // Other
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
@@ -146,7 +163,8 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra"
-        );
+            
+	);
     
     var $reportItem;
     
@@ -362,6 +380,43 @@ class ReportItemCallback {
         }
         return implode(", ", $newProjects);
     }
+    function getHqpName(){
+	$relation = Relationship::newFromId($this->reportItem->projectId);
+	$hqp = $relation->getUser2();
+	return $hqp->getNameForForms();
+    }
+
+    function getHqpPosition(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        $hqp = $relation->getUser2();
+        return $hqp->getPosition();
+    }
+    
+    function getHqpAwards(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        $hqp = $relation->getUser2();
+	$award_names = array();
+        $awards = $hqp->getPapers("Awards", false, 'both', true, "Public");
+	foreach($awards as $award){
+	    $award_names[] = $award->type;
+	}
+	return implode(",",$award_names);
+    }
+    
+    function getUserHqpRole(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        return $relation->type;
+	
+    }
+   
+    function getHqpStartDate(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        return $relation->getStartDate();
+    }
+    function getHqpEndDate(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        return $relation->getEndDate();
+    }
 
     function getCourseTerm(){
 	$course = Course::newFromId($this->reportItem->projectId);
@@ -397,7 +452,53 @@ class ReportItemCallback {
         $course = Course::newFromId($this->reportItem->projectId);
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
     }
-    
+
+    function getContributionAgency(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        $partners = $contribution->getPartners();
+	$contribution_string = array();
+	foreach($partners as $partner){
+	    $contribution_string[] = $partner->organization; 
+	}
+	return implode(",", $contribution_string);
+    }
+
+    function getContributionProgram(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        return $contribution->description;
+    }
+
+    function getContributionStartDate(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        return $contribution->start_date;
+    }   
+
+    function getContributionEndDate(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        return $contribution->end_date;
+    }
+
+    function getContributionYearly(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        return $contribution->getTotal();
+    }   
+
+    function getContributionTotal(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        return $contribution->getTotal();
+    }   
+
+    function getContributionRecipients(){
+        $contribution = Contribution::newFromId($this->reportItem->projectId);
+        $recipients = $contribution->people;
+	$string_names = array();
+	/*foreach($recipients as $recipient){
+	    $person = Person::newFromId($recipient);
+	    $string_names[] = $person->getNameForForms();
+	}*/
+	return implode(",",$string_names);
+    }   
+
     function getMilestoneId(){
         return $this->reportItem->milestoneId;
     }
@@ -1387,6 +1488,11 @@ class ReportItemCallback {
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
+    }
+   
+    function getProductCitation(){
+	$product = Paper::newFromId($this->reportItem->productId);
+	return $product->getProperCitation(true, true, false);
     }
     
     function getWgServer(){

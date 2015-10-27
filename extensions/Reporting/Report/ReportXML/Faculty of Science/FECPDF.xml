@@ -10,27 +10,28 @@
     <ReportSection id="information" tooltip="Information" name="Information" title="Information" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-            	<table class='wikitable'>
-            	<tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
-                <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
-                <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
+            	<table><tr><td style='width:100%'>
+            	<table class='wikitable' style='width:100%'>
+            	<tr><td>Name:</td><td><b>{$user_name}</b></td></tr>
+                <tr><td>Rank:</td><td><b>{$user_level}</b></td></tr>
+                <tr><td>Department</td><td><b>{$user_dept}</b></td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
 	    <![CDATA[
-		<tr><td><b>Year of PhD:</b></td><td>{$item}</td></tr>
+		<tr><td>Year of PhD:</td><td><b>{$item}</b></td></tr>
 	    ]]>
 	</ReportItem>
         <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
              <![CDATA[
-                 <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$item}</td></tr>
+                 <tr><td>Year of Appointment:&nbsp;</td><td><b>{$item}</b></td></tr>
              ]]>
         </ReportItem>
         <ReportItem id="gradCount" type="StaticReportItem">
             <![CDATA[
-            	<tr><td><b>Graduate Students(Supervised or Co-supervised):</b></td><td>10</td></tr>
-                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>1</tr></td>
-	    	</table>
+            	<tr><td>Graduate Students(Supervised or Co-supervised):</td><td><b>10</b></td></tr>
+                <tr><td style='width:350px;'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</td><td><b>1</b></tr></td>
+	    	</table></td><td><table><tr><td>hello</td></tr></table></td></tr></table>
 	    ]]>
 	</ReportItem>
 	<ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">

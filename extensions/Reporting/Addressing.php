@@ -864,6 +864,14 @@ define('FEC_INFO_APPOINTMENT', 2);
 define('FEC_INFO_RESP', 3);
 define('FEC_INFO_LEAVES', 4);
 define('FEC_INFO_REASONS', 5);
+define('FEC_INFO_DEVELOPMENT', 6);
+define('FEC_INFO_TEACHING', 7);
+define('FEC_INFO_AWARDS', 8);
+define('FEC_INFO_ACTIVITIES', 9);
+define('FEC_INFO_SERVICE', 10);
+define('FEC_INFO_ADDITIONAL', 11);
+define('FEC_INFO_FOOTNOTES', 12);
+
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
  * to identify a user ID or project ID, which is the focus of the evaluation.
