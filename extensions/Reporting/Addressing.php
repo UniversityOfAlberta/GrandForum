@@ -67,6 +67,7 @@ define('RP_IFP_PROGRESS',       301);
 define('RP_PROGRESS',           302);
 define('RP_SSA_FINAL_PROGRESS', 303);
 define('RP_IFP_FINAL_PROJECT',  304);
+define('RP_IFP_REVIEW',          305);
 
 /*
  * FEC
@@ -272,8 +273,8 @@ define('SSA_HQP',               2);
 //FEC Report
 define('FEC_INFORMATION', 1);
 
-
-
+// IFP Review
+define('IFP_REVIEW',            1);
 
 /*
  * Third-level identifiers: question within a section.
@@ -857,6 +858,14 @@ define('SSA_MOBILIZATION',  13);
 define('SSA_INSTITUTION',   14);
 define('SSA_LEARNING',      15);
 
+// IFP Review
+define('IFP_REVIEW_RELEVANCE',  1);
+define('IFP_REVIEW_MOTIVATION', 2);
+define('IFP_REVIEW_CAPACITY',   3);
+define('IFP_REVIEW_SUPPORT',    4);
+define('IFP_REVIEW_REFEREE',    5);
+define('IFP_REVIEW_COMMENTS',   6);
+define('IFP_REVIEW_FUNDING',    7);
 
 //FEC Report
 define('FEC_INFO_PHD', 1);

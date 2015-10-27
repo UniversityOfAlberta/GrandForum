@@ -95,7 +95,6 @@
 
     function formatDate($date){
         $date_array = explode(" ", $date);
-	print_r($date_array);
         if(count($date_array)==2){
             $date = parseSemDate($date_array);
         }
@@ -225,7 +224,7 @@
 	if($student == false){    
 	     $disc = $person->getDiscipline();
              $university_info = $person->university;
-             $student = createUser($data['email'], $data['name'], $data['program'], $university_info['department'], $university_info['university'], $data['id']); 
+             //$student = createUser($data['email'], $data['name'], $data['program'], $university_info['department'], $university_info['university'], $data['id']); 
         }
 	    //enter supervisors
 	foreach($data['supervisors'] as $super){
@@ -236,41 +235,73 @@
             if($type == "Supervisor" || $type == "Co-Supervisor"){
                 $type = "Supervises";
             }
-            if(!($supervisor->relatedTo($student, $type))){
-                $status = addRelation($supervisor, $student, $type, $super['start_date'], $super['end_date']);
-                if(!$status){
+	    $start_date = formatDate($super['start_date']);
+            $end_date = formatDate($super['end_date']);
+            if(!($supervisor->relatedToDuring($student, $type, $start_date, $end_date))){
+		if($flag){
+		    $graduated = $data['graduated'];
+		    if($graduated != 'Continuing' && $super['end_date'] = ""){
+			$end_date = "2015-01-01 00:00:00"; //TODO: can't have arbitrary date here.
+			$status = addRelation($supervisor, $student, $type, $super['start_date'], $end_date);
+		    }
+		    else{
+			$status = addRelation($supervisor, $student, $type, $super['start_date'], $super['end_date']);
+		    }
+		}
+		else{
+                    $status = addRelation($supervisor, $student, $type, $super['start_date'], $super['end_date']);
+		}
+		if(!$status){
                     print_r("couldn't add relation {$student->getRealName()}");
                 }
             }
         }
 	if($flag){
 	   //enter awards
-	    if($data['awards'] != ""){ 
-             	$status = addAwards($student, $data['awards']);
-                if(!$status){
-              	     print_r("couldn't add relation {$student->getRealName()}");
-             	}
+	    $status = true;
+	    if($data['awards'] != ""){
+		$awards = $student->getPapers("Awards", false, 'both', true, "Public");
+	        foreach($awards as $award){
+			//TODO: ACTUALLY CHECK DATE HERE!
+		    $type = "Misc: ".$data['awards'];
+		    if($award->type == $type && $award->date == "2015-01-01"){
+			$status = false;
+			break;
+		    }
+		}	
+		if($status){
+             	    //$status = addAwards($student, $data['awards']);
+                    if(!$status){
+              	         print_r("couldn't add relation {$student->getRealName()}");
+             	    }
+	        }
 	    }
 	   	//enter moved on
 	     if($data['graduated'] != "Continuing"){
-	     	$status = addMovedOn($student,$data['graduated'],$data['end_date']);
-                if(!$status){
+		if($data['end_date'] == ""){
+		    $end_date = "2015-01-01 00:00:00";
+		    $status = addMovedOn($student, $data['graduated'], $end_date);
+		}
+		else{
+	     	    $status = addMovedOn($student,$data['graduated'],$data['end_date']);
+                }
+		if(!$status){
              	     print_r("couldn't add relation {$student->getRealName()}");
              	}	
-	     }
+	     
+	      }
 	return;
 	}
         if(false && $data['research_area'] != ""){
-	    $status = addResearchArea($student, $data['research_area'], $data['start_date']);
+	    //$status = addResearchArea($student, $data['research_area'], $data['start_date']);
 	    if(!$status){
 		print_r("couldn't add research are {$student->getRealName()}");
 	    }
 	}
-	return;
     }
 
 //--------------------------------------------MAIN HERE -----------------------------------------------------------------------
-    /*$url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/FECrep.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2&button=View%20Report');
+    $url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/FECrep.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2&button=View%20Report');
     
     $person = Person::newFromNameLike('Eleni Stroulia');
 
@@ -313,9 +344,10 @@
 	$parsed_array[] = $data;	
     }
     foreach($parsed_array as $student){
-        //enterData($student,$person, true);
-	
-    }*/ 
+        enterData($student,$person, true);
+	print_r($student);
+    }
+    /* 
     $person = Person::newFromNameLike('Eleni Stroulia');
     $url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/login.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2');
     $regex = '/option value\=\"(.+?)\"\>/';
@@ -371,5 +403,5 @@
     foreach($parsed_array as $student){
         enterData($student,$person, false);
     }
-
+*/
 ?> 

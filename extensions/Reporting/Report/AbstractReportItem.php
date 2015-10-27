@@ -409,8 +409,13 @@ abstract class AbstractReportItem {
             }
         }
         
-        preg_match_all('/{(.+?)}/', $cdata, $matches);
+        // Support nested function calls
+        preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
+        // Reverse the array so that it gets the inner most first
+        $matches[1] = array_reverse($matches[1]);
+        
         foreach($matches[1] as $k => $m){
+            $m = $matches[1][$k];
             $e = explode('(', $m);
             if(isset($e[1])){
                 // Function call
@@ -428,9 +433,15 @@ abstract class AbstractReportItem {
                 if(isset(ReportItemCallback::$callbacks[$f])){
                     $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
                     if(is_array($v)){
+                        foreach($matches[1] as $k2 => $m2){
+                            $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
+                        }
                         $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                     }
                     else{
+                        foreach($matches[1] as $k2 => $m2){
+                            $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
+                        }
                         $cdata = str_replace("{".$m."}", $v, $cdata);
                     }
                 }

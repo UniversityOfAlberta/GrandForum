@@ -9,6 +9,10 @@ eventer(messageEvent,function(e) {
         jQuery("iframe").height(e.data);
     }
     jQuery("img.throbber").hide(); 
+    for(var i = 0; i < window.frames.length; i++){
+        var frame = window.frames[i];
+        frame.postMessage({projectUrl: "http://canadianglycomics.ca/projects/?project="}, "*");
+    };
 }, false);
 
 function getUrlVars() {

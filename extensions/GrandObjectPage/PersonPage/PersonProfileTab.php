@@ -22,8 +22,8 @@ class PersonProfileTab extends AbstractEditableTab {
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
-            $this->html .= "<br />";
         }
+        $this->html .= $this->showFundedProjects($this->person, $this->visibility);
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->person->isRole(NI) || 
@@ -352,11 +352,26 @@ EOF;
         return $html;
     }
     
+    function showFundedProjects($person, $visibility){
+        global $config;
+        $html = "";
+        $projects = $person->getProjects();
+        if(count($projects) > 0){
+            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            foreach($projects as $project){
+                $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a></li>";
+            }
+            $html .= "</ul>";
+        }
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
      */
     function showTable($person, $visibility){
+        global $config;
         $me = Person::newFromWgUser();
 	$visibilityCopy = $visibility;
 	$visibilityCopy['isMe'] = false;

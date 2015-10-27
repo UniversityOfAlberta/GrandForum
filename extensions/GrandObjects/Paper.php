@@ -225,13 +225,15 @@ class Paper extends BackboneModel{
     }
     
     /**
-     * Returns all of the Papers in the database
-     * @param Project $project Specifies which project the returned papers should be associated with
-     * @param string $category Specifies which category the returned papers should be of('Publication', 'Artifact' etc.)
+     * Returns all of the Products in the database
+     * @param Project $project Specifies which project the returned Products should be associated with
+     * @param string $category Specifies which category the returned Products should be of('Publication', 'Artifact' etc.)
      * @param string $grand Whether to include grand-only, non-grand-only or both
-     * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @param boolean $onlyPublic Whether or not to only include Products with access_id = 0
      * @param string $access Whether to include 'Forum' or 'Public' access
-     * @return array All of the Papers
+     * @param integer $start The index to start at
+     * @param integer $count The max number of Products to return 
+     * @return array All of the Products
      */
     static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
         global $config;

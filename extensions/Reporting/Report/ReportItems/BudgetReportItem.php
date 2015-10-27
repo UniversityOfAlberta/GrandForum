@@ -7,6 +7,17 @@ class BudgetReportItem extends AbstractReportItem {
 		$structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 		$template = $this->getAttr('template', 'GRAND Researcher Budget Request (2015-16).xls');
 		$budgetText = $this->getAttr('budgetText', 'Budget');
+		if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
+	        $data = $this->getBlobValue();
+            $link = $this->getDownloadLink();
+            $html = "";
+            if($data !== null && $data != ""){
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
+            }
+            $item = $this->processCData($html);
+            $wgOut->addHTML($item);
+            return;
+        }
 		if(isset($_GET['downloadBudget'])){
 		    $data = $this->getBlobValue();
 		    if($data != null){

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="IFP2016 Report" reportType="RP_IFP_REVIEW" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+            <SectionPermission id="report" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" name="IFP Report" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Catalyst">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="table_head" type="StaticReportItem">
+                    <![CDATA[
+                        <script type='text/javascript'>
+                            var q1 = 0;
+                            var q2 = 0;
+                            var q3 = 0;
+                            var q4 = 0;
+                            var q5 = 0;
+                            var nReviewers = 0;
+                        </script>
+                        <div style="margin: 10px;">
+                        <table class='wikitable'>
+                            <thead>
+                                <tr>
+                                    <th width='50px'>Reviewer</th>
+                                    <th width='50px'>Q1</th>
+                                    <th width='50px'>Q2</th>
+                                    <th width='50px'>Q3</th>
+                                    <th width='50px'>Q4</th>
+                                    <th width='50px'>Q5</th>
+                                    <th width='50px'>Total</th>
+                                    <th style='min-width:400px;'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="SAB-Catalyst" includeSelf="true">
+                    <ReportItem id="relevance" type="StaticReportItem">
+                        <![CDATA[
+                            <tr>
+                                <td>{$user_name}</td>
+                                <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="motivation" type="StaticReportItem">
+                        <![CDATA[
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="capacity" type="StaticReportItem">
+                        <![CDATA[
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="support" type="StaticReportItem">
+                        <![CDATA[
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="referee" type="StaticReportItem">
+                        <![CDATA[
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="total" type="StaticReportItem">
+                        <![CDATA[
+                            <td align='right'>
+                                {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)},
+                                     {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)},
+                                          {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)},
+                                               {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)},
+                                                    {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)})
+                                               })
+                                          })
+                                     })
+                                }
+                                <script type='text/javascript'>
+                                    q1 += {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)};
+                                    q2 += {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)};
+                                    q3 += {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)};
+                                    q4 += {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)};
+                                    q5 += {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)};
+                                    nReviewers++;
+                                </script>
+                            </td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="comments" type="StaticReportItem">
+                        <![CDATA[
+                            <td>
+                                <div style='max-height: 75px; overflow-y: auto;'>
+                                    {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="table_foot" type="StaticReportItem">
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th id='{$user_id}_q1_total'></th>
+                                    <th id='{$user_id}_q2_total'></th>
+                                    <th id='{$user_id}_q3_total'></th>
+                                    <th id='{$user_id}_q4_total'></th>
+                                    <th id='{$user_id}_q5_total'></th>
+                                    <th id='{$user_id}_total'></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_q1_total").text(q1/nReviewers);
+                            $("#{$user_id}_q2_total").text(q2/nReviewers);
+                            $("#{$user_id}_q3_total").text(q3/nReviewers);
+                            $("#{$user_id}_q4_total").text(q4/nReviewers);
+                            $("#{$user_id}_q5_total").text(q5/nReviewers);
+                            $("#{$user_id}_total").text((q1+q2+q3+q4+q5)/nReviewers);
+                            $(".wikitable").dataTable();
+                        </script>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

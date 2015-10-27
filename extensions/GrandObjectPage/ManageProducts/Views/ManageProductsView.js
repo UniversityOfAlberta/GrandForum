@@ -173,7 +173,6 @@ ManageProductsView = Backbone.View.extend({
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
@@ -381,7 +380,7 @@ ManageProductsView = Backbone.View.extend({
                     if(view.$("div.popupBox").is(":visible")){
                         // Need to defer the event so that unchecking a project is not in conflict
                         _.defer(function(){
-                            view.model.trigger("change");
+                            view.model.trigger("change", view.model);
                         });
                     }
                 });
@@ -653,7 +652,6 @@ ManageProductsView = Backbone.View.extend({
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
 	                $("div.throbber", this.bibtexDialog).show();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
-	                    console.log(response);
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');

@@ -17,6 +17,7 @@ class ImportBibTeXAPI extends API{
                                'thesis' => 'PHD Thesis',
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
+                               'inbook' => 'Book Chapter',
                                'misc' => 'Misc');
 
     var $structure = null;
@@ -176,14 +177,15 @@ class ImportBibTeXAPI extends API{
             $errorProducts = array();
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
-                    $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
+                    print_r($paper);
+                    /*$type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
                     $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
                     else{
                         $errorProducts[] = $paper;
-                    }
+                    }*/
                 }
             }
             else{
@@ -191,6 +193,7 @@ class ImportBibTeXAPI extends API{
                 $this->addError("No BibTeX references were found");
                 return false;
             }
+            exit;
             $json = array('created' => array(),
                           'errors' => array());
             foreach($createdProducts as $product){

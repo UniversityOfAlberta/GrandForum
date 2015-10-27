@@ -137,7 +137,7 @@ $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
     
 $budgetStructures[TVN_BUDGET_STRUCTURE] =
     array(array(HEAD,       NA,         NA,         NA,         NA,         NA,         NA,         NA),
-          array(HEAD1_ROW,  NA,         V_PERS,     NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         READ,       NA,         NA,         NA,         NA,         NA),
           array(HEAD1_ROW,  NA,         V_PERS,     NA,         NA,         NA,         NA,         NA),
           array(HEAD1_ROW,  NA,         V_PERS,     NA,         NA,         NA,         NA,         NA),
           array(HEAD1_ROW,  NA,         STRING,     NA,         NA,         NA,         NA,         NA),

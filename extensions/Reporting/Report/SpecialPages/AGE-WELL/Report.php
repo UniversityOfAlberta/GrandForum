@@ -26,6 +26,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Feedback"] = TabUtils::createTab("My Feedback");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         $tabs["Plans"] = TabUtils::createTab("My CC Activity Plans");
         $tabs["Applications"] = TabUtils::createTab("HQP Application");
@@ -59,7 +60,7 @@ class Report extends AbstractReport{
                     $tabs["Plans"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}CCPlanning&project={$project->getName()}", $selected);
                     
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PLFeedback" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Feedback)", "{$url}PLFeedback&project={$project->getName()}", $selected);
+                    $tabs["Feedback"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PLFeedback&project={$project->getName()}", $selected);
                 }
                 else{
                     $report = "";

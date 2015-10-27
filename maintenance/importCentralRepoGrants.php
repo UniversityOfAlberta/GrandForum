@@ -1,6 +1,5 @@
 <?php
 	/**used to transfer data from centralrepo to main database.**/
-	$wgUser=User::newFromName("Admin");
 	require_once( "commandLine.inc" );
 	$servername = "199.116.235.47";
 	$username = "new_root";

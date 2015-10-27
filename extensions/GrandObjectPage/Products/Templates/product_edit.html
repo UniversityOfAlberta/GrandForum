@@ -8,7 +8,7 @@
 <h2>Description</h2>
 <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 <h2>Information</h2>
-<table id="productData">
+<table id="productData" width="100%">
     <tr>
         <td class="label">Category:</td>
         <td class="field">
@@ -30,9 +30,9 @@
     <% } %>
     <tr>
         <td class="label">Visibility:</td>
-        <td class="field">
+        <td class="field" colspan="2">
             <%= HTML.Select(this, 'access', {options: ['Public','Forum']}) %>
-            <div style="float:right;">
+            <div style="display:inline-block;">
                 <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
                     <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the Forum will be able to view this product.</li>
                     <li style="margin-top:0;margin-bottom:0;"><b>Forum:</b> Only Forum members will be able to view this product.</li>
@@ -49,6 +49,42 @@
     <tr>
         <td class="label">Date:</td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
+        <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
+	<% if(projectsEnabled){ %>
+            <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
+            <div id='productSpinner'></div>
+            <div id='productProjects'>
+                <table>
+                    <% _.each(this.projects.models, function(p){ %>
+                        <tr>
+                            <td class="label"><%= p.get('name') %>:</td>
+                            <td class="checkboxCell" style="width:40px;">
+                                <div class="checkboxOuter" data-project="<%= p.get('id') %>">
+                                    <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
+                                    <% if(p.get('subprojects').length > 0){ %>
+                                        <div style="display:none;" class="subprojectPopup popupBox">
+                                            
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    <tr>
+                        <td class="label">Other:</td>
+                        <td class="checkboxCell" align="center" style="width:40px;">
+                            <div class="checkboxOuter">
+                                <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
+                                <div style="display:none;" class="otherPopup popupBox">
+                                    
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    <%}%>
     </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(!val.hidden){ %>
@@ -56,51 +92,17 @@
                 <td class="label"><%= val.label %>:</td>
                 <td class="field">
                     <% if(val.type == "String"){ %>
-                        <%= HTML.TextBox(this, 'data.' + index, {size: 30}) %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } else if(val.type == "Radio"){ %>
                         <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
                     <% } else { %>
-                        <%= HTML.TextBox(this, 'data.' + index, {size: 30}) %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } %>
                 </td>
             </tr>
         <% } %>
     <% }, this) %>
 </table>
-<% if(projectsEnabled){ %>
-<h2>Related Projects</h2>
-<div id='productSpinner'></div>
-<div id='productProjects'>
-    <table>
-        <% _.each(this.projects.models, function(p){ %>
-            <tr>
-                <td class="label"><%= p.get('name') %>:</td>
-                <td class="checkboxCell" style="width:40px;">
-                    <div class="checkboxOuter" data-project="<%= p.get('id') %>">
-                        <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked(projects, p.get('id')) %> /><% if(projectChecked(projects, p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
-                        <% if(p.get('subprojects').length > 0){ %>
-                            <div style="display:none;" class="subprojectPopup popupBox">
-                                
-                            </div>
-                        <% } %>
-                    </div>
-                </td>
-            </tr>
-        <% }) %>
-        <tr>
-            <td class="label">Other:</td>
-            <td class="checkboxCell" align="center" style="width:40px;">
-                <div class="checkboxOuter">
-                    <input class="other" name="other"  type="checkbox" <%= otherChecked(this) %> disabled /><div class="showOther">&#9660;</div>
-                    <div style="display:none;" class="otherPopup popupBox">
-                        
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
-<%}%>
 </form>
 <% if(!this.isDialog){ %>
     <br />

@@ -1228,7 +1228,7 @@ EOF;
         return $this->endDates;
     }
     
-    // Returns the startDate for the given Person
+    // Returns the endDate for the given Person
     function getEndDate($person){
         if($person != null && $person instanceof Person){
             $this->getEndDates();

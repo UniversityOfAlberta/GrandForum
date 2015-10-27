@@ -66,69 +66,8 @@ abstract class AbstractReport extends SpecialPage {
         $pers->id = $sto->metadata('user_id');
         $type = $sto->metadata('type');
         $year = $sto->metadata('year');
-        switch($type){
-            case RPTP_NORMAL:
-                $type = "NIReport";
-                break;
-            case RPTP_NI_COMMENTS:
-                $type = "NIReportComments";
-                break;
-            case RPTP_CHAMP:
-                $type = "ChampionReport";
-                break;
-            case RPTP_PROJECT_CHAMP:
-                $type = "ProjectChampionsReportPDF";
-                break;
-            case RPTP_PROJECT_ISAC:
-                $type = "ProjectISACCommentsPDF";
-                break;
-            case RPTP_INPUT:
-                break;
-            case RPTP_LEADER:
-                $type = "ProjectReport";
-                break;
-            case RPTP_SUBPROJECT:
-                $type = "SubProjectReport";
-                break;
-            case RPTP_REVIEWER:
-                $type = "ReviewReport";
-                break;
-            case RPTP_SUPPORTING:
-                break;
-            case RPTP_EVALUATOR:
-                $type = "EvaluatorResearcherReport";
-                break;
-            case RPTP_EVALUATOR_PROJ:
-                break;
-            case RPTP_EVALUATOR_NI:
-                $type = "EvalNIPDFReport";
-                break;
-            case RPTP_LEADER_COMMENTS:
-                $type = "ProjectReportComments";
-                break;
-            case RPTP_LEADER_MILESTONES:
-                $type = "ProjectReportMilestones";
-                break;
-            case RPTP_EXIT_HQP:
-            case RPTP_HQP:
-                $type = "HQPReport";
-                break;
-            case RPTP_HQP_COMMENTS:
-                $type = "HQPReportComments";
-                break;
-            case RPTP_NI_PROJECT_COMMENTS:
-                $type = "ProjectNIComments";
-                break;
-            case RPTP_MTG:
-                $type = "MindTheGap";
-                break;
-            case RPTP_CATALYST:
-                $type = "CatalystReport";
-                break;
-            case RPTP_TRANS:
-                $type = "TranslationalReport";
-                break;
-        }
+        
+        $type = ReportXMLParser::findPDFReport($type, true);
         
         $proj = null;
         $rp_index = new ReportIndex($pers);
@@ -370,6 +309,11 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getLatestPDF(){
+        if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
+            $file = $this->pdfFiles[0];
+            $report = new DummyReport($file, $this->person, $this->project);
+            return $report->getLatestPDF();
+        }
         $sto = new ReportStorage($this->person);
         if($this->project != null){
             if($this->pdfAllProjects){
@@ -386,10 +330,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $year = $c['year'];
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if(strcmp($tst, $largestDate) > 0){
                 $largestDate = $tst;
                 $return = array($c);
@@ -399,6 +340,11 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getPDF($submittedByOwner=false){
+        if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
+            $file = $this->pdfFiles[0];
+            $report = new DummyReport($file, $this->person, $this->project);
+            return $report->getPDF();
+        }
         $sto = new ReportStorage($this->person);
         $foundSameUser = false;
         $foundSubmitted = false;
@@ -445,9 +391,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if($c['submitted'] == 1){
                 $c['status'] = "Generated/Submitted";
             }

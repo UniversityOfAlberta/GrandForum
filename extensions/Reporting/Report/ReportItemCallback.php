@@ -101,6 +101,7 @@ class ReportItemCallback {
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
+            "user_project_end_date" => "getUserProjectEndDate",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_research_time" => "getUserResearchTime",
@@ -162,9 +163,10 @@ class ReportItemCallback {
             "getText" => "getText",
             "getHTML" => "getHTML",
             "getArray" => "getArray",
-            "getExtra" => "getExtra"
-            
-	);
+            "getExtra" => "getExtra",
+            "add" => "add",
+            "subtract" => "subtract",
+        );
     
     var $reportItem;
     
@@ -1053,6 +1055,16 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getUserProjectEndDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        $date = $project->getEndDate($person);
+        if($date != "0000-00-00 00:00:00"){
+            return time2date($project->getEndDate($person));
+        }
+        return "";
+    }
+    
     function getUserPhase1Projects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
@@ -1449,6 +1461,7 @@ class ReportItemCallback {
         $people = array_merge(Person::getAllPeople(RMC),
                               Person::getAllPeople(STAFF),
                               Person::getAllPeople(MANAGER),
+                              Person::getAllPeople(ADMIN),
                               Person::getAllPeople(SD));
         $comments = array();
         foreach($people as $person){
@@ -1586,6 +1599,14 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
         return nl2br($blb->getData());
+    }
+    
+    function add($val1, $val2){
+        return $val1 + $val2;
+    }
+    
+    function subtract($val1, $val2){
+        return $val1 - $val2;
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){

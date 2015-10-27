@@ -36,9 +36,9 @@
     APIRequest::doAction('UserUniversity', true);
   }
 $wgUser=User::newFromName("Admin");
-	if(file_exists("facultyOfScienceMissed.csv")){
+	if(file_exists("missedFOS.csv")){
 	    print_r("Reading in data");
-            $lines = explode("\n", file_get_contents("facultyOfScienceMissed.csv"));
+            $lines = explode("\n", file_get_contents("missedFOS.csv"));
             foreach($lines as $line){
                 $cells = str_getcsv($line);
                 if(count($cells) > 1){

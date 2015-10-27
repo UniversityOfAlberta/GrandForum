@@ -552,6 +552,19 @@ class CavendishTemplate extends QuickTemplate {
 		    </style>
 		    <script type="text/javascript">
 		        parent.postMessage(-1, "*");
+		        
+		        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+                var eventer = window[eventMethod];   
+                var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";   
+
+                // Listen to message from parent window
+                eventer(messageEvent,function(e) {
+                    if(e.data.projectUrl != undefined){
+                        $("a.projectUrl").attr('href', function(el){ return e.data.projectUrl + jQuery(this).attr('data-projectId')});
+                        $("a.projectUrl").attr('target', '_parent');
+                    }
+                }, false);
+		        
 		        $(document).ready(function(){
 		            $("a").attr("target", "_blank");
 		            var height = $("#bodyContent").height();
@@ -874,7 +887,7 @@ class CavendishTemplate extends QuickTemplate {
 	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
 	                $resources['links'][1006] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
 	            }
-	            
+	            $resources['links'][1007] = TabUtils::createToolboxLink("Funding", "$wgServer$wgScriptPath/index.php/Network_Resources/Funding");
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){

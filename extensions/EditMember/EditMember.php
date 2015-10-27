@@ -877,7 +877,7 @@ class EditMember extends SpecialPage{
                     </tr>");
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>
-                                            $('#requests').dataTable().fnSort([[2,'desc']]);
+                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }

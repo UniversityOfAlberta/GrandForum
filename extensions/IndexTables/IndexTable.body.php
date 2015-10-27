@@ -249,7 +249,7 @@ class IndexTable {
             }
 	    }
 	    $this->text .= "</tbody></table>";
-		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
@@ -288,7 +288,7 @@ class IndexTable {
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
@@ -358,7 +358,7 @@ EOF;
                 $this->text .= "</tr>";
             }
         }
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
@@ -460,7 +460,7 @@ EOF;
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>";
 
 		return true;
 	}
@@ -492,7 +492,7 @@ EOF;
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
 	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100});
+	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
 	    </script>";
@@ -525,7 +525,7 @@ EOF;
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
 	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100});
+	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
 	    </script>";
