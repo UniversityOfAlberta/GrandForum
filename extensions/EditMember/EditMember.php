@@ -1168,8 +1168,6 @@ class EditMember extends SpecialPage{
         $leadProjects = new Collection($person->leadership());
         $myLeadProjects = $leadProjects->pluck('name');
 
-        $wgOut->addHTML("<h2>Project Leader</h2>");
-        
         $projList = new ProjectList("pl", "Projects", $myLeadProjects, $projects);
         $projList->attr('expand', true);
         $wgOut->addHTML($projList->render());

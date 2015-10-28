@@ -31,7 +31,7 @@ class AnnokiControl extends SpecialPage {
         case "passwordreset-emailtext-ip":
             $message = 'A new password has been requested for {{SITENAME}} ($4). A temporary password has been made for the following user:
 
-"$2"
+$2
                         
 Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
             break;

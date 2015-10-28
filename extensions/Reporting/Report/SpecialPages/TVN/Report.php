@@ -67,7 +67,7 @@ class Report extends AbstractReport{
                 if($hqp->isSubRole("IFP")){
                     $ifpDeleted = false;
                     foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                        $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && substr($project->getName(), "IFP") !== false));
+                        $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
                     }
                     if(!$ifpDeleted){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;
@@ -82,7 +82,7 @@ class Report extends AbstractReport{
         if($person->isSubRole('IFP')){
             $ifpDeleted = false;
             foreach($person->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && substr($project->getName(), "IFP") !== false));
+                $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
             }
             if(!$ifpDeleted){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPProgressReport")) ? "selected" : false;

@@ -31,11 +31,19 @@ class ReportStatusTable extends SpecialPage{
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $hqps = Person::getAllPeople(HQP);
         $nis = Person::getAllPeople(NI);
-        $ifp = array();
+        $ifpFinal = array();
+        $ifpProgress = array();
         $ssa = array();
         foreach($hqps as $hqp){
             if($hqp->isSubRole('IFP')){
-                $ifp[] = $hqp;
+                $ifpDeleted = false;
+                foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
+                }
+                if(!$ifpDeleted){
+                    $ifpProgress[] = $hqp;
+                }
+                $ifpFinal[] = $hqp;
             }
         }
         foreach($nis as $ni){
@@ -56,8 +64,8 @@ class ReportStatusTable extends SpecialPage{
                             </ul>");
         $this->addProjectTable(RP_FINAL_PROJECT,    'final');
         $this->addProjectTable(RP_PROGRESS,         'progress');
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final',    $ifp);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress', $ifp);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final',    $ifpFinal);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress', $ifpProgress);
         $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
@@ -105,7 +113,7 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</tbody>
         </table>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#{$type}Table').dataTable();
+            $('#{$type}Table').dataTable({'iDisplayLength': 25});
         </script>");
         $wgOut->addHTML("</div>");
     }
@@ -159,7 +167,7 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</tbody>
         </table>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('#{$type}Table').dataTable();
+            $('#{$type}Table').dataTable({'iDisplayLength': 25});
         </script>
         </div>");
     }

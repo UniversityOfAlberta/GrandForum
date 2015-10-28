@@ -6,7 +6,7 @@
             <SectionPermission id="review" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="materials" tooltip="Download IFP Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <!--ReportSection id="materials" tooltip="Download IFP Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                 You can download the IFP Proposal PDFs for reference.
@@ -31,7 +31,7 @@
                 </table>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
         <Instructions>
             <![CDATA[
@@ -71,7 +71,7 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of TVN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project is aligns with TVN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
+                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of TVN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project aligns with TVN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
                     <![CDATA[
                         <h2>1. Relevance and alignment of applicant's personal research project </h2>
                         {$item}
@@ -106,11 +106,11 @@
                         <h2>Total Score*</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="user{$user_id}_total">
-                            {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$parent_id},0)},
-                                 {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$parent_id},0)},
-                                      {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$parent_id},0)},
-                                           {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$parent_id},0)},
-                                                {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$parent_id},0)})
+                            {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$parent_id},0)},
+                                 {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$parent_id},0)},
+                                      {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$parent_id},0)},
+                                           {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$parent_id},0)},
+                                                {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$parent_id},0)})
                                            })
                                       })
                                  })
