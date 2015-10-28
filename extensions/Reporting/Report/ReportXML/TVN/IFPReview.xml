@@ -106,11 +106,11 @@
                         <h2>Total Score*</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="user{$user_id}_total">
-                            {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$parent_id},0)},
-                                 {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$parent_id},0)},
-                                      {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$parent_id},0)},
-                                           {add({getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$parent_id},0)},
-                                                {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$parent_id},0)})
+                            {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$parent_id},0)},
+                                 {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$parent_id},0)},
+                                      {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$parent_id},0)},
+                                           {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$parent_id},0)},
+                                                {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$parent_id},0)})
                                            })
                                       })
                                  })

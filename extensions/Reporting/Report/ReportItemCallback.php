@@ -136,6 +136,7 @@ class ReportItemCallback {
             "index" => "getIndex",
             "extraIndex" => "getExtraIndex",
             "getText" => "getText",
+            "getNumber" => "getNumber",
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
@@ -1451,6 +1452,10 @@ class ReportItemCallback {
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
         return nl2br($blb->getData());
+    }
+    
+    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
+        return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
     }
     
     function add($val1, $val2){
