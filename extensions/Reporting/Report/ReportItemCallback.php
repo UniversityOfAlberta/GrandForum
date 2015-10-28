@@ -142,6 +142,8 @@ class ReportItemCallback {
             "getExtra" => "getExtra",
             "add" => "add",
             "subtract" => "subtract",
+            "multiply" => "multiply",
+            "divide" => "divide"
         );
     
     var $reportItem;
@@ -237,7 +239,7 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             $leaders = $project->getLeaders();
             foreach($leaders as $lead){
-                $leads[] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+                $leads[$lead->getReversedName()] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
         }
         if(count($leads) == 0){
@@ -1464,6 +1466,14 @@ class ReportItemCallback {
     
     function subtract($val1, $val2){
         return $val1 - $val2;
+    }
+    
+    function multiply($val1, $val2){
+        return $val1*$val2;
+    }
+    
+    function divide($val1, $val2){
+        return $val1/max(1, $val2);
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){

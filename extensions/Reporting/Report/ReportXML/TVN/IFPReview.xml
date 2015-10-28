@@ -6,7 +6,7 @@
             <SectionPermission id="review" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="materials" tooltip="Download IFP Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <!--ReportSection id="materials" tooltip="Download IFP Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <Instructions>
             <![CDATA[
                 You can download the IFP Proposal PDFs for reference.
@@ -31,7 +31,7 @@
                 </table>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
         <Instructions>
             <![CDATA[

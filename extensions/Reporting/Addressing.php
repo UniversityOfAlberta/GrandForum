@@ -67,7 +67,8 @@ define('RP_IFP_PROGRESS',       301);
 define('RP_PROGRESS',           302);
 define('RP_SSA_FINAL_PROGRESS', 303);
 define('RP_IFP_FINAL_PROJECT',  304);
-define('RP_IFP_REVIEW',          305);
+define('RP_IFP_REVIEW',         305);
+define('RP_TRANS_REVIEW',       306);
 
 /*
  * Second-level identifiers: report section.
@@ -266,6 +267,10 @@ define('SSA_HQP',               2);
 
 // IFP Review
 define('IFP_REVIEW',            1);
+
+// Transformative Review
+define('TRANS_SRC_REVIEW',      1);
+define('TRANS_RMC_REVIEW',      2);
 
 /*
  * Third-level identifiers: question within a section.
@@ -857,6 +862,23 @@ define('IFP_REVIEW_SUPPORT',    4);
 define('IFP_REVIEW_REFEREE',    5);
 define('IFP_REVIEW_COMMENTS',   6);
 define('IFP_REVIEW_FUNDING',    7);
+
+// Transformative Review
+define('TRANS_SRC_TOPIC',       1);
+define('TRANS_SRC_GAP',         2);
+define('TRANS_SRC_QUESTION',    3);
+define('TRANS_SRC_METHODOLOGY', 4);
+define('TRANS_SRC_DESIGN',      5);
+define('TRANS_SRC_PROCEDURES',  6);
+define('TRANS_SRC_OUTCOMES',    7);
+define('TRANS_SRC_INTEGRATION', 8);
+define('TRANS_SRC_RECOGNITION', 9);
+define('TRANS_SRC_COMMENTS1',   14);
+define('TRANS_SRC_EXPERIENCE',  10);
+define('TRANS_SRC_EXPERTICE',   11);
+define('TRANS_SRC_BUDGET',      12);
+define('TRANS_SRC_OBJECTIVES',  13);
+define('TRANS_SRC_COMMENTS2',   15);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
