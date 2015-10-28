@@ -99,10 +99,16 @@ class ImportBibTeXAPI extends API{
         }
         $me = Person::newFromWgUser();
 
+        $paper['day'] = (isset($paper['day'])) ? $paper['day'] : "01";
+
         if($product->description == ""){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
-        if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01"; }
-        if(!is_array($product->data)){ $product->data = array(); }
+        if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
+        if($product->acceptance_ratio_numerator == ""){$product->acceptance_ratio_numerator = @"{$paper['acceptance_ratio_numerator']}";}
+        if($product->acceptance_ratio_denominator == ""){$product->acceptance_ratio_denominator = @"{$paper['acceptance_ratio_denominator']}";}
+        if($product->ratio == ""){$product->ratio = @"{$paper['ratio']}";}
+        if($product->acceptance_date == ""){$product->acceptance_date = @"{$paper['acceptance_date']}";}
+	if(!is_array($product->data)){ $product->data = array(); }
         if(!is_array($product->projects)){ $product->projects = array(); }
         if(!is_array($product->authors)){ $product->authors = array(); }
         if(!$product->exists()){
@@ -163,16 +169,23 @@ class ImportBibTeXAPI extends API{
 	    global $wgMessage;
 	    $me = Person::newFromWgUser();
         if(isset($_POST['bibtex'])){
-            $this->structure = Product::structure();
-            $dir = dirname(__FILE__);
-            $error = "";
-            require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
-            $md5 = md5($_POST['bibtex']);
-            $fileName = "/tmp/".$md5;
-            $_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
-            file_put_contents($fileName, $_POST['bibtex']);
-            $bib = new Bibliography($fileName);
-            unlink($fileName);
+            
+            if(isset($_POST['fec'])){
+                $bib = new stdClass();
+                $bib->m_entries = "";
+            }
+            else{
+	    	$this->structure = Product::structure();
+            	$dir = dirname(__FILE__);
+            	$error = "";
+            	require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
+            	$md5 = md5($_POST['bibtex']);
+            	$fileName = "/tmp/".$md5;
+            	$_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
+            	file_put_contents($fileName, $_POST['bibtex']);
+            	$bib = new Bibliography($fileName);
+            	unlink($fileName);
+	    }
             $createdProducts = array();
             $errorProducts = array();
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){

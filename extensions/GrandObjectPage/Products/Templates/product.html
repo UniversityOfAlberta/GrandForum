@@ -9,7 +9,9 @@
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr><td align="right"><b>Status:</b></td><td><%= status %></td></tr>
     <% } %>
-    <tr><td align="right"><b>Date:</b></td><td><%= formatDate(date) %></td></tr>
+    <tr><td align="right"><b>Publication Date:</b></td><td><%= formatDate(date) %></td></tr>
+    <tr><td align="right"><b>Acceptance Date:</b></td><td><%= formatDate(acceptance_date) %></td></tr>
+    <tr><td align="right"><b>Ratio:</b></td><td><%= ratio %> (<%= acceptance_ratio_numerator %>/<%= acceptance_ratio_denominator %>)</td></tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(data[index] != "" && data[index] != undefined && !val.hidden){ %>
             <tr>

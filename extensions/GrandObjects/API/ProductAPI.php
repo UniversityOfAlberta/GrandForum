@@ -57,6 +57,10 @@ class ProductAPI extends RESTAPI {
         $paper->type = $this->POST('type');
         $paper->description = $this->POST('description');
         $paper->date = $this->POST('date');
+	$paper->acceptance_date = $this->POST('acceptance_date');
+	$paper->acceptance_ratio_numerator = $this->POST('acceptance_ratio_numerator');
+	$paper->acceptance_ratio_denominator = $this->POST('acceptance_ratio_denominator');
+	$paper->ratio = $this->POST('ratio');
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
         $paper->projects = $this->POST('projects');
@@ -82,6 +86,10 @@ class ProductAPI extends RESTAPI {
         $paper->type = $this->POST('type');
         $paper->description = $this->POST('description');
         $paper->date = $this->POST('date');
+        $paper->acceptance_date = $this->POST('acceptance_date');
+        $paper->acceptance_ratio_numerator = $this->POST('acceptance_ratio_numerator');
+        $paper->acceptance_ratio_denominator = $this->POST('acceptance_ratio_denominator');
+        $paper->ratio = $this->POST('ratio');
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
         $paper->projects = $this->POST('projects');
