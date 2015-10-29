@@ -132,17 +132,19 @@
                         <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_total5">
-                                {multiply(
-                                    {divide(
-                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
-                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
-                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
-                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},
-                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},
-                                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},
-                                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},
-                                                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
+                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
+                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
+                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},
+                                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},
+                                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},
+                                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},
+                                                                             {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}
+                                                                        )}
                                                                     )}
                                                                 )}
                                                             )}
@@ -150,9 +152,9 @@
                                                     )}
                                                 )}
                                             )}
-                                        )}
-                                    , 36)}
-                                , 5)}
+                                        , 36)}
+                                    , 5)}
+                                ,2 )}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
                             $("#proj{$project_id} div.scientific input[type=radio]").click(function(){
@@ -216,17 +218,19 @@
                         <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_feasibility5">
-                                {multiply(
-                                    {divide(
-                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
-                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                                     {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
+                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
+                                                    )}
                                                 )}
                                             )}
-                                        )}
-                                    , 16)}
-                                , 5)}
+                                        , 16)}
+                                    , 5)}
+                                , 2 )}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
                             $("#proj{$project_id} div.feasibility input[type=radio]").click(function(){
@@ -359,17 +363,19 @@
                         </p>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_total5">
-                                {multiply(
-                                    {divide(
-                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},
-                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},
-                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},
-                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})},
-                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})},
-                                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},
-                                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})},
-                                                                         {getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})}
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},
+                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},{$project_id})},
+                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},
+                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})},
+                                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})},
+                                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},
+                                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})},
+                                                                             {getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})}
+                                                                        )}
                                                                     )}
                                                                 )}
                                                             )}
@@ -377,9 +383,9 @@
                                                     )}
                                                 )}
                                             )}
-                                        )}
-                                    , 36)}
-                                , 5)}
+                                        , 36)}
+                                    , 5)}
+                                , 2)}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
                             $("#proj{$project_id} input[type=radio]").click(function(){

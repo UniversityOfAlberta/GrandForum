@@ -143,7 +143,8 @@ class ReportItemCallback {
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
-            "divide" => "divide"
+            "divide" => "divide",
+            "round" => "round"
         );
     
     var $reportItem;
@@ -1469,11 +1470,15 @@ class ReportItemCallback {
     }
     
     function multiply($val1, $val2){
-        return round($val1*$val2, 2);
+        return $val1*$val2;
     }
     
     function divide($val1, $val2){
-        return round($val1/max(1, $val2), 2);
+        return $val1/max(1, $val2);
+    }
+    
+    function round($val, $dec=0){
+        return round($val, $dec);
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
