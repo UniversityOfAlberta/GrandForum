@@ -1469,11 +1469,11 @@ class ReportItemCallback {
     }
     
     function multiply($val1, $val2){
-        return $val1*$val2;
+        return round($val1*$val2, 2);
     }
     
     function divide($val1, $val2){
-        return $val1/max(1, $val2);
+        return round($val1/max(1, $val2), 2);
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){

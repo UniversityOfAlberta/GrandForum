@@ -875,10 +875,22 @@ define('TRANS_SRC_INTEGRATION', 8);
 define('TRANS_SRC_RECOGNITION', 9);
 define('TRANS_SRC_COMMENTS1',   14);
 define('TRANS_SRC_EXPERIENCE',  10);
-define('TRANS_SRC_EXPERTICE',   11);
+define('TRANS_SRC_EXPERTISE',   11);
 define('TRANS_SRC_BUDGET',      12);
 define('TRANS_SRC_OBJECTIVES',  13);
 define('TRANS_SRC_COMMENTS2',   15);
+
+define('TRANS_RMC_GRANT',       1);
+define('TRANS_RMC_IMPACT',      2);
+define('TRANS_RMC_POLICY',      3);
+define('TRANS_RMC_MISSION',     4);
+define('TRANS_RMC_PRIORITIES',  5);
+define('TRANS_RMC_NETWORKING',  6);
+define('TRANS_RMC_PARTNERSHIPS',7);
+define('TRANS_RMC_HQP',         8);
+define('TRANS_RMC_ENGAGEMENT',  9);
+define('TRANS_RMC_COMMENTS',    10);
+define('TRANS_RMC_SUGGESTIONS', 11);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used
