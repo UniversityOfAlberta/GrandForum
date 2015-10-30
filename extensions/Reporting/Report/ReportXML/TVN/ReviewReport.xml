@@ -363,7 +363,6 @@
                                     <th>B1</th>
                                     <th>B2</th>
                                     <th>B3</th>
-                                    <th>B4</th>
                                     <th>Total</th>
                                     <th>Converted Total</th>
                                     <th width='400px'>Comments</th>
@@ -380,11 +379,6 @@
                                 <td align='right'>{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})}</td>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="expertise" type="StaticReportItem">
-                        <![CDATA[
-                            <td align='right'>{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})}</td>
-                        ]]>
-                    </ReportItem>
                     <ReportItem id="budget" type="StaticReportItem">
                         <![CDATA[
                             <td align='right'>{getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
@@ -399,10 +393,8 @@
                         <![CDATA[
                             <td align='right'>
                                 {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
-                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                             {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                        )}
+                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                     )}
                                 )}
                             </td>
@@ -411,13 +403,11 @@
                                     {multiply(
                                         {divide(
                                             {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                                    )}
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                                     {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                                 )}
                                             )}
-                                        , 16)}
+                                        , 12)}
                                     , 5)}
                                 , 2 )}
                             </td>
@@ -441,7 +431,6 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th id='{$project_id}_q10_total'></th>
-                                    <th id='{$project_id}_q11_total'></th>
                                     <th id='{$project_id}_q12_total'></th>
                                     <th id='{$project_id}_q13_total'></th>
                                     <th id='{$project_id}_total2'></th>
@@ -456,8 +445,8 @@
                             $("#{$project_id}_q11_total").text(q11/nReviewers);
                             $("#{$project_id}_q12_total").text(q12/nReviewers);
                             $("#{$project_id}_q13_total").text(q13/nReviewers);
-                            $("#{$project_id}_total2").text((q10+q11+q12+q13)/nReviewers);
-                            $("#{$project_id}_converted_total2").text(Math.round(((((q10+q11+q12+q13)/nReviewers)/16)*5)*100)/100);
+                            $("#{$project_id}_total2").text((q10+q12+q13)/nReviewers);
+                            $("#{$project_id}_converted_total2").text(Math.round(((((q10+q12+q13)/nReviewers)/12)*5)*100)/100);
                             $("#{$project_id}_table2.wikitable").dataTable({'autoWidth':false});
                         </script>
                     ]]>

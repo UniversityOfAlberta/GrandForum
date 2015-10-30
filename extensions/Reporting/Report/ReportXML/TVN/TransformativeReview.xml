@@ -184,21 +184,15 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="expertise" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_EXPERTISE" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible given the project team's lack of expertise needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any specific skills or training directly relevant to the proposal being reviewed.|The proposed study is unlikely to be feasible given the project team's limited expertise needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some specific skills and training directly relevant to the proposal being reviewed.|The proposed study is likely feasible given the project team's expertise needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list the appropriate skills and training relevant to the proposal being reviewed.  However, there are some expertise missing within the project team that may be needed to complete the project.|The proposed study is feasible given the project team's expertise needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list all the appropriate skills and training." orientation="horizontal" showScore="true">
-                    <![CDATA[
-                        <h2>B2. Ability to successfully execute project based on expertise of project team</h2>
-                        {$item}
-                    ]]>
-                </ReportItem>
                 <ReportItem id="budget" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_BUDGET" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.|The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.|The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.|The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>B3. Chance of successfully executing project based on the budget</h2>
+                        <h2>B2. Chance of successfully executing project based on the budget</h2>
                         {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="objectives" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_OBJECTIVES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.|The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>B4. Chance of successfully executing project objectives within the time requested?</h2>
+                        <h2>B3. Chance of successfully executing project objectives within the time requested?</h2>
                         {$item}
                     ]]>
                 </ReportItem>
@@ -208,13 +202,11 @@
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_feasibility">
                                 {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
-                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                             {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                        )}
+                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                     )}
                                 )}
-                            </b> (Score out of 16)</p>
+                            </b> (Score out of 12)</p>
                         <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_feasibility5">
@@ -222,15 +214,13 @@
                                     {multiply(
                                         {divide(
                                             {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERTISE,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                                    )}
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                                     {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                                 )}
                                             )}
-                                        , 16)}
+                                        , 12)}
                                     , 5)}
-                                , 2 )}
+                                , 2)}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
                             $("#proj{$project_id} div.feasibility input[type=radio]").click(function(){
@@ -239,7 +229,7 @@
                                     total += parseInt($(v).val());
                                 });
                                 $("#proj{$project_id}_feasibility").html(total);
-                                $("#proj{$project_id}_feasibility5").html(Math.round((total/16)*5*100)/100);
+                                $("#proj{$project_id}_feasibility5").html(Math.round((total/12)*5*100)/100);
                             });
                         </script>
                         </div>
