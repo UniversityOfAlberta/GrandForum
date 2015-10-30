@@ -171,13 +171,25 @@ abstract class PDFGenerator {
         $str = str_replace("&#64257;", "fi", $str);
         $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
         $str = str_replace("‐", "-", $str);
-        /*preg_match_all("/<strong>(.*?)<\/strong>/", $str, $matches);
+        /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
             $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<em>.*?<\/em>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</em> &nbsp;<em>", $match);
+            $match1 = str_replace(" &nbsp;<em>&nbsp;", " &nbsp;<em>", $match1);
+            $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<span style=\"text-decoration: underline;\">.*?<\/span>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace("<span style=\"text-decoration: underline;\">", "<u>", $match);
+            $match1 = str_replace_last("</span>", "</u>", $match1);
+            $match1 = str_replace(" ", "</u> &nbsp;<u>", $match1);
+            //$match1 = str_replace(" &nbsp;<u>&nbsp;", " &nbsp;<u>", $match1);
+            $str = str_replace($match, $match1, $str);
         }*/
-        //$str = str_replace("<strong>", "<span>", $str);
-        //$str = str_replace("</strong>", "</span>", $str);
         return $str;
     }
     
