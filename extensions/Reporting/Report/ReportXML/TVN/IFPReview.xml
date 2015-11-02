@@ -1,37 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="IFP2016 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-            <SectionPermission id="materials" permissions="rw" />
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="ETC">
             <SectionPermission id="review" permissions="rw" />
         </Role>
     </Permissions>
-    <!--ReportSection id="materials" tooltip="Download IFP Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-                You can download the IFP Proposal PDFs for reference.
-            ]]>
-        </Instructions>
-        <ReportItem id="project_materials_head" type="StaticReportItem">
-            <![CDATA[
-            <table align="left" class="wikitable">
-                <tr>
-                    <th style="min-width:110px;">IFP Name</th>
-                    <th style="min-width:125px;">IFP Proposal PDF</th>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CatalystReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td align='center'>{$item}</td>]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="project_materials_foot" type="StaticReportItem">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
-    </ReportSection-->
     <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
         <Instructions>
             <![CDATA[
