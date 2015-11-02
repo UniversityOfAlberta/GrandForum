@@ -219,7 +219,8 @@ class MailList{
                     function createTable(){
                         $('#mailingListMessages').dataTable({'iDisplayLength': 100,
                                             'aaSorting': [ [0,'desc'], [1,'desc']],
-                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                                            'autoWidth': false});
                         $('#mailingListMessages').show();
                         $('#mailingListMessages').width('100%');
                     }
