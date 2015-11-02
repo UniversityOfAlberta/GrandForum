@@ -222,7 +222,6 @@ class MailList{
                                             'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
                                             'autoWidth': false});
                         $('#mailingListMessages').show();
-                        $('#mailingListMessages').width('100%');
                     }
                     
                     createTable();
