@@ -38,7 +38,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+                <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
                             <h3>Additional Reviewer Feedback</h3>
@@ -46,7 +46,7 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+                <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
                             <h3>Additional Reviewer Feedback</h3>
@@ -57,7 +57,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc1" name="CC1 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>Objectives</h2>
@@ -99,7 +99,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>Objectives</h2>
@@ -134,7 +134,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc2" name="CC2 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>What products or services do you intend to commercialize?</h2>
@@ -180,7 +180,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>What products or services do you intend to commercialize?</h2>
@@ -218,7 +218,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc3" name="CC3 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>What do you know about transdisciplinarity?</h2>
@@ -242,39 +242,32 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>What do you know about transdisciplinarity?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}<br /><br />
                     <h2>Have you previously worked on projects that adopted a transdisciplinary approach?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}<br /><br />
                     <h2>Please outline your experience of teamwork within large, complex projects</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}<br /><br />
                     <h2>What are your plans to contribute to the wider network?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}<br /><br />
                     <h2>Synergies between projects</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}<br /><br />
                     <h2>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}<br /><br />
                     <h2>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3><br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}<br /><br />
                     <h2>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</h2>
                         {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
+                    <h2>CC Leader Feedback</h2>
                 ]]>
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc4" name="CC4 Feedback" blobSection="SEC_NONE" type="ReportSection" pagebreak="false">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>Description of type of HQP training activities will be conducted within your research project.</h2>
@@ -304,7 +297,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>Description of type of HQP training activities will be conducted within your research project.</h2>
