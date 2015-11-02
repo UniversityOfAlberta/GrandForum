@@ -28,7 +28,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
