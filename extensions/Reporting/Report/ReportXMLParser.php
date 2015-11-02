@@ -49,7 +49,7 @@ class ReportXMLParser {
                 $parser = simplexml_load_string($xml);
                 if($parser->getName() == "Report"){
                     $attributes = $parser->attributes();
-                    self::$fileMap[constant("{$attributes->reportType}")] = $fileName;
+                    @self::$fileMap[constant("{$attributes->reportType}")] = $fileName;
                 }
             }
         }
