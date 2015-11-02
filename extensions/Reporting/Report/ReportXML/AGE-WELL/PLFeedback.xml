@@ -337,45 +337,48 @@
                             <th width="50%">My Comments</th>
                             <th width="50%">CC Leader Feedback</th>
                         </tr>
-                        <tr><th colspan='2'>What do you know about transdisciplinarity?</th></tr>
+                        <tr>
+                            <th colspan='1'>What do you know about transdisciplinarity?</th>
+                            <td valign='top' rowspan='16'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_FEEDBACK,0,0,{$project_id})}</td>
+                        </tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td>
+                            <!--td valign='top' rowspan='15'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Have you previously worked on projects that adopted a transdisciplinary approach?</th></tr>
+                        <tr><th colspan='1'>Have you previously worked on projects that adopted a transdisciplinary approach?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Please outline your experience of teamwork within large, complex projects</th></tr>
+                        <tr><th colspan='1'>Please outline your experience of teamwork within large, complex projects</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>What are your plans to contribute to the wider network?</th></tr>
+                        <tr><th colspan='1'>What are your plans to contribute to the wider network?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Synergies between projects</th></tr>
+                        <tr><th colspan='1'>Synergies between projects</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</th></tr>
+                        <tr><th colspan='1'>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</th></tr>
+                        <tr><th colspan='1'>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</th></tr>
+                        <tr><th colspan='1'>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td-->
                         </tr>
                     </table>
                 ]]>

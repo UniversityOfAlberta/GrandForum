@@ -222,37 +222,23 @@
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <h2>What do you know about transdisciplinarity?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}<br /><br />
                     <h2>Have you previously worked on projects that adopted a transdisciplinary approach?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}<br /><br />
                     <h2>Please outline your experience of teamwork within large, complex projects</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}<br /><br />
                     <h2>What are your plans to contribute to the wider network?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}<br /><br />
                     <h2>Synergies between projects</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}<br /><br />
                     <h2>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}<br /><br />
                     <h2>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}<br /><br />
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}<br /><br />
                     <h2>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</h2>
-                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}
-                        <h3>CC Leader Feedback</h3>
-                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}
+                        {getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}<br /><br />
+                    <h2>CC Leader Feedback</h2>
+                        {getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_FEEDBACK,0,0,{$project_id})}
                 ]]>
             </ReportItem>
         </ReportItemSet>

@@ -470,6 +470,7 @@ define('CC_3_ACCEPT',       6);
 define('CC_3_SUPPORT',      7);
 define('CC_3_EVAL',         8);
 define('CC_3_ATTACH',       9);
+define('CC_3_FEEDBACK',     10);
 
 define('CC_4_TRAIN',        1);
 define('CC_4_KNOW',         2);
