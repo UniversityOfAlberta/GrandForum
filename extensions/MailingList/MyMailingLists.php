@@ -48,7 +48,7 @@ class MyMailingLists extends SpecialPage{
             <input type='submit' value='Submit' />
         </form>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('.mailTable').dataTable({'iDisplayLength': 100});
+            $('.mailTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
         </script>");
     }
     
