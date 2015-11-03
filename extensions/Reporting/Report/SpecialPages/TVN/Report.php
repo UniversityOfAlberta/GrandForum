@@ -26,6 +26,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         return true;
     }
     
@@ -90,6 +91,14 @@ class Report extends AbstractReport{
             }
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
+        }
+        if(count($person->getEvaluates("IFP-ETC")) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2016 Review", "{$url}IFPReview", $selected);
+        }
+        if($person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report", "{$url}ReviewReport", $selected);
         }
         return true;
     }
