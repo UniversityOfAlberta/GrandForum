@@ -904,16 +904,6 @@ class EditMember extends SpecialPage{
         EditMember::generateRoleFormHTML($wgOut);
         $wgOut->addHTML("</div>");
         
-        /*if(!$me->isRoleAtLeast(STAFF) && ($me->isProjectLeader() && $person->isRoleAtLeast(RMC))){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#RolesTab').parent().hide();
-                $('#tabs-1').hide();
-                $(document).ready(function(){
-                    $('#tabs').tabs('select', 1);
-                });
-            </script>");
-        }*/
-        
         $wgOut->addHTML("<div id='tabs-2'>");
                         EditMember::generateProjectFormHTML($wgOut);
         $wgOut->addHTML("</div>");
