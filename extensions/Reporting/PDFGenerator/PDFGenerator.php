@@ -688,9 +688,9 @@ if ( isset($pdf) ) {
              '.PDFGenerator::cmToPixels($margins['top']).', 
              $color, 0.5);
   $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $color, 0.5);
   $pdf->close_object();
   $pdf->add_object($foot, "all");
@@ -701,7 +701,7 @@ if ( isset($pdf) ) {
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
   $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
