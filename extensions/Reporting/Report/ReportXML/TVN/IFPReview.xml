@@ -30,7 +30,7 @@
         </Instructions>
         <ReportItem type="StaticReportItem">
             <![CDATA[
-                Please note that you must separately log into TVN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into TVN’s secure website.  <a href='http://www.tvn-nce.ca/member-area/' target='_blank'>http://www.tvn-nce.ca/member-area/</a>
+                <p>Please note that you must separately log into TVN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into TVN’s secure website.  <a href='http://www.tvn-nce.ca/member-area/' target='_blank'>http://www.tvn-nce.ca/member-area/</a></p>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
