@@ -30,15 +30,15 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="feedback" name="Project Feedback" tooltip="{$project_name} Feedback" title="{$project_name} Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
+    <ReportSection id="feedback" name="RMC Review" tooltip="RMC Review" title="RMC Review" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
         <ReportItem id="table_head" type="StaticReportItem">
             <![CDATA[
                 <i>RMC Additional Feedback will be made available at a later point in time.</i>
                 <table class='wikitable'>
                     <tr>
-                        <th width="37.5%">Reviewer Comment</th>
-                        <th width="37.5%">My Responses</th>
-                        <th width="25%">Additional Reviewer Feedback</th>
+                        <th width="37.5%">February 2015 Review</th>
+                        <th width="37.5%">My October 2015 Responses</th>
+                        <th width="25%">October 2015 Review</th>
                     </tr>
             ]]>
         </ReportItem>
