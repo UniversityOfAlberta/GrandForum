@@ -3187,9 +3187,10 @@ class Person extends BackboneModel {
      * @param string $startRange The starting date (start of the current reporting year if not specified)
      * @param string $endRange The end date (end of the current reporting year if not specified)
      * @param boolean $includeHQP Whether or not to include HQP in the result
+     * @param boolean $networkRelated Whether or not the products need to be associated with a project
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
@@ -3218,7 +3219,7 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               $paper->isGrandRelated() &&
+               (!$networkRelated || $paper->isGrandRelated()) &&
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
             }
