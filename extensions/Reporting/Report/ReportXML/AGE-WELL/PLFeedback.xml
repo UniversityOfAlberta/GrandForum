@@ -33,12 +33,31 @@
     <ReportSection id="feedback" name="RMC Review" tooltip="RMC Review" title="RMC Review" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
         <ReportItem id="table_head" type="StaticReportItem">
             <![CDATA[
+                <style>
+                    th.light {
+                        background: #F2F2F2 !important;
+                    }
+                
+                    th.dark {
+                        background: #E6E6E6 !important;
+                    }
+                    
+                    td.light {
+                        background: #FFFFFF !important;
+                    }
+                    
+                    td.dark {
+                        background: #F2F2F2 !important;
+                    }
+                    
+                </style>
                 <i>RMC Additional Feedback will be made available at a later point in time.</i>
-                <table class='wikitable'>
+                <table class='wikitable' width='100%'>
                     <tr>
-                        <th width="37.5%">February 2015 Review</th>
-                        <th width="37.5%">My October 2015 Responses</th>
-                        <th width="25%">October 2015 Review</th>
+                        <th class='dark'>February 2015 Review</th>
+                        <th class='dark'>My October 2015 Responses</th>
+                        <th class='light'>October 2015 Review</th>
+                        <th class='light'>My Responses</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -47,14 +66,14 @@
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         <tr>
-                            <td valign='top'>
+                            <td valign='top' class='dark'>
                                 <p>{getExtra(comment)}</p>
                             </td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
                     <![CDATA[
-                        <td valign='top'>
+                        <td valign='top' class='dark'>
                             {$item}
                         </td>
                     ]]>
@@ -62,8 +81,10 @@
                 <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
-                                <td valign='top'>
+                                <td valign='top' class='light'>
                                     {$rmc_project_feedback}
+                                </td>
+                                <td valign='top' class='light'>
                                 </td>
                             </tr>
                         ]]>
@@ -72,7 +93,9 @@
                 <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
-                                <td valign='top'>
+                                <td valign='top' class='light'>
+                                </td>
+                                <td valign='top' class='light'>
                                 </td>
                             </tr>
                         ]]>
