@@ -54,10 +54,10 @@
                 <i>RMC Additional Feedback will be made available at a later point in time.</i>
                 <table class='wikitable' width='100%'>
                     <tr>
-                        <th class='dark'>February 2015 Review</th>
-                        <th class='dark'>My October 2015 Responses</th>
-                        <th class='light'>October 2015 Review</th>
-                        <th class='light'>My Responses</th>
+                        <th class='dark' width='25%'>February 2015 Review</th>
+                        <th class='dark' width='25%'>My October 2015 Responses</th>
+                        <th class='light' width='25%'>October 2015 Review</th>
+                        <th class='light' width='25%'>My Responses</th>
                     </tr>
             ]]>
         </ReportItem>
