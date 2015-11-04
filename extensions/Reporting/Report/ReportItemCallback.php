@@ -64,6 +64,7 @@ class ReportItemCallback {
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
+            "user_phone" => "getUserPhone",
             "user_gender" => "getUserGender",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
@@ -80,6 +81,7 @@ class ReportItemCallback {
             "user_project_end_date" => "getUserProjectEndDate",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
+            "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
             "user_research_time" => "getUserResearchTime",
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
@@ -772,6 +774,11 @@ class ReportItemCallback {
         return $person->getEmail();
     }
     
+    function getUserPhone(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getPhoneNumber();
+    }
+    
     function getUserGender(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getGender();
@@ -952,6 +959,43 @@ class ReportItemCallback {
             return implode(", ", $projects);
         }
         return "N/A";
+    }
+    
+    function getTVNFileNumber(){
+        $id = $this->reportItem->personId;
+        
+        $fileNumbers = array(
+            1791    => "IFP2016-01",
+            1790    => "IFP2016-04",
+            249     => "IFP2016-06",
+            1789    => "IFP2016-07",
+            1788    => "IFP2016-08",
+            1787    => "IFP2016-09",
+            1786    => "IFP2016-10",
+            1785    => "IFP2016-11",
+            1784    => "IFP2016-12",
+            456     => "IFP2016-14",
+            1783    => "IFP2016-16",
+            285     => "IFP2016-18",
+            1782    => "IFP2016-20",
+            1781    => "IFP2016-21",
+            1780    => "IFP2016-22",
+            1761    => "IFP2016-23",
+            1779    => "IFP2016-24",
+            1778    => "IFP2016-25",
+            1777    => "IFP2016-28",
+            230     => "IFP2016-30",
+            1776    => "IFP2016-31",
+            1775    => "IFP2016-32",
+            1774    => "IFP2016-33",
+            1773    => "IFP2016-34",
+            1772    => "IFP2016-35"
+        );
+        
+        if(isset($fileNumbers[$id])){
+            return $fileNumbers[$id];
+        }
+        return "";
     }
     
     function getUserResearchTime(){

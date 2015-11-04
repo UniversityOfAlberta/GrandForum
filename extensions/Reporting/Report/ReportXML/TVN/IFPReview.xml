@@ -34,12 +34,13 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {$user_tvn_file_number}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
                         <div id="user{$user_id}">
                         <table class='wikitable'>
                             <tr><td><b>Candidate's Name:</b></td><td>{$user_name}</td></tr>
+                            <tr><td><b>TVN File#:</b></td><td>{$user_tvn_file_number}</td></tr>
                             <tr><td><b>Candidate's Scientific Discipline:</b></td><td>{$user_dept}</td></tr>
                     ]]>
                 </ReportItem>

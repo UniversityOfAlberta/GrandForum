@@ -355,6 +355,9 @@ class ReportXMLParser {
             if(isset($attributes->type) || $section != null){
                 if(isset($attributes->type)){
                     $type = "{$attributes->type}";
+                    if(!class_exists($type) && class_exists($type."ReportSection")){
+                        $type = $type."ReportSection";
+                    }
                     if(!class_exists($type)){
                         $this->errors[] = "ReportSection '{$type}' does not exists";
                         continue;
@@ -472,6 +475,10 @@ class ReportXMLParser {
             if(class_exists($type)){
                 $itemset = new $type();
             }
+            else if(class_exists($type."ReportItemSet")){
+                $type = $type."ReportItemSet";
+                $itemset = new $type();
+            }
             else{
                 $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
                 return;
@@ -571,9 +578,12 @@ class ReportXMLParser {
         if(isset($attributes->type) || $item != null){
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";
+                if(!class_exists($type) && class_exists($type."ReportItem")){
+                    $type = $type."ReportItem";
+                }
                 if(!class_exists($type)){
                     $this->errors[] = "ReportItem '{$type}' does not exists";
-                    return;
+                    $item = "StaticReportItem";
                 }
                 $item = new $type();
                 $position = isset($attributes->position) ? "{$attributes->position}" : null;
