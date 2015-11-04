@@ -14,16 +14,16 @@
             <SectionPermission id="feedback" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="feedback" tooltip="Project Feedback" name="Project Feedback" blobSection="PROJ_REVIEW_FEEDBACK" type="EditableReportSection">
+    <ReportSection id="feedback" tooltip="RMC Review" name="RMC Review" blobSection="PROJ_REVIEW_FEEDBACK" type="EditableReportSection">
         <ReportItemSet id="comments" type="AllProjectsReportItemSet" subType="Project">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <table class='wikitable' style='width:100%;'>
                             <tr>
-                                <th width="30%">Reviewer Comment</th>
-                                <th width="30%">Project Leader Responses</th>
-                                <th width="40%">Additional Reviewer Feedback</th>
+                                <th width="30%">February 2015 Review</th>
+                                <th width="30%">October 2015 PL Responses</th>
+                                <th width="40%">October 2015 Review</th>
                             </tr>
                     ]]>
                 </ReportItem>
