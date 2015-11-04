@@ -34,7 +34,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {$user_tvn_file_number}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
                         <div id="user{$user_id}">

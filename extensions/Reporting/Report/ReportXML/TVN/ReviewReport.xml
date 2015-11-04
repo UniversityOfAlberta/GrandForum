@@ -7,7 +7,7 @@
     </Permissions>
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[
                         <script type='text/javascript'>
