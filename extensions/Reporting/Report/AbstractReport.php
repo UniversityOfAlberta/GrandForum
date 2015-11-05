@@ -92,7 +92,7 @@ abstract class AbstractReport extends SpecialPage {
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
     function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
-        global $wgUser, $wgMessage;
+        global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
         $this->year = $year;
@@ -125,7 +125,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         if(file_exists($xmlFileName)){
             $exploded = explode(".", $xmlFileName);
-            $exploded = explode("/", $exploded[count($exploded)-2]);
+            $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
             $xml = file_get_contents($xmlFileName);
             $parser = new ReportXMLParser($xml, $this);

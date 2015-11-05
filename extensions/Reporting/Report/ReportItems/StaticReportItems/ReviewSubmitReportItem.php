@@ -48,6 +48,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                         for(index in data){
                                             var val = data[index];
                                             if(typeof val.tok != 'undefined'){
+                                                index = index.replace('/', '');
                                                 var tok = val.tok;
                                                 var time = val.time;
                                                 var len = val.len;
@@ -174,7 +175,12 @@ EOF;
             $sub = 0;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getLatestPDF();
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
@@ -195,6 +201,7 @@ EOF;
 		    	$show_pdf = $tst;
 		    }
 
+            $file = str_replace("/", "", $file);
 		    $subm_table_row =<<<EOF
 		    <tr>
 		    <td>
@@ -246,7 +253,12 @@ EOF;
             $sub = 0;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getPDF();
         	$subm = "Not Generated/Not Submitted";
         	if (count($check) > 0) {

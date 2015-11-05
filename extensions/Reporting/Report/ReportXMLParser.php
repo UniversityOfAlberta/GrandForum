@@ -36,6 +36,7 @@ class ReportXMLParser {
                 }
             }
         }
+        
         return self::$pdfFiles;
     }
     
@@ -231,9 +232,6 @@ class ReportXMLParser {
                 $this->report->setReportType($type);
             }
             if(isset($attributes->pdfType)){
-                if(!defined($attributes->pdfType)){
-                    $this->errors[] = "PDF Type '{$attributes->pdfType}' does not exist for Report, using RPTP_NORMAL";
-                }
                 $type = AbstractReport::blobConstant($attributes->pdfType);
                 $this->report->setPDFType($type);
             }

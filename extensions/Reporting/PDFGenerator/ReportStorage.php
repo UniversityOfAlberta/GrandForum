@@ -55,7 +55,7 @@ class ReportStorage {
         // the hash of the data and the hash of PDF file.
         $tok = md5($this->_uid . $uname . $tst . $hdata . $hpdf);
 
-        $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, {$type}, {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
+        $sql = "INSERT INTO grand_pdf_report (user_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) VALUES ({$this->_uid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
             DBFunctions::escape($sdata) . "', '" .
             DBFunctions::escape(utf8_decode($html)) . "', '" .
             DBFunctions::escape($pdf) . "');";
@@ -316,7 +316,7 @@ class ReportStorage {
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
-                AND type = {$type} 
+                AND type = '{$type}' 
                 {$year}
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
                 ORDER BY timestamp DESC
@@ -341,7 +341,7 @@ class ReportStorage {
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
-                AND type = {$type} 
+                AND type = '{$type}' 
                 AND year = {$year} 
                 AND report_id NOT IN (SELECT `report_id` FROM grand_pdf_index)
                 ORDER BY timestamp DESC
@@ -361,7 +361,7 @@ class ReportStorage {
                 FROM grand_pdf_report r, grand_pdf_index i 
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
-                AND r.type = {$type} 
+                AND r.type = '{$type}' 
                 AND r.year = {$year} 
                 ORDER BY timestamp DESC
                 {$lim}";
@@ -384,7 +384,7 @@ class ReportStorage {
                 WHERE r.report_id = i.report_id
                 AND i.sub_id = {$sub_id}
                 AND r.user_id = {$user_id}
-                AND r.type = {$type}
+                AND r.type = '{$type}'
                 ORDER BY timestamp DESC
                 {$lim}";
         $res = DBFunctions::execSQL($sql);
@@ -411,7 +411,7 @@ class ReportStorage {
                                      FROM grand_pdf_report p2 
                                      WHERE p1.user_id = p2.user_id 
                                      AND p2.submitted = {$subm} 
-                                     AND p2.type = {$type} 
+                                     AND p2.type = '{$type}' 
                                      AND p2.timestamp < '2011-08-01') 
                 ORDER BY p1.user_id;";
         return DBFunctions::execSQL($sql);
