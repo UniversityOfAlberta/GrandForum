@@ -1160,6 +1160,13 @@ abstract class AbstractReport extends SpecialPage {
         return true;
     }
     
+    static function blobConstant($constant){
+        if(defined("{$constant}")){
+            return constant("{$constant}");
+        }
+        return "{$constant}";
+    }
+    
     static function tinyMCEUpload($action){
         $me = Person::newFromWgUser();
         if($action == "tinyMCEUpload"){

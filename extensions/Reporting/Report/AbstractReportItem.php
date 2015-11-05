@@ -423,12 +423,7 @@ abstract class AbstractReportItem {
                 $a = explode(",", str_replace(")", "", $e[1]));
                 foreach($a as $key => $arg){
                     $arg = trim($arg);
-                    if(defined($arg)){
-                        $a[$key] = constant($arg);
-                    }
-                    else{
-                        $a[$key] = $arg;
-                    }
+                    $a[$key] = AbstractReport::blobConstant($arg);
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
                     $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);

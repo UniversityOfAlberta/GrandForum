@@ -48,7 +48,6 @@ define('RP_CATALYST',           103);
 define('RP_TRANS',              104);
 define('RP_SAB_CAT_REVIEW',     105);
 define('RP_SAB_CAT_REPORT',     106);
-define('RP_HQP_EXCHANGE',       107);
 
 /*
  * AGE-WELL
@@ -213,11 +212,6 @@ define('CAT_MILESTONES',2);
 define('CAT_SUPPORT',   3);
 define('CAT_CCV',       4);
 define('CAT_COMM',      5);
-
-// Second level for HQP Exchange
-define('HQP_EX_PROFILE',    1);
-define('HQP_EX_PROPOSAL',   2);
-define('HQP_EX_REPORT',     3);
 
 // Second level for TVN Final Project Report
 define('FINAL_INFORMATION',     1);
@@ -649,29 +643,6 @@ define('CAT_CCV_UPLOAD9',           9);
 define('CAT_CCV_UPLOAD10',          10);
 
 define('CAT_COMM_UPLOAD',           1);
-
-/* These are used for the HQP Exchange Report */
-define('HQP_EX_PROFILE_CITY',       1);
-define('HQP_EX_PROFILE_PROV',       2);
-define('HQP_EX_PROFILE_SUPNAME',    3);
-define('HQP_EX_PROFILE_SUPPOS',     4);
-define('HQP_EX_PROFILE_SUPDEPT',    5);
-define('HQP_EX_PROFILE_SUPUNI',     6);
-define('HQP_EX_PROFILE_SUPCITY',    7);
-define('HQP_EX_PROFILE_SUPPROV',    8);
-define('HQP_EX_PROFILE_SUPPHONE',   9);
-define('HQP_EX_PROFILE_SUPEMAIL',   10);
-define('HQP_EX_PROFILE_HOSTNAME',   11);
-define('HQP_EX_PROFILE_HOSTPOS',    12);
-define('HQP_EX_PROFILE_HOSTDEPT',   13);
-define('HQP_EX_PROFILE_HOSTUNI',    14);
-define('HQP_EX_PROFILE_HOSTCITY',   15);
-define('HQP_EX_PROFILE_HOSTPROV',   16);
-define('HQP_EX_PROFILE_HOSTPHONE',  17);
-define('HQP_EX_PROFILE_HOSTEMAIL',  18);
-define('HQP_EX_PROFILE_SITE',       19);
-define('HQP_EX_PROFILE_BACKGROUND', 20);
-define('HQP_EX_PROFILE_SCHOLAR',    21);
 
 /* These are used for TVN Project Reports */
 // Final Report
