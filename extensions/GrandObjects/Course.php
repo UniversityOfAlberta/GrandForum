@@ -1,5 +1,4 @@
 <?php
-    
     /**
     * @package GrandObjects
     */
@@ -7,7 +6,6 @@
     class Course extends BackboneModel{
 
 	static $cache = array();
-
 	var $id;
 	var $acadOrg;
 	var $term;
@@ -49,7 +47,6 @@
 	var $consent;
 	var $courseDescr;
 	var $maxUnits;
-
 	var $courseName;
 
 	    // Constructor
@@ -119,7 +116,6 @@
 	    //$self::$cache[$course->id] = &$course;
 	    return $course;
 	} 
-	
 
 	/**
 	 * Returns an array of courses that match the given subject and id
@@ -142,6 +138,28 @@
 	    }
 	    return $courses;
 	}
+
+        /**
+         * Returns an array of courses that match the given subject and id
+         * @param string $subject The name of the course
+         * @param integer $catalog The catalog number of the course
+         * @return array The array of Courses
+        */
+        static function newFromSubjectCatalogSectStartDateTerm($subject, $catalog,$sect, $startDate, $term){
+            $sql = "SELECT *
+                   FROM grand_courses
+                   WHERE `Subject` LIKE '%$subject%'
+                   AND `Catalog` LIKE '%$catalog%'
+		   AND `Sect` LIKE '%$sect%'
+		   AND `Start Date` LIKE '%$startDate%'
+		   AND `Term` LIKE '%$term%'";
+            $data = DBFunctions::execSQL($sql);
+	    if(count($data)>0){
+                $course = new Course(array($data[0]));
+	        return $course;
+	    }
+	    return new Course(array());
+        }
 	
 	/**
 	 * Returns True if the course is saved correctly to the course table in the database
@@ -152,57 +170,88 @@
 	    if($me->isLoggedIn() 
 		&& $this->subject != "" 
 		&& $this->catalog != ""){
-		// Begin Transaction
-		DBFunctions::begin();
-		// Update courses table
-		$status = DBFunctions::insert('grand_courses',
-				    array('Acad Org' => $this->acadOrg,
-					  'Term' => $this->term,
-					  'Short Desc' => $this->shortDesc,
-					  'Class Nbr' => $this->classNbr,
-					  'Subject' => $this->subject,
-					  'Catalog' => $this->catalog,
-					  'Component' => $this->component,
-					  'Sect' => $this->sect,
-					  'Descr' => $this->descr,
-					  'Crs Status' => $this->crsStatus,
-					  'Facil ID' => $this->facilId,
-					  'Place' => $this->place,
-					  'Pat' => $this->pat,
-					  'Start Date' => $this->startDate,
-					  'End Date' => $this->endDate,
-					  'Hrs From' => $this->hrsFrom,
-					  'Hrs To' => $this->hrsTo,
-					  'Mon' => $this->mon,
-					  'Tues' => $this->tues,
-					  'Wed' => $this->wed,
-					  'Thurs' => $this->thurs,
-					  'Fri' => $this->fri,
-					  'Sat' => $this->sat,
-					  'Sun' => $this->sun,
-					  'Class Type' => $this->classType,
-					  'Cap Enrl' => $this->capEnrl,
-					  'Tot Enrl' => $this->totEnrl,
-					  'Campus' => $this->campus,
-					  'Location' => $this->location,
-					  'Notes Nbr' => $this->notesNbr,
-					  'Note Nbr' => $this->noteNbr,
-					  'Note' => $this->note,
-					  'Rq Group' => $this->rqGroup,
-					  'Restriction Descr' => $this->restrictionDescr,
-					  'Approved Hrs' => $this->approvedHrs,
-					  'Duration' => $this->duration,
-					  'Career' => $this->career,
-					  'Consent' => $this->consent,
-					  'Course Descr' => $this->courseDescr,
-					  'Max Units' => $this->maxUnits),
-				      true);
-	    	if($status){
-		    //Commit transaction
-		    DBFunctions::commit();
-		}
+                $sql = "INSERT INTO grand_courses (`Acad Org`,
+						    `Term`,
+						    `Short Desc`,
+						    `Class Nbr`,
+                                                    `Subject`, 
+                                                    `Catalog`,
+						    `Component`, 
+                                                    `Sect`, 
+                                                    `Descr`, 
+                                                    `Crs Status`,
+						    `Facil ID`, 
+                                                    `Place`, 
+                                                    `Pat`, 
+                                                    `Start Date`, 
+						    `End Date`, 
+                                                    `Hrs From`,                                                    
+                                                    `Hrs To`, 
+                                                    `Mon`,
+						    `Tues`, 
+                                                    `Wed`, 
+                                                    `Thurs`, 
+                                                    `Fri`, 
+                                                    `Sat`, 
+                                                    `Sun`,
+						    `Class Type`, 
+                                                    `Cap Enrl`, 
+                                                    `Tot Enrl`, 
+                                                    `Campus`,
+						    `Location`, 
+                                                    `Notes Nbr`, 
+                                                    `Note Nbr`, 
+                                                    `Note`, 
+                                                    `Rq Group`,
+						    `Restriction Descr`, 
+                                                    `Approved Hrs`, 
+                                                    `Duration`, 
+                                                    `Career`,
+						    `Consent`, 
+                                                    `Course Descr`, 
+                                                    `Max Units`) VALUES
+						   ('{$this->acadOrg}',
+                                                    '{$this->term}',
+                                                    '{$this->shortDesc}',
+                                                    '{$this->classNbr}',
+						    '{$this->subject}',
+                                                    '{$this->catalog}',
+                                                    '{$this->component}',
+                                                    '{$this->sect}',
+						    '{$this->descr}',
+                                                    '{$this->crsStatus}',
+                                                    '{$this->facilId}',
+                                                    '{$this->place}',
+						    '{$this->pat}',
+                                                    '{$this->startDate}',
+                                                    '{$this->endDate}',
+                                                    '{$this->hrsFrom}',
+						    '{$this->hrsTo}',
+                                                    '{$this->mon}',
+                                                    '{$this->tues}',
+                                                    '{$this->wed}',
+                                                    '{$this->thurs}',
+						    '{$this->fri}',
+                                                    '{$this->sat}',
+                                                    '{$this->sun}',
+                                                    '{$this->classType}',
+                                                    '{$this->capEnrl}',
+						    '{$this->totEnrl}',
+                                                    '{$this->campus}',
+                                                    '{$this->location}',
+                                                    '{$this->notesNbr}',
+						    '{$this->noteNbr}',
+                                                    '{$this->note}',
+                                                    '{$this->rqGroup}',
+                                                    '{$this->restrictionDescr}',
+						    '{$this->approvedHrs}',
+                                                    '{$this->duration}',
+                                                    '{$this->career}',
+                                                    '{$this->consent}',
+						    '{$this->courseDescr}',
+                                                    '{$this->maxUnits}')";
+                DBFunctions::execSQL($sql, true);
 	    }			
-	    return false;			
 	}
 
         /**
@@ -215,57 +264,51 @@
                 && $this->subject != ""
                 && $this->catalog != ""){
 	    	//begin transactions
-		DBFunctions::begin();
-		$status = DBFunctions::update('grand_courses',
-					      array('Acad Org' => $this->acadOrg,
-                                          	    'Term' => $this->term,
-                                          	    'Short Desc' => $this->shortDesc,
-                                          	    'Class Nbr' => $this->classNbr,
-                                         	    'Subject' => $this->subject,
-                                          	    'Catalog' => $this->catalog,
-                                          	    'Component' => $this->component,
-                                          	    'Sect' => $this->sect,
-                                          	    'Descr' => $this->descr,
-                                          	    'Crs Status' => $this->crsStatus,
-                                          	    'Facil ID' => $this->facilId,
-                                          	    'Place' => $this->place,
-                                          	    'Pat' => $this->pat,
-                                          	    'Start Date' => $this->startDate,
-                                          	    'End Date' => $this->endDate,
-                                          	    'Hrs From' => $this->hrsFrom,
-                                          	    'Hrs To' => $this->hrsTo,
-                                          	    'Mon' => $this->mon,
-                                          	    'Tues' => $this->tues,
-                                          	    'Wed' => $this->wed,
-                                          	    'Thurs' => $this->thurs,
-                                          	    'Fri' => $this->fri,
-                                          	    'Sat' => $this->sat,
-                                          	    'Sun' => $this->sun,
-                                          	    'Class Type' => $this->classType,
-                                          	    'Cap Enrl' => $this->capEnrl,
-                                          	    'Tot Enrl' => $this->totEnrl,
-                                          	    'Campus' => $this->campus,
-                                          	    'Location' => $this->location,
-                                          	    'Notes Nbr' => $this->notesNbr,
-                                          	    'Note Nbr' => $this->noteNbr,
-                                          	    'Note' => $this->note,
-                                          	    'Rq Group' => $this->rqGroup,
-                                          	    'Restriction Descr' => $this->restrictionDescr,
-                                          	    'Approved Hrs' => $this->approvedHrs,
-                                          	    'Duration' => $this->duration,
-                                          	    'Career' => $this->career,
-                                          	    'Consent' => $this->consent,
-                                          	    'Course Descr' => $this->courseDescr,
-                                          	    'Max Units' => $this->maxUnits),
-                                      		array('id' => EQ($this->id)),
-						array(),
-						true);
-	        if($status){
-		    DBFunctions::commit();
-		    return $status;
-		}    
+		$sql = "UPDATE grand_courses
+			SET `Acad Org` = '{$this->acadOrg}',
+			`Term` = '{$this->term}',
+			`Short Desc` = '{$this->shortDesc}',
+			`Class Nbr` = '{$this->classNbr}',
+			`Subject` = '{$this->subject}',
+			`Catalog` = '{$this->catalog}',
+			`Component` = '{$this->component}',
+			`Sect` = '{$this->sect}',
+			`Descr` = '{$this->descr}',
+			`Crs Status` = '{$this->crsStatus}',
+			`Facil ID` = '{$this->facilId}',
+			`Place` = '{$this->place}',
+			`Pat` = '{$this->pat}',
+			`Start Date` = '{$this->startDate}',
+			`End Date` = '{$this->endDate}',
+			`Hrs From` = '{$this->hrsFrom}',
+			`Hrs To` = '{$this->hrsTo}',
+			`Mon` = '{$this->mon}',
+			`Tues` = '{$this->tues}',
+			`Wed` = '{$this->wed}',
+			`Thurs` = '{$this->thurs}',
+			`Fri` = '{$this->fri}',
+			`Sat` = '{$this->sat}',
+			`Sun` = '{$this->sun}',
+			`Class Type` = '{$this->classType}',
+			`Cap Enrl` = '{$this->capEnrl}',
+			`Tot Enrl` = '{$this->totEnrl}',
+                        `Campus` = '{$this->campus}',
+                        `Location` = '{$this->location}',
+                        `Notes Nbr` = '{$this->notesNbr}',
+                        `Note Nbr` = '{$this->noteNbr}',
+                        `Note` = '{$this->note}',
+                        `Rq Group` = '{$this->rqGroup}',
+                        `Restriction Descr` = '{$this->restrictionDescr}',
+                        `Approved Hrs` = '{$this->approvedHrs}',
+                        `Duration` = '{$this->duration}',
+                        `Career` = '{$this->career}',
+                        `Consent` = '{$this->consent}',
+                        `Course Descr` = '{$this->courseDescr}',
+                        `Max Units` = '{$this->maxUnits}'                         
+                        WHERE `id` = '{$this->id}'";
+
+		DBFunctions::execSQL($sql, true);
 	    }
-	    return false;
 	}
 
 	function getAllCourses(){
@@ -291,6 +334,17 @@
 	    return $courses;
 	}
 
+	function getProfessors(){
+	    $data= DBFunctions::select(array('grand_user_courses'),
+                                    array('user_id' => 'id'),
+                                    array('course_id' => EQ($this->id)));
+	    $profs = array();
+	    foreach($data as $row){
+		$profs[] = Person::newFromId($row['id']);
+	    }
+	    return $profs;
+	}
+
 	function toarray(){
 		//TODO:implement function
 	}
@@ -314,9 +368,5 @@
             return date("Y-m-d", $date);
         }
 
-    }   
-
-
-
-
+    }
 ?>

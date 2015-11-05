@@ -14,11 +14,12 @@ class CCVImport extends BackbonePage {
     }
     
     function getTemplates(){
-        return array("ccv_import");
+        return array("csv_import");
     }
     
     function getViews(){
-        return array("CCVImportView");
+        return array("CSVImportView"
+		     );
     }
     
     function getModels(){

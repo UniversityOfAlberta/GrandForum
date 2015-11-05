@@ -508,16 +508,19 @@ class Person extends BackboneModel {
             $this->dateFso3 = $row['date_fso3'];
             $this->dateFso4 = $row['date_fso4'];
 	}
+	return $this;
     }
 
     function updateFecInfo(){
 	//TODO: This can be done in another file separate from this object. Did this to save time and should
 	//fix in the future
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->getId() ||
-           $me->isRoleAtLeast(MANAGER) ||
-           $isSupervisor){
-            $status = DBFunctions::update('grand_personal_fec_info', 
+        if($me->getId() == $this->getId() || $me->isRoleAtLeast(MANAGER) || $isSupervisor){
+            $fec = DBFunctions::select(array('grand_personal_fec_info'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->getId())));
+	    if(count($fec) > 0){ 
+	        $status = DBFunctions::update('grand_personal_fec_info', 
                                     array('date_of_phd' => $this->dateOfPhd,
                                           'date_of_appointment' => $this->dateOfAppointment,
                                           'date_assistant' => $this->dateOfAssistant,
@@ -534,8 +537,30 @@ class Person extends BackboneModel {
                                           'date_fso3' => $this->dateFso3,
                                           'date_fso4' => $this->dateFso4),
                                     array('user_id' => EQ($this->getId())));
-        return $status;
-	}
+	        return $status;
+	    }
+	    else{
+                $status = DBFunctions::insert('grand_personal_fec_info',
+                                    array('user_id' => $this->getId(),
+					  'date_of_phd' => $this->dateOfPhd,
+                                          'date_of_appointment' => $this->dateOfAppointment,
+                                          'date_assistant' => $this->dateOfAssistant,
+                                          'date_associate' => $this->dateOfAssociate,
+                                          'date_professor' => $this->dateOfProfessor,
+                                          'date_tenure' => $this->dateOfTenure,
+                                          'date_retirement' => $this->dateOfRetirement,
+                                          'date_last_degree' => $this->dateOfLastDegree,
+                                          'last_degree' => $this->lastDegree,
+                                          'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                          'publication_history_books' => $this->publicationHistoryBooks,
+                                          'publication_history_patents' => $this->publicationHistoryPatents,
+                                          'date_fso2' => $this->dateFso2,
+                                          'date_fso3' => $this->dateFso3,
+                                          'date_fso4' => $this->dateFso4),
+                                           true);
+                return $status;
+	    }
+        }
         return false;
     }
 

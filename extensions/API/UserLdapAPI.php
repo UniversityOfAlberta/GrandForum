@@ -12,7 +12,7 @@ class UserLdapAPI extends API{
         }
     }
 
-	function doAction($noEcho=false){
+    function doAction($noEcho=false){
         $person = Person::newFromName($_POST['user_name']);
         DBFunctions::update('mw_user',
                             array('ldap_url' => $_POST['ldap']),
@@ -20,10 +20,10 @@ class UserLdapAPI extends API{
         if(!$noEcho){
             echo "Ldap added\n";
         }
-	}
+    }
 	
-	function isLoginRequired(){
+    function isLoginRequired(){
 		return true;
-	}
+    }
 }
 ?>

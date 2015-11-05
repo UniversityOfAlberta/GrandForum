@@ -108,9 +108,11 @@ class APIRequest{
 	function createActions(){
 	    //POST
 	    $this->addAction('Products', 'uploadCCV', new UploadCCVAPI());
+	    $this->addAction('Products', 'uploadCSV', new UploadCSVAPI());
 	    $this->addAction('Products', 'importBibTeX', new ImportBibTeXAPI());
 	    $this->addAction('Products', 'importDOI', new ImportDOIAPI());
 	    $this->addAction('Products', 'getPublicationSearch', new PublicationSearchAPI());
+            $this->addAction('Products', 'importGradDb', new ImportGradDbAPI());
 	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());

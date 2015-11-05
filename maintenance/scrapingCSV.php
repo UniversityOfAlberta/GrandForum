@@ -10,7 +10,7 @@
 	print_r("Reading in data");
         $lines = file_get_contents("Eleni.csv");
 	$scraper->setCsvData($lines);
-	print_r($scraper->csvPubs);
+	print_r($scraper->csvCourses);
 	//print_r($formattedArray);
       //print_r($Endarray);
 
