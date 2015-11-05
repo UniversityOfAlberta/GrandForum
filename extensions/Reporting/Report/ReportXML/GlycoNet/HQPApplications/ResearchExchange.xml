@@ -219,10 +219,10 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td valign='top' style='font-weight: bold;'>
+                        <td valign='top' style='font-weight: bold; white-space: nowrap;'>
                             The proposed exchange site is:
                         </td>
-                        <td valign='top'>
+                        <td valign='top' style='white-space: nowrap;'>
                             {$item}
                         </td>
                     </tr>
@@ -231,9 +231,9 @@
         </ReportItem>
         <ReportItem id="background" type="MultiText" blobType="BLOB_ARRAY" blobItem="BACKGROUND" 
                     multiple="true" 
-                    labels="Degree/Position|Department|Institution|Country|Date Started|Date Completed/Expected Date of Completion" 
+                    labels="Degree/Position|Department|Institution|Country|Date Started&lt;br /&gt;(MM/YYYY)|Date Completed/Expected Date of Completion&lt;br /&gt;(MM/YYYY)" 
                     types="text|text|text|text|text|text"
-                    sizes="150|150|150|150|150|150">
+                    sizes="125|125|150|125|100|100">
             <![CDATA[
                 <h2>Academic Background - <small>list current program or position first</small></h2>
                 {$item}
@@ -241,7 +241,7 @@
         </ReportItem>
         <ReportItem id="scholarships" type="MultiText" blobType="BLOB_ARRAY" blobItem="SCHOLAR" 
                     multiple="true" 
-                    labels="Name|Value&lt;br /&gt;&lt;small&gt;(CDN $)&lt;/small&gt;|Year|Level" 
+                    labels="Name|Value&lt;br /&gt;(CDN $)|Year|Level" 
                     types="text|integer|integer|text"
                     sizes="300|100|40|125">
             <![CDATA[

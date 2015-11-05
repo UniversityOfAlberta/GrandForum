@@ -260,7 +260,7 @@ EOF;
         $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
         $rules = "";
         $frame = "";
-        if($class == 'wikitable'){
+        if(strstr($class, 'wikitable') !== false){
             $rules = "all";
             $frame = "box";
         }
