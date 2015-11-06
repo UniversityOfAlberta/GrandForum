@@ -267,7 +267,7 @@ class ReportXMLParser {
         foreach($children as $key => $child){
             if($key == "Role"){
                 $attributes = $child->attributes();
-                $role = (isset($attributes->role)) ? constant($attributes->role) : MANAGER;
+                $role = (isset($attributes->role)) ? AbstractReport::blobConstant($attributes->role) : MANAGER;
                 $subType = (isset($attributes->subType)) ? $attributes->subType : "";
                 $subType = (isset($attributes->subRole)) ? $attributes->subRole : $subType;
                 if(isset($attributes->role) && AbstractReport::blobConstant($attributes->role) == null){
