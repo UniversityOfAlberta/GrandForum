@@ -240,7 +240,7 @@
         <ReportItem id="scholarships" type="MultiText" blobType="BLOB_ARRAY" blobItem="SCHOLAR" 
                     multiple="true" 
                     labels="Name|Value&lt;br /&gt;(CDN $)|Year|Level" 
-                    types="text|integer|integer|text"
+                    types="text|integer|integer|Select(Institutional,Provincial,National,International)"
                     sizes="300|100|40|125">
             <![CDATA[
                 <h2>Scholarships & Awards - <small>begin with most recent</small></h2>
