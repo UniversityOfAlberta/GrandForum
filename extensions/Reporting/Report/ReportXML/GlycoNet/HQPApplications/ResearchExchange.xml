@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Exchange Program" reportType="RP_HQP_EXCHANGE" pdfType="RPTP_NORMAL" pdfFiles="HQPApplications/ResearchExchangePDF" ajax="true" disabled="false">
+<Report name="Research Exchange Program" reportType="RP_HQP_EXCHANGE" pdfType="HQP_EXCHANGE" pdfFiles="HQPApplications/ResearchExchangePDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -13,18 +13,14 @@
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
-                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health. Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at <a href='http://www.glyconet.ca' target='_blank'>www.glyconet.ca</a>.</p>
+                <h3>Background</h3>
+                <p>The Research Exchange Program provides financial support to graduate students, postdoctoral fellows, technicians, and research associates within GlycoNet who are working on multi-investigator projects. These funds are intended to contribute towards trainee living and travel expenses.</p>
 
-                <p>Part of GlycoNet’s mission is to “deliver exceptional training in glycomics research and entrepreneurship.” To facilitate the transfer of knowledge within the Network, GlycoNet is funding a Research Exchange Program for graduate students, post-doctoral fellows, technicians, and research associates that will support these researchers while they work on collaborative projects at a different institution.</p>
+                <h3>Eligibility</h3>
+                <p>Individuals wishing to take part in the Research Exchange Program must be currently supervised by a GlycoNet Network Investigator. Trainees must finish the exchange before completion of their degree program or tenure. Both Canadian and international students are eligible. The exchange site must be an academic research institution or government lab inside or outside of Canada. A maximum of two applications from the same lab will be supported each year, and applications must align with one of GlycoNet’s research themes (see <a href='http://www.glyconet.ca' target='_blank'>glyconet.ca</a>).</p>
 
-                <h2>Eligibility</h2>
-                <p>Individuals wishing to take part in the Research Exchange Program must be currently supervised by a GlycoNet Network Investigator. Trainees must finish the exchange before completion of their degree program or tenure. Both Canadian and international students are eligible. The exchange site must be an academic research institution or government lab inside or outside of Canada. A maximum of two applications from the same lab will be supported each year, and applications must align with one of GlycoNet’s research themes (see glyconet.ca).</p>
-                
-                <h2>Funding Available</h2>
-                <p>GlycoNet has set aside $50,000 annually for this program. The Network will contribute up to $1000/month in living expenses (pro-rated for partial months), in addition to a travel allowance in accordance with the GlycoNet Travel Policy, for trainees working in another laboratory outside the city of their home institution. Each year, the Network will support approximately 10 exchanges of up to 6 months, with the stipend paid to the trainee’s primary supervisor as a research grant. Exchanges of less than 1 week will not be considered.</p>
-                
-                <h2>Application Requirements</h2>
-                <p>The applicant must complete the application through the GlycoNet forum. A complete application includes:</p>
+                <h3>Instructions</h3>
+                <p>The applicant must complete the application through the GlycoNet forum. A complete application includes:
                 <ul>
                     <li>Applicant profile</li>
                     <li>Proposal detailing the exchange activities and benefits to the participants</li>
@@ -32,11 +28,7 @@
                     <li>Signed letter of support from the applicant’s primary academic supervisor</li>
                     <li>Signed letter of invitation from the proposed host institution/department</li>
                 </ul>
-
-                <p>Uploaded applications will be reviewed by the GlycoNet Training Committee, and applicants and their supervisors will be notified by email of the final decisions. Successful applicants will be required to submit a final report within one month of the completion of their exchange. IP will be managed according to the GlycoNet Intellectual Property policy (see glyconet.ca).</p>
-                
-                <h2>Submission and Additional Information</h2>
-                <p>Further inquiries about this opportunity may be directed to Ryan Snitynsky, the GlycoNet Training Coordinator (<a href='mailto:snitynsk@ualberta.ca'>mailto:snitynsk@ualberta.ca</a>). Application deadlines are <b>January 1</b>, <b>May 1</b>, and <b>September 1</b> each year for exchanges in the following academic term.</p>
+                <p>Application deadlines are January 15, May 15, and September 15 each year for exchanges in the following academic term.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -54,7 +46,6 @@
                     <tr><td align='right' style='font-weight:bold;'>Program/Position:</td><td>{$user_level}</td></tr>
                     <tr><td align='right' style='font-weight:bold;'>Department:</td><td>{$user_dept}</td></tr>
                     <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
-                        
             ]]>
         </ReportItem>
         <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
@@ -191,7 +182,14 @@
         <ReportItem id="host_prov" type="Text" blobType="BLOB_TEXT" blobItem="HOSTPROV">
             <![CDATA[
                 <tr>
-                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
+                    <td align='right' style='font-weight:bold;'>Prov/State:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="host_country" type="Text" blobType="BLOB_TEXT" blobItem="HOSTCOUNTRY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Country:</td><td>{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -302,10 +300,10 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" limit="750" rich="true" height="400px">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true" height="400px">
             <![CDATA[
-                <h2>Exchange Description</h2>
-                <p><small>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</small></p>
+                <h2>Exchange Description - <small>750 words maximum, including references</small></h2>
+                <p>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
                 {$item}
             ]]>
         </ReportItem>

@@ -79,7 +79,8 @@
                         <th>Department</th>
                         <th>Institution</th>
                         <th>City</th>
-                        <th>Province</th>
+                        <th>Prov/State</th>
+                        <th>Country</th>
                         <th>Phone</th>
                         <th>Email</th>
                     </tr>
@@ -90,6 +91,7 @@
                         <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTUNI,0,{$user_id},0}</td>
                         <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTCITY,0,{$user_id},0}</td>
                         <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTPROV,0,{$user_id},0}</td>
+                        <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTCOUNTRY,0,{$user_id},0}</td>
                         <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTPHONE,0,{$user_id},0}</td>
                         <td>{getText(RP_HQP_EXCHANGE,PROFILE,HOSTEMAIL,0,{$user_id},0}</td>
                     </tr>
@@ -170,7 +172,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" limit="750" rich="true">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true">
             <![CDATA[
                 <h2>Exchange Description</h2>
                 {$item}
