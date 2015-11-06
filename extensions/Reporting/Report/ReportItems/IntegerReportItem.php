@@ -8,7 +8,7 @@ class IntegerReportItem extends TextReportItem {
 		$max = $this->getAttr('max');
 		$value = $this->getBlobValue();
 		$width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
-		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};' value='{$value}' />";
+		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};text-align:right;' value='{$value}' />";
 		$item = $this->processCData($item);
 		$wgOut->addHTML("$item");
 		$wgOut->addHTML("<script type='text/javascript'>

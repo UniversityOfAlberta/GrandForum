@@ -573,9 +573,28 @@ EOF;
 		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
+		    }
+		    
 		    #pdfBody li {
 		        font-weight: normal !important;
-		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce li {
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce ul {
+		        margin-top: 0;
+		        margin-bottom: ".max(9, ($fontSize+(DPI_CONSTANT)))."px;
+		    }
+		    
+		    #pdfBody .tinymce ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
 		    }
 		    
 		    #pdfBody b, #pdfBody strong {

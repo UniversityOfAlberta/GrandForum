@@ -302,11 +302,129 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" limit="750" rich="true">
+        <ReportItem id="description" type="Textarea" limit="750" rich="true" height="400px">
             <![CDATA[
                 <h2>Exchange Description</h2>
                 <p><small>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</small></p>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="expenses_head" type="Static">
+            <![CDATA[
+                <h2>Estimated Expenses</h2>
+                <table id='budget' frame='box' rules='all'>
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Expense</b></td>
+                        <td style='background:#CCCCCC;'><b>Amount ($)</b></td>
+                        <td style='background:#CCCCCC;'><b>Description</b></td>
+                    </tr>
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Travel</b></td>
+                        <td style='background:#CCCCCC;'></td>
+                        <td style='background:#CCCCCC;'></td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="airfare" type="Integer" blobItem="AIRFARE" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Airfare</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="airfare_desc" type="Textarea" blobItem="AIRFARE_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ground" type="Integer" blobItem="GROUND" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Ground transport (bus, train)</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ground_desc" type="Textarea" blobItem="GROUND_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vehicle" type="Integer" blobItem="VEHICLE" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Private vehicle</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vehicle_desc" type="Textarea" blobItem="VEHICLE_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="lodging" type="Integer" blobItem="LODGING" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td style='background:#CCCCCC;'><b>Accommodation</b></td>
+                        <td style='background:#CCCCCC;'></td>
+                        <td style='background:#CCCCCC;'></td>
+                    </tr>
+                    <tr>
+                        <td>Lodging</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vehicle_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meals" type="Integer" blobItem="MEALS" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td>Meals</td>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="meals_desc" type="Textarea" blobItem="MEALS_DESC" height="50px" width="300px">
+            <![CDATA[
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total" type="Integer" blobItem="TOTAL" min="0" max="10000000" width="70px">
+            <![CDATA[
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td id='total'><div style='text-align:right;padding:3px;'></div>{$item}</td>
+                        <td></td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="expenses_foot" type="Static">
+            <![CDATA[
+                </table>
+                <script type='text/javascript'>
+                    $('td#total input').hide();
+                    function calcTotal(){
+                        var sum = 0;
+                        $('table#budget td:not(#total) input').each(function(i, el){
+                            var value = parseInt($(el).val());
+                            if(!_.isNaN(value)){
+                                sum += parseInt(value);
+                            }
+                        });
+                        $('td#total div').text(sum);
+                        $('td#total input').val(sum);
+                        $('td#total input').attr('value', sum);
+                    }
+                    calcTotal();
+                    $('table#budget td:not(#total) input').change(calcTotal);
+                    $('table#budget td:not(#total) input').keyup(calcTotal);
+                </script>
             ]]>
         </ReportItem>
         <ReportItem id="figures" type="Upload" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
