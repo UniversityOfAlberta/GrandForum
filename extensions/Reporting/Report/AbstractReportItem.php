@@ -261,12 +261,8 @@ abstract class AbstractReportItem {
     function getBlobValue(){
         $report = $this->getReport();
         $section = $this->getSection();
-        // !!! 
-        //I think there is a bug here. I think ReportBlob should really be given $this-personId, instead of ID of person who created the report 
-        // This needs to be checked
-        // !!!
-        //$blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
@@ -308,7 +304,8 @@ abstract class AbstractReportItem {
     function getMD5(){
         $report = $this->getReport();
         $section = $this->getSection();
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
@@ -335,7 +332,8 @@ abstract class AbstractReportItem {
     function setBlobValue($value){
         $report = $this->getReport();
         $section = $this->getSection();
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();

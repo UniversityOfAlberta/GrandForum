@@ -61,6 +61,8 @@ class ReportItemCallback {
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
             "parent_id" => "getParentId",
+            "parent_name" => "getParentName",
+            "parent_uni" => "getParentUni",
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
@@ -137,6 +139,7 @@ class ReportItemCallback {
             "name" => "getName",
             "index" => "getIndex",
             "extraIndex" => "getExtraIndex",
+            "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
@@ -786,6 +789,16 @@ class ReportItemCallback {
     
     function getParentId(){
         return $this->reportItem->getParent()->getParent()->personId;
+    }
+    
+    function getParentName(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getNameForForms();
+    }
+    
+    function getParentUni(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getUni();
     }
     
     function getUserName(){
@@ -1485,6 +1498,13 @@ class ReportItemCallback {
             }
         }
         return 0;
+    }
+    
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return $blb->getMD5();
     }
     
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId){
