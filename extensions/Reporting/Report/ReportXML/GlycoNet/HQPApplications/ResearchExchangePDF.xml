@@ -138,7 +138,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PUBLIC_PROFILE_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Contributions</h2>
                 {$item}
@@ -187,7 +187,7 @@
         <ReportItem id="expenses" type="Static">
             <![CDATA[
                 <h2>Estimated Expenses</h2>
-                <table id='budget' frame='box' rules='all' class='wikitable'>
+                <table id='budget' frame='box' rules='all' class='wikitable' width='100%'>
                     <tr>
                         <td style='background:#CCCCCC;'><b>Expense</b></td>
                         <td style='background:#CCCCCC;'><b>Amount ($)</b></td>
