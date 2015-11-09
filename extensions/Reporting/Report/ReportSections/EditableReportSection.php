@@ -8,7 +8,7 @@ class EditableReportSection extends AbstractReportSection {
     // Creates a new EditableReportSection()
     function EditableReportSection(){
         $this->AbstractReportSection();
-        $this->autosave = false;
+        $this->autosave = true;
     }
     
     // Sets whether or not to use the autosave feature
