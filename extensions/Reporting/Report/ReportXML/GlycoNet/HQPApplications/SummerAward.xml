@@ -387,26 +387,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-                <p>The intent of <b><i>Review</i></b> page is to provide
-                <ul>
-                  <li>an online document with all the information currently contained in the report, and </li>
-                  <li>an online approximation of what the resulting PDF document will look like. </li>
-                </ul>
-                If you are satisfied with this content, then you can proceed to the final step of the reporting workflow where you can <b><i>Submit</i></b> your report to be forwarded to the RMC.</p>
-            ]]>
-        </Instructions>
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-
-            ]]>
-        </Instructions>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>
