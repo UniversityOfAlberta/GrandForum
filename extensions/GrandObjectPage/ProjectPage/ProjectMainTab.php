@@ -203,7 +203,7 @@ EOF;
     }
     
     function showDescription(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
@@ -211,7 +211,7 @@ EOF;
         $description = $project->getDescription();
         
         if($edit || !$edit && $description != ""){
-            $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
+            $this->html .= "<h2><span class='mw-headline'>{$config->getValue('networkName')} Webiste Project Overview</span></h2>";
         }
         if(!$edit){
             $this->html .= $description."<br />";
