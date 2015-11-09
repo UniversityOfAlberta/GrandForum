@@ -125,12 +125,12 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$user_id}_q1_total").text(q1/nReviewers);
-                            $("#{$user_id}_q2_total").text(q2/nReviewers);
-                            $("#{$user_id}_q3_total").text(q3/nReviewers);
-                            $("#{$user_id}_q4_total").text(q4/nReviewers);
-                            $("#{$user_id}_q5_total").text(q5/nReviewers);
-                            $("#{$user_id}_total").text((q1+q2+q3+q4+q5)/nReviewers);
+                            $("#{$user_id}_q1_total").text(Math.round((q1/nReviewers)*100)/100);
+                            $("#{$user_id}_q2_total").text(Math.round((q2/nReviewers)*100)/100);
+                            $("#{$user_id}_q3_total").text(Math.round((q3/nReviewers)*100)/100);
+                            $("#{$user_id}_q4_total").text(Math.round((q4/nReviewers)*100)/100);
+                            $("#{$user_id}_q5_total").text(Math.round((q5/nReviewers)*100)/100);
+                            $("#{$user_id}_total").text(Math.round(((q1+q2+q3+q4+q5)/nReviewers)*100)/100);
                             $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
@@ -338,16 +338,16 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$project_id}_q1_total").text(q1/nReviewers);
-                            $("#{$project_id}_q2_total").text(q2/nReviewers);
-                            $("#{$project_id}_q3_total").text(q3/nReviewers);
-                            $("#{$project_id}_q4_total").text(q4/nReviewers);
-                            $("#{$project_id}_q5_total").text(q5/nReviewers);
-                            $("#{$project_id}_q6_total").text(q6/nReviewers);
-                            $("#{$project_id}_q7_total").text(q7/nReviewers);
-                            $("#{$project_id}_q8_total").text(q8/nReviewers);
-                            $("#{$project_id}_q9_total").text(q9/nReviewers);
-                            $("#{$project_id}_total1").text((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers);
+                            $("#{$project_id}_q1_total").text(Math.round((q1/nReviewers)*100)/100);
+                            $("#{$project_id}_q2_total").text(Math.round((q2/nReviewers)*100)/100);
+                            $("#{$project_id}_q3_total").text(Math.round((q3/nReviewers)*100)/100);
+                            $("#{$project_id}_q4_total").text(Math.round((q4/nReviewers)*100)/100);
+                            $("#{$project_id}_q5_total").text(Math.round((q5/nReviewers)*100)/100);
+                            $("#{$project_id}_q6_total").text(Math.round((q6/nReviewers)*100)/100);
+                            $("#{$project_id}_q7_total").text(Math.round((q7/nReviewers)*100)/100);
+                            $("#{$project_id}_q8_total").text(Math.round((q8/nReviewers)*100)/100);
+                            $("#{$project_id}_q9_total").text(Math.round((q9/nReviewers)*100)/100);
+                            $("#{$project_id}_total1").text(Math.round(((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers)*100)/100);
                             $("#{$project_id}_converted_total1").text(Math.round(((((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers)/36)*5)*100)/100);
                             $("#{$project_id}_table1.wikitable").dataTable({'autoWidth': false});
                         </script>
@@ -653,16 +653,16 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$project_id}_q1_total").text(q1/nReviewers);
-                            $("#{$project_id}_q2_total").text(q2/nReviewers);
-                            $("#{$project_id}_q3_total").text(q3/nReviewers);
-                            $("#{$project_id}_q4_total").text(q4/nReviewers);
-                            $("#{$project_id}_q5_total").text(q5/nReviewers);
-                            $("#{$project_id}_q6_total").text(q6/nReviewers);
-                            $("#{$project_id}_q7_total").text(q7/nReviewers);
-                            $("#{$project_id}_q8_total").text(q8/nReviewers);
-                            $("#{$project_id}_q9_total").text(q9/nReviewers);
-                            $("#{$project_id}_total1").text((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers);
+                            $("#{$project_id}_q1_total").text(Math.round((q1/nReviewers)*100)/100);
+                            $("#{$project_id}_q2_total").text(Math.round((q2/nReviewers)*100)/100);
+                            $("#{$project_id}_q3_total").text(Math.round((q3/nReviewers)*100)/100);
+                            $("#{$project_id}_q4_total").text(Math.round((q4/nReviewers)*100)/100);
+                            $("#{$project_id}_q5_total").text(Math.round((q5/nReviewers)*100)/100);
+                            $("#{$project_id}_q6_total").text(Math.round((q6/nReviewers)*100)/100);
+                            $("#{$project_id}_q7_total").text(Math.round((q7/nReviewers)*100)/100);
+                            $("#{$project_id}_q8_total").text(Math.round((q8/nReviewers)*100)/100);
+                            $("#{$project_id}_q9_total").text(Math.round((q9/nReviewers)*100)/100);
+                            $("#{$project_id}_total1").text(Math.round(((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers)*100)/100);
                             $("#{$project_id}_converted_total1").text(Math.round(((((q1+q2+q3+q4+q5+q6+q7+q8+q9)/nReviewers)/36)*5)*100)/100);
                             $("#{$project_id}_table.wikitable").dataTable({'autoWidth':false});
                         </script>
