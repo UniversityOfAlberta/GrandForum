@@ -166,6 +166,19 @@ ManageProductsView = Backbone.View.extend({
         this.productChanged();
     },
     
+    cacheRows: function(){
+        // Needed so that the search functionality can be updated
+        if(this.table != null){
+            var rows = this.table.rows().indexes();
+            var table = this.table;
+            rows.each($.proxy(function(i, val){
+                if(this.subViews[i] != undefined){
+                    this.subViews[i].row = this.table.row(i);
+                }
+            }, this));
+        }
+    },    
+    
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
@@ -173,6 +186,7 @@ ManageProductsView = Backbone.View.extend({
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
+	    this.cacheRows();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
