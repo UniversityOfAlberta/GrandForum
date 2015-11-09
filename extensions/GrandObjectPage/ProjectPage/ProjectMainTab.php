@@ -211,7 +211,7 @@ EOF;
         $description = $project->getDescription();
         
         if($edit || !$edit && $description != ""){
-            $this->html .= "<h2><span class='mw-headline'>{$config->getValue('networkName')} Webiste Project Overview</span></h2>";
+            $this->html .= "<h2><span class='mw-headline'>{$config->getValue('networkName')} Website Project Overview</span></h2>";
         }
         if(!$edit){
             $this->html .= $description."<br />";
