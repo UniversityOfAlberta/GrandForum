@@ -131,12 +131,12 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$user_id}_q1_total").text(Math.round((q1/nReviewers)*100)/100);
-                            $("#{$user_id}_q2_total").text(Math.round((q2/nReviewers)*100)/100);
-                            $("#{$user_id}_q3_total").text(Math.round((q3/nReviewers)*100)/100);
-                            $("#{$user_id}_q4_total").text(Math.round((q4/nReviewers)*100)/100);
-                            $("#{$user_id}_q5_total").text(Math.round((q5/nReviewers)*100)/100);
-                            $("#{$user_id}_total").text(Math.round(((q1+q2+q3+q4+q5)/nReviewers)*100)/100);
+                            $("#{$user_id}_q1_total").text(Math.round((q1/Math.max(1,nReviewers))*100)/100);
+                            $("#{$user_id}_q2_total").text(Math.round((q2/Math.max(1,nReviewers))*100)/100);
+                            $("#{$user_id}_q3_total").text(Math.round((q3/Math.max(1,nReviewers))*100)/100);
+                            $("#{$user_id}_q4_total").text(Math.round((q4/Math.max(1,nReviewers))*100)/100);
+                            $("#{$user_id}_q5_total").text(Math.round((q5/Math.max(1,nReviewers))*100)/100);
+                            $("#{$user_id}_total").text(Math.round(((q1+q2+q3+q4+q5)/Math.max(1,nReviewers))*100)/100);
                             $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
