@@ -211,11 +211,11 @@ EOF;
         global $config;
         $this->html .= "<table>
                             <tr>
-                                <td align='right' valign='top'><b>{$config->getValue('networkName')} Website:</b></td>
+                                <td align='right' valign='top'><b>Live on Website:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
                             </tr>
                             <tr>
-                                <td align='right' valign='top'><b>{$config->getValue('siteName')}:</b></td>
+                                <td align='right' valign='top'><b>Live on Forum:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
                             </tr>
                         </table>";
