@@ -24,12 +24,18 @@
                     <ReportItem id="script" type="StaticReportItem">
                         <![CDATA[
                             <script type='text/javascript'>
-                                q1 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)};
-                                q2 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)};
-                                q3 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)};
-                                q4 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)};
-                                q5 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)};
-                                nReviewers++;
+                                if("{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)}" != "" &&
+                                   "{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)}" != "" &&
+                                   "{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)}" != "" &&
+                                   "{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)}" != "" &&
+                                   "{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)}" != ""){
+                                    q1 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)};
+                                    q2 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)};
+                                    q3 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)};
+                                    q4 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)};
+                                    q5 += {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)};
+                                    nReviewers++;
+                                }
                             </script>
                         ]]>
                     </ReportItem>
@@ -58,27 +64,27 @@
                         <![CDATA[
                             <tr>
                                 <td>{$user_name}</td>
-                                <td align='right'>{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)}</td>
+                                <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$parent_id},{$user_id},0)}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="motivation" type="StaticReportItem">
                         <![CDATA[
-                            <td align='right'>{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$parent_id},{$user_id},0)}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="capacity" type="StaticReportItem">
                         <![CDATA[
-                            <td align='right'>{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$parent_id},{$user_id},0)}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="support" type="StaticReportItem">
                         <![CDATA[
-                            <td align='right'>{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$parent_id},{$user_id},0)}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="referee" type="StaticReportItem">
                         <![CDATA[
-                            <td align='right'>{getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$parent_id},{$user_id},0)}</td>
                         ]]>
                     </ReportItem>
                     <ReportItem id="total" type="StaticReportItem">
@@ -138,7 +144,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="src_review" name="SRC Trans. Review" tooltip="SRC Review of Transformative Proposals" type="ReportSection">
+    <ReportSection id="src_review" name="SRC Trans. Review" tooltip="SRC Review of Transformative Proposals" type="ReportSection" disabled="true">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
@@ -454,7 +460,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="rmc_review" name="RMC Trans. Review" tooltip="RMC Review of Transformative Proposals" type="ReportSection">
+    <ReportSection id="rmc_review" name="RMC Trans. Review" tooltip="RMC Review of Transformative Proposals" type="ReportSection" disabled="true">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
