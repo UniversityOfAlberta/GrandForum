@@ -788,7 +788,7 @@ class ReportItemCallback {
     }
     
     function getParentId(){
-        return $this->reportItem->getParent()->getParent()->personId;
+        return $this->reportItem->getParent()->personId;
     }
     
     function getParentName(){
