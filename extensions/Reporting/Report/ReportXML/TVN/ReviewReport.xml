@@ -3,7 +3,7 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="ifp_review" permissions="rw" />
-            <SectionPermission id="ifp_summary" permissions="rw" />
+            <SectionPermission id="ifp_review_summary" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection">
