@@ -384,14 +384,14 @@ EOF;
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
 ";
-            if($config->getValue('projectsEnabled')){
+            if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
                 $projects = $person->getProjects();
                 $projs = array();
 			    foreach($projects as $project){
 			        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
 				        $subprojs = array();
 				        foreach($project->getSubProjects() as $subproject){
-				            if($person->isMemberOf($subproject) && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
+				            if($person->isMemberOf($subproject)){
 				                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
 				            }
 				        }
