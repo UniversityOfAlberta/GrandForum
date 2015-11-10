@@ -226,7 +226,9 @@
                     </tbody>
                 </table>
                 <script type='text/javascript'>
-                    $("#eval_table").dataTable({'autoWidth': false});
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                 </script>
             ]]>
         </ReportItem>
