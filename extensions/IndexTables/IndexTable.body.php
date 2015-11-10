@@ -359,7 +359,7 @@ EOF;
            ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
-        if($config->getValue('projectsEnabled')){
+        if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
@@ -391,7 +391,7 @@ EOF;
 			        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
 				        $subprojs = array();
 				        foreach($project->getSubProjects() as $subproject){
-				            if($person->isMemberOf($subproject)){
+				            if($person->isMemberOf($subproject) && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
 				                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
 				            }
 				        }
