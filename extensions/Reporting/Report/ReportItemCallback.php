@@ -753,8 +753,6 @@ class ReportItemCallback {
         return $hqp_comments;
     }
     
-    function get
-    
     function getMyName(){
         $person = $this->reportItem->getReport()->person;
         return $person->getNameForForms();
