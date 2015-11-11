@@ -398,7 +398,7 @@
         <Instructions>
             <![CDATA[
                 <ol>
-                    <li>General: This Financial Reporting form contains four (3) tabs.
+                    <li>General: This Financial Reporting form contains three (3) tabs.
                         <ol>
                             <li>Actual Expenditures up to March 31, 2015</li>
                             <li>Supporting Detailed Information for TVN funds spent</li>
@@ -440,7 +440,7 @@
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet id="notIsPL" type="IsPLReportItemSet" not="true">
-            <ReportItem id="ni_upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" blobSubItem="{$user_id}" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
+            <ReportItem id="ni_upload" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" blobSubItem="{$wgUserId}" template="TVN - FINAL Report.xlsx" budgetText="Financial Report">
                 <![CDATA[
                     {$item}
                 ]]>

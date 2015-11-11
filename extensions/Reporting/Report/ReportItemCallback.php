@@ -132,6 +132,7 @@ class ReportItemCallback {
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
             // Other
+            "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
             "networkName" => "getNetworkName",
@@ -751,6 +752,8 @@ class ReportItemCallback {
         }
         return $hqp_comments;
     }
+    
+    function get
     
     function getMyName(){
         $person = $this->reportItem->getReport()->person;
@@ -1419,6 +1422,11 @@ class ReportItemCallback {
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
+    }
+    
+    function getWgUserId(){
+        global $wgUser;
+        return $wgUser->getId();
     }
     
     function getWgServer(){
