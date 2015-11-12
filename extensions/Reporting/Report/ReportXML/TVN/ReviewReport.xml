@@ -234,7 +234,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="src_review" name="SRC Trans. Review" tooltip="SRC Review of Transformative Proposals" type="ReportSection" disabled="true">
+    <ReportSection id="src_review" name="Ex/SRC Trans. Review" tooltip="External/SRC Review of Transformative Proposals" type="ReportSection" disabled="true">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
