@@ -391,7 +391,7 @@ EOF;
 ";
             if($subRoleHeader != ""){
                 $subRoles = $person->getSubRoles();
-                $this->text .= "<td align='left'>".implode("<br />", $subRoles)."</td>";
+                $this->text .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
             }
             if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
                 $projects = $person->getProjects();
