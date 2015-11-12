@@ -27,18 +27,18 @@ ManageProductsView = Backbone.View.extend({
             this.listenToOnce(this.products, "sync", $.proxy(function(){
                 me.projects.ready().then($.proxy(function(){
                     this.projects = me.projects.getCurrent();
-                    this.model.ready().then($.proxy(function(){
-                        this.allProjects.ready().then($.proxy(function(){
-                            this.otherProjects = this.allProjects.getCurrent();
-                            this.oldProjects = this.allProjects.getOld();
-                            this.otherProjects.remove(this.projects.models);
-                            this.oldProjects.remove(this.projects.models);
-                            me.projects.ready().then($.proxy(function(){
-                                this.render();
-                            }, this));
-                        }, this));
-                    }, this));
-                }, this));
+                    return this.projects.ready();
+                }, this)).then($.proxy(function(){
+                    return this.allProjects.ready();
+                }. this)).then($.proxy(function(){
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    return me.projects.ready();
+                }, this)).then($.proxy(function(){
+                    this.render();
+                }, this));               
             }, this));
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
