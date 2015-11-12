@@ -12,7 +12,7 @@
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
     </Permissions>
-    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="src_review" name="Ex/SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
