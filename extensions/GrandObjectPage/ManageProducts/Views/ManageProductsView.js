@@ -38,7 +38,7 @@ ManageProductsView = Backbone.View.extend({
                     return me.projects.ready();
                 }, this)).then($.proxy(function(){
                     this.render();
-                }, this));               
+                }, this));              
             }, this));
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);

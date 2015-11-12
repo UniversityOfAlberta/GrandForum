@@ -138,7 +138,17 @@ class Contribution {
 	    $data = DBFunctions::execSQL($sql);
 	    $contributions = array();
 	    foreach($data as $row){
-	        $contributions[] = array("id" => $row['id'], "name" => $row['name']);
+	        $contribution = Contribution::newFromId($row['id']);
+	        $isMe = false;
+	        foreach($contribution->getPeople() as $person){
+	            if($person == $me->getName() || ($person instanceof Person && $person->getId() == $me->getId())){
+	                $isMe = true;
+	                break;
+	            }
+	        }
+	        if($isMe){
+	            $contributions[] = array("id" => $row['id'], "name" => $row['name']);
+	        }
 	    }
 	    $json = json_encode($contributions);
 	    return $json;
