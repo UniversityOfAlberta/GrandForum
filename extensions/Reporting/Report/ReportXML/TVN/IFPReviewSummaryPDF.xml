@@ -3,7 +3,7 @@
     <ReportSection id="ifp_review_summary" name="IFP Summary Table" tooltip="IFP Summary Table" type="ReportSection" pagebreak="false">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <table class='wikitable' id="eval_table" width='100%' frame='box' rules='all'>
+                <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                     <thead>
                         <tr>
                             <th>IFP</th>
@@ -49,22 +49,22 @@
                 <![CDATA[
                     <tr>
                         <td style='white-space:nowrap;'><b>{$user_tvn_file_number} - {$user_name}</b></td>
-                        <td>
-                            {round({divide({get(q1)},{get(nReviewers)})},2)}
+                        <td align='right'>
+                            {round({divide({get(q1)},{get(nReviewers)})},1)}
                         </td>
-                        <td>
-                            {round({divide({get(q2)},{get(nReviewers)})},2)}
+                        <td align='right'>
+                            {round({divide({get(q2)},{get(nReviewers)})},1)}
                         </td>
-                        <td>
-                            {round({divide({get(q3)},{get(nReviewers)})},2)}
+                        <td align='right'>
+                            {round({divide({get(q3)},{get(nReviewers)})},1)}
                         </td>
-                        <td>
-                            {round({divide({get(q4)},{get(nReviewers)})},2)}
+                        <td align='right'>
+                            {round({divide({get(q4)},{get(nReviewers)})},1)}
                         </td>
-                        <td>
-                            {round({divide({get(q5)},{get(nReviewers)})},2)}
+                        <td align='right'>
+                            {round({divide({get(q5)},{get(nReviewers)})},1)}
                         </td>
-                        <td>
+                        <td align='right'>
                             {set(total, 
                                 {add({get(q1)}, 
                                     {add({get(q2)},
@@ -74,7 +74,7 @@
                                     )}
                                 )}
                             )}
-                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                            {round({divide({get(total)},{get(nReviewers)})},1)}
                         </td>
                     </tr>
                 ]]>

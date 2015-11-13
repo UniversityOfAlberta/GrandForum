@@ -9,7 +9,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}" level="2">
                 <ReportItem id="bookmark" type="SubBookmark" title="{$user_tvn_file_number} - {$user_name}">
                     <![CDATA[
                         {$item}
@@ -43,7 +43,7 @@
                 </ReportItemSet>
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
-                        <table class='wikitable' id="{$user_id}_table" width='100%' frame='box' rules='all'>
+                        <table class='wikitable smaller' id="{$user_id}_table" width='100%' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th>Reviewer</th>
@@ -118,19 +118,19 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
+                                        {round({divide({get(q1)},{get(nReviewers)})},1)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
+                                        {round({divide({get(q2)},{get(nReviewers)})},1)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
+                                        {round({divide({get(q3)},{get(nReviewers)})},1)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
+                                        {round({divide({get(q4)},{get(nReviewers)})},1)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
+                                        {round({divide({get(q5)},{get(nReviewers)})},1)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -142,7 +142,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                        {round({divide({get(total)},{get(nReviewers)})},1)}
                                     </th>
                                     <th></th>
                                 </tr>

@@ -1564,7 +1564,7 @@ class ReportItemCallback {
     }
     
     function round($val, $dec=0){
-        return round($val, $dec);
+        return number_format(round($val, $dec), $dec, ".", "");
     }
     
     function set($key, $val){
