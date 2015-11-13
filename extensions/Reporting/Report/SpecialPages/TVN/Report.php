@@ -59,8 +59,14 @@ class Report extends AbstractReport{
         if(count($hqps) > 0){
             foreach($hqps as $hqp){
                 if($hqp->isSubRole("SSA")){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SSA Report", "{$url}HQPReport", $selected);
+                    $ssaDeleted = false;
+                    foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+                        $ssaDeleted = ($ssaDeleted || ($project->isDeleted() && strstr($project->getName(), "SSA") !== false));
+                    }
+                    if(!$ssaDeleted){
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SSA Report", "{$url}HQPReport", $selected);
+                    }
                     break;
                 }
             }
