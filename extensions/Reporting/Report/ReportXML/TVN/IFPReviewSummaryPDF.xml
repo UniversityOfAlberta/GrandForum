@@ -3,7 +3,7 @@
     <ReportSection id="ifp_review_summary" name="IFP Summary Table" tooltip="IFP Summary Table" type="ReportSection" pagebreak="false">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
+                <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
                     <thead>
                         <tr>
                             <th>IFP</th>

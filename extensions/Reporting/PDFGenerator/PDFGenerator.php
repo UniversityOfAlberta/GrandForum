@@ -561,6 +561,11 @@ EOF;
 		        display:inline;
 		    }
 		    
+		    #pdfBody table.small {
+		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        display: table;
+		    }
+		    
 		    #pdfBody td.small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
 		        display:table-cell;

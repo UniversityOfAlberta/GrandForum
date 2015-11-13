@@ -43,7 +43,7 @@
                 </ReportItemSet>
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
-                        <table class='wikitable smaller' id="{$user_id}_table" width='100%' frame='box' rules='all'>
+                        <table class='wikitable small' id="{$user_id}_table" width='100%' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th>Reviewer</th>
