@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP2016 Report" ajax="true" disabled="false" pdfFiles="ReviewReport">
+<Report name="IFP2016 Report" ajax="true" disabled="false" pdfFiles="IFPReviewReportPDF,IFPReviewSummaryPDF">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="ifp_review" permissions="rw" />
             <SectionPermission id="ifp_review_summary" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection">
@@ -778,5 +779,10 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="submit" type="ReportSection" name="Submit" tooltip="Submit" title="Submit">
+        <ReportItem id="submit" type="SimpleReviewSubmit">
+            {$item}
+        </ReportItem>
     </ReportSection>
 </Report>
