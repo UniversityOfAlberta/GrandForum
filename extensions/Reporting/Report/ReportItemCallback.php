@@ -57,6 +57,7 @@ class ReportItemCallback {
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
             "report_has_started" => "getReportHasStarted",
             // People
+            "my_id" => "getMyId",
             "my_name" => "getMyName",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
@@ -751,6 +752,11 @@ class ReportItemCallback {
             }
         }
         return $hqp_comments;
+    }
+    
+    function getMyId(){
+        $person = $this->reportItem->getReport()->person;
+        return $person->getId();
     }
     
     function getMyName(){

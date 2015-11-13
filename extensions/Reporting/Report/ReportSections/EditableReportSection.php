@@ -69,7 +69,6 @@ class EditableReportSection extends AbstractReportSection {
                     $('#reportMain button').prop('disabled', 'disabled');
                     $('#reportMain select').prop('disabled', 'disabled');
                     $('#reportMain a.custom-combobox-toggle').hide();
-                    console.log('disable');
                 });
             </script>");
         }

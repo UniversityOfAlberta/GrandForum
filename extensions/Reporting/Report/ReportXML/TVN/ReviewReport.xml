@@ -106,7 +106,7 @@
                     <ReportItem id="comments" type="StaticReportItem">
                         <![CDATA[
                             <td>
-                                <div style='max-height: 75px; overflow-y: auto;'>
+                                <div style='max-height: 115px; overflow-y: auto;'>
                                     {getText(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
                                 </div>
                             </td>
