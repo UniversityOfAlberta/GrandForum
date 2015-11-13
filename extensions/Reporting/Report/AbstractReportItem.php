@@ -28,6 +28,7 @@ abstract class AbstractReportItem {
     var $value;
     var $reportCallback;
     var $attributes;
+    var $variables = array();
     
     // Creates a new AbstractReportItem
     function AbstractReportItem(){
@@ -410,8 +411,10 @@ abstract class AbstractReportItem {
         // Support nested function calls
         preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
         // Reverse the array so that it gets the inner most first
-        $matches[1] = array_reverse($matches[1]);
-        
+        //print_r($matches[1]);
+        //$matches[1] = array_reverse($matches[1]);
+        $recursive = false;
+        $noLongerRecursive = false;
         foreach($matches[1] as $k => $m){
             $m = $matches[1][$k];
             $e = explode('(', $m);
@@ -424,24 +427,73 @@ abstract class AbstractReportItem {
                     $a[$key] = AbstractReport::blobConstant($arg);
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
-                    $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
-                    if(is_array($v)){
-                        foreach($matches[1] as $k2 => $m2){
-                            $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
-                        }
-                        $cdata = str_replace("{".$m."}", serialize($v), $cdata);
+                    if(strstr($m, "{") !== false || strstr($m, "}") !== false){
+                        // Don't process yet if there are recursive calls
+                        $recursive = true;
+                        continue;
                     }
                     else{
-                        foreach($matches[1] as $k2 => $m2){
-                            $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
+                        $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
+                        if(is_array($v)){
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                         }
-                        $cdata = str_replace("{".$m."}", $v, $cdata);
+                        else{
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", $v, $cdata);
+                        }
+                        if($recursive){
+                            break;
+                        }
                     }
                 }
             }
         }
-        
+        if($recursive){
+            // There are recursive calls, now call them
+            $cdata = $this->varSubstitute($cdata);
+        }
         return $cdata;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        else{
+            return $this->getParent()->getVariable($key);
+        }
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if($this instanceof ReportItemSet && isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        else{
+            $found = $this->getParent()->setVariable($key, $value, $depth + 1);
+            if(!$found && $depth == 1 && $this instanceof ReportItemSet){
+                $this->variables[$key] = $value;
+                return true;
+            }
+        }
+        return false;
     }
     
 }

@@ -51,6 +51,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfFiles;
     var $pdfAllProjects;
     var $showInstructions = true;
+    var $variables = array();
     
     /**
      * @param string $tok
@@ -1191,6 +1192,33 @@ abstract class AbstractReport extends SpecialPage {
             exit;
         }
         return true;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        return "";
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if(isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        return false;
     }
 }
 

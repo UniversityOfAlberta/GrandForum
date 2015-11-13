@@ -151,7 +151,17 @@ class ReportItemCallback {
             "subtract" => "subtract",
             "multiply" => "multiply",
             "divide" => "divide",
-            "round" => "round"
+            "round" => "round",
+            "set" => "set",
+            "get" => "get",
+            "and" => "andCond",
+            "or" => "orCond",
+            "==" => "eq",
+            "!=" => "neq",
+            ">" => "gt",
+            "<" => "lt",
+            ">=" => "gteq",
+            "<=" => "lteq"
         );
     
     var $reportItem;
@@ -1555,6 +1565,56 @@ class ReportItemCallback {
     
     function round($val, $dec=0){
         return round($val, $dec);
+    }
+    
+    function set($key, $val){
+        $this->reportItem->setVariable($key, $val);
+    }
+    
+    function get($key){
+        return $this->reportItem->getVariable($key);
+    }
+    
+    function andCond(){
+        $bool = true;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool && $arg);
+        }
+        return $bool;
+    }
+    
+    function orCond(){
+        $bool = false;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool || $arg);
+        }
+        return $bool;
+    }
+    
+    function eq($val1, $val2){
+        return ($val1 == $val2);
+    }
+    
+    function neq($val1, $val2){
+        return ($val1 != $val2);
+    }
+    
+    function gt($val1, $val2){
+        return ($val2 > $val2);
+    }
+    
+    function lt($val1, $val2){
+        return ($val1 < $val2);
+    }
+    
+    function gteq($val1, $val2){
+        return ($val1 >= $val2);
+    }
+    
+    function lteq($val1, $val2){
+        return ($val1 <= $val2);
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
