@@ -7,12 +7,12 @@
                     <thead>
                         <tr>
                             <th>IFP</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Q4</th>
-                            <th>Avg. Q5</th>
-                            <th>Avg. Total</th>
+                            <th style='white-space:nowrap;'>Avg. Q1</th>
+                            <th style='white-space:nowrap;'>Avg. Q2</th>
+                            <th style='white-space:nowrap;'>Avg. Q3</th>
+                            <th style='white-space:nowrap;'>Avg. Q4</th>
+                            <th style='white-space:nowrap;'>Avg. Q5</th>
+                            <th style='white-space:nowrap;'>Avg. Total</th>
                         </tr>
                     </thead>
                     <tbody>

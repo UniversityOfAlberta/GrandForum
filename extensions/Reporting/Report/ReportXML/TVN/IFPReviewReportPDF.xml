@@ -10,6 +10,11 @@
                 </ReportItem>
             </ReportItemSet>
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}">
+                <ReportItem id="bookmark" type="SubBookmark" title="{$user_tvn_file_number} - {$user_name}">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[
                         {set(q1, 0)}
