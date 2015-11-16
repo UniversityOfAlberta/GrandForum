@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Summer Awards For Undegraduate Students" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false">
-    <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
-            <SectionPermission id="background" permissions="rw" />
-            <SectionPermission id="application" permissions="rw" />
-            <SectionPermission id="hqp_description" permissions="rw" />
-            <SectionPermission id="description" permissions="" />
-            <SectionPermission id="declaration" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
-            <SectionPermission id="background" permissions="rw" />
-            <SectionPermission id="application" permissions="" />
-            <SectionPermission id="hqp_description" permissions="" />
-            <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="declaration" permissions="" />
-            <SectionPermission id="review" permissions="" />
-            <SectionPermission id="submit" permissions="" />
-        </Role>
-    </Permissions>
+<Report name="Summer Awards For Undegraduate Students" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <h4 style='font-size:1.40em;'>Summer Awards for Undergraduate Students</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
@@ -278,7 +273,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="description" type="Editable" name="Descriptions" tooltip="Project Descriptions" title="Project Descriptions" blobSection="DESCRIPTION">
+    <ReportSection id="description" type="Editable" name="Descriptions" tooltip="Project Descriptions" title="Project Descriptions" blobSection="DESCRIPTION" pagebreak="false">
         <ReportItem id="sup_head" type="Static">
             <![CDATA[
                 <h2>Trainee</h2>
@@ -370,28 +365,5 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
-    </ReportSection>
-    <ReportSection id="declaration" type="ReportSection" name="Declaration" tooltip="Applicant Declaration" title="Applicant Declaration">
-        <ReportItem id="declaration" type="Static">
-            <![CDATA[
-                <p>By submitting this Research Exchange Program 2015-2016 Application Form I agree with GlycoNet that:</p>
-                <ol>
-                    <li>the information contained in this form is true, complete, and accurate;</li>
-                    <li>I will use the funds received by me solely for the purpose set out in this application and as required pursuant to any applicable policies and procedures of GlycoNet;</li>
-                    <li>I will immediately notify the GlycoNet Training Coordinator of any change in my academic status or substantial change to the scope of the project;</li>
-                    <li>I consent to being identified by name as a recipient of funding under the Summer Awards Program on the GlycoNet website and in GlycoNet publications;</li>
-                    <li>I will acknowledge GlycoNet as a funding source when presenting work carried out during the tenure of the Summer Awards Program; and</li>
-                    <li>I will comply with the final reporting requirements of the Summer Awards Program required by GlycoNet.</li>
-                </ol>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>
