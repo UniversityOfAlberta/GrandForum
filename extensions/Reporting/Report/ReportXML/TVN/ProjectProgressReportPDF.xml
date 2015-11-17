@@ -35,7 +35,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId">
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" blobIndex="personId">
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -65,7 +65,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI">
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="CI">
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="HQP,Collaborator,Knowledge">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
