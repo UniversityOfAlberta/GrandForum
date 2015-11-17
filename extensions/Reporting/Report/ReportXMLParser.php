@@ -49,7 +49,7 @@ class ReportXMLParser {
                 $parser = simplexml_load_string($xml);
                 if($parser->getName() == "Report"){
                     $attributes = $parser->attributes();
-                    self::$fileMap[constant("{$attributes->reportType}")] = $fileName;
+                    @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
                 }
             }
         }
@@ -69,8 +69,8 @@ class ReportXMLParser {
                 $parser = simplexml_load_string($xml);
                 if($parser->getName() == "Report"){
                     $attributes = $parser->attributes();
-                    self::$pdfMap[constant("{$attributes->pdfType}")] = $fileName;
-                    self::$pdfRpMap[constant("{$attributes->pdfType}")] = constant($attributes->reportType);
+                    self::$pdfMap[AbstractReport::blobConstant("{$attributes->pdfType}")] = $fileName;
+                    self::$pdfRpMap[AbstractReport::blobConstant("{$attributes->pdfType}")] = AbstractReport::blobConstant($attributes->reportType);
                 }
             }
         }
@@ -227,17 +227,14 @@ class ReportXMLParser {
                 $this->report->setHeaderName("{$attributes->headerName}");
             }
             if(isset($attributes->reportType)){
-                if(!defined($attributes->reportType)){
-                    $this->errors[] = "Report Type '{$attributes->reportType}' does not exist for Report, using RP_RESEARCHER";
-                }
-                $type = (defined($attributes->reportType)) ? constant($attributes->reportType) : RP_RESEARCHER;
+                $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);
             }
             if(isset($attributes->pdfType)){
                 if(!defined($attributes->pdfType)){
                     $this->errors[] = "PDF Type '{$attributes->pdfType}' does not exist for Report, using RPTP_NORMAL";
                 }
-                $type = (defined($attributes->pdfType)) ? constant($attributes->pdfType) : RPTP_NORMAL;
+                $type = AbstractReport::blobConstant($attributes->pdfType);
                 $this->report->setPDFType($type);
             }
             if(isset($attributes->pdfFiles)){
@@ -272,14 +269,14 @@ class ReportXMLParser {
         foreach($children as $key => $child){
             if($key == "Role"){
                 $attributes = $child->attributes();
-                $role = (isset($attributes->role)) ? @constant($attributes->role) : MANAGER;
+                $role = (isset($attributes->role)) ? constant($attributes->role) : MANAGER;
                 $subType = (isset($attributes->subType)) ? $attributes->subType : "";
                 $subType = (isset($attributes->subRole)) ? $attributes->subRole : $subType;
-                if(isset($attributes->role) && @constant($attributes->role) == null){
+                if(isset($attributes->role) && AbstractReport::blobConstant($attributes->role) == null){
                     $role = (string)$attributes->role;
                 }
-                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
                 if($start == null){
                     $this->errors[] = "Start time '{$attributes->start}' does not exist";
                 }
@@ -293,8 +290,8 @@ class ReportXMLParser {
                 $attributes = $child->attributes();
                 $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
                 $projName = (isset($attributes->project)) ? "{$attributes->project}" : "";
-                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
                 if($start == null){
                     $this->errors[] = "Start time '{$attributes->start}' does not exist";
                 }
@@ -355,6 +352,9 @@ class ReportXMLParser {
             if(isset($attributes->type) || $section != null){
                 if(isset($attributes->type)){
                     $type = "{$attributes->type}";
+                    if(!class_exists($type) && class_exists($type."ReportSection")){
+                        $type = $type."ReportSection";
+                    }
                     if(!class_exists($type)){
                         $this->errors[] = "ReportSection '{$type}' does not exists";
                         continue;
@@ -392,10 +392,7 @@ class ReportXMLParser {
                     $section->setDisabled($attributes->tooltip);
                 }
                 if(isset($attributes->blobSection)){
-                    if(!defined($attributes->blobSection)){
-                        $this->errors[] = "Blob Section '{$attributes->blobSection}' does not exist for ReportSection, using SEC_NONE";
-                    }
-                    $sec = (defined($attributes->blobSection)) ? constant($attributes->blobSection) : SEC_NONE;
+                    $sec = AbstractReport::blobConstant($attributes->blobSection);
                     $section->setBlobSection($sec);
                 }
                 if($type == "EditableReportSection" && isset($attributes->autosave)){
@@ -470,6 +467,10 @@ class ReportXMLParser {
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
             if(class_exists($type)){
+                $itemset = new $type();
+            }
+            else if(class_exists($type."ReportItemSet")){
+                $type = $type."ReportItemSet";
                 $itemset = new $type();
             }
             else{
@@ -571,9 +572,12 @@ class ReportXMLParser {
         if(isset($attributes->type) || $item != null){
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";
+                if(!class_exists($type) && class_exists($type."ReportItem")){
+                    $type = $type."ReportItem";
+                }
                 if(!class_exists($type)){
                     $this->errors[] = "ReportItem '{$type}' does not exists";
-                    return;
+                    $item = "StaticReportItem";
                 }
                 $item = new $type();
                 $position = isset($attributes->position) ? "{$attributes->position}" : null;
@@ -616,21 +620,15 @@ class ReportXMLParser {
                 $item->setExtra($value['extra']);
             }
             if(isset($attributes->blobType)){
-                if(!defined($attributes->blobType)){
-                    $this->errors[] = "Blob Type '{$attributes->blobType}' does not exist for ReportItem, using BLOB_TEXT";
-                }
-                $t = (defined($attributes->blobType)) ? constant($attributes->blobType) : BLOB_TEXT;
+                $t = AbstractReport::blobConstant($attributes->blobType);
                 $item->setBlobType($t);
             }
             if(isset($attributes->blobItem)){
-                if(!defined($attributes->blobItem)){
-                    $this->errors[] = "Blob Item '{$attributes->blobItem}' does not exist for ReportItem, using null";
-                }
-                $i = (defined($attributes->blobItem)) ? constant($attributes->blobItem) : null;
+                $i = AbstractReport::blobConstant($attributes->blobItem);
                 $item->setBlobItem($i);
             }
             if(isset($attributes->blobSubItem)){
-                $i = (defined($attributes->blobSubItem)) ? constant($attributes->blobSubItem) : $attributes->blobSubItem;
+                $i = AbstractReport::blobConstant($attributes->blobSubItem);
                 $item->setBlobSubItem($i);
             }
             foreach($attributes as $key => $value){

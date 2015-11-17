@@ -209,7 +209,7 @@ abstract class AbstractReportItem {
         }
         if(!($parent instanceof AbstractReportSection)){
             $extraId = $this->getExtraIndex();
-            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
+            $postId = @$parent->getPostId()."_p1{$this->personId}_p2{$this->projectId}_m{$this->milestoneId}_e{$extraId}".$postId;
         }
         else{
             $postId = str_replace(" ", "", $parent->name).$postId;
@@ -423,12 +423,7 @@ abstract class AbstractReportItem {
                 $a = explode(",", str_replace(")", "", $e[1]));
                 foreach($a as $key => $arg){
                     $arg = trim($arg);
-                    if(defined($arg)){
-                        $a[$key] = constant($arg);
-                    }
-                    else{
-                        $a[$key] = $arg;
-                    }
+                    $a[$key] = AbstractReport::blobConstant($arg);
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
                     $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);

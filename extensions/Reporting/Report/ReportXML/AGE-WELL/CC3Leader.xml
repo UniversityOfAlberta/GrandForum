@@ -17,7 +17,7 @@
         </Instructions>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$project_name}">            
-                <ReportItem id="trans" type="TextareaReportItem" blobItem="CC_3_TRANS">
+                <ReportItem id="trans" type="StaticReportItem" blobItem="CC_3_TRANS">
                     <![CDATA[
                         <h2>SECTION 1: KNOWLEDGE</h2>
                         <h3>What do you know about transdisciplinarity?</h3>
@@ -25,7 +25,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="adopt" type="TextareaReportItem" blobItem="CC_3_ADOPT">
+                <ReportItem id="adopt" type="StaticReportItem" blobItem="CC_3_ADOPT">
                     <![CDATA[
                         <h2>SECTION 2: EXPERIENCE</h2>
                         <h3>Have you previously worked on projects that adopted a transdisciplinary approach?</h3>
@@ -33,14 +33,14 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="teamwork" type="TextareaReportItem" blobItem="CC_3_TEAMWORK">
+                <ReportItem id="teamwork" type="StaticReportItem" blobItem="CC_3_TEAMWORK">
                     <![CDATA[
                         <h3>Please outline your experience of teamwork within large, complex projects</h3>
                         <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</div>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="network" type="TextareaReportItem" blobItem="CC_3_NETWORK">
+                <ReportItem id="network" type="StaticReportItem" blobItem="CC_3_NETWORK">
                     <![CDATA[
                         <h2>SECTION 3: IMPLEMENTATION</h2>
                         <h3>What are your plans to contribute to the wider network?</h3>
@@ -48,21 +48,21 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="synergy" type="TextareaReportItem" blobItem="CC_3_SYNERGY">
+                <ReportItem id="synergy" type="StaticReportItem" blobItem="CC_3_SYNERGY">
                     <![CDATA[
                         <h3>Synergies between projects</h3>
                         <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</div>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="accept" type="TextareaReportItem" blobItem="CC_3_ACCEPT">
+                <ReportItem id="accept" type="StaticReportItem" blobItem="CC_3_ACCEPT">
                     <![CDATA[
                         <h3>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</h3>
                         <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</div>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="support" type="TextareaReportItem" blobItem="CC_3_SUPPORT">
+                <ReportItem id="support" type="StaticReportItem" blobItem="CC_3_SUPPORT">
                     <![CDATA[
                         <h2>SECTION 4: SUPPORT AND EVALUATION</h2>
                         <h3>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</h3>
@@ -70,11 +70,17 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="eval" type="TextareaReportItem" blobItem="CC_3_EVAL">
+                <ReportItem id="eval" type="StaticReportItem" blobItem="CC_3_EVAL">
                     <![CDATA[
                         <h3>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</h3>
                         <div style='margin-left:10px;font-style: italic;'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</div>
                         {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="feedback" type="TextareaReportItem" blobItem="CC_3_FEEDBACK">
+                    <![CDATA[
+                        <h2>Feedback</h2>
+                        {$item}<br /><br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>

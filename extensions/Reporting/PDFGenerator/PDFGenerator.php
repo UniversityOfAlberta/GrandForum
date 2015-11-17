@@ -171,13 +171,25 @@ abstract class PDFGenerator {
         $str = str_replace("&#64257;", "fi", $str);
         $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
         $str = str_replace("‐", "-", $str);
-        /*preg_match_all("/<strong>(.*?)<\/strong>/", $str, $matches);
+        /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
             $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<em>.*?<\/em>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</em> &nbsp;<em>", $match);
+            $match1 = str_replace(" &nbsp;<em>&nbsp;", " &nbsp;<em>", $match1);
+            $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<span style=\"text-decoration: underline;\">.*?<\/span>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace("<span style=\"text-decoration: underline;\">", "<u>", $match);
+            $match1 = str_replace_last("</span>", "</u>", $match1);
+            $match1 = str_replace(" ", "</u> &nbsp;<u>", $match1);
+            //$match1 = str_replace(" &nbsp;<u>&nbsp;", " &nbsp;<u>", $match1);
+            $str = str_replace($match, $match1, $str);
         }*/
-        //$str = str_replace("<strong>", "<span>", $str);
-        //$str = str_replace("</strong>", "</span>", $str);
         return $str;
     }
     
@@ -676,9 +688,9 @@ if ( isset($pdf) ) {
              '.PDFGenerator::cmToPixels($margins['top']).', 
              $color, 0.5);
   $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $color, 0.5);
   $pdf->close_object();
   $pdf->add_object($foot, "all");
@@ -689,7 +701,7 @@ if ( isset($pdf) ) {
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
   $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());

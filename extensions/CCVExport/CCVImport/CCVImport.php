@@ -10,15 +10,30 @@ class CCVImport extends BackbonePage {
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isRoleAtLeast(MANAGER);
+        return $person->isRoleAtLeast(INACTIVE);
     }
     
     function getTemplates(){
-        return array("csv_import");
+        return array(
+		     "Backbone/*",
+		     "ccv_import",
+		     "csv_import",
+		     "eval_import",
+		     "grad_import",
+		     "grant_import",
+		     "tab"
+		     );
     }
     
     function getViews(){
-        return array("CSVImportView"
+        return array("
+		     Backbone/*",
+		     "CCVImportView",
+		     "CSVImportView",
+		     "EvalImportView",
+		     "GradImportView",
+		     "GrantImportView",
+		     "TabView"
 		     );
     }
     

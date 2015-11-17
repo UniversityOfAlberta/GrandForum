@@ -168,63 +168,63 @@ class ImportBibTeXAPI extends API{
 	function doAction($noEcho=false){
 	    global $wgMessage;
 	    $me = Person::newFromWgUser();
-        if(isset($_POST['bibtex'])){
+            if(isset($_POST['bibtex'])){
             
-            if(isset($_POST['fec'])){
-                $bib = new stdClass();
-                $bib->m_entries = "";
-            }
-            else{
-	    	$this->structure = Product::structure();
-            	$dir = dirname(__FILE__);
-            	$error = "";
-            	require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
-            	$md5 = md5($_POST['bibtex']);
-            	$fileName = "/tmp/".$md5;
-            	$_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
-            	file_put_contents($fileName, $_POST['bibtex']);
-            	$bib = new Bibliography($fileName);
-            	unlink($fileName);
-	    }
-            $createdProducts = array();
-            $errorProducts = array();
-            if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
-                foreach($bib->m_entries as $bibtex_id => $paper){
-                    $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
-                    if($product != null){
-                        $createdProducts[] = $product;
-                    }
-                    else{
-                        $errorProducts[] = $paper;
-                    }
-                }
-            }
-            else{
-                // Error
-                $this->addError("No BibTeX references were found");
-                return false;
-            }
-            $json = array('created' => array(),
-                          'errors' => array());
-            foreach($createdProducts as $product){
-                $json['created'][] = $product->toArray();
-            }
-            foreach($errorProducts as $product){
-                if(!isset($product['title'])){
-                    $this->addError("A publication was missing a title");
-                }
-                else if(!isset($product['author'])){
-                    $this->addError("A publication was missing an authors list");
+                if(isset($_POST['fec'])){
+                    $bib = new stdClass();
+                    $bib->m_entries = $_POST['fec'];
                 }
                 else{
-                    $this->addMessage("Duplicate");
+	    	    $this->structure = Product::structure();
+            	    $dir = dirname(__FILE__);
+            	    $error = "";
+            	    require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
+            	    $md5 = md5($_POST['bibtex']);
+            	    $fileName = "/tmp/".$md5;
+            	    $_POST['bibtex'] = preg_replace("/((\\w+?)\\s*=\\s*\\{(.*?)\\},*)(\\s)*/ms", "\n$1\n", $_POST['bibtex']);
+            	    file_put_contents($fileName, $_POST['bibtex']);
+            	    $bib = new Bibliography($fileName);
+            	    unlink($fileName);
+	        }
+                $createdProducts = array();
+                $errorProducts = array();
+                if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
+                    foreach($bib->m_entries as $bibtex_id => $paper){
+                        $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
+                        $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
+                        if($product != null){
+                            $createdProducts[] = $product;
+                        }
+                        else{
+                            $errorProducts[] = $paper;
+                        }
+                    }
                 }
+                else{
+                // Error
+                    $this->addError("No BibTeX references were found");
+                    return false;
+                }
+                $json = array('created' => array(),
+                              'errors' => array());
+                foreach($createdProducts as $product){
+                    $json['created'][] = $product->toArray();
+                }
+                foreach($errorProducts as $product){
+                    if(!isset($product['title'])){
+                        $this->addError("A publication was missing a title");
+                    }
+                    else if(!isset($product['author'])){
+                        $this->addError("A publication was missing an authors list");
+                    }
+                    else{
+                        $this->addMessage("Duplicate");
+                    }
+                }
+                $this->data = $json;
+                return $json;
             }
-            $this->data = $json;
-            return $json;
         }
-	}
 	
 	function isLoginRequired(){
 		return true;

@@ -30,15 +30,34 @@
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
-    <ReportSection id="feedback" name="Project Feedback" tooltip="{$project_name} Feedback" title="{$project_name} Feedback" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
+    <ReportSection id="feedback" name="RMC Review" tooltip="RMC Review" title="RMC Review" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">
         <ReportItem id="table_head" type="StaticReportItem">
             <![CDATA[
+                <style>
+                    th.light {
+                        background: #F2F2F2 !important;
+                    }
+                
+                    th.dark {
+                        background: #E6E6E6 !important;
+                    }
+                    
+                    td.light {
+                        background: #FFFFFF !important;
+                    }
+                    
+                    td.dark {
+                        background: #F2F2F2 !important;
+                    }
+                    
+                </style>
                 <i>RMC Additional Feedback will be made available at a later point in time.</i>
-                <table class='wikitable'>
+                <table class='wikitable' width='100%'>
                     <tr>
-                        <th width="37.5%">Reviewer Comment</th>
-                        <th width="37.5%">My Responses</th>
-                        <th width="25%">Additional Reviewer Feedback</th>
+                        <th class='dark' width='25%'>February 2015 Review</th>
+                        <th class='dark' width='25%'>My October 2015 Responses</th>
+                        <th class='light' width='25%'>October 2015 Review</th>
+                        <th class='light' width='25%'>My Responses</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -47,32 +66,36 @@
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         <tr>
-                            <td valign='top'>
+                            <td valign='top' class='dark'>
                                 <p>{getExtra(comment)}</p>
                             </td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="comment" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
                     <![CDATA[
-                        <td valign='top'>
+                        <td valign='top' class='dark'>
                             {$item}
                         </td>
                     ]]>
                 </ReportItem>
-                <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+                <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
-                                <td valign='top'>
+                                <td valign='top' class='light'>
                                     {$rmc_project_feedback}
+                                </td>
+                                <td valign='top' class='light'>
                                 </td>
                             </tr>
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+                <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
                     <ReportItem id="feedback" type="StaticReportItem">
                         <![CDATA[
-                                <td valign='top'>
+                                <td valign='top' class='light'>
+                                </td>
+                                <td valign='top' class='light'>
                                 </td>
                             </tr>
                         ]]>
@@ -87,7 +110,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="cc1" tooltip="CC1 Feedback" name="CC1 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <table class='wikitable'>
@@ -143,7 +166,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
@@ -202,7 +225,7 @@
          </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc2" tooltip="CC2 Feedback" name="CC2 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <table class='wikitable'>
@@ -264,7 +287,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
@@ -329,7 +352,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc3" tooltip="CC3 Feedback" name="CC3 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <table class='wikitable'>
@@ -337,51 +360,54 @@
                             <th width="50%">My Comments</th>
                             <th width="50%">CC Leader Feedback</th>
                         </tr>
-                        <tr><th colspan='2'>What do you know about transdisciplinarity?</th></tr>
+                        <tr>
+                            <th colspan='1'>What do you know about transdisciplinarity?</th>
+                            <td valign='top' rowspan='16'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_FEEDBACK,0,0,{$project_id})}</td>
+                        </tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td>
+                            <!--td valign='top' rowspan='15'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TRANS,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Have you previously worked on projects that adopted a transdisciplinary approach?</th></tr>
+                        <tr><th colspan='1'>Have you previously worked on projects that adopted a transdisciplinary approach?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ADOPT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Please outline your experience of teamwork within large, complex projects</th></tr>
+                        <tr><th colspan='1'>Please outline your experience of teamwork within large, complex projects</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_TEAMWORK,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>What are your plans to contribute to the wider network?</th></tr>
+                        <tr><th colspan='1'>What are your plans to contribute to the wider network?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_NETWORK,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>Synergies between projects</th></tr>
+                        <tr><th colspan='1'>Synergies between projects</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SYNERGY,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</th></tr>
+                        <tr><th colspan='1'>How can we encourage acceptance of different theoretical and methodological approaches to research and team working practices?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_ACCEPT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</th></tr>
+                        <tr><th colspan='1'>How do you think CC3 (transdisciplinary working) can support the AGE-WELL network to achieve its goals?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_SUPPORT,0,0,{$project_id})}</td-->
                         </tr>
-                        <tr><th colspan='2'>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</th></tr>
+                        <tr><th colspan='1'>How can transdisiplinarity be evaluated within AGE-WELL so that we can establish what works well and what doesn’t?</th></tr>
                         <tr>
                             <td valign='top'>{getText(RP_CC_PLANNING,CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td>
-                            <td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td>
+                            <!--td valign='top'>{getText(RP_CC_LEADER, CC_PLANNING_3,CC_3_EVAL,0,0,{$project_id})}</td-->
                         </tr>
                     </table>
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
@@ -436,7 +462,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc4" tooltip="CC4 Feedback" name="CC4 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-11-01 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <table class='wikitable'>
@@ -478,7 +504,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-11-01 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>

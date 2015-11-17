@@ -113,7 +113,8 @@ class APIRequest{
 	    $this->addAction('Products', 'importDOI', new ImportDOIAPI());
 	    $this->addAction('Products', 'getPublicationSearch', new PublicationSearchAPI());
             $this->addAction('Products', 'importGradDb', new ImportGradDbAPI());
-	
+	    $this->addAction('Products', 'uploadGrantXls', new UploadGrantXlsAPI());	
+	    $this->addAction('Products', 'uploadEvals', new UploadCourseEvalsAPI());
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
 		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());
@@ -127,6 +128,8 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserPhone', new UserPhoneAPI());
 		$this->addAction('User Accounts', 'updateUserWebsite', new UserWebsiteAPI());
                 $this->addAction('User Accounts', 'updateUserLdap', new UserLdapAPI());
+                $this->addAction('User Accounts', 'updateGoogleScholarUrl', new UserGoogleScholarAPI());
+                $this->addAction('User Accounts', 'updateSciverseId', new UserSciverseAPI());	
 		$this->addAction('User Accounts', 'updateUserNationality', new UserNationalityAPI());
         $this->addAction('User Accounts', 'updateUserEmail', new UserEmailAPI());
         $this->addAction('User Accounts', 'updateUserGender', new UserGenderAPI());

@@ -145,7 +145,30 @@
          * @param integer $catalog The catalog number of the course
          * @return array The array of Courses
         */
-        static function newFromSubjectCatalogSectStartDateTerm($subject, $catalog,$sect, $startDate, $term){
+        static function newFromSubjectCatalogSectStartDateTerm($subject, $catalog,$sect,$startDate,$term){
+            $sql = "SELECT *
+                   FROM grand_courses
+                   WHERE `Subject` LIKE '%$subject%'
+                   AND `Catalog` LIKE '%$catalog%'
+                   AND `Sect` LIKE '%$sect%'
+                   AND `Start Date` LIKE '%$startDate%'
+                   AND `Term` LIKE '%$term%'";
+            $data = DBFunctions::execSQL($sql);
+            if(count($data)>0){
+                $course = new Course(array($data[0]));
+                return $course;
+            }
+            return new Course(array());
+        }
+        
+
+        /**
+         * Returns an array of courses that match the given subject and id
+         * @param string $subject The name of the course
+         * @param integer $catalog The catalog number of the course
+         * @return array The array of Courses
+        */
+        static function newFromSubjectCatalogSectStartDateTermLike($subject = '%', $catalog = '%' ,$sect = '%', $startDate = '%', $term = '%'){
             $sql = "SELECT *
                    FROM grand_courses
                    WHERE `Subject` LIKE '%$subject%'
@@ -357,6 +380,10 @@
         function getCacheId(){
                 //TODO:implement function
         }
+	
+	function getId(){
+	    return $this->id;
+	}
 	
 	function getStartDate(){
 	    $date = strtotime("01 January 1900 +{$this->startDate} days");

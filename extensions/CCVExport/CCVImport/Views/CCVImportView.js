@@ -5,7 +5,11 @@ CCVImportView = Backbone.View.extend({
     initialize: function(options){
         this.people = new People();
         this.people.roles = [NI];
-        this.listenTo(this.people, "sync", $.proxy(function(){
+        this.parent = options.parent;
+        if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
+            this.model.set("person", me);
+        }
+	this.listenTo(this.people, "sync", $.proxy(function(){
             this.render();
         }, this));
         this.people.fetch();

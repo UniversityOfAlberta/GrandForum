@@ -1,4 +1,5 @@
-<div id="tabs-1">
+<div id="csvtab">
+    <% if(this.parent.currentRoles.where({name:ADMIN}).length > 0){ %>
     <span class="label">Member:</span> 
     <select id="csvmember-select" data-placeholder="Choose a Member...">
         <option></option>
@@ -6,6 +7,7 @@
             <option value="<%= p.get('id')%>" <% if(person != null && p.get('id') == person.get('id')){ %> selected<% } %>><%= p.get('fullName') %></option>
         <% }) %>
     </select>
+    <% } %>
     <% if(person != null){ %>
         <h2>CSV Upload</h2>
         <p>Upload the CSV File for <b><%= person.get('fullName') %></b>.</p>
@@ -20,7 +22,7 @@
                 <input type="checkbox" name="funding" value="true" checked="checked" />Grant Information<br />
                 <input type="checkbox" name="awards" value="true" checked="checked" />Awards<br />
                 <input type="checkbox" name="info" value="true" checked="checked" />Personal Information<br />
-                <input type="checkbox" name="employment" value="true" checked="checked" />Employment Information
+                <input type="checkbox" name="additionals" value="true" checked="checked" />Additional Information
             </fieldset>
             <input type="file" name="csv" />
         <form><br />

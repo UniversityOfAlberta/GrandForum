@@ -48,7 +48,6 @@ class Bar extends Visualization {
 		]
 	     }
 	     var intervalId = setInterval(function(){
-		console.log('interval');
 		if($('#barchart{$this->index}').is(':visible')){
 		 var blank = document.createElement('canvas');
                  var canvas = document.getElementById('canvas');
@@ -59,7 +58,6 @@ class Bar extends Visualization {
 							responsive: false,
 							scaleShowGridLines : false
 							});
-		console.log('render');
 		clearInterval(intervalId);
 		intervalId = null;
 		}

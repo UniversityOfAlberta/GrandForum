@@ -141,15 +141,6 @@ Feature: EditMember
         Then I should see "is no longer a project leader of Phase2Project5"
         And "ni.user3@behat-test.com" should not be subscribed to "test-leaders"
         
-    Scenario: PL Editing RMC project members (Should see RMC who are also NI, but not people who are only RMC)
-        Given I am logged in as "PL.User1" using password "PL.Pass1"
-        When I follow "Edit Roles"
-        Then I should see "RMC User1"
-        But I should not see "RMC User2"
-        When I select "RMC User1" from "names"
-        And I press "Next"
-        Then I should see "Phase2Project1"
-        
     Scenario: PL Editing Champ project members
         Given I am logged in as "PL.User1" using password "PL.Pass1"
         When I follow "Edit Roles"

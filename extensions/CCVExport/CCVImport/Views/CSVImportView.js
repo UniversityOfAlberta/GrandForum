@@ -3,9 +3,13 @@ CSVImportView = Backbone.View.extend({
     template: _.template($("#csv_import_template").html()),
 
     initialize: function(options){
-        this.people = new People();
+        this.parent = options.parent;
+	this.people = new People();
         this.people.roles = [NI];
-        this.listenTo(this.people, "sync", $.proxy(function(){
+	if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
+            this.model.set("person", me);
+	}
+	this.listenTo(this.people, "sync", $.proxy(function(){
             this.render();
         }, this));
         this.people.fetch();
@@ -29,12 +33,17 @@ CSVImportView = Backbone.View.extend({
                 var warning = new Array();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
+		var nCourses = response.courses.length;
+		console.log(nCourses);
                 var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
                 var nFunding = (response.funding != undefined) ? response.funding.length : 0;
                 var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
                 if(nCreated > 0){
                     success.push("<b>" + nCreated + "</b> products were created");
                 }
+		if(nCourses > 0){
+		    success.push("<b>" + nCourses + "</b> courses were created/updated");
+		}
                 if(nHQP > 0){
                     success.push("<b>" + nHQP + "</b> HQP were created/updated");
                 }

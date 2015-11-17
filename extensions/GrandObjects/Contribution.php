@@ -12,23 +12,26 @@ class Contribution {
     var $name;
     var $rev_id;
     var $project_id;
-    var $people;
+    var $pi = array();
+    var $people = array();
     var $peopleWaiting;
     var $projects;
     var $projectsWaiting;
-    var $partners;
+    var $partners = array();
     var $partnersWaiting;
-    var $type;
-    var $subtype;
-    var $cash;
-    var $kind;
+    var $type = array();
+    var $subtype = array();
+    var $cash = array();
+    var $kind = array();
     var $description;
-    var $keywords;
+    var $keywords = array();
+    var $scope;
     var $access_id;
     var $start_date;
     var $end_date;
     var $date;
-    var $unknown;
+    var $unknown = array();
+
     
     // Creates a Contribution from the given id
     // The most recent revision is grabbed
@@ -107,6 +110,62 @@ class Contribution {
             $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
         }
+    }
+
+    function create(){
+        $me = Person::newFromWGUser();
+        if($me->isLoggedIn()){
+            // Begin Transaction
+            DBFunctions::begin();
+            $sql = "SELECT MAX(id) FROM grand_contributions";
+            $data = DBFunctions::execSQL($sql);
+            $cid = $data[0]['MAX(id)'] + 1;
+	    if($this->id == ""){
+		$this->id = $cid;
+	    }
+            $status = DBFunctions::insert('grand_contributions',
+                                          array('id' => $this->id,
+						'project_id' => $this->project_id,
+						'name' => $this->name,
+                                                'pi' => serialize($this->pi),
+						'users' => serialize($this->people),
+						'description' => $this->description,
+						'keywords' => serialize($this->keywords),
+						'scope' => $this->scope,
+						'access_id' => $this->access_id,
+						'start_date' => $this->start_date,
+						'end_date' => $this->end_date),
+                                          true);
+	
+	    if($status){
+		$contribution = Contribution::newFromId($this->id);
+		$this->rev_id = $contribution->rev_id;
+		foreach($this->partners as $partner){
+		    print_r("got here");
+		    print_r($this->rev_id);
+		    $type = $this->type;
+		    $subtype = $this->subtype;
+		    $cash = $this->cash;
+		    $kind = $this->kind;
+		    $unknown = $this->unknown;
+		    $id = md5(serialize($partner));
+                    $status = DBFunctions::insert('grand_contributions_partners',
+                                              array('contribution_id' => $this->rev_id,
+                                                    'partner' => $partner->organization,
+                                                    'type' => $type["$id"],
+                                                    'subtype' => $subtype["$id"],
+                                                    'cash' => $cash["$id"],
+                                                    'kind' => $kind["$id"],
+                                                    'unknown' => $unknown["$id"]),
+                                                    true);
+		    if($status){
+			DBFunctions::commit();	
+		    }
+		}
+	    }
+            return $status;
+        }
+        return false;
     }
     
     static function getAllContributions(){
@@ -574,8 +633,7 @@ class Contribution {
         $data = DBFunctions::execSQL($sql);
         $keywords = array();
         if(count($data)>0){
-            $words = unserialize($data[0]['keywords']);
-	    $keywords = explode(",",$words);
+            $keywords = unserialize($data[0]['keywords']);
         }
         return $keywords;
 

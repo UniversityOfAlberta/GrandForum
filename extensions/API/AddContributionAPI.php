@@ -79,7 +79,13 @@ class AddContributionAPI extends API{
             }
             $contribution = Contribution::newFromId($_POST['id']);
             $_POST['access_id'] = (isset($_POST['access_id'])) ? $_POST['access_id'] : $contribution->getAccessId();
-            DBFunctions::insert('grand_contributions',
+            $keywords = explode(",", $_POST['keywords']);
+            $keyArray = array();
+            foreach($keywords as $keyword){
+           	 $keyArray[] = $keyword;
+            } 
+	    $_POST['keywords'] = $keyArray;
+	    DBFunctions::insert('grand_contributions',
                                 array('id' => $_POST['id'],
                                       'name' => $_POST['title'],
                                       'users' => serialize($_POST['users']),

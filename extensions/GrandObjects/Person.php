@@ -29,6 +29,8 @@ class Person extends BackboneModel {
     var $twitter;
     var $website;
     var $ldap;
+    var $googleScholar;
+    var $sciverseId;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -311,6 +313,8 @@ class Person extends BackboneModel {
                                               'user_twitter',
                                               'user_website',
 					      'ldap_url',
+					      'google_scholar_url',
+					      'sciverse_id',
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
@@ -850,6 +854,8 @@ class Person extends BackboneModel {
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
             $this->ldap = @$data[0]['ldap_url'];
+	    $this->googleScholar = @$data[0]['google_scholar_url'];
+	    $this->sciverseId = @$data[0]['sciverse_id'];
 	    $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
@@ -878,6 +884,8 @@ class Person extends BackboneModel {
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
 		      'ldap' => $this->getLdap(),
+		      'googleScholarId' => $this->getGoogleScholar(),
+		      'sciverseId' => $this->getSciverseId(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
@@ -920,6 +928,8 @@ class Person extends BackboneModel {
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
+					  'google_scholar_url' => $this->getGoogleScholar(),
+					  'sciverse_id' => $this->getSciverseId(),
 					  'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -962,6 +972,8 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
 					  'ldap_url' => $this->getLdap(),
+                                          'google_scholar_url' => $this->getGoogleScholar(),
+                                          'sciverse_id' => $this->getSciverseId(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1330,7 +1342,14 @@ class Person extends BackboneModel {
 	}
 	return $this->ldap;
     }
+
+    function getGoogleScholar(){
+	return $this->googleScholar;
+    }
     
+    function getSciverseId(){
+	return $this->sciverseId;
+    }
     /**
      * Returns the url of this Person's profile page
      * @return string The url of this Person's profile page
@@ -2395,6 +2414,67 @@ class Person extends BackboneModel {
         $this->projectCache[$start.$end] = $projectsDuring;
         return $projectsDuring;
     }
+
+    static function getAllPartnerNames(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $names = array();
+        foreach($data as $row){
+            $names[$row['partner']] = $row['partner'];
+        }
+        return $names;
+    }
+    
+    static function getAllPartnerTitles(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $titles = array();
+        foreach($data as $row){
+            $titles[$row['title']] = $row['title'];
+        }
+        return $titles;
+    }
+    
+    static function getAllPartnerDepartments(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'));
+        $depts = array();
+        foreach($data as $row){
+            $depts[$row['department']] = $row['department'];
+        }
+        return $depts;
+    }
+    
+    // Returns the name of the partner of this user
+    function getPartnerName(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
+            return $data[0]['partner'];
+        }
+        return "";
+    }
+    
+    function getPartnerTitle(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
+            return $data[0]['title'];
+        }
+        return "";      
+    }
+    
+    function getPartnerDepartment(){
+        $data = DBFunctions::select(array('grand_champion_partners'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data) > 0){
+            return $data[0]['department'];
+        }
+        return "";      
+    }
     
     /**
      * Returns the number of months an HQP has been a part of a project
@@ -3235,7 +3315,7 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
-        $me = Person::newFromWgUser();
+	$me = Person::newFromWgUser();
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
@@ -3258,15 +3338,12 @@ class Person extends BackboneModel {
                 }
             }
         }
-        
         if(!$onlyPublic){
-            $allPapers = Paper::getAllPapers('all', $category, $grand, $onlyPublic, $access);
+            $allPapers = Paper::getAllPrivatePapers('all', $category, $grand);
             foreach($allPapers as $paper){
-                if(!isset($processed[$paper->getId()]) &&
-                   ($paper->getCreatedBy() == $this->id || 
-                    $paper->getAccessId() == $this->id)){
+                if(!isset($processed[$paper->getId()])){
                     $processed[$paper->getId()] = true;
-                    $papers[] = $paper->getId();
+		    $papers[] = $paper->getId();
                 }
             }
         }
@@ -3297,9 +3374,10 @@ class Person extends BackboneModel {
      * @param string $startRange The starting date (start of the current reporting year if not specified)
      * @param string $endRange The end date (end of the current reporting year if not specified)
      * @param boolean $includeHQP Whether or not to include HQP in the result
+     * @param boolean $networkRelated Whether or not the products need to be associated with a project
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
         global $config;
 	self::generateAuthorshipCache();
         $processed = array();
@@ -3329,8 +3407,8 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               ($paper->isGrandRelated() || !$config->getValue("projectsEnabled")) &&
-               $paper->getId() != 0 &&
+               (!$networkRelated || $paper->isGrandRelated() || !$config->getValue("projectsEnabled")) &&
+               $paper->getId() != 0 && 
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
             }

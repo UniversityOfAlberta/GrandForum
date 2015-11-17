@@ -11,12 +11,13 @@ class Relationship{
 	var $id;
 	var $user1;
 	var $user2;
-    var $type;
-    var $projects;
-    var $projectsWaiting;
-    var $startDate;
-    var $endDate;
-    var $comment;
+        var $type;
+        var $projects;
+        var $projectsWaiting;
+        var $startDate;
+        var $endDate;
+	var $status;
+        var $comment;
 	
 	// Returns a new Relationship from the given id
 	static function newFromId($id){
@@ -29,6 +30,21 @@ class Relationship{
 		$Relationship = new Relationship($data);
         self::$cache[$Relationship->id] = &$Relationship;
 		return $Relationship;
+	}
+	
+	static function newFromUser1User2TypeStartDate($user1,$user2,$type,$startdate){
+	    $sql = "SELECT *
+		  FROM grand_relations WHERE
+		  user1 = '$user1' AND
+		  user2 = '$user2' AND
+	          type = '$type' AND
+		  start_date = '$startdate'";
+	    $data = DBFunctions::execSQL($sql);
+	    if(count($data) >0){
+	        $relation = new Relationship(array($data[0]));
+	        return $relation;
+	    }
+	    return new Relationship(array());
 	}
 	
 	// Constructor
@@ -44,6 +60,35 @@ class Relationship{
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
 		}
+	}
+
+	function create(){
+	    $me = Person::newFromWGUser();
+	    if($me->isLoggedIn()){
+	 	DBFunctions::begin();
+		$status = DBFunctions::insert('grand_relations',
+					      array('user1' => $this->user1,
+						    'user2' => $this->user2,
+						    'type' => $this->type,
+						    'start_date' => $this->startDate,
+						    'end_date' => $this->endDate),
+					      true);
+		if($this->endDate == ""){
+		    $this->endDate ="0000-00-00 00:00:00";
+		}
+		if($status && $this->endDate != "0000-00-00 00:00:00"){
+		    $status = DBFunctions::insert('grand_movedOn',
+					    array('user_id' => $this->user2,
+						  'effective_date' => $this->endDate,
+						  'status' => $this->status),
+					      true);
+		}
+		if($status){
+		    DBFunctions::commit();
+			return $status;
+		}
+	    }
+	    return false;
 	}
 	
 	// Returns the id of this Relationship

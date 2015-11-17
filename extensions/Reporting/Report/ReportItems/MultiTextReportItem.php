@@ -105,6 +105,11 @@ EOF;
                             }
                             $item .= "</select></td>\" + \n";
                         }
+                        else if(strstr(strtolower(@$types[$j]), "date") !== false){
+                            preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
+                            $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
+                            $item .= @"\"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
@@ -136,6 +141,11 @@ EOF;
                     $("#table_{$this->getPostId()}").show();
                 }
                 $("input.numeric").forceNumeric({min: 0, max: 9999999999999999});
+                $("input.calendar").each(function(i, el){
+                    $(el).datepicker({
+                        dateFormat: $(el).attr('data-dateFormat')
+                    });
+                });
             }
             $(document).ready(function(){
                 $("#table_{$this->getPostId()} select:not(.raw)").combobox();
@@ -192,6 +202,12 @@ EOF;
                             }
                         }
                         $item .= "</select></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "date") !== false){
+                        $val = str_replace("'", "&#39;", $value[$index]);
+                        preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
+                        $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
+                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);

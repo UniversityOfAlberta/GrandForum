@@ -271,7 +271,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created, acceptance_ratio_denominator, acceptance_ratio_numerator, ratio, acceptance_date
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -287,10 +287,10 @@ class Paper extends BackboneModel{
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
             }
-            if(!$onlyPublic){
+            if($onlyPublic === false){
                 $sql .= "\nAND (access_id = '{$me->getId()}' OR access_id = '0')";
             }
-            else{
+            else if ($onlyPublic === true){
                 $sql .= "\nAND access_id = '0'";
             }
             $sql .= "\nORDER BY p.`type`, p.`title`";
@@ -428,6 +428,44 @@ class Paper extends BackboneModel{
             return $papers;
         }
     }
+
+    static function getAllPrivatePapers($project='all', $category='all', $grand='grand'){
+	if(isset(self::$dataCache["me".$project.$category.$grand])){
+            return self::$dataCache["me".$project.$category.$grand];
+        }
+	$me = Person::newFromWgUser();
+	$sql = "SELECT SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
+		 FROM grand_products WHERE
+		(access_id = '{$me->getId()}'
+		OR created_by = '{$me->getId()}')
+		";
+        if($category != "all"){
+            $sql .= "\nAND `category` = '$category'";
+        }
+        $sql .= "\nORDER BY `type`, `title`";
+        $data = DBFunctions::execSQL($sql);
+        self::generateProductProjectsCache();
+        $papers = array();
+	foreach($data as $row){
+            $hasProjects = (isset(self::$productProjectsCache[$row['id']]) && count(self::$productProjectsCache[$row['id']]) > 0);
+            if($project != "all" ||
+               (($grand == 'grand' && $hasProjects) ||
+                ($grand == 'nonGrand' && !$hasProjects) ||
+                 $grand == 'both')){
+                if(!isset(self::$cache[$row['id']])){
+                    $paper = new Paper(array($row));
+                    self::$cache[$paper->id] = $paper;
+                }
+                else{
+                    $paper = self::$cache[$row['id']];
+                }
+                $papers[] = $paper;
+            }
+        }
+        self::$dataCache["me".$project.$category.$grand] = $papers;
+	return $papers;
+    }
+
     
     static function generateIllegalAuthorsCache(){
         if(count(self::$illegalAuthorsCache) == 0){
@@ -560,10 +598,10 @@ class Paper extends BackboneModel{
             //$this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
 	    $this->central_repo_id = $data[0]['central_repo_id'];
-	    $this->ratio = $data[0]['ratio'];
-	    $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
-	    $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
-	    $this->acceptance_date = $data[0]['acceptance_date'];
+//	    $this->ratio = $data[0]['ratio'];
+//	    $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
+//	    $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
+//	    $this->acceptance_date = $data[0]['acceptance_date'];
         }
     }
     

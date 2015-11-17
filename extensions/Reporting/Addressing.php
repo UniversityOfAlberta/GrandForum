@@ -73,7 +73,6 @@ define('RP_TRANS_REVIEW',       306);
 /*
  * FEC
  */
-define('RP_FEC', 400);
 
 
 /*
@@ -272,7 +271,6 @@ define('SSA_REPORT',            1);
 define('SSA_HQP',               2);
 
 //FEC Report
-define('FEC_INFORMATION', 1);
 
 // IFP Review
 define('IFP_REVIEW',            1);
@@ -479,6 +477,7 @@ define('CC_3_ACCEPT',       6);
 define('CC_3_SUPPORT',      7);
 define('CC_3_EVAL',         8);
 define('CC_3_ATTACH',       9);
+define('CC_3_FEEDBACK',     10);
 
 define('CC_4_TRAIN',        1);
 define('CC_4_KNOW',         2);
@@ -873,18 +872,6 @@ define('IFP_REVIEW_COMMENTS',   6);
 define('IFP_REVIEW_FUNDING',    7);
 
 //FEC Report
-define('FEC_INFO_PHD', 1);
-define('FEC_INFO_APPOINTMENT', 2);
-define('FEC_INFO_RESP', 3);
-define('FEC_INFO_LEAVES', 4);
-define('FEC_INFO_REASONS', 5);
-define('FEC_INFO_DEVELOPMENT', 6);
-define('FEC_INFO_TEACHING', 7);
-define('FEC_INFO_AWARDS', 8);
-define('FEC_INFO_ACTIVITIES', 9);
-define('FEC_INFO_SERVICE', 10);
-define('FEC_INFO_ADDITIONAL', 11);
-define('FEC_INFO_FOOTNOTES', 12);
 
 // Transformative Review
 define('TRANS_SRC_TOPIC',       1);
@@ -898,10 +885,22 @@ define('TRANS_SRC_INTEGRATION', 8);
 define('TRANS_SRC_RECOGNITION', 9);
 define('TRANS_SRC_COMMENTS1',   14);
 define('TRANS_SRC_EXPERIENCE',  10);
-define('TRANS_SRC_EXPERTICE',   11);
+define('TRANS_SRC_EXPERTISE',   11);
 define('TRANS_SRC_BUDGET',      12);
 define('TRANS_SRC_OBJECTIVES',  13);
 define('TRANS_SRC_COMMENTS2',   15);
+
+define('TRANS_RMC_GRANT',       1);
+define('TRANS_RMC_IMPACT',      2);
+define('TRANS_RMC_POLICY',      3);
+define('TRANS_RMC_MISSION',     4);
+define('TRANS_RMC_PRIORITIES',  5);
+define('TRANS_RMC_NETWORKING',  6);
+define('TRANS_RMC_PARTNERSHIPS',7);
+define('TRANS_RMC_HQP',         8);
+define('TRANS_RMC_ENGAGEMENT',  9);
+define('TRANS_RMC_COMMENTS',    10);
+define('TRANS_RMC_SUGGESTIONS', 11);
 
 /*
  * There are no third-level identifiers for Evaluator Report.  Those are used

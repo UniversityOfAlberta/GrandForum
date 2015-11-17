@@ -229,6 +229,7 @@
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
+    $config->setConst("ETC",        "ETC");
     $config->setConst("IAC",        "IAC");
     $config->setConst("CAC",        "CAC");
     $config->setConst("NCE",        "NCE Rep");
@@ -260,6 +261,7 @@
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "International Scientific Advisory Committee",
+        $config->getConst('ETC')            => "Education and Training Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",
         $config->getConst('CAC')            => "Consumer Advisory Committee",
         $config->getConst('NCE')            => "NCE Rep",

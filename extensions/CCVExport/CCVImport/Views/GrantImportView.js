@@ -1,10 +1,15 @@
-CSVImportView = Backbone.View.extend({
+GrantImportView = Backbone.View.extend({
 
     template: _.template($("#grant_import_template").html()),
 
     initialize: function(options){
+	this.parent = options.parent;
         this.people = new People();
         this.people.roles = [NI];
+        this.parent = options.parent;
+        if(this.parent.currentRoles.where({name:ADMIN}).length == 0){
+            this.model.set("person", me);
+        }
         this.listenTo(this.people, "sync", $.proxy(function(){
             this.render();
         }, this));
