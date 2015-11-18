@@ -12,7 +12,7 @@
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
     </Permissions>
-    <ReportSection id="src_review" name="Ex/SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -172,7 +172,7 @@
                 <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS1" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
-                        <p>Please provide written feedback in this cell.  Comments are mandatory for any section that scores 3 or less:</p>
+                        <p> Please provide written feedback as necessary (mandatory for scores on individual components less than 3):</p>
                         {$item}<br /><br />
                     ]]>
                 </ReportItem>
@@ -247,6 +247,41 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="rmc_review" name="RMC Review" blobSection="TRANS_RMC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Reviewer Information and Instructions:</p>
+                <ol>
+                    <li>Please complete all sections.</li>
+                    <li>Goal of the Competition: This program is designed to fund transformative research projects that are exceptionally innovative and thus have the potential to have a major economic and social impact on the current Canadian health care system as it relates to the care for frail elderly Canadians. TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices. It is expected that if successful the knowledge generated from these projects would be applied widely across the Canadian health care system.</li>
+                    <li>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:
+                        <ol type="i">
+                            <li>Proposals must demonstrate the potential for a transformative impact on improving care for frail elderly Canadians and their caregivers, and provide a socio-economic benefit to Canada.</li>
+                            <li>Small-scale feasibility studies or strictly observational studies are not eligible for funding under this competition. Proposals are expected to be larger and longer grants than traditionally funded by TVN.  Grants can be up to 3 years in length and have a maximum budget of $3M</li>
+                            <li>Transformative research that would be eligible for funding are projects that:
+                            <ul>
+                                <li>are being scaled up from existing successful demonstration projects</li>
+                                <li>apply pathways, processes, tools or technology developed from existing knowledge or evidence into the care of the frail elderly</li>
+                                <li>apply care pathways currently in practice in other health care systems in the world</li>
+                                <li>build on current TVN funded research to apply it to wider health care systems, more regions or provinces</li>
+                            </ul>
+                            </li>
+                            <li>Within the scope of the present competition, projects which have the following characteristics will be prioritized for funding:
+                            <ul>
+                                <li>Those that improve the uptake or application of existing evidence to improve care for frail elderly Canadians</li>
+                                <li>Those that seek to improve system changes for the benefit of frail elderly Canadians</li>
+                                <li>Proposals that building on previous TVN funded work</li>
+                            </ul>
+                            </li>
+                            <li>Research projects must fit within TVN’s strategic priorities (i.e., Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes; Improving care across the continuum)</li>
+                            <li>Research projects must fit within TVN’s patient-oriented research themes (i.e., Improving end-of-life care/advance care planning; Improving acute care/critical care; Optimizing community care/residential care; Optimizing transitions of care)</li>
+                            <li>Proposals must demonstrate significant partnerships which will increase translation of project results into policy and/or practice.  Potential for commercialization of research results is an asset although not required.  Proposals must have demonstrated committed cash or eligible in-kind contributions from NCE-eligible partners totaling a minimum of 50% of TVN’s funding. To be clear, for example if $100,000 is requested from TVN the applicants must secure an additional minimum $50,000 in partner contributions.</li>
+                            <li>Networking: In general TVN seeks projects that represent the collaborative efforts of investigators in more than one discipline and at more than one institution, from more than one province, and with the involvement of partners and stakeholders from multiple sectors.  Note: For these smaller Catalyst grants investigators were advised that minimally the proposal needed to describe future plans to address these networking requirements.</li>
+                            <li>Research teams must include patients and families, knowledge users, and HQP as meaningfully involved and integral team members.</li>
+                        </ol>
+                    </li>
+                </ol>
+            ]]>
+        </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
@@ -301,7 +336,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_RMC_HQP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="HQP have not been identified as part of the research team|The number of identified HQP is minimal and their roles in the project have not been delineated.|The number of HQP is reasonable and their roles in the project have been clearly delineated.|The number of HQP is excellent and they appear to have significant and clearly defined roles in the project." orientation="horizontal" showScore="true">
+                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_RMC_HQP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="HQP have not been identified as part of the research team.|The number of identified HQP is minimal and their roles in the project have been somewhat  delineated, but do not appear to be meaningful.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).|The number of HQP is reasonable and their roles in the project have been clearly delineated and are meaningful.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).|The number of HQP is high and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.)." orientation="horizontal" showScore="true">
                     <![CDATA[
                         <h2>8. HQP Development</h2>
                         {$item}
