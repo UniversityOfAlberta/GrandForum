@@ -281,7 +281,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
