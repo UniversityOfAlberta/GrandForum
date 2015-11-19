@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" pdfFiles="HQPApplications/SummerAwardReportPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="report" tooltip="Final Report" name="Final Report" title="Final Report" type="EditableReportSection" blobSection="REPORT">
+        <ReportItem id="trainee_head" type="Static">
+            <![CDATA[
+                <h2>Trainee</h2>
+                <table class='wikitable'>
+                    <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
+                    <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="province" type="Text" blobType="BLOB_TEXT" blobItem="PROV">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="trainee_foot" type="Static">
+            <![CDATA[
+                        <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
+                        <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="residency" type="Select" options="Candadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_head" type="Static">
+            <![CDATA[
+                <h2>Proposed Supervisor</h2>
+                <table class='wikitable'>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_name" type="NISelect" blobType="BLOB_TEXT" blobItem="SUPNAME">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Name:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_dept" type="Text" blobType="BLOB_TEXT" blobItem="SUPDEPT">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Department:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_uni" type="Text" blobType="BLOB_TEXT" blobItem="SUPUNI">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Institution:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_city" type="Text" blobType="BLOB_TEXT" blobItem="SUPCITY">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_prov" type="Text" blobType="BLOB_TEXT" blobItem="SUPPROV">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_phone" type="Text" blobType="BLOB_TEXT" blobItem="SUPPHONE">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Phone:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_email" type="Text" blobType="BLOB_TEXT" blobItem="SUPEMAIL">
+            <![CDATA[
+                <tr>
+                    <td align='right' style='font-weight:bold;'>Email:</td><td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_foot" type="Static">
+            <![CDATA[
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="acronym" type="Text" blobItem="ACRONYM" blobSubItem="{$user_id}">
+            <![CDATA[
+                <h2>Project Information</h2>
+                <table class='wikitable'>
+                <tr>
+                    <td valign='top' align='right'><b>Project Acronym:</b><br />
+                        <small>(if project is funded by GlycoNet)</small>
+                    </td>
+                    <td valign='top'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" blobSubItem="{$user_id}">
+            <![CDATA[
+                <tr>
+                    <td align='right'><b>Project Title:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Radio" blobItem="THEME" blobSubItem="{$user_id}" orientation="vertical" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+            <![CDATA[
+                <tr>
+                    <td valign='top' align='right'><b>Theme:</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" blobSubItem="{$user_id}" limit="750" rich="true" height="400px">
+            <![CDATA[
+                <h2>Project Description - <small>750 words maximum, including references</small></h2>
+                <p>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="Upload" blobItem="FIGURES" blobSubItem="{$user_id}" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Uploads</h2>
+                <h3>Figures and schemes - <small>1 pages maximum</small></h3>
+                <p>Upload as a single separate PDF document. Include legends below each figure or scheme.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter" type="Upload" blobItem="LETTER" blobSubItem="{$user_id}" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h3>Signed letter of support</h3>
+                <p>Upload as a single separate PDF document.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

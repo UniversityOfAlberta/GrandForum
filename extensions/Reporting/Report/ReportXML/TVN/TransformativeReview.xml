@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP2016 Review" reportType="RP_TRANS_REVIEW" ajax="true" disabled="false">
+<Report name="Transformative Review" reportType="RP_TRANS_REVIEW" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="materials" permissions="rw" />
@@ -38,7 +38,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
@@ -249,7 +249,6 @@
     <ReportSection id="rmc_review" name="RMC Review" blobSection="TRANS_RMC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
-                <p>Reviewer Information and Instructions:</p>
                 <ol>
                     <li>Please complete all sections.</li>
                     <li>Goal of the Competition: This program is designed to fund transformative research projects that are exceptionally innovative and thus have the potential to have a major economic and social impact on the current Canadian health care system as it relates to the care for frail elderly Canadians. TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices. It is expected that if successful the knowledge generated from these projects would be applied widely across the Canadian health care system.</li>
@@ -282,7 +281,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
