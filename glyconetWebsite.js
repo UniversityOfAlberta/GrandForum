@@ -231,4 +231,4 @@ initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);
 initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
 initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
 initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 3);
-initTab("GTA", "#gta", "tab-7", ['position','university'], 4);
+initTab("GTA", "#gta", "tab-7", ['position','university','email'], 3);
