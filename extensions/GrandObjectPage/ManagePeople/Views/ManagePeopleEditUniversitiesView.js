@@ -1,18 +1,18 @@
-ManagePeopleEditRolesView = Backbone.View.extend({
+ManagePeopleEditUniversitiesView = Backbone.View.extend({
 
-    roles: null,
+    universities: null,
     person: null,
-    roleViews: null,
+    universityViews: null,
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
-        this.roleViews = new Array();
-        this.listenTo(this.model, "change", this.render);
-        this.template = _.template($('#edit_roles_template').html());
+        this.template = _.template($('#edit_universities_template').html());
+        this.universityViews = new Array();
+        
         this.model.ready().then($.proxy(function(){
-            this.roles = this.model.getAll();
-            this.listenTo(this.roles, "add", this.addRows);
+            this.universities = this.model;
+            this.listenTo(this.universities, "add", this.addRows);
             this.model.ready().then($.proxy(function(){
                 this.render();
             }, this));
@@ -41,51 +41,50 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        var copy = this.roles.toArray();
+        var copy = this.universities.toArray();
         clearAllMessages();
-        _.each(copy, $.proxy(function(role){
-            if(_.contains(allowedRoles, role.get('name'))){
-                if(role.get('deleted') != "true"){
-                    role.save(null, {
-                        success: function(){
-                            addSuccess("Roles saved");
-                        },
-                        error: function(){
-                            addError("Roles could not be saved");
-                        }
-                    });
-                }
-                else {
-                    role.destroy(null, {
-                        success: function(){
-                            addSuccess("Roles saved");
-                        },
-                        error: function(){
-                            addError("Roles could not be saved");
-                        }
-                    });
-                }
+        _.each(copy, $.proxy(function(university){
+            if(university.get('deleted') != "true"){
+                university.save(null, {
+                    success: function(){
+                        addSuccess("Universities saved");
+                    },
+                    error: function(){
+                        addError("Universities could not be saved");
+                    }
+                });
+            }
+            else {
+                university.destroy(null, {
+                    success: function(){
+                        addSuccess("Universities saved");
+                    },
+                    error: function(){
+                        addError("Universities could not be saved");
+                    }
+                });
             }
         }, this));
     },
     
-    addRole: function(){
-        this.roles.add(new Role({name: HQP, userId: this.person.get('id')}));
+    addUniversity: function(){
+        var university = "Unknown";
+        this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){
-        this.roles.each($.proxy(function(role, i){
-            if(this.roleViews[i] == null){
-                var view = new ManagePeopleEditRolesRowView({model: role});
-                this.$("#role_rows").append(view.render());
+        this.universities.each($.proxy(function(university, i){
+            if(this.universityViews[i] == null){
+                var view = new ManagePeopleEditUniversitiesRowView({model: university});
+                this.$("#university_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
                 }
                 else{
                     view.$el.addClass('odd');
                 }
-                this.roleViews[i] = view;
+                this.universityViews[i] = view;
             }
         }, this));
     },
@@ -99,13 +98,13 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 
 });
 
-ManagePeopleEditRolesRowView = Backbone.View.extend({
+ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     tagName: 'tr',
     
     initialize: function(){
         this.listenTo(this.model, "change", this.update);
-        this.template = _.template($('#edit_roles_row_template').html());
+        this.template = _.template($('#edit_universities_row_template').html());
     },
     
     delete: function(){
@@ -133,6 +132,12 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.$("[name=university]").css('max-width', '200px').css('width', '200px');
+        this.$("[name=department]").css('max-width', '200px').css('width', '200px');
+        this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+        this.$("[name=university]").combobox();
+        this.$("[name=department]").combobox();
+        this.$("[name=position]").combobox();
         return this.$el;
     }, 
     

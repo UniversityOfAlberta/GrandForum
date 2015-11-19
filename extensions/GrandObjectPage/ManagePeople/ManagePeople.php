@@ -1,5 +1,4 @@
 <?php
-
 $wgHooks['ToolboxLinks'][] = 'ManagePeople::createToolboxLinks';
 BackbonePage::register('ManagePeople', 'ManagePeople', 'network-tools', dirname(__FILE__));
 
@@ -35,13 +34,9 @@ class ManagePeople extends BackbonePage {
         $positions = json_encode(array_values(Person::getAllPositions()));
 
         $departments = json_encode(array_values(Person::getAllDepartments()));
-        $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
-        sort($organizations);
-        
-        $organizations = json_encode($organizations);
         
         $wgOut->addScript("<script type='text/javascript'>
-            var allUniversities = $organizations;
+            var allUniversities = $uniNames;
             var allPositions = $positions;
             var allDepartments = $departments;
         </script>");

@@ -149,6 +149,7 @@ class CavendishTemplate extends QuickTemplate {
                 $.each(this.$el.find('input[type=datepicker]'), function(index, val){
                     $(val).datepicker({
                         'dateFormat': $(val).attr('format'),
+                        'defaultDate': $(val).attr('value'),
                         'changeMonth': true,
                         'changeYear': true,
                         'showOn': "both",
@@ -232,6 +233,8 @@ class CavendishTemplate extends QuickTemplate {
 		<script type='text/javascript'>
 		
 		    // Configs
+		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
+		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    
 		    <?php

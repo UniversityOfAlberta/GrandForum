@@ -8,10 +8,12 @@ Role = Backbone.Model.extend({
     
     defaults: {
         id: null,
+        userId: "",
         name: "",
         comment: "",
-        startDate: "",
-        endDate: ""
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        deleted: false
     }
 });
 

@@ -3,7 +3,6 @@
 class PersonCoursesReportItemSet extends ReportItemSet {
 
     function getData(){
-        $phase = $this->getAttr("phase");
         $data = array();
         $person = Person::newFromId($this->personId);
         $courses = $person->getCourses();

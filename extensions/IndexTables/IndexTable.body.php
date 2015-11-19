@@ -555,21 +555,22 @@ EOF;
             $partners = $contribution->getPartners();
             $names = array();
 	    foreach($contribution->getPeople() as $author){
-		if($author->getId() != 0 && $author->getUrl() != ""){
+		if($author instanceof Person){
                     $url = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
                     if(!in_array($url,$names)){
                     $names[] = $url;}
                }
                else{
-                    if(!in_array($author->getNameForForms(),$names)){
-                    $names[] = $author->getNameForForms();}
+                    if(!in_array($author,$names)){
+                        $names[] = $author;
+		    }
                }
             }
 
             $this->text .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
 				<td align=center>{$contribution->getStartYear()}</td>
                                 <td align=center>{$partners[0]->getOrganization()}</td>
-                                <td style='white-space:nowrap;'>".implode(", ", $names)."</td>
+                                <td>".implode(", ", $names)."</td>
                                 <td align=right>$".number_format($contribution->getCash())."</td>
                                 <td align=right>$".number_format($contribution->getKind())."</td>
                                  <td align=right>$".number_format($contribution->getTotal())."</td></tr>";

@@ -117,7 +117,12 @@ class ReportItemCallback {
             "user_mtg_firstnations" => "getUserMTGFirstNations",
             "user_mtg_socialproblems" => "getUserMTGSocialProblems",
             "user_mtg_other" => "getUserMTGOther",
-            // Champions
+	    "user_product_count" => "getUserProductCount",
+	    "user_grad_count" => "getUserGradCount",
+	    "user_fellow_count" => "getUserFellowCount",
+	    "user_contribution_count" => "getUserContributionCount",
+            "user_contribution_cash_total" => "getUserContributionCashTotal",
+	    // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
             "champ_subtitle" => "getChampSubTitle",
@@ -137,6 +142,7 @@ class ReportItemCallback {
             "spl_subprojects" => "getSPLSubProjects",
             // ISAC
             "isac_comment" => "getISACComment",
+	    "chair_id" => "getChairId",
             // SAB
             "sab_strength" => "getSABStrength",
             "sab_weakness" => "getSABWeakness",
@@ -1420,6 +1426,17 @@ class ReportItemCallback {
         }
         return "";
     }
+
+    function getChairId(){
+	$user = Person::newFromId($this->reportItem->personId);
+	$people = Person::getAllPeople(ISAC);
+	foreach($people as $person){
+	    if($person->getDepartment() == $user->getDepartment()){
+		return $person->getId();
+	    }
+	}
+	return 0;
+    }
     
     function getSABStrength($personId=-1){
         $personId = ($personId != -1) ? $personId : $this->reportItem->personId;
@@ -1712,6 +1729,54 @@ class ReportItemCallback {
     function getReportSection(){
         return $this->reportItem->getSection()->name;
     }
+
+    function getUserProductCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+	$products = $person->getPapersAuthored('all', REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL, true);
+        $products = $person->getPapers("all", false, 'both', true, "Public");
+	return count($products);
+    }
+
+    function getUserGradCount(){
+	$person = Person::newFromId($this->reportItem->personId);
+	$relations = $person->getRelations("Supervises", REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+	$count = 0;
+	foreach($relations as $relation){
+	    if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc"))){
+		$count++;
+	    }
+	}
+	return $count;
+    }
+
+    function getUserFellowCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = $person->getRelations("Supervises", REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $count = 0;
+        foreach($relations as $relation){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","ra"))){
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    function getUserContributionCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $contributions = $person->getContributionsDuring(REPORTING_CYCLE_START);
+        return count($contributions);
+    }
+
+    function getUserContributionCashTotal(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $contributions = $person->getContributionsDuring(REPORTING_CYCLE_START);
+	$total = 0;
+	foreach($contributions as $contribution){
+	     $total += $contribution->getTotal();
+	}
+	return number_format($total);
+    }
+
 }
 
 ?>

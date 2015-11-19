@@ -126,29 +126,372 @@ class PersonProjectsAPI extends RESTAPI {
 
     function doGET(){
         $person = Person::newFromId($this->getParam('id'));
-        $json = array();
-        $projects = $person->getProjects(true);
-        foreach($projects as $project){
-            if(!$project->isSubProject()){
-                $json[] = array('projectId' => $project->getId(),
-                                'personId' => $person->getId(),
-                                'startDate' => $project->getJoinDate($person),
-                                'endDate' => $project->getEndDate($person));
+        $projects = $person->getPersonProjects();
+        if($this->getParam('personProjectId') != ""){
+            // Single Project
+            foreach($projects as $project){
+                if($project['id'] == $this->getParam('personProjectId')){
+                    return json_encode($project);
+                }
             }
         }
-        return json_encode($json);
+        else{
+            // All Projects
+            return json_encode($projects);
+        }
     }
     
     function doPOST(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        $project = Project::newFromName($this->POST('name'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        $allowedProjects = $me->getAllowedProjects();
+        if($project == null || $project->getName() == ""){
+            $this->throwError("This Project does not exist");
+        }
+        if(!in_array($this->POST('name'), $allowedProjects) || 
+           !in_array($project->getName(), $allowedProjects)){
+            $this->throwError("You are not allowed to add this person to that project");
+        }
+        MailingList::unsubscribeAll($person);
+        $status = DBFunctions::insert('grand_project_members',
+                                      array('user_id'    => $person->getId(),
+                                            'project_id' => $project->getId(),
+                                            'start_date' => $this->POST('startDate'),
+                                            'end_date'   => $this->POST('endDate'),
+                                            'comment'    => $this->POST('comment')));
+
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('id'),
+                                    array('project_id' => $project->getId(),
+                                          'user_id' => $person->getId()),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            $this->params['personProjectId'] = $data[0]['id'];
+        }
+        $person->projects = null;
+        MailingList::subscribeAll($person);
+        return $this->doGET();
     }
     
     function doPUT(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        $project = Project::newFromName($this->POST('name'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        $allowedProjects = $me->getAllowedProjects();
+        if($project == null || $project->getName() == ""){
+            $this->throwError("This Project does not exist");
+        }
+        if(!in_array($this->POST('name'), $allowedProjects) || 
+           !in_array($project->getName(), $allowedProjects)){
+            $this->throwError("You are not allowed to add this person to that project");
+        }
+        MailingList::unsubscribeAll($person);
+        $status = DBFunctions::update('grand_project_members',
+                                      array('project_id' => $project->getId(),
+                                            'start_date' => $this->POST('startDate'),
+                                            'end_date'   => $this->POST('endDate'),
+                                            'comment'    => $this->POST('comment')),
+                                      array('id' => $this->getParam('personProjectId')));
+        $person->projects = null;
+        MailingList::subscribeAll($person);
+        if(!$status){
+            $this->throwError("The project <i>{$project->getName()}</i> could not be updated");
+        }
+        return $this->doGET();
     }
     
     function doDELETE(){
-        return doGET();
+        $person = Person::newFromId($this->getParam('id'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        $allowedProjects = $me->getAllowedProjects();
+        $data = DBFunctions::select(array('grand_project_members'),
+                                    array('project_id'),
+                                    array('id' => EQ($this->getParam('personProjectId'))));
+        if(count($data) > 0){
+            $project = Project::newFromId($data[0]['project_id']);
+            if(!in_array($project->getName(), $allowedProjects)){
+                $this->throwError("You are not allowed to remove this person from that project");
+            }
+        }
+        else{
+            $this->throwError("This Project does not exist");
+        }
+        MailingList::unsubscribeAll($person);
+        DBFunctions::delete('grand_project_members',
+                            array('id' => $this->getParam('personProjectId')));
+        $person->projects = null;
+        MailingList::subscribeAll($person);
+        return false;
+    }
+}
+
+class PersonUniversitiesAPI extends RESTAPI {
+
+    function doGET(){
+        $person = Person::newFromId($this->getParam('id'));
+        $universities = $person->getPersonUniversities();
+        if($this->getParam('personUniversityId') != ""){
+            // Single University
+            foreach($universities as $university){
+                if($university['id'] == $this->getParam('personUniversityId')){
+                    return json_encode($university);
+                }
+            }
+        }
+        else{
+            // All Universities
+            $newUniversities = array();
+            foreach($universities as $uni){
+                if($uni['endDate'] == '0000-00-00 00:00:00'){
+                    // Till the end of time
+                    $newUniversities['9999-99-99 99:99:99_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                }
+                else{
+                    $newUniversities[$uni['endDate'].'_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                }
+            }
+            ksort($newUniversities);
+            $newUniversities = array_reverse($newUniversities);
+            $universities = array_values($newUniversities);
+            return json_encode($universities);
+        }
+    }
+    
+    function doPOST(){
+        $person = Person::newFromId($this->getParam('id'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        $uniCheck = DBFunctions::select(array('grand_universities'),
+                                        array('*'),
+                                        array('university_name' => $this->POST('university')));
+        $posCheck = DBFunctions::select(array('grand_positions'),
+                                        array('*'),
+                                        array('position' => $this->POST('position')));
+        
+        if(count($uniCheck) == 0){
+            // Create new University
+            DBFunctions::insert('grand_universities',
+                                array('university_name' => $this->POST('university'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+        }
+        
+        
+        if(count($posCheck) == 0){
+            // Create new Position
+            DBFunctions::insert('grand_positions',
+                                array('position' => $this->POST('position'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+            
+        }
+       
+        $universities = University::getAllUniversities();
+        $positions = Person::getAllPositions();
+        
+        $university_id = "";
+        $position_id = "";
+        $department = $this->POST('department');
+        $start_date = $this->POST('startDate');
+        $end_date = $this->POST('endDate');
+        
+        foreach($universities as $university){
+            if($this->POST('university') == $university->getName()){
+                $university_id = $university->getId();
+            }
+        }
+        
+        foreach($positions as $id => $position){
+            if($this->POST('position') == $position){
+                $position_id = $id;
+            }
+        }
+        MailingList::unsubscribeAll($person);
+        DBFunctions::insert('grand_user_university',
+                            array('user_id' => $person->getId(),
+                                  'university_id' => $university_id,
+                                  'department' => $department,
+                                  'position_id' => $position_id,
+                                  'start_date' => $start_date,
+                                  'end_date' => $end_date));
+                                  
+        
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('id'),
+                                    array('user_id' => $person->getId()),
+                                    array('id' => 'DESC'),
+                                    array(1));
+        if(count($data) > 0){
+            $this->params['personUniversityId'] = $data[0]['id'];
+        }
+        $person->universityDuring = array();
+        MailingList::subscribeAll($person);
+        return $this->doGET();
+    }
+    
+    function doPUT(){
+        $personUniversityId = $this->getParam('personUniversityId');
+        $person = Person::newFromId($this->getParam('id'));
+        
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        
+        $uniCheck = DBFunctions::select(array('grand_universities'),
+                                        array('*'),
+                                        array('university_name' => $this->POST('university')));
+        $posCheck = DBFunctions::select(array('grand_positions'),
+                                        array('*'),
+                                        array('position' => $this->POST('position')));
+
+        if(count($uniCheck) == 0){
+            // Create new University
+            DBFunctions::insert('grand_universities',
+                                array('university_name' => $this->POST('university'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+        }
+        
+        if(count($posCheck) == 0){
+            // Create new Position
+            DBFunctions::insert('grand_positions',
+                                array('position' => $this->POST('position'),
+                                      '`order`' => 10000,
+                                      '`default`' => 0));
+            
+        }
+        
+        $universities = University::getAllUniversities();
+        $positions = Person::getAllPositions();
+        
+        $university_id = "";
+        $position_id = "";
+        $department = $this->POST('department');
+        $start_date = $this->POST('startDate');
+        $end_date = $this->POST('endDate');
+        
+        foreach($universities as $university){
+            if($this->POST('university') == $university->getName()){
+                $university_id = $university->getId();
+            }
+        }
+        
+        foreach($positions as $id => $position){
+            if($this->POST('position') == $position){
+                $position_id = $id;
+            }
+        }
+        MailingList::unsubscribeAll($person);
+        DBFunctions::update('grand_user_university',
+                            array('user_id' => $person->getId(),
+                                  'university_id' => $university_id,
+                                  'department' => $department,
+                                  'position_id' => $position_id,
+                                  'start_date' => $start_date,
+                                  'end_date' => $end_date),
+                            array('id' => EQ($personUniversityId)));
+        $person->universityDuring = array();
+        MailingList::subscribeAll($person);
+        return $this->doGET();
+    }
+    
+    function doDELETE(){
+        $personUniversityId = $this->getParam('personUniversityId');
+        $person = Person::newFromId($this->getParam('id'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        MailingList::unsubscribeAll($person);
+        DBFunctions::delete('grand_user_university',
+                            array('id' => $personUniversityId));
+        $person->universityDuring = array();
+        MailingList::subscribeAll($person);
+        return false;
+    }
+}
+
+class PersonRelationsAPI extends RESTAPI {
+
+    function doGET(){
+        $person = Person::newFromId($this->getParam('id'));
+        $relations = $person->getRelations('all', true);
+        if($this->getParam('relId') != ""){
+            // Single Relation
+            foreach($relations as $type){
+                foreach($type as $id => $relation){
+                    if($id == $this->getParam('relId')){
+                        return json_encode($relation);
+                    }
+                }
+            }
+        }
+        else{
+            // All Relations
+            return json_encode(flatten($relations));
+        }
+    }
+    
+    function doPOST(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        
+        $relation = new Relationship(array());
+        $relation->user1 = $this->POST('user1');
+        $relation->user2 = $this->POST('user2');
+        $relation->type = $this->POST('type');
+        $relation->startDate = $this->POST('startDate');
+        $relation->endDate = $this->POST('endDate');
+        $relation->comment = $this->POST('comment');
+        $relation->create();
+        return $this->doGET();
+    }
+    
+    function doPUT(){
+        $person = Person::newFromId($this->getParam('id'));
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in");
+        }
+        
+        $relation = Relationship::newFromId($this->getParam('relId'));
+        if($relation->getId() == null){
+            $this->throwError("This Relationship does not exist");
+        }
+        $relation->user1 = $this->POST('user1');
+        $relation->user2 = $this->POST('user2');
+        $relation->type = $this->POST('type');
+        $relation->startDate = $this->POST('startDate');
+        $relation->endDate = $this->POST('endDate');
+        $relation->comment = $this->POST('comment');
+        $relation->update();
+        return $this->doGET();
+    }
+    
+    function doDELETE(){
+        $person = Person::newFromId($this->getParam('id'));
+        $relation = Relationship::newFromId($this->getParam('relId'));
+        if($relation->getId() == null){
+            $this->throwError("This Relationship does not exist");
+        }
+        $relation->delete();
+        return false;
     }
 }
 

@@ -1,18 +1,17 @@
-ManagePeopleEditRolesView = Backbone.View.extend({
+ManagePeopleEditProjectsView = Backbone.View.extend({
 
-    roles: null,
+    projects: null,
     person: null,
-    roleViews: null,
+    projectViews: null,
 
     initialize: function(options){
         this.person = options.person;
         this.model.fetch();
-        this.roleViews = new Array();
-        this.listenTo(this.model, "change", this.render);
-        this.template = _.template($('#edit_roles_template').html());
+        this.projectViews = new Array();
+        this.template = _.template($('#edit_projects_template').html());
         this.model.ready().then($.proxy(function(){
-            this.roles = this.model.getAll();
-            this.listenTo(this.roles, "add", this.addRows);
+            this.projects = this.model;
+            this.listenTo(this.projects, "add", this.addRows);
             this.model.ready().then($.proxy(function(){
                 this.render();
             }, this));
@@ -41,27 +40,27 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        var copy = this.roles.toArray();
+        var copy = this.projects.toArray();
         clearAllMessages();
-        _.each(copy, $.proxy(function(role){
-            if(_.contains(allowedRoles, role.get('name'))){
-                if(role.get('deleted') != "true"){
-                    role.save(null, {
+        _.each(copy, $.proxy(function(project){
+            if(_.contains(allowedProjects, project.get('name'))){
+                if(project.get('deleted') != "true"){
+                    project.save(null, {
                         success: function(){
-                            addSuccess("Roles saved");
+                            addSuccess("Projects saved");
                         },
                         error: function(){
-                            addError("Roles could not be saved");
+                            addError("Projects could not be saved");
                         }
                     });
                 }
                 else {
-                    role.destroy(null, {
+                    project.destroy(null, {
                         success: function(){
-                            addSuccess("Roles saved");
+                            addSuccess("Projects saved");
                         },
                         error: function(){
-                            addError("Roles could not be saved");
+                            addError("Projects could not be saved");
                         }
                     });
                 }
@@ -69,27 +68,28 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         }, this));
     },
     
-    addRole: function(){
-        this.roles.add(new Role({name: HQP, userId: this.person.get('id')}));
+    addProject: function(){
+        var project = _.first(allowedProjects);
+        this.projects.add(new PersonProject({name: project, personId: this.person.get('id')}));
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){
-        this.roles.each($.proxy(function(role, i){
-            if(this.roleViews[i] == null){
-                var view = new ManagePeopleEditRolesRowView({model: role});
-                this.$("#role_rows").append(view.render());
+        this.projects.each($.proxy(function(project, i){
+            if(this.projectViews[i] == null){
+                var view = new ManagePeopleEditProjectsRowView({model: project});
+                this.$("#project_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
                 }
                 else{
                     view.$el.addClass('odd');
                 }
-                this.roleViews[i] = view;
+                this.projectViews[i] = view;
             }
         }, this));
     },
-    
+       
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
@@ -99,13 +99,13 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 
 });
 
-ManagePeopleEditRolesRowView = Backbone.View.extend({
+ManagePeopleEditProjectsRowView = Backbone.View.extend({
     
     tagName: 'tr',
     
     initialize: function(){
         this.listenTo(this.model, "change", this.update);
-        this.template = _.template($('#edit_roles_row_template').html());
+        this.template = _.template($('#edit_projects_row_template').html());
     },
     
     delete: function(){

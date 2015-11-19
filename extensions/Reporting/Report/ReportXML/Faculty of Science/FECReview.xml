@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FECReview" reportType="RP_FEC" pdfFiles="FECReview" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="Reviews" blobSection="FEC_REVIEW" type="EditableReportSection">
+	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor">
+	    <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+	    	 <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
+	    	     <![CDATA[
+	    	     <tr><td><div style="margin-left:15px; margin-top:15px;">{$item}</div>
+	    	     ]]>
+	    	 </ReportItem>
+	         <ReportItem id="teachingEvaluations" type="TextareaReportItem" blobItem="FEC_REVIEW_TEACHING_EVALUATION" blobSubItem="{$user_id}" blobType="BLOB_TEXT" optional="true">
+                    <![CDATA[
+			<h1>Teaching Evaluations</h1>
+			<div>{$item}</div>
+                    ]]>
+                  </ReportItem>
+                  <ReportItem id="researchEvaluations" type="TextareaReportItem" blobItem="FEC_REVIEW_RESEARCH_EVALUATION" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+                      <![CDATA[
+		          <h1>Research Evaluations</h1>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+	        <ReportItem id="departmentalFec" type="TextareaReportItem" blobItem="FEC_REVIEW_DEPARTMENTAL_EVA" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+
+			<![CDATA[
+		            <h1>Departmental</h1>
+		            <div>{$item}</div>
+		      	]]>
+		  </ReportItem>
+		  <ReportItem id="facultycommittee" type="TextareaReportItem" height="100px" blobItem="FEC_REVIEW_COMMITTEE" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <b>Faculty</b>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="universitycommittee" type="TextareaReportItem" height="100px" blobItem="FEC_REVIEW_UNIVERSITY" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <b>University</b>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="scientificcommittee" type="TextareaReportItem" height="100px" blobItem="FEC_REVIEW_SCIENTIFIC" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <b>Scientific</b>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="communityOutreachcommittee" type="TextareaReportItem" height="100px" blobItem="FEC_REVIEW_COMMUNITY" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <b>Community Outreach</b>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="Othercommittee" type="TextareaReportItem" height="100px" blobItem="FEC_REVIEW_OTHER" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <b>Other</b>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="comments" type="TextareaReportItem" blobItem="FEC_REVIEW_COMMENTS" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <h1>General Comments</h1>
+		          <div>{$item}</div>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="recommendationsIncrement" type="TextareaReportItem" blobItem="FEC_REVIEW_RECOMMENDATIONS_INCREMENT" width="100px" height="30px" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <h1>Recommendations</h1>
+		          <table><thead><th>Increment</th><th>Tenure</th><th>Promotion</th></thead><tbody><tr>
+		               <td>{$item}</td>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="recommendationsTenure" type="TextareaReportItem" blobItem="FEC_REVIEW_RECOMMENDATIONS_TENURE" width="100px" height="30px" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		      	  <td>{$item}</td>
+		      ]]>
+		  </ReportItem>
+		  <ReportItem id="recommendationsPromotion" type="TextareaReportItem" blobItem="FEC_REVIEW_RECOMMENDATIONS_PROMOTION" width="100px" height="30px" blobType="BLOB_TEXT" blobSubItem="{$user_id}" optional="true">
+		      <![CDATA[
+		          <td>{$item}</td></tr></tbody></table>
+		      ]]>
+		  </ReportItem>
+	    </ReportItemSet>
+	</ReportItemSet>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

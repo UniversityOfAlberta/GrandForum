@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FECStats" reportType="RP_FEC" pdfFiles="FECStats" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="Reviews" blobSection="FEC_REVIEW" type="EditableReportSection">
+	<ReportItem id="header" type="StaticReportItem">
+	    <![CDATA[
+	        <table id='fec_table' style='width:100%;' frame=box rules=all><thead><tr>
+	        <th>Name</th>
+	        <th>Position</th>
+	        <th>Total Publications</th>
+	        <th>Graduate Students</th>
+	        <th>Post-doctoral Fellows/Research Associates</th>
+	        <th>Grants</th>
+	        <th>Grant Cash Total</th>
+	        <th>Increment</th>
+	        <th>Tenure</th>
+	        <th>Promotion</th>
+	        </tr></thead><tbody>
+	    ]]>
+	</ReportItem>
+	    <ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor">
+		<ReportItemSet id="fec_report" type="FECReportItemSet" userid="{$user_id}">
+		    <ReportItem id="row" type="StaticReportItem">
+		        <![CDATA[
+		            <tr>
+		            <td>{$user_name}</td>
+		            <td>{$user_level}</td>
+		            <td align=right>{$user_product_count}</td>
+		            <td align=right>{$user_grad_count}</td>
+		            <td align=right>{$user_fellow_count}</td>
+		            <td align=right>{$user_contribution_count}</td>
+		            <td align=right>${$user_contribution_cash_total}</td>
+		            <td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RECOMMENDATIONS_INCREMENT,{$user_id},{$chair_id},0)}</td>
+		            <td></td>
+		            <td></td></tr>
+		        ]]>
+		    </ReportItem>
+	        </ReportItemSet>
+	    </ReportItemSet>
+	<ReportItem id="footer" type="StaticReportItem">
+	    <![CDATA[
+	        </tbody></table><script type='text/javascript'>
+	                                $('#fec_table').dataTable({
+	                                    "iDisplayLength": 50
+	                                      });
+	                                        </script>
+	    ]]>
+	</ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

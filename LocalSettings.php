@@ -366,6 +366,12 @@ function str_replace_every_other($needle, $replace, $haystack, &$count=null, $re
     return $haystack;
 }
 
+function flatten(array $array) {
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return $return;
+}
+
 function adjustBrightness($hex, $steps) {
     // Steps should be between -255 and 255. Negative = darker, positive = lighter
     $steps = max(-255, min(255, $steps));

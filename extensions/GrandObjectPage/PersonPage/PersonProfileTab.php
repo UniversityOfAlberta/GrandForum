@@ -173,6 +173,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['ldap'] = @$_POST['ldap'];
+	    $_POST['googleScholarUrl'] = @$_POST['googleScholarUrl'];
+	    $_POST['sciverseId'] = @$_POST['sciverseId'];
 	    $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
@@ -192,6 +194,10 @@ class PersonProfileTab extends AbstractEditableTab {
             $api->doAction(true);
             $api = new UserLdapAPI();
             $api->doAction(true);
+	    $api = new UserGoogleScholarAPI();
+	    $api->doAction(true);
+	    $api = new UserSciverseAPI();
+	    $api->doAction(true);
 	    $api = new UserNationalityAPI();
             $api->doAction(true);
             $api = new UserEmailAPI();
@@ -271,7 +277,7 @@ EOF;
 	        $person = Person::newFromId($_GET['person']);
 	        $text .= $person->getProfile()."\n";
 	        
-	        $products = $person->getPapers("all", false, 'both', false, 'Public');
+	        $products = $person->getPapers("all", false, 'both', true, 'Public');
 	        foreach($products as $product){
 	            $text .= $product->getTitle()."\n";
 	            $text .= $product->getDescription()."\n";
@@ -439,6 +445,14 @@ EOF;
 		$this->html .= "<tr>
                                 <td align='right'><b>LDAP URL:</b></td>
                                 <td><input type='text' size='30' name='ldap' value='".str_replace("'", "&#39;", $person->getLdap())."' /></td>
+                            </tr>";
+                $this->html .= "<tr>
+                                <td align='right'><b>Google Scholar URL:</b></td>
+                                <td><input type='text' size='30' name='googleScholarUrl' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                            </tr>";
+                $this->html .= "<tr>
+                                <td align='right'><b>Sciverse Id:</b></td>
+                                <td><input type='text' size='30' name='sciverseId' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
                             </tr>";
 	}
 	$this->html .=  "<tr>

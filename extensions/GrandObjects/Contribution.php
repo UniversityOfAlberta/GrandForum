@@ -44,7 +44,7 @@ class Contribution {
         $sql = "SELECT *
                 FROM grand_contributions
                 WHERE id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).")
                 ORDER BY rev_id DESC LIMIT 1";
 	$data = DBFunctions::execSQL($sql);
 	$contribution = new Contribution($data);
@@ -62,7 +62,7 @@ class Contribution {
                 FROM grand_contributions c1, grand_contributions c2
                 WHERE c1.name = '$name'
                 AND c1.id = c2.id
-                AND (c2.access_id = '{$me->getId()}' OR c2.access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
+                AND (c2.access_id = '{$me->getId()}' OR c2.access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).")
                 ORDER BY c2.rev_id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
@@ -79,7 +79,7 @@ class Contribution {
         $sql = "SELECT *
                 FROM grand_contributions
                 WHERE rev_id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).")";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
         self::$cache["rev$id"] = &$contribution;
@@ -172,7 +172,7 @@ class Contribution {
         $me = Person::newFromWgUser();
         $sql = "SELECT DISTINCT id
                 FROM `grand_contributions`
-                WHERE (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
+                WHERE (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).")";
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
         foreach($data as $row){
@@ -191,7 +191,7 @@ class Contribution {
                 FROM(SELECT id, name, rev_id
                      FROM `grand_contributions`
                      WHERE name LIKE '%' 
-                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
+                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)|| $me->isRole(ISAC) || $me->isRole(RMC)).") \n";
 	    foreach($splitPhrase as $word){
 	        $sql .= "AND name LIKE '%$word%'\n";
 	    }
@@ -222,7 +222,7 @@ class Contribution {
                 FROM grand_contributions
                 WHERE '$startDate' <= end_date
                 AND '$endDate' >= start_date
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
+                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).") \n";
 
         if(!is_null($type) && $type != ""){
             $sql .= " AND type = '{$type}'";
