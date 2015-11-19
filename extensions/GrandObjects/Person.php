@@ -1162,7 +1162,7 @@ class Person extends BackboneModel {
      */
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRole(HQPC)){
             return "{$this->email}";
         }
         return "";
@@ -3840,9 +3840,10 @@ class Person extends BackboneModel {
      * Returns all of the evaluation assignments for this Person
      * @param string $type The type of assignment
      * @param string $year The year for the assignments
+     * @param string $class The class of the evaluatee
      * @return array The evaluation assignments for this Person
      */
-    function getEvaluates($type, $year = YEAR){
+    function getEvaluates($type, $year = YEAR, $class = "Person"){
         $type = DBFunctions::escape($type);
         
         $sql = "SELECT *
@@ -3854,7 +3855,7 @@ class Person extends BackboneModel {
         $subs = array();
 
         foreach($data as $row){
-            if($row['type'] == "Project" || $row['type'] == "SAB"){
+            if($row['type'] == "Project" || $row['type'] == "SAB" || $class == "Project"){
                 $project = Project::newFromId($row['sub_id']);
                 $subs[$project->getName()] = $project;
             }
