@@ -223,6 +223,6 @@ initTab("SD,BOD Chair,ASD,Manager", "#executive-leadership", "tab-0", ['position
 initTab("BOD", "#bod", "tab-4", ['position','university'], 4);
 initTab("SAB", "#sab", "tab-5", ['position','university'], 4);
 initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);
-initTab("NI", "#network-investigators", "tab-1", ['university'], 4);
+initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
 initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
 initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 3);

@@ -24,7 +24,7 @@ if(project != ""){
         });
         $("#project-leaders").append(leaders.join('; '));
         $("#project-description").html(response.description);
-        $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project + '/members/NI', function(people){
+        $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project + '/members/NI,NFI', function(people){
             var length = 0;
             var nis = new Array();
             $.each(people, function(i, person){
