@@ -356,6 +356,7 @@
         </ReportItemSet>
         <ReportItem id="reminder" type="StaticReportItem">
             <![CDATA[
+                <br />
                 <p><b>Note:</b> Once you have completed your comments for each IFP, remind the IFP to generate a PDF of their report since your comments will now appear in them.</p>
             ]]>
         </ReportItem>
