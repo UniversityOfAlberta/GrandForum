@@ -8,9 +8,9 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         
         $type = $this->getAttr('subType', 'NI');
         $class = $this->getAttr('class', 'Person');
+        $year = $this->getReport()->year;
         if($type != 'SAB' && $type != 'Project' && $class != "Project"){
             //$subs = Person::getAllPeople($type);
-            $year = $this->getReport()->year;
             $subs = Person::getAllEvaluates($type, $year, $class);
             $sorted = array();
             foreach ($subs as $s){
@@ -21,7 +21,7 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             $subs = $sorted;
         }
         else {
-            $subs = Project::getAllProjects();
+            $subs = Person::getAllEvaluates($type, $year, $class);
         }
         if(is_array($subs)){
             foreach($subs as $sub){

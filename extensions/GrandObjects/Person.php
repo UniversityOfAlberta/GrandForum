@@ -3815,7 +3815,7 @@ class Person extends BackboneModel {
      * @param string $year The year for the assignments
      * @return array The evaluation assignments
      */
-    static function getAllEvaluates($type, $year = YEAR){
+    static function getAllEvaluates($type, $year = YEAR, $class){
         $type = DBFunctions::escape($type);
         
         $sql = "SELECT DISTINCT sub_id 
@@ -3826,7 +3826,7 @@ class Person extends BackboneModel {
         $subs = array();
         foreach($data as $row){
             if($type != "Project" && 
-               $type != "SAB"){
+               $type != "SAB" && $class != "Project"){
                 $subs[] = Person::newFromId($row['sub_id']);
             }
             else{
