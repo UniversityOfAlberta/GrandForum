@@ -207,7 +207,7 @@ abstract class AbstractReport extends SpecialPage {
                                  <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
                 return;
             }
-            if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -601,7 +601,10 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
+                        if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
+                            $rResult = true;
+                        }
+                        else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
                             }
