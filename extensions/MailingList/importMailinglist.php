@@ -113,7 +113,9 @@ function parseMailArchive($filename, $proj_id) {
 		if (trim($refids[$i]) != "") {
 			$curRefids = preg_split("/\s+/", $refids[$i]);
 			preg_match("/<(.*)>/", $curRefids[0], $refidMatches);
-			$refid = $refidMatches[1];
+            if(isset($refidMatches[1])){
+                $refid = $refidMatches[1];
+            }
 			
 			//sometimes the first reference is not actually the original message in the thread
 			if (isset($parentMapping[$refid])) {
