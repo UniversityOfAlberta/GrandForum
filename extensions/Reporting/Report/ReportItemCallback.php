@@ -156,12 +156,14 @@ class ReportItemCallback {
             "get" => "get",
             "and" => "andCond",
             "or" => "orCond",
+            "contains" => "contains",
+            "!contains" => "notContains",
             "==" => "eq",
             "!=" => "neq",
             ">" => "gt",
             "<" => "lt",
             ">=" => "gteq",
-            "<=" => "lteq"
+            "<=" => "lteq",
         );
     
     var $reportItem;
@@ -1591,6 +1593,14 @@ class ReportItemCallback {
             $bool = ($bool || $arg);
         }
         return $bool;
+    }
+    
+    function contains($val1, $val2){
+        return (strstr($val1, $val2) !== false);
+    }
+    
+    function notContains($val1, $val2){
+        return !$this->contains($val1, $val2);
     }
     
     function eq($val1, $val2){
