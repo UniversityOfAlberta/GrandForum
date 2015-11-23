@@ -48,9 +48,11 @@ class ReportXMLParser {
                 $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
                 $xml = file_get_contents($fileName);
                 $parser = simplexml_load_string($xml);
-                if($parser->getName() == "Report"){
-                    $attributes = $parser->attributes();
-                    @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
+                if($parser != null){
+                    if($parser->getName() == "Report"){
+                        $attributes = $parser->attributes();
+                        @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
+                    }
                 }
             }
         }
