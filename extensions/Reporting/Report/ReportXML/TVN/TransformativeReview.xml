@@ -11,7 +11,7 @@
             <SectionPermission id="src_review" permissions="rw" />
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="INACTIVE">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="src_review" permissions="rw" />
             <SectionPermission id="rmc_review" permissions="" />
@@ -74,7 +74,7 @@
             ]]>
         </Instructions>
         <ReportItemSet id="if_eula" type="If" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)}, 
-                                                      {!contains({$user_full_roles},SRC)}
+                                                      {contains({$user_full_roles},SRC)}
                                                   )}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
