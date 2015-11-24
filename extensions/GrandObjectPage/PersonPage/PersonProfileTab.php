@@ -308,12 +308,12 @@ EOF;
                                                 $('#vis{$chord->index}').empty();
                                             }
                                             else{
-                                                _.defer(function(){
-                                                    $('#vis{$chord->index}').empty();
-                                                    $('#vis{$chord->index}').show();
-                                                    render{$chord->index}(width, height);
-                                                });
+                                                $('#vis{$chord->index}').empty();
+                                                $('#vis{$chord->index}').show();
+                                                render{$chord->index}(width, height);
                                             }
+                                            $('#vis{$chord->index}').height(Math.max(1,height));
+                                            $('#vis{$chord->index}').width(Math.max(1,width));
                                             lastWidth = $('#firstLeft').width();
                                             $('#contact').height(Math.max(height, $('#contact > #card').height()));
                                         }
