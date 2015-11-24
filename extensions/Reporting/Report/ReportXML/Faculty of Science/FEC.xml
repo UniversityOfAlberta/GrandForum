@@ -28,8 +28,8 @@
         </ReportItem>
         <ReportItem id="gradCount" type="StaticReportItem">
             <![CDATA[
-            	<tr><td><b>Graduate Students(Supervised or Co-supervised):</b></td><td>10</td></tr>
-                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>1</tr></td>
+            	<tr><td><b>Graduate Students(Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
 	    	</table>
 	    ]]>
 	</ReportItem>
@@ -215,6 +215,47 @@
         <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
             	<h2>Footnotes</h2>{$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
+        <ReportItem id="chairTable" type="StaticReportItem">
+            <![CDATA[
+            	<p id='comment_p'></p>
+            	<div id='chair_comments_none' style=visibility:hidden;">
+            	    No Chair Recommendation Available.
+            	</div>
+                <div id='chair_comments' style="visibility:hidden;">
+                    <table class='dashboard wikitable'><thead>
+                    <tr><th><Section</th>
+                    <th>Comment</th></tr></thead><tbody>
+                    <tr><td>Teaching Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Research Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RESEARCH_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td colspan='2' align center> Service/Committees Evaluations</td></tr>
+                    <tr><td>Departmental</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_DEPARTMENTAL,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Faculty</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>University</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Scientific</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_SCIENTIFIC,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Community Outreach</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMUNITY,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Other</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_OTHER,{$user_id},{$chair_id},0)}</td></tr>
+                    <tr><td>Comments</td><td><p id='fec_comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMENTS,{$user_id},{$chair_id},0)}</p></td></tr>
+                    </tbody>
+                    </table>
+                </div>
+                <script type='text/javascript'>
+                var intervalId = setInterval(function(){
+                    if ($('#comment_p').is(':visible') && !$('#fec_comments').is(':empty')){
+                        document.getElementById('chair_comments').style.visibility = 'visible';
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                    else if($('#comment_p').is(':visible') && $('#fec_comments').is(':empty')){
+			document.getElementById('chair_comments_none').style.visibility = 'visible';
+			clearInterval(intervalId);
+			intervalId = null;
+                    }
+                }, 100);
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>

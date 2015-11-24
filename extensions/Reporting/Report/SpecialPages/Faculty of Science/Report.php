@@ -23,17 +23,31 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Reports"] = TabUtils::createTab("My Annual Report");
+        $tabs["Recommendations"] = TabUtils::createTab("My Recommendations");
         return true;
     }
     
     static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromWgUser();
+        $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+	if($person->isRole(NI)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
+        }
+        if($person->isRole(ISAC)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview")) ? "selected" : false;
+            $tabs["Recommendations"]['subtabs'][] = TabUtils::createSubTab("{$person->getDepartment()}", "{$url}FECReview", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
+            $tabs["Recommendations"]['subtabs'][] = TabUtils::createSubTab("FOS", "{$url}FECStats", $selected);
+	}
+
         return true;
     }
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $config;
-
         return true;
     }
 }

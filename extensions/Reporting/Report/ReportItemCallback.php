@@ -432,6 +432,34 @@ class ReportItemCallback {
         return $relation->getEndDate();
     }
 
+    function getHqpGradCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+	$count = 0;
+	$gradTerm = array('msc student', 'phd student', 'phd', 'msc');
+	$relations = $person->getHQP();
+	foreach($relations as $relation){
+	    $uni = $relation->getUniversity();
+	    if(in_array(strtolower($uni['position']),$gradTerm)){
+		$count++;
+	    }
+	}
+	return ($count);
+    }
+
+    function getHqpPostDoctoralFellowCount(){
+	$person = Person::newFromId($this->reportItem->personId);
+        $count = 0;
+        $gradTerm = array('pdf','postdoctoral fellow', 'post-doctoral fellow', 'ra', 'research associate');
+        $relations = $person->getHQP();
+        foreach($relations as $relation){
+            $uni = $relation->getUniversity();
+            if(in_array(strtolower($uni['position']),$gradTerm)){
+                $count++;
+            }
+        }
+        return ($count);
+    }
+
     function getCourseTerm(){
 	$course = Course::newFromId($this->reportItem->projectId);
 	return $course->shortDesc;

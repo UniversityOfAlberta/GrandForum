@@ -4412,15 +4412,14 @@ class Person extends BackboneModel {
      * @return Person The Person from the given email
      */
     static function newFromUniversityId($id){
+	$person = new Person(array());
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
                                     array('university_id' => $id));
         if(count($data) > 0){
             return Person::newFromId($data[0]['user_id']);
         }
-        else{
-            return null;
-        }
+	return $person;
     }
 
     function setUniversityId($id){

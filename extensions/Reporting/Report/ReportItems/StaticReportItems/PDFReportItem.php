@@ -7,6 +7,8 @@ class PDFReportItem extends StaticReportItem {
         $me = $this->getReport()->person;
         $reportType = $this->getAttr("reportType", 'HQPReport');
         $useProject = $this->getAttr("project", false);
+	$class = $this->getAttr("class", "button");
+	$showIfNull = $this->getAttr("showIfNull", "false");
         $buttonName = $this->getAttr("buttonName", "Report PDF");
         $noRenderIfNull = $this->getAttr("noRenderIfNull", "false");
         $year = $this->getAttr("year", $this->getReport()->year);
@@ -32,7 +34,7 @@ class PDFReportItem extends StaticReportItem {
     		$tst = $sto->metadata('timestamp');
     		$len = $sto->metadata('len_pdf');
     		$sub = $sto->metadata('submitted');
-    		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+    		$item = "<a class='$class' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
     		$item = $this->processCData($item);
 		    $wgOut->addHTML($item);
     	}
@@ -40,7 +42,12 @@ class PDFReportItem extends StaticReportItem {
     	    if($noRenderIfNull == "true"){
     	        return;
     	    }
+	    else if($showIfNull == "true"){
+		$wgOut->addHTML($this->processCData("{$buttonName}"));
+	    }
+	    else{
     	    $wgOut->addHTML($this->processCData(""));
+	    }
     	}
 	}
 	

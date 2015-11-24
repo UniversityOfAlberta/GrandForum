@@ -15,13 +15,13 @@ class UploadCSVAPI extends API{
     }
 
     function setCsvData($data){
-        $lines = str_replace("\n","     ", $data);
-        $regex = "/(.+?) ,,,,,,,,,,,,,,,,,,,,,,,,,/";
+        $lines = str_replace("\r\n","__", $data);
+        $regex = "/(.+?)__(,){25}__/";
 	preg_match_all($regex, $lines, $array);
 	$sectioned = $array[1];
 	$sections = array();
      	foreach($sectioned as $section){
-	    $p = explode("     ", $section);
+	    $p = explode("__", $section);
 	    $sections[] = $p;
 	}
 	$Endarray = array();
@@ -177,12 +177,12 @@ class UploadCSVAPI extends API{
     	APIRequest::doAction('UserProfile', true);
     }
 
-    function addUserRole($name, $role){
-        Person::$cache = array();
-        Person::$namesCache = array();
-        $_POST['user'] = $name;
-    	$_POST['role'] = $role;
-    	APIRequest::doAction('AddRole', true);
+    function addUserRole($userId, $role){
+        $new_role = new Role(array());
+        $new_role->user = $userId;
+        $new_role->role = $role;
+        $new_role->startDate = date("Y-m-d 00:00:00");
+        $new_role->create();
     }
 
     function addUserUniversity($name, $university, $department, $title){
@@ -211,8 +211,8 @@ class UploadCSVAPI extends API{
         Person::$rolesCache = array();
 	  //adding user info     
 	$this->addUserUniversity($username, $university, $department, $title);
-	$this->addUserRole($username, $role);
-	$student = Person::newFromNameLike("$firstname $lastname");
+        $student = Person::newFromNameLike("$firstname $lastname");
+	$this->addUserRole($student->getId(), $role);
 	return $student;
     }
 
@@ -466,7 +466,7 @@ class UploadCSVAPI extends API{
         $csv = $_FILES['csv'];
 	if($csv['type'] == "text/csv" && $csv['size'] > 0){
             $file_contents = file_get_contents($csv['tmp_name']);
-	    $this->setCsvData($file_contents);
+	    $hi = $this->setCsvData($file_contents);
 	    $ec = $this->csvPubs;
 	    $error = "";
 	    $json = array('created' => array(),
@@ -492,6 +492,7 @@ class UploadCSVAPI extends API{
 	    if(isset($_POST['awards'])){
 		$json['created'][] = $this->createAwardInfo($person, $this->csvAwards);
 	    }
+	    $json['courses'] = array(1,2,3,4);
 	    $obj = json_encode($json);
 
             echo <<<EOF

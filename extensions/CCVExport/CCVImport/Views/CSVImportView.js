@@ -32,9 +32,8 @@ CSVImportView = Backbone.View.extend({
                 var success = new Array();
                 var warning = new Array();
                 var nCreated = response.created.length;
-                var nError = response.error.length;
 		var nCourses = response.courses.length;
-		console.log(nCourses);
+                var nError = response.error.length;
                 var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
                 var nFunding = (response.funding != undefined) ? response.funding.length : 0;
                 var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
