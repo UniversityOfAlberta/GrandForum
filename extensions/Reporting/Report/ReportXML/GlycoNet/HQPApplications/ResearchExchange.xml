@@ -29,6 +29,10 @@
                 <h3>Eligibility</h3>
                 <p>Individuals wishing to take part in the Research Exchange Program must be currently supervised by a GlycoNet Network Investigator. Trainees must finish the exchange before completion of their degree program or tenure. Both Canadian and international students are eligible. The exchange site must be an academic research institution or government lab inside or outside of Canada. A maximum of two applications from the same lab will be supported each year, and applications must align with one of GlycoNet’s research themes (see <a href='http://www.glyconet.ca' target='_blank'>glyconet.ca</a>).</p>
 
+                <h3>Funding Available</h3>
+                <p>Funding Available
+GlycoNet has set aside $50,000 annually for this program. The Network will contribute up to $1000/month in living expenses (pro-rated for partial months), in addition to a travel allowance in accordance with the GlycoNet Travel Policy, for trainees working in another laboratory outside the city of their home institution. Each year, the Network will support approximately 10 exchanges of up to 6 months, with the stipend paid to the trainee’s primary supervisor as a research grant. Exchanges of one week or less will not be considered.</p>
+
                 <h3>Instructions</h3>
                 <p>The applicant must complete the application through the GlycoNet forum. A complete application includes:
                 <ul>
@@ -38,7 +42,24 @@
                     <li>Signed letter of support from the applicant’s primary academic supervisor</li>
                     <li>Signed letter of invitation from the proposed host institution/department</li>
                 </ul>
-                <p>Application deadlines are January 15, May 15, and September 15 each year for exchanges in the following academic term.</p>
+                <table style="width:450px;">
+                    <tr>
+                        <td><h3>Exchange Start Date:</h3></td>
+                        <td><h3>Application Deadline:</h3></td>
+                    </tr>
+                    <tr>
+                        <td>May 1 - August 31</td>
+                        <td>January 15</td>
+                    </tr>
+                    <tr>
+                        <td>September 1 - December 31</td>
+                        <td>May 15</td>	
+                    </tr>
+                    <tr>
+                        <td>January 1 - April 30</td>
+                        <td>September 15</td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>
