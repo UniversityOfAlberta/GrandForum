@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Research Exchange Program" reportType="RP_HQP_EXCHANGE" pdfType="HQP_EXCHANGE" pdfFiles="HQPApplications/ResearchExchangePDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -33,11 +43,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="profile" name="Profile" title="Applicant Profile" tooltip="Applicant Profile" type="EditableReportSection" blobSection="PROFILE">
-        <Instructions>
-            <![CDATA[
-                Hello World
-            ]]>
-        </Instructions>
         <ReportItem id="trainee_head" type="Static">
             <![CDATA[
                 <h2>Trainee</h2>

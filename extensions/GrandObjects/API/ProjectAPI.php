@@ -6,7 +6,10 @@ class ProjectAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $project = Project::newFromId($this->getParam('id'));
             if($project == null || $project->getName() == ""){
-                $this->throwError("This project does not exist");
+                $project = Project::newFromName($this->getParam('id'));
+                if($project == null || $project->getName() == ""){
+                    $this->throwError("This project does not exist");
+                }
             }
             return $project->toJSON();
         }
@@ -36,7 +39,10 @@ class ProjectMembersAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $project = Project::newFromId($this->getParam('id'));
             if($project == null || $project->getName() == ""){
-                $this->throwError("This project does not exist");
+                $project = Project::newFromName($this->getParam('id'));
+                if($project == null || $project->getName() == ""){
+                    $this->throwError("This project does not exist");
+                }
             }
             if($this->getParam('role') != ""){
                 $exploded = explode(",", $this->getParam('role'));
