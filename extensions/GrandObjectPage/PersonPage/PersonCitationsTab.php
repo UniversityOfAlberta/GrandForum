@@ -19,29 +19,11 @@ class PersonCitationsTab extends AbstractTab {
 	$wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#citationAccordion').accordion({autoHeight: false, collapsible: true});
-                    $('.ui-accordion .ui-accordion-header a.accordion_hdr_lnk').click(function() {
-                      window.location = $(this).attr('href');
-                      return false;
-                   });
+                    $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
                 });
 
 
                 </script>"
-            );
-            $wgOut->addHTML(
-                "<style type='text/css'>
-                    .ui-accordion .ui-accordion-header a{
-                        display: inline !important;
-                    }
-                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk{
-                        color: blue !important;
-                        padding-left: 0 !important;
-                    }
-                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk:hover{
-                        text-decoration: underline;
-                    }
-                </style>"
             );
 
 
@@ -50,15 +32,19 @@ class PersonCitationsTab extends AbstractTab {
         $scopus_stats = $this->getScopusStats($metric);
 	$gs_stats = $this->getGsStats();
 	$this->html ="
-	    <div id='citationAccordion'>
+	    <div class='citationAccordion'>
                 <h3><a href='#'>ACM Statistics</a></h3>
                 <div>
                 {$acm_stats}
                 </div>
+	    </div>
+	    <div class='citationAccordion'>
                 <h3><a href='#'>Scopus Statistics</a></h3>
                 <div>
 		{$scopus_stats}
                 </div>
+            </div>
+            <div class='citationAccordion'>
 		<h3><a href='#'>Google Scholar Statistics</a></h3>
 		<div id='gs_stats'>
 		{$gs_stats}

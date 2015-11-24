@@ -17,13 +17,13 @@
 	    <![CDATA[
 	        <table id='fec_table' style='width:100%;' frame=box rules=all><thead><tr>
 	        <th>Name</th>
-	        <th>Department</th>
-	        <th>Position</th>
-	        <th>Total Publications</th>
-	        <th>Graduate Students</th>
-	        <th>Post-doctoral Fellows/Research Associates</th>
+	        <th>Dept</th>
+	        <th>Pos</th>
+	        <th>Pubs</th>
+	        <th>Masters /PhD</th>
+	        <th>PDF /RA</th>
 	        <th>Grants</th>
-	        <th>Grant Cash Total</th>
+	        <th>Grant Total</th>
 	        <th>Increment</th>
 	        <th>Tenure</th>
 	        <th>Promotion</th>
@@ -33,7 +33,7 @@
 	    <ReportItemSet id="professors" type="AllPeopleReportItemSet" sort_reversed="true" roles="Professor">
 		    <ReportItem id="linkAR" type="PDFReportItem" reportType="FEC" class="" showIfNull="true" buttonName="{$user_reversed_name}">
 		    	<![CDATA[
-		    	   <tr><td style='white-space:nowrap;'>{$item}
+		    	   <tr><td>{$item}
 		    	]]>
 		    </ReportItem>
 		    <ReportItem id="linkComments" type="StaticReportItem">

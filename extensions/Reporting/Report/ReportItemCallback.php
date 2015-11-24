@@ -163,6 +163,7 @@ class ReportItemCallback {
             // Other
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+	    "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
@@ -1609,6 +1610,14 @@ class ReportItemCallback {
     function getWgScriptPath(){
         global $wgScriptPath;
         return $wgScriptPath;
+    }
+
+    function getGet($var1){
+	if(isset($_GET[$var1])){
+	    return $_GET[$var1];
+		
+	}
+	return "";
     }
     
     function getNetworkName(){

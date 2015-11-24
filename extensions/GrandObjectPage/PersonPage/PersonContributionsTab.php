@@ -18,37 +18,18 @@ class PersonContributionsTab extends AbstractTab {
         $wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#grantAccordion').accordion({autoHeight: false, collapsible: true});
-                    $('.ui-accordion .ui-accordion-header a.accordion_hdr_lnk').click(function() {
-                      window.location = $(this).attr('href');
-                      return false;
-                   });
+                    $('.grantAccordion').accordion({autoHeight: false, collapsible: true, active:false});
                 });
-
-
                 </script>"
             );
-            $wgOut->addHTML(
-                "<style type='text/css'>
-                    .ui-accordion .ui-accordion-header a{
-                        display: inline !important;
-                    }
-                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk{
-                        color: blue !important;
-                        padding-left: 0 !important;
-                    }
-                    .ui-accordion .ui-accordion-header a.accordion_hdr_lnk:hover{
-                        text-decoration: underline;
-                    }
-                </style>"
-            );
-
 	$this->html ="
-	    <div id='grantAccordion'>
+	    <div class='grantAccordion'>
                 <h3><a href='#'>UoA Grants 3.0</a></h3>
                 <div>
                 {$this->generateUofAGrantTable()}
                 </div>
+	    </div>
+            <div class='grantAccordion'>
                 <h3><a href='#'>NSERC</a></h3>
                 <div>
                 {$this->generateGrantTable()}

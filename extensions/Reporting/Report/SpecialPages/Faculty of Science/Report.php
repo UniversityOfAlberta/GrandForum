@@ -24,7 +24,8 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Annual Report");
-        $tabs["Recommendations"] = TabUtils::createTab("My Recommendations");
+        $tabs["Recommendations"] = TabUtils::createTab("Recommendations");
+	$tabs["FosStats"] = TabUtils::createTab("FOS Stats");
         return true;
     }
     
@@ -40,7 +41,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview")) ? "selected" : false;
             $tabs["Recommendations"]['subtabs'][] = TabUtils::createSubTab("{$person->getDepartment()}", "{$url}FECReview", $selected);
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
-            $tabs["Recommendations"]['subtabs'][] = TabUtils::createSubTab("FOS", "{$url}FECStats", $selected);
+            $tabs["FosStats"]['subtabs'][] = TabUtils::createSubTab("Stats", "{$url}FECStats", $selected);
 	}
 
         return true;
