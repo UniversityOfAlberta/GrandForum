@@ -51,6 +51,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfFiles;
     var $pdfAllProjects;
     var $showInstructions = true;
+    var $variables = array();
     
     /**
      * @param string $tok
@@ -92,7 +93,7 @@ abstract class AbstractReport extends SpecialPage {
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
     function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
-        global $wgUser, $wgMessage;
+        global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
         $this->year = $year;
@@ -125,7 +126,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         if(file_exists($xmlFileName)){
             $exploded = explode(".", $xmlFileName);
-            $exploded = explode("/", $exploded[count($exploded)-2]);
+            $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
             $xml = file_get_contents($xmlFileName);
             $parser = new ReportXMLParser($xml, $this);
@@ -206,7 +207,7 @@ abstract class AbstractReport extends SpecialPage {
                                  <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
                 return;
             }
-            if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -600,7 +601,10 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
+                        if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
+                            $rResult = true;
+                        }
+                        else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
                             }
@@ -1191,6 +1195,33 @@ abstract class AbstractReport extends SpecialPage {
             exit;
         }
         return true;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        return "";
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if(isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        return false;
     }
 }
 

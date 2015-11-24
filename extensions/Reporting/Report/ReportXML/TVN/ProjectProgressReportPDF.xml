@@ -19,7 +19,7 @@
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>
-                <small><table class='wikitable' width='100%' frame='box' rules='all'>
+                <table class='wikitable smaller' width='100%' frame='box' rules='all'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
                         <th>Role in project and<br />Date Withdrawn</th>
@@ -35,7 +35,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId">
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" blobIndex="personId">
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -65,7 +65,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI">
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="CI">
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="HQP,Collaborator,Knowledge">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -120,7 +120,7 @@
         </ReportItemSet>
         <ReportItem id="people_foot" type="StaticReportItem">
             <![CDATA[
-                </table></small>
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>

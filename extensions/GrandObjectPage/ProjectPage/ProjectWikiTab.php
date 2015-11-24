@@ -90,7 +90,7 @@ class ProjectWikiTab extends AbstractTab {
         }
         $this->html .= "</tbody></table>";
         $this->html .= "<script type='text/javascript'>
-            $('#projectWikiPages').dataTable({'iDisplayLength': 100});
+            $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
         </script>";
         return $this->html;
     }

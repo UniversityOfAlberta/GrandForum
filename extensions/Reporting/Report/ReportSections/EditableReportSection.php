@@ -8,7 +8,7 @@ class EditableReportSection extends AbstractReportSection {
     // Creates a new EditableReportSection()
     function EditableReportSection(){
         $this->AbstractReportSection();
-        $this->autosave = false;
+        $this->autosave = true;
     }
     
     // Sets whether or not to use the autosave feature
@@ -69,7 +69,6 @@ class EditableReportSection extends AbstractReportSection {
                     $('#reportMain button').prop('disabled', 'disabled');
                     $('#reportMain select').prop('disabled', 'disabled');
                     $('#reportMain a.custom-combobox-toggle').hide();
-                    console.log('disable');
                 });
             </script>");
         }
@@ -88,7 +87,7 @@ class EditableReportSection extends AbstractReportSection {
         $allSections = $this->getParent()->sections;
         $saveText = "";
         foreach($allSections as $section){
-            if($section->name == "Submit"){
+            if($section->name == "Submit" && $section->checkPermission('r')){
                 $saveText = "<br /><small>Once you have saved and reviewed your text you will need to generate/submit your report by going to the <a style='cursor:pointer;' onclick=\"$('a#Submit').click()\">Submit</a> section.</small>";
             }
         }

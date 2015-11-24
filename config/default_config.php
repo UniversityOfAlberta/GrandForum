@@ -225,10 +225,12 @@
      */
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
+    $config->setConst("HQPC",       "HQPC");
     $config->setConst("PS",         "PS");
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "ISAC");
+    $config->setConst("SRC",        "SRC");
     $config->setConst("ETC",        "ETC");
     $config->setConst("IAC",        "IAC");
     $config->setConst("CAC",        "CAC");
@@ -258,9 +260,11 @@
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
         $config->getConst('HQP')            => "Highly Qualified Person",
+        $config->getConst('HQPC')           => "HQP Committee",
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "International Scientific Advisory Committee",
+        $config->getConst('SRC')            => "Scientific Research Committee",
         $config->getConst('ETC')            => "Education and Training Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",
         $config->getConst('CAC')            => "Consumer Advisory Committee",

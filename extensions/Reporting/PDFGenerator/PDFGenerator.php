@@ -171,6 +171,8 @@ abstract class PDFGenerator {
         $str = str_replace("&#64257;", "fi", $str);
         $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
         $str = str_replace("‐", "-", $str);
+        $str = str_replace("&lang;", "&#10216;", $str);
+        $str = str_replace("&rang;", "&#10217;", $str);
         /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
@@ -559,6 +561,11 @@ EOF;
 		        display:inline;
 		    }
 		    
+		    #pdfBody table.small {
+		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        display: table;
+		    }
+		    
 		    #pdfBody td.small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
 		        display:table-cell;
@@ -573,9 +580,28 @@ EOF;
 		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
+		    }
+		    
 		    #pdfBody li {
 		        font-weight: normal !important;
-		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce li {
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce ul {
+		        margin-top: 0;
+		        margin-bottom: ".max(9, ($fontSize+(DPI_CONSTANT)))."px;
+		    }
+		    
+		    #pdfBody .tinymce ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
 		    }
 		    
 		    #pdfBody b, #pdfBody strong {

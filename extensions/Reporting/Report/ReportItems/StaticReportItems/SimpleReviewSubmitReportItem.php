@@ -32,6 +32,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		                                        for(index in data){
 		                                            val = data[index];
 		                                            if(typeof val.tok != 'undefined'){
+		                                                index = index.replace('/', '');
 		                                                var tok = val.tok;
 		                                                var time = val.time;
 		                                                var len = val.len;
@@ -115,6 +116,7 @@ EOF;
 		    	$show_pdf = "<br />".$tst;
 		    }
 
+            $file = str_replace("/", "", $file);
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>

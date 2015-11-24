@@ -22,6 +22,7 @@ abstract class AbstractReportSection {
     var $reportCallback;
     var $projectId;
     var $personId;
+    var $variables = array();
     
     // Creates a new AbstractReportSection
     function AbstractReportSection(){
@@ -429,6 +430,42 @@ abstract class AbstractReportSection {
         }
         
         return $cdata;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        else{
+            return $this->getParent()->getVariable($key);
+        }
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if(isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        else{
+            $found = $this->getParent()->setVariable($key, $value, $depth + 1);
+            if(!$found && $depth == 0){
+                $this->variables[$key] = $value;
+                return true;
+            }
+        }
+        return false;
     }
     
 }

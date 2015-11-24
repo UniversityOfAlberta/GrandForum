@@ -36,6 +36,7 @@ class ReportXMLParser {
                 }
             }
         }
+        
         return self::$pdfFiles;
     }
     
@@ -47,9 +48,11 @@ class ReportXMLParser {
                 $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
                 $xml = file_get_contents($fileName);
                 $parser = simplexml_load_string($xml);
-                if($parser->getName() == "Report"){
-                    $attributes = $parser->attributes();
-                    @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
+                if($parser != null){
+                    if($parser->getName() == "Report"){
+                        $attributes = $parser->attributes();
+                        @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
+                    }
                 }
             }
         }
@@ -231,9 +234,6 @@ class ReportXMLParser {
                 $this->report->setReportType($type);
             }
             if(isset($attributes->pdfType)){
-                if(!defined($attributes->pdfType)){
-                    $this->errors[] = "PDF Type '{$attributes->pdfType}' does not exist for Report, using RPTP_NORMAL";
-                }
                 $type = AbstractReport::blobConstant($attributes->pdfType);
                 $this->report->setPDFType($type);
             }
@@ -269,7 +269,7 @@ class ReportXMLParser {
         foreach($children as $key => $child){
             if($key == "Role"){
                 $attributes = $child->attributes();
-                $role = (isset($attributes->role)) ? constant($attributes->role) : MANAGER;
+                $role = (isset($attributes->role)) ? AbstractReport::blobConstant($attributes->role) : MANAGER;
                 $subType = (isset($attributes->subType)) ? $attributes->subType : "";
                 $subType = (isset($attributes->subRole)) ? $attributes->subRole : $subType;
                 if(isset($attributes->role) && AbstractReport::blobConstant($attributes->role) == null){

@@ -33,7 +33,7 @@ class TextareaReportItem extends AbstractReportItem {
                     });
                 }
                 $(document).ready(function(){
-                    $('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    //$('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
                     var readOnly = false;
                     if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
                         readOnly = true;
@@ -87,7 +87,8 @@ class TextareaReportItem extends AbstractReportItem {
     }
     
     function calculateHeight($limit){
-        if($limit > 0){
+        $rich = (strtolower($this->getAttr('rich', 'false')) == 'true');
+        if($limit > 0 && !$rich){
             $height = max(125, (pow($limit, 0.75)))."px";
         }
         else{

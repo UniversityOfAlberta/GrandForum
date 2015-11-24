@@ -19,7 +19,7 @@
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>
-                <small><table class='wikitable' width='100%' frame='box' rules='all'>
+                <table class='wikitable smaller' width='100%' frame='box' rules='all'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
                         <th>Role in project and<br />Date Withdrawn</th>
@@ -120,7 +120,7 @@
         </ReportItemSet>
         <ReportItem id="people_foot" type="StaticReportItem">
             <![CDATA[
-                </table></small><br />
+                </table><br />
             ]]>
         </ReportItem>
     </ReportSection>

@@ -1,8 +1,5 @@
 <?php
 
-require_once("HQPRegisterTable.php");
-require_once("HQPReviewTable.php");
-
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
@@ -64,6 +61,7 @@ class HQPRegister extends SpecialPage{
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
+        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
         $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
@@ -93,7 +91,7 @@ class HQPRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromId($wgUser->getId());
-        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.<br /><br />");
+        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());

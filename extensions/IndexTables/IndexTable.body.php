@@ -376,6 +376,7 @@ EOF;
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
 		$contactHeader = "";
+		$subRoleHeader = "";
 		$projectsHeader = "";
 		$universityHeader = "";
 		$ldapHeader = "";
@@ -386,7 +387,10 @@ EOF;
            ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
-        if($config->getValue('projectsEnabled')){
+        if($table == HQP){
+            $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
+        }
+        if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
 	if(!$config->getValue('singleUniversity')){
@@ -400,6 +404,7 @@ EOF;
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
+                                    {$subRoleHeader}
                                     {$projectsHeader}
 				    {$universityHeader}
                                     <th style='white-space: nowrap;'>Department</th>
@@ -418,7 +423,11 @@ EOF;
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
 ";
-            if($config->getValue('projectsEnabled')){
+            if($subRoleHeader != ""){
+                $subRoles = $person->getSubRoles();
+                $this->text .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
+            }
+            if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
                 $projects = $person->getProjects();
                 $projs = array();
 			    foreach($projects as $project){

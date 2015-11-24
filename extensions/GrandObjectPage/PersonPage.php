@@ -113,7 +113,7 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP) || $person->isRole(HQP."-Candidate")){
+                if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
                 }

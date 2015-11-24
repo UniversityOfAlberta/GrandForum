@@ -6,11 +6,12 @@ class MaterialsReportItemSet extends ReportItemSet {
         $data = array();
         $person = Person::newFromId($this->personId);
         $type = $this->getAttr('subType', NI);
-        $subs = $person->getEvaluates($type);
+        $class = $this->getAttr('class', 'Person');
+        $subs = $person->getEvaluates($type, $this->getReport()->year, $class);
         if(is_array($subs)){
             foreach($subs as $sub){
                 $tuple = self::createTuple();
-                if($type == "Project" || $type == "SAB"){
+                if($type == "Project" || $type == "SAB" || $class == "Project"){
                     $tuple['project_id'] = $sub->getId();
                 }
                 else{

@@ -28,7 +28,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem type="StaticReportItem">
+        <ReportItem id="message" type="StaticReportItem">
             <![CDATA[
                 <p>Please note that you must separately log into TVN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into TVN’s secure website.  <a href='http://www.tvn-nce.ca/member-area/' target='_blank'>http://www.tvn-nce.ca/member-area/</a></p>
             ]]>
@@ -85,11 +85,11 @@
                         <h2>Total Score*</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="user{$user_id}_total">
-                            {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$parent_id},0)},
-                                 {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$parent_id},0)},
-                                      {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$parent_id},0)},
-                                           {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$parent_id},0)},
-                                                {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$parent_id},0)})
+                            {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_RELEVANCE,{$user_id},{$wgUserId},0)},
+                                 {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_MOTIVATION,{$user_id},{$wgUserId},0)},
+                                      {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_CAPACITY,{$user_id},{$wgUserId},0)},
+                                           {add({getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_SUPPORT,{$user_id},{$wgUserId},0)},
+                                                {getNumber(RP_IFP_REVIEW,IFP_REVIEW,IFP_REVIEW_REFEREE,{$user_id},{$wgUserId},0)})
                                            })
                                       })
                                  })

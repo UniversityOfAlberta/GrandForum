@@ -42,18 +42,23 @@ function initSideBar(){
     jQuery("#" + firstTab).show();
     
     jQuery(".right-sidebar-wrapper").append("<div id='roles' class='custom-sidebar gdl-divider widget_nav_menu'>");
+    jQuery(".right-sidebar-wrapper").append("<div id='committees' class='custom-sidebar gdl-divider widget_nav_menu'>");
     jQuery("#roles").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Groups</h3>");
     jQuery("#roles").append("<div class='menu-members-container'>");
-    jQuery("#roles > div.menu-members-container").append("<ul id='roles-members'>");
+    jQuery("#roles > div.menu-members-container").append("<ul class='roleList' id='roles-members'>");
     addTab("#roles-members", "executive-leadership", "Executive Leadership");
-    addTab("#roles-members", "bod", "Board of Directors");
-    addTab("#roles-members", "sab", "Scientific Advisory Board");
-    addTab("#roles-members", "rmc", "Research Management Committee");
     addTab("#roles-members", "network-investigators", "Network Investigators");
     addTab("#roles-members", "collaborators", "Collaborators");
     addTab("#roles-members", "administrative-centre", "Administrative Centre");
+    jQuery("#committees").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Committees</h3>");
+    jQuery("#committees").append("<div class='menu-committees-container'>");
+    jQuery("#committees > div.menu-committees-container").append("<ul class='roleList' id='committees-members'>");
+    addTab("#committees-members", "bod", "Board of Directors");
+    addTab("#committees-members", "sab", "Scientific Advisory Board");
+    addTab("#committees-members", "rmc", "Research Management Committee");
+    addTab("#committees-members", "gta", "GlycoNet Trainee Association");
                                    
-    jQuery("#roles-members li a").click(function(e){
+    jQuery("ul.roleList li a").click(function(e){
         var id = jQuery(e.currentTarget).parent().attr('data-id');
         lastPage = id;
         jQuery(".outer_tab").hide();
@@ -87,7 +92,7 @@ function initSideBar(){
             jQuery(".gdl-tabs-content").hide();
             jQuery("#universities").show();
             jQuery("#universities_tab").show();
-            initTab("NI,RMC,SAB,BOD,SD,ASD,Staff,Manager/" + university.name, "#universities", "", false, 4);
+            initTab("NI,NFI,RMC,SAB,BOD,SD,ASD,Staff,Manager/" + university.name, "#universities", "", false, 4);
         });
         jQuery(".page-wrapper").css('min-height', jQuery(".right-sidebar-wrapper").height());
         if(isNumeric(firstTab)){
@@ -223,6 +228,7 @@ initTab("SD,BOD Chair,ASD,Manager", "#executive-leadership", "tab-0", ['position
 initTab("BOD", "#bod", "tab-4", ['position','university'], 4);
 initTab("SAB", "#sab", "tab-5", ['position','university'], 4);
 initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);
-initTab("NI", "#network-investigators", "tab-1", ['university'], 4);
+initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
 initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
 initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 3);
+initTab("GTA", "#gta", "tab-7", ['position','university','email'], 3);

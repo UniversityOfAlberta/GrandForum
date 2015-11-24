@@ -81,10 +81,13 @@ class ReportItemCallback {
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
             "report_has_started" => "getReportHasStarted",
             // People
+            "my_id" => "getMyId",
             "my_name" => "getMyName",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
             "parent_id" => "getParentId",
+            "parent_name" => "getParentName",
+            "parent_uni" => "getParentUni",
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
@@ -161,6 +164,7 @@ class ReportItemCallback {
             "product_url" => "getProductUrl",
 	    "product_citation" => "getProductCitation",
             // Other
+            "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
 	    "GET" => "getGet",
@@ -169,6 +173,7 @@ class ReportItemCallback {
             "name" => "getName",
             "index" => "getIndex",
             "extraIndex" => "getExtraIndex",
+            "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
@@ -178,7 +183,19 @@ class ReportItemCallback {
             "subtract" => "subtract",
             "multiply" => "multiply",
             "divide" => "divide",
-            "round" => "round"
+            "round" => "round",
+            "set" => "set",
+            "get" => "get",
+            "and" => "andCond",
+            "or" => "orCond",
+            "contains" => "contains",
+            "!contains" => "notContains",
+            "==" => "eq",
+            "!=" => "neq",
+            ">" => "gt",
+            "<" => "lt",
+            ">=" => "gteq",
+            "<=" => "lteq",
         );
     
     var $reportItem;
@@ -927,6 +944,11 @@ class ReportItemCallback {
         return $hqp_comments;
     }
     
+    function getMyId(){
+        $person = $this->reportItem->getReport()->person;
+        return $person->getId();
+    }
+    
     function getMyName(){
         $person = $this->reportItem->getReport()->person;
         return $person->getNameForForms();
@@ -963,7 +985,17 @@ class ReportItemCallback {
     }
     
     function getParentId(){
-        return $this->reportItem->getParent()->getParent()->personId;
+        return $this->reportItem->getParent()->personId;
+    }
+    
+    function getParentName(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getNameForForms();
+    }
+    
+    function getParentUni(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getUni();
     }
     
     function getUserName(){
@@ -1602,6 +1634,11 @@ class ReportItemCallback {
 	return $product->getProperCitation(true, true, false);
     }
     
+    function getWgUserId(){
+        global $wgUser;
+        return $wgUser->getId();
+    }
+    
     function getWgServer(){
         global $wgServer;
         return $wgServer;
@@ -1689,6 +1726,13 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        return $blb->getMD5();
+    }
+    
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
@@ -1724,7 +1768,65 @@ class ReportItemCallback {
     }
     
     function round($val, $dec=0){
-        return round($val, $dec);
+        return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function set($key, $val){
+        $this->reportItem->setVariable($key, $val);
+    }
+    
+    function get($key){
+        return $this->reportItem->getVariable($key);
+    }
+    
+    function andCond(){
+        $bool = true;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool && $arg);
+        }
+        return $bool;
+    }
+    
+    function orCond(){
+        $bool = false;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool || $arg);
+        }
+        return $bool;
+    }
+    
+    function contains($val1, $val2){
+        return (strstr($val1, $val2) !== false);
+    }
+    
+    function notContains($val1, $val2){
+        return !$this->contains($val1, $val2);
+    }
+    
+    function eq($val1, $val2){
+        return ($val1 == $val2);
+    }
+    
+    function neq($val1, $val2){
+        return ($val1 != $val2);
+    }
+    
+    function gt($val1, $val2){
+        return ($val2 > $val2);
+    }
+    
+    function lt($val1, $val2){
+        return ($val1 < $val2);
+    }
+    
+    function gteq($val1, $val2){
+        return ($val1 >= $val2);
+    }
+    
+    function lteq($val1, $val2){
+        return ($val1 <= $val2);
     }
     
     function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){

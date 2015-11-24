@@ -27,18 +27,18 @@ ManageProductsView = Backbone.View.extend({
             this.listenToOnce(this.products, "sync", $.proxy(function(){
                 me.projects.ready().then($.proxy(function(){
                     this.projects = me.projects.getCurrent();
-                    this.model.ready().then($.proxy(function(){
-                        this.allProjects.ready().then($.proxy(function(){
-                            this.otherProjects = this.allProjects.getCurrent();
-                            this.oldProjects = this.allProjects.getOld();
-                            this.otherProjects.remove(this.projects.models);
-                            this.oldProjects.remove(this.projects.models);
-                            me.projects.ready().then($.proxy(function(){
-                                this.render();
-                            }, this));
-                        }, this));
-                    }, this));
-                }, this));
+                    return this.projects.ready();
+                }, this)).then($.proxy(function(){
+                    return this.allProjects.ready();
+                }. this)).then($.proxy(function(){
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    return me.projects.ready();
+                }, this)).then($.proxy(function(){
+                    this.render();
+                }, this));              
             }, this));
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
@@ -166,6 +166,19 @@ ManageProductsView = Backbone.View.extend({
         this.productChanged();
     },
     
+    cacheRows: function(){
+        // Needed so that the search functionality can be updated
+        if(this.table != null){
+            var rows = this.table.rows().indexes();
+            var table = this.table;
+            rows.each($.proxy(function(i, val){
+                if(this.subViews[i] != undefined){
+                    this.subViews[i].row = this.table.row(i);
+                }
+            }, this));
+        }
+    },    
+    
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
@@ -173,6 +186,7 @@ ManageProductsView = Backbone.View.extend({
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
+	    this.cacheRows();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
