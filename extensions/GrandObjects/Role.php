@@ -48,7 +48,7 @@ class Role extends BackboneModel {
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
-			$this->title = $data[0]['title'];
+			$this->title = @$data[0]['title'];
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
