@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="hqp_description" permissions="rw" />

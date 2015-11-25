@@ -100,14 +100,27 @@ class Report extends AbstractReport{
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ResearchExchange")) ? "selected" : false;
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Research Exchange", "{$url}HQPApplications/ResearchExchange", $selected);
             }
-            /*if($person->isSubRole("Summer Award HQP")){
+            if($person->isSubRole("Summer Award HQP")){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/SummerAwardReport")) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Summer Award Report", "{$url}HQPApplications/SummerAwardReport", $selected);
             }
             else{
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/SummerAward")) ? "selected" : false;
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Summer Award", "{$url}HQPApplications/SummerAward", $selected);
-            }*/
+            }
+        }
+        if($person->isRole(NI)){
+            $data = DBFunctions::select(array('grand_report_blobs'),
+                                        array('*'),
+                                        array('rp_type'     => EQ('RP_HQP_SUMMER'),
+                                              'rp_section'  => EQ('APPLICATION'),
+                                              'rp_item'     => EQ('SUPNAME'),
+                                              'data'        => EQ($person->getNameForForms())));
+            if(count($data) > 0){
+                // NI was referenced in HQP Summer Application
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/SummerAward")) ? "selected" : false;
+                $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Summer Award", "{$url}HQPApplications/SummerAward", $selected);
+            }
         }
         return true;
     }
