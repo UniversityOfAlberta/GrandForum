@@ -279,42 +279,6 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="description" type="Editable" name="Descriptions" tooltip="Project Descriptions" title="Project Descriptions" blobSection="DESCRIPTION">
-        <ReportItem id="sup_head" type="Static">
-            <![CDATA[
-                <h2>Trainee</h2>
-                <table class='wikitable'>
-                    <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
-                    <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="province" type="Text" blobType="BLOB_TEXT" blobItem="PROV">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
-            <![CDATA[
-                <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
-                <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="residency" type="Select" options="Candadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
-                </tr>
-                </table>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="students" type="Self" reportType="RP_HQP_SUMMER" blobSection="APPLICATION" blobItem="SUPNAME" blobValue="{$user_name}">
             <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                 <ReportItem id="acronym" type="Text" blobItem="ACRONYM" blobSubItem="{$user_id}">

@@ -32,13 +32,13 @@ class HQPApplicationTable extends SpecialPage{
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
-        $hqp = Person::getAllPeople(HQP);
+        $hqp = Person::getAllPeople();
         
         $tabbedPage = new TabbedPage("person");
 
         $tabbedPage->addTab(new CandidatesTab());
-        $tabbedPage->addTab(new ApplicationTab('RP_HQP_EXCHANGE', $hqp));
-        $tabbedPage->addTab(new ApplicationTab('RP_HQP_SUMMER', $hqp));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp));
         $tabbedPage->showPage();
     }
     
