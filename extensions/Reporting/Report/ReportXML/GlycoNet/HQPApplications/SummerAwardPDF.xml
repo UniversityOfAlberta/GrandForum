@@ -144,7 +144,6 @@
                     <table class='wikitable'>
                         <tr>
                             <td valign='top' align='right'><b>Project Acronym:</b><br />
-                                <small>(if project is funded by GlycoNet)</small>
                             </td>
                             <td valign='top'>{getText(RP_HQP_SUMMER, DESCRIPTION, ACRONYM, {$parent_id}, {$user_id}, 0)}</td>
                         </tr>
