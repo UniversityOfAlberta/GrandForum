@@ -79,6 +79,7 @@ $arrayTypes[PROJECT_CHAMPIONS_ARRAY] = "ProjectChampionsArray";
 define('NI_PUBLIC_PROFILE_STRUCTURE', 1);
 define('NI_PRIVATE_PROFILE_STRUCTURE', 2);
 define('HQP_PUBLIC_PROFILE_STRUCTURE', 3);
+define('HQP_PRODUCTIVITY_STRUCTURE', 4);
 
 define('PROJECT_PUBLIC_STRUCTURE', 10);
 
@@ -116,13 +117,23 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
-    array(array_merge(array(HEAD."(Projects)", HEAD."(Supervisors)"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
-          array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
+    array(array_merge(array(HEAD."(Projects)", HEAD."(Supervisors)"), $head, array(HEAD."(Multimedia)"),
+          array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
                                                                        PERSON_HQP),
                                                                  $persRow, 
-                                                                 array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
-          array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
+                                                                 array(PERSON_MULTIMEDIA)),
+          array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA)),
+    );
+    
+$dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] =
+    array(array_merge(array(HEAD."(Projects)", $head, array(HEAD."(Multimedia)")),
+          array_merge(array(HEAD.'(Total:)'), $persRow, array(PERSON_MULTIMEDIA)),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
+                                                                       PERSON_HQP),
+                                                                 $persRow, 
+                                                                 array(PERSON_MULTIMEDIA)),
+          array_merge(array(HEAD.'(Total:)'), $persRow, array(PERSON_MULTIMEDIA)),
     );
     
 $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = 
