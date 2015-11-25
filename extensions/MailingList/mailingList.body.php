@@ -35,6 +35,9 @@ class MailList{
             if($nsText == "Mail"){
                 $list = strtolower($text);
                 $result = MailingList::isSubscribed($list, $me);
+                if($me->isRoleAtLeast(STAFF) && $list != "support" && $list != strtolower($config->getValue('networkName')."-support")){
+                    $result = true;
+                }
             }
         }
         return true;
