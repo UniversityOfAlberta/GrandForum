@@ -11,7 +11,7 @@ $wgHooks['userCan'][] = array($mailList, 'userCanExecute');
 class MailList{
     
     function userCanExecute(&$title, &$user, $action, &$result){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $config;
         if($action == "read"){
             $me = Person::newFromUser($user);
             if($me->isRoleAtLeast(MANAGER)){
