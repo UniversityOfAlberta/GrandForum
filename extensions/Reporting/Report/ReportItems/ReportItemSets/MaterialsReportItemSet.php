@@ -13,12 +13,15 @@ class MaterialsReportItemSet extends ReportItemSet {
                 $tuple = self::createTuple();
                 if($type == "Project" || $type == "SAB" || $class == "Project"){
                     $tuple['project_id'] = $sub->getId();
+                    $name = $sub->getName();
                 }
                 else{
                     $tuple['person_id'] = $sub->getId();
+                    $name = $sub->getReversedName();
                 }
-                $data[] = $tuple;
+                $data[$name] = $tuple;
             }
+            ksort($data);
         }
         return $data;
     }
