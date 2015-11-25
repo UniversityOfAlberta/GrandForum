@@ -104,7 +104,7 @@
                 <table class='wikitable'>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_name" type="NISelect" blobType="BLOB_TEXT" blobItem="SUPNAME">
+        <ReportItem id="sup_name" type="NISelect" placeholder="Choose NI..." blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
                     <td align='right' style='font-weight:bold;'>Name:</td><td>{$item}</td>

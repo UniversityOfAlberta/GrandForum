@@ -16,8 +16,9 @@ class NISelectReportItem extends SelectReportItem {
     function render(){
         global $wgOut;
         parent::render();
+        $placeholder = $this->getAttr('placeholder', 'Choose '.NI.'...');
         $wgOut->addHTML("<script type='text/javascript'>
-            $(\"select[name='{$this->getPostId()}']\").attr('data-placeholder', 'Choose ".NI."...');
+            $(\"select[name='{$this->getPostId()}']\").attr('data-placeholder', '{$placeholder}');
             $(\"select[name='{$this->getPostId()}']\").chosen();
         </script>");
     }
