@@ -1972,6 +1972,7 @@ class Person extends BackboneModel {
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => INACTIVE,
+                                                           'title' => '',
                                                            'start_date' => '0000-00-00 00:00:00',
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));

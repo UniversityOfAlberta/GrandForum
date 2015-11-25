@@ -73,9 +73,21 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
         APIRequest::doAction('UserProfile', true);
+        if(isset($_POST['role_title'])){
+            foreach($this->person->getRoles() as $role){
+                if(isset($_POST['role_title'][$role->getId()])){
+                    $value = $_POST['role_title'][$role->getId()];
+                    DBFunctions::update('grand_roles', 
+                                        array('title' => $value),
+                                        array('id' => $role->getId()));
+                }
+            }
+        }
+        Person::$rolesCache = array();
         Person::$cache = array();
         Person::$namesCache = array();
         Person::$idsCache = array();
+        
         $this->person = Person::newFromId($this->person->getId());
     }
     
@@ -468,6 +480,7 @@ EOF;
         global $wgOut, $wgUser;
         $university = $person->getUniversity();
         $nationality = "";
+        $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
             if($person->isRoleDuring(HQP, "0000", "9999") ||
                $person->isRoleDuring(NI, "0000", "9999")){
@@ -509,7 +522,8 @@ EOF;
                             </tr>
                             {$nationality}
                             {$gender}";
-                            
+        
+        $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
         if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
@@ -552,13 +566,25 @@ EOF;
         $deptCombo->attr('style', 'max-width: 250px;');
         $this->html .= "<tr>
                             <td align='right'><b>Title:</b></td>
-                            <td>{$titleCombo->render()}
-                            </td>
-                        </tr>
-                        <tr>
+                            <td>{$titleCombo->render()}</td>
+                        </tr>";
+        if($me->isRoleAtLeast(STAFF)){
+            $this->html .= "<tr>
+                                <td></td>
+                                <td><table>";
+            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
+            foreach($roles as $role){
+                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
+                $this->html .= "<tr>
+                                    <td align='right'><b>{$role->getRole()}:</b></td>
+                                    <td>{$roleTitleCombo->render()}</td>
+                                </tr>";
+            }
+            $this->html .= "</table></td></tr>";
+        }
+        $this->html .= "<tr>
                             <td align='right'><b>Institution:</b></td>
-                            <td>{$orgCombo->render()}
-                            </td>
+                            <td>{$orgCombo->render()}</td>
                         </tr>
                         <tr>
                             <td align='right'><b>Department:</b></td>

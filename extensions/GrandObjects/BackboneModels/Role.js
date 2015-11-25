@@ -9,6 +9,7 @@ Role = Backbone.Model.extend({
     defaults: {
         id: null,
         name: "",
+        title: "",
         comment: "",
         startDate: "",
         endDate: ""
