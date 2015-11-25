@@ -117,7 +117,7 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
-    array(array_merge(array(HEAD."(Projects)", HEAD."(Supervisors)"), $head, array(HEAD."(Multimedia)"),
+    array(array_merge(array(HEAD."(Projects)", HEAD."(Supervisors)"), $head, array(HEAD."(Multimedia)")),
           array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
                                                                        PERSON_HQP),
@@ -127,7 +127,7 @@ $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
     );
     
 $dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] =
-    array(array_merge(array(HEAD."(Projects)", $head, array(HEAD."(Multimedia)")),
+    array(array_merge(array(HEAD."(Projects)"), $head, array(HEAD."(Multimedia)")),
           array_merge(array(HEAD.'(Total:)'), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
                                                                        PERSON_HQP),
