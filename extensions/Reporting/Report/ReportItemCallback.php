@@ -1516,6 +1516,12 @@ class ReportItemCallback {
     
     function getExtraIndex(){
         $set = $this->reportItem->getSet();
+        while(!($set instanceof ArrayReportItemSet)){
+            $set = $set->getParent();
+            if($set instanceof AbstractReport){
+                return 0;
+            }
+        }
         foreach($set->getData() as $index => $item){
             if($item['extra'] == $this->reportItem->extra){
                 return $index;
@@ -1531,11 +1537,17 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
-        return $blb->getData();
+        if($index == null){
+            return $blb->getData();
+        }
+        else{
+            $array = $blb->getData();
+            return @$array[$index];
+        }
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId){

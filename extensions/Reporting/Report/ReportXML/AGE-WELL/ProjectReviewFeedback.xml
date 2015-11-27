@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Review Feedback" reportType="RP_PROJ_REVIEW" ajax="true">
+<Report name="Project Review Feedback" reportType="RP_PROJ_REVIEW" ajax="true" personId="0">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Staff">
             <SectionPermission id="feedback" permissions="rw" />
@@ -40,11 +40,11 @@
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
-                        <table class='wikitable' style='width:100%;'>
+                        <table><tr><td valign='top'>
+                        <table class='wikitable' style='width:600px;'>
                             <tr>
-                                <th class='dark' width="33%">February 2015 Review</th>
-                                <th class='dark' width="33%">October 2015 PL Responses</th>
-                                <th class='light' width="33%">October 2015 Review</th>
+                                <th class='dark' width='50%'>February 2015 Review</th>
+                                <th class='dark' width='50%'>October 2015 PL Responses</th>
                             </tr>
                     ]]>
                 </ReportItem>
@@ -65,18 +65,23 @@
                                 </td>
                             ]]>
                         </ReportItem>
-                        <ReportItem id="feedback" type="TextareaReportItem" height="100px" blobItem="PROJ_FEEDBACK_COMM" blobSubItem="{$user_id}0{$extraIndex}">
-                            <![CDATA[
-                                    <td class='light' valign='top'>
-                                        {$item}
-                                    </td>
-                                </tr>
-                            ]]>
-                        </ReportItem>
                     </ReportItemSet>
                 </ReportItemSet>
                 <ReportItem id="table_foot" type="StaticReportItem">
                     <![CDATA[
+                        </table>
+                        </td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="feedback" type="MultiTextReportItem" blobItem="PROJ_FEEDBACK_COMM" blobType="BLOB_ARRAY" multiple="true" 
+                            labels="October 2015 Review|PL Responses" 
+                            types="Textarea|getArray(RP_PROJ_FEEDBACK,PROJ_FEEDBACK_COMMENTS,PROJ_FEEDBACK_COMM2,0,0,{$project_id})"
+                            sizes="300|300">
+                    <![CDATA[
+                        <td valign='top'>
+                        {$item}
+                        </td>
+                        </tr>
                         </table>
                     ]]>
                 </ReportItem>

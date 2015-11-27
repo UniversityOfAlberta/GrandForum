@@ -21,6 +21,7 @@ abstract class AbstractReportItem {
     var $milestoneId;
     var $productId;
     var $extra;
+    var $extraIndex;
     var $private;
     var $deleted;
     var $blobItem;
@@ -195,6 +196,12 @@ abstract class AbstractReportItem {
     
     function getExtraIndex(){
         $set = $this->getSet();
+        while(!($set instanceof ArrayReportItemSet)){
+            $set = $set->getParent();
+            if($set instanceof AbstractReport){
+                return 0;
+            }
+        }
         foreach($set->getCachedData() as $index => $item){
             if($item['extra'] == $this->extra){
                 return $index;
@@ -216,6 +223,7 @@ abstract class AbstractReportItem {
             $postId = str_replace(" ", "", $parent->name).$postId;
         }
         $postId = str_replace("-", "", $postId);
+        $postId = str_replace(" ", "", $postId);
         return $postId;
     }
     
@@ -267,6 +275,7 @@ abstract class AbstractReportItem {
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
         switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -338,6 +347,7 @@ abstract class AbstractReportItem {
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
 	    switch($this->blobType){
             default:
             case BLOB_TEXT:

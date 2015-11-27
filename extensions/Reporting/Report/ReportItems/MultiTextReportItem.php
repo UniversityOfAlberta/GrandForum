@@ -110,6 +110,9 @@ EOF;
                             $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
                             $item .= @"\"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
+                        else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
+                            $item .= @"\"<td></td>\" + \n";
+                        }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
@@ -208,6 +211,12 @@ EOF;
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
                         $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
+                        $fn = "{".$types[$j]."}";
+                        $val = unserialize($this->varSubstitute($fn));
+                        $val = @$val[$i][$this->id];
+                        $item .= @"<td>{$val}</td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);
