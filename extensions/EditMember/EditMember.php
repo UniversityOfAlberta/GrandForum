@@ -976,8 +976,10 @@ class EditMember extends SpecialPage{
                     }
                 }
             }
-            
-            if($r->getId() != 0){
+            if(count($projs) == 0){
+                $projectLink = "&nbsp;<span></span>";
+            }
+            else if($r->getId() != 0){
                 $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='float:right; cursor: pointer;'>[Projects]</a>";
             }
             else{
