@@ -21,7 +21,8 @@ class ProjectMainTab extends AbstractEditableTab {
            !$project->isDeleted() && 
            !$project->isSubProject() && 
            !$edit && 
-           !$me->isMemberOf($project)){
+           !$me->isMemberOf($project) &&
+           $me->isRoleAtLeast(NI)){
             // Show a 'Join' button if this person isn't a member of the project, but is logged in
             $this->html .= "<a class='button' onClick=\"$('#joinForm').slideDown();$(this).remove();\">Join</a>
             <script type='text/javascript'>
