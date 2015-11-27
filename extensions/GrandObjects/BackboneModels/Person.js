@@ -105,6 +105,7 @@ Person = Backbone.Model.extend({
         twitter: '',
         university: '',
         position: '',
+        roles: new Array(),
         department: '',
         publicProfile: '',
         privateProfile: '',

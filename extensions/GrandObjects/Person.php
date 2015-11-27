@@ -767,7 +767,14 @@ class Person extends BackboneModel {
         if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
         }
-
+        $roles = array();
+        foreach($this->getRoles() as $role){
+            if($role->getId() != -1){
+                $roles[] = array('id' => $role->getId(),
+                                 'role' => $role->getRole(),
+                                 'title' => $role->getTitle());
+            }
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -784,6 +791,7 @@ class Person extends BackboneModel {
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
+                      'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl());
