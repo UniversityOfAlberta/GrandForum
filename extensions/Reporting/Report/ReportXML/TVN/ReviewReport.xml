@@ -729,6 +729,36 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(qa1)}, 
+                            {add({get(qa2)},
+                                {add({get(qa3)},
+                                    {add({get(qa4)},
+                                        {add({get(qa5)},
+                                            {add({get(qa6)},
+                                                {add({get(qa7)},
+                                                    {add({get(qa8)},
+                                                         {get(qa9)}
+                                                    )}
+                                                )}
+                                            )}
+                                        )}
+                                    )}
+                                )}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -760,27 +790,8 @@
                         <td align='right'>
                             {round({divide({get(qa9)},{get(nAReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(qa1)}, 
-                                    {add({get(qa2)},
-                                        {add({get(qa3)},
-                                            {add({get(qa4)},
-                                                {add({get(qa5)},
-                                                    {add({get(qa6)},
-                                                        {add({get(qa7)},
-                                                            {add({get(qa8)},
-                                                                 {get(qa9)}
-                                                            )}
-                                                        )}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nAReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -836,6 +847,24 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(qb1)}, 
+                            {add({get(qb2)},
+                                 {get(qb3)}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -849,15 +878,8 @@
                         <td align='right'>
                             {round({divide({get(qb3)},{get(nBReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(qb1)}, 
-                                    {add({get(qb2)},
-                                         {get(qb3)}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nBReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -937,6 +959,36 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)}, 
+                            {add({get(q2)},
+                                {add({get(q3)},
+                                    {add({get(q4)},
+                                        {add({get(q5)},
+                                            {add({get(q6)},
+                                                {add({get(q7)},
+                                                    {add({get(q8)},
+                                                         {get(q9)}
+                                                    )}
+                                                )}
+                                            )}
+                                        )}
+                                    )}
+                                )}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -968,27 +1020,8 @@
                         <td align='right'>
                             {round({divide({get(q9)},{get(nReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(q1)}, 
-                                    {add({get(q2)},
-                                        {add({get(q3)},
-                                            {add({get(q4)},
-                                                {add({get(q5)},
-                                                    {add({get(q6)},
-                                                        {add({get(q7)},
-                                                            {add({get(q8)},
-                                                                 {get(q9)}
-                                                            )}
-                                                        )}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -1502,6 +1535,36 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(qa1)}, 
+                            {add({get(qa2)},
+                                {add({get(qa3)},
+                                    {add({get(qa4)},
+                                        {add({get(qa5)},
+                                            {add({get(qa6)},
+                                                {add({get(qa7)},
+                                                    {add({get(qa8)},
+                                                         {get(qa9)}
+                                                    )}
+                                                )}
+                                            )}
+                                        )}
+                                    )}
+                                )}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -1533,27 +1596,8 @@
                         <td align='right'>
                             {round({divide({get(qa9)},{get(nAReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(qa1)}, 
-                                    {add({get(qa2)},
-                                        {add({get(qa3)},
-                                            {add({get(qa4)},
-                                                {add({get(qa5)},
-                                                    {add({get(qa6)},
-                                                        {add({get(qa7)},
-                                                            {add({get(qa8)},
-                                                                 {get(qa9)}
-                                                            )}
-                                                        )}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nAReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -1609,6 +1653,24 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(qb1)}, 
+                            {add({get(qb2)},
+                                 {get(qb3)}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -1622,15 +1684,8 @@
                         <td align='right'>
                             {round({divide({get(qb3)},{get(nBReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(qb1)}, 
-                                    {add({get(qb2)},
-                                         {get(qb3)}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nBReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>
@@ -1706,6 +1761,34 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
+            <ReportItem id="total" type="StaticReportItem">
+                <![CDATA[
+                    {set(total, 
+                        {add({get(q1)}, 
+                            {add({get(q2)},
+                                {add({get(q3)},
+                                    {add({get(q4)},
+                                        {add({get(q5)},
+                                            {add({get(q6)},
+                                                {add({get(q7)},
+                                                     {get(q8)}
+                                                )}
+                                            )}
+                                        )}
+                                    )}
+                                )}
+                            )}
+                        )}
+                    )}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},32)},5)},1)})}
+                    {set(highlight,)}
+                ]]>
+            </ReportItem>
+            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+                <![CDATA[
+                    {set(highlight,background:#FFCC00)}
+                ]]>
+            </ReportItem>
             <ReportItem id="table_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -1734,25 +1817,8 @@
                         <td align='right'>
                             {round({divide({get(q8)},{get(nReviewers)})},1)}
                         </td>
-                        <td align='right'>
-                            {set(total, 
-                                {add({get(q1)}, 
-                                    {add({get(q2)},
-                                        {add({get(q3)},
-                                            {add({get(q4)},
-                                                {add({get(q5)},
-                                                    {add({get(q6)},
-                                                        {add({get(q7)},
-                                                             {get(q8)}
-                                                        )}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                    )}
-                                )}
-                            )}
-                            {round({divide({get(total)},{get(nReviewers)})},1)}
+                        <td align='right' style='{get(highlight)}'>
+                            {get(total)}
                         </td>
                     </tr>
                 ]]>

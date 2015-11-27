@@ -90,6 +90,9 @@ abstract class AbstractReportItem {
     function getSet(){
         $parent = $this->getParent();
         while(!($parent instanceof ReportItemSet)){
+            if($parent instanceof AbstractReport){
+                break;
+            }
             $parent = $parent->getParent();
         }
         return $parent;
@@ -197,10 +200,10 @@ abstract class AbstractReportItem {
     function getExtraIndex(){
         $set = $this->getSet();
         while(!($set instanceof ArrayReportItemSet)){
-            $set = $set->getParent();
             if($set instanceof AbstractReport){
                 return 0;
             }
+            $set = $set->getParent();
         }
         foreach($set->getCachedData() as $index => $item){
             if($item['extra'] == $this->extra){
