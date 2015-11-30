@@ -216,7 +216,7 @@ EOF;
                         $fn = "{".$types[$j]."}";
                         $val = unserialize($this->varSubstitute($fn));
                         $val = @$val[$i][$this->id];
-                        $item .= @"<td>{$val}</td>";
+                        $item .= @"<td valign='top'>{$val}</td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);
