@@ -9,8 +9,6 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-    </Permissions>
-    <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
