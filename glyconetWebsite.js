@@ -189,6 +189,7 @@ function initTab(role, selector, tabSelector, fields, cols){
         
         jQuery(selector + "_tab .tshowcase-box-photo").click(function(e){
             // Click Profile
+            scroll(0,0);
             var id = jQuery(e.currentTarget).parent().parent().attr('id');
             var person = response[id];
             if(firstPerson == "" || firstPerson == undefined){
