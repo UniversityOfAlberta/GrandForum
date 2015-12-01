@@ -87,7 +87,7 @@ EOF;
                             $item .= @"\"<td><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
+                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -183,7 +183,7 @@ EOF;
                         $item .= @"<td><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
-                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
+                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                             strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -216,7 +216,7 @@ EOF;
                         $fn = "{".$types[$j]."}";
                         $val = unserialize($this->varSubstitute($fn));
                         $val = @$val[$i][$this->id];
-                        $item .= @"<td>{$val}</td>";
+                        $item .= @"<td valign='top'>{$val}</td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);

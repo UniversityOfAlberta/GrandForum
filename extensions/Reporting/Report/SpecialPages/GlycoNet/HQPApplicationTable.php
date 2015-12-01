@@ -32,7 +32,7 @@ class HQPApplicationTable extends SpecialPage{
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
-        $hqp = Person::getAllPeople(HQP);
+        $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         
         $tabbedPage = new TabbedPage("person");
 
