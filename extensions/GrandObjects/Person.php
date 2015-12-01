@@ -357,10 +357,7 @@ class Person extends BackboneModel {
     static function generateLeaderCache(){
         if(count(self::$leaderCache) == 0){
             $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
-                    FROM grand_project_leaders l, grand_project p, (
-                        SELECT *
-                        FROM grand_project_status
-                        ORDER BY evolution_id DESC) s
+                    FROM grand_project_leaders l, grand_project p, grand_project_status s
                     WHERE l.type = 'leader'
                     AND p.id = l.project_id
                     AND p.id = s.project_id
