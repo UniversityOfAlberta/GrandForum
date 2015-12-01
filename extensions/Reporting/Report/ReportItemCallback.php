@@ -1533,7 +1533,7 @@ class ReportItemCallback {
     function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
-        $result = $blb->load($addr);
+        $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
     
