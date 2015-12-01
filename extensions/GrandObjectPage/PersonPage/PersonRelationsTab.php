@@ -25,7 +25,7 @@ class PersonRelationsTab extends AbstractTab {
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
                     if($visibility['edit'] && $visibility['isSupervisor']){
-                        $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
+                        $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditRelations'>Edit Relations</a>";
                     }
                     $this->html .= "<h3>Supervisors</h3>";
                     $this->html .= "<table class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
@@ -141,8 +141,11 @@ class PersonRelationsTab extends AbstractTab {
         }
         if($wgUser->isLoggedIn()){
             if($this->html == ""){
-                if($visibility['isMe'] || $visibility['isSupervisor']){
-                    $this->html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
+                if($visibility['isMe'] && $this->person->isRole(HQP)){
+                    $this->html .= "Contact your supervisor in order be added as their student";
+                }
+                if($visibility['isSupervisor']){
+                    $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditRelations'>Edit Relations</a>";
                 }
                 else{
                     $this->html .= "This user has no relations";
