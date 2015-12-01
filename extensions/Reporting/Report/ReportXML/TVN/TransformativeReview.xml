@@ -2,16 +2,16 @@
 <Report name="Transformative Review" reportType="RP_TRANS_REVIEW" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-            <SectionPermission id="eula" permissions="" />
-            <SectionPermission id="ex_review" permissions="" />
-            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SRC">
-            <SectionPermission id="eula" permissions="" />
-            <SectionPermission id="ex_review" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="-" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
