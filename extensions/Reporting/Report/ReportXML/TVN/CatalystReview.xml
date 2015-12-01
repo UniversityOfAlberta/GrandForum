@@ -2,16 +2,16 @@
 <Report name="Catalyst Review" reportType="RP_CAT_REVIEW" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-            <SectionPermission id="eula" permissions="" />
-            <SectionPermission id="ex_review" permissions="" />
-            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SRC">
-            <SectionPermission id="eula" permissions="" />
-            <SectionPermission id="ex_review" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="-" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
@@ -82,7 +82,7 @@
                                 <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
                                 <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                             </table>
-                            <a href='{$wgServer}{$wgScriptPath}/index.php?downloadBlob=true&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         ]]>
                     </ReportItem>
                     <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
@@ -318,7 +318,7 @@
                             <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
                             <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                         </table>
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?downloadBlob=true&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                     ]]>
                 </ReportItem>
                 <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
@@ -545,7 +545,7 @@
                             <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
                             <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                         </table>
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?downloadBlob=true&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                     ]]>
                 </ReportItem>
                 <ReportItem id="impact" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_IMPACT" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposal will not evaluate, or have the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will satisfactorily evaluate, and has the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will do a good job of evaluating, and has good potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will do an excellent job of evaluating, and has excellent potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization." orientation="horizontal" showScore="true">
