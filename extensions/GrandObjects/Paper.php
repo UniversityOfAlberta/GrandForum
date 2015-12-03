@@ -677,7 +677,7 @@ class Paper extends BackboneModel{
      */
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        if(!isset($_GET['embed'])){
+        if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
             return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
         }
         return "{$wgServer}{$wgScriptPath}/index.php/Special:Products?embed#/{$this->getCategory()}/{$this->getId()}";
