@@ -470,7 +470,7 @@ abstract class AbstractReportItem {
             // There are recursive calls, now call them
             $cdata = $this->varSubstitute($cdata);
         }
-        return $cdata;
+        return str_replace(",", "&#44;", $cdata);
     }
     
     /**
