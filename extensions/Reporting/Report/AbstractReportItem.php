@@ -426,6 +426,8 @@ abstract class AbstractReportItem {
             }
         }
         
+        $cdata = str_replace(",", "&#44;", $cdata);
+        
         // Support nested function calls
         preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
         // Reverse the array so that it gets the inner most first
