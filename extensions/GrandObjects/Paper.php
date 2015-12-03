@@ -677,7 +677,10 @@ class Paper extends BackboneModel{
      */
     function getUrl(){
         global $wgServer, $wgScriptPath;
-        return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
+        if(!isset($_GET['embed'])){
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:Products#/{$this->getCategory()}/{$this->getId()}";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:Products?embed#/{$this->getCategory()}/{$this->getId()}";
     }
     
     /**

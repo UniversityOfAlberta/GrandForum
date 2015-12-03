@@ -1235,8 +1235,11 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC))){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && !isset($_GET['embed'])){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+        }
+        elseif($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
     }

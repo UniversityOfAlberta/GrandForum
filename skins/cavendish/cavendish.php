@@ -510,6 +510,10 @@ class CavendishTemplate extends QuickTemplate {
 		            overflow: hidden;
 		            background: #FFFFFF;
 		        }
+			
+			body {
+			    background:#FFFFFF;
+			}
 		        
 		        #side {
 		            display: none;
@@ -571,7 +575,7 @@ class CavendishTemplate extends QuickTemplate {
                 }, false);
 		        
 		        $(document).ready(function(){
-		            $("a").attr("target", "_blank");
+		            $("a").attr("target", "");
 		            var height = $("#bodyContent").height();
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
