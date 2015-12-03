@@ -584,7 +584,9 @@ class CavendishTemplate extends QuickTemplate {
 		            }, 100);
 		        });
 		    </script>
-		<?php } ?>
+		<?php
+            header_remove("X-Frame-Options");
+		 } ?>
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>

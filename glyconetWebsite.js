@@ -219,6 +219,10 @@ function initTab(role, selector, tabSelector, fields, cols){
             }
         });
         
+        jQuery("iframe" + selector + "_frame").load(function(){
+            scroll(0,0);
+        });
+        
         if(firstPerson != "" && firstPerson != undefined){
             jQuery("#" + firstTab + " " + selector + "_tab div[data-id=" + firstPerson + "] .tshowcase-box-photo").click();
         }
