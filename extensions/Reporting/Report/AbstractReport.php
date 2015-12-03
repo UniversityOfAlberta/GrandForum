@@ -1144,6 +1144,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn()){
                 permissionError();
             }
+            ini_set("memory_limit","256M");
             $blob = new ReportBlob();
             $blob->loadFromMD5($_GET['id']);
             $data = $blob->getData();
