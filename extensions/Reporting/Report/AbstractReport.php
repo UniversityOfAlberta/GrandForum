@@ -710,6 +710,9 @@ abstract class AbstractReport extends SpecialPage {
                 $found = true;
                 foreach($this->sectionPermissions[$role][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
+                    if($key == "-"){
+                        return array();
+                    }
                 }
             }
         }
@@ -719,6 +722,9 @@ abstract class AbstractReport extends SpecialPage {
                 $found = true;
                 foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
+                    if($key == "-"){
+                        return array();
+                    }
                 }
             }
         }
@@ -726,6 +732,9 @@ abstract class AbstractReport extends SpecialPage {
             $found = true;
             foreach($this->sectionPermissions[$me->getId()][$section->id] as $key => $perm){
                 $permissions[$key] = $perm;
+                if($key == "-"){
+                    return array();
+                }
             }
         }
         if(!$found){
@@ -1135,6 +1144,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn()){
                 permissionError();
             }
+            ini_set("memory_limit","256M");
             $blob = new ReportBlob();
             $blob->loadFromMD5($_GET['id']);
             $data = $blob->getData();

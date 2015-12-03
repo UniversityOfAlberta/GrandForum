@@ -26,7 +26,7 @@ class EditMember extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
-        $user = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         $date = date("Y-m-d");
         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
@@ -89,7 +89,7 @@ class EditMember extends SpecialPage{
                                 });
                             }
                            </script>");
-        if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && $me->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 // Admin Accepted
                 EditMember::handleAdminAccept();
@@ -98,7 +98,7 @@ class EditMember extends SpecialPage{
                 // Admin Ignored
                 DBFunctions::update('grand_role_request',
                                     array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
-                                          'staff' => $user->getId(),
+                                          'staff' => $me->getId(),
                                           '`ignore`' => 1),
                                     array('id' => EQ($_POST['id'])));
             }
@@ -120,7 +120,7 @@ class EditMember extends SpecialPage{
                     EditMember::generateMain();
                     return;
                 }
-                else if(!$user->isAllowedToEdit($person)){ // Handles RMC-GOV
+                else if(!$me->isAllowedToEdit($person)){ // Handles RMC-GOV
                     $wgMessage->addError("You do not have permissions to edit this user.");
                     EditMember::generateMain();
                     return;
@@ -236,7 +236,7 @@ class EditMember extends SpecialPage{
                 $wgMessage->addSuccess("The user <b>{$person->getNameForForms()}</b> has been requested to have the following role changes:<br /><p style='margin-left:15px;'>".$message."</p>Once an admin sees this request they will review and accept it");
             }
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
-            if($user->isRoleAtLeast(STAFF)){
+            if($me->isRoleAtLeast(STAFF)){
                 // Sub-Role Changes
                 $subRoles = @$_POST['sub_wpNS'];
                 if(!is_array($subRoles)){
@@ -553,7 +553,7 @@ class EditMember extends SpecialPage{
     
     function generateMain(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $user = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         $wgOut->addScript('<script type="text/javascript">
                             var sort = "first";
                             var allPeople = new Array(');
@@ -561,13 +561,13 @@ class EditMember extends SpecialPage{
         $i = 0;
         $names = array();
         foreach($allPeople as $person){
-            if(!$user->isAllowedToEdit($person)){ 
+            if(!$me->isAllowedToEdit($person)){ 
                 // User does not have permission for this person
                 continue;
             }
             $names[] = $person->getName();
         }
-        if($user->isRoleAtLeast(STAFF)){
+        if($me->isRoleAtLeast(STAFF)){
             foreach(Person::getAllStaff() as $person){
                 $names[] = $person->getName();
             }
@@ -698,7 +698,7 @@ class EditMember extends SpecialPage{
             sortBy("first");
         });
         </script>');
-        if($user->isRoleAtLeast(STAFF)){
+        if($me->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'>View Requests</a></b><br /><br />");
             foreach(Person::getAllStaff() as $person){
                 $allPeople[] = $person;
@@ -720,7 +720,7 @@ class EditMember extends SpecialPage{
             foreach($projects as $project){
                 $projs[] = $project->getName();
             }
-            if(!$user->isAllowedToEdit($person)){
+            if(!$me->isAllowedToEdit($person)){
                 // User does not have permission for this person
                 continue;           
             }
@@ -887,7 +887,7 @@ class EditMember extends SpecialPage{
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
         $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
-        <p>Select the Roles and Projects to which <b>{$person->getReversedName()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
+        <p>Select the Roles and Projects to which <b>{$person->getNameForForms()}</b> should be a member of.  Deselecting a role or project will prompt further questions, relating to the reason why they are leaving that role.  All actions will need to be approved by an Administrator.</p>");
         $wgOut->addHTML("<div id='tabs'>
                     <ul>
                         <li><a id='RolesTab' href='#tabs-1'>Roles</a></li>
@@ -927,7 +927,8 @@ class EditMember extends SpecialPage{
     
     function generateRoleFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $user = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
+        $myProjects = $me->getProjects(false, true);
         if(!isset($_GET['name'])){
             return;
         }
@@ -935,30 +936,65 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<table style='min-width:300px;'><tr>
                         <td class='mw-input'>");
         $boxes = "";
-        $projects = "";
         
         $wgRolesCopy = $wgRoles;
         asort($wgRolesCopy);
-        $projs = Project::getAllProjects();
+        
+        $projects = Project::getAllProjects();
+        
         foreach($wgRolesCopy as $role){
             $r = $person->getRole($role);
             $roleId = str_replace(" ", "-", $role);
-            if($r->getId() != 0){
+            
+            $hidden_checkboxes = "";
+            $projs = array();
+            $myProjs = array();
+            foreach($projects as $project){
+                if($me->isRoleAtLeast(STAFF)){
+                    $skip = false;
+                }
+                else{
+                    $skip = true;
+                    foreach($myProjects as $myProject){
+                        if($myProject != null && $project->getName() == $myProject->getName()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                if(!$skip){
+                    $projs[] = $project;
+                }
+                else{
+                    if($r->hasProject($project) && count($r->getProjects()) > 0){
+                        $hidden_checkboxes .= "<input type='hidden' name='role_projects[{$roleId}][]' value='{$project->getName()}' checked='checked' />";
+                        foreach($project->getSubProjects() as $subProj){
+                            if($r->hasProject($subProj) && count($r->getProjects()) > 0){
+                                $hidden_checkboxes .= "<input type='hidden' name='role_projects[{$roleId}][]' value='{$subProj->getName()}' checked='checked' />";
+                            }
+                        }
+                    }
+                }
+            }
+            if(count($projs) == 0){
+                $projectLink = "&nbsp;<span></span>";
+            }
+            else if($r->getId() != 0){
                 $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='float:right; cursor: pointer;'>[Projects]</a>";
             }
             else{
                 $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='display: none; float:right; cursor: pointer;'>[Projects]</a>";
             }
-            if(($role != ISAC  || $user->isRoleAtLeast(STAFF)) &&
-               ($role != IAC   || $user->isRoleAtLeast(STAFF)) &&
-               ($role != CAC   || $user->isRoleAtLeast(STAFF)) &&
-               ($role != HQPAC || $user->isRoleAtLeast(STAFF)) && 
-               ($role != RMC   || $user->isRoleAtLeast(STAFF)) && 
-               ($role != CF    || $user->isRoleAtLeast(STAFF)) &&
-               ($role != NCE   || $user->isRoleAtLeast(MANAGER)) && 
-               ($user->isRoleAtLeast($role) || ($role == CHAMP && $user->isRoleAtLeast(PL)))){
+            if(($role != ISAC  || $me->isRoleAtLeast(STAFF)) &&
+               ($role != IAC   || $me->isRoleAtLeast(STAFF)) &&
+               ($role != CAC   || $me->isRoleAtLeast(STAFF)) &&
+               ($role != HQPAC || $me->isRoleAtLeast(STAFF)) && 
+               ($role != RMC   || $me->isRoleAtLeast(STAFF)) && 
+               ($role != CF    || $me->isRoleAtLeast(STAFF)) &&
+               ($role != NCE   || $me->isRoleAtLeast(MANAGER)) && 
+               ($me->isRoleAtLeast($role) || ($role == CHAMP && $me->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
-                if($user->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$user->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
+                if($me->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$me->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){
                     $boxes .= "checked onChange='qualifyProjects(this);addComment(this, true);' class='already'"; //Prevent un-check
                 }
                 else if($person->isRole($role) || $person->isRole($role."-Candidate")){
@@ -978,7 +1014,10 @@ class EditMember extends SpecialPage{
             $projList = new ProjectList("role_projects[{$roleId}]", "Projects", $roleProjects->pluck('name'), $projs);
             $projList->attr('reasons', false);
             $projList->attr('expand', false);
-            $boxes .= "<div class='role_projects' id='role_{$roleId}_projects' style='display:none;white-space:nowrap;width:600px;' title='Qualify Role with Projects'>{$projList->render()}</div>";
+            $boxes .= "<div class='role_projects' id='role_{$roleId}_projects' style='display:none;white-space:nowrap;width:600px;' title='Qualify Role with Projects'>
+                {$projList->render()}
+                {$hidden_checkboxes}
+            </div>";
         }
         $wgOut->addHTML($boxes);
         $wgOut->addHTML("</td></tr></table>\n");
@@ -986,7 +1025,7 @@ class EditMember extends SpecialPage{
     
     function generateSubRoleFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $user = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         if(!isset($_GET['name'])){
             return;
         }
@@ -999,7 +1038,6 @@ class EditMember extends SpecialPage{
         $subRoles = $config->getValue("subRoles");
         
         asort($subRoles);
-        $projs = Project::getAllProjects();
         foreach($subRoles as $subRole => $fullSubRole){
             $checked = ($person->isSubRole($subRole)) ? " checked" : "";
             $boxes .= "&nbsp;<input id='role_$subRole' type='checkbox' name='sub_wpNS[]' value='".$subRole."' $checked />&nbsp;{$fullSubRole}<br />";            
@@ -1014,9 +1052,8 @@ class EditMember extends SpecialPage{
     function generateProjectFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        $user = Person::newFromId($wgUser->getId());
-        $myProjects = $user->getProjects(false, true);
-        $themeProjects = $user->getThemeProjects();
+        $myProjects = $me->getProjects(false, true);
+        $themeProjects = $me->getThemeProjects();
         foreach($myProjects as $project){
             $themeProjects[$project->getName()] = $project;
         }
@@ -1032,7 +1069,7 @@ class EditMember extends SpecialPage{
         $projs = array();
         $myProjs = array();
         foreach($projects as $project){
-            if($user->isRoleAtLeast(STAFF)){
+            if($me->isRoleAtLeast(STAFF)){
                 $skip = false;
             }
             else{
@@ -1148,7 +1185,6 @@ class EditMember extends SpecialPage{
 
     function generatePLFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath;
-        $user = Person::newFromId($wgUser->getId());
         if(!isset($_GET['name'])){
             return;
         }
@@ -1170,7 +1206,6 @@ class EditMember extends SpecialPage{
     
     function generateTLFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $user = Person::newFromId($wgUser->getId());
         if(!isset($_GET['name'])){
             return;
         }
@@ -1221,7 +1256,7 @@ class EditMember extends SpecialPage{
     
     function handleAdminAccept(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
-        $user = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         // Admin Accepted
         $person = Person::newFromId($_POST['user']);
         //Process Project Changes
@@ -1342,7 +1377,7 @@ class EditMember extends SpecialPage{
         
         DBFunctions::update('grand_role_request',
                             array('last_modified' => EQ(COL('SUBDATE(CURRENT_TIMESTAMP, INTERVAL 5 SECOND)')),
-                                  'staff' => $user->getId(),
+                                  'staff' => $me->getId(),
                                   'created' => 1),
                             array('id' => $_POST['id']));
         MailingList::subscribeAll($person);

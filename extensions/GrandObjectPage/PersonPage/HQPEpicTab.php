@@ -499,7 +499,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     }
     
     function canEdit(){
-        return ($this->userCanView() && $this->visibility['isMe']);
+        return ($this->userCanView() && ($this->visibility['isMe'] || $this->visibility['isSupervisor']));
     }
     
 }

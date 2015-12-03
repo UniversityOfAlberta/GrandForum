@@ -68,7 +68,7 @@ class HQPRegisterTable extends SpecialPage{
                 $application .= "</small></div>";
             }
             else{
-                continue;
+                //continue;
             }
             
             $wgOut->addHTML("<tr>");

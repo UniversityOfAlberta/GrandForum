@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="hqp_description" permissions="rw" />
+            <SectionPermission id="description" permissions="" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="hqp_description" permissions="rw" />
@@ -39,6 +48,9 @@
                 <ul>
                     <li>GlycoNet Network Investigator (listed on <a href='http://www.glyconet.ca' target='_blank'>www.glyconet.ca</a>)</li>
                 </ul>
+                
+                <h3>Funding Available</h3>
+                <p>Each award is valued at $4,500 for 16 consecutive weeks of full time employment, with supervisors supplementing the award to a value of at least 25% from other sources (total of at least $5625/student/summer). Six awards will be available each year.</p>
                 
                 <h3>Instructions</h3>
                 <p>The applicant must complete the application through the GlycoNet forum. Applicants can be added to the forum by their proposed supervisors. A complete application includes:</p>
@@ -101,7 +113,7 @@
                 <table class='wikitable'>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_name" type="NISelect" blobType="BLOB_TEXT" blobItem="SUPNAME">
+        <ReportItem id="sup_name" type="NISelect" placeholder="Choose NI..." blobType="BLOB_TEXT" blobItem="SUPNAME">
             <![CDATA[
                 <tr>
                     <td align='right' style='font-weight:bold;'>Name:</td><td>{$item}</td>
@@ -279,42 +291,6 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="description" type="Editable" name="Descriptions" tooltip="Project Descriptions" title="Project Descriptions" blobSection="DESCRIPTION">
-        <ReportItem id="sup_head" type="Static">
-            <![CDATA[
-                <h2>Trainee</h2>
-                <table class='wikitable'>
-                    <tr><td align='right' style='font-weight:bold;'>Name:</td><td>{$user_name}</td></tr>
-                    <tr><td align='right' style='font-weight:bold;'>Institution:</td><td>{$user_uni}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="city" type="Text" blobType="BLOB_TEXT" blobItem="CITY">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>City:</td><td>{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="province" type="Text" blobType="BLOB_TEXT" blobItem="PROV">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>Province:</td><td>{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="trainee_foot" type="Static">
-            <![CDATA[
-                <tr><td align='right' style='font-weight:bold;'>Phone:</td><td>{$user_phone}</td></tr>
-                <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="residency" type="Select" options="Candadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
-            <![CDATA[
-                <tr>
-                    <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
-                </tr>
-                </table>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="students" type="Self" reportType="RP_HQP_SUMMER" blobSection="APPLICATION" blobItem="SUPNAME" blobValue="{$user_name}">
             <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                 <ReportItem id="acronym" type="Text" blobItem="ACRONYM" blobSubItem="{$user_id}">

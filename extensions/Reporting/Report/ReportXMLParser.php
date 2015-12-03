@@ -13,10 +13,25 @@ class ReportXMLParser {
     static $pdfRpMap = array();
     static $time = 0;
     
+    static function listFiles($dir, $path=""){
+        global $config;
+        $return = array();
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach($files as $file){
+            if(is_dir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$file}/")){
+                $return = array_merge(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$file}/", "{$path}{$file}/"), $return);
+            }
+            else{
+                $return[] = "{$path}{$file}";
+            }
+        }
+        return $return;
+    }
+    
     static function listReports(){
         global $config;
         if(count(self::$files) == 0){
-            $files = array_values(array_diff(scandir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"), array('.', '..')));
+            $files = array_values(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"));
             foreach($files as $file){
                 if(strstr($file, "PDF.xml") === false){
                     self::$files[] = $file;
@@ -29,14 +44,13 @@ class ReportXMLParser {
     static function listPDFs(){
         global $config;
         if(count(self::$pdfFiles) == 0){
-            $files = array_values(array_diff(scandir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"), array('.', '..')));
+            $files = array_values(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"));
             foreach($files as $file){
                 if(strstr($file, "PDF.xml") !== false){
                     self::$pdfFiles[] = $file;
                 }
             }
         }
-        
         return self::$pdfFiles;
     }
     

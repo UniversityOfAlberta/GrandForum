@@ -9,8 +9,6 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-    </Permissions>
-    <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
@@ -273,7 +271,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PUBLIC_PROFILE_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Contributions</h2>
                 <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>

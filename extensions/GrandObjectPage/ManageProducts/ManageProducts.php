@@ -33,6 +33,15 @@ class ManageProducts extends BackbonePage {
     }
     
     function getModels(){
+        global $wgOut;
+        $students = array();
+        $person = Person::newFromWgUser();
+        foreach($person->getHQP(true) as $hqp){
+            $students[] = $hqp->getId();
+        }
+        $wgOut->addScript("<script type='text/javascript'>
+            var students = ".json_encode($students).";
+        </script>");
         return array('Backbone/*');
     }
     

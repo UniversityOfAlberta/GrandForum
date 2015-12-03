@@ -58,7 +58,7 @@ class Impersonate extends SpecialPage {
 	                        var allPeople = new Array(');
 	    $allPeople = array();
 	    if($user->isRoleAtLeast(STAFF) || $user->isRole(SD)){
-	        $allPeople = Person::getAllPeople('all');
+	        $allPeople = array_merge(Person::getAllPeople('all'), Person::getAllCandidates('all'));
 	        $i = 0;
 	        $names = array();
 	        foreach($allPeople as $person){

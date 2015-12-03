@@ -12,6 +12,7 @@ class Role extends BackboneModel {
 	var $id;
 	var $user;
     var $role;
+    var $title;
     var $startDate;
     var $endDate;
     var $comment;
@@ -47,6 +48,7 @@ class Role extends BackboneModel {
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
+			$this->title = $data[0]['title'];
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
@@ -58,6 +60,7 @@ class Role extends BackboneModel {
 	                  'userId' => $this->user,
 	                  'name' => $this->getRole(),
 	                  'fullName' => $this->getRoleFullName(),
+	                  'title' => $this->getTitle(),
 	                  'comment' => $this->getComment(),
 	                  'startDate' => $this->getStartDate(),
 	                  'endDate' => $this->getEndDate());
@@ -180,6 +183,10 @@ class Role extends BackboneModel {
 	function getRoleFullName(){
 	    global $config;
 	    return $config->getValue('roleDefs', $this->getRole());
+	}
+	
+	function getTitle(){
+	    return $this->title;
 	}
 	
 	// Returns the startDate for this Role

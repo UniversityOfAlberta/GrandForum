@@ -2,18 +2,21 @@
 <Report name="Transformative Review" reportType="RP_TRANS_REVIEW" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
-            <SectionPermission id="eula" permissions="" />
-            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SRC">
-            <SectionPermission id="eula" permissions="" />
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="" />
+            <SectionPermission id="rmc_review" permissions="-" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
-            <SectionPermission id="src_review" permissions="rw" />
+            <SectionPermission id="ex_review" permissions="rw" />
+            <SectionPermission id="src_review" permissions="" />
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
     </Permissions>
@@ -47,7 +50,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+    <ReportSection id="ex_review" name="External Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -73,10 +76,8 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{or({==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)}, 
-                                                      {contains({$user_full_roles},SRC)}
-                                                  )}">
-            <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                     <ReportItem id="table" type="StaticReportItem">
                         <![CDATA[
@@ -86,6 +87,7 @@
                                 <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
                                 <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                             </table>
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         ]]>
                     </ReportItem>
                     <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
@@ -284,13 +286,246 @@
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{and({!=({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)}, 
-                                                        {!contains({$user_full_roles},SRC)}
-                                                   )}">
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_TRANS_REVIEW,TRANS_SRC_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="src_review" name="SRC Review" blobSection="TRANS_SRC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <ol>
+                    <li>Please complete both sections A and B.</li> 
+                    <li>You can use decimals in your scores.</li>
+                    <li>Observational studies or studies that do not study the impact of interventions will not be funded.</li>
+                    <li><b>Goal of the Competition:</b> This program is designed to fund transformative research projects that are exceptionally innovative and thus have the potential to have a major economic and social impact on the current Canadian health care system as it relates to the care for frail elderly Canadians. TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices. It is expected that if successful the knowledge generated from these projects would be applied widely across the Canadian health care system.</li>
+                    <li><b>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:</b>
+                        <ul>
+                            <li>Innovation of the research project with the potential that results would be recognized nationally and globally for scientific excellence.</li>
+                            <li>Potential to revolutionize the care of frail elderly Canadians.</li>
+                            <li>Potential to have a major economic and social impact.</li>
+                            <li>Degree to which project is cross-provincial, multi-institutional, and multi- and interdisciplinary.</li>
+                            <li>Degree to which projects have high translational capacity towards improving care for frail elderly Canadians.</li>
+                            <li>Each proposal must include the evaluation of one or more: i) patient-centred outcomes, ii) patient/family satisfaction or iii) health economic outcomes.</li>
+                            <li>Proposals should have clearly defined research question(s) and knowledge or practice gap(s) for the care of frail elderly Canadians.</li>
+                            <li>Proposals must have a well described methodology and must demonstrate that key deliverables and measurable outcomes are achievable within the funding period.</li>
+                            <li>Where appropriate, proposals must include a health economist and/or ethicist on the project team.</li>
+                            <li>Project team members will be adjudicated for their level of experience and expertise.</li>
+                            <li>Budgets: maximum $3M over a maximum period of 3 years.  To expedite the start of the project, successful applicants may be provided with early funding of up to $50,000 to undertake preliminary “pilot” or preparatory work.  Submitted projects must justify the need for pilot/preparatory funding.</li>
+                        <ul>
+                    </li>
+                </ol>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
+                <ReportItem id="table" type="StaticReportItem">
+                    <![CDATA[
+                        <div id="proj{$project_id}">
+                        <table class='wikitable'>
+                            <tr><td><b>Project Leader:</b></td><td>{$project_leaders}</td></tr>
+                            <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
+                            <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
+                        </table>
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <div class="scientific">
+                        <div style="font-size:150%;font-weight:bold;text-align:center;">A. Scientific Excellence</div>
+                        <h2>A1. Knowledge of the Topic</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="gap" type="RadioReportItem"  blobType="BLOB_TEXT" blobItem="TRANS_SRC_GAP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="No attempt has been made to identify the knowledge gap pertinent to the proposed work.|An attempt has been made to identify the knowledge gap pertinent to the proposed work and how the work fill the gap but these are superficial and not completely elaborated.|The proposal has satisfactorally identified the knowledge gap and how the proposed work will fill the gap|The proposal has fully and clearly identified the knowledge gap and has completely demonstrated how the proposed work will help fill the gap." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A2. Knowledge Gap</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="question" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_QUESTION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research question and/or hypothesis have not been articulated|The research question and/or hypothesis have been somewhat articulated|The research question and/or hypothesis have been articulated|The research question and/or hypothesis have been clearly articulated" orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A3. Research Question</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="methodology" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_METHODOLOGY" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The methodology is incongruent with the intent of the research project or has not been identified and/or described.|The methodology is confusing, incomplete, or lacks congruency with the intent of the research project.|The methodology is congruent with the intent of the research project.|The methodology is clearly described, congruent and rigorous." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A4. Research Methodology</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="design" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_DESIGN" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research design, which may include the type of research population and sample size  being studied is inappropriate or has not been identified and/or described.|The research design, which may include the type of research population and sample size  being studied is confusing or incomplete given the research questions and sampling strategy. Some limitations and assumptions have been identified.|The research design, which may include the type of research population and sample size  being studied has been adequately described.  In addition, some of the appropriate and important limitations and assumptions have been clearly stated.|The research design, which may include the type of research population and sample size  being studied purpose, are coherent and fully consistent with the research questions/objectives. In addition,appropriate and important limitations and assumptions have been clearly stated." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A5. Research Design</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="procedures" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_PROCEDURES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are not identified or inappropiate.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are incompletely identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are somewhat satisfactorily identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are completely identified and fully described." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A6. Research Procedures</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="outcomes" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_OUTCOMES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The outcomes of this project has no potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have some positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project have the potential to have a significantly positive effect on practice, policy and socio-economic benefits to Canada." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A7. Research Outcomes</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="integration" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_INTEGRATION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="There is no description of how the knowledge will be integrated and translated at the end of the grant.|There is some description of how the knowledge will be integrated and translated at the end of the grant.|There is a description of how the knowledge will be integrated and translated at the end of the grant.|There is a clear description of how the knowledge will be integrated and translated at the end of the grant." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A8. Knowledge Integration/Translation</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="recognition" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_RECOGNITION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed project is not innovative and does not have the potential to be recognized nationally and globally for scientific excellence.|The proposed project has a few innovative components within the project and has some potential to be recognized to nationally and globally for scientific excellence|The proposed project has the potential to be recognized nationally and globally for scientific excellence.|The proposed project has great potential to be recognized nationally and globally for scientific excellence. " orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>A9. Innovation and Scientific Recognition</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="total1" type="StaticReportItem">
+                    <![CDATA[
+                        <h2>Scientific Excellence</h2>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$project_id}_total">
+                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
+                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},
+                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},
+                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},
+                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},
+                                                                 {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}
+                                                            )}
+                                                        )}
+                                                    )}
+                                                )}
+                                            )}
+                                        )}
+                                    )}
+                                )}
+                            </b> (Score out of 36)</p>
+                        <h2>Scientific Excellence</h2>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$project_id}_total5">
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
+                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
+                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
+                                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},
+                                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},
+                                                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},
+                                                                        {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},
+                                                                             {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}
+                                                                        )}
+                                                                    )}
+                                                                )}
+                                                            )}
+                                                        )}
+                                                    )}
+                                                )}
+                                            )}
+                                        , 36)}
+                                    , 5)}
+                                ,2 )}
+                            </b> (Score converted out of 5)</p>
+                        <script type="text/javascript">
+                            $("#proj{$project_id} div.scientific input[type=radio]").click(function(){
+                                var total = 0;
+                                $("#proj{$project_id} .scientific input[type=radio]:checked").each(function(i, v){
+                                    total += parseInt($(v).val());
+                                });
+                                $("#proj{$project_id}_total").html(total);
+                                $("#proj{$project_id}_total5").html(Math.round((total/36)*5*100)/100 );
+                            });
+                        </script>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="comments1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS1" rich="true">
+                    <![CDATA[
+                        <h2>Comments</h2>
+                        <p> Please provide written feedback as necessary (mandatory for scores on individual components less than 3):</p>
+                        {$item}<br /><br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="experience" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_EXPERIENCE" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible given the project team's lack of specific experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any current or past research funding directly relevant to the proposal being reviewed.|The proposed study is unlikely to be feasible given the project team's limited experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some past research funding directly relevant to the proposal being reviewed.|The proposed study is likely feasible given the project team's experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list a few current and past research funding directly relevant to the proposal being reviewed.|The proposed study is feasible given the project team's extensive experience needed to carry out the proposal. The CVs of the Project Leader, Principal Investigators and Co-Invetigators list many current and past research funding directly relevant to the proposal being reviewed." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <div class='feasibility'>
+                        <div style="font-size:150%;font-weight:bold;text-align:center;">B. Project Feasibility</div>
+                        <h2>B1. Ability to successfully execute project based on experience of project team</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="budget" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_BUDGET" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.|The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.|The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.|The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>B2. Chance of successfully executing project based on the budget</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="objectives" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_OBJECTIVES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.|The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives." orientation="horizontal" showScore="true">
+                    <![CDATA[
+                        <h2>B3. Chance of successfully executing project objectives within the time requested?</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="total2" type="StaticReportItem">
+                    <![CDATA[
+                        <h2>Project Feasibility</h2>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$project_id}_feasibility">
+                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                    {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                         {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
+                                    )}
+                                )}
+                            </b> (Score out of 12)</p>
+                        <h2>Scientific Excellence</h2>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$project_id}_feasibility5">
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                                     {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
+                                                )}
+                                            )}
+                                        , 12)}
+                                    , 5)}
+                                , 2)}
+                            </b> (Score converted out of 5)</p>
+                        <script type="text/javascript">
+                            $("#proj{$project_id} div.feasibility input[type=radio]").click(function(){
+                                var total = 0;
+                                $("#proj{$project_id} div.feasibility input[type=radio]:checked").each(function(i, v){
+                                    total += parseInt($(v).val());
+                                });
+                                $("#proj{$project_id}_feasibility").html(total);
+                                $("#proj{$project_id}_feasibility5").html(Math.round((total/12)*5*100)/100);
+                            });
+                        </script>
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="comments2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="TRANS_SRC_COMMENTS2" rich="true">
+                    <![CDATA[
+                        <h2>Comments</h2>
+                        <p>Please provide written feedback in this cell.  Comments are mandatory for any section that scores 3 or less:</p>
+                        {$item}
+                        </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="rmc_review" name="RMC Review" blobSection="TRANS_RMC_REVIEW" tooltip="Review of Transformative Grants" type="EditableReportSection">
         <Instructions>
@@ -337,6 +572,7 @@
                             <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
                             <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                         </table>
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_TG, RP_TG_REPORT, RP_TG_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                     ]]>
                 </ReportItem>
                 <ReportItem id="grant" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="TRANS_RMC_GRANT" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposal does not have the potential to revolutionize the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a relatively large research project but lacks the capacity to be truly tranformative and thus has minimal potential to revolutionize the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a large research project that has good potential to revolutionize and transform the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices.|The proposal is a large research project that has excellent potential to revolutionize and transform the care of frail elderly Canadians.&lt;br /&gt;&lt;br /&gt;NOTE: This grant comptition is designed to fund exceptionally innovative research projects that will have a major economic and social impact on the current Canadian health care system.  TVN defines transformative research as projects that aim to significantly change current practice as it pertains to the frail elderly through the application of current or new scientific/medical concepts, methodologies or practices. " orientation="horizontal" showScore="true">

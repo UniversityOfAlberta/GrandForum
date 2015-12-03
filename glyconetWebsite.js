@@ -59,6 +59,7 @@ function initSideBar(){
     addTab("#committees-members", "gta", "GlycoNet Trainee Association");
                                    
     jQuery("ul.roleList li a").click(function(e){
+        scroll(0,0);
         var id = jQuery(e.currentTarget).parent().attr('data-id');
         lastPage = id;
         jQuery(".outer_tab").hide();
@@ -82,6 +83,7 @@ function initSideBar(){
         jQuery(".right-sidebar-wrapper").height("auto");
         jQuery("#menu-members li a").click(function(e){
             // Click University
+            scroll(0,0);
             jQuery(".outer_tab").hide();
             var id = jQuery(e.currentTarget).parent().attr('data-id');
             var university = response[id];
@@ -189,6 +191,7 @@ function initTab(role, selector, tabSelector, fields, cols){
         
         jQuery(selector + "_tab .tshowcase-box-photo").click(function(e){
             // Click Profile
+            scroll(0,0);
             var id = jQuery(e.currentTarget).parent().parent().attr('id');
             var person = response[id];
             if(firstPerson == "" || firstPerson == undefined){
@@ -214,6 +217,10 @@ function initTab(role, selector, tabSelector, fields, cols){
             if(firstPerson == "" || firstPerson == undefined){
                 jQuery(".back_button").show();
             }
+        });
+        
+        jQuery("iframe" + selector + "_frame").load(function(){
+            scroll(0,0);
         });
         
         if(firstPerson != "" && firstPerson != undefined){

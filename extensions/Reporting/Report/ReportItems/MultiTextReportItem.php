@@ -87,7 +87,7 @@ EOF;
                             $item .= @"\"<td><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;height:60px;'></textarea></td>\" + \n";
+                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -109,6 +109,9 @@ EOF;
                             preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                             $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
                             $item .= @"\"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
+                        else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
+                            $item .= @"\"<td></td>\" + \n";
                         }
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
@@ -180,7 +183,7 @@ EOF;
                         $item .= @"<td><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
-                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;height:65px;'>{$value[$index]}</textarea></td>";
+                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                             strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -208,6 +211,12 @@ EOF;
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
                         $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
+                        $fn = "{".$types[$j]."}";
+                        $val = unserialize($this->varSubstitute($fn));
+                        $val = @$val[$i][$this->id];
+                        $item .= @"<td valign='top'>{$val}</td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);

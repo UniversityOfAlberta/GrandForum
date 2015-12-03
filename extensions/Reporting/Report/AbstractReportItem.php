@@ -21,6 +21,7 @@ abstract class AbstractReportItem {
     var $milestoneId;
     var $productId;
     var $extra;
+    var $extraIndex;
     var $private;
     var $deleted;
     var $blobItem;
@@ -89,6 +90,9 @@ abstract class AbstractReportItem {
     function getSet(){
         $parent = $this->getParent();
         while(!($parent instanceof ReportItemSet)){
+            if($parent instanceof AbstractReport){
+                break;
+            }
             $parent = $parent->getParent();
         }
         return $parent;
@@ -195,6 +199,12 @@ abstract class AbstractReportItem {
     
     function getExtraIndex(){
         $set = $this->getSet();
+        while(!($set instanceof ArrayReportItemSet)){
+            if($set instanceof AbstractReport){
+                return 0;
+            }
+            $set = $set->getParent();
+        }
         foreach($set->getCachedData() as $index => $item){
             if($item['extra'] == $this->extra){
                 return $index;
@@ -216,6 +226,7 @@ abstract class AbstractReportItem {
             $postId = str_replace(" ", "", $parent->name).$postId;
         }
         $postId = str_replace("-", "", $postId);
+        $postId = str_replace(" ", "", $postId);
         return $postId;
     }
     
@@ -272,6 +283,7 @@ abstract class AbstractReportItem {
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
         switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -343,6 +355,7 @@ abstract class AbstractReportItem {
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
 	    switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -462,7 +475,7 @@ abstract class AbstractReportItem {
             // There are recursive calls, now call them
             $cdata = $this->varSubstitute($cdata);
         }
-        return $cdata;
+        return str_replace(",", "&#44;", $cdata);
     }
     
     /**

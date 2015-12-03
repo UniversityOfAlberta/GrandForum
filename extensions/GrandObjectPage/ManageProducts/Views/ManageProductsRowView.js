@@ -151,7 +151,12 @@ ManageProductsViewRow = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-        this.el.innerHTML = this.template(this.model.toJSON());
+        var isMine = {isMine: false};
+        if(_.contains(_.pluck(this.model.get('authors'), 'id'), me.get('id')) || 
+           _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0){
+            isMine.isMine = true;
+        }
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
         if(this.parent.table != null){
             // Need this so that the search functionality is updated
             var data = new Array();

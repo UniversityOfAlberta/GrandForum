@@ -2,30 +2,11 @@
 <Report name="Research Exchange Program Report" reportType="RP_HQP_EXCHANGE_REPORT" pdfType="HQP_EXCHANGE_REPORT" pdfFiles="HQPApplications/ResearchExchangeReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
-            <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
-        <ReportItem id="instructions" type="Static">
-            <![CDATA[
-                <h3>Background</h3>
-                <p>The Research Exchange Program provides financial support to graduate students, postdoctoral fellows, technicians, and research associates within GlycoNet who are working on multi-investigator projects. These funds are intended to contribute towards trainee living and travel expenses.</p>
-
-                <h3>Instructions</h3>
-                <p>The applicant must complete the final report through the GlycoNet forum. The report includes the following sections:</p>
-                <ul>
-                    <li>Applicant profile</li>
-                    <li>Exchange summary addressing the overall project goals, your role in the project during the exchange, successes and challenges you encountered, and the benefits this exchange provided to the groups involved.</li>
-                    <li>Publications, presentations, and intellectual property produced during the tenure of your exchange or expected in the near future.</li>
-                </ul>
-
-                <p>The final report must be submitted within one month following the exchange end date.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="profile" name="Final Report" title="Research Exchange Program - Final Report" tooltip="Research Exchange Program - Final Report" type="EditableReportSection" blobSection="REPORT">
         <ReportItem id="trainee_head" type="Static">
             <![CDATA[
@@ -247,7 +228,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PUBLIC_PROFILE_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Products</h2>
                 <p>List publications, presentations, and intellectual property produced during the tenure of your exchange.  To add products go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>

@@ -514,6 +514,10 @@ class CavendishTemplate extends QuickTemplate {
 		            overflow: hidden;
 		            background: #FFFFFF;
 		        }
+			
+			body {
+			    background:#FFFFFF;
+			}
 		        
 		        #side {
 		            display: none;
@@ -575,7 +579,7 @@ class CavendishTemplate extends QuickTemplate {
                 }, false);
 		        
 		        $(document).ready(function(){
-		            $("a").attr("target", "_blank");
+		            $("a").attr("target", "");
 		            var height = $("#bodyContent").height();
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
@@ -584,7 +588,9 @@ class CavendishTemplate extends QuickTemplate {
 		            }, 100);
 		        });
 		    </script>
-		<?php } ?>
+		<?php
+            header_remove("X-Frame-Options");
+		 } ?>
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
@@ -902,6 +908,7 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
 	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;

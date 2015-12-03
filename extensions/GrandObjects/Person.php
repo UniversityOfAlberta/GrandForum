@@ -379,10 +379,7 @@ class Person extends BackboneModel {
     static function generateLeaderCache(){
         if(count(self::$leaderCache) == 0){
             $sql = "SELECT l.user_id, p.id, p.name, s.type, s.status
-                    FROM grand_project_leaders l, grand_project p, (
-                        SELECT *
-                        FROM grand_project_status
-                        ORDER BY evolution_id DESC) s
+                    FROM grand_project_leaders l, grand_project p, grand_project_status s
                     WHERE l.type = 'leader'
                     AND p.id = l.project_id
                     AND p.id = s.project_id
@@ -871,7 +868,14 @@ class Person extends BackboneModel {
         if($wgUser->isLoggedIn()){
             $privateProfile = $this->getProfile(true);
         }
-
+        $roles = array();
+        foreach($this->getRoles() as $role){
+            if($role->getId() != -1){
+                $roles[] = array('id' => $role->getId(),
+                                 'role' => $role->getRole(),
+                                 'title' => $role->getTitle());
+            }
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -891,6 +895,7 @@ class Person extends BackboneModel {
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
+                      'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl());
@@ -1357,8 +1362,11 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI))){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+        }
+        else if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
     }
@@ -2107,6 +2115,7 @@ class Person extends BackboneModel {
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => INACTIVE,
+                                                           'title' => '',
                                                            'start_date' => '0000-00-00 00:00:00',
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));
