@@ -129,7 +129,12 @@ class ReportArchive extends SpecialPage {
                     ob_clean();
                     header("Content-Type: application/{$ext}");
                     header('Content-Length: ' . $len);
-                    header('Content-Disposition: attachment; filename="'.$name.'"');
+		    if(isset($_GET['download'])){                    
+			header('Content-Disposition: attachment; filename="'.$name.'"');
+		    }
+		    else{
+                        header('Content-Disposition: inline; filename="'.$name.'"');
+		    }
                     header('Cache-Control: private, max-age=0, must-revalidate');
                     header('Pragma: public');
                     ini_set('zlib.output_compression','0');

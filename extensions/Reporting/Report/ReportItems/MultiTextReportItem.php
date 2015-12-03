@@ -207,7 +207,7 @@ EOF;
                         $val = str_replace("'", "&#39;", $value[$index]);
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
                     }
                     else{
                         $val = str_replace("'", "&#39;", $value[$index]);
@@ -312,6 +312,9 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
+			else if(strstr(strtolower(@$types[$j]), "date") !== false){
+                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+			}
                         else{
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }

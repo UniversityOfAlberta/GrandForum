@@ -2,9 +2,14 @@
 <Report name="FECReview" reportType="RP_FEC" pdfFiles="FECReview" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="ISAC">
-            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="reviews" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+                    <SectionPermission id="reviews" permissions="rw" />
+                    <SectionPermission id="review" permissions="" />
+                    <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="reviews" tooltip="Reviews" name="Reviews" title="Reviews" blobSection="FEC_REVIEW" type="EditableReportSection">
@@ -28,7 +33,8 @@
    		</script>
 	    ]]>
 	</ReportItem>
-	<ReportItemSet id="if_statement" type="IfReportItemSet" if="{==({GET(dept)}, {$user_dept})}">
+	<ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({==({GET(dept)}, {$user_dept})},
+								         {contains({$user_full_roles}, Chair)})}">
 	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor" sort_reversed="true" department="{GET(dept)}">
 	    <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
 	    	 <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
@@ -111,6 +117,41 @@
 	    </ReportItemSet>
 	</ReportItemSet>
 	</ReportItemSet>
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({!=({GET(dept)}, {$user_dept})},
+        								{!contains({$user_full_roles},Chair)})}">
+                <ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor" sort_reversed="true" department="{GET(dept)}">
+                    <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
+                        <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
+                            <![CDATA[
+                                 <div style="margin-left:15px; margin-top:15px;">{$item}</div>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="feedback_unedit" type="StaticReportItem">
+                            <![CDATA[
+                            	<h1>Teaching Evaluations</h1>
+                            	<div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}</div>
+                            	<h1>Research Evaluations</h1>
+                            	<div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RESEARCH_EVALUATION,{$user_id},{$chair_id},0)}</div>
+                            	<h1>Service/Committees Evaluations</h1>
+                            	<b>Departmental</b>
+                            	<div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_DEPARTMENTAL,{$user_id},{$chair_id},0)}</div>
+                            	<b>Faculty</b>
+                                <div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</div>
+                                <b>University</b>
+                                <div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</div>
+                                <b>Scientific</b>
+                                <div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_SCIENTIFIC,{$user_id},{$chair_id},0)}</div>
+                                <b>Community Outreach</b>
+                                <div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMUNITY,{$user_id},{$chair_id},0)}</div>
+                                <b>Other</b>
+                                <div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_OTHER,{$user_id},{$chair_id},0)}</div>
+				<h1>Comments</h1>
+				<div>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMENTS,{$user_id},{$chair_id},0)}</div>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

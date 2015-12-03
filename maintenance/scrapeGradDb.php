@@ -2,12 +2,6 @@
         //written to input prof student relations to database
     require_once( "commandLine.inc" );
         //functions and code based on install.php
-    function addUserWebsite($name, $website){
-     	$_POST['user_name'] = $name;
-    	$_POST['website'] = $website;
-    	APIRequest::doAction('UserWebsite', true);
-    }
-
     function addUserProfile($name, $profile){
     	$_POST['user_name'] = $name;
     	$_POST['profile'] = $profile;
@@ -301,7 +295,8 @@
     }
 
 //--------------------------------------------MAIN HERE -----------------------------------------------------------------------
-    $url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/FECrep.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2&button=View%20Report');
+   $mf = array();
+   $url = file_get_contents('http://grand.cs.ualberta.ca/~ruby/index.html');
     
     $person = Person::newFromNameLike('Eleni Stroulia');
 
@@ -344,11 +339,11 @@
 	$parsed_array[] = $data;	
     }
     foreach($parsed_array as $student){
-        enterData($student,$person, true);
-	print_r($student);
+    //    enterData($student,$person, true);
+    	$mf[] = $student;
     }
-    /* 
-    $person = Person::newFromNameLike('Eleni Stroulia');
+    print_r($mf);
+  /*  $person = Person::newFromNameLike('Eleni Stroulia');
     $url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/login.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2');
     $regex = '/option value\=\"(.+?)\"\>/';
     preg_match_all($regex, $url, $Array);
@@ -401,7 +396,8 @@
     $parsed_array[] = $data;
     }
     foreach($parsed_array as $student){
-        enterData($student,$person, false);
+      //  enterData($student,$person, false);
+      print_r($student);
     }
 */
 ?> 

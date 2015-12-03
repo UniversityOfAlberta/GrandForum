@@ -4,6 +4,7 @@ class UploadCSVAPI extends API{
     var $csvData = array();
     var $csvPersonData = array();
     var $csvPubs = array();
+    var $csvPresentations = array();
     var $csvGrants = array();
     var $csvCourses = array();
     var $csvAdditionalInfo = array();
@@ -147,9 +148,11 @@ class UploadCSVAPI extends API{
 	$this->csvPersonData = $data['faculty_staff_member'];
 	$this->csvData = $data;
 	$this->csvPubs = $data['publications'];
+	$this->csvPresentations = $data['presentations'];
 	$this->csvGrants = $data['grants'];
 	$this->csvCourses = $data ['courses'];
-        $this->csvStudents = $data['responsibilities'];         
+        $this->csvStudents = $data['responsibilities'];
+        $this->csvAdditionalInfo['leaves']= $data['leaves'];      
 	$this->csvAdditionalInfo['reduced teaching reasons']= $data['reduced teaching reasons'];
         $this->csvAdditionalInfo['teaching_developments'] = $data['teaching_developments'];
         $this->csvAdditionalInfo['other_teachings'] = $data['other_teachings'];
@@ -166,6 +169,12 @@ class UploadCSVAPI extends API{
 
     function deleteCsvTrailingCommas($data){
         return trim(preg_replace("/(.*?)((,|\s)*)$/m", "$1", $data));
+    }
+
+    function multiexplode ($delimiters,$string) {
+        $ready = str_replace($delimiters, $delimiters[0], $string);
+    	$launch = explode($delimiters[0], $ready);
+    	return  $launch;
     }
     
     function addUserProfile($name, $profile){
@@ -197,6 +206,9 @@ class UploadCSVAPI extends API{
          //creating new user and assuming department is same as supervisor ??
     function createUser($fullname, $role, $title, $department, $university){
 	$nameArray = explode(".",$fullname);
+	if(count($nameArray) < 2){
+	    $nameArray = explode(" ", $fullname);
+	}
 	$firstname = trim($nameArray[0]);
 	$lastname = trim($nameArray[1]);
 	$username = str_replace(" ", "", str_replace("'", "", "$firstname.$lastname"));
@@ -245,23 +257,648 @@ class UploadCSVAPI extends API{
         }
 	return "Award";
     }
-
+	//TODO: MIGHT WANT TO SHORTEN THIS BY CREATING A METHOD TO CHECK AND INSERT/UPDATE
     function createAdditionalInfo($person,$additionals){
 	foreach($additionals as $key=>$additional){
-	    if($additional['id'] == 'null'){
-		continue;
-	    }
-	    DBFunctions::begin();
-	    $status = DBFunctions::insert('grand_university_activities',
-				     array('user_id' => $person->getId(),
-					   'description' => $additional['description'],
-					   'category' => $key),
-					   true);
-	    if($status){
-		DBFunctions::commit();
+	    switch($key){
+	        case 'leaves':
+		    if($additional[0]['id'] == 'null'){
+			break;
+		    }
+		    $found = false;
+		    $dateArray = explode("-", $additional[0]['created_at']);
+		    $year = $dateArray[0];
+		    $leaves_array = array();
+		    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_INFORMATION',
+                                                          'rp_item' => 'FEC_INFO_LEAVES',
+							  'year' => $year));
+		    if(count($data)>0){
+                    	$leaves_array = unserialize($data[0]['data']);
+			$found=true;
+		    }
+		    foreach($additional as $item){
+			$leave = array('category'=>$item['category'],
+				       'startdate'=>$item['start_date'],
+				       'enddate'=>$item['end_date']);
+			$leaves_array['leaves'][] = $leave;
+ 
+		    }
+		    if($found){
+			$status = DBFunctions::update('grand_report_blobs',
+						       array('data'=>serialize($leaves_array)),
+						       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_LEAVES',
+                                                             'year' => $year), true);
+		    }
+		    else{
+			$status = DBFunctions::insert('grand_report_blobs',
+						      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_LEAVES',
+                                                             'year' => $year,
+							     'proj_id' => 0,
+							     'edited_by' => $person->getId(),
+							     'rp_subitem' => 0,
+							     'blob_type' => 1024,
+							     'data' => serialize($leaves_array),
+							     'md5' => md5(serialize($leaves_array))),true);
+		    }
+		    if ($status){
+			DBFunctions::commit();
+		    }
+		    break;
+                case 'reduced teaching reasons':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+	            $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_INFORMATION',
+                                                          'rp_item' => 'FEC_INFO_REASONS',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['reason'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_REASONS',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_REASONS',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+							     'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'teaching_developments':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_INFORMATION',
+                                                          'rp_item' => 'FEC_INFO_DEVELOPMENT',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_DEVELOPMENT',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_INFORMATION',
+                                                             'rp_item' => 'FEC_INFO_DEVELOPMENT',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'other_teachings':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_COURSES',
+                                                          'rp_item' => 'FEC_INFO_TEACHING',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_COURSES',
+                                                             'rp_item' => 'FEC_INFO_TEACHING',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_COURSES',
+                                                             'rp_item' => 'FEC_INFO_TEACHING',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'supplementary_professional_activities':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_ACTIVITIES',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_ACTIVITIES',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_ACTIVITIES',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'community_outreach_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_COMMUNITY',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_COMMUNITY',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_COMMUNITY',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'departmental_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_DEPARTMENTAL',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_DEPARTMENTAL',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_DEPARTMENTAL',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'faculty_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_FACULTY',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_FACULTY',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_FACULTY',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'other_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_OTHER',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_OTHER',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_OTHER',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'scientific_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $leaves_array = array();
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_SCIENTIFIC',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $leaves_array = unserialize($data[0]['data']);
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $leave = array('scope'=>$item['scientific_committee_scope'],
+                                       'organization'=>$item['organization'],
+                                       'description'=>$item['description']);
+                        $leaves_array['serviceOutreachScientific'][] = $leave;
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>serialize($leaves_array)),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_SCIENTIFIC',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_SCIENTIFIC',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1024,
+                                                             'data' => serialize($leaves_array),
+                                                             'md5' => md5(serialize($leaves_array))),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'university_committees':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_UNIVERSITY',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_UNIVERSITY',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_UNIVERSITY',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+                case 'additional_data':
+                    if($additional[0]['id'] == 'null'){
+                        break;
+                    }
+                    $reasons = "";
+                    $found = false;
+                    $dateArray = explode("-", $additional[0]['created_at']);
+                    $year = $dateArray[0];
+                    $data = DBFunctions::select(array('grand_report_blobs'),
+                                                    array('data'),
+                                                    array('user_id' => $person->getId(),
+                                                          'rp_type' => 'RP_FEC',
+                                                          'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                          'rp_item' => 'FEC_INFO_ADDITIONAL',
+                                                          'year' => $year));
+                    if(count($data)>0){
+                        $reasons = $data[0]['data'];
+                        $found=true;
+                    }
+                    foreach($additional as $item){
+                        $reasons = $reasons.$item['description'];
+
+                    }
+                    if($found){
+                        $status = DBFunctions::update('grand_report_blobs',
+                                                       array('data'=>$reasons),
+                                                       array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_ADDITIONAL',
+                                                             'year' => $year), true);
+                    }
+                    else{
+                        $status = DBFunctions::insert('grand_report_blobs',
+                                                      array('user_id' => $person->getId(),
+                                                             'rp_type' => 'RP_FEC',
+                                                             'rp_section' => 'FEC_ADDITIONAL_INFO',
+                                                             'rp_item' => 'FEC_INFO_ADDITIONAL',
+                                                             'year' => $year,
+                                                             'proj_id' => 0,
+                                                             'edited_by' => $person->getId(),
+                                                             'rp_subitem' => 0,
+                                                             'blob_type' => 1,
+                                                             'data' => $reasons,
+                                                             'md5'=>md5($reasons)),true);
+                    }
+                    if ($status){
+                        DBFunctions::commit();
+                    }
+                    break;
+		default:
+		    break;
 	    }
 	}
 	return "AdditionalAdded";
+    }
+
+    function createPresentationInfo($person, $presentations){
+	foreach($presentations as $presentation){
+            $data = DBFunctions::select(array('grand_products'),
+				        array('id'),
+					array('category'=>'Presentation',
+					      'title' => "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}"));
+	    if(count($data) >0){
+		continue;
+	    }
+	    $newPresentation = new Paper(array());
+            $newPresentation->type = 'Invited Presentation';
+	    $newPresentation->category = 'Presentation';
+            $newPresentation->description = $presentation['description'];
+            $newPresentation->data = array('location'=>$presentation['country'],
+					   'refereed'=>$presentation['refereed'],
+					   'organization'=>$presentation['organization']);
+	    $newPresentation->invited = $presentation['invited'];
+	    $newPresentation->refereed = $presentation['refereed'];
+	    $newPresentation->duration = $presentation['duration'];
+	    $newPresentation->date = $presentation['date'];
+	    $newPresentation->title = "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}";
+	    $newPresentation->authors = array($person);
+	    $newPresentation->create();
+	}
+	return "Hii";
     }
 
     function createGrantInfo($person, $grants){
@@ -294,7 +931,7 @@ class UploadCSVAPI extends API{
 	    }
 	    $contribution->pi = $piArray;
 	    $userArray = array();
-	    $users = explode(",", $grant['corecipients']);
+	    $users = $this->multiexplode(array(",","+"), $grant['corecipients']);
 	    foreach($users as $user){
 		$newUser = Person::newFromNameLike($user);
 		if($newUser->getId() != ""){
@@ -417,10 +1054,11 @@ class UploadCSVAPI extends API{
 	    $newcourse->component = $course['component'];
 	    $newcourse->sect = $course['section'];
 	    $newcourse->term = $course['term_number'];
+	    $newcourse->term_string = $course['term'];
 	    $newcourse->startDate = $startDate;
 	    $newcourse->endDate = $endDate;
 	    $newcourse->totEnrl = $course['enrollment'];
-	    $newcourse->capEnrl = $this->calculateCapEnrl($totEnrl,$course['percentage']);    
+	    $newcourse->capEnrl = $this->calculateCapEnrl($newcourse->totEnrl,$course['percentage']);
 	    $newcourse->create();
             $courseCheck = Course::newFromSubjectCatalogSectStartDateTerm($course['subject'], $course['number'],$course['section'], $startDate, $course['term_number']);
             $status = DBFunctions::insert('grand_user_courses',
@@ -467,6 +1105,7 @@ class UploadCSVAPI extends API{
 	if($csv['type'] == "text/csv" && $csv['size'] > 0){
             $file_contents = file_get_contents($csv['tmp_name']);
 	    $hi = $this->setCsvData($file_contents);
+            $hi = "hii";
 	    $ec = $this->csvPubs;
 	    $error = "";
 	    $json = array('created' => array(),
@@ -475,22 +1114,39 @@ class UploadCSVAPI extends API{
 		$hi = $this->createFecInfo($person, $this->csvPersonData[0]);
 	    }
 	    if(isset($_POST['courses'])){
-		$hi = $this->createCourseInfo($person, $this->csvCourses);
+		if($this->csvCourses[0]['id'] != 'null'){
+		    $hi = $this->createCourseInfo($person, $this->csvCourses);
+		}
 	    }
 	    if(isset($_POST['funding'])){
-		$hi = $this->createGrantInfo($person, $this->csvGrants);
+                if($this->csvGrants[0]['id'] != 'null'){
+		    $hi = $this->createGrantInfo($person, $this->csvGrants);
+		}
 	    }
 	    if(isset($_POST['supervises'])){
-		$json['supervises'] = $this->createStudentInfo($person, $this->csvStudents);
+                if($this->csvStudents[0]['id'] != 'null'){
+		    $json['supervises'] = $this->createStudentInfo($person, $this->csvStudents);
+		}
 	    }
 	    if(isset($_POST['publications'])){
-		$hi = $this->createPublicationsInfo($this->csvPubs);
+                if($this->csvPubs[0]['id'] != 'null'){
+		    $hi = $this->createPublicationsInfo($this->csvPubs);
+		}
 	    }
+            if(isset($_POST['presentations'])){
+                if($this->csvPresentations[0]['id'] != 'null'){
+                    $hi = $this->createPresentationInfo($person, $this->csvPresentations);
+                }
+            }	
             if(isset($_POST['additionals'])){
-                $hi = $this->createAdditionalInfo($person,$this->csvAdditionalInfo);
+                if($this->csvAdditionalInfo[0]['id'] != 'null'){
+                    $hi = $this->createAdditionalInfo($person,$this->csvAdditionalInfo);
+		}
             }
 	    if(isset($_POST['awards'])){
-		$json['created'][] = $this->createAwardInfo($person, $this->csvAwards);
+                if($this->csvAwards[0]['id'] != 'null'){
+		    $json['created'][] = $this->createAwardInfo($person, $this->csvAwards);
+		}
 	    }
 	    $json['courses'] = array(1,2,3,4);
 	    $obj = json_encode($json);
@@ -499,7 +1155,7 @@ class UploadCSVAPI extends API{
             <html>
                 <head>
                     <script type='text/javascript'>
-                                            parent.ccvUploaded($obj, "$error");
+                                            parent.ccvUploaded([], "$hi");
 		    </script>
                 </head>
             </html>

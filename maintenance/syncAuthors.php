@@ -6,7 +6,7 @@ $wgUser = User::newFromName("Admin");
 
 $queriesSoFar = 0;
 global $wgDBname;
-$papers = Paper::getAllPapers('all', 'all', 'both', true);
+$papers = Paper::getAllPapers('all', 'all', 'both', -1);
 $nPapers = count($papers);
 $insertSQL = "INSERT INTO `grand_product_authors`
 	          (`author`, `product_id`, `order`) VALUES\n";
@@ -19,7 +19,7 @@ foreach($papers as $paper){
     show_status(++$queriesSoFar, $nPapers+3);
 }
 DBFunctions::begin();
-DBFunctions::execSQL("DELETE FROM `grand_product_authors` WHERE access_id = 0", true, true);
+DBFunctions::execSQL("TRUNCATE TABLE `grand_product_authors`", true, true);
 show_status(++$queriesSoFar, $nPapers+3);
 DBFunctions::execSQL($insertSQL.implode(",\n",$inserts), true, true);
 show_status(++$queriesSoFar, $nPapers+3);

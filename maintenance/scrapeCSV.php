@@ -6,22 +6,26 @@
 	var $csvData = array();
 	var $csvPersonData = array();
 	var $csvPubs = array();
+        var $csvPresentations = array();
 	var $csvGrants = array();
 	var $csvCourses = array();
+	var $csvStudents = array();
 	var $csvAdditionalData = array();
 	var $courseEvals = array();
+	var $csvAwards = array();
 
 	function setCsvData($data){
-        $lines = str_replace("\n","     ", $data);
-        $regex = "/(.+?) ,,,,,,,,,,,,,,,,,,,,,,,,,/";
+        $lines = str_replace("\n","__", $data);
+	$regex = "/(.+?)__(,){25}__/";
 	preg_match_all($regex, $lines, $array);
 	$sectioned = $array[1];
 	$sections = array();
-     	foreach($sectioned as $section){
-	    $p = explode("     ", $section);
+	foreach($sectioned as $section){
+	    $p = explode("__", $section);
 	    $sections[] = $p;
 	}
 	$Endarray = array();
+	//print_r($sections);
     	foreach($sections as $section){
 	    $array = array();
 	    $header = "";
@@ -37,7 +41,7 @@
 	    $Endarray[] = $array;
 	}
 	$formattedArray = array();
-	
+	//print_r($Endarray);
 	foreach($Endarray as $info){
 	    $header = "";
 	    $key = "";
@@ -56,7 +60,7 @@
 		     //having to change some keys to match ImportBibTex
 		    if($key == 'publications'){
  		        $xrow = str_getcsv($info[$i]);
-                        for($x=0;$x<count($xrow); $x++){
+                        for($x=0;$x<count($xrow); $x++){ //switched to header instead of xrow
                             switch ($header[$x]){
 				case 'refereed':
 			            $row['peer_reviewed'] = $xrow[$x];
@@ -83,9 +87,16 @@
 				    break;
 				case 'publication_date':
 				    $dateArray = explode("-", $xrow[$x]);
-				    $row['year'] = $dateArray[0];
-				    $row['month'] = $dateArray[1];
-				    $row['day'] = $dateArray[2];
+				    if(count($dateArray)>1){
+				        $row['year'] = $dateArray[0];
+				        $row['month'] = $dateArray[1];
+				        $row['day'] = $dateArray[2];
+				    }
+				    else{
+					$row['year'] = "";
+                                        $row['month'] = "";
+                                        $row['day'] = "";
+				    }
 				    break;
 				case 'location':
 				    $row['city'] = $xrow[$x];
@@ -99,7 +110,7 @@
 		    }
 		    else{
                         $xrow = str_getcsv($info[$i]);
-		        for($x=0;$x<count($xrow); $x++){
+		        for($x=0;$x<count($xrow); $x++){//changed to $header
 			     $row[$header[$x]] = $xrow[$x];
 			}
 		    }
@@ -108,7 +119,6 @@
 	    }
 	    $formattedArray[$key] = $array;
 	}
-
 	$addedPubs = array();
 	$newPubs = array();
     	$publications = $formattedArray['publications'];
@@ -125,21 +135,26 @@
 		    $pub['author'][] = $pub2['author_name'];
 		}
 	     }
-	     $pub['author'] = implode(",",$pub['author']);
+	     $pub['author'] = implode(", ",$pub['author']);
 	      //unsetting all the rows not needed for the ImportBibtex
 	     unset($pub['author_name']);
 	     unset($pub['ccid']);
 	     unset($pub['department']);
 	     unset($pub['author_type']);
+	     unset($pub['location']);
 	     $newPubs[] = $pub;
         }
+	$formattedArray['publications'] = $newPubs;
+	//print_r($formattedArray);
 	$data = $formattedArray;
-
 	    $this->csvPersonData = $data['faculty_staff_member'];
 	    $this->csvData = $data;
 	    $this->csvPubs = $data['publications'];
+	    $this->csvPresentations = $data['presentations'];
 	    $this->csvGrants = $data['grants'];
-	    $this->csvCourses = $data ['courses'];	    
+	    $this->csvCourses = $data ['courses'];
+	    $this->csvStudents = $data['responsibilities'];
+            $this->csvAdditionalData['leaves']= $data['leaves'];    
 	    $this->csvAdditionalData['reduced teaching reasons']= $data['reduced teaching reasons'];
             $this->csvAdditionalData['teaching_developments'] = $data['teaching_developments'];
             $this->csvAdditionalData['other_teachings'] = $data['other_teachings'];
@@ -151,6 +166,7 @@
             $this->csvAdditionalData['scientific_committees'] = $data['scientific_committees'];
             $this->csvAdditionalData['university_committees'] = $data['university_committees'];
             $this->csvAdditionalData['additional_data'] = $data['additional_data'];
+	    $this->csvAwards = $data['awards'];    
 	}
 
         function deleteCsvTrailingCommas($data){
@@ -249,7 +265,6 @@
 
         function formatDate($date){
             $date_array = explode(" ", $date);
-	    print_r($date_array);
             if(count($date_array)==2){
                 $date = parseSemDate($date_array);
             }

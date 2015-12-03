@@ -13,6 +13,7 @@ class Contribution {
     var $rev_id;
     var $project_id;
     var $pi = array();
+    var $piWaiting;
     var $people = array();
     var $peopleWaiting;
     var $projects;
@@ -92,6 +93,8 @@ class Contribution {
             $this->rev_id = $data[0]['rev_id'];
             $this->project_id = $data[0]['project_id'];
 	    $this->name = $data[0]['name'];
+            $this->pi = unserialize($data[0]['pi']);
+	    $this->piWaiting = true;
             $this->people = unserialize($data[0]['users']);
             $this->peopleWaiting = true; // Lazyness
             $this->projects = array();
@@ -105,6 +108,7 @@ class Contribution {
             $this->unknown = array();
             $this->description = $data[0]['description'];
             $this->keywords = unserialize($data[0]['keywords']);
+	    $this->scope = $data[0]['scope'];
 	    $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
@@ -333,6 +337,29 @@ class Contribution {
             $this->peopleWaiting = false;
         }
         return $this->people;
+    }
+
+    function getPIs(){
+        if($this->piWaiting){
+            $pi = array();
+            foreach($this->pi as $pId){
+                if(is_numeric($pId)){
+                    $pi[] = Person::newFromId($pId);
+                }
+                else{
+                    $person = Person::newFromNameLike($pId);
+                    if($person != null && $person->getName() != ""){
+                        $pi[] = $person;
+                    }
+                    else{
+                        $pi[] = $pId;
+                    }
+                }
+            }
+            $this->pi = $pi;
+            $this->piWaiting = false;
+        }
+        return $this->pi;
     }
     
     // Returns the parent of this Contribution

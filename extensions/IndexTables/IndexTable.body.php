@@ -54,6 +54,7 @@ class IndexTable {
         }
         elseif(count($roles)>1){
             sort($roles);
+            $peopleSubTab = TabUtils::createSubTab('People', "", "");
             foreach($roles as $role){
                 if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
@@ -555,6 +556,7 @@ EOF;
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
                         <th style ='white-space:nowrap;'>Year</th>
 			<th style='white-space:nowrap;'>Sponsors</th>
+			<th style='white-space:nowrap;'>PI</th>
                         <th style='white-space:nowrap;'>Co-grantees</th>
                         <th style='white-space:nowrap;'>Cash</th>
                         <th style='white-space:nowrap;'>In Kind</th>
@@ -563,6 +565,7 @@ EOF;
         foreach($contributions as $contribution){
             $partners = $contribution->getPartners();
             $names = array();
+            $pis = array();
 	    foreach($contribution->getPeople() as $author){
 		if($author instanceof Person){
                     $url = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
@@ -575,10 +578,24 @@ EOF;
 		    }
                }
             }
+            foreach($contribution->getPIs() as $pi){
+                if($pi instanceof Person){
+                    $url = "<a href='{$pi->getUrl()}'>{$pi->getNameForForms()}</a>";
+                    if(!in_array($url,$pis)){
+                    $pis[] = $url;}
+               }
+               else{
+                    if(!in_array($pi,$pis)){
+                        $pis[] = $pi;
+                    }
+               }
+            }
+
 
             $this->text .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
 				<td align=center>{$contribution->getStartYear()}</td>
                                 <td align=center>{$partners[0]->getOrganization()}</td>
+				<td>".implode(", ", $pis)."</td>
                                 <td>".implode(", ", $names)."</td>
                                 <td align=right>$".number_format($contribution->getCash())."</td>
                                 <td align=right>$".number_format($contribution->getKind())."</td>

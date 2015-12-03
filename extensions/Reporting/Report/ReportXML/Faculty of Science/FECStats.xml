@@ -50,7 +50,6 @@
 		                       <tr><td>University</td><td class='comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</td></tr>
 		                       <tr><td>Scientific</td><td class='comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_SCIENTIFIC,{$user_id},{$chair_id},0)}</td></tr>
 		                       <tr><td>Community Outreach</td><td class='comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMUNITY,{$user_id},{$chair_id},0)}</td></tr>
-		                       <tr><td>Faculty</td><td class='comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</td></tr>
 		                       <tr><td>Other</td><td class='comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_OTHER,{$user_id},{$chair_id},0)}</td></tr>
 		                       <tr><td>Comments</td><td class='comments'><p id="fec_comments_row{$user_id}">{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMENTS,{$user_id},{$chair_id},0)}</p></td></tr>
 		                       </tbody>

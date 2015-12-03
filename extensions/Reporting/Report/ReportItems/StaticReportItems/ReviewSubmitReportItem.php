@@ -144,7 +144,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		}
 		$wgOut->addHTML("<script type='text/javascript'>
 		    function clickButton(button){
-                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
+                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name + '&download');
             }
 		</script>");
 		$disabled = "";

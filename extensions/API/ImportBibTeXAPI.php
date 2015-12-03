@@ -32,7 +32,10 @@ class ImportBibTeXAPI extends API{
     }
     
     function getMonth($month){
-        if(strlen($month) != 3){
+	if(is_numeric($month)){
+	    return $month;
+	}
+        else if(strlen($month) != 3){
             return "01";
         }
         $month = substr(strtolower($month), 0, 3);
@@ -59,7 +62,7 @@ class ImportBibTeXAPI extends API{
         }
         $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
         $checkProduct = Product::newFromTitle($paper['title']);
-        if($checkBibProduct->getId() != 0){
+        if($bibtex_id != "" && $checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
         }
@@ -169,13 +172,12 @@ class ImportBibTeXAPI extends API{
 	    global $wgMessage;
 	    $me = Person::newFromWgUser();
             if(isset($_POST['bibtex'])){
-            
+                $this->structure = Product::structure();
                 if(isset($_POST['fec'])){
                     $bib = new stdClass();
                     $bib->m_entries = $_POST['fec'];
                 }
                 else{
-	    	    $this->structure = Product::structure();
             	    $dir = dirname(__FILE__);
             	    $error = "";
             	    require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
@@ -191,6 +193,9 @@ class ImportBibTeXAPI extends API{
                 if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                     foreach($bib->m_entries as $bibtex_id => $paper){
                         $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
+		        if(isset($_POST['fec'])){
+			    $bibtex_id = "";
+  	                }
                         $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
                         if($product != null){
                             $createdProducts[] = $product;

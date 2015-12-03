@@ -9,6 +9,7 @@
 	var $id;
 	var $acadOrg;
 	var $term;
+	var $term_string;
 	var $shortDesc;
 	var $classNbr;
 	var $subject;
@@ -55,6 +56,7 @@
                 $this->id = $data[0]['id'];
                 $this->acadOrg = $data[0]['Acad Org'];
                 $this->term = $data[0]['Term'];
+		$this->term_string = $data[0]['term_string'];
                 $this->shortDesc = $data[0]['Short Desc'];
                 $this->classNbr = $data[0]['Class Nbr'];
                 $this->subject = $data[0]['Subject'];
@@ -195,6 +197,7 @@
 		&& $this->catalog != ""){
                 $sql = "INSERT INTO grand_courses (`Acad Org`,
 						    `Term`,
+						    `term_string`,
 						    `Short Desc`,
 						    `Class Nbr`,
                                                     `Subject`, 
@@ -235,6 +238,7 @@
                                                     `Max Units`) VALUES
 						   ('{$this->acadOrg}',
                                                     '{$this->term}',
+						    '{$this->term_string}',
                                                     '{$this->shortDesc}',
                                                     '{$this->classNbr}',
 						    '{$this->subject}',
@@ -290,6 +294,7 @@
 		$sql = "UPDATE grand_courses
 			SET `Acad Org` = '{$this->acadOrg}',
 			`Term` = '{$this->term}',
+			`term_string` = '{$this->term_string}',
 			`Short Desc` = '{$this->shortDesc}',
 			`Class Nbr` = '{$this->classNbr}',
 			`Subject` = '{$this->subject}',

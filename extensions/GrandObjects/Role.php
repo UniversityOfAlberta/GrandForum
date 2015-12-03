@@ -75,6 +75,7 @@ class Role extends BackboneModel {
 	                                        'end_date'   => $this->getEndDate(),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
+	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -109,6 +110,7 @@ class Role extends BackboneModel {
 	                                        'end_date'   => $this->getEndDate(),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
+	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -123,6 +125,7 @@ class Role extends BackboneModel {
 	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
+	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;

@@ -4,7 +4,7 @@ class PersonContributionsReportItemSet extends ReportItemSet {
         $phase = $this->getAttr("phase");
         $data = array();
         $person = Person::newFromId($this->personId);
-	$contributions = $person->getContributionsDuring(REPORTING_CYCLE_START);
+	$contributions = $person->getContributions();
 	if(is_array($contributions)){
             foreach($contributions as $contribution){
                 $tuple = self::createTuple();

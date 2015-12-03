@@ -37,6 +37,9 @@ class Paper extends BackboneModel{
     var $ratio;
     var $acceptance_ratio_numerator;
     var $acceptance_ratio_denominator;
+    var $duration;
+    var $invited;
+    var $refereed;
 
     /**
      * Returns a new Paper from the given id
@@ -271,7 +274,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created, acceptance_date, acceptance_ratio_denominator, acceptance_ratio_numerator
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -598,10 +601,10 @@ class Paper extends BackboneModel{
             //$this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
 	    $this->central_repo_id = $data[0]['central_repo_id'];
-//	    $this->ratio = $data[0]['ratio'];
-//	    $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
-//	    $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
-//	    $this->acceptance_date = $data[0]['acceptance_date'];
+	    $this->ratio = $data[0]['ratio'];
+	    $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
+	    $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
+	    $this->acceptance_date = $data[0]['acceptance_date'];
         }
     }
     
@@ -636,7 +639,19 @@ class Paper extends BackboneModel{
     function getCategory(){
         return $this->category;
     }
-    
+
+    function getPresentationInfo(){
+      $data = DBFunctions::select(array('grand_products'),
+                                  array('duration', 'invited', 'refereed'),
+                                  array('id'=>$this->getId()));
+      if(count($data)>0){
+	$this->duration = $data[0]['duration'];
+      	$this->invited = $data[0]['invited'];
+      	$this->refereed = $data[0]['refereed'];
+      }
+      return $this;
+    }
+ 
     /**
      * Returns the abstract or description of this Paper
      * @return string The abstract or description of this Paper
@@ -1442,6 +1457,9 @@ class Paper extends BackboneModel{
 					        'ratio' => $this->ratio,
 					        'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
 						'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
+						'duration' => $this->duration,
+						'invited' => $this->invited,
+						'refereed' => $this->refereed,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1538,6 +1556,9 @@ class Paper extends BackboneModel{
 						'ratio' => $this->ratio,
 						'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
 						'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
+						'duration' => $this->duration,
+						'invited' => $this->invited,
+						'refereed' => $this->refereed,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),

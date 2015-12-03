@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfFiles="FEC" ajax="true">
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -16,12 +21,12 @@
                 <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
+        <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" default="{$user_phd_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
 	    <![CDATA[
 		<tr><td><b>Year of PhD:</b></td><td>{$item}</td></tr>
 	    ]]>
 	</ReportItem>
-        <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
+        <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" default="{$user_appointment_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
              <![CDATA[
                  <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$item}</td></tr>
              ]]>
@@ -40,7 +45,7 @@
 	    	<div style='margin-left:25px;'>{$item}</div>
 	    ]]>
 	</ReportItem>
-	<ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Text|Text" multiple="true" optional="true">
+	<ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
 	    <![CDATA[
 		<h2>Leaves</h2>
 		{$item}
@@ -76,7 +81,7 @@
 	     <ReportItem id="row" type="StaticReportItem">
 	     	<![CDATA[
 
-	             <tr><td>{$course_term}</td>
+	             <tr><td align='center'>{$course_term}</td>
 	             <td align='center'>{$course_subject}</td>
                      <td align='center'>{$course_number}</td>
                      <td align='center'>{$course_comp}</td>
@@ -121,7 +126,7 @@
     	         	<td>{$user_hqp_role}</td>
     	         	<td>{$hqp_start_date}</td>
     	         	<td>{$hqp_end_date}</td>
-    	         	<td>--</td></tr>
+    	         	<td>{$hqp_status}</td></tr>
     	         ]]>
     	     </ReportItem>
     	 </ReportItemSet>
@@ -131,7 +136,7 @@
     	     ]]>
          </ReportItem>
     </ReportSection>
-    <ReportSection id="publications" tooltip="Publications" name="Publications" title="Publications" blobSection="FEC_PRODUCTS" type="EditableReportSection">
+    <ReportSection id="publications" tooltip="Publications" name="Publications" title="Publications"  blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
 		<h2>Publications</h2>
@@ -139,7 +144,7 @@
 		<th>Refereed Type Authors Title Venue Accepted Published Pg. Eds. Vol. Issue Place Publisher DOI URL</th></tr></thead><tbody>
 	    ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication">
 	    <ReportItem id="row" type="StaticReportItem">
 	         <![CDATA[
 		     <tr><td>{$product_citation}</td></tr>
@@ -147,6 +152,38 @@
 	    </ReportItem>
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="presentationheader" type="StaticReportItem">
+	    <![CDATA[
+                <h2>Presentations</h2>
+                <table class ='wikitable' style='width:100%'><thead>
+                	<th>Category</th>
+                	<th>Invited</th>
+                	<th>Refereed</th>
+                	<th>Organization</th>
+                	<th>Country</th>
+                	<th>Date</th>
+                	<th>Minutes</th></thead><tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="presentations" type="PersonPresentationReportItemSet">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td align='center'>Presentation</td>
+                    	<td align='center'>{$presentation_invited}</td>
+                    	<td align='center'>{$presentation_refereed}</td>
+                    	<td>{$presentation_organization}</td>
+                    	<td align='center'>{$presentation_country}</td>
+                    	<td style='white-space:nowrap;'>{$presentation_date}</td>
+                    	<td align='center'>{$presentation_duration}</td>
+                    	</tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="presentationfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
             ]]>
@@ -172,14 +209,14 @@
 	    <ReportItem id="row" type="StaticReportItem">
 	        <![CDATA[
 	            <tr>
-	            	<td> -- </td>
+	            	<td>{$contribution_scope}</td>
 	            	<td>{$contribution_agency}</td>
 	            	<td>{$contribution_program}</td>
 	            	<td>{$contribution_start_date}</td>
 	            	<td>{$contribution_end_date}</td>
-	            	<td>{$contribution_yearly}</td>
-	            	<td>{$contribution_total}</td>
-	            	<td> -- </td>
+	            	<td>${$contribution_yearly}</td>
+	            	<td>${$contribution_total}</td>
+	            	<td>{$contribution_pis}</td>
 	            	<td>{$contribution_recipients}</td>
 	            </tr>
 	        ]]>
@@ -190,21 +227,45 @@
 	        </tbody></table>
 	    ]]>
 	</ReportItem>
-	<ReportItem id="awardsReceived" type="TextareaReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_TEXT" rich="true" optional="true">
+	<ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels="Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true">
 	    <![CDATA[
 	        <h2>Awards Received</h2>{$item}
 	    ]]>
 	</ReportItem>
     </ReportSection>
-    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_GRANTS" type="EditableReportSection">
+    <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
             	<h2>Supplementary Professional Activities</h2>{$item}
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreach" type="TextareaReportItem" blobItem="FEC_INFO_SERVICE" blobType="BLOB_TEXT" rich="true" optional="true">
+        <ReportItem id="serviceOutreachDepartmental" type="TextareaReportItem" blobItem="FEC_INFO_DEPARTMENTAL" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-            	<h2>Service/Committees/Outreach</h2>{$item}
+            	<h2>Service/Committees/Outreach</h2><b>Departmental</b>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutreachFaculty" type="TextareaReportItem" blobItem="FEC_INFO_FACULTY" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <b>Faculty</b>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutreachUniversity" type="TextareaReportItem" blobItem="FEC_INFO_UNIVERSITY" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <b>University</b>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutreachScientific" type="MultiTextReportItem" blobItem="FEC_INFO_SCIENTIFIC" blobType="BLOB_ARRAY" labels="Scope|Organization|Description" types="Text|Text|Text" multiple="true" optional="true">
+            <![CDATA[
+                <b>Scientific</b>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutReachCommunity" type="TextareaReportItem" blobItem="FEC_INFO_COMMUNITY" blobtype="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[<b>Outreach/Community Engagement/Media</b>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="serviceOutreachOther" type="TextareaReportItem" blobItem="FEC_INFO_OTHER" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <b>Other</b>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" rich="true" optional="true">

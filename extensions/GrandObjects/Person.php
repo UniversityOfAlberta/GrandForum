@@ -2741,7 +2741,8 @@ class Person extends BackboneModel {
             $sql = "SELECT id
                     FROM(SELECT id, name, rev_id
                     FROM grand_contributions
-                    WHERE users LIKE '%\"{$this->id}\"%'
+                    WHERE (users LIKE '%\"{$this->id}\"%'
+		           OR pi LIKE '%\"{$this->id}\"%')
                     AND (access_id = '{$this->id}' OR access_id = '0')
                     GROUP BY id, name, rev_id
                     ORDER BY id ASC, rev_id DESC) a
@@ -2755,6 +2756,21 @@ class Person extends BackboneModel {
             }
         }
         return $this->contributions;
+    }
+
+    function getPresentations(){
+	$presentations = array();
+        $sql = "SELECT id
+                FROM grand_products
+		WHERE (authors LIKE '%\"{$this->id}\"%'
+		       OR authors LIKE '%\"{$this->getNameForForms()}\"%')
+		       AND category = 'Presentation'";
+	$data = DBFunctions::execSQL($sql);
+	foreach($data as $row){
+	    $presentation = Paper::newFromId($row['id']);
+	    $presentations[] = $presentation;
+	}
+	return $presentations;
     }
     
     /**
@@ -4267,7 +4283,7 @@ class Person extends BackboneModel {
     function isReceiverOf($contribution){
         if($contribution instanceof Contribution){
             $con_people = $contribution->getPeople();
-            
+            $con_people = array_merge($con_people, $contribution->getPIs()); 
             $con_receiver = false;
             if(is_array($con_people)){
                 foreach($con_people as $con_pers){

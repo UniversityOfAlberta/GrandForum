@@ -33,14 +33,26 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-	if($person->isRole(NI)){
+	if(!$person->isRole(ISAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
         }
-        if($person->isRole(ISAC)){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview")) ? "selected" : false;
-            $tabs["Recommendations"]['subtabs'][] = TabUtils::createSubTab("{$person->getDepartment()}", "{$url}FECReview", $selected);
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
+        if($person->isRole(RMC) || $person->isRole(ISAC)){
+	    $depts = Person::getAllDepartments();
+	    foreach($depts as $dept){
+		if($dept != $person->getDepartment()){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $dept) ? "selected" : false;
+                    $subTabs[] = TabUtils::createSubTab("{$dept}", "{$url}FECReview&dept=".urlencode($dept), $selected);
+		}
+	    }
+	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $person->getDepartment()) ? "selected" : false;
+            $tabs["Recommendations"]['subtabs'][0] = TabUtils::createSubTab("{$person->getDepartment()}", "{$url}FECReview&dept=".urlencode($person->getDepartment()), $selected);
+            
+	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $dept) ? "selected" : false;
+            $tabs["Recommendations"]['subtabs'][1] = TabUtils::createSubTab("Other", "", $selected);
+	    $tabs["Recommendations"]['subtabs'][1]['dropdown'] = $subTabs;
+	    
+	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
             $tabs["FosStats"]['subtabs'][] = TabUtils::createSubTab("Stats", "{$url}FECStats", $selected);
 	}
 

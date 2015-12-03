@@ -6,7 +6,11 @@ class IntegerReportItem extends TextReportItem {
 		global $wgOut;
 		$min = $this->getAttr('min');
 		$max = $this->getAttr('max');
-		$value = $this->getBlobValue();
+		$default = $this->getAttr('default', "");
+                $value = $this->getBlobValue();
+		if($value == ""){
+		    $value = $default;
+		}
 		$width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
 		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};text-align:right;' value='{$value}' />";
 		$item = $this->processCData($item);

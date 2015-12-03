@@ -34,7 +34,7 @@ class PDFReportItem extends StaticReportItem {
     		$tst = $sto->metadata('timestamp');
     		$len = $sto->metadata('len_pdf');
     		$sub = $sto->metadata('submitted');
-    		$item = "<a class='$class' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+    		$item = "<a class='$class' style='width:{$width};' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
     		$item = $this->processCData($item);
 		    $wgOut->addHTML($item);
     	}
