@@ -110,6 +110,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     private function selectList($person, $value){
+        $structure = Product::structure();
         $allProducts = $person->getPapers('all', true, 'grand');
         $products = array();
         foreach($allProducts as $product){
@@ -120,12 +121,9 @@ class PersonDashboardTab extends AbstractEditableTab {
         $products = array_reverse($products);
         $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
-        $html .= $this->optGroup($products, "Publication", $value);
-        $html .= $this->optGroup($products, "Artifact", $value);
-        $html .= $this->optGroup($products, "Activity", $value);
-        $html .= $this->optGroup($products, "Presentation", $value);
-        $html .= $this->optGroup($products, "Press", $value);
-        $html .= $this->optGroup($products, "Award", $value);
+        foreach($structure['categories'] as $cat => $types){
+            $html .= $this->optGroup($products, "$cat", $value);
+        }
         $html .= "</select><br />";
         return $html;
     }
