@@ -111,7 +111,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     private function selectList($person, $value){
         $structure = Product::structure();
-        $allProducts = $person->getPapers('all', true, 'grand');
+        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public');
         $products = array();
         foreach($allProducts as $product){
             $date = $product->getDate();
