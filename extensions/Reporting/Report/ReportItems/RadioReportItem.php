@@ -23,7 +23,7 @@ class RadioReportItem extends AbstractReportItem {
 		        $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
 		    }
 		    else{
-		        $items[] = "<input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
+		        $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
 		    }
 		}
 
@@ -31,7 +31,7 @@ class RadioReportItem extends AbstractReportItem {
         $orientation = $this->getAttr('orientation', 'vertical');
         $descriptions = explode("|", $this->getAttr('descriptions', ''));
         if($orientation == 'vertical' && count($descriptions) != count($items)){
-            $output = implode("<br />\n", $items);
+            $output = implode("\n", $items);
         }
         else if($orientation == 'horizontal' && count($descriptions) != count($items)){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);
