@@ -110,7 +110,7 @@
         'Poll',
         'QueryableTable',
         'IndexTables',
-        //'Reporting',
+        'Reporting',
         'NCETable',
         'EmptyEmailList',
         'GlobalSearch',
