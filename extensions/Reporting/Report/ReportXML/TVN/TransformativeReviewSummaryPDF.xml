@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Transformative Review Summary" ajax="true" pdfType="RPTP_TRANS_REVIEW_SUMMARY" disabled="false">
-    <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (External)" type="ReportSection" pagebreak="true">
+    <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (External/ISAC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
@@ -138,7 +138,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (External)" type="ReportSection" pagebreak="true">
+    <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (External/ISAC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
