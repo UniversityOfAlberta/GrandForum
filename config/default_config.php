@@ -228,6 +228,7 @@
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("SRC",        "SRC");
     $config->setConst("ETC",        "ETC");
+    $config->setConst("KTC",        "KTC");
     $config->setConst("IAC",        "IAC");
     $config->setConst("CAC",        "CAC");
     $config->setConst("NCE",        "NCE Rep");
@@ -262,6 +263,7 @@
         $config->getConst('ISAC')           => "International Scientific Advisory Committee",
         $config->getConst('SRC')            => "Scientific Research Committee",
         $config->getConst('ETC')            => "Education and Training Committee",
+        $config->getConst('KTC')            => "Knowledge Translation Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",
         $config->getConst('CAC')            => "Consumer Advisory Committee",
         $config->getConst('NCE')            => "NCE Rep",
