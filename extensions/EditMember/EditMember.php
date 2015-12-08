@@ -270,8 +270,10 @@ class EditMember extends SpecialPage{
                                         array('user_id' => EQ($person->getId())));
                     $person->candidate = true;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
+                    MailingList::subscribeAll($person);
                 }
                 else if(!isset($_POST['candidate']) && $person->isCandidate()){
+                    MailingList::unsubscribeAll($person);
                     DBFunctions::update('mw_user',
                                         array('candidate' => '0'),
                                         array('user_id' => EQ($person->getId())));
