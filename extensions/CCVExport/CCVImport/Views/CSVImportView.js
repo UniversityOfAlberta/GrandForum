@@ -32,19 +32,34 @@ CSVImportView = Backbone.View.extend({
                 var success = new Array();
                 var warning = new Array();
                 var nCreated = response.created.length;
-		var nCourses = response.courses.length;
+		var nCourses = (response.courses != undefined) ? response.courses.length: 0;
                 var nError = response.error.length;
+		var nPresentations = (response.presentations != undefined) ? response.presentations.length: 0;
+		var nAdditionals = (response.additionals != undefined) ? response.additionals.length: 0;
+		var nAwards = (response.awards != undefined) ? response.awards.length: 0;
                 var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
                 var nFunding = (response.funding != undefined) ? response.funding.length : 0;
                 var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
                 if(nCreated > 0){
                     success.push("<b>" + nCreated + "</b> products were created");
                 }
+		if(response.fec_info!= undefined){
+		  success.push("FEC personal information was created/updated");
+		}
 		if(nCourses > 0){
 		    success.push("<b>" + nCourses + "</b> courses were created/updated");
 		}
                 if(nHQP > 0){
                     success.push("<b>" + nHQP + "</b> HQP were created/updated");
+                }
+                if(nPresentations > 0){
+                    success.push("<b>" + nPresentations + "</b> Presentations were created/updated");
+                }
+                if(nAwards > 0){
+                    success.push("<b>" + nAwards + "</b> Awards were created/updated");
+                }
+                if(nAdditionals > 0){
+                    success.push("<b>" + nAdditionals + "</b> Additional Information was created/updated");
                 }
                 if(nFunding > 0){
                     success.push("<b>" + nFunding + "</b> Funding Contributions were created/updated");

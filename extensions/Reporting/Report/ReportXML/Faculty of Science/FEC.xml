@@ -144,7 +144,7 @@
 		<th>Refereed Type Authors Title Venue Accepted Published Pg. Eds. Vol. Issue Place Publisher DOI URL</th></tr></thead><tbody>
 	    ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-01-01" end="{$this_year}-12-31">
 	    <ReportItem id="row" type="StaticReportItem">
 	         <![CDATA[
 		     <tr><td>{$product_citation}</td></tr>
@@ -169,7 +169,7 @@
                 	<th>Minutes</th></thead><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonPresentationReportItemSet">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{subtract({$this_year},1)}-01-01" end="{$this_year}-12-31">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center'>Presentation</td>

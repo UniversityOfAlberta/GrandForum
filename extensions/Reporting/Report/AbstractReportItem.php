@@ -460,6 +460,7 @@ abstract class AbstractReportItem {
                             $cdata = str_replace("{".$m."}", serialize($v), $cdata);
                         }
                         else{
+                            $v = str_replace(",", "&#44;", $v);
                             foreach($matches[1] as $k2 => $m2){
                                 $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
                             }
@@ -476,7 +477,7 @@ abstract class AbstractReportItem {
             // There are recursive calls, now call them
             $cdata = $this->varSubstitute($cdata);
         }
-        return str_replace(",", "&#44;", $cdata);
+        return $cdata;
     }
     
     /**

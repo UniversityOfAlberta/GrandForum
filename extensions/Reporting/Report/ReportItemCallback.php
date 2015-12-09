@@ -443,7 +443,7 @@ class ReportItemCallback {
 	$award_names = array();
         $awards = $hqp->getPapers("Awards", false, 'both', true, "Public");
 	foreach($awards as $award){
-	    $award_names[] = $award->type;
+	    $award_names[] = str_replace("Misc: ", "", $award->type);
 	}
 	return implode(",",$award_names);
     }

@@ -229,6 +229,7 @@ class UploadCSVAPI extends API{
     }
 
     function createAwardInfo($person, $awards){
+	$success = array();
 	foreach($awards as $award){
 	    if($award['id'] == 'null'){
 		continue;
@@ -252,10 +253,11 @@ class UploadCSVAPI extends API{
                                      true);
                 if($status){
                     DBFunctions::commit();
+		    $success[] = $status;
                 }
 	    }
         }
-	return "Award";
+	return $success;
     }
 	//TODO: MIGHT WANT TO SHORTEN THIS BY CREATING A METHOD TO CHECK AND INSERT/UPDATE
     function createAdditionalInfo($person,$additionals){
@@ -875,6 +877,7 @@ class UploadCSVAPI extends API{
     }
 
     function createPresentationInfo($person, $presentations){
+	$success = array();
 	foreach($presentations as $presentation){
             $data = DBFunctions::select(array('grand_products'),
 				        array('id'),
@@ -896,12 +899,16 @@ class UploadCSVAPI extends API{
 	    $newPresentation->date = $presentation['date'];
 	    $newPresentation->title = "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}";
 	    $newPresentation->authors = array($person);
-	    $newPresentation->create();
+	    $status = $newPresentation->create();
+	    if($status){
+		$success[] = $status;
+	    }	
 	}
-	return "Hii";
+	return $success;
     }
 
     function createGrantInfo($person, $grants){
+	$fundings = array();
     	foreach($grants as $grant){
    	    $contribution = new Contribution(array());
 	    $contribution->name = $grant['program'];
@@ -942,12 +949,16 @@ class UploadCSVAPI extends API{
 		}
 	    }
 	    $contribution->people = $userArray;
-	    $contribution->create();
+	    $status = $contribution->create();
+	    if($status){
+		$fundings[] = $status;
+	    }
 	}
-	return "HIII";
+	return $fundings;
     }
 
     function createStudentInfo($person, $students){
+	$supervises = array();
 	foreach($students as $student){
 	    $newStudent = Person::newFromNameLike($student['name']);
 	    $university = $person->getUniversity();
@@ -972,22 +983,21 @@ class UploadCSVAPI extends API{
 		$newRelation->type = $student['role'];
 		$newRelation->startDate = $student['started'];
 		$newRelation->endDate = $student['ended']; 
-		$newRelation->create();
+		$status = $newRelation->create();
+		if($status){
+		    $supervises[] = $status;
+		}
 	    }
 	    continue;
 	}
-	return "MADE IT!";
+	return $supervises;
     }
 
     function createPublicationsInfo($publications){
         $_POST['bibtex'] = "hi";
 	$_POST['fec'] = $publications;
         $response = APIRequest::doAction('importBibTeX', true);
-	return count($response['errors']);
-    }
-
-    function addActivities($person, $activities){
-    	
+	return array('success'=>$response['created'], 'fail'=>$response['error']);
     }
 
     function calculateCapEnrl($enrollment, $percentage){
@@ -1020,6 +1030,7 @@ class UploadCSVAPI extends API{
     }
 
     function createCourseInfo($person, $courses){
+	$course_status = array();
 	foreach($courses as $course){
 	    $yearString = explode("-", $course['updated_at']);
 	    $term = strtolower($course['term']);
@@ -1045,6 +1056,10 @@ class UploadCSVAPI extends API{
                                     array('user_id' => $person->getId(),
                                           'course_id' => $courseCheck->id),
                                            true);
+		if($status){
+		    DBFunctions::commit();
+		}
+		$course_status[] = $status;
 		continue;
 	    }
         	//if not create courses
@@ -1065,9 +1080,13 @@ class UploadCSVAPI extends API{
                                     array('user_id' => $person->getId(),
                                           'course_id' => $courseCheck->id),
                                            true);
+            if($status){
+                DBFunctions::commit();
+            }
+	    $course_status[] =$status;
 
 	}
-	return "Finished";
+	return $course_status;
     }
 
     function createFecInfo($person, $data){
@@ -1086,8 +1105,8 @@ class UploadCSVAPI extends API{
         if($person->dateFso2 == ""){ $person->dateFso2 = $data['date_fso2'];}
         if($person->dateFso3 == ""){ $person->dateFso3 = $data['date_fso3'];}
         if($person->dateFso4 == ""){ $person->dateFso4 = $data['date_fso4'];}
-        $person->updateFecInfo();
-	return $data['publication_history_refereed'];
+        $status = $person->updateFecInfo();
+	return $status;
     }
 
     function doAction($noEcho=false){
@@ -1095,67 +1114,54 @@ class UploadCSVAPI extends API{
         $me = Person::newFromWgUser();
         if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
             $person = Person::newFromId($_POST['id']);
-	    $person->getFecPersonalInfo();
         }
         else{
             $person = $me;
-            $person->getFecPersonalInfo();
         }
         $csv = $_FILES['csv'];
 	if($csv['type'] == "text/csv" && $csv['size'] > 0){
+	    $person->getFecPersonalInfo();
             $file_contents = file_get_contents($csv['tmp_name']);
 	    $hi = $this->setCsvData($file_contents);
-            $hi = "hii";
-	    $ec = $this->csvPubs;
 	    $error = "";
 	    $json = array('created' => array(),
 			  'error' => array()); 
 	    if(isset($_POST['info'])){
-		$hi = $this->createFecInfo($person, $this->csvPersonData[0]);
+		$json['fec_info'] = $this->createFecInfo($person, $this->csvPersonData[0]);
 	    }
-	    if(isset($_POST['courses'])){
-		if($this->csvCourses[0]['id'] != 'null'){
-		    $hi = $this->createCourseInfo($person, $this->csvCourses);
-		}
+	    if(isset($_POST['courses']) && $this->csvCourses[0]['id'] != 'null'){
+		 $json['courses'] = $this->createCourseInfo($person, $this->csvCourses);
 	    }
-	    if(isset($_POST['funding'])){
-                if($this->csvGrants[0]['id'] != 'null'){
-		    $hi = $this->createGrantInfo($person, $this->csvGrants);
-		}
+	    if(isset($_POST['funding']) && $this->csvGrants[0]['id'] != 'null'){
+		$funding= $this->csvGrants;
+		$json['funding'] = $this->createGrantInfo($person, $this->csvGrants);
+		$json['fundingFail'] = count($funding) - count($json['funding']);
 	    }
-	    if(isset($_POST['supervises'])){
-                if($this->csvStudents[0]['id'] != 'null'){
-		    $json['supervises'] = $this->createStudentInfo($person, $this->csvStudents);
-		}
+	    if(isset($_POST['supervises']) && $this->csvStudents[0]['id'] != 'null'){
+		$json['supervises'] = $this->createStudentInfo($person, $this->csvStudents);
 	    }
-	    if(isset($_POST['publications'])){
-                if($this->csvPubs[0]['id'] != 'null'){
-		    $hi = $this->createPublicationsInfo($this->csvPubs);
-		}
+	    if(isset($_POST['publications']) && $this->csvPubs[0]['id'] != 'null'){
+		$publications = $this->createPublicationsInfo($this->csvPubs);
+		$json['created'] = $publications['success'];
+		$json['error'] = $publications['fail'];
 	    }
-            if(isset($_POST['presentations'])){
-                if($this->csvPresentations[0]['id'] != 'null'){
-                    $hi = $this->createPresentationInfo($person, $this->csvPresentations);
-                }
+		//starts here ----------->
+            if(isset($_POST['presentations']) && $this->csvPresentations[0]['id'] != 'null'){
+                $json['presentations'] = $this->createPresentationInfo($person, $this->csvPresentations);
             }	
-            if(isset($_POST['additionals'])){
-                if($this->csvAdditionalInfo[0]['id'] != 'null'){
-                    $hi = $this->createAdditionalInfo($person,$this->csvAdditionalInfo);
-		}
+            if(isset($_POST['additionals']) && $this->csvAdditionalInfo[0]['id'] != 'null'){
+                $json['additionals']  = $this->createAdditionalInfo($person,$this->csvAdditionalInfo);
             }
-	    if(isset($_POST['awards'])){
-                if($this->csvAwards[0]['id'] != 'null'){
-		    $json['created'][] = $this->createAwardInfo($person, $this->csvAwards);
-		}
+	    if(isset($_POST['awards']) && $this->csvAwards[0]['id'] != 'null'){
+		$json['awards'] = $this->createAwardInfo($person, $this->csvAwards);
 	    }
-	    $json['courses'] = array(1,2,3,4);
 	    $obj = json_encode($json);
 
             echo <<<EOF
             <html>
                 <head>
                     <script type='text/javascript'>
-                                            parent.ccvUploaded([], "$hi");
+                                            parent.ccvUploaded($obj, "$error");
 		    </script>
                 </head>
             </html>

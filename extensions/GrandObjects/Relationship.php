@@ -31,13 +31,15 @@ class Relationship extends BackboneModel {
         return $Relationship;
     }
 
-    static function newFromUser1User2TypeStartDate($user1,$user2,$type,$startdate){
+    static function newFromUser1User2TypeStartDate($user1,$user2,$type,$startdate=false){
             $sql = "SELECT *
                   FROM grand_relations WHERE
                   user1 = '$user1' AND
                   user2 = '$user2' AND
-                  type = '$type' AND
-                  start_date = '$startdate'";
+                  type = '$type'";
+	    if($startdate != false){
+	     $sql = $sql. " AND start_date = '$startdate'";
+	    }
             $data = DBFunctions::execSQL($sql);
             if(count($data) >0){
                 $relation = new Relationship(array($data[0]));
@@ -130,7 +132,6 @@ class Relationship extends BackboneModel {
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),true);
-
                 if($this->endDate == ""){
                     $this->endDate ="0000-00-00 00:00:00";
                 }

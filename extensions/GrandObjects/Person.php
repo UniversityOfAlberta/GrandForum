@@ -538,6 +538,9 @@ class Person extends BackboneModel {
                                           'date_fso3' => $this->dateFso3,
                                           'date_fso4' => $this->dateFso4),
                                     array('user_id' => EQ($this->getId())));
+		if($status){
+		    DBFunctions::commit();
+		}
 	        return $status;
 	    }
 	    else{
@@ -559,6 +562,9 @@ class Person extends BackboneModel {
                                           'date_fso3' => $this->dateFso3,
                                           'date_fso4' => $this->dateFso4),
                                            true);
+               if($status){
+                    DBFunctions::commit();
+                }
                 return $status;
 	    }
         }
@@ -2767,21 +2773,6 @@ class Person extends BackboneModel {
         return $this->contributions;
     }
 
-    function getPresentations(){
-	$presentations = array();
-        $sql = "SELECT id
-                FROM grand_products
-		WHERE (authors LIKE '%\"{$this->id}\"%'
-		       OR authors LIKE '%\"{$this->getNameForForms()}\"%')
-		       AND category = 'Presentation'";
-	$data = DBFunctions::execSQL($sql);
-	foreach($data as $row){
-	    $presentation = Paper::newFromId($row['id']);
-	    $presentations[] = $presentation;
-	}
-	return $presentations;
-    }
-    
     /**
      * Returns the Contributions this Person has made during the given year
      * @param string $year The year of the Contribution

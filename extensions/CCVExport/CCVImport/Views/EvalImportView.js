@@ -34,28 +34,10 @@ EvalImportView = Backbone.View.extend({
                 var warning = new Array();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
-                var nHQP = (response.supervises != undefined) ? response.supervises.length : 0;
-                var nFunding = (response.funding != undefined) ? response.funding.length : 0;
-                var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
-                if(nCreated > 0){
-                    success.push("<b>" + nCreated + "</b> products were created");
+                var nCourses = (response.courses != undefined) ? response.courses.length : 0;
+                if(nCourses > 0){
+                    success.push("<b>" + nCourses + "</b> Course Evaluations were created/updated");
                 }
-                if(nHQP > 0){
-                    success.push("<b>" + nHQP + "</b> HQP were created/updated");
-                }
-                if(nFunding > 0){
-                    success.push("<b>" + nFunding + "</b> Funding Contributions were created/updated");
-                }
-                if(fundingFail > 0){
-                    warning.push("<b>" + fundingFail + "</b> Funding Contributions failed to import");
-                }
-                if(response.info != undefined){
-                    success.push("Personal Information was updated");
-                }
-                if(response.employment != undefined){
-                    success.push("Employment Information was updated");
-                }
-                
                 if(success.length > 0){
                     addSuccess(success.join("<br />"));
                 }

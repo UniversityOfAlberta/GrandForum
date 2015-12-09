@@ -28,12 +28,12 @@ class ImportGradDbAPI extends API{
     function createUser($info, $university_info){
 	$role = "Student";
         $nameArray = explode(" ", $info['name']);
-	$firstname = $nameArray[0];
-	$lastname = $nameArray[count($nameArray)-1];
+	$firstname = trim($nameArray[0]);
+	$lastname = trim($nameArray[count($nameArray)-1]);
         $username = str_replace(" ", "", str_replace("'", "", "$firstname.$lastname"));
-        User::createNew($username, array('real_name' => "$firstname $lastname",
+	User::createNew($username, array('real_name' => "$firstname $lastname",
                                          'password' => User::crypt(mt_rand()),
-                                         'email' => $info['email']
+                                         'email' => ""
                                          ));
         Person::$cache = array();
         Person::$namesCache = array();
@@ -43,6 +43,7 @@ class ImportGradDbAPI extends API{
 	$student = Person::newFromNameLike("$firstname $lastname");
 	$this->addUserRole($student->id, $role);
         $student->setUniversityId($info['id']);
+        DBFunctions::commit();
         return $student;
     }
 
@@ -57,12 +58,30 @@ class ImportGradDbAPI extends API{
 	return $fullname;
     }
 
-    function formatDate($date){
-        $date_array = explode(" ", $date);
-        if(count($date_array)==2){
-            $date = parseSemDate($date_array);
+    function parseSemDate($date){
+        switch ($date[0]){
+            case 'Fall':
+                $date = "{$date[1]}-09-01 00:00:00";
+                break;
+            case 'Winter':
+                $date = "{$date[1]}-01-01 00:00:00";
+                break;
+            case 'Spring':
+                $date = "{$date[1]}-04-01 00:00:00";
+                break;
+            case 'Summer':
+                $date = "{$date[1]}-06-01 00:00:00";
+                break;
         }
-        elseif(count($date_array)==1){
+        return $date;
+    }
+
+    function formatDate($date){
+	$date_array = explode(" ", trim($date));
+        if(count($date_array)==2){
+            $date = $this->parseSemDate($date_array);
+        }
+        else if(count($date_array)==1){
 	     if($date == "00/00"){
 		return "0000-00-00 00:00:00";
 	     }
@@ -102,28 +121,87 @@ class ImportGradDbAPI extends API{
         return false;
     }
 
-    function addRelation($supervisors){
+    function addRelation($supervisors, $student){
+	$students = array();
 	foreach($supervisors as $supervisor){
-            if($supervisor['end_date'] == ""){
-                $supervisor['end_date'] = $this->formatDate("00/00");
+            if(!isset($supervisor['end_date']) || $supervisor['end_date'] == ""){
+                $supervisor['end_date'] = "00/00";
             }
-	    return $supervisor['end_date'];
-	    $supervisor = $this->findUser("", $supervisor['name']);
-	    if($supervisor == false){
+	    $supervisor_obj = $this->findUser("", $supervisor['name']);
+	    if($supervisor_obj == false){
 		continue;
 	    }
-	    $type = $supervisor['type'];
-	    if($type == "Supervisor" || $type == "Co-Supervisor"){
+            $type = trim($supervisor['type']);
+	    if(strtolower($type) == "supervisor" || strtolower($type) == "co-supervisor"){
 		$type = "Supervises";
 	    }
-	    $start_date = formatDate($supervisor['start_date']);
-	    $end_date = formatDate($supervisor['end_date']);
+            $start_date = $this->formatDate($supervisor['start_date']);
+            $end_date = $this->formatDate($supervisor['end_date']);
+            //if($graduated != 'Continuing' && $super['end_date'] = ""){
+              //  $end_date = date('Y-m-d h:i:s', time()); //TODO: can't have arbitrary date here.
+	    //}
+            $oldRelation = Relationship::newFromUser1User2TypeStartDate($supervisor_obj->getId(), $student->getId(), $type);
+	    
+	   if($oldRelation->getId() == ""){
+                $newRelation = new Relationship(array());
+                $newRelation->user1 = $supervisor_obj->getId();
+                $newRelation->user2 = $student->getId();
+                $newRelation->type = $type;
+                $newRelation->startDate = $start_date;
+                $newRelation->endDate = $end_date;
+                $status = $newRelation->create();
+		if($status){
+                    DBFunctions::commit();
+		    $students[] = $status;
+		}
+            }
+            continue;
 	}
     }
 
+    function addAwards($title, $student){
+        $awards = $student->getPapers("Awards", false, 'both', true, "Public");
+	$current_date = date('Y-m-d h:i:s', time());
+	foreach($awards as $award){
+            $type = "Misc: ".$title;
+            if($award->type == $type && $award->date == $current_date){
+                return;
+            }
+	}
+        DBFunctions::begin();
+        $status = DBFunctions::insert('grand_products',
+                                     array('category' => 'Awards',
+                                           'type' => "Misc: ".$title,
+                                           'title' =>$student->getRealName(),
+                                           'authors'=>serialize(array($student->id)),
+                                           'date' => $current_date),
+                                     true);
+        if($status){
+            DBFunctions::commit();
+            return $status;
+        }
+        return false;
+    }
+
+    function addResearchArea($student, $researchArea, $startdate){
+        DBFunctions::begin();
+        $start_date = $this->formatDate($startdate);
+        $disc = $student->getDiscipline();
+        $university_info = $student->university;
+          //should do a check to see if exists
+        $status = DBFunctions::update('grand_user_university',
+                                    array('research_area' => $researchArea,
+                                          'start_date' => $start_date),
+                                    array('user_id' => EQ($student->id)));
+        if($status){
+            DBFunctions::commit();
+            return $status;
+        }
+        return false;
+    }
+
     function enterData($students, $person, $flag=false){
-	$names = "";
-	$count =1;
+	$students = array();
 	foreach($students as $info){
 	    $student = Person::newFromUniversityId($info['id']);
             if(!isset($info['email'])){
@@ -138,87 +216,19 @@ class ImportGradDbAPI extends API{
                 $university_info = $person->university;
 		$student = $this->createUser($info,$university_info);
             }
-	    if($count < 5){
-		$count++;
-		continue;
+	    if(isset($info['supervisors']) && count($info['supervisors']) > 0){
+		$students = $this->addRelation($info['supervisors'], $student);
 	    }
-	    if(count($info['supervisors']) > 0){
-		$hi = $this->addRelation($info['supervisors']);
-		return $hi;
+
+	    if(isset($info['awards']) && $info['awards'] != ""){
+		$this->addAwards($info['awards'], $student);
 	    }
-/*
-            foreach($info['supervisors'] as $super){
-                $supervisor = findUser("", $super['name']);
-            	if($supervisor == false){
-                    continue;
-		}
-                $type = $super['type'];
-                if($type == "Supervisor" || $type == "Co-Supervisor"){
-                    $type = "Supervises";
-                }
-                $start_date = formatDate($super['start_date']);
-                $end_date = formatDate($super['end_date']);
-                if(!($supervisor->relatedToDuring($student, $type, $start_date, $end_date))){
-                    if($flag){
-                        $graduated = $info['graduated'];
-                        if($graduated != 'Continuing' && $super['end_date'] = ""){
-                            $end_date = "2015-01-01 00:00:00"; //TODO: can't have arbitrary date here.
-                            $status = addRelation($supervisor, $student, $type, $super['start_date'], $end_date);
-                        }
-                        else{
-                            $status = addRelation($supervisor, $student, $type, $super['start_date'], $super['end_date']);
-                        }
-                        if(!$status){
-                            print_r("couldn't add relation {$student->getRealName()}");
-                        }
-                    }
-                }
-	    }
-            if($flag){
-               //enter awards
-                $status = true;
-                if($info['awards'] != ""){
-                    $awards = $student->getPapers("Awards", false, 'both', true, "Public");
-                    foreach($awards as $award){
-                        //TODO: ACTUALLY CHECK DATE HERE!
-                        $type = "Misc: ".$info['awards'];
-                        if($award->type == $type && $award->date == "2015-01-01"){
-                            $status = false;
-                            break;
-                        }
-                    }
-                    if($status){
-                        //$status = addAwards($student, $info['awards']);
-                        if(!$status){
-                             print_r("couldn't add relation {$student->getRealName()}");
-                        }    
-                    }
-                }
-                //enter moved on
-                if($info['graduated'] != "Continuing"){
-                    if($info['end_date'] == ""){
-                        $end_date = "2015-01-01 00:00:00";
-                        $status = addMovedOn($student, $info['graduated'], $end_date);
-                    }
-                    else{
-                        $status = addMovedOn($student,$info['graduated'],$info['end_date']);
-                    }
-                    if(!$status){
-                        print_r("couldn't add relation {$student->getRealName()}");
-                    }
-                }
-            return;
+
+            if(isset($info['research_area']) && $info['research_area'] != ""){
+                $status = $this->addResearchArea($student, $info['research_area'], $info['start_date']);
             }
-            if(false && $info['research_area'] != ""){
-                //$status = addResearchArea($student, $info['research_area'], $info['start_date']);
-                if(!$status){
-                    print_r("couldn't add research are {$student->getRealName()}");
-                }
-            }
-        }*/
-   $names = $names.",".$info['name'];
         }
-	return $names;                                      
+	return $students;
     }
 	
     function setGradDbInfo($person, $data){
@@ -258,7 +268,67 @@ class ImportGradDbAPI extends API{
             }
             $this->generalInfo[] = $data;
         }
-	return "parsed";
+    }
+
+    function parse($regex, $url){
+        preg_match_all($regex, $url, $Array);
+        return $Array[1][0];
+    }
+
+    function setGradDbExtraInfo($person, $url){
+        $regex = '/option value\=\"(.+?)\"\>/';
+        preg_match_all($regex, $url, $Array);
+        $students = $Array[1];
+        $parsed_array = array();
+        foreach($students as $student){
+	    $data = array();
+	    $site = "https://graddb.cs.ualberta.ca/Prod/login.cgi?";
+	    $site .= "oracle.login=stroulia";
+	    $site .= "&oracle.password=Bella1Alex";
+	    $site .= "2&button=Program%20Summary";
+	    $site .= "&stulist=$student";
+   	    $url = file_get_contents($site);
+    	      //parsing through html
+	    $regex ='/Student Id\: \<\/b\>(.+?)\<br/';
+    	    $data['id'] = trim($this->parse($regex, $url));
+	    $regex = '/\<input type\=\"hidden\" name\=\"name\" value\=\"(.+?)\"/';
+	    $data['name'] = trim($this->parse($regex, $url));
+	    $regex = '/Email\: \<\/th\> \<td\>(.+?)\<\/td\>/';
+    	    $data['email'] = trim($this->parse($regex,$url));
+	    $regex = '/Program\: \<\/b\>(.+?)\</';
+	    $data['program'] = trim($this->parse($regex,$url));
+	    $regex = '/Start Date\: \<\/b\>(.+?)\</';
+    	    $data['start_date'] = trim($this->parse($regex, $url));
+	    $regex = '/Research Area(.+?)\<\/b\>(.+?)\</';
+    	    preg_match_all($regex, $url, $Array);
+	    $data['research_area'] = trim(str_replace("<br />", "", $Array[2][0]));
+    	    $regex = '/Thesis Title\: \<\/b\>(.+?)\</';
+    	    $data['thesis'] = trim(str_replace("<br />", "", $this->parse($regex, $url)));
+    	    $regex = '/End Date\<\/th\>\<\/tr\>(.+?)\<\/table\>/';
+	    $supervisorsArray=array();
+	    $table = $this->parse($regex,$url);
+    	    $regex = '/\<tr\>(.+?)\<\/tr\>/';
+   	    preg_match_all($regex, $table, $row);
+    	    $supervisors = $row[1];
+	    $keys = array('name','type','start_date','end_date');
+	    foreach($supervisors as $supervisor){
+	        $superdata = array();
+	        $i = 0;
+	        $regex = '/\<td\>(.+?)\<\/td\>/';
+                preg_match_all($regex, $supervisor,$infos);
+                $infos = $infos[1];
+	        foreach($infos as $info){
+		    $superdata[$keys[$i]] = trim($info);
+		    $i++;
+	        }
+	        $supervisorsArray[] = $superdata;
+    	    }
+	    $data['supervisors']=$supervisorsArray;
+            $parsed_array[] = $data;
+        }
+        foreach($parsed_array as $student){
+            $this->individualInfo[] = $student;
+        }
     }
 
     function doAction($noEcho=false){
@@ -271,17 +341,24 @@ class ImportGradDbAPI extends API{
             $person = $me;
         }
 	if($_POST['login'] != "" && $_POST['password'] != ""){
+            $error = "";
+            $json = array('created' => array(),
+                          'error' => array());
 	    $msg = $_POST['password'];
-            //$content  = file_get_contents("https://graddb.cs.ualberta.ca/Prod/FECrep.cgi?oracle.login={$_POST['login']}&oracle.password={$_POST['password']}&button=View%20Report");
-	    $content = file_get_contents("http://grand.cs.ualberta.ca/~ruby/index.html");
+            $content  = file_get_contents("https://graddb.cs.ualberta.ca/Prod/FECrep.cgi?oracle.login={$_POST['login']}&oracle.password={$_POST['password']}&button=View%20Report");
 	    $msg = $this->setGradDbInfo($person, $content);
-	    $msg = $this->enterData($this->generalInfo, $person, $true);
+	    $json['students'] = $this->enterData($this->generalInfo, $person, $true);
+	    $extra_content = file_get_contents("https://graddb.cs.ualberta.ca/Prod/login.cgi?oracle.login={$_POST['login']}&oracle.password={$_POST['[password']}");
+	    $msg = $this->setGradDbExtraInfo($person, $extra_content);
+	    $msg = $this->individualInfo[0]['id'];
+            $msg = $this->enterData($this->individualInfo, $person, $true);
+            $obj = json_encode($json);
+
 	    echo <<<EOF
             <html>
                 <head>
                     <script type='text/javascript'>
-                                            parent.ccvUploaded([], "$msg");
-
+                                            parent.ccvUploaded($obj, "$error");
 		    </script>
                 </head>
             </html>
@@ -301,7 +378,6 @@ EOF;
 EOF;
             exit;
         }
-
     }
     
     function isLoginRequired(){

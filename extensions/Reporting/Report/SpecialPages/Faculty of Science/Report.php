@@ -23,9 +23,11 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Reports"] = TabUtils::createTab("My Annual Report");
-        $tabs["Recommendations"] = TabUtils::createTab("Recommendations");
-	$tabs["FosStats"] = TabUtils::createTab("FOS Stats");
+        if($wgUser->isLoggedIn()){
+            $tabs["Reports"] = TabUtils::createTab("My Annual Report");
+            $tabs["Recommendations"] = TabUtils::createTab("Recommendations");
+	    $tabs["FosStats"] = TabUtils::createTab("FOS Stats");
+	}
         return true;
     }
     

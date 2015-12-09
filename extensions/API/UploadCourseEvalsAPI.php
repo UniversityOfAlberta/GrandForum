@@ -95,6 +95,7 @@
 	}
 
 	function createEvalInfo($person, $evaluations){
+	    $courses = array();
 	    foreach($evaluations as $evaluation){
         	//$person = Person::newFromNameLike($course['user']);
 		$userCourses = $person->getCourses();
@@ -121,19 +122,28 @@
 		    }
 		}
 		if(!$found){
-		    DBFunctions::insert('grand_user_courses',
+		    $status = DBFunctions::insert('grand_user_courses',
 					array('course_id' => $course->getId(),
 					      'user_id' => $person->getId()),
 					true);
+		    if($status){
+			DBFunctions::commit();
+			$courses[] = $status;
+		    }
+		    continue;
 		}
-                DBFunctions::update('grand_user_courses',
+                $status = DBFunctions::update('grand_user_courses',
                                       array('course_evals' => serialize($evaluation)),
                                         array('course_id' => EQ($course->getId()),
                                               'user_id' => EQ($person->getId())),
                                         array(),
                                         true);
+		if($status){
+		    DBFunctions::commit();
+		    $courses[] = $status;
+		}
 	    }
-	    return $evaluation['subject'];
+	    return $courses;
 	}
 
 	function doAction($noEcho=false){
@@ -148,16 +158,21 @@
 	    $eval_file = $_FILES['eval'];
 	    if($eval_file['type'] == 'text/html' &&
 	        $eval_file['size'] > 0){
+	        $error = "";
+            	$json = array('created' => array(),
+                          'error' => array());
 		$file_contents = file_get_contents($eval_file['tmp_name']);
 		$this->setEvalInfo($file_contents);
-		if(count($this->evals)){
-		    $hi = $this->createEvalInfo($person, $this->evals);
+		if(count($this->evals)>0){
+		    $json['courses'] = $this->createEvalInfo($person, $this->evals);
 		}
+                $obj = json_encode($json);
+
 		echo <<<EOF
             	<html>
                     <head>
                     	<script type='text/javascript'>
-                                            parent.ccvUploaded([], "$hi");
+                                            parent.ccvUploaded($obj, "$error");
                     	</script>
                     </head>
             	</html>

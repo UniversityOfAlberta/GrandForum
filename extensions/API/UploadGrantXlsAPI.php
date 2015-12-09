@@ -79,6 +79,7 @@
 	}
 
 	function createGrantInfo($person, $grants){
+	    $success = array();
 	    foreach($grants as $grant){
 		$grant['Award Begin Date'] = $this->formatDate($grant['Award Begin Date']);		
 		$grant['Award End Date'] = $this->formatDate($grant['Award End Date']);
@@ -101,9 +102,13 @@
 		$contribution->cash = array("$id"=>str_replace(array(',','$','.'), "", $grant['Total Award']));
 		$contribution->kind = array("$id"=>0);
 		$contribution->unknown = array("$id"=>0);
-		$contribution->create();
+		$status = $contribution->create();
+		if($status){
+		    DBFunctions::commit();
+		    $success[] = $status;
+		}
 	    }
-	   return "YES";
+	   return $success;
 	}
 
 	function checkXlsFile($xls){
@@ -149,27 +154,33 @@
 	    }
 	    $xls = $_FILES['grant'];
 	    $xls2 = $_FILES['grant2'];
-	    $hi = "nope";
 	    if((isset($xls['type']) && isset($xls2['type'])) &&
 	        $xls['type'] == "application/vnd.ms-excel" &&
                 $xls2['type'] == "application/vnd.ms-excel" &&
 	        $xls['size'] > 0 &&
 	        $xls2['size'] > 0){
+                $error = "";
+                $json = array('created' => array(),
+                          'error' => array());
 		if($this->checkXlsFile($xls)){
 		    $xls = $_FILES['grant2'];
 		    $xls2 = $_FILES['grant'];
 		}
                 $xls_content = explode("\n", file_get_contents($xls['tmp_name']));
 		$xls2_content = explode("\n", file_get_contents($xls2['tmp_name']));
-		$hi = $this->setGrantInfo($xls_content, $xls2_content);
+		$this->setGrantInfo($xls_content, $xls2_content);
 		if(count($this->grants) >0){
-		    $hi = $this->createGrantInfo($person, $this->grants);
+		    $funding = $this->grants;
+		    $json['funding'] = $this->createGrantInfo($person, $this->grants);
+		    $json['fundingFail'] = count($funding) - count($json['funding']);
 		}
+                $obj = json_encode($json);
+
 		echo <<<EOF
             	<html>
                     <head>
                     	<script type='text/javascript'>
-                                            parent.ccvUploaded([], "$hi");
+                                            parent.ccvUploaded($obj, "$error");
                     	</script>
                     </head>
             	</html>

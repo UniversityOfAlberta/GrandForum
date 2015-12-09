@@ -274,7 +274,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created, acceptance_date, acceptance_ratio_denominator, acceptance_ratio_numerator
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created, acceptance_date, acceptance_ratio_denominator, ratio, acceptance_ratio_numerator
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
