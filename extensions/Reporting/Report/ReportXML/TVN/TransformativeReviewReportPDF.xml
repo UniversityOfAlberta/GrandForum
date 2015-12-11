@@ -161,7 +161,7 @@
             </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>A. Scientific Excellence (External)</h4>
+                    <h4>A. Scientific Excellence (External/ISAC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>
@@ -286,7 +286,7 @@
             </ReportItem>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>B. Project Feasibility (External)</h4>
+                    <h4>B. Project Feasibility (External/ISAC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>

@@ -850,14 +850,6 @@ class ReportItemCallback {
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
-            if(!($role->getRole() == NI ||
-                 $role->getRole() == AR ||
-                 $role->getRole() == CI ||
-                 $role->getRole() == HQP ||
-                 $role->getRole() == EXTERNAL ||
-                 $role->getRole() == CHAMP)){
-                continue;  
-            }
             if($project != null && $project->getId() != 0){
                 if($role->hasProject($project)){
                     $roleNames[$role->getRole()] = $role->getRole();

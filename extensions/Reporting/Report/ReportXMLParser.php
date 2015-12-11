@@ -268,6 +268,9 @@ class ReportXMLParser {
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }
+            if(isset($attributes->year)){
+                $this->report->year = "{$attributes->year}";
+            }
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }

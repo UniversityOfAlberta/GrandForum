@@ -371,7 +371,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>A. Scientific Excellence (External)</h3>
+                        <h3>A. Scientific Excellence (External/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table1ex">
                             <thead>
                                 <tr>
@@ -503,7 +503,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>B. Project Feasibility (External)</h3>
+                        <h3>B. Project Feasibility (External/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table2ex">
                             <thead>
                                 <tr>
@@ -929,7 +929,7 @@
     <ReportSection id="trans_review_summary" name="Transformative Summary" tooltip="Transformative Summary" type="ReportSection">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>A. Scientific Excellence (External)</h3>
+                <h3>A. Scientific Excellence (External/ISAC)</h3>
                 <table class='wikitable' id="eval_table1ex">
                     <thead>
                         <tr>
@@ -1071,7 +1071,7 @@
         </ReportItem>
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>B. Project Feasibility (External)</h3>
+                <h3>B. Project Feasibility (External/ISAC)</h3>
                 <table class='wikitable' id="eval_table2ex">
                     <thead>
                         <tr>
@@ -1677,7 +1677,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>A. Scientific Excellence (External)</h3>
+                        <h3>A. Scientific Excellence (External/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table1ex">
                             <thead>
                                 <tr>
@@ -1808,7 +1808,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>B. Project Feasibility (External)</h3>
+                        <h3>B. Project Feasibility (External/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table2ex">
                             <thead>
                                 <tr>
@@ -2224,7 +2224,7 @@
     <ReportSection id="cat_review_summary" name="Catalyst Summary" tooltip="Catalyst Summary" type="ReportSection">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>A. Scientific Excellence (External)</h3>
+                <h3>A. Scientific Excellence (External/ISAC)</h3>
                 <table class='wikitable' id="eval_table1ex">
                     <thead>
                         <tr>
@@ -2366,7 +2366,7 @@
         </ReportItem>
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>B. Project Feasibility (External)</h3>
+                <h3>B. Project Feasibility (External/ISAC)</h3>
                 <table class='wikitable' id="eval_table2ex">
                     <thead>
                         <tr>
