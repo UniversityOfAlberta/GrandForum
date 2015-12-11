@@ -9,8 +9,7 @@ class MultiBudget {
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if($data == null || $data == ""){
-            echo "No data uploaded for {$project->getNameForForms()}\n";
-            continue;
+            return;
         }
         $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
         if ($tmpn === false) {
