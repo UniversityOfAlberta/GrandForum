@@ -102,8 +102,8 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $projects = Project::getAllProjectsDuring('0000','9999', true);
                 foreach($projects as $project){
-                    $pName = unaccentChars($project->getName());
-                    $pFullName = unaccentChars($project->getFullName());
+                    $pName = unaccentChars(str_replace(".", " ", $project->getName()));
+                    $pFullName = unaccentChars(str_replace(".", " ", $project->getFullName()));
                     $names = array_merge(explode(" ", unaccentChars($pName)),
                                          explode(" ", unaccentChars($pFullName)));
                     $found = true;
