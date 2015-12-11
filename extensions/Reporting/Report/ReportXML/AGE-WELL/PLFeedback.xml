@@ -371,7 +371,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cc3" tooltip="CC3 Feedback" name="CC3 Feedback" blobSection="SEC_NONE" type="ReportSection">
-        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-31 01:01:01" end="9999">
+        <ReportItemSet id="if" type="DateReportItemSet" start="2015-12-01 01:01:01" end="9999">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <table class='wikitable'>
@@ -426,7 +426,7 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-31 00:00:00">
+        <ReportItemSet id="else" type="DateReportItemSet" start="0000" end="2015-12-01 00:00:00">
             <ReportItem id="table" type="StaticReportItem">
                 <![CDATA[
                     <i>CC Leader Feedback will be made available at a later point in time.</i>
