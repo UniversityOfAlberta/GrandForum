@@ -1197,6 +1197,12 @@ td.budgetError {
     background: #FEB8B8;
 }
 
+.multiBudget {
+    overflow-x: auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
 /* jQuery dialogs */
 .ui-dialog{
     border: 1px solid #ccc;

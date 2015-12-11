@@ -19,7 +19,7 @@ class MoneyCell extends Cell{
             }
             else{
                 $value = $cellValue;
-                $this->error = "&#39;$cellValue&#39; is not a valid money value.";
+                //$this->error = "&#39;$cellValue&#39; is not a valid money value.";
             }
         }
         $this->value = $value;

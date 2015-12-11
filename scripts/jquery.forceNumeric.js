@@ -6,6 +6,9 @@ jQuery.fn.forceNumeric = function (options) {
                 return;
             }
             $(target).val(Math.min(options.max, $(target).val().replace(/,/g, '')));
+            if(options.includeCommas == true){
+                $(target).val($(target).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            }
         }
         
         var validateMin = function(target){
@@ -13,6 +16,9 @@ jQuery.fn.forceNumeric = function (options) {
                 return;
             }
             $(target).val(Math.max(options.min, $(target).val().replace(/,/g, '')));
+            if(options.includeCommas == true){
+                $(target).val($(target).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            }
         }
         
         if(options.max != undefined && options.max != ""){
@@ -27,7 +33,7 @@ jQuery.fn.forceNumeric = function (options) {
             });
             validateMin(this);
         }
-        if(!(/^[0-9]+$/.test($(this).val()))){
+        if(!(/^[0-9,]+$/.test($(this).val()))){
             $(this).val("");
         }
         $(this).keydown(function (e) {

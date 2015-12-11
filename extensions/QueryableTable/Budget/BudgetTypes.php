@@ -48,6 +48,7 @@ define('REPORT2_STRUCTURE', 3);
 define('GLYCONET_BUDGET_STRUCTURE', 4);
 define('AGEWELL_BUDGET_STRUCTURE', 5);
 define('TVN_BUDGET_STRUCTURE', 6);
+define('AGEWELL_NI_BUDGET_STRUCTURE', 7);
 
 $budgetStructures = array();
 
@@ -130,7 +131,34 @@ $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  READ,       COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
+          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
+          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(READ,       NA,         NA,         NA,         NA,         NA,         NA,         NA)
+    );
+    
+$budgetStructures[AGEWELL_NI_BUDGET_STRUCTURE] =
+    array(array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD_ROW.'(Project Investigator)',  NA,         V_PERS_NOT_NULL,        NA,         NA,         NA,         NA),
+          array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD_ROW.'(University)',            NA,         READ,       NA,         NA,         NA,         NA),
+          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      HEAD_ROW,   NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD_ROW,   HEAD_ROW,   NA,         NA,         HEAD_ROW,   NA,         NA,         HEAD_ROW),
+          array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,   NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
           array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
           array(READ,       NA,         NA,         NA,         NA,         NA,         NA,         NA)
     );

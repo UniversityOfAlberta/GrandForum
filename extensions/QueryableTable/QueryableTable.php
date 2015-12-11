@@ -537,7 +537,7 @@ abstract class QueryableTable {
     
     // Shows the errors which arose during readCells()
 	function showErrors(){
-	    $ret = "<ul class='pdfnodisplay'>";
+	    $ret = "<div class='pdfnodisplay'>";
 	    if ($this->status()){
 			if (!$this->isError()) {
 				// All OK.
@@ -545,8 +545,7 @@ abstract class QueryableTable {
 					"Please verify that the budget preview below is correct. If not, please contact support.</li>";*/
 			}
 			else {
-				$ret .= "<li>Please verify that the budget preview below is correct. If not, please contact support.<br />
-				             The following errors were found in your budget:</li><div class='error'>\n";
+				$ret .= "<div class='error'>\n";
 				$ret .= $this->showErrorsSimple();
 				$ret .= "</div>\n";
 			}
@@ -554,7 +553,7 @@ abstract class QueryableTable {
 		else {
 			$ret .= "<div class='error'>The spreadsheet could not be read by the system.</div>";
 		}
-		$ret .= "</ul>\n";
+		$ret .= "</div>\n";
 		
 		return $ret;
 	}
