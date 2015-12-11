@@ -57,7 +57,7 @@ class ImportBibTeXAPI extends API{
            !isset($paper['author'])){
             return null;  
         }
-        $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
+        $checkBibProduct = Product::newFromBibTeXId($bibtex_id, $paper['title']);
         $checkProduct = Product::newFromTitle($paper['title']);
         if($checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered

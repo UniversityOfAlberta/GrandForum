@@ -16,7 +16,7 @@ class ImportDOIAPI extends API{
 	        $_POST['doi'] = preg_replace("/\\s/", "", $_POST['doi']);
 	        $url = "http://dx.doi.org/{$_POST['doi']}";
 	        $ch = curl_init();
-	        $headers = array("Accept: text/bibliography; style=bibtex");
+	        $headers = array("Accept: application/x-bibtex");
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 

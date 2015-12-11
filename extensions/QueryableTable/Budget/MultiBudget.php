@@ -9,17 +9,15 @@ class MultiBudget {
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if($data == null || $data == ""){
-            return;
+            return false;
         }
         $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
         if ($tmpn === false) {
             // Failed to reserve a temporary file.
-            echo "Could not reserve temp file.";
             return false;
         }
         $tmpf = fopen($tmpn, 'w');
         if ($tmpf === false) {
-            echo "Could not create temp file.";
             // TODO: log?
             unlink($tmpn);
             return false;
@@ -28,7 +26,6 @@ class MultiBudget {
         if (fwrite($tmpf, $data) === false) {
             // TODO: log?
             // Error writing to temporary file.
-            echo "Could not write to temp file.";
             fclose($tmpf);
             unlink($tmpn);
             return false;

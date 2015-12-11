@@ -82,9 +82,10 @@ class Paper extends BackboneModel{
     /**
      * Returns a new Paper from the given bibtex_id
      * @param integer $bibtex_id The id of the Paper
+     * @param string $title The optional title for string comparison
      * @return Paper The Paper with the given bibtex_id
      */
-    static function newFromBibTeXId($bibtex_id){
+    static function newFromBibTeXId($bibtex_id, $title=""){
         if(isset(self::$cache[$bibtex_id])){
             return self::$cache[$bibtex_id];
         }
@@ -96,6 +97,19 @@ class Paper extends BackboneModel{
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         $data = DBFunctions::execSQL($sql);
+        if($title != ""){
+            $newData = array();
+            // Check the title.  It should be at least 80% similar
+            foreach($data as $row){
+                $percent = 0;
+                similar_text(unaccentChars($title), unaccentChars($row['title']), $percent);
+                if($percent >= 80){
+                    $newData[] = $row;
+                    break;
+                }
+            }
+            $data = $newData;
+        }
         $paper = new Paper($data);
         self::$cache[$paper->id] = &$paper;
         self::$cache[$paper->title] = &$paper;
