@@ -202,6 +202,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $result = $blb->load($addr);
                 $carryOver = $blb->getData();
                 
+                if($allocation == ""){
+                    $alloc = "TBA";
+                }
+                else {
+                    $alloc = "\$".number_format($allocation);
+                }
+                
                 if($edit){
                     if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
@@ -212,19 +219,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     }
                     else{
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
-                                        \${$allocation}<br />";
+                                        {$alloc}<br />";
                     }
                     $this->html .= "<h3>Upload Budget</h3>
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
                 
                 if(!$edit){
-                    if($allocation == ""){
-                        $alloc = "TBA";
-                    }
-                    else {
-                        $alloc = "\$".number_format($allocation);
-                    }
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
                     $multiBudget = new MultiBudget(array($structure, $niStructure), $xls);
