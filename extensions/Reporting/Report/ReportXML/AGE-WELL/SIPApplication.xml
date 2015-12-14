@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" ajax="true" disabled="false">
+<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" pdfType="RPTP_SIP" pdfFiles="SIPApplicationPDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
             <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI-Candidate">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
             <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description">
@@ -267,5 +271,18 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review_header" type="StaticReportItem">
+            <![CDATA[ 
+                By generating a PDF your application is automatically submitted.<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>
