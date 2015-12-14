@@ -211,7 +211,7 @@ $wgRestrictDisplayTitle = false;
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
 $wgRawHtml = true;
 $wgEnableUploads       = true;
-$wgMaxUploadSize = 1024*1024*20;
+$wgMaxUploadSize = 1024*1024*50;
 ini_set('upload_max_filesize', $wgMaxUploadSize);
 $wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'doc', 'docx', 'xls', 'xlsx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav', 'txt');
 $wgVerifyMimeType = false;
