@@ -210,7 +210,7 @@ class ReportXMLParser {
     }
     
     // Parses the XML document starting at the root
-    function parse(){
+    function parse($quick=false){
         if(isset(self::$parserCache[$this->report->xmlName])){
             $this->parser = self::$parserCache[$this->report->xmlName];
         }
@@ -218,12 +218,12 @@ class ReportXMLParser {
             $this->parser = simplexml_load_string($this->xml);
             self::$parserCache[$this->report->xmlName] = $this->parser;
         }
-        $this->parseReport();
+        $this->parseReport($quick);
         $this->showErrors();
     }
     
     // Parses the <Report> element of the XML
-    function parseReport(){
+    function parseReport($quick=false){
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
@@ -236,7 +236,7 @@ class ReportXMLParser {
                     $exploded = explode("/", $exploded[count($exploded)-2]);
                     $xml = file_get_contents($xmlFileName);
                     $parser = new ReportXMLParser($xml, $this->report);
-                    $parser->parse();
+                    $parser->parse($quick);
                 }
                 else{
                     if($this->report->xmlName == $attributes->extends){
@@ -281,8 +281,10 @@ class ReportXMLParser {
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }
-            if(isset($children->ReportSection)){
-                $this->parseReportSection($children->ReportSection);
+            if(!$quick){
+                if(isset($children->ReportSection)){
+                    $this->parseReportSection($children->ReportSection);
+                }
             }
         }
     }

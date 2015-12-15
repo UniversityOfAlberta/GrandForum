@@ -92,7 +92,7 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
+    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
         global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
@@ -151,7 +151,7 @@ abstract class AbstractReport extends SpecialPage {
                     redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
                 }
             }
-            $parser->parse();
+            $parser->parse($quick);
             if(isset($_GET['saveBackup'])){
                 $parser->saveBackup();
             }
@@ -317,7 +317,7 @@ abstract class AbstractReport extends SpecialPage {
     function getLatestPDF(){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
             return $report->getLatestPDF();
         }
         $sto = new ReportStorage($this->person);

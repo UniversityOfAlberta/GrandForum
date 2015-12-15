@@ -90,7 +90,7 @@ class ReportStatusTable extends SpecialPage{
             </thead>
             <tbody>");
         foreach($people as $person){
-            $report = new DummyReport($rp, $person, null);
+            $report = new DummyReport($rp, $person, null, REPORTING_YEAR, true);
             $generated = "";
             $download = "";
             
@@ -141,7 +141,7 @@ class ReportStatusTable extends SpecialPage{
             if(isset($leaders[0])){
                 $leader = $leaders[0];
                 if(!$leader->isRole(HQP) && $leader->isActive()){
-                    $report = new DummyReport($rp, $leader, $project);
+                    $report = new DummyReport($rp, $leader, $project, REPORTING_YEAR, true);
                     $generated = "";
                     $download = "";
                     
