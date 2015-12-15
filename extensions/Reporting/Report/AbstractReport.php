@@ -573,12 +573,12 @@ abstract class AbstractReport extends SpecialPage {
         $personId = $this->person->getId();
         $projectId = ($this->project != null) ? $this->project->getId() : 0;
         $data = DBFunctions::select(array('grand_report_blobs'),
-                                    array('*'),
+                                    array('COUNT(*)' => 'count'),
                                     array('user_id' => EQ($personId),
                                           'proj_id' => EQ($projectId),
                                           'rp_type' => EQ($this->reportType),
                                           'year' => EQ($this->year)));
-        return (count($data) > 0);
+        return ($data[0]['count'] > 0);
     }
     
     // Checks the permissions of the Person with the required Permissions of the Report
