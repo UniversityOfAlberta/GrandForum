@@ -49,7 +49,7 @@ class CCActivitiesTable extends SpecialPage{
                 continue;
             }
             $wgOut->addHTML("<tr>");
-            $wgOut->addHTML("<td>{$project->getName()}</td>");
+            $wgOut->addHTML("<td style='white-space:nowrap;'>{$project->getName()}</td>");
         
             $combined = new DummyReport(RP_CC_PLANNING, new Person(array()), $project, REPORTING_YEAR, true);
             $cc1 = new DummyReport("CC1PlanningPDF", new Person(array()), $project, REPORTING_YEAR, true);
