@@ -128,7 +128,12 @@ abstract class AbstractReport extends SpecialPage {
             $exploded = explode(".", $xmlFileName);
             $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
-            $xml = file_get_contents($xmlFileName);
+            if(isset(ReportXMLParser::$parserCache[$this->xmlName])){
+                $xml = "";
+            }
+            else{
+                $xml = file_get_contents($xmlFileName);
+            }
             $parser = new ReportXMLParser($xml, $this);
             if(isset($_COOKIE['showSuccess'])){
                 unset($_COOKIE['showSuccess']);
