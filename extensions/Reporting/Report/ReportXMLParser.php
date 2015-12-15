@@ -6,6 +6,7 @@ class ReportXMLParser {
     var $errors;
     var $parser;
     var $report;
+    static $parserCache = array();
     static $files = array();
     static $pdfFiles = array();
     static $fileMap = array();
@@ -210,7 +211,13 @@ class ReportXMLParser {
     
     // Parses the XML document starting at the root
     function parse(){
-        $this->parser = simplexml_load_string($this->xml);
+        if(isset(self::$parserCache[$this->report->xmlName])){
+            $this->parser = self::$parserCache[$this->report->xmlName];
+        }
+        else{
+            $this->parser = simplexml_load_string($this->xml);
+            self::$parserCache[$this->report->xmlName] = $this->parser;
+        }
         $this->parseReport();
         $this->showErrors();
     }
