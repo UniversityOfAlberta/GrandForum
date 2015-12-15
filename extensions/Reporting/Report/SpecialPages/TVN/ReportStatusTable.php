@@ -140,26 +140,28 @@ class ReportStatusTable extends SpecialPage{
             $leaders = array_values($project->getLeaders());
             if(isset($leaders[0])){
                 $leader = $leaders[0];
-                $report = new DummyReport($rp, $leader, $project);
-                $generated = "";
-                $download = "";
-                
-                $started = ($report->hasStarted()) ? "Yes" : "No";
-                if($started == "Yes"){
-                    $check = $report->getLatestPDF();
-                    if(isset($check[0])){
-                        $pdf = PDF::newFromToken($check[0]['token']);
-                        $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
-                        $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                if(!$leader->isRole(HQP)){
+                    $report = new DummyReport($rp, $leader, $project);
+                    $generated = "";
+                    $download = "";
+                    
+                    $started = ($report->hasStarted()) ? "Yes" : "No";
+                    if($started == "Yes"){
+                        $check = $report->getLatestPDF();
+                        if(isset($check[0])){
+                            $pdf = PDF::newFromToken($check[0]['token']);
+                            $generated = time2date($check[0]['timestamp'], 'F j, Y h:i:s');
+                            $download = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                        }
                     }
+                    $wgOut->addHTML("<tr>");
+                    $wgOut->addHTML("<td>{$leader->getFirstName()}</td><td>{$leader->getLastName()}</td><td><a href='mailto:{$leader->getEmail()}'>{$leader->getEmail()}</a></td>");
+                    $wgOut->addHTML("<td>{$project->getName()}</td>");
+                    $wgOut->addHTML("<td align='center'>{$started}</td>");
+                    $wgOut->addHTML("<td style='white-space:nowrap;'>{$generated}</td>");
+                    $wgOut->addHTML("<td align='center'>{$download}</td>");
+                    $wgOut->addHTML("</tr>");
                 }
-                $wgOut->addHTML("<tr>");
-                $wgOut->addHTML("<td>{$leader->getFirstName()}</td><td>{$leader->getLastName()}</td><td><a href='mailto:{$leader->getEmail()}'>{$leader->getEmail()}</a></td>");
-                $wgOut->addHTML("<td>{$project->getName()}</td>");
-                $wgOut->addHTML("<td align='center'>{$started}</td>");
-                $wgOut->addHTML("<td style='white-space:nowrap;'>{$generated}</td>");
-                $wgOut->addHTML("<td align='center'>{$download}</td>");
-                $wgOut->addHTML("</tr>");
             }
         }
         $wgOut->addHTML("</tbody>
