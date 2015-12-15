@@ -140,7 +140,7 @@ class ReportStatusTable extends SpecialPage{
             $leaders = array_values($project->getLeaders());
             if(isset($leaders[0])){
                 $leader = $leaders[0];
-                if(!$leader->isRole(HQP)){
+                if(!$leader->isRole(HQP) && $leader->isActive()){
                     $report = new DummyReport($rp, $leader, $project);
                     $generated = "";
                     $download = "";
