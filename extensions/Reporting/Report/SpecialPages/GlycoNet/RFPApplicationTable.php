@@ -61,7 +61,7 @@ class RFPApplicationTable extends SpecialPage{
             </thead>
             <tbody>");
         foreach($nis as $ni){
-            $report = new DummyReport($rp, $ni);
+            $report = new DummyReport($rp, $ni, null, REPORTING_YEAR, true);
             $check = $report->getLatestPDF();
             if(isset($check[0])){
                 $pdf = PDF::newFromToken($check[0]['token']);
