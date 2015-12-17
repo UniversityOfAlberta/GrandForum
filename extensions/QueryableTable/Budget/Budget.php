@@ -212,7 +212,7 @@ class Budget extends QueryableTable{
                     if(ord($maxCol) < $colN + 1){
                         break;
                     }
-                    $origCellValue = $cells[$rowN][$colN];
+                    $origCellValue = @$cells[$rowN][$colN];
                     $splitCell = explode("(", $cell);
                     $params = array();
                     $cell = $splitCell[0];

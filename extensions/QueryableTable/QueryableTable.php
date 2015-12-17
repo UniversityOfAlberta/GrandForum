@@ -504,13 +504,18 @@ abstract class QueryableTable {
     
     function isError(){
         $isError = (count($this->errors) > 0);
-        foreach($this->xls as $rowN => $row){
-		    foreach($row as $colN => $cell){
-		        if($cell->error != ""){
-			        $isError = true;
-			        break;
+        if(is_array($this->xls)){
+            foreach($this->xls as $rowN => $row){
+		        foreach($row as $colN => $cell){
+		            if($cell->error != ""){
+			            $isError = true;
+			            break;
+			        }
 			    }
-			}
+		    }
+		}
+		else{
+		    $isError = true;
 		}
 		return $isError;
     }
