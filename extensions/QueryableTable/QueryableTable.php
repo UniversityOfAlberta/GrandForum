@@ -522,19 +522,24 @@ abstract class QueryableTable {
     
     function showErrorsSimple(){
         $ret = "";
-        foreach($this->xls as $rowN => $row){
-		    foreach($row as $colN => $cell){
-		        if($cell->error != ""){
-			        $ret .= "{$cell->error}<br />\n";
+        if(is_array($this->xls)){
+            foreach($this->xls as $rowN => $row){
+		        foreach($row as $colN => $cell){
+		            if($cell->error != ""){
+			            $ret .= "{$cell->error}<br />\n";
+			        }
 			    }
-			}
-		}
-		if(count($this->errors) > 0){
-		    foreach($this->errors as $rowN => $rowErrors){
-		        foreach($rowErrors as $colN => $error){
-		            $ret .= "$error<br />\n";
+		    }
+		    if(count($this->errors) > 0){
+		        foreach($this->errors as $rowN => $rowErrors){
+		            foreach($rowErrors as $colN => $error){
+		                $ret .= "$error<br />\n";
+		            }
 		        }
 		    }
+		}
+		else{
+		    $ret .= "This is not a valid worksheet<br />\n";
 		}
 		$ret = substr($ret, 0, strlen($ret) - strlen("<br />\n"));
 		return $ret;
