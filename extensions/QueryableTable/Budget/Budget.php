@@ -346,9 +346,9 @@ class Budget extends QueryableTable{
             foreach($tab->getElementsByTagName("td") as $td){
                 $td->removeAttribute('width');
                 $td->removeAttribute('nowrap');
-                if(strstr($td->getAttribute('class'), "explicitSpan") === false){
+                /*if(strstr($td->getAttribute('class'), "explicitSpan") === false){
                     $td->setAttribute('colspan', '1');
-                }
+                }*/
                 if(strstr($td->getAttribute('class'), "budgetError") === false && strstr($td->getAttribute('style'), "background") === false){
                     $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
                 }

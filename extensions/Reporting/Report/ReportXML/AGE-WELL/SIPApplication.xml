@@ -239,14 +239,65 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="ReportSection" blobSection="APPENDIX">
-        <ReportItem id="upload" type="Upload" blobType="BLOB_RAW" blobItem="UPLOAD" mimeType="application/vnd.ms-excel">
+    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
             <![CDATA[
-                <h3>(Excel spreadsheet with tabs for Team, Budget, Partner Contributions, Other Funds, Activities, Timelines and Milestones)</h3>
-                <a href='../data/AGE-WELL SIP Appendix.xls'>Download Spreadsheet Template</a>
+                <h2>Team Summary</h2>
                 {$item}
             ]]>
-        </ReportItem> 
+        </ReportItem>
+        <ReportItem id="hqp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP" labels="Name|Institution|Email|Level of Study/Position" types="Text|Text|Text|Text" sizes="150|150|150|" multiple="true">
+            <![CDATA[
+                <h2>Highly Qualified Personnel (HQP)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL Budget.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUSTIFICATION">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" sizes="||||75" blobItem="OTHER_FUNDS" multiple="true">
+            <![CDATA[
+                <h3>Other Funds</h3>
+                <table class='small'>
+                    <tr>
+                        <th style='width:200px;' align='left'>Type of Grant</th>
+                        <th align='left'>Status</th>
+                    </tr>
+                    <tr>
+                        <td valign='top'>
+                            1. Provincial<br />
+                            2. CIHR/NSERC/SSHRC<br />
+                            3. Other Provincial<br />
+                            4. Other Federal<br />
+                            5. International<br />
+                            6. Other AGE-WELL NCE<br />
+                            7. Other non-AGE-WELL<br />
+                        </td>
+                        <td valign='top'>
+                            PA: Pending Approval<br />
+                            GH: Grant Held<br />
+                            E/C: Expired/Completed<br />
+                        </td>
+                    </tr>
+                </table>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
+            <![CDATA[
+                <h2>Milestones</h2>
+                <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
@@ -256,7 +307,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER">
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip">
             <![CDATA[
                 <h3>Partner Letter of Support</h3>
                 <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application.</p>
