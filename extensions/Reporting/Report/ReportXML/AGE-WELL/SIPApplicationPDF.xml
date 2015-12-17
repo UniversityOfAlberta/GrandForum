@@ -157,7 +157,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER">
+        <ReportItem id="letter" type="UploadReportItem" mimeType="application/zip" blobItem="LETTER">
             <![CDATA[
                 <h2>Partner Letter of Support</h2>
                 {$item}
