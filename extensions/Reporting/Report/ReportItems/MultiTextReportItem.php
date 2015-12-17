@@ -321,6 +321,9 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
+                        else if(strtolower(@$types[$j]) == "textarea"){
+                            $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";
+                        }
                         else{
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
