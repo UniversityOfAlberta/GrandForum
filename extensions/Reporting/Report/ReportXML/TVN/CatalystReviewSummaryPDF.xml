@@ -88,7 +88,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;(nAReviewers,0)})}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -190,7 +190,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;(nBReviewers,0)})}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -310,7 +310,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;(nAReviewers,0)})}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -412,7 +412,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;(nBReviewers,0)})}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -526,7 +526,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;(nReviewers,0)})}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
