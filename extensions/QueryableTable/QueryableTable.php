@@ -577,48 +577,50 @@ abstract class QueryableTable {
             if($sortable){
                 $sort = "class='sortable'";
             }
-            $ret[] = "<table id='{$this->id}' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
-            foreach($this->xls as $rowN => $row){
-                $ret[] = "<tr>\n";
-                $i = 0;
-                foreach($row as $colN => $cell){
-                    $class = "";
-                    $errorMsg = "";
-                    $errorMsgEnd = "";
-                    $style = "";
-                    $Cell = $cell;
-                    if($Cell->error != ""){
-                        $class .= " budgetError";
-                        $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
-                        $errorMsgEnd = "</span>";
-                    }
-                    
-                    $cell = $Cell->render();
-                    $style = $Cell->style;
-                    $span = 1;
-                    if(!isset($row[$colN + 1])){
-                        $span = max(1, $this->nCols() - $colN);
-                    }
-                    $span = 1;
-                    for($i=$colN+1; $i < $this->nCols(); $i++){
-                        $c = $this->structure[$rowN][$i];
-                        if($c == NA){
-                            $span++;
+            if(is_array($this->xls)){
+                $ret[] = "<table id='{$this->id}' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
+                foreach($this->xls as $rowN => $row){
+                    $ret[] = "<tr>\n";
+                    $i = 0;
+                    foreach($row as $colN => $cell){
+                        $class = "";
+                        $errorMsg = "";
+                        $errorMsgEnd = "";
+                        $style = "";
+                        $Cell = $cell;
+                        if($Cell->error != ""){
+                            $class .= " budgetError";
+                            $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
+                            $errorMsgEnd = "</span>";
                         }
-                        else{
-                            break;
+                        
+                        $cell = $Cell->render();
+                        $style = $Cell->style;
+                        $span = 1;
+                        if(!isset($row[$colN + 1])){
+                            $span = max(1, $this->nCols() - $colN);
                         }
+                        $span = 1;
+                        for($i=$colN+1; $i < $this->nCols(); $i++){
+                            $c = $this->structure[$rowN][$i];
+                            if($c == NA){
+                                $span++;
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                        if($Cell->span != null){
+                            $span = $Cell->span;
+                            $class .= " explicitSpan";
+                        }
+                        $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                        ++$i;
                     }
-                    if($Cell->span != null){
-                        $span = $Cell->span;
-                        $class .= " explicitSpan";
-                    }
-                    $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
-                    ++$i;
+                    $ret[] = "</tr>\n";
                 }
-                $ret[] = "</tr>\n";
+                $ret[] = "</table>\n";
             }
-            $ret[] = "</table>\n";
         }
         return implode("", $ret);
 	}
