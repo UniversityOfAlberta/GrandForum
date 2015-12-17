@@ -158,6 +158,7 @@
         </ReportItem>
         <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL Budget.xlsx">
             <![CDATA[
+                <h2>Budget</h2>
                 {$item}
             ]]>
         </ReportItem>
