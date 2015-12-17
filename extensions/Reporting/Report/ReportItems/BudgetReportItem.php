@@ -92,7 +92,7 @@ class BudgetReportItem extends AbstractReportItem {
 	            if($structure == REPORT2_STRUCTURE){
 	                $budget = $this->colorBudget($budget);
 	            }
-		        $wgOut->addHTML($budget->renderForPDF());
+		        $wgOut->addHTML("<div class='small'>{$budget->renderForPDF()}</small>");
 		    }
 		    else{
 		        $wgOut->addHTML("You have not yet uploaded a ".strtolower($budgetText));

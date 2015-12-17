@@ -131,9 +131,7 @@ $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
-          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
-          array(READ,       NA,         NA,         NA,         NA,         NA,         NA,         NA)
+          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM)
     );
     
 $budgetStructures[AGEWELL_NI_BUDGET_STRUCTURE] =
@@ -158,9 +156,7 @@ $budgetStructures[AGEWELL_NI_BUDGET_STRUCTURE] =
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM),
-          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA),
-          array(READ,       NA,         NA,         NA,         NA,         NA,         NA,         NA)
+          array(HEAD1_ROW,  READ,       COL_SUM,    COL_TOTAL,  COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM)
     );
     
 $budgetStructures[TVN_BUDGET_STRUCTURE] =
