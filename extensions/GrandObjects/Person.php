@@ -779,7 +779,7 @@ class Person extends BackboneModel {
             }
             $roles[] = array('id' => '',
                              'role' => $role,
-                             'title' => $project->getAcronym());
+                             'title' => $project->getName());
         }
         foreach($this->getLeadThemes() as $theme){
             $roles[] = array('id' => '',
