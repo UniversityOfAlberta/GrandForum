@@ -784,12 +784,12 @@ class Person extends BackboneModel {
         foreach($this->getLeadThemes() as $theme){
             $roles[] = array('id' => '',
                              'role' => TL,
-                             'title' => $theme->getName());
+                             'title' => $theme->getAcronym());
         }
         foreach($this->getCoordThemes() as $theme){
             $roles[] = array('id' => '',
                              'role' => TC,
-                             'title' => $theme->getName());
+                             'title' => $theme->getAcronym());
         }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
