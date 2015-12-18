@@ -222,6 +222,7 @@ class Budget extends QueryableTable{
                     //$origCellValue = utf8_encode($origCellValue);
                     //$origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
                     $origCellValue = preg_replace('/\s\s+/', ' ', $origCellValue);
+                    $origCellValue = trim($origCellValue);
                     $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
                     if(!($cellValue instanceof NACell)){
                         $this->xls[$rowN][$colN] = $cellValue;
