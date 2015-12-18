@@ -31,7 +31,7 @@ class Report extends AbstractReport{
         $tabs["Feedback"] = TabUtils::createTab("My Feedback");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         $tabs["Plans"] = TabUtils::createTab("My CC Activity Plans");
-        $tabs["Applications"] = TabUtils::createTab("HQP Application");
+        $tabs["Applications"] = TabUtils::createTab("My Applications");
         return true;
     }
     
@@ -48,6 +48,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReviewFeedback")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Project Review (Feedback)", "{$url}ProjectReviewFeedback", $selected);
         }
+        /*if($person->isRole(NI) || $person->isRole(NI.'-Candidate')){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Application", "{$url}SIPApplication", $selected);
+        }*/
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
             $projects = array();
             foreach($person->leadership() as $project){
