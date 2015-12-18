@@ -219,8 +219,8 @@ class Budget extends QueryableTable{
                     if(count($splitCell) > 1){
                         $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
                     }
-                    $origCellValue = utf8_encode($origCellValue);
-                    $origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
+                    //$origCellValue = utf8_encode($origCellValue);
+                    //$origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
                     $origCellValue = preg_replace('/\s\s+/', ' ', $origCellValue);
                     $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
                     if(!($cellValue instanceof NACell)){
