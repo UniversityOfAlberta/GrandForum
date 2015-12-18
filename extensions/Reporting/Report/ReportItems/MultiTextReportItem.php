@@ -162,7 +162,16 @@ EOF;
             foreach($labels as $j => $label){
                 $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
             }
-            $item .= "<th style='width:51px;'></th></tr>";
+            if($multiple){
+                $item .= "<th style='width:51px;'></th></tr>";
+            }
+        }
+        if(!$multiple){
+            foreach($indices as $j => $index){
+                if(!isset($values[0][$index])){
+                    $values[0][$index] = "";
+                }
+            } 
         }
         $i = 0;
         foreach($values as $i => $value){
@@ -210,7 +219,7 @@ EOF;
                         $val = str_replace("'", "&#39;", $value[$index]);
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
                         $fn = "{".$types[$j]."}";
@@ -229,22 +238,22 @@ EOF;
                 $item .= "</tr>";
             }
         }
-        if(!$multiple && count($values) == 0){
+        /*if(!$multiple && count($values) == 0){
             $item .= "<tr class='obj'>";
-            foreach($indices as $index){
-                $item .= "<td><input type='text' name='{$this->getPostId()}[0][$index]' value='' /></td>";
+            foreach($indices as $j => $index){
+                $item .= "<td><input type='text' name='{$this->getPostId()}[0][$index]' style='width:{$sizes[$j]}px;' value='' /></td>";
             }
             $item .= "</tr>";
-        }
+        }*/
         if($multiple){
             $item .= "<tfoot><tr><td colspan='".(count($indices)+1)."'>";
             $item .= "<button id='add_{$this->getPostId()}' onClick='addObj{$this->getPostId()}(max{$this->getPostId()});' type='button'>+</button>";
-            $item .= "<script type='text/javascript'>
-                updateTable{$this->getPostId()}();
-            </script>";
             $item .= "</td></tr></tfoot>";
         }
         $item .= "</table>";
+        $item .= "<script type='text/javascript'>
+                      updateTable{$this->getPostId()}();
+                  </script>";
         $item = $this->processCData($item);
         $wgOut->addHTML("$item");
     }

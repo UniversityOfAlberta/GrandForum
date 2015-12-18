@@ -772,6 +772,25 @@ class Person extends BackboneModel {
                                  'title' => $role->getTitle());
             }
         }
+        foreach($this->leadership() as $project){
+            $role = PL;
+            if($project->getType() == 'Administrative'){
+                $role = APL;
+            }
+            $roles[] = array('id' => '',
+                             'role' => $role,
+                             'title' => $project->getName());
+        }
+        foreach($this->getLeadThemes() as $theme){
+            $roles[] = array('id' => '',
+                             'role' => TL,
+                             'title' => $theme->getName());
+        }
+        foreach($this->getCoordThemes() as $theme){
+            $roles[] = array('id' => '',
+                             'role' => TC,
+                             'title' => $theme->getName());
+        }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),

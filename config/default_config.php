@@ -243,6 +243,7 @@
     $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("CF",         "CF");
+    $config->setConst("NMO",        "NMO");
     $config->setConst("BOD",        "BOD");
     $config->setConst("BODC",       "BOD Chair");
     $config->setConst("CHAMP",      "Champion");
@@ -280,6 +281,7 @@
         $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('CF')             => "Core Facillity",
+        $config->getConst('NMO')            => "Network Management Office",
         $config->getConst('BOD')            => "Board of Directors",
         $config->getConst('BODC')           => "Board of Directors Chair",
         $config->getConst('ASD')            => "Associate Scientific Director",
