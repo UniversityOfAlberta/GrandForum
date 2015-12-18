@@ -165,7 +165,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = max(substr($phaseDates[1], 0, 4), substr($project->getCreated(), 0, 4));
             
-            for($i=$endYear; $i >= $startYear; $i--){
+            for($i=$endYear+1; $i >= $startYear; $i--){
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
                 // Budget
