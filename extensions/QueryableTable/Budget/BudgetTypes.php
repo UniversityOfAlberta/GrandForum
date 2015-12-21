@@ -124,6 +124,7 @@ $budgetStructures[TECH_WORKSHOP_STRUCTURE] =
           array(HEAD4,      MONEY,      READ,       NA,         NA),
           array(HEAD4,      MONEY,      READ,       NA,         NA),
           array(HEAD4,      MONEY,      READ,       NA,         NA),
+          array(HEAD4,      MONEY,      READ,       NA,         NA),
           array(HEAD1_ROW,  HEAD1_ROW,  NA,         NA,         NA),
           array(HEAD4,      READ,       READ,       READ,       READ),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
