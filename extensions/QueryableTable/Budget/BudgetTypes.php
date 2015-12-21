@@ -116,7 +116,7 @@ $budgetStructures[TECH_WORKSHOP_STRUCTURE] =
           array(HEAD4,      READ,       NA,         NA,         NA),
           array(HEAD4,      READ,       NA,         NA,         NA),
           array(HEAD4,      READ,       NA,         NA,         NA),
-          array(BLANK,      NA,         NA,         NA,         NA),
+          array(HEAD."(&nbsp;)",        NA,         NA,         NA,         NA),
           array(HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  NA,         NA),
           array(HEAD4,      MONEY,      READ,       NA,         NA),
           array(HEAD4,      MONEY,      READ,       NA,         NA),
@@ -131,7 +131,7 @@ $budgetStructures[TECH_WORKSHOP_STRUCTURE] =
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW),
+          array(HEAD1_ROW."(&nbsp;)",   HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW),
           array(HEAD4,      COL_TOTAL,  BLANK,      NA,         NA));
     
 $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
