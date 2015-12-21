@@ -594,7 +594,7 @@ abstract class QueryableTable {
                             $errorMsgEnd = "</span>";
                         }
                         
-                        $cell = $Cell->render();
+                        $cell = nl2br($Cell->render());
                         $style = $Cell->style;
                         $span = 1;
                         if(!isset($row[$colN + 1])){

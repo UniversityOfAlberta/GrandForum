@@ -22,7 +22,7 @@ class Head4Cell extends Cell{
     
     function render(){
         $this->style = "text-align: right;";
-        return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$this->value}";
+        return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{$this->value}</b>";
     }
 }
 

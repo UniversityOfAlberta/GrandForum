@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" pdfFiles="" ajax="true" disabled="false">
+<Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" pdfFiles="TechnologyWorkshopPDF" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
-
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
@@ -74,7 +77,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="offered_desc" type="Textarea" blobItem="OFFERED_DESC" rich="true">
+        <ReportItem id="offered_desc" type="Textarea" blobItem="OFFERED_DESC" rich="true" optional="true">
             <![CDATA[
                 <p>If so, briefly describe the context of the previous workshop:</p>
                 {$item}
@@ -108,10 +111,16 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="graphical" type="Upload" blobItem="GRAPHICAL" mimeType="application/pdf">
+        <ReportItem id="graphical" type="Upload" blobItem="GRAPHICAL" fileSize="2" mimeType="application/pdf">
             <![CDATA[
                 <h3>Graphical Abstract</h3>
                 <p>A single image; to be used for advertising, as a PDF</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="BUDGET" structure="TECH_WORKSHOP_STRUCTURE" template="TechWorkshop.xlsx">
+            <![CDATA[
+                <h3>Budget</h3>
                 {$item}
             ]]>
         </ReportItem>
