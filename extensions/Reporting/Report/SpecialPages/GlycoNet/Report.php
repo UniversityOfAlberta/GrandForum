@@ -110,6 +110,8 @@ class Report extends AbstractReport{
             }
         }
         if($person->isRole(NI)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TechnologyWorkshop")) ? "selected" : false;
+            $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Tech Workshop", "{$url}TechnologyWorkshop", $selected);
             $data = DBFunctions::select(array('grand_report_blobs'),
                                         array('*'),
                                         array('rp_type'     => EQ('RP_HQP_SUMMER'),
