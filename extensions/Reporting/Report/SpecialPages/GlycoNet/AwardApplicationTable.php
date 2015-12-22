@@ -1,22 +1,22 @@
 <?php
 
 $dir = dirname(__FILE__) . '/';
-$wgSpecialPages['HQPApplicationTable'] = 'HQPApplicationTable'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['HQPApplicationTable'] = $dir . 'HQPApplicationTable.i18n.php';
-$wgSpecialPageGroups['HQPApplicationTable'] = 'network-tools';
+$wgSpecialPages['AwardApplicationTable'] = 'AwardApplicationTable'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['AwardApplicationTable'] = $dir . 'AwardApplicationTable.i18n.php';
+$wgSpecialPageGroups['AwardApplicationTable'] = 'network-tools';
 
-$wgHooks['SubLevelTabs'][] = 'HQPApplicationTable::createSubTabs';
+$wgHooks['SubLevelTabs'][] = 'AwardApplicationTable::createSubTabs';
 
 autoload_register('Reporting/Report/SpecialPages/GlycoNet/ApplicationTabs');
 
-function runHQPApplicationTable($par) {
-    HQPApplicationTable::execute($par);
+function runAwardApplicationTable($par) {
+    AwardApplicationTable::execute($par);
 }
 
-class HQPApplicationTable extends SpecialPage{
+class AwardApplicationTable extends SpecialPage{
 
-    function HQPApplicationTable() {
-        SpecialPage::__construct("HQPApplicationTable", null, false, 'runHQPApplicationTable');
+    function AwardApplicationTable() {
+        SpecialPage::__construct("AwardApplicationTable", null, false, 'runAwardApplicationTable');
     }
     
     function userCanExecute($user){
@@ -26,19 +26,21 @@ class HQPApplicationTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
-        HQPApplicationTable::generateHTML($wgOut);
+        AwardApplicationTable::generateHTML($wgOut);
     }
     
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
         $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
+        $ni = Person::getAllPeople(NI);
         
         $tabbedPage = new TabbedPage("person");
 
         $tabbedPage->addTab(new CandidatesTab());
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni));
         $tabbedPage->showPage();
     }
     
@@ -47,8 +49,8 @@ class HQPApplicationTable extends SpecialPage{
         $person = Person::newFromWgUser();
         
         if(self::userCanExecute($wgUser)){
-            $selected = @($wgTitle->getText() == "HQPApplicationTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HQP Applications", "$wgServer$wgScriptPath/index.php/Special:HQPApplicationTable", $selected);
+            $selected = @($wgTitle->getText() == "AwardApplicationTable") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Award Applications", "$wgServer$wgScriptPath/index.php/Special:AwardApplicationTable", $selected);
         }
         return true;
     }
