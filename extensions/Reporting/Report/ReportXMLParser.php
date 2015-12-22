@@ -131,6 +131,7 @@ class ReportXMLParser {
                                   'time'      => $time,
                                   'person_id' => $this->report->person->getId(),
                                   'backup'    => $encrypted));
+        DBFunctions::commit();
         if($download){
             header("Content-type: application/force-download");
             if($this->report->project == null){
