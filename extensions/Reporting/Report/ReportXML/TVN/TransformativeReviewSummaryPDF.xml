@@ -4,22 +4,19 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th style='white-space:nowrap;'>Avg. Q1</th>
-                            <th style='white-space:nowrap;'>Avg. Q2</th>
-                            <th style='white-space:nowrap;'>Avg. Q3</th>
-                            <th style='white-space:nowrap;'>Avg. Q4</th>
-                            <th style='white-space:nowrap;'>Avg. Q5</th>
-                            <th style='white-space:nowrap;'>Avg. Q6</th>
-                            <th style='white-space:nowrap;'>Avg. Q7</th>
-                            <th style='white-space:nowrap;'>Avg. Q8</th>
-                            <th style='white-space:nowrap;'>Avg. Q9</th>
-                            <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th style='white-space:nowrap;'>Avg. Q1</th>
+                        <th style='white-space:nowrap;'>Avg. Q2</th>
+                        <th style='white-space:nowrap;'>Avg. Q3</th>
+                        <th style='white-space:nowrap;'>Avg. Q4</th>
+                        <th style='white-space:nowrap;'>Avg. Q5</th>
+                        <th style='white-space:nowrap;'>Avg. Q6</th>
+                        <th style='white-space:nowrap;'>Avg. Q7</th>
+                        <th style='white-space:nowrap;'>Avg. Q8</th>
+                        <th style='white-space:nowrap;'>Avg. Q9</th>
+                        <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
@@ -133,7 +130,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -142,16 +138,13 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Total (out of 5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
@@ -217,7 +210,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -226,22 +218,19 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th style='white-space:nowrap;'>Avg. Q1</th>
-                            <th style='white-space:nowrap;'>Avg. Q2</th>
-                            <th style='white-space:nowrap;'>Avg. Q3</th>
-                            <th style='white-space:nowrap;'>Avg. Q4</th>
-                            <th style='white-space:nowrap;'>Avg. Q5</th>
-                            <th style='white-space:nowrap;'>Avg. Q6</th>
-                            <th style='white-space:nowrap;'>Avg. Q7</th>
-                            <th style='white-space:nowrap;'>Avg. Q8</th>
-                            <th style='white-space:nowrap;'>Avg. Q9</th>
-                            <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th style='white-space:nowrap;'>Avg. Q1</th>
+                        <th style='white-space:nowrap;'>Avg. Q2</th>
+                        <th style='white-space:nowrap;'>Avg. Q3</th>
+                        <th style='white-space:nowrap;'>Avg. Q4</th>
+                        <th style='white-space:nowrap;'>Avg. Q5</th>
+                        <th style='white-space:nowrap;'>Avg. Q6</th>
+                        <th style='white-space:nowrap;'>Avg. Q7</th>
+                        <th style='white-space:nowrap;'>Avg. Q8</th>
+                        <th style='white-space:nowrap;'>Avg. Q9</th>
+                        <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
@@ -355,7 +344,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -364,16 +352,13 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Total (out of 5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
@@ -439,7 +424,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -448,22 +432,19 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Q4</th>
-                            <th>Avg. Q5</th>
-                            <th>Avg. Q6</th>
-                            <th>Avg. Q7</th>
-                            <th>Avg. Q8</th>
-                            <th>Avg. Q9</th>
-                            <th>Avg. Total (out of 5)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Q4</th>
+                        <th>Avg. Q5</th>
+                        <th>Avg. Q6</th>
+                        <th>Avg. Q7</th>
+                        <th>Avg. Q8</th>
+                        <th>Avg. Q9</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
@@ -577,7 +558,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>

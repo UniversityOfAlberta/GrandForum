@@ -92,7 +92,6 @@ abstract class PDFGenerator {
 "/(&upsih;)/",
 "/(&piv;)/",
 "/(&bull;)/",
-"/(&hellip;)/",
 "/(&prime;)/",
 "/(&Prime;)/",
 "/(&oline;)/",
@@ -173,6 +172,7 @@ abstract class PDFGenerator {
         $str = str_replace("‐", "-", $str);
         $str = str_replace("&lang;", "&#10216;", $str);
         $str = str_replace("&rang;", "&#10217;", $str);
+        $str = str_replace("&hellip;", "...", $str);
         /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
@@ -741,6 +741,7 @@ if ( isset($pdf) ) {
         $html = str_replace("’", '\'', $html);
         $html = str_replace("“", '"', $html);
         $html = str_replace("”", '"', $html);
+        $html = str_replace("…", '...', $html);
         $html = PDFGenerator::replaceSpecial($html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);

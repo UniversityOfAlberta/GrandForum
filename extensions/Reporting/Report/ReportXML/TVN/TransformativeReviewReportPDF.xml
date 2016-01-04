@@ -215,12 +215,6 @@
                             )}
                         </td>
                         </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='10'>
-                            {getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}
-                        </td>
-                        </tr>
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -284,6 +278,14 @@
                     </table><br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
                     <h4>B. Project Feasibility (External/ISAC)</h4>
@@ -314,12 +316,6 @@
                                       {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                  )}
                             )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='4'>
-                            {getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}
                         </td>
                         </tr>
                     ]]>
@@ -355,6 +351,14 @@
                     </table><br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
                     <h4>A. Scientific Excellence (SRC)</h4>
@@ -409,12 +413,6 @@
                                       )}
                                  )}
                             )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='10'>
-                            {getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}
                         </td>
                         </tr>
                     ]]>
@@ -480,7 +478,14 @@
                     </table><br />
                 ]]>
             </ReportItem>
-            
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
                     <h4>B. Project Feasibility (SRC)</h4>
@@ -511,12 +516,6 @@
                                       {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                  )}
                             )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='4'>
-                            {getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}
                         </td>
                         </tr>
                     ]]>
@@ -552,6 +551,14 @@
                     </table><br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="TRANS-SRC" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
                     <h4>RMC Review</h4>
@@ -606,16 +613,6 @@
                                      )}
                                 )}
                             )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='10' valign='top'>
-                            <b>Comments:</b><br />
-                            {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_COMMENTS,0,{$user_id},{$project_id})}
-                            <br />
-                            <b>Suggestions:</b><br />
-                            {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
                         </td>
                         </tr>
                     ]]>
@@ -679,6 +676,19 @@
                             </tr>
                         </tfoot>
                     </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <b>{$user_name}</b>
+                    <small><b>Comments:</b><br />
+                        {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_COMMENTS,0,{$user_id},{$project_id})}
+                        <br />
+                        <b>Suggestions:</b><br />
+                        {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
+                    </small>
                 ]]>
             </ReportItem>
         </ReportItemSet>
