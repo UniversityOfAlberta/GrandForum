@@ -18,7 +18,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description">
+    <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions">
         <ReportItem id="description" type="Static">
             <![CDATA[
                 <h3>Program Description</h3>
@@ -52,12 +52,18 @@
 
                 <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application. For reporting purposes, all partnership activities should be quantified in Part II – Appendix of the application package and supported by a Letter of Support from the partnering organization included in Part III of this application.</p>
 
-                <h3>Application Forms and Process</h3>
-                <p>The SIP application consists of three sections:<br />
+                <h3>Application Instructions</h3>
+                The SIP application consists of three sections:<br />
                 <b>PART 1 - Narrative Application</b> (5 page max, minimum 12 pt font excluding Cover Sheet)<br />
-                <b>PART 2 - Appendix</b> (Excel spreadsheet with tabs for Team, Budget, Partner Contributions, Other Funds, Activities, Timelines and Milestones)<br />
+                <p>Complete sections directly in Forum using the spaces provided. Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
+                <b>PART 2 - Appendix</b> (Team Summary, Budget and Budget Justification, Partner Contributions, Other Funds, Milestones)<br />
+                <p>Complete Team Summary, HQP, Budget Justification and Other Funds directly in Forum using the sections and drop down menus provided.</p>
+                <p>Budget Template and Milestone Templates (Excel) are available in Forum (links in each section).  Download, complete and upload filled documents.  Any partner contributions should be added to the Budget Template and supported by a letter signed by the partner.</p>
+                <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
                 <b>PART 3 - Investigator Bio</b> (2 page max, highlighting relevant experience) and Partner Letter of Support (if applicable)</p>
-                <p style="font-weight:bold;color:#FF0000;">SIP applications will be accepted online through the AGE-WELL Forum Research Portal beginning in early 2016.</p>
+                <p>Upload a brief bio (2 page max., PDF) for the principle investigator.  No specific format/template is required.</p>
+                <p>Upload any letters of support from partners described in Part 2. Submit as PDF(s).</p>
+                <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
 
                 <h3>Submission Deadlines:</h3>
                 <p>Proposals will be accepted quarterly. Deadlines for 2016 are:
