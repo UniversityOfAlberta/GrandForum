@@ -943,7 +943,7 @@
                             <th>Avg. Q7</th>
                             <th>Avg. Q8</th>
                             <th>Avg. Q9</th>
-                            <th>Avg. Total</th>
+                            <th>Avg. Total (scores out of 5)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1079,7 +1079,7 @@
                             <th>Avg. Q1</th>
                             <th>Avg. Q2</th>
                             <th>Avg. Q3</th>
-                            <th>Avg. Total</th>
+                            <th>Avg. Total (scores out of 5)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1173,7 +1173,7 @@
                             <th>Avg. Q7</th>
                             <th>Avg. Q8</th>
                             <th>Avg. Q9</th>
-                            <th>Avg. Total</th>
+                            <th>Avg. Total (scores out of 5)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1309,7 +1309,7 @@
                             <th>Avg. Q1</th>
                             <th>Avg. Q2</th>
                             <th>Avg. Q3</th>
-                            <th>Avg. Total</th>
+                            <th>Avg. Total (scores out of 5)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1403,7 +1403,7 @@
                             <th>Avg. Q7</th>
                             <th>Avg. Q8</th>
                             <th>Avg. Q9</th>
-                            <th>Avg. Total</th>
+                            <th>Avg. Total (scores out of 5)</th>
                         </tr>
                     </thead>
                     <tbody>
