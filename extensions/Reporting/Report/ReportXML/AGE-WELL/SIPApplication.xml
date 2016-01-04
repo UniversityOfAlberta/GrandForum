@@ -56,12 +56,12 @@
                 The SIP application consists of three sections:<br />
                 <b>PART 1 - Narrative Application</b> (5 page max, minimum 12 pt font excluding Cover Sheet)<br />
                 <p>Complete sections directly in Forum using the spaces provided. Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
-                <b>PART 2 - Appendix</b> (Team Summary, Budget and Budget Justification, Partner Contributions, Other Funds, Milestones)<br />
-                <p>Complete Team Summary, HQP, Budget Justification and Other Funds directly in Forum using the sections and drop down menus provided.</p>
-                <p>Budget Template and Milestone Templates (Excel) are available in Forum (links in each section).  Download, complete and upload filled documents.  Any partner contributions should be added to the Budget Template and supported by a letter signed by the partner.</p>
+                <b>PART 2 - Appendix</b> (Team Summary, Budget and Budget Justification, Partner Contributions)<br />
+                <p>Complete Team Summary, HQP and Budget Justification directly in Forum using the sections and drop down menus provided.</p>
+                <p>Budget Template (Excel) are available in Forum (links in each section).  Download, complete and upload filled documents.  Any partner contributions should be added to the Budget Template and supported by a letter signed by the partner.</p>
                 <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
                 <b>PART 3 - Investigator Bio</b> (2 page max, highlighting relevant experience) and Partner Letter of Support (if applicable)</p>
-                <p>Upload a brief bio (2 page max., PDF) for the principle investigator.  No specific format/template is required.</p>
+                <p>Complete bio directly in Forum using the textbox provided.  Provide a brief bio (2 page max) for the principle investigator.  No specific format/template is required.</p>
                 <p>Upload any letters of support from partners described in Part 2. Submit as PDF(s).</p>
                 <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
 
@@ -346,7 +346,7 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" sizes="||||75" blobItem="OTHER_FUNDS" multiple="true">
+        <!--ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" sizes="||||75" blobItem="OTHER_FUNDS" multiple="true">
             <![CDATA[
                 <h3>Other Funds</h3>
                 <table class='small'>
@@ -373,14 +373,14 @@
                 </table>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
+        </ReportItem-->
+        <!--ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 <h2>Milestones</h2>
                 <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
