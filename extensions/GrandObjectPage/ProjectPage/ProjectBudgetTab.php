@@ -258,6 +258,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
+                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
                                         <p>Please provide a detailed justification for each category where a budget request has been made.  Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
