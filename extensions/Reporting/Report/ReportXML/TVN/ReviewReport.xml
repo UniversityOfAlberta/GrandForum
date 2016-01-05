@@ -408,7 +408,7 @@
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
                             <td align='right'>
-                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
                                           {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
@@ -424,7 +424,7 @@
                                                )}
                                           )}
                                      )}
-                                )}
+                                )}, 36)}, 5)}, 1)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -488,7 +488,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nAExReviewers)})},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nAExReviewers)})}, 36}), 5)},1)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -528,11 +528,11 @@
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
                             <td align='right'>
-                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
                                           {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                      )}
-                                )}
+                                )}, 12)}, 5)}, 1)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -566,7 +566,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nBExReviewers)})},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nBExReviewers)})}, 12)}, 5)},1)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -617,7 +617,7 @@
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
                             <td align='right'>
-                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
                                           {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},
                                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
@@ -633,7 +633,7 @@
                                                )}
                                           )}
                                      )}
-                                )}
+                                )}, 36)}, 5)}, 1)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -697,7 +697,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nAReviewers)})},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nAReviewers)})}, 36)}, 5)},1)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -737,11 +737,11 @@
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
                             <td align='right'>
-                                {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
                                           {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                      )}
-                                )}
+                                )}, 12)}, 5)}, 1)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -775,7 +775,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nBReviewers)})},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nBReviewers)})}, 12)}, 5)},1)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -827,7 +827,7 @@
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})}</td>
                             <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})}</td>
                             <td align='right'>
-                                {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},
+                                {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},
                                     {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},
                                          {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},{$project_id})},
                                               {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},
@@ -843,7 +843,7 @@
                                               )}
                                          )}
                                     )}
-                                )}
+                                )}, 36)}, 5)}, 1)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -912,7 +912,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({divide({get(total)},{get(nReviewers)})},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})}, 36)}, 5)},1)}
                                     </th>
                                     <th></th>
                                 </tr>
