@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP2016 Review Report" ajax="true" pdfType="RPTP_IFP_REVIEW_REPORT" disabled="false">
+<Report name="IFP2016 Review Report" ajax="true" pdfType="RPTP_IFP_REVIEW_REPORT" personId="0" disabled="false">
     <ReportSection id="ifp_review" name="IFP Review" tooltip="Review of IFP Proposals" type="ReportSection" pagebreak="false">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
             <ReportItemSet id="pagebreak" type="NotFirst">

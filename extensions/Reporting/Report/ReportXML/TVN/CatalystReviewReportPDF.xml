@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Review Report" ajax="true" pdfType="RPTP_CAT_REVIEW_REPORT" disabled="false">
+<Report name="Catalyst Review Report" ajax="true" personId="0" pdfType="RPTP_CAT_REVIEW_REPORT" disabled="false">
     <ReportSection id="cat_review" name="Catalyst Review" tooltip="Review of Catalyst Proposals" type="ReportSection" pagebreak="false">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
             <ReportItemSet id="pagebreak" type="NotFirst">

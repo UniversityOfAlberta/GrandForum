@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Review Summary" ajax="true" pdfType="RPTP_CAT_REVIEW_SUMMARY" disabled="false">
+<Report name="Catalyst Review Summary" ajax="true" personId="0" pdfType="RPTP_CAT_REVIEW_SUMMARY" disabled="false">
     <ReportSection id="cat_review_summary1" name="A. Scientific Excellence Summary (External/ISAC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
