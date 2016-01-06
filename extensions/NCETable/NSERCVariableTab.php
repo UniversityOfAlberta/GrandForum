@@ -514,7 +514,10 @@ EOF;
                     
                     $lnk_id = "lnk_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_" .$pos. "_" .$gender. "_". $label;
-            
+                    
+                    $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                    $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                                
                     $inner_tbl .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;{$label}</td>";
                     $num_students = count($counts[0]);
                     $student_details = Dashboard::hqpDetails($counts[0]);
@@ -539,6 +542,10 @@ EOF;
                     //Theses
                     $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_thes_" .$pos. "_" .$gender. "_". $label;
+                    
+                    $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                    $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                    
                     $num_theses = count($counts[1]);
                     $theses_details = Dashboard::paperDetails($counts[1]);
                     if($num_theses > 0){
@@ -568,6 +575,10 @@ EOF;
 
                 $lnk_id = "lnk_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_" .$pos. "_" .$gender. "_total";
+                
+                $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                
                 $num_total_nat = count($total_nat[0]);
                 $total_nat_details = Dashboard::hqpDetails($total_nat[0]);
 
@@ -583,6 +594,10 @@ EOF;
             $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
             $lnk_id = "lnk_" .$pos. "_total";
             $div_id = "div_" .$pos. "_total";
+            
+            $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+            $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+            
             $num_total_gen = count($total_gen[0]);
             $total_gen_details = Dashboard::hqpDetails($total_gen[0]);
             if($num_total_gen > 0){
@@ -605,6 +620,10 @@ EOF;
 
             $lnk_id = "lnk_thes_" .$pos. "_total";
             $div_id = "div_thes_" .$pos. "_total";
+            
+            $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+            $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+            
             $num_total_gen_thes = count($total_gen[1]);
             $total_gen_thes_details = Dashboard::paperDetails($total_gen[1]);
             if($num_total_gen_thes > 0){
