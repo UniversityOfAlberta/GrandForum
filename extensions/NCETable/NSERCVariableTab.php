@@ -677,8 +677,8 @@ EOF;
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
-                $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                            "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
+                $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                            "Technicians / Research Associates"=>array(), "Other"=>array(),);
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Unknown";
@@ -799,8 +799,8 @@ EOF;
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
-                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                                             "Tech"=>array(), "Other"=>array());
+                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                                             "Technicians / Research Associates"=>array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
                 //}
