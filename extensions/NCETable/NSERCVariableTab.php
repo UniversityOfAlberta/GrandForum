@@ -661,8 +661,8 @@ EOF;
 
         //Setup the table structure
         $universities = array();
-        $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                            "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
+        $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                            "Technicians / Research Associates"=>array(), "Other"=>array());
 
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
@@ -678,10 +678,10 @@ EOF;
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Other"=>array(),);
+                                            "Technicians / Research Associates"=>array(), "Other"=>array());
             }
 
-            $pos = (isset($uniobj['position']))? $uniobj['position'] : "Unknown";
+            $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
             $pos = (isset($positions[$pos]))? $positions[$pos] : "Other";
 
             if($uni == "Unknown"){
@@ -717,7 +717,7 @@ EOF;
 EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
-                $uni_id = preg_replace('/ /', '', $uni);
+                $uni_id = str_replace("/", "_", str_replace(" ", "_", $uni));
                 $lnk_id = "lnk_" . $uni_id . "_" . $posi;
                 $div_id = "div_" . $uni_id . "_" . $posi;
 
@@ -792,8 +792,9 @@ EOF;
         //Fill the table
         foreach ($hqps as $hqp){
             $projs = $hqp->getProjectsDuring($this->from, $this->to);
-            $uni = $hqp->getUni();
-            $pos = $hqp->getPosition();
+            $univ = $hqp->getUniversityDuring($this->from, $this->to);
+            $pos = @$univ['position'];
+            $uni = @$univ['university'];
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
@@ -829,7 +830,7 @@ EOF;
 EOF;
             $total_proj = array();
             foreach($data as $posi => $hqpa){
-                $proj_id = preg_replace('/ /', '', $projName);
+                $proj_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $projName)));
                 $lnk_id = "lnk_" . $proj_id . "_" . $posi;
                 $div_id = "div_" . $proj_id . "_" . $posi;
 
