@@ -71,11 +71,11 @@ function showDiv(div_id, details_div_id){
             switch (ArrayUtil::get_string($_GET, 'summary')) {
                 case 'grand':
                     $wgOut->addScript($foldscript);
-                    $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
-                    self::showContributionsTable();
-                    $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
-                    self::showContributionsByProjectTable();
                     $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
+                    $this->html .= "<a id='Table2.1'></a><h3>Table 2.1: Contributions</h3>";
+                    self::showContributionsTable();
+                    $this->html .= "<a id='Table2.2'></a><h3>Table 2.2: Contributions by Project</h3>";
+                    self::showContributionsByProjectTable();
                     self::showGrandTables();
                     self::showDisseminations();
                     self::showArtDisseminations();
@@ -336,7 +336,7 @@ EOF;
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
-        
+        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>";
         $this->html .= self::getHQPStats();
 
         $canadian = array();
