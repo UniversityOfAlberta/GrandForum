@@ -955,10 +955,6 @@ EOF;
          <tr>
          <th>University</th>
          <th>Researchers</th>";
-        if(isExtensionEnabled('Reporting')){
-            // Only show this if the Reporting Extension is enabled, otherwise it will always be 0
-            $html .= "<th>{$config->getValue('networkName')} effort</th>";
-        }
         $html .= "</tr>";
 
         foreach ($universities as $uni=>$data){
@@ -993,9 +989,6 @@ EOF;
             }
             else{
                 $html .= "<td>0</td>";
-            }
-            if(isExtensionEnabled('Reporting')){
-                $html .= "<td>{$distr}</td>";
             }
 
             //}
