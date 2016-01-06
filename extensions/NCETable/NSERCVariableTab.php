@@ -703,10 +703,9 @@ EOF;
          <th>Ugrad</th>
          <th>Masters</th>
          <th>PhD</th>
-         <th>PostDoc</th>
-         <th>Tech</th>
+         <th>Post-Doctoral Fellows</th>
+         <th>Technicians / Research Associates</th>
          <th>Other</th>
-         <th>Unknown</th>
          <th>Total</th>
          </tr>
 EOF;
@@ -817,8 +816,8 @@ EOF;
          <th>Ugrad</th>
          <th>Masters</th>
          <th>PhD</th>
-         <th>PostDoc</th>
-         <th>Tech</th>
+         <th>Post-Doctoral Fellows</th>
+         <th>Technicians / Research Associates</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
