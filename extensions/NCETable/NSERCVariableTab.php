@@ -422,16 +422,17 @@ EOF;
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
                             "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"PostDoc",
-                            "Technician"=>"Tech",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
                             "Other"=>"Other",
                             "Unknown"=>"Unknown");
 
-        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Landed Immigrant"=>array(array(),array()), "Visa Holder"=>array(array(),array()), "Unknown"=>array(array(),array()));
+        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
-            $hqp_table[$val] = array("Female"=>$nations, "Male"=>$nations, "Unknown"=>$nations);
+            $hqp_table[$val] = array("Male"=>$nations, "Female"=>$nations, "Unknown"=>$nations);
         }
 
         //Fill the table
@@ -442,6 +443,12 @@ EOF;
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
             $nation = (empty($nation))? "Unknown" : $nation;
+            if($nation == "Landed Immigrant"){
+                $nation = "Canadian";
+            }
+            else if($nation == "Visa Holder"){
+                $nation = "Foreign";
+            }
             //$thesis = $hqp->getThesis();
             //$thesis = (!is_null($thesis))? 1 : 0;
 
@@ -484,34 +491,31 @@ EOF;
         $details_div_id = "hqp_details";
         $html =<<<EOF
          <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+            <tr>
+                <td width='25%'></td>
+                <th width='25%'>HQP</th>
+                <th width='25%'>N. of HQP</th>
+                <th width='25%'>N. of degrees completed</th>
+            </tr>
 EOF;
         
         $total = array(array(), array());
         foreach ($hqp_table as $pos=>$data){
             $html .=<<<EOF
                 <tr>
-                <th>{$pos}</th>
-                <td>
+                <th rowspan='14'>{$pos}</th>
 EOF;
-            $inner_tbl =<<<EOF
-                <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-                <tr>
-                    <td>Graduate Students</td>
-                    <td>Number of Students</td>
-                    <td>Number of Theses Completed</td>
-                 </tr>
-EOF;
+            $inner_tbl = "";
             $total_gen = array(array(), array());
             foreach($data as $gender => $nations){
-
-                $inner_tbl .= "<tr><td align='center'>{$gender}</td><td></td><td></td></tr>";
+                $inner_tbl .= "<tr><td>{$gender}</td><td></td><td></td></tr>";
                 $total_nat = array(array(), array());
                 foreach($nations as $label => $counts){
                     
                     $lnk_id = "lnk_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_" .$pos. "_" .$gender. "_". $label;
             
-                    $inner_tbl .= "<tr><td>{$label}</td>";
+                    $inner_tbl .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;{$label}</td>";
                     $num_students = count($counts[0]);
                     $student_details = Dashboard::hqpDetails($counts[0]);
                     if($num_students > 0){
@@ -561,57 +565,22 @@ EOF;
                     $total_nat[1] = array_merge($total_nat[1], $counts[1]); //+= $counts[1];
                 }
 
-                $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_nat[0]}</td><td>{$total_nat[1]}</td></tr>";
+
                 $lnk_id = "lnk_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_" .$pos. "_" .$gender. "_total";
                 $num_total_nat = count($total_nat[0]);
                 $total_nat_details = Dashboard::hqpDetails($total_nat[0]);
-                if($num_total_nat > 0){
-                    $inner_tbl .=<<<EOF
-                        <td>
-                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                        $num_total_nat
-                        </a>
-                        <div style="display: none;" id="$div_id" class="cell_details_div">
-                            <p><span class="label">{$pos} / {$gender} / Total:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                            <ul>$total_nat_details</ul>
-                        </div>
-                        </td>
-EOF;
-                }
-                else{
-                    $inner_tbl .= "<td>0</td>";
-                }
 
                 $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_thes_" .$pos. "_" .$gender. "_total";
                 $num_total_nat_thes = count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
-                if($num_total_nat_thes > 0){
-                    $inner_tbl .=<<<EOF
-                        <td>
-                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                        $num_total_nat_thes
-                        </a>
-                        <div style="display: none;" id="$div_id" class="cell_details_div">
-                            <p><span class="label">Theses: {$pos} / {$gender} / Total:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                            <ul>$total_nat_thes_details</ul>
-                        </div>
-                        </td>
-EOF;
-                }
-                else{
-                    $inner_tbl .= "<td>0</td>";
-                }
-                //$inner_tbl .= "<td>{$total_nat[1]}</td></tr>";
 
                 $total_gen[0] = array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
                 $total_gen[1] = array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
             }   
             
-            $inner_tbl .= "<tr style='font-weight:bold;'><td>Total $pos:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
+            $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
             $lnk_id = "lnk_" .$pos. "_total";
             $div_id = "div_" .$pos. "_total";
             $num_total_gen = count($total_gen[0]);
@@ -655,15 +624,14 @@ EOF;
             else{
                 $inner_tbl .= "<td>0</td>";
             }
-            //$inner_tbl .= "<td>{$total_gen[1]}</td></tr>";
-
-            $inner_tbl .= "</table>";           
-            $html .= $inner_tbl."</td></tr>";
+            //$inner_tbl .= "<td>{$total_gen[1]}</td></tr>";         
+            $html .= $inner_tbl."</tr>";
+            $html .= "<tr><th colspan='4'></th></tr>";
             
             $total[0] = array_merge($total[0], $total_gen[0]);// += $total_gen[0];
             $total[1] = array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
         }
-        $html .= "<tr style='font-weight:bold;'><td></td><td>Total Students: "; //Total Thesis: {$total[1]}</td></tr>";
+        $html .= "<tr style='font-weight:bold;'><td></td><td>Total HQP: "; //Total Thesis: {$total[1]}</td></tr>";
         $lnk_id = "lnk_total";
         $div_id = "div_total";
         $num_total = count($total[0]);
@@ -681,7 +649,7 @@ EOF;
 EOF;
         }
         else{
-            $html .= "Total Students: 0";
+            $html .= "Total HQP: 0";
         }
 
         $lnk_id = "lnk_thes_total";
