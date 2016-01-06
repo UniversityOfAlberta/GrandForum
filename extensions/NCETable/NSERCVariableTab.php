@@ -425,8 +425,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+                            "Other"=>"Other");
 
         $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
 
@@ -437,7 +436,7 @@ EOF;
 
         //Fill the table
         foreach($hqps as $hqp){
-            $pos = $hqp->getUniversity();
+            $pos = $hqp->getUniversityDuring($this->from, $this->to);
             $pos = (isset($positions[$pos['position']]))? $pos['position'] : "Other";
             $gender = $hqp->getGender();
             $gender = (empty($gender))? "Unknown" : $gender;
@@ -449,43 +448,14 @@ EOF;
             else if($nation == "Visa Holder"){
                 $nation = "Foreign";
             }
-            //$thesis = $hqp->getThesis();
-            //$thesis = (!is_null($thesis))? 1 : 0;
 
             $hqp_table[$positions[$pos]][$gender][$nation][0][] = $hqp;
-            /*if(!is_null($thesis)){
-                $hqp_table[$positions[$pos]][$gender][$nation][1][] = $thesis;
-            }*/
-        }
-
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to); 
-        foreach($papers as $paper){
-            $type = $paper->getType();
-            if($type == "PhD Thesis" || $type == "PHD Thesis"){
-                $pos = "PhD";
-            }   
-            else if( $type == "Masters Thesis"){
-                $pos = "Masters";
+            $movedOns = $hqp->getAllMovedOn();
+            foreach($movedOns as $movedOn){
+                if($movedOn['reason'] == 'graduated'){
+                    $hqp_table[$positions[$pos]][$gender][$nation][1][] = $movedOn['thesis'];
+                }
             }
-            else if( $type == "Bachelors Thesis" || $type == "Misc: Honours thesis"){
-                $pos = "Ugrad";
-            }
-            else{
-                continue;
-            }
-
-            $author = $paper->getAuthors();
-            if(count($author) < 1){
-                continue;
-            }
-            $author = $author[0];
-            $gender = $author->getGender();
-            $gender = (empty($gender))? "Unknown" : $gender;
-            $nation = $author->getNationality();
-            $nation = (empty($nation))? "Unknown" : $nation;
-
-            $hqp_table[$pos][$gender][$nation][1][] = $paper;
-
         }
 
         $details_div_id = "hqp_details";
@@ -710,10 +680,10 @@ EOF;
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
                             "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"PostDoc",
-                            "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
+                            "Other"=>"Other");
 
         //Fill the table
         foreach ($hqps as $hqp){
@@ -828,8 +798,9 @@ EOF;
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
                             "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"PostDoc",
-                            "Technician"=>"Tech",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
                             "Other"=>"Other");
 
         //Fill the table
@@ -1059,10 +1030,10 @@ EOF;
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
                             "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"PostDoc",
-                            "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
+                            "Other"=>"Other");
         
         $intkeys = array(
             'Canadian' => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
