@@ -833,6 +833,9 @@ EOF;
                 $proj_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $projName)));
                 $lnk_id = "lnk_" . $proj_id . "_" . $posi;
                 $div_id = "div_" . $proj_id . "_" . $posi;
+                
+                $lnk_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $lnk_id)));
+                $div_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $div_id)));
 
                 $total_proj = array_merge($total_proj, $hqpa);
                 $num_students = count($hqpa);   
