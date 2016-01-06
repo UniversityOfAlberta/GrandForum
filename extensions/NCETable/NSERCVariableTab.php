@@ -620,7 +620,7 @@ EOF;
             $total[0] = array_merge($total[0], $total_gen[0]);// += $total_gen[0];
             $total[1] = array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
         }
-        $html .= "<tr style='font-weight:bold;'><td></td><td>Total HQP: "; //Total Thesis: {$total[1]}</td></tr>";
+        $html .= "<tr style='font-weight:bold;'><td></td><td>Total:</td><td>"; //Total Thesis: {$total[1]}</td></tr>";
         $lnk_id = "lnk_total";
         $div_id = "div_total";
         $num_total = count($total[0]);
@@ -638,16 +638,16 @@ EOF;
 EOF;
         }
         else{
-            $html .= "Total HQP: 0";
+            $html .= "0";
         }
-
+        $html .= "</td><td>";
         $lnk_id = "lnk_thes_total";
         $div_id = "div_thes_total";
         $num_total_thes = count($total[1]);
         $total_thes_details = Dashboard::paperDetails($total[1]);
         if($num_total_thes > 0){
             $html .=<<<EOF
-;                Total Theses: <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $num_total_thes
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -658,7 +658,7 @@ EOF;
 EOF;
         }
         else{
-            $html .= "; Total Theses: 0";
+            $html .= "0";
         }
 
         //$html .= "; Total Thesis: {$total[1]}</td></tr>";
