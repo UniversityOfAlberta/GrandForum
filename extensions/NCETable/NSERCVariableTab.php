@@ -68,35 +68,22 @@ function showDiv(div_id, details_div_id){
         $this->showContentsTable();
 
         if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->year}_".$label){
-        switch (ArrayUtil::get_string($_GET, 'summary')) {
-        /*
-        case 'table2':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            //self::show_grand_table2();
-            break;
-            
-        case 'table3':
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showHQPTable();
-            break;
-        */
-        case 'grand':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
-            self::showContributionsTable();
-            $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
-            self::showContributionsByProjectTable();
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showGrandTables();
-            self::showDisseminations();
-            self::showArtDisseminations();
-            self::showActDisseminations();
-            self::showPublicationList();
-            break;
+            switch (ArrayUtil::get_string($_GET, 'summary')) {
+                case 'grand':
+                    $wgOut->addScript($foldscript);
+                    $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
+                    self::showContributionsTable();
+                    $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
+                    self::showContributionsByProjectTable();
+                    $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
+                    self::showGrandTables();
+                    self::showDisseminations();
+                    self::showArtDisseminations();
+                    self::showActDisseminations();
+                    self::showPublicationList();
+                    break;
+            }
         }
-        }
-        //$this->showProductivity();
         
         return $this->html;
     }
@@ -687,7 +674,7 @@ EOF;
 
         //Fill the table
         foreach ($hqps as $hqp){
-            $uniobj = $hqp->getUniversity();
+            $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
@@ -943,7 +930,7 @@ EOF;
             $grand_percent = preg_replace('/%/', '', $grand_percent);
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
-            $uniobj = $hqp->getUniversity();
+            $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array(array(), 0);
@@ -1071,7 +1058,7 @@ EOF;
             }
             //Movedon data
             else{
-                $m_pos = $m->getUniversity();
+                $m_pos = $m->getUniversityDuring($this->from, $this->to);
                 if(isset($positions[$m_pos['position']])){
                     $m_pos = $m_pos['position'];
                 }
@@ -1102,7 +1089,7 @@ EOF;
         }   
 
         $html =<<<EOF
-            <table cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
             <th rowspan='2'>Position /<br />Degree completed</th>
             <th colspan='3'>Canadian</th>
@@ -1244,53 +1231,6 @@ EOF;
         return $html;
     }
 
-    static function showHQPTable(){
-        global $wgOut;
-        $wgOut->addScript("<script type='text/javascript'>
-            function showHideTable(id){
-                $('#' + id).toggle();
-            }
-        </script>");
-        $people = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
-        $chunk = "
-<a id='Table3'></a><h3>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</h3>
-<table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-    <tr><th width='15%'>Name</th><th width='10%'>Type</th><th width='30%'>University</th><th width='25%'>Title</th><th width='20%'>Projects</th></tr>
-";
-        foreach($people as $hqp){
-            $projects = $hqp->getProjects();
-            $university = $hqp->getUniversity();
-            $chunk .= "<tr>
-                           <td valign='top'>{$hqp->getName()}</td>
-                           <td valign='top'>HQP</td>
-                           <td valign='top'>{$university['university']}</td>
-                           <td valign='top'>{$university['position']}</td>
-                           <td style='padding:0;'>";
-            $table = "";
-            $max = 0;
-            foreach($projects as $project){
-                $month = $hqp->getHQPMonth($project);
-                $table .= "<tr>
-                               <td valign='top'>{$project->getName()}</td>
-                               <td>$month</td>
-                           </tr>";
-                if($month != "Unknown" && $month > $max){
-                    $max = $month;
-                }
-            }
-            if($max < 10){
-                $max = "0".$max;
-            }
-            $table = "<span hidden='hidden'>$max</span><table class='wikitable' cellspacing='1' cellpadding='2' rules='all' width='100%'>
-                                <tr><th width='100px'>Project</th><th>Months Active</th></tr>".$table."</table>";
-                           
-            $chunk .= "$table</td></tr>";
-        }
-        $chunk .= "</table>";
-
-        $this->html .= $chunk;
-    }
-
     function showDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
@@ -1308,20 +1248,6 @@ EOF;
             $groups = array();
             $author_ids = array();
             foreach($authors as $author){
-                /* Old interpretation of a group as project
-                $projects = $author->getProjects();
-                if(is_null($projects)){continue;}
-                foreach($projects as $p){
-                    $p_name = $p->getName();
-                    if(array_key_exists($p_name, $pub_projects)){
-                        $pub_projects[$p_name]++;
-                    }
-                    else{
-                        $pub_projects[$p_name] = 1;
-                    }
-                }
-                */
-                
                 $author_ids[] = $author->getId();
                 if($author->getId() == ""){
                     break;
@@ -1342,19 +1268,9 @@ EOF;
                     }
 
                 }
-
-
             }
-            //print_r($author_ids);
             $key = "_r2";
-            /*if( array_search(count($authors), $pub_projects) ){
-                $key = "_r1";
-            }
-            else{
-                $key = "_r2";
-            }*/
-            //print_r($groups);
-            //echo "<br><br>";
+
             foreach($groups as $k=>$sup){
                 if(in_array($k, $author_ids) && count($sup) == count($authors) ){
                     $key = "_r1";
@@ -1567,7 +1483,6 @@ EOF;
                 if($author->getId() == ""){
                     break;
                 }
-                //echo "sdsd".$author->isSupervisor();
                 if($author->isSupervisor()){
                     if(!isset($groups[$author->getId()])){
                         $groups[$author->getId()] = array($author->getId());
@@ -1745,7 +1660,7 @@ EOF;
 
     function showPublicationList(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
+        $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
         $alreadyDone = array();
@@ -1759,16 +1674,19 @@ EOF;
             //    continue;
             //}
             switch ($pub->getType()) {
+                // A1: Articles in refereed publications
                 case 'Book':
                 case 'Book Chapter':
+                case 'Edited Book':
                 case 'Collections Paper':
+                case 'Conference Paper':
                 case 'Proceedings Paper':
                     if($status != "Published"){
                         continue 2;
                     }
                     $pub_count["a2"][] = $pub;
                     break;
-
+                // A2: Other refereed contributions
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
                     if($status != "Published" && $status != "Submitted"){
@@ -1776,18 +1694,31 @@ EOF;
                     }
                     $pub_count["a1"][] = $pub;
                     break;
-
+                // C: Specialized Publications
+                case 'Bachelors Thesis':
                 case 'Masters Thesis':
+                case 'Masters Dissertation':
                 case 'PHD Thesis':
+                case 'PHD Dissertation':
                 case 'Tech Report':
+                case 'Abstract':
+                case 'Journal Abstract':
+                case 'Conference Abstract':
+                case 'White Paper':
+                case 'Symposium Record':
+                case 'Industrial Report':
+                case 'Internal Report':
+                case 'Manual':
                     if($status != "Published"){
                         continue 2;
                     }
                     $pub_count["c"][] = $pub;   
                     break;
-
+                // B: Non-refereed contributions
                 case 'Misc':
                 case 'Poster':
+                case 'Book Review':
+                case 'Review Article':
                 default:
                     if($status != "Published"){
                         continue 2;
