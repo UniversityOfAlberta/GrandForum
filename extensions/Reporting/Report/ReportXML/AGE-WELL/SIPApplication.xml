@@ -17,6 +17,22 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EXTERNAL">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EXTERNAL-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions">
         <ReportItem id="description" type="Static">
