@@ -114,6 +114,7 @@ foreach($allPeople as $person){
             }
             if($rowN >= 7){
                 $title = "";
+                $leader = "";
                 $quarters = array();
                 $people = array();
                 $comments = "";

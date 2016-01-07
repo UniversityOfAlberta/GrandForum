@@ -298,6 +298,7 @@ class ProjectMilestoneAPI extends API{
                 }
             }
         }
+        /*
         foreach($milestone->getProject()->getLeaders() as $leader){
             $skip = false;
             foreach($people as $person){
@@ -324,7 +325,7 @@ class ProjectMilestoneAPI extends API{
             if(!$skip){
                 Notification::addNotification($me, $leader, "Milestone Changed", "{$milestone->getProject()->getName()}'s Milestone entitled <i>{$milestone->getTitle()}</i> has been modified", "{$milestone->getProject()->getUrl()}");
             }
-        }
+        }*/
 	}
 	
 	function checkIdentifier($project){
