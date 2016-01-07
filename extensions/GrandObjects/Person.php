@@ -1716,7 +1716,7 @@ class Person extends BackboneModel {
      */
     function getPosition(){
         $university = $this->getUniversity();
-        return (isset($university['position'])) ? $university['position'] : "Unkown";
+        return (isset($university['position'])) ? $university['position'] : "Unknown";
     }    
     
     /**
