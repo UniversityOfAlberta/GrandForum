@@ -221,7 +221,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="trans_src_review" name="Transformative Review" tooltip="Review of Transformative Proposals" type="ReportSection">
+    <ReportSection id="trans_src_review" name="Trans. SRC/Ext Review" tooltip="Review of Transformative Proposals" type="ReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
