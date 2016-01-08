@@ -17,7 +17,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EXTERNAL">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="External">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -25,7 +25,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EXTERNAL-Candidate">
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="External-Candidate">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
