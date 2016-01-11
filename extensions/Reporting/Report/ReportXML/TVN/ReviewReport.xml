@@ -362,15 +362,15 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},2)}</td>
                             <td align='right'>
                                 {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
@@ -388,7 +388,7 @@
                                                )}
                                           )}
                                      )}
-                                )}, 36)}, 5)}, 1)}
+                                )}, 36)}, 5)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -406,31 +406,31 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(qaex1)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex1)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex2)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex2)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex3)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex3)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex4)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex4)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex5)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex5)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex6)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex6)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex7)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex7)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex8)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex8)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qaex9)},{get(nAExReviewers)})},1)}
+                                        {round({divide({get(qaex9)},{get(nAExReviewers)})},2)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -452,7 +452,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nAExReviewers)})}, 36}), 5)},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nAExReviewers)})}, 36}), 5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -488,15 +488,15 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},2)}</td>
                             <td align='right'>
                                 {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
                                           {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                      )}
-                                )}, 12)}, 5)}, 1)}
+                                )}, 12)}, 5)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -514,13 +514,13 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(qbex1)},{get(nBExReviewers)})},1)}
+                                        {round({divide({get(qbex1)},{get(nBExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qbex2)},{get(nBExReviewers)})},1)}
+                                        {round({divide({get(qbex2)},{get(nBExReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qbex3)},{get(nBExReviewers)})},1)}
+                                        {round({divide({get(qbex3)},{get(nBExReviewers)})},2)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -530,7 +530,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nBExReviewers)})}, 12)}, 5)},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nBExReviewers)})}, 12)}, 5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -571,15 +571,15 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_QUESTION,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_METHODOLOGY,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_DESIGN,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_PROCEDURES,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OUTCOMES,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_INTEGRATION,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_RECOGNITION,0,{$user_id},{$project_id})},2)}</td>
                             <td align='right'>
                                 {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_TOPIC,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_GAP,0,{$user_id},{$project_id})},
@@ -597,7 +597,7 @@
                                                )}
                                           )}
                                      )}
-                                )}, 36)}, 5)}, 1)}
+                                )}, 36)}, 5)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -615,31 +615,31 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(qa1)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa1)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa2)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa2)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa3)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa3)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa4)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa4)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa5)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa5)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa6)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa6)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa7)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa7)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa8)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa8)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qa9)},{get(nAReviewers)})},1)}
+                                        {round({divide({get(qa9)},{get(nAReviewers)})},2)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -661,7 +661,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nAReviewers)})}, 36)}, 5)},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nAReviewers)})}, 36)}, 5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -697,15 +697,15 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})},2)}</td>
                             <td align='right'>
                                 {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                      {add({getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_BUDGET,0,{$user_id},{$project_id})},
                                           {getNumber(RP_TRANS_REVIEW,TRANS_SRC_REVIEW,TRANS_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                      )}
-                                )}, 12)}, 5)}, 1)}
+                                )}, 12)}, 5)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -723,13 +723,13 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(qb1)},{get(nBReviewers)})},1)}
+                                        {round({divide({get(qb1)},{get(nBReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qb2)},{get(nBReviewers)})},1)}
+                                        {round({divide({get(qb2)},{get(nBReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(qb3)},{get(nBReviewers)})},1)}
+                                        {round({divide({get(qb3)},{get(nBReviewers)})},2)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -739,7 +739,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nBReviewers)})}, 12)}, 5)},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nBReviewers)})}, 12)}, 5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -826,15 +826,15 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})}</td>
-                            <td align='right'>{getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_POLICY,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_MISSION,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PRIORITIES,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_NETWORKING,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_HQP,0,{$user_id},{$project_id})},2)}</td>
+                            <td align='right'>{round({getText(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},2)}</td>
                             <td align='right'>
                                 {round({multiply({divide({add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_GRANT,0,{$user_id},{$project_id})},
                                     {add({getNumber(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_IMPACT,0,{$user_id},{$project_id})},
@@ -852,7 +852,7 @@
                                               )}
                                          )}
                                     )}
-                                )}, 36)}, 5)}, 1)}
+                                )}, 36)}, 5)}, 2)}
                             </td>
                             <td>
                                 <div style='max-height: 115px; overflow-y: auto;'>
@@ -875,31 +875,31 @@
                                 <tr>
                                     <th style='white-space:nowrap;'>Average Scores:</th>
                                     <th>
-                                        {round({divide({get(q1)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q1)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q2)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q2)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q3)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q3)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q4)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q4)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q5)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q5)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q6)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q6)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q7)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q7)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q8)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q8)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q9)},{get(nReviewers)})},1)}
+                                        {round({divide({get(q9)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
                                         {set(total, 
@@ -921,7 +921,7 @@
                                                 )}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})}, 36)}, 5)},1)}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})}, 36)}, 5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -1021,7 +1021,7 @@
                             )}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1035,31 +1035,31 @@
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
                         <td align='right'>
-                            {round({divide({get(qa1)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa1)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa2)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa2)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa3)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa3)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa4)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa4)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa5)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa5)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa6)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa6)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa7)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa7)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa8)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa8)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa9)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa9)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}
@@ -1127,7 +1127,7 @@
                             )}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1141,13 +1141,13 @@
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
                         <td align='right'>
-                            {round({divide({get(qb1)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb1)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qb2)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb2)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qb3)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb3)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}
@@ -1251,7 +1251,7 @@
                             )}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},1)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1265,31 +1265,31 @@
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
                         <td align='right'>
-                            {round({divide({get(qa1)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa1)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa2)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa2)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa3)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa3)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa4)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa4)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa5)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa5)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa6)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa6)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa7)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa7)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa8)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa8)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qa9)},{get(nAReviewers)})},1)}
+                            {round({divide({get(qa9)},{get(nAReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}
@@ -1357,7 +1357,7 @@
                             )}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},1)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1371,13 +1371,13 @@
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
                         <td align='right'>
-                            {round({divide({get(qb1)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb1)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qb2)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb2)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(qb3)},{get(nBReviewers)})},1)}
+                            {round({divide({get(qb3)},{get(nBReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}
@@ -1481,7 +1481,7 @@
                             )}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},1)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -1495,31 +1495,31 @@
                     <tr>
                         <td style='white-space:nowrap;'><b>{$project_name}</b></td>
                         <td align='right'>
-                            {round({divide({get(q1)},{get(nReviewers)})},1)}
+                            {round({divide({get(q1)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q2)},{get(nReviewers)})},1)}
+                            {round({divide({get(q2)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q3)},{get(nReviewers)})},1)}
+                            {round({divide({get(q3)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q4)},{get(nReviewers)})},1)}
+                            {round({divide({get(q4)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q5)},{get(nReviewers)})},1)}
+                            {round({divide({get(q5)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q6)},{get(nReviewers)})},1)}
+                            {round({divide({get(q6)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q7)},{get(nReviewers)})},1)}
+                            {round({divide({get(q7)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q8)},{get(nReviewers)})},1)}
+                            {round({divide({get(q8)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right'>
-                            {round({divide({get(q9)},{get(nReviewers)})},1)}
+                            {round({divide({get(q9)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}

@@ -10,20 +10,35 @@ class RadioReportItem extends AbstractReportItem {
         $value = $this->getBlobValue();
         $items = array();
 		foreach($options as $i => $option){
-		    $checked = "";
-		    if($value == $option){
-		        $checked = "checked='checked'";
-		    }
-		    $option = str_replace("'", "&#39;", $option);
-		    if(count($labels) == count($options)){
-		        $score = "";
-		        if($showScore){
-		            $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
+		    if(!is_array($option)){
+		        $checked = "";
+		        if($value == $option){
+		            $checked = "checked='checked'";
 		        }
-		        $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		        $option = str_replace("'", "&#39;", $option);
+		        if(count($labels) == count($options)){
+		            $score = "";
+		            if($showScore){
+		                $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
+		            }
+		            $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		        }
+		        else{
+		            $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		        }
 		    }
 		    else{
-		        $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		        // Show sub options
+		        $score = "";
+		        foreach($option as $subOption){
+		            $checked = "";
+		            if($value == $subOption){
+		                $checked = "checked='checked'";
+		            }
+		            $subOption = str_replace("'", "&#39;", $subOption);
+		            $score .= "<tr><td style='font-weight:normal;font-size:smaller;'><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$subOption}' $checked />&nbsp;$subOption</td></tr>";
+		        }
+		        $items[] = "<table cellspacing='0' cellpadding='0'><tr><td>{$labels[$i]}</td></tr>{$score}</table>";
 		    }
 		}
 
@@ -59,6 +74,14 @@ class RadioReportItem extends AbstractReportItem {
 	
 	function parseOptions(){
 	    $options = @explode("|", $this->attributes['options']);
+	    foreach($options as $key => $option){
+	        $subOptions = array();
+	        preg_match("/^\((.*)\)$/", $option, $subOptions);
+	        if(isset($subOptions[1])){
+	            $subOptions = explode(",", $subOptions[1]);
+	            $options[$key] = $subOptions;
+	        }
+	    }
 	    return $options;
 	}
 	
