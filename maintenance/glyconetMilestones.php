@@ -44,6 +44,7 @@ else{
     exit;
 }
 
+$alreadyDone = array();
 $allPeople = Person::getAllPeople(NI);
 foreach($allPeople as $person){
     $type = BLOB_EXCEL;
@@ -55,11 +56,22 @@ foreach($allPeople as $person){
     $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
     $blob->load($blob_address);
     $data = $blob->getData();
+    $project = "";
     if($data != null && $data != ""){
         $data = json_decode($data);
         $data = base64_decode($data->file);
     }
-    else{
+
+    $leadership = $person->leadership();
+    foreach($leadership as $lead){
+        if(file_exists("docs/{$person->getName()} {$lead->getName()}.xlsx") &&
+           !isset($alreadyDone[$person->getName()][$lead->getName()])){
+            $data = file_get_contents("docs/{$person->getName()} {$lead->getName()}.xlsx");
+            $project = $lead->getName();
+            $alreadyDone[$person->getName()][$lead->getName()] = true;
+        }
+    }
+    if($data == ""){
         echo "No data uploaded for {$person->getNameForForms()}\n";
         continue;
     }
@@ -100,7 +112,6 @@ foreach($allPeople as $person){
         $obj->setActiveSheetIndex(0);
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
-        $project = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         foreach($cells as $rowN => $row){
@@ -108,7 +119,9 @@ foreach($allPeople as $person){
                 foreach($row as $colN => $cell){
                     $cell = trim($cell);
                     if($colN == 1){
-                        $project = $cell;
+                        if($project == ""){
+                            $project = $cell;
+                        }
                     }
                 }
             }
