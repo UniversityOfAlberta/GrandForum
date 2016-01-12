@@ -447,7 +447,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(q1, 0)}
