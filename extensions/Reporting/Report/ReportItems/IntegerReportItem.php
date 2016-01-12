@@ -11,7 +11,7 @@ class IntegerReportItem extends TextReportItem {
 		$align = $this->getAttr('align', 'right');
 		$size = $this->getAttr('size', '');
 		$decimals = $this->getAttr('decimals', 0);
-		
+		$font = "";
 		if($size != ''){
 		    $width = '';
 		    $font = "font-family: monospace;";
