@@ -465,7 +465,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(q1, 0)}

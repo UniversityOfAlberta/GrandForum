@@ -233,6 +233,20 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="impact" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_IMPACT" rich="true">
+            <![CDATA[
+                <h3>Impact of Findings</h3>
+                <p>Potential impact of findings on clinical practice/patient care (up to 3; brief bullet points)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="gaps" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_GAPS" rich="true">
+            <![CDATA[
+                <h3>Knowledge/Research Gaps</h3>
+                <p>What are some of the remaining knowledge/research gaps (brief bullet points)</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_REVIEW" rich="true">
             <![CDATA[
                 <h3>Scientific Review</h3>
@@ -261,6 +275,13 @@
             <![CDATA[
                 <h3>Research Documents</h3>
                 <p>If you would like to include any research documents, please attach them below as a zip archive</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="implementation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_KTEE_IMPLEMENTATION" rich="true" limit="100">
+            <![CDATA[
+                <h3>KT Implementation</h3>
+                <p>In terms of KT implementation, what do you intend to do when your study is complete, or what do you recommend take place? (≤ 100 words)</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -297,11 +318,18 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activites" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking Activities" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
                 <p>Identify any networking activity your project team undertook during this final reporting period and describe the outcomes as they relate to the completion of your project and to the development of collaborations.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="groups" type="TextareaReportItem" blobItem="FINAL_NET_GROUPS" rich="true">
+            <![CDATA[
+                <h3>Groups/Organizations</h3>
+                <p>Are there any groups/organizations of interest that you think this summary should be sent to? If so, please list them here:</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -337,6 +365,34 @@
         <ReportItem id="additional_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_ADDITIONAL_YES" optional="true" width="550px" height="100px">
             <![CDATA[
                 <p><small>If Yes, please provide information on the funding agency, the total funding awarded, length of the grant and title of the grant.</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="policy" type="TextareaReportItem" blobItem="FINAL_ALIGN_POLICY" rich="true">
+            <![CDATA[
+                <h3>Policy Makers</h3>
+                <p><small>Suggestions on how administrators or policy maker should use the findings (up to 3; brief bullet points)</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="relevant" type="TextareaReportItem" blobItem="FINAL_ALIGN_RELEVANT" rich="true">
+            <![CDATA[
+                <h3>Relevance of Outcomes</h3>
+                <p><small>How relevant are the outcomes of your research likely to be (please elaborate in the text box below):</small></p>
+                <ol type="i">
+                    <li>For improving evidence-based clinical practices?</li>
+                    <li>For older Canadians who are deemed frail, and their caregivers?</li>
+                    <li>For expanding the research and knowledge base, and for providing clear, solid direction for future research in this area?</li>
+                    <li>For impacting and influencing health policy?</li>
+                    <li>For publication in a recognized medical/health journal?</li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="FINAL_ALIGN_IMPACT" rich="true">
+            <![CDATA[
+                <h3>Impact</h3>
+                <p><small>Suggestions on how these findings could impact frail older adults and/or their family caregivers (up to 3; brief bullet points)</small></p>
                 {$item}
             ]]>
         </ReportItem>
