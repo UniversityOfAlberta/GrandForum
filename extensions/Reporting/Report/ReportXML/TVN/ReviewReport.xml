@@ -464,7 +464,6 @@
                         </script>
                     ]]>
                 </ReportItem>
-                
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
@@ -673,7 +672,6 @@
                         </script>
                     ]]>
                 </ReportItem>
-                
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
@@ -755,7 +753,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="trans_rmc_review" name="Trans. RMC Review" tooltip="Review of Transformative Proposals" type="ReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[
@@ -1419,7 +1417,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(q1, 0)}
@@ -2071,7 +2069,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="cat_rmc_review" name="Cat. RMC Review" tooltip="Review of Catalyst Proposals" type="ReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[                       
@@ -2723,7 +2721,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(q1, 0)}
