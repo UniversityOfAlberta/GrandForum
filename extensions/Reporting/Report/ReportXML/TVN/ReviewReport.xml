@@ -1540,7 +1540,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="cat_src_review" name="Catalyst Review" tooltip="Review of Catalyst Proposals" type="ReportSection">
+    <ReportSection id="cat_src_review" name="Cat. SRC/Ext Review" tooltip="Review of Catalyst Proposals" type="ReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
@@ -1573,20 +1573,10 @@
                         {set(qb2, 0)}
                         {set(qb3, 0)}
                         
-                        {set(q1, 0)}
-                        {set(q2, 0)}
-                        {set(q3, 0)}
-                        {set(q4, 0)}
-                        {set(q5, 0)}
-                        {set(q6, 0)}
-                        {set(q7, 0)}
-                        {set(q8, 0)}
-                        
                         {set(nAExReviewers, 0)}
                         {set(nBExReviewers, 0)}
                         {set(nAReviewers, 0)}
                         {set(nBReviewers, 0)}
-                        {set(nReviewers, 0)}
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
@@ -1658,29 +1648,6 @@
                             {set(qb2, {add({get(qb2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})})})}
                             {set(qb3, {add({get(qb3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
                             {set(nBReviewers, {add({get(nBReviewers)},1)})}
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},0)},{$project_id})},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})},)},
-                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
-                                                          )}">
-                        <![CDATA[
-                            {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})})})}
-                            {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},{$project_id})})})}
-                            {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})})})}
-                            {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})})})}
-                            {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})})})}
-                            {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})})})}
-                            {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})})})}
-                            {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})})})}
-                            {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
@@ -2100,6 +2067,49 @@
                         </script>
                     ]]>
                 </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="cat_rmc_review" name="Cat. RMC Review" tooltip="Review of Catalyst Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
+                <ReportItem id="script_init" type="StaticReportItem">
+                    <![CDATA[                       
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+
+                        {set(nReviewers, 0)}
+                    ]]>
+                </ReportItem>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
+                    <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},0)},{$project_id})},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})},)}
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})},)},
+                                                               {!=({getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})},)}
+                                                          )}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},{$project_id})})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_NETWORKING,0,{$user_id},{$project_id})})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PARTNERSHIPS,0,{$user_id},{$project_id})})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
