@@ -297,7 +297,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activites" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking Activities" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
