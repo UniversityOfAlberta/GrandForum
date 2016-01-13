@@ -934,7 +934,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="trans_review_summary" name="Transformative Summary" tooltip="Transformative Summary" type="ReportSection">
+    <ReportSection id="trans_review_summary" name="Trans. SRC/Ext Summary" tooltip="Transformative Summary" type="ReportSection">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <h3>A. Scientific Excellence (External/ISAC)</h3>
@@ -1395,6 +1395,8 @@
                 </script>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="trans_review_summary" name="Trans. RMC Summary" tooltip="Transformative Summary" type="ReportSection">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <h3>RMC Review</h3>
