@@ -16,7 +16,7 @@ class ProjectMilestonesTab extends AbstractTab {
         if($wgUser->isLoggedIn()){
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
-            if($me->isMemberOf($project) || $me->isRoleAtLeast(MANAGER)){
+            if($me->isMemberOf($project) || $me->isRoleAtLeast(STAFF)){
                 $this->showMilestones();
                 return $this->html;
             }
