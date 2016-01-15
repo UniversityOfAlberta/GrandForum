@@ -1,6 +1,6 @@
 <?php
 
-class ProjectMilestonesTab extends AbstractTab {
+class ProjectMilestonesTab extends AbstractEditableTab {
 
     var $project;
     var $visibility;
@@ -9,6 +9,14 @@ class ProjectMilestonesTab extends AbstractTab {
         parent::AbstractTab("Milestones");
         $this->project = $project;
         $this->visibility = $visibility;
+    }
+    
+    function handleEdit(){
+        
+    }
+    
+    function canEdit(){
+        return true;
     }
     
     function generateBody(){
@@ -20,6 +28,15 @@ class ProjectMilestonesTab extends AbstractTab {
                 $this->showMilestones();
                 return $this->html;
             }
+        }
+    }
+    
+    function generateEditBody(){
+        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
+        if($wgUser->isLoggedIn()){
+            $project = $this->project;
+            $this->showMilestones();
+            return $this->html;
         }
     }
     
@@ -77,13 +94,22 @@ class ProjectMilestonesTab extends AbstractTab {
                         <tbody>";
         foreach($activities as $activity => $milestones){
             $count = count($milestones);
+            if(isset($this->visibility['edit'])){
+                $activity = "<input type='text' name='activity' value='{$activity}' />";
+            }
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
             foreach($milestones as $key => $milestone){
                 if($key != 0){
                     $this->html .= "<tr>";
                 }
-                $this->html .= "<td>{$milestone->getTitle()}</td>";
+                if(isset($this->visibility['edit'])){
+                    $title = "<input type='text' name='title[{$milestone->getId()}]' value='{$milestone->getTitle()}' />";
+                }
+                else{
+                    $title = $milestone->getTitle();
+                }
+                $this->html .= "<td>{$title}</td>";
                 $quarters = $milestone->getQuarters();
                 for($y=$startYear; $y < $startYear+3; $y++){
                     for($q=1;$q<=4;$q++){
@@ -110,7 +136,18 @@ class ProjectMilestonesTab extends AbstractTab {
                 $commentIcon = ($comment != "") ? "<img style='float:right;padding-top:2px;' src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
                 $leader = $milestone->getLeader();
                 $people = $milestone->getPeople();
-                $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+                if(!isset($this->visibility['edit'])){
+                    $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+                }
+                else{
+                    $members = $project->getAllPeople();
+                    $peopleNames = array();
+                    foreach($members as $person){
+                        $peopleNames[] = $person->getNameForForms();
+                    }
+                    $selectBox = new SelectBox("leader[{$milestone->getId()}]", "leader", $leader->getNameForForms(), $peopleNames);
+                    $leaderText = $selectBox->render();
+                }
                 $peopleText = array();
                 foreach($people as $person){
                     $peopleText[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
