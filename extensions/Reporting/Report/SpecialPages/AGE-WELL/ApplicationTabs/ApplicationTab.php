@@ -8,7 +8,11 @@ class ApplicationTab extends AbstractTab {
     function ApplicationTab($rp, $people){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
-        $this->people = $people;
+        $newPeople = array();
+        foreach($people as $person){
+            $newPeople[$person->getId()] = $person;
+        }
+        $this->people = $newPeople;
         if(is_array($this->rp)){
             $report = new DummyReport($this->rp[0], $me);
         }
