@@ -173,6 +173,10 @@ abstract class PDFGenerator {
         $str = str_replace("&lang;", "&#10216;", $str);
         $str = str_replace("&rang;", "&#10217;", $str);
         $str = str_replace("&hellip;", "...", $str);
+        $str = str_replace("</html>", "", $str);
+        $str = str_replace("<html>", "", $str);
+        $str = str_replace("<body>", "", $str);
+        $str = str_replace("</body>", "", $str);
         /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
         foreach($matches[1] as $match){
             $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
