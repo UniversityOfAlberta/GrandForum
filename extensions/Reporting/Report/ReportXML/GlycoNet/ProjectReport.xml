@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="" personId="0" ajax="true" disabled="false">
+    <ReportSection id="information" type="ReportSection" name="Project Information">
+        <ReportItem id="info" type="StaticReportItem">
+            <![CDATA[
+                <p><b>Theme:</b>           {$project_theme}</p>
+                <p><b>Project Title:</b>   {$project_name}</p>
+                <p><b>Project Leader:</b>  {$project_leaders}<br />
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="leaders" type="ProjectLeaders">
+            <ReportItem id="leader_info">
+                <![CDATA[
+                    Location:       {$user_name}<br />
+                    E-mail address: {$user_email}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="co-investigators_table" type="StaticReportItem">
+            <![CDATA[
+                </p>
+                <p><b>Co-Investigators:</b>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>E-mail address</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="co-investigators" type="ProjectPeopleNoLeaders">
+            <ReportItem id="investigators_info" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_uni}</td>
+                        <td>{$user_email}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqp_table" type="StaticReportItem">
+            <![CDATA[
+                </table>
+                </p>
+                <p><b>Trainees and role:</b>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>E-mail address</th>
+                        <th>Supervisor</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
+            <ReportItem id="hqp_info" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_uni}</td>
+                        <td>{$user_email}</td>
+                        <td>{$user_supervisors}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqp_table" type="StaticReportItem">
+            <![CDATA[
+                </table>
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" type="ReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
+        <ReportItem id="table" type="ProjectMilestoneTable">
+            <![CDATA[
+                {$item}<br />
+                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
+        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS">
+            <![CDATA[
+                <h3>1. Research Achievements</h3>
+                <p>Describe significant achievements or advances made in this project over the funding period</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
+            <![CDATA[
+                <p>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
+            <![CDATA[
+                <p>Outline the impact of these achievements in terms of the goals of the Project, of the theme and of GlycoNet.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
+            <![CDATA[
+                <p>What are the benefits to Canada of the work to date?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
+        <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES">
+            <![CDATA[
+                <p>Describe roles of each trainee within the project</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING">
+            <![CDATA[
+                <p>Describe any training initiatives undertaken during the funding period</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE">
+            <![CDATA[
+                <p>Did any trainees graduate or transition to the workforce? Describe.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY">
+            <![CDATA[
+                <p>How was cross-disciplinary training/experience achieved?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
+            <![CDATA[
+                <p>Cross-reference training initiative progress to deliverables included in the original proposal.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
+        <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
+            <![CDATA[
+                <p>Describe all collaborations and partners related to the project</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="TextareaReportItem" blobItem="RESOURCES">
+            <![CDATA[
+                <p>Describe how resources and facilities have been optimised through collaborations.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="accomplishment" type="TextareaReportItem" blobItem="ACCOMPLISHMENT">
+            <![CDATA[
+                <p>Cross-reference these accomplishment to deliverables and milestones included in the original proposal.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee" type="EditableReportSection" blobSection="KTEE" name="KTEE" title="Knowledge exchange and technology exploitation">
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
+            <![CDATA[
+                <p>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="titles" type="TextareaReportItem" blobItem="TITLES">
+            <![CDATA[
+                <p>If applicable, list the titles and details of any intellectual property created, including invention disclosures, patent applications filed or issued.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="abstract" type="TextareaReportItem">
+            <![CDATA[
+                <p>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</p>
+                [Coming Soon]
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Table and Justification">
+        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <p>Provide a written justification for any significant (??>20%??) deviation from the original budget in your approved proposal.</p>
+                <p>Provide details of all stipends paid, including names, positions and amounts paid.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
+            <![CDATA[
+                <h3>Justification</h3>
+                <p>Provide a written explanation of any deviation between the actual contributions and anticipated expenditures and those proposed in the original approved proposal.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -46,6 +46,7 @@ define('SUPPLEMENTAL_STRUCTURE', 1);
 define('REPORT_STRUCTURE', 2);
 define('REPORT2_STRUCTURE', 3);
 define('GLYCONET_BUDGET_STRUCTURE', 4);
+define('GLYCONET_NI_BUDGET_STRUCTURE', 9);
 define('AGEWELL_BUDGET_STRUCTURE', 5);
 define('TVN_BUDGET_STRUCTURE', 6);
 define('AGEWELL_NI_BUDGET_STRUCTURE', 7);
@@ -108,6 +109,8 @@ $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
           array(HEAD4,      MONEY,           MONEY,       MONEY,       MONEY,       BLANK,  NA,     HEAD4,      MONEY,       MONEY,       MONEY,       MONEY,       BLANK,       NA,          NA,         NA),
           array(HEAD1_ROW,  HEAD_MONEY,      HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,  NA,     HEAD1_ROW,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,       NA,          NA,         NA),
     );
+    
+$budgetStructures[GLYCONET_NI_BUDGET_STRUCTURE] = $budgetStructures[GLYCONET_BUDGET_STRUCTURE];
     
 $budgetStructures[TECH_WORKSHOP_STRUCTURE] = 
     array(array(HEAD_ROW,   NA,         NA,         NA,         NA),
