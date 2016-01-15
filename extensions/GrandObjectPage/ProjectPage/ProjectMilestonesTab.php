@@ -16,7 +16,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return true;
+        return false;
     }
     
     function generateBody(){
