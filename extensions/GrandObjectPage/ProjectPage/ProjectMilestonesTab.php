@@ -94,21 +94,21 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         <tbody>";
         foreach($activities as $activity => $milestones){
             $count = count($milestones);
-            if(isset($this->visibility['edit'])){
+            /*if(isset($this->visibility['edit'])){
                 $activity = "<input type='text' name='activity' value='{$activity}' />";
-            }
+            }*/
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
             foreach($milestones as $key => $milestone){
                 if($key != 0){
                     $this->html .= "<tr>";
                 }
-                if(isset($this->visibility['edit'])){
+                /*if(isset($this->visibility['edit'])){
                     $title = "<input type='text' name='title[{$milestone->getId()}]' value='{$milestone->getTitle()}' />";
                 }
-                else{
+                else{*/
                     $title = $milestone->getTitle();
-                }
+                //}
                 $this->html .= "<td>{$title}</td>";
                 $quarters = $milestone->getQuarters();
                 for($y=$startYear; $y < $startYear+3; $y++){
@@ -136,9 +136,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $commentIcon = ($comment != "") ? "<img style='float:right;padding-top:2px;' src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
                 $leader = $milestone->getLeader();
                 $people = $milestone->getPeople();
-                if(!isset($this->visibility['edit'])){
+                //if(!isset($this->visibility['edit'])){
                     $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
-                }
+                /*}
                 else{
                     $members = $project->getAllPeople();
                     $peopleNames = array();
@@ -147,7 +147,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     }
                     $selectBox = new SelectBox("leader[{$milestone->getId()}]", "leader", $leader->getNameForForms(), $peopleNames);
                     $leaderText = $selectBox->render();
-                }
+                }*/
                 $peopleText = array();
                 foreach($people as $person){
                     $peopleText[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
