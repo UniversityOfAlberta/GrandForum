@@ -9,6 +9,7 @@ class ProjectMilestoneAPI extends API{
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("leader",false,"The name of the leader for this milestone","First.Last");
         $this->addPOST("activity",true,"The name of the activity", "Analysis");
+        $this->addPOST("activity_id",false,"The id of the activity", "2");
         $this->addPOST("milestone",true,"The title of the milestone","MEOW is great");
         $this->addPOST("problem",true,"The problem of this milestone","Show that MEOW is great");
 	    $this->addPOST("description",true,"The description for this milestone","Show that MEOW is great");
@@ -49,7 +50,7 @@ class ProjectMilestoneAPI extends API{
             $_POST['leader'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['leader'])));
         }
         if(isset($_POST['people']) && $_POST['people'] != null){
-            $_POST['people'] = @explode(", ", $_POST['people']);
+            $_POST['people'] = @$_POST['people'];
         }
         else{
             $_POST['people'] = array();
@@ -59,6 +60,9 @@ class ProjectMilestoneAPI extends API{
         }
         if(isset($_POST['activity']) && $_POST['activity'] != ""){
             $_POST['activity'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['activity']))));
+        }
+        if(isset($_POST['activity_id']) && $_POST['activity_id'] != ""){
+            $_POST['activity_id'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['activity_id']))));
         }
         if(isset($_POST['new_title']) && $_POST['new_title'] != ""){
             $_POST['new_title'] = @addslashes(str_replace("'", "&#39;", str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['new_title']))));
@@ -88,14 +92,9 @@ class ProjectMilestoneAPI extends API{
 		    return "A valid title must be provided";
 		}
 		
-		$people = array();
-		if(isset($_POST['people']) && count($_POST['people']) > 0 && is_array($_POST['people'])){
-            foreach($_POST['people'] as $person){
-                $p = Person::newFromNameLike(trim($person));
-                if($p != null && $p->getName() != ""){
-                    $people[] = $p;
-                }
-            }
+        $people = "";
+        if(isset($_POST['people'])){
+            $people = $_POST['people'];
         }
 		
 		$leader = 0;
@@ -142,16 +141,26 @@ class ProjectMilestoneAPI extends API{
         }
         
         $activityId = 0;
-        if(isset($_POST['activity'])){
-            $activity = Activity::newFromName($_POST['activity']);
+        if(isset($_POST['activity_id'])){
+            $activity = Activity::newFromId($_POST['activity_id']);
+            $activityId = $_POST['activity_id'];
+            if($activity->getName() != $_POST['activity']){
+                DBFunctions::update('grand_activities',
+                                    array('name' => $_POST['activity']),
+                                    array('id' => $activity->getId()));
+            }
+        }
+        else if(isset($_POST['activity'])){
+            $activity = Activity::newFromName($_POST['activity'], $project->getId());
             if($activity->getName() != ""){
                 $activityId = $activity->getId();
             }
             else if($_POST['activity'] != ""){
                 // Activity not found, so add it
                 DBFunctions::insert('grand_activities',
-                                    array('name' => $_POST['activity']));
-                $activity = Activity::newFromName($_POST['activity']);
+                                    array('name' => $_POST['activity'],
+                                          'project_id' => $project->getId()));
+                $activity = Activity::newFromName($_POST['activity'], $project->getId());
                 $activityId = $activity->getId();
             }
         }
@@ -176,13 +185,14 @@ class ProjectMilestoneAPI extends API{
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
 		                              'comment'             => $_POST['comment'],
+		                              'people'              => $_POST['people'],
 		                              'edited_by'           => $me->getId(),
 		                              'quarters'            => $_POST['quarters'],
 		                              'start_date'          => EQ(COL('CURRENT_TIMESTAMP')),
 		                              'projected_end_date'  => "{$_POST['end_date']}-00"));
             $_POST['title'] = $_POST['new_title'];
             Milestone::$cache = array();
-            $this->updatePeople($people);
+            //$this->updatePeople($people);
             Milestone::$cache = array();
         }
         else if(!$this->update){
@@ -207,10 +217,10 @@ class ProjectMilestoneAPI extends API{
                             DBFunctions::escape($_POST['description']), 
                             DBFunctions::escape($_POST['assessment'])
                             );
-                                
+                    
                     DBFunctions::execSQL($sql, true);
                     Milestone::$cache = array();
-                    $this->updatePeople($people);
+                    //$this->updatePeople($people);
                     Milestone::$cache = array();
                     DBFunctions::commit();
                     return;
@@ -237,12 +247,13 @@ class ProjectMilestoneAPI extends API{
 		                              'description'         => $_POST['description'],
 		                              'assessment'          => $_POST['assessment'],
 		                              'comment'             => @$_POST['comment'],
+		                              'people'              => $_POST['people'],
 		                              'edited_by'           => $me->getId(),
 		                              'quarters'            => $_POST['quarters'],
 		                              'start_date'          => EQ(COL('CURRENT_TIMESTAMP')),
 		                              'projected_end_date'  => "{$_POST['end_date']}-00"));
             Milestone::$cache = array();
-            $this->updatePeople($people);
+            //$this->updatePeople($people);
         }
         
         if(!$noEcho){

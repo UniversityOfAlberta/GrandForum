@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" pdfType="RPTP_SIP" pdfFiles="SIPApplicationPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -9,7 +9,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI-Candidate">
+        <Role role="NI-Candidate">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -17,7 +17,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="External">
+        <Role role="External">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -25,7 +25,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="External-Candidate">
+        <Role role="External-Candidate">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />

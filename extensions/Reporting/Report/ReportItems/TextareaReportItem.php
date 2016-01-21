@@ -10,7 +10,6 @@ class TextareaReportItem extends AbstractReportItem {
             $item .= "<script type='text/javascript'>
                 $(document).ready(function(){
                     var strlen = $('textarea[name={$this->getPostId()}]').val().length;
-                    if(
                     changeColor{$this->getPostId()}($('textarea[name={$this->getPostId()}]'), strlen);
                 });
             </script>";
