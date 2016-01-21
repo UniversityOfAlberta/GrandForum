@@ -5,7 +5,7 @@ class ProjectMilestoneTableReportItem extends StaticReportItem {
     function render(){
         global $wgOut;
         $project = Project::newFromId($this->projectId);
-        $tab = new ProjectMilestonesTab($project, array());
+        $tab = new ProjectMilestonesTab($project, array('edit' => 0));
         $tab->showMilestones();
         $item = $tab->html;
         $item = $this->processCData($item);
@@ -15,7 +15,7 @@ class ProjectMilestoneTableReportItem extends StaticReportItem {
     function renderForPDF(){
         global $wgOut;
         $project = Project::newFromId($this->projectId);
-        $tab = new ProjectMilestonesTab($project, array());
+        $tab = new ProjectMilestonesTab($project, array('edit' => 0));
         $tab->showMilestones();
         $item = $tab->html;
         $item = $this->processCData($item);

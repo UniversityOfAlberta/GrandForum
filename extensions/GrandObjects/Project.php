@@ -1252,6 +1252,17 @@ EOF;
         }
     }
     
+    function getActivities(){
+        $activities = array();
+        $data = DBFunctions::select(array('grand_activities'),
+                                    array('id'),
+                                    array('project_id' => $this->getId()));
+        foreach($data as $row){
+            $activities[] = Activity::newFromId($row['id']);
+        }
+        return $activities;
+    }
+    
     // Returns the current milestones of this project
     // If $history is set to true, all the milestones ever for this project are included
     function getMilestones($history=false){
@@ -1287,6 +1298,9 @@ EOF;
                 continue;
             }
             $milestone = Milestone::newFromId($row['milestone_id']);
+            if($milestone->getStatus() == 'Deleted'){
+                continue;
+            }
             $milestoneIds[$milestone->getMilestoneId()] = true;
             $milestones[] = $milestone;
         }

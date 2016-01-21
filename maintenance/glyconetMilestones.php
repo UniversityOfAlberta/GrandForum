@@ -99,7 +99,7 @@ function addMilestones($data, $person, $project){
                 $title = "";
                 $leader = "";
                 $quarters = array();
-                $people = array();
+                $people = "";
                 $comments = "";
                 foreach($row as $colN => $cell){
                     $cell = trim($cell);
@@ -157,7 +157,7 @@ function addMilestones($data, $person, $project){
                             $leader = $cell;
                             break;
                         case PERSON_COL:
-                            $people = explode(",", $cell);
+                            $people = $cell;
                             break;
                         case TBD_COL:
                             $comments = $cell;
