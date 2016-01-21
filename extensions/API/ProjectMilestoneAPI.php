@@ -116,6 +116,7 @@ class ProjectMilestoneAPI extends API{
                 exit;
             }
 		}
+		
 		$me = Person::newFromName($_POST['user_name']);
 		
 		DBFunctions::begin();
@@ -164,6 +165,16 @@ class ProjectMilestoneAPI extends API{
                 $activityId = $activity->getId();
             }
         }
+        if(isset($_POST['id'])){
+		    $milestone = Milestone::newFromId($_POST['id']);
+		    if($milestone->getTitle() == $_POST['new_title'] &&
+		       $milestone->getPeopleText() == $_POST['people'] &&
+		       $milestone->quarters == $_POST['quarters'] &&
+		       $milestone->getStatus() == $_POST['status'] &&
+		       $milestone->getLeader()->getNameForForms() == $_POST['leader']){
+		        return;   
+		   }
+		}
         $sql = "SELECT *
                 FROM grand_milestones
                 WHERE $join
