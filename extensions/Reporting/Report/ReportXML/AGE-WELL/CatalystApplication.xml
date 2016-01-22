@@ -99,7 +99,8 @@
         <ReportItem id="ii" type="RadioReportItem" options="Yes|No" blobItem="THEME">
             <![CDATA[
                 <li>
-                    <b>Project Theme</b>
+                    <b>Project Theme</b><br />
+                    Does your project fall within the theme of ‘Older workers and the Workplace’?
                     {$item}
             ]]>
         </ReportItem>
