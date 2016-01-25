@@ -10,6 +10,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         parent::AbstractTab("Milestones");
         $this->project = $project;
         $this->visibility = $visibility;
+        
+        if($this->canEdit() && (isset($_GET['edit']) || isset($_POST['edit']))){
+            $this->visibility['edit'] = 1;
+        }
     }
     
     function handleEdit(){
@@ -31,7 +35,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     }
                 }
                 
-                $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                if(isset($_POST['milestone_leader'])){
+                    $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                }
                 $_POST['activity'] = $activity;
                 $_POST['activity_id'] = $activityId;
                 $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
@@ -60,7 +66,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
         }
         
-        if(isset($_POST['new_activity_title']) && $_POST['new_activity_title'] != ""){
+        if(isset($_POST['new_activity_title']) && $_POST['new_activity_title'] != "" && $this->canEditMilestone(null)){
             DBFunctions::insert('grand_activities',
                                 array('name' => $_POST['new_activity_title'],
                                       'project_id' => $this->project->getId()));
@@ -69,7 +75,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             redirect("{$this->project->getUrl()}?tab=milestones&edit");
         }
         if(isset($_POST['new_milestone_activity']) && isset($_POST['new_milestone_title']) &&
-           $_POST['new_milestone_activity'] != "" && $_POST['new_milestone_title'] != ""){
+           $_POST['new_milestone_activity'] != "" && $_POST['new_milestone_title'] != "" && 
+           $this->canEditMilestone(null)){
             
             $_POST['leader'] = "";
             $_POST['activity'] = $_POST['new_milestone_activity'];
@@ -100,6 +107,24 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function canEdit(){
         $me = Person::newFromWgUser();
+        
+        $milestones = $this->project->getMilestones(true);
+        foreach($milestones as $milestone){
+            if($milestone->getLeader()->getId() == $me->getId()){
+                return true;
+            }
+        }
+        
+        return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
+    }
+    
+    function canEditMilestone($milestone){
+        $me = Person::newFromWgUser();
+        
+        if($milestone != null && $milestone->getLeader()->getId() == $me->getId()){
+            return true;
+        }
+        
         return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
     }
     
@@ -161,6 +186,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
         </style>";
         $statusHeader = "";
+        $statusColspan = 2;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -168,29 +194,36 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
             $activityBox = new SelectBox("new_milestone_activity", "new_milestone_activity", "", $activityNames);
             $activityText = $activityBox->render();
-            $this->html .= "<div title='Add Activity' id='addActivityDialog' style='display:none;'>
-                                <table>
-                                    <tr>
-                                        <td align='right'><b>Title:</b></td>
-                                        <td><input type='text' name='new_activity_title' /></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div title='Add Milestone' id='addMilestoneDialog' style='display:none;'>
-                                <table>
-                                    <tr>
-                                        <td align='right'><b>Activity:</b></td>
-                                        <td>{$activityText}</td>
-                                    </tr>
-                                    <tr>
-                                        <td align='right'><b>Title:</b></td>
-                                        <td><input type='text' name='new_milestone_title' /></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <a class='button' id='addActivity'>Add Activity</a>&nbsp;
-                            <a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
-            $statusHeader = "<th>Status</th><th width='1%'>Delete?</td>";
+            if($this->canEditMilestone(null)){
+                $this->html .= "<div title='Add Activity' id='addActivityDialog' style='display:none;'>
+                                    <table>
+                                        <tr>
+                                            <td align='right'><b>Title:</b></td>
+                                            <td><input type='text' name='new_activity_title' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div title='Add Milestone' id='addMilestoneDialog' style='display:none;'>
+                                    <table>
+                                        <tr>
+                                            <td align='right'><b>Activity:</b></td>
+                                            <td>{$activityText}</td>
+                                        </tr>
+                                        <tr>
+                                            <td align='right'><b>Title:</b></td>
+                                            <td><input type='text' name='new_milestone_title' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <a class='button' id='addActivity'>Add Activity</a>&nbsp;
+                                <a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
+            
+                $statusHeader = "<th>Status</th><th width='1%'>Delete?</td>";
+            }
+            else{
+                $statusHeader = "<th>Status</th>";
+            }
+            $statusColspan = 4;
         }
         $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;' >";
         $this->html .= "<thead>
@@ -199,7 +232,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             <th colspan='4' class='left_border'>".($startYear)."</th>
                             <th colspan='4' class='left_border'>".($startYear+1)."</th>
                             <th colspan='4' class='left_border'>".($startYear+2)."</th>
-                            <th colspan='3' class='left_border' width='33%'></th>
+                            <th colspan='{$statusColspan}' class='left_border' width='33%'></th>
                         </tr>
                         <tr>
                             <th>Activity</th>
@@ -225,9 +258,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         foreach($activities as $activityId => $milestones){
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
-            if($this->visibility['edit'] == 1){
+            if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                 $activityTitle = str_replace("'", "&#39;", $activity);
                 $activity = "<input type='text' name='milestone_activity[$activityId]' value='$activityTitle' />";
+            }
+            else if($this->visibility['edit'] == 1){
+                $activityTitle = str_replace("'", "&#39;", $activity);
+                $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' />$activity";
             }
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
@@ -235,7 +272,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 if($key != 0){
                     $this->html .= "<tr>";
                 }
-                if($this->visibility['edit'] == 1){
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
@@ -252,7 +289,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
 
                         $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
                         $checkbox = "";
-                        if($this->visibility['edit'] == 1){
+                        if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                             $checked = "";
                             if(isset($quarters[$y][$q])){
                                 $checked = "checked='checked'";
@@ -272,26 +309,28 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $commentIcon = ($comment != "") ? "<img style='float:right;padding-top:2px;' src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
                 $leader = $milestone->getLeader();
                 $peopleText = $milestone->getPeopleText();
+                $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
                 
-                if($this->visibility['edit'] == 1){
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $members = $project->getAllPeople();
                     $peopleNames = array();
                     foreach($members as $person){
                         $peopleNames[$person->getNameForForms()] = $person->getNameForForms();
                     }
-                    $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getNameForForms(), $peopleNames);
-                    $leaderText = $selectBox->render();
+                    if($this->canEditMilestone(null)){
+                        $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getNameForForms(), $peopleNames);
+                        $leaderText = $selectBox->render();
+                    }
+                    else{
+                        $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
+                    }
                     
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
-                else{
-                    $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
-                }
-                
                 $this->html .= "<td class='left_border' align='center' style='white-space:nowrap;'>{$leaderText}</td>";
                 $this->html .= "<td class='left_comment' align='center'>{$commentIcon}{$peopleText}</td>";
-                if($this->visibility['edit'] == 1){
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();
                     foreach(Milestone::$statuses as $status => $color){
                         $statuses[$status] = $status;
@@ -300,7 +339,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $selectBox = new SelectBox("milestone_status[$activityId][{$milestone->getMilestoneId()}]", "status", $milestone->getStatus(), $statuses);
                     $statusText = $selectBox->render();
                     $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
-                    $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
+                    if($this->canEditMilestone(null)){
+                        $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
+                    }
+                }
+                else if($this->visibility['edit'] && !$this->canEditMilestone($milestone)){
+                    $this->html .= "<td id='status' class='left_comment' align='center'></td>";
                 }
                 $this->html .= "</tr>";
             }
