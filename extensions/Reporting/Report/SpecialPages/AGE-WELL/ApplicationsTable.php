@@ -40,6 +40,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new TabbedPage("person");
 
         $tabbedPage->addTab(new ApplicationTab('RP_SIP', $nis));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis));
         $tabbedPage->showPage();
     }
     

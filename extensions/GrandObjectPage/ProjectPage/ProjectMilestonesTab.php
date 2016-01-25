@@ -226,7 +226,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $count = max(1, count($milestones));
             $activity = $activityNames[$activityId];
             if($this->visibility['edit'] == 1){
-                $activity = "<input type='text' name='milestone_activity[$activityId]' value='$activity' />";
+                $activityTitle = str_replace("'", "&#39;", $activity);
+                $activity = "<input type='text' name='milestone_activity[$activityId]' value='$activityTitle' />";
             }
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
@@ -235,8 +236,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $this->html .= "<tr>";
                 }
                 if($this->visibility['edit'] == 1){
-                    $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestone->getTitle()}' />
-                              <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestone->getTitle()}' />";
+                    $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
+                    $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
+                              <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
                 }
                 else{
                     $title = $milestone->getTitle();
@@ -280,7 +282,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getNameForForms(), $peopleNames);
                     $leaderText = $selectBox->render();
                     
-                    $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$milestone->getPeopleText()}' />";
+                    $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
+                    $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
                 else{
                     $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
