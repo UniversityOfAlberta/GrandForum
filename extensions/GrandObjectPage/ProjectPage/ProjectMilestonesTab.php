@@ -59,9 +59,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
                    $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
                     $milestone = Milestone::newFromId($milestoneId);
-                    DBFunctions::update('grand_milestones',
-                                        array('status' => 'Deleted'),
-                                        array('id' => $milestone->getId()));
+                    if($this->canEditMilestone($milestone)){
+                        DBFunctions::update('grand_milestones',
+                                            array('status' => 'Deleted'),
+                                            array('id' => $milestone->getId()));
+                    }
                 }
             }
         }
