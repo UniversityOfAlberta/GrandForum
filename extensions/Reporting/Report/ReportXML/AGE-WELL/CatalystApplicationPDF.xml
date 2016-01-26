@@ -63,7 +63,14 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="v" type="SelectReportItem" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
+        <ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
+            <![CDATA[
+                <li>
+                    <b>Collaborators/partners invested in the project (if applicable)</b> {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vi" type="SelectReportItem" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
             <![CDATA[
                 <li>
                     <b>The proposed project is best aligned with AGE-WELL:</b>
