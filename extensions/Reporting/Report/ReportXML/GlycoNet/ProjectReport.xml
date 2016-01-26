@@ -108,36 +108,40 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
-        <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES">
-            <![CDATA[
-                <p>Describe roles of each trainee within the project</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING">
-            <![CDATA[
-                <p>Describe any training initiatives undertaken during the funding period</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE">
-            <![CDATA[
-                <p>Did any trainees graduate or transition to the workforce? Describe.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY">
-            <![CDATA[
-                <p>How was cross-disciplinary training/experience achieved?</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
-            <![CDATA[
-                <p>Cross-reference training initiative progress to deliverables included in the original proposal.</p>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
+            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES">
+                    <![CDATA[
+                        <p>Describe role of the trainee within the project</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING">
+                    <![CDATA[
+                        <p>Describe any training initiatives undertaken during the funding period</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE">
+                    <![CDATA[
+                        <p>Did the trainee graduate or transition to the workforce? Describe.</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY">
+                    <![CDATA[
+                        <p>How was cross-disciplinary training/experience achieved?</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
+                    <![CDATA[
+                        <p>Cross-reference training initiative progress to deliverables included in the original proposal.</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="Networking" title="Networking and Partnerships">
         <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS">
@@ -175,7 +179,15 @@
         <ReportItem id="abstract" type="TextareaReportItem">
             <![CDATA[
                 <p>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</p>
-                [Coming Soon]
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[
+                <h2>Productivity</h2>
+                <p>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</p>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
