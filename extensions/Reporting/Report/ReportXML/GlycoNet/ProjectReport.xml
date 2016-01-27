@@ -50,7 +50,7 @@
                         <th>Location</th>
                         <th>Title</th>
                         <th>E-mail address</th>
-                        <th>Supervisor</th>
+                        <th>Supervisor(s)</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -85,7 +85,6 @@
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
         <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS">
             <![CDATA[
-                <h3>1. Research Achievements</h3>
                 <p><b>Describe significant achievements or advances made in this project over the funding period</b></p>
                 {$item}
             ]]>

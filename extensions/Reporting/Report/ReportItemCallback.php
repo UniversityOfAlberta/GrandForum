@@ -290,8 +290,8 @@ class ReportItemCallback {
         $nis = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END))){
+            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $ni){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59"))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -519,7 +519,7 @@ class ReportItemCallback {
             return;
         }
         //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
-        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         
         $hqp_milestone_comments = "";
         $alreadyDone = array();
@@ -565,7 +565,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -595,7 +595,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -635,7 +635,7 @@ class ReportItemCallback {
     
     function getReportSABComments(){
         $ret = "";
-        $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-01-01', $this->reportItem->getReport()->year.'-12-31');
+        $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-04-01', ($this->reportItem->getReport()->year+1).'-03-31');
         
         $index = 1;
         foreach($sabs as $sab){
@@ -718,7 +718,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -749,10 +749,10 @@ class ReportItemCallback {
         }
         $me = Person::newFromId($this->reportItem->personId);
         
-        $hqps = $me->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $hqps = $me->getHQPDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $hqp_comments = "";
         foreach($hqps as $hqp){
-            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59")){
                 $hqp_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $hqp->getId(), $this->reportItem->projectId);
                 $hqp_blob->load($hqp_rep_addr);
                 $hqp_data = $hqp_blob->getData();
@@ -935,7 +935,7 @@ class ReportItemCallback {
     function getUserProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject()){
                 $deleted = ($project->isDeleted()) ? " (Ended)" : "";
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
@@ -960,7 +960,7 @@ class ReportItemCallback {
     function getUserPhase1Projects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject() && $project->getPhase() == 1){
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
@@ -974,7 +974,7 @@ class ReportItemCallback {
     function getUserPhase2Projects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject() && $project->getPhase() == 2){
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
@@ -1026,7 +1026,7 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $total = 0;
         $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             $blob = new ReportBlob(BLOB_ARRAY, substr(REPORTING_CYCLE_START, 0, 4), $person->getId(), $project->getId());
             $blob->load($rep_addr);
             $data = $blob->getData();
