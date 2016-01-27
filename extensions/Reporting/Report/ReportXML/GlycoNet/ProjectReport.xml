@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="" personId="0" ajax="true" disabled="false">
+<Report name="Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProjectReport" personId="0" ajax="true" disabled="false">
     <ReportSection id="information" type="ReportSection" name="Project Information">
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
@@ -208,6 +208,11 @@
                 <p>Provide a written explanation of any deviation between the actual contributions and anticipated expenditures and those proposed in the original approved proposal.</p>
                 {$item}
             ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
 </Report>
