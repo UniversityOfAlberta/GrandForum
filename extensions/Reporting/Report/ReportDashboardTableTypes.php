@@ -9,6 +9,7 @@ define('PROJECT_REPORT_TIME_STRUCTURE', 104);
 define('PROJECT_ROSTER_STRUCTURE', 105);
 define('PROJECT_CHAMP_ROSTER_STRUCTURE', 106);
 define('PROJECT_NI_ROSTER_STRUCTURE', 107);
+define('PROJECT_CONTRIBUTION_STRUCTURE', 108);
 
 $productStructure = Product::structure();
 $categories = array_keys($productStructure['categories']);
@@ -84,20 +85,27 @@ $dashboardStructures[HQP_REPORT_STRUCTURE] =
     );
 
 $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
-    array(array_merge(array(HEAD."(People)"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END),
-                                                              STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+    array(array_merge(array(HEAD."(People)"), $head, array(HEAD."(Multimedia)")),
+          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE_ROLES),
                                                                  $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END),
-                                                                       STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array_merge(
                                                                  array(PROJECT_PEOPLE_ROLES),
                                                                  $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END),
-                                                                       STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END),
-                                                              STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END)))
+                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END)))
+    );
+    
+$dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] = 
+    array(array_merge(array(HEAD."(People)"), array(HEAD."(Contributions)")),
+          array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE_ROLES),
+                                                                 array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array_merge(
+                                                                 array(PROJECT_PEOPLE_ROLES),
+                                                                 array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+          array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END)))
     );
     
 $dashboardStructures[PROJECT_REPORT_TIME_STRUCTURE] = 

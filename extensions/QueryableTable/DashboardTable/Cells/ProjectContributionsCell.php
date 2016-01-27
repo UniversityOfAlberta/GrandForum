@@ -151,7 +151,7 @@ EOF;
                 $amount = $contribution->getTotal();
             }
             $amount = number_format($amount);
-            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td class='pdfnodisplay' style='text-align:right;'>\${$amount} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td class='pdfnodisplay'>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly'><div style='display:inline-block;width: 17.5%;margin-left:2.5%;vertical-align:top;'>".implode("<br />", $parts)."</div><div style='display:inline-block;width: 10%;vertical-align:top;text-align:right;'>".implode("<br />", $amounts)."<br /><b>\${$amount}</b></div><div style='display:inline-block;vertical-align:top;width:20%;'>".implode("<br />", $types)."</div><div class='pdfOnly' style='width:50%;text-align:right;display:inline-block;'><i>".implode(", ", $projs)."</i></div></div></td>";
+            $details = "<td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span>, {$date}</span><div><div style='display:inline-block;width: 17.5%;margin-left:2.5%;vertical-align:top;'>".implode("<br />", $parts)."</div><div style='display:inline-block;width: 10%;vertical-align:top;text-align:right;'>".implode("<br />", $amounts)."<br /><b>\${$amount}</b></div><div style='display:inline-block;vertical-align:top;width:20%;'>".implode("<br />", $types)."</div><div style='width:50%;text-align:right;display:inline-block;'><i>".implode(", ", $projs)."</i></div></div></td>";
             return $details;
         }
         

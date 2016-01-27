@@ -181,8 +181,7 @@ class ContributionPage {
                                             sum += parseInt($(val).val());
                                         }
                                     });
-                                    $('#contributionTotalPerYear').html(sum);
-                                    $('#contributionTotal').html(sum*years);
+                                    $('#contributionTotal').html(sum);
                                 }
                                 
                                 $(document).ready(function(){
@@ -533,15 +532,13 @@ class ContributionPage {
                         $wgOut->addHTML("<a href='javascript:addPartner();' class='button'>Add Partner</a>");
                     }
                     if(!$create){
-                        $totalPerYear = $contribution->getTotal();
-                        $total = $totalPerYear*$contribution->getNYears();
+                        $total = $contribution->getTotal();
                     }
                     else{
-                        $totalPerYear = 0;
                         $total = 0;
                     }
                     $wgOut->addHTML("<div style='background:#EEE;padding:5px;'>");
-                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: $<span id='contributionTotal'>{$total}</span> <small>($<span id='contributionTotalPerYear'>{$totalPerYear}</span>/year)</small></h3>");
+                    $wgOut->addHTML("<h3 style='padding-top:0;'>Total: $<span id='contributionTotal'>{$total}</span></h3>");
                     $wgOut->addHTML("</div>");
                     
                     if($edit || !$edit && count($contribution->getProjects()) > 0){

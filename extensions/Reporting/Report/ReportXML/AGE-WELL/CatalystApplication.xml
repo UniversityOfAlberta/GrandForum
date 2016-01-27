@@ -34,22 +34,22 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions">
+    <ReportSection id="description" tooltip="2016 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2016 AGE-WELL Catalyst Program">
         <ReportItem id="description" type="Static">
             <![CDATA[
                 <h3>Program Description</h3>
-                <p>AGE-WELL’s Catalyst Program supports creative, novel and innovative research projects that will generate, promote or accelerate economic and social benefits aligned with AGE-WELL’s mission and vision. The Catalyst Program will support scalable research projects including pilot studies, feasibility studies, and novel and innovative approaches aligned with research priorities and themes. It is expected that successful Catalyst projects may be suitable for future AGE-WELL investments.</p>
+                <p>AGE-WELL’s Catalyst Program supports creative, novel and innovative research projects that will generate, promote or accelerate economic and social benefits aligned with AGE-WELL’s research priorities and themes. The Catalyst Program will support scalable research projects including pilot studies, feasibility studies, and novel and innovative approaches aligned with research priorities and themes. It is expected that successful Catalyst projects may be suitable for future AGE-WELL investments.</p>
 
                 <p>Successful projects should accelerate Canadian innovation and economic competitiveness, and improve the quality of life for older adults or caregivers.</p>
 
                 <p>The theme of each call will be determined by the Research Management Committee and announced with each competition.</p> 
 
-                <p>The theme of the 2016 Catalyst Program is "Older workers and the workplace".</p>
+                <p><u>The theme of the 2016 Catalyst Program</u> is "Older workers and the workplace".</p>
 
                 <p>Priority in this competition will be given to research that looks at topics such as (but not restricted to): productivity in the workplace; helping and attracting older workers stay in the workforce; making the workplace more supportive for older workers; combining caregiving and paid work; technology to support older workers in the age-care sector.  We strongly advise that researchers have strong industry and community partnerships, so that the research will contribute to improving best practice in relation to older workers. 
                 </p>
                 
-                <h3>Maximum Investment</h3>
+                <h3>Award Value</h3>
                 <p>$35,000 with an upper limit of $50,000 from AGE-WELL where there are cash contributions from partners. </p>
                 
                 <h3>Timeframe</h3>
@@ -63,7 +63,7 @@
 
                 <p>Funded projects must be aligned with AGE-WELL’s overall mission and vision (<a href='http://agewell-nce.ca/research' target='_blank'>http://agewell-nce.ca/research</a>) and tied to one of the specified themes chosen by AGE-WELL’s Research Management Committee.</p>
                 
-                <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application. For reporting purposes, all partnership activities should be quantified in Section 3 as well as in Part 2 – Appendix of the application package.</p>
+                <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application. For reporting purposes, all partnership activities should be quantified in the Partnerships and Letters section as well as in the Budget and Activities section of the application package.</p>
                 
                 <h3>Application Forms and Process</h3>
                 <p>Catalyst applications will be accepted online through the AGE-WELL Forum Research Portal. The application consists of a 5 page maximum narrative application; tables for team summary, budget and partner contributions, activities and milestones; and partner letter(s) of support, if applicable.</p>
@@ -77,7 +77,7 @@
                 </ol>
 
                 <h3>Submission Deadlines:</h3>
-                <p>Applications must be received through the AGE-WELL Forum Research Portal by 5:00pm EST on <b>Friday, February 19, 2016.</b></p>
+                <p>Applications must be received through the AGE-WELL Forum Research Portal by 5:00pm EST on <b>Friday, March 4th, 2016</b>.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -125,7 +125,14 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="v" type="SelectReportItem" blobType="BLOB_TEXT" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
+        <ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
+            <![CDATA[
+                <li>
+                    <b>Collaborators/partners invested in the project (if applicable)</b> {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vi" type="SelectReportItem" blobType="BLOB_TEXT" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
             <![CDATA[
                 <li>
                     <b>The proposed project is best aligned with AGE-WELL</b>
@@ -259,7 +266,7 @@
         <ReportItem id="collab" type="TextareaReportItem" rich="true" blobItem="COLLAB">
             <![CDATA[
                 <li><b>Collaborators/Partners and added value of the collaboration - </b>
-                    <i>list in Part 3 of this application and ensure that a letter of support is included. Partner contributions should appear in the Appendix section in the Budget spreadsheet.</i>
+                    <i>list in Partnership Section of this application and ensure that a letter of support is included. Partner contributions should appear in the Appendix section in the Budget spreadsheet.</i>
                     {$item}
                 </li>
             ]]>
@@ -386,7 +393,7 @@
     <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="partners" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Partner Organization/ Research Receptor|Potential Conflict of Interest|Role in Project and Specific&lt;br /&gt;Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" sizes="175|75|175|75|75">
             <![CDATA[
-                <p>List each organization that will partner in the project, their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. All financial information provided in the budget in Part 2: Appendix should also appear in the pertinent areas of the project budget, and individuals from these organizations that will be participating as project team members should also be listed in the Project Team List.</p>
+                <p>List each organization that will partner in the project, their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. All financial information provided in the budget in the Budget and Activities section should also appear in the pertinent areas of the project budget, and individuals from these organizations that will be participating as project team members should also be listed in the Project Team List.</p>
 
                 <p><u>Please provide a letter of support</u> on the letterhead of each eligible partner detailing the extent of their collaboration and/or cash and in-kind contribution towards the project. The letter should specifically include reference to AGE-WELL, the proposed project, and any conditions placed on funding.</p>
 
