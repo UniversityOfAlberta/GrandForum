@@ -275,6 +275,8 @@ EOF;
             // Don't alter the text in any way
         }
         else{
+            $value = str_replace("<", "&lt;", $value);
+            $value = str_replace(">", "&gt;", $value);
             nl2br($value);
         }
         return $value;
