@@ -48,6 +48,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Location</th>
+                        <th>Title</th>
                         <th>E-mail address</th>
                         <th>Supervisor</th>
                     </tr>
@@ -59,6 +60,7 @@
                     <tr>
                         <td>{$user_name}</td>
                         <td>{$user_uni}</td>
+                        <td>{$user_level}</td>
                         <td>{$user_email}</td>
                         <td>{$user_supervisors}</td>
                     </tr>
@@ -202,6 +204,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="false" details="true" totalOnly="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
             <![CDATA[
                 <h3>Justification</h3>
