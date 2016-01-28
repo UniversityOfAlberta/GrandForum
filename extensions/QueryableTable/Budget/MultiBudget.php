@@ -80,6 +80,12 @@ class MultiBudget {
                 $ret .= "<a class='button' onClick='$(this).parent().hide();$(this).parent().prev().show();'>&lt;</a>&nbsp;
                          <a class='button' onClick='$(this).parent().hide();$(this).parent().next().show();'>&gt;</a>";
             }
+            else if($key == 0 && $this->nBudgets() == 1){
+                // Only Budget
+                $ret .= "<div>";
+                $ret .= "<a class='button disabledButton'>&lt;</a>&nbsp;
+                         <a class='button disabledButton'>&gt;</a>";
+            }
             else{
                 // Last
                 $ret .= "<div style='display:none;'>";
