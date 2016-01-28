@@ -19,6 +19,15 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="NFI">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="" />
+            <SectionPermission id="hqp_description" permissions="" />
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="declaration" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
         <Role role="NI">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="" />
