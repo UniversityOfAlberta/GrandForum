@@ -50,7 +50,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
                 $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
-                $_POST['comment'] = "";
+                $_POST['comment'] = $_POST['milestone_comment'][$activityId][$milestoneId];
                 $_POST['id'] = $milestoneId;
                 
                 $milestoneApi = new ProjectMilestoneAPI(true);
@@ -188,7 +188,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
         </style>";
         $statusHeader = "";
-        $statusColspan = 2;
+        $statusColspan = 3;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -253,6 +253,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             <th>Q4</th>
                             <th class='left_border'>Leader</th>
                             <th>Personnel</th>
+                            <th></th>
                             {$statusHeader}
                         </tr>
                         </thead>
@@ -270,11 +271,14 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
+            if(count($milestones) == 0){
+                $this->html .= "<td colspan='".($statusColspan+1+(3*4))."'></td>";
+            }
             foreach($milestones as $key => $milestone){
                 if($key != 0){
                     $this->html .= "<tr>";
                 }
-                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
@@ -308,7 +312,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
-                $commentIcon = ($comment != "") ? "<img style='float:right;padding-top:2px;' src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
+                $commentIcon = ($comment != "") ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
                 $leader = $milestone->getLeader();
                 $peopleText = $milestone->getPeopleText();
                 $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
@@ -326,12 +330,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     else{
                         $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
                     }
-                    
+                    $commentIcon = "<div class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
                 $this->html .= "<td class='left_border' align='center' style='white-space:nowrap;'>{$leaderText}</td>";
-                $this->html .= "<td class='left_comment' align='center'>{$commentIcon}{$peopleText}</td>";
+                $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
+                $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();
                     foreach(Milestone::$statuses as $status => $color){
@@ -357,12 +362,25 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             var colors = ".json_encode(Milestone::$statuses).";
             
             $('#milestones_table td').qtip();
-            $('#milestones_table td.left_comment img').qtip({
+            $('#milestones_table td.comment img').qtip({
                 position: {
                     my: 'topRight',
                     at: 'bottomLeft'
                 }
             });
+            
+            /*$('#milestones_table div.comment').click(function(){
+                var that = $(this);
+                $('.comment_dialog', $(this).parent()).dialog({
+                    width: 'auto',
+                    buttons: {
+                        'Done': function(){
+                            $(this).parent().prependTo(that);
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            });*/
             
             var changeColor = function(){
                 var checked = $(this).is(':checked');

@@ -61,6 +61,8 @@ class ReportItemCallback {
             "my_name" => "getMyName",
             "my_first_name" => "getMyFirstName",
             "my_last_name" => "getMyLastName",
+            "my_roles" => "getMyRoles",
+            "my_full_roles" => "getMyFullRoles",
             "parent_id" => "getParentId",
             "parent_name" => "getParentName",
             "parent_uni" => "getParentUni",
@@ -147,6 +149,7 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "concat" =>"concat",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
@@ -767,23 +770,66 @@ class ReportItemCallback {
     }
     
     function getMyId(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getId();
     }
     
     function getMyName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getNameForForms();
     }
     
     function getMyFirstName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getFirstName();
     }
     
     function getMyLastName(){
-        $person = $this->reportItem->getReport()->person;
+        $person = Person::newFromWgUser();
         return $person->getLastName();
+    }
+    
+    function getMyRoles(){
+        $person = Person::newFromWgUser();
+        $project = Project::newFromId($this->reportItem->projectId);
+        $roles = $person->getRoles();
+        $roleNames = array();
+        foreach($roles as $role){
+            if($project != null && $project->getId() != 0){
+                if($role->hasProject($project)){
+                    $roleNames[$role->getRole()] = $role->getRole();
+                }
+            }
+            else{
+                $roleNames[$role->getRole()] = $role->getRole();
+            }
+        }
+        return implode(", ", $roleNames);
+    }
+    
+    function getMyFullRoles(){
+        $person = Person::newFromWgUser();
+        $project = Project::newFromId($this->reportItem->projectId);
+        $roles = $this->getMyRoles();
+        if($project != null && $project->getId() != 0){
+            if($person->leadershipOf($project)){
+                if($roles != ""){
+                    $roles .= ", PL";
+                }
+                else{
+                    $roles .= "PL";
+                }
+            }
+        }
+        else if($person->isProjectLeader()){
+            if($roles != ""){
+                $roles .= ", PL";
+            }
+            else{
+                $roles .= "PL";
+            }
+        }
+        return $roles;
     }
     
     function getUserUrl(){
@@ -1551,6 +1597,10 @@ class ReportItemCallback {
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+    }
+    
+    function concat($str1, $str2){
+        return "{$str1}{$str2}";
     }
     
     function add($val1, $val2){

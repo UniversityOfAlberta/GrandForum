@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProjectReport" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="PL">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="--" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="--" />
+        </Role>
+        <Role role="HQP">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="milestones" permissions="--" />
+            <SectionPermission id="achievements" permissions="--" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="--" />
+            <SectionPermission id="ktee" permissions="r" />
+            <SectionPermission id="budget" permissions="--" />
+            <SectionPermission id="contributions" permissions="--" />
+            <SectionPermission id="review" permissions="--" />
+        </Role>
+    </Permissions>
     <ReportSection id="information" type="ReportSection" name="Project Information">
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
@@ -83,30 +118,115 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS">
-            <![CDATA[
-                <p><b>Describe significant achievements or advances made in this project over the funding period</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
-            <![CDATA[
-                <p><b>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
-            <![CDATA[
-                <p><b>Outline the impact of these achievements in terms of the goals of the Project, of the theme and of GlycoNet.</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
-            <![CDATA[
-                <p><b>What are the benefits to Canada of the work to date?</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <ReportItem id="comments" type="StaticReportItem">
+                <![CDATA[
+                    {set(achievements,)}
+                    {set(deliverables,)}
+                    {set(impact,)}
+                    {set(benefits,)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+                <ReportItem id="comments" type="StaticReportItem">
+                    <![CDATA[
+                        {set(achievements,{concat({get(achievements)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,ACHIEVEMENTS,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(deliverables,{concat({get(deliverables)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,DELIVERABLES,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(impact,{concat({get(impact)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,IMPACT,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(benefits,{concat({get(benefits)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,BENEFITS,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="achievements_popup" type="PopupReportItem" title="NI Comments" text="{get(achievements)}">
+                <![CDATA[
+                    <p><b>Describe significant achievements or advances made in this project over the funding period</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="deliverables_popup" type="PopupReportItem" title="NI Comments" text="{get(deliverables)}">
+                <![CDATA[
+                    <p><b>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
+                <![CDATA[
+                    <p><b>Outline the impact of these achievements in terms of the goals of the Project, of the theme and of GlycoNet.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="benefits_popup" type="PopupReportItem" title="NI Comments" text="{get(benefits)}">
+                <![CDATA[
+                    <p><b>What are the benefits to Canada of the work to date?</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
+            <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Describe significant achievements or advances made in this project over the funding period</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Outline the impact of these achievements in terms of the goals of the Project, of the theme and of GlycoNet.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>What are the benefits to Canada of the work to date?</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
