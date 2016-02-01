@@ -330,7 +330,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     else{
                         $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
                     }
-                    $commentIcon = "<div class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
+                    $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
@@ -379,18 +379,20 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
             });
             
-            /*$('#milestones_table div.comment').click(function(){
+            $('#milestones_table div.comment').click(function(){
                 var that = $(this);
                 $('.comment_dialog', $(this).parent()).dialog({
                     width: 'auto',
                     buttons: {
                         'Done': function(){
-                            $(this).parent().prependTo(that);
                             $(this).dialog('close');
                         }
+                    },
+                    close: function( event, ui ) {
+                        $(this).parent().prependTo(that.parent());
                     }
                 });
-            });*/
+            });
             
             var changeColor = function(){
                 var checked = $(this).is(':checked');

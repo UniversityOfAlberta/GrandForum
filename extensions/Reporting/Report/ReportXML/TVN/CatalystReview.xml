@@ -606,7 +606,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
