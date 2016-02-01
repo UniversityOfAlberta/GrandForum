@@ -1541,7 +1541,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="cat_src_review" name="Cat. SRC/Ext Review" tooltip="Review of Catalyst Proposals" type="ReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-EX" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="script_init" type="StaticReportItem">
                     <![CDATA[
@@ -1654,7 +1654,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>A. Scientific Excellence (External/ISAC)</h3>
+                        <h3>A. Scientific Excellence (External/SRC/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table1ex">
                             <thead>
                                 <tr>
@@ -1785,7 +1785,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        <h3>B. Project Feasibility (External/ISAC)</h3>
+                        <h3>B. Project Feasibility (External/SRC/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table2ex">
                             <thead>
                                 <tr>
@@ -1856,214 +1856,6 @@
                         </div>
                         <script type='text/javascript'>
                             $("#{$project_id}_table2ex.wikitable").dataTable({'autoWidth': false});
-                        </script>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="table_head" type="StaticReportItem">
-                    <![CDATA[
-                        <div style="margin: 10px;">
-                        <h3>A. Scientific Excellence (SRC)</h3>
-                        <table class='wikitable' id="{$project_id}_table1">
-                            <thead>
-                                <tr>
-                                    <th>Reviewer</th>
-                                    <th>Q1</th>
-                                    <th>Q2</th>
-                                    <th>Q3</th>
-                                    <th>Q4</th>
-                                    <th>Q5</th>
-                                    <th>Q6</th>
-                                    <th>Q7</th>
-                                    <th>Q8</th>
-                                    <th>Q9</th>
-                                    <th>Total</th>
-                                    <th width='60%'>Comments</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    ]]>
-                </ReportItem>
-                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
-                    <ReportItem id="row" type="StaticReportItem">
-                        <![CDATA[
-                            <tr>
-                            <td>{$user_name}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>
-                                {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
-                                     {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},
-                                          {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},
-                                               {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},
-                                                         {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},
-                                                              {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},
-                                                                   {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},
-                                                                        {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})}
-                                                                   )}
-                                                              )}
-                                                         )}
-                                                    )}
-                                               )}
-                                          )}
-                                     )}
-                                )},36)},5)},2)}
-                            </td>
-                            <td>
-                                <div style='max-height: 115px; overflow-y: auto;'>
-                                    {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}
-                                </div>
-                            </td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-                <ReportItem id="table_foot" type="StaticReportItem">
-                    <![CDATA[
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style='white-space:nowrap;'>Average Scores:</th>
-                                    <th>
-                                        {round({divide({get(qa1)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa2)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa3)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa4)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa5)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa6)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa7)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa8)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qa9)},{get(nAReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {set(total, 
-                                            {add({get(qa1)}, 
-                                                {add({get(qa2)},
-                                                    {add({get(qa3)},
-                                                        {add({get(qa4)},
-                                                            {add({get(qa5)},
-                                                                {add({get(qa6)},
-                                                                    {add({get(qa7)},
-                                                                        {add({get(qa8)},
-                                                                             {get(qa9)}
-                                                                        )}
-                                                                    )}
-                                                                )}
-                                                            )}
-                                                        )}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                        {round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},2)}
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        </div>
-                        <script type='text/javascript'>
-                            $("#{$project_id}_table1.wikitable").dataTable({'autoWidth': false});
-                        </script>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="table_head" type="StaticReportItem">
-                    <![CDATA[
-                        <div style="margin: 10px;">
-                        <h3>B. Project Feasibility (SRC)</h3>
-                        <table class='wikitable' id="{$project_id}_table2">
-                            <thead>
-                                <tr>
-                                    <th>Reviewer</th>
-                                    <th>Q1</th>
-                                    <th>Q2</th>
-                                    <th>Q3</th>
-                                    <th>Total</th>
-                                    <th width='60%'>Comments</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    ]]>
-                </ReportItem>
-                <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
-                    <ReportItem id="row" type="StaticReportItem">
-                        <![CDATA[
-                            <tr>
-                            <td>{$user_name}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>
-                                {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                     {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                          {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                     )}
-                                )},12)},5)},2)}
-                            </td>
-                            <td>
-                                <div style='max-height: 115px; overflow-y: auto;'>
-                                    {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}
-                                </div>
-                            </td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
-                <ReportItem id="table_foot" type="StaticReportItem">
-                    <![CDATA[
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style='white-space:nowrap;'>Average Scores:</th>
-                                    <th>
-                                        {round({divide({get(qb1)},{get(nBReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qb2)},{get(nBReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(qb3)},{get(nBReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {set(total, 
-                                            {add({get(qb1)}, 
-                                                {add({get(qb2)},
-                                                     {get(qb3)}
-                                                )}
-                                            )}
-                                        )}
-                                        {round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},2)}
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        </div>
-                        <script type='text/javascript'>
-                            $("#{$project_id}_table2.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
                 </ReportItem>
@@ -2244,7 +2036,7 @@
     <ReportSection id="cat_review_summary" name="Catalyst Summary" tooltip="Catalyst Summary" type="ReportSection">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>A. Scientific Excellence (External/ISAC)</h3>
+                <h3>A. Scientific Excellence (External/SRC/ISAC)</h3>
                 <table class='wikitable' id="eval_table1ex">
                     <thead>
                         <tr>
@@ -2386,7 +2178,7 @@
         </ReportItem>
         <ReportItem id="table_head" type="Static">
             <![CDATA[
-                <h3>B. Project Feasibility (External/ISAC)</h3>
+                <h3>B. Project Feasibility (External/SRC/ISAC)</h3>
                 <table class='wikitable' id="eval_table2ex">
                     <thead>
                         <tr>
@@ -2467,236 +2259,6 @@
                 </table>
                 <script type='text/javascript'>
                     $("#eval_table2ex").dataTable({'autoWidth': false,
-                                                'iDisplayLength': -1,
-                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
-                </script>
-            ]]>
-        </ReportItem>
-        <ReportItem id="table_head" type="Static">
-            <![CDATA[
-                <h3>A. Scientific Excellence (SRC)</h3>
-                <table class='wikitable' id="eval_table1">
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Q4</th>
-                            <th>Avg. Q5</th>
-                            <th>Avg. Q6</th>
-                            <th>Avg. Q7</th>
-                            <th>Avg. Q8</th>
-                            <th>Avg. Q9</th>
-                            <th>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
-                <![CDATA[
-                    {set(qa1, 0)}
-                    {set(qa2, 0)}
-                    {set(qa3, 0)}
-                    {set(qa4, 0)}
-                    {set(qa5, 0)}
-                    {set(qa6, 0)}
-                    {set(qa7, 0)}
-                    {set(qa8, 0)}
-                    {set(qa9, 0)}
-                    
-                    {set(nAReviewers, 0)}
-                ]]>
-            </ReportItem>
-            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},)}
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},)}
-                                                      )}">
-                    <![CDATA[
-                        {set(qa1, {add({get(qa1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})})})}
-                        {set(qa2, {add({get(qa2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})})})}
-                        {set(qa3, {add({get(qa3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})})})}
-                        {set(qa4, {add({get(qa4)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})})})}
-                        {set(qa5, {add({get(qa5)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})})})}
-                        {set(qa6, {add({get(qa6)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})})})}
-                        {set(qa7, {add({get(qa7)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})})})}
-                        {set(qa8, {add({get(qa8)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})})})}
-                        {set(qa9, {add({get(qa9)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})})})}
-                        {set(nAReviewers, {add({get(nAReviewers)},1)})}
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
-                <![CDATA[
-                    {set(total, 
-                        {add({get(qa1)}, 
-                            {add({get(qa2)},
-                                {add({get(qa3)},
-                                    {add({get(qa4)},
-                                        {add({get(qa5)},
-                                            {add({get(qa6)},
-                                                {add({get(qa7)},
-                                                    {add({get(qa8)},
-                                                         {get(qa9)}
-                                                    )}
-                                                )}
-                                            )}
-                                        )}
-                                    )}
-                                )}
-                            )}
-                        )}
-                    )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nAReviewers)})},36)},5)},2)})}
-                    {set(highlight,)}
-                ]]>
-            </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
-                <![CDATA[
-                    {set(highlight,background:#FFCC00)}
-                ]]>
-            </ReportItem>
-            <ReportItem id="table_row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;'><b>{$project_name}</b></td>
-                        <td align='right'>
-                            {round({divide({get(qa1)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa2)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa3)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa4)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa5)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa6)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa7)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa8)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qa9)},{get(nAReviewers)})},2)}
-                        </td>
-                        <td align='right' style='{get(highlight)}'>
-                            {get(total)}
-                        </td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
-            <![CDATA[
-                    </tbody>
-                </table>
-                <script type='text/javascript'>
-                    $("#eval_table1").dataTable({'autoWidth': false,
-                                                'iDisplayLength': -1,
-                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
-                </script>
-            ]]>
-        </ReportItem>
-        <ReportItem id="table_head" type="Static">
-            <![CDATA[
-                <h3>B. Project Feasibility (SRC)</h3>
-                <table class='wikitable' id="eval_table2">
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
-            <ReportItem id="script_init" type="StaticReportItem">
-                <![CDATA[
-                    {set(qb1, 0)}
-                    {set(qb2, 0)}
-                    {set(qb3, 0)}
-                    
-                    {set(nBReviewers, 0)}
-                ]]>
-            </ReportItem>
-            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
-                <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
-                                                           {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}
-                                                      )}">
-                    <![CDATA[
-                        {set(qb1, {add({get(qb1)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})})})}
-                        {set(qb2, {add({get(qb2)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})})})}
-                        {set(qb3, {add({get(qb3)},{getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})})})}
-                        {set(nBReviewers, {add({get(nBReviewers)},1)})}
-                    ]]>
-                </ReportItem>
-            </ReportItemSet>
-            <ReportItem id="total" type="StaticReportItem">
-                <![CDATA[
-                    {set(total, 
-                        {add({get(qb1)}, 
-                            {add({get(qb2)},
-                                 {get(qb3)}
-                            )}
-                        )}
-                    )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nBReviewers)})},12)},5)},2)})}
-                    {set(highlight,)}
-                ]]>
-            </ReportItem>
-            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
-                <![CDATA[
-                    {set(highlight,background:#FFCC00)}
-                ]]>
-            </ReportItem>
-            <ReportItem id="table_row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td style='white-space:nowrap;'><b>{$project_name}</b></td>
-                        <td align='right'>
-                            {round({divide({get(qb1)},{get(nBReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qb2)},{get(nBReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(qb3)},{get(nBReviewers)})},2)}
-                        </td>
-                        <td align='right' style='{get(highlight)}'>
-                            {get(total)}
-                        </td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="table_foot" type="Static">
-            <![CDATA[
-                    </tbody>
-                </table>
-                <script type='text/javascript'>
-                    $("#eval_table2").dataTable({'autoWidth': false,
                                                 'iDisplayLength': -1,
                                                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
                 </script>
