@@ -358,6 +358,16 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
         $this->html .= "</tbody>
                         </table>";
+        $this->html .= "<table style='float:right;'>
+                            <tr>
+                                <th>Legend</th>
+                            </tr>";
+        foreach(Milestone::$statuses as $status => $color){
+            $this->html .= "<tr>
+                                <td class='smallest'><div style='text-align:center;padding:1px 3px;background:{$color};border:1px solid #555555;white-space:nowrap;'>$status</div></td>
+                            </tr>";
+        }
+        $this->html .= "</table>";
         $this->html .= "<script type='text/javascript'>
             var colors = ".json_encode(Milestone::$statuses).";
             
