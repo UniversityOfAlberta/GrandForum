@@ -55,7 +55,7 @@ class ContributionPage {
                             $researchers = array();
                             if(is_array($_POST['researchers'])){
                                 foreach(array_unique($_POST['researchers']) as $researcher){
-                                     $person = Person::newFromNameLike(str_replace(" ", ".", $researcher));
+                                     $person = Person::newFromNameLike($researcher);
                                      if($person != null && $person->getName() != null){
                                         $researchers[] = $person->getId();
                                      }
