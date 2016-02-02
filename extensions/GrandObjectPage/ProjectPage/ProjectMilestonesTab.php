@@ -312,7 +312,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
-                $commentIcon = ($comment != "") ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
+                $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
                 $leader = $milestone->getLeader();
                 $peopleText = $milestone->getPeopleText();
                 $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
@@ -330,7 +330,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     else{
                         $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
                     }
-                    $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
+                    $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
@@ -388,7 +388,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             $(this).dialog('close');
                         }
                     },
-                    close: function( event, ui ) {
+                    close: function(event, ui){
                         $(this).parent().prependTo(that.parent());
                     }
                 });
