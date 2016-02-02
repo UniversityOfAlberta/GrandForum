@@ -100,10 +100,10 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] =
 $dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] = 
     array(array_merge(array(HEAD."(People)"), array(HEAD."(Contributions)")),
           array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE_ROLES),
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE),
                                                                  array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array_merge(
-                                                                 array(PROJECT_PEOPLE_ROLES),
+                                                                 array(PROJECT_PEOPLE),
                                                                  array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END)))
     );

@@ -458,9 +458,9 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="true" details="true" showButton="false" totalOnly="true">
             <![CDATA[
-                {$item}
+                {$item}<br />
                 <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:AddContributionPage' target='_blank'>Add/Edit Contributions</a>
             ]]>
         </ReportItem>
