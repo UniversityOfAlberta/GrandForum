@@ -312,7 +312,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
-                $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$comment}' />" : "";
+                $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
+                $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
                 $leader = $milestone->getLeader();
                 $peopleText = $milestone->getPeopleText();
                 $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
