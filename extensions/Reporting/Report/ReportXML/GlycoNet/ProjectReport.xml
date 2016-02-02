@@ -267,7 +267,8 @@
                     <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$user_id}">
                         <![CDATA[
                             <p><b>Cross-reference training initiative progress to deliverables included in the original proposal.</b></p>
-                            {$item}
+                            {$item}<br />
+                            <br />
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
