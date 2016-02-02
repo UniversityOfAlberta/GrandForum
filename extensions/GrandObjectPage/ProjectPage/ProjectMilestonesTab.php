@@ -50,7 +50,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
                 $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
-                $_POST['comment'] = $_POST['milestone_comment'][$activityId][$milestoneId];
+                $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
                 $_POST['id'] = $milestoneId;
                 
                 $milestoneApi = new ProjectMilestoneAPI(true);
