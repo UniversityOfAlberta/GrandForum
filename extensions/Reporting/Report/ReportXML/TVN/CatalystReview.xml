@@ -25,6 +25,18 @@
             <SectionPermission id="src_review" permissions="" />
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
+        <Person id="831">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="rw" />
+        </Person>
+        <Person id="847">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="eula" name="Agreement" title="Confidentiality Agreement" tooltip="Confidentiality Agreement" blobSection="CAT_SRC_EULA" type="EULA">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to abide by the confidentiality agreement" 
@@ -1111,8 +1123,13 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+        <ReportItem id="footnote" type="StaticReportItem">
+            <![CDATA[
+                <p style='font-size:1.5em;'>Please continue to the Fit Review</p>
+            ]]>
+        </ReportItem>
     </ReportSection>
-    <ReportSection id="rmc_review" name="RMC Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
+    <ReportSection id="rmc_review" name="Fit Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -1135,12 +1152,6 @@
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
                         <div id="proj{$project_id}">
-                        <table class='wikitable'>
-                            <tr><td><b>Project Leader:</b></td><td>{$project_leaders}</td></tr>
-                            <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
-                            <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
-                        </table>
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                     ]]>
                 </ReportItem>
