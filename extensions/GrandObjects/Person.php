@@ -3235,6 +3235,20 @@ class Person extends BackboneModel {
         }
         return $papersArray;
     }
+
+    function getUserStories(){
+	$stories = array();
+	$data = DBFunctions::select(array('grand_user_stories'),
+                                    array('rev_id'),
+                                    array('user_id' => EQ($this->getId())));
+        if(count($data) > 0){
+	    foreach($data as $storydata){
+		$story = Story::newFromId($storydata['rev_id']);
+		$stories[] = $story;
+	    }
+        }
+	return $stories;
+    }
     
     /**
      * Returns when this Person's top products were last updated

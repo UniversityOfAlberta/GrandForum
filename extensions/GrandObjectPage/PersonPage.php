@@ -122,12 +122,18 @@ class PersonPage {
                 }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
+                if(isExtensionEnabled('QueryableTable')){
+		    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
+		}
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+		if(isExtensionEnabled('Visualizations')){
+                    $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+		}
+                if(isExtensionEnabled('Duplicates')){
+                    $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+		}
                 $tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);

@@ -43,35 +43,36 @@ class IndexTable {
                 }
             }
         }
-        $peopleSubTab = TabUtils::createSubTab("People");
-        $roles = array_values($wgAllRoles);
-        sort($roles);
-        foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
-                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+	if($me->isLoggedIn()){
+            $peopleSubTab = TabUtils::createSubTab("People");
+            $roles = array_values($wgAllRoles);
+            sort($roles);
+            foreach($roles as $role){
+                if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
+                    $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                    $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                }
             }
-        }
-        
-        $tabs['Main']['subtabs'][] = $peopleSubTab;
-        
-        $selected = ($wgTitle->getText() == "Products" || 
-                     $wgTitle->getText() == "Multimedia" ||
-                     $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
-        $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-        $structure = Product::structure();
-        $categories = array_keys($structure['categories']);
-        foreach($categories as $category){
-            if(Product::countByCategory($category) > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
+            $tabs['Main']['subtabs'][] = $peopleSubTab;
+	}
+
+	if(isExtensionEnabled('Products')){
+            $selected = ($wgTitle->getText() == "Products" || 
+                         $wgTitle->getText() == "Multimedia" ||
+                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
+            $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
+            $structure = Product::structure();
+            $categories = array_keys($structure['categories']);
+            foreach($categories as $category){
+                if(Product::countByCategory($category) > 0){
+                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
+                }
             }
+            if(Material::countByCategory() > 0){
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
+            }
+            $tabs['Main']['subtabs'][] = $productsSubTab;
         }
-        if(Material::countByCategory() > 0){
-            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
-        }
-        $tabs['Main']['subtabs'][] = $productsSubTab;
-        
-       
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');

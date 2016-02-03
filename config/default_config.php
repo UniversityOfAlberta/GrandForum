@@ -98,6 +98,7 @@
         'GrandObjects',
         'UI',
         'Notification',
+	'Products',
         'GrandObjectPage',
         'Cal',
         'TempEd',
@@ -125,7 +126,8 @@
         //'Solr',
         //'TravelForm',
         //'AdvancedSearch',
-        'CCVExport'
+        'CCVExport',
+	//'Caps'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,

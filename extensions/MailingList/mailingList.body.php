@@ -140,7 +140,7 @@ class MailList{
             $project_name = strtolower($wgTitle->getText());
             if(isset($_GET['thread'])){
                 $this->createMailListThread($project_name, $_GET['thread']);
-                return false;
+                return true;
             }
             
             $me = Person::newFromWgUser();
@@ -236,9 +236,9 @@ class MailList{
             $wgOut->setPageTitle($wgTitle->getNSText()." Mailing List Archives");
             $wgOut->output();
             $wgOut->disable();
-            return false;
+            return true;
         }
-        return false;
+        return true;
     }
     
     function createMailListThread($project_name, $thread){

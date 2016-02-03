@@ -28,6 +28,7 @@ function autoload_register($directory){
 }
 
 function redirect($url){
+    DBFunctions::commit();
     session_write_close();
     header("Location: $url");
     exit;
@@ -139,6 +140,9 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
+
+$egAnnokiExtensions['Caps'] = array('name' => 'Caps',
+                                         'path' => "$IP/extensions/Caps/Caps.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
