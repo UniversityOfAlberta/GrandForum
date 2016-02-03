@@ -548,6 +548,18 @@
             <data></data>
         </Product>
         
+        <Product type="Data Set" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Report of Invention" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Report of Copyright" status="">
+            <data></data>
+        </Product>
+        
         <Product type="Patent" status="">
             <data>
                 <field label="Number" type="String">number</field>
