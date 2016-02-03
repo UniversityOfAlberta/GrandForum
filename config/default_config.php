@@ -239,6 +239,7 @@
     $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
     $config->setConst("TC",         "TC");
+    $config->setConst("TA",         "TA");
     $config->setConst("RMC",        "RMC");
     $config->setConst("HQPAC",      "HQPAC");
     $config->setConst("EVALUATOR",  "Evaluator");
@@ -253,7 +254,7 @@
     $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
-    $config->setConst("ADMIN",    "Admin");
+    $config->setConst("ADMIN",      "Admin");
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
@@ -277,7 +278,8 @@
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",
         $config->getConst('TC')             => "Work Package Coordinator",
-        $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('TA')             => "Theme Advisory Committee",
+        $config->getConst('RMC')            => "Research Management Committee",
         $config->getConst('HQPAC')          => "HQP Advisory Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('CF')             => "Core Facillity",
