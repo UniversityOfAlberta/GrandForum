@@ -79,13 +79,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
+    <ReportSection id="narrative" tooltip="Narrative Application" title="Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
         <ReportItem id="header1" type="Static">
             <![CDATA[
-                <h2>Section 1- Overview</h2>
+                <h2>1) Rationale and Approach</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="background" type="TextareaReportItem" rich="true" blobItem="BACKGROUND">
+        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <style>
                     ol#list > li {
@@ -93,21 +93,21 @@
                     }
                 </style>
                 <ol id='list' type="i">
-                <li><b>Background, Research Question, and/or Objectives</b>
+                <li><b>Summarize the rationale for the project</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="method" type="TextareaReportItem" rich="true" blobItem="METHOD">
+        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS">
             <![CDATA[
-                <li><b>Methodological Approach</b>
+                <li><b>State the project goals and objectives</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="relevance" type="TextareaReportItem" rich="true" blobItem="RELEVANCE">
+        <ReportItem id="kt" type="TextareaReportItem" rich="true" blobItem="KT">
             <![CDATA[
-                <li><b>Relevance to AGE-WELL vision and goals</b>
+                <li><b>Describe the commercialization, business strategy, or knowledge mobilization approach to be used</b>
                     {$item}
                 </li>
                 </ol>
@@ -115,90 +115,41 @@
         </ReportItem>
         <ReportItem id="header2" type="Static">
             <![CDATA[
-                <h2>Section 2 – Innovation and Impact</h2>
+                <h2>2) Impact and Evolution</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="novelty" type="TextareaReportItem" rich="true" blobItem="NOVELTY">
+        <ReportItem id="impact" type="TextareaReportItem" rich="true" blobItem="IMPACT">
             <![CDATA[
                 <ol id='list' type="i">
-                <li><b>Novelty and originality</b>
+                <li><b>Describe the anticipated impacts and associated benefits and beneficiaries of this project</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
         <ReportItem id="evaluate" type="TextareaReportItem" rich="true" blobItem="EVALUATE">
             <![CDATA[
-                <li><b>Potential for Knowledge Mobilization and/or Commercialization</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="social" type="TextareaReportItem" rich="true" blobItem="SOCIAL">
-            <![CDATA[
-                <li><b>Social Innovation: Potential implications and practical benefits for the aged population</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="scientific" type="TextareaReportItem" rich="true" blobItem="SCIENTIFIC">
-            <![CDATA[
-                <li><b>Scientific Innovation</b>
+                <li><b>How and when will you evaluate this initiative?</b>
                     {$item}
                 </li>
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="header3" type="Static">
+        <ReportItem id="header2" type="Static">
             <![CDATA[
-                <h2>Section 3 – Research Plan</h2>
+                <h2>3) Project Team and Partnerships</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="timeline" type="TextareaReportItem" rich="true" blobItem="TIMELINE">
+        <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
             <![CDATA[
                 <ol id='list' type="i">
-                <li><b>Timeline of Research Deliverables & Milestones</b>
+                <li><b>Describe how the expertise of your team will contribute to the success of the proposed initiative</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="plans" type="TextareaReportItem" rich="true" blobItem="PLANS">
+        <ReportItem id="partners" type="TextareaReportItem" rich="true" blobItem="PARTNERS">
             <![CDATA[
-                <li><b>Future plans to ensure sustainability of this study</b>
-                    {$item}
-                </li>
-                </ol>
-            ]]>
-        </ReportItem>
-        <ReportItem id="header4" type="Static">
-            <![CDATA[
-                <h2>Section 4 – Project team and Networking</h2>
-            ]]>
-        </ReportItem>
-        <ReportItem id="networking" type="TextareaReportItem" rich="true" blobItem="NETWORKING">
-            <![CDATA[
-                <ol id='list' type="i">
-                <li><b>Project Networking and Engagement</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp" type="TextareaReportItem" rich="true" blobItem="HQP">
-            <![CDATA[
-                <li><b>Development of HQP</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="collab" type="TextareaReportItem" rich="true" blobItem="COLLAB">
-            <![CDATA[
-                <li><b>Collaborators/Partners and added value of the collaboration</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="funding" type="TextareaReportItem" rich="true" blobItem="FUNDING">
-            <![CDATA[
-                <li><b>Other Funding</b>
+                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. dissemination, product development, testing and evaluation etc.).</b>
                     {$item}
                 </li>
                 </ol>
@@ -274,16 +225,16 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO" pagebreak="false">
-        <ReportItem id="partners" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Partner Organization/ Research Receptor|Potential Conflict of Interest|Role in Project and Specific&lt;br /&gt;Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" class="wikitable">
+    <ReportSection id="bio" tooltip="Investigator Bios &amp; Partner Letter(s) of Support" title="Investigator Bios &amp; Partner Letter(s) of Support" name="Investigator Bios &amp; Partner Letter(s) of Support" type="EditableReportSection" blobSection="BIO" pagebreak="false">
+        <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
             <![CDATA[
+                <h3>Investigator Bio</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
             <![CDATA[
                 <h3>Partner Letters of Support</h3>
-
                 {$item}
             ]]>
         </ReportItem>

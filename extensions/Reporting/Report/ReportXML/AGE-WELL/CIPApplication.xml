@@ -41,7 +41,7 @@
                 
                 <p>AGE-WELL’s Collaborative Impact Program is a matched funding program that is designed to leverage partnerships between academic researchers and industry, government (provincial) and community organizations in order to accelerate Canadian innovation and economic competitiveness, and improve the quality of life for older adults and/or caregivers.</p>
                 
-                <p>CIP funds will support post-discovery commercialization, business development, knowledge mobilization, or translation activities that align with the vision and mission of AGE-WELL. AGE-WELL will consider proposals for commercialization and/or knowledge mobilization, including:</p>
+                <p>CIP funds will support <u>post-discovery</u> commercialization, business development, knowledge mobilization, or translation activities that align with the vision and mission of AGE-WELL. AGE-WELL will consider proposals for commercialization and/or knowledge mobilization, including:</p>
                 <ul>
                     <li>commercialization of technologies, products, and/or services, including but not limited to, business development, prototype development, market readiness and start-up activities</li>
                     <li>knowledge mobilization (KM), translation (KT) or exchange activities, including but not limited to, the implementation of KM/KT products or the introduction of new products/services into practice or policy settings</li>
@@ -254,7 +254,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="appendix" tooltip="Budget and Activities" title="Budget and Activities" name="Budget and Activities" type="EditableReportSection" blobSection="APPENDIX">
+    <ReportSection id="appendix" tooltip="PART 3 - Team, Budget &amp; Milestones" title="PART 2 - Team, Budget &amp; Milestones" name="Budget and Activities" type="EditableReportSection" blobSection="APPENDIX">
         <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
             <![CDATA[
                 <h2>Team Summary</h2>
@@ -363,7 +363,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
+    <ReportSection id="bio" tooltip="PART 3 - Investigator Bios &amp; Partner Letter(s) of Support" title="PART 3 - Investigator Bios &amp; Partner Letter(s) of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
             <![CDATA[
                 <h3>Investigator Bio</h3>
@@ -374,7 +374,7 @@
         <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip">
             <![CDATA[
                 <h3>Partner Letter of Support</h3>
-                <p>All cash and in-kind contributions must be supported by letters of support from the contributing partner. Please attach a letter of support signed by the partner organization.</p>
+                <p>All cash and in-kind contributions must be supported by letters of support from the contributing partner. Please attach a letter of support signed by the partner organization as a zip archive.</p>
                 {$item}
             ]]>
         </ReportItem>

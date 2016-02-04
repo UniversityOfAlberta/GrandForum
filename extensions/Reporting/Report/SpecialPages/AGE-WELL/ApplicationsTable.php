@@ -41,6 +41,7 @@ class ApplicationsTable extends SpecialPage{
 
         $tabbedPage->addTab(new ApplicationTab('RP_SIP', $nis));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis));
+        $tabbedPage->addTab(new ApplicationTab('RP_CIP', $nis));
         $tabbedPage->showPage();
     }
     
