@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Catalyst Review Summary" ajax="true" personId="0" pdfType="RPTP_CAT_REVIEW_SUMMARY" disabled="false">
-    <ReportSection id="cat_review_summary1" name="A. Scientific Excellence Summary (External/ISAC)" type="ReportSection" pagebreak="true">
+    <ReportSection id="cat_review_summary1" name="A. Scientific Excellence Summary (Ex/ISAC/SRC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
@@ -138,7 +138,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="cat_review_summary2" name="B. Project Feasibility Summary (External/ISAC)" type="ReportSection" pagebreak="true">
+    <ReportSection id="cat_review_summary2" name="B. Project Feasibility Summary (Ex/ISAC/SRC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
@@ -222,7 +222,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="cat_review_summary1" name="A. Scientific Excellence Summary (SRC)" type="ReportSection" pagebreak="true">
+    <ReportSection id="cat_review_summary1" name="A. Scientific Excellence Summary (RMC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
@@ -244,7 +244,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(qa1, 0)}
@@ -260,7 +260,7 @@
                     {set(nAReviewers, 0)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
                 <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
@@ -360,7 +360,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="cat_review_summary2" name="B. Project Feasibility Summary (SRC)" type="ReportSection" pagebreak="true">
+    <ReportSection id="cat_review_summary2" name="B. Project Feasibility Summary (RMC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
@@ -376,7 +376,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(qb1, 0)}
@@ -386,7 +386,7 @@
                     {set(nBReviewers, 0)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
                 <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},)},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},0)},{$project_id})},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},)}

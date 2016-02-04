@@ -678,19 +678,19 @@
                     </table>
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <b>{$user_name}</b>
-                    <small><b>Comments:</b><br />
-                        {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_COMMENTS,0,{$user_id},{$project_id})}
-                        <br />
-                        <b>Suggestions:</b><br />
-                        {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
-                    </small>
-                ]]>
-            </ReportItem>
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-RMC" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b><br />
+                        <small><b>Comments:</b><br />
+                            {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_COMMENTS,0,{$user_id},{$project_id})}
+                            <br />
+                            <b>Suggestions:</b><br />
+                            {getHTML(RP_TRANS_REVIEW,TRANS_RMC_REVIEW,TRANS_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
+                        </small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
 </Report>
