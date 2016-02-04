@@ -30,6 +30,7 @@ function autoload_register($directory){
 function redirect($url){
     session_write_close();
     header("Location: $url");
+    DBFunctions::commit();
     exit;
 }
 

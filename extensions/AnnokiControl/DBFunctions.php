@@ -131,7 +131,10 @@ class DBFunctions {
 	static function DBWritable(){
 	    global $wgImpersonating;
 	    $me = Person::newFromWGUser();
-	    $supervisesImpersonee = checkSupervisesImpersonee();
+	    $supervisesImpersonee = false;
+	    if(isExtensionEnabled('Impersonate')){
+	     	$supervisesImpersonee = checkSupervisesImpersonee();
+	    }
 	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
 	}
 	

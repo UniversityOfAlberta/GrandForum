@@ -904,6 +904,7 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
 	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
@@ -933,6 +934,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
 		        $person = Person::newFromName($_POST['wpName']);
+		        $user = User::newFromName($_POST['wpName']);
 		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
@@ -945,12 +947,12 @@ class CavendishTemplate extends QuickTemplate {
 		            $user->load();
 		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
 		        }
-		        else if($person->getUser()->checkTemporaryPassword($_POST['wpPassword'])){
-		            $failMessage = "";
-		            return;
-		        }
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
+		        }
+		        if($user->checkTemporaryPassword($_POST['wpPassword'])){
+		            $failMessage = "";
+		            return;
 		        }
 		        if(isset($_POST['wpMailmypassword'])){
 		            echo "<script type='text/javascript'>

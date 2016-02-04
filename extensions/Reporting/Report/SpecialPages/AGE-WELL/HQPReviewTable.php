@@ -93,7 +93,7 @@ class HQPReviewTable extends SpecialPage{
             $evaluators = $candidate->getEvaluators($year, $evalKey);
             $nEval = count($evaluators);
 
-            $report = new DummyReport("HQPApplication", $candidate, null, $year);
+            $report = new DummyReport("HQPApplication", $candidate, null, $year, true);
             $check = $report->getLatestPDF();
             $button = "";
             if(isset($check[0])){

@@ -65,15 +65,13 @@ class BudgetReportItem extends AbstractReportItem {
 	function renderForPDF(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 	    $budgetText = $this->getAttr('budgetText', 'Budget');
+	    $html = "";
 	    if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
 	        $data = $this->getBlobValue();
             $link = $this->getDownloadLink();
-            $html = "";
             if($data !== null && $data != ""){
                 $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
             }
-            $item = $this->processCData($html);
-            $wgOut->addHTML($item);
 	    }
 	    else{
 	        $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
@@ -92,12 +90,14 @@ class BudgetReportItem extends AbstractReportItem {
 	            if($structure == REPORT2_STRUCTURE){
 	                $budget = $this->colorBudget($budget);
 	            }
-		        $wgOut->addHTML($budget->renderForPDF());
+		        $html .= "<div class='small'>{$budget->renderForPDF()}</div>";
 		    }
 		    else{
-		        $wgOut->addHTML("You have not yet uploaded a ".strtolower($budgetText));
+		        $html .= "You have not yet uploaded a ".strtolower($budgetText);
 		    }
 		}
+		$item = $this->processCData($html);
+		$wgOut->addHTML($item);
 	}
 	
 	function budgetUploadForm(){

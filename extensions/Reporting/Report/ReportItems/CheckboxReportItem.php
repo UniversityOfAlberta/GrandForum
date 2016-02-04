@@ -16,13 +16,13 @@ class CheckboxReportItem extends AbstractReportItem {
 		        $checked = "checked='checked'";
 		    }
 		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;{$option}";
+		    $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
 		}
 
         $output = "";
         $orientation = $this->getAttr('orientation', 'vertical');
         if($orientation == 'vertical'){
-            $output = implode("<br />\n", $items);
+            $output = implode("\n", $items);
         }
         else if($orientation == 'horizontal'){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);

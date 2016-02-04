@@ -286,13 +286,21 @@ HTML.Switcheroo = function(view, attr, options){
         var newItems = Array();
         var index = attr.indexOf('.');
         var subName = attr.substr(index+1);
+        var field = attr.substr(0, index);
+        eval("var oldItems = view.model.get('" + field + "');");
         for(cId in current){
             var c = current[cId];
+            var obj = _.findWhere(oldItems, {name: c});
             var tuple = {};
-            tuple[subName] = c;
+            if(obj != null){
+                tuple = obj;
+            }
+            else{
+                tuple[subName] = c;
+            }
             newItems.push(tuple);
         }
-        var field = attr.substr(0, index);
+        
         eval("view.model.set({" + field + ": newItems}, {silent:true});");
     };
     view.delegateEvents(events);

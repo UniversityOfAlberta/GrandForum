@@ -90,7 +90,7 @@ function impersonate(){
             $_GET['impersonate'] = $name;
         }
         
-        $_COOKIE['impersonate'] = "{$_GET['impersonate']}|".(time()+(60*60));
+        $_COOKIE['impersonate'] = "{$_GET['impersonate']}|".(time()+(60*60*6));
         if(!isset($_GET['nocookie'])){
             $urlBeforeImpersonate = $page;
             if(isset($_COOKIE['urlBeforeImpersonate'])){
@@ -106,8 +106,8 @@ function impersonate(){
                     $urlBeforeImpersonate = $page;
                 }
             }
-            setcookie('urlBeforeImpersonate', $urlBeforeImpersonate, time()+(60*60), '/');
-            setcookie('impersonate', "{$_GET['impersonate']}|".(time()+(60*60)), time()+(60*60), '/'); // Cookie will expire in one hour
+            setcookie('urlBeforeImpersonate', $urlBeforeImpersonate, time()+(60*60*6), '/');
+            setcookie('impersonate', "{$_GET['impersonate']}|".(time()+(60*60*6)), time()+(60*60*6), '/'); // Cookie will expire in six hours
             redirect("{$wgServer}{$page}");
         }
     }

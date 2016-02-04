@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Transformative Review Summary" ajax="true" pdfType="RPTP_TRANS_REVIEW_SUMMARY" disabled="false">
-    <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (External)" type="ReportSection" pagebreak="true">
+<Report name="Transformative Review Summary" ajax="true" pdfType="RPTP_TRANS_REVIEW_SUMMARY" personId="0" disabled="false">
+    <ReportSection id="trans_review_summary1" name="A. Scientific Excellence Summary (External/ISAC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th style='white-space:nowrap;'>Avg. Q1</th>
-                            <th style='white-space:nowrap;'>Avg. Q2</th>
-                            <th style='white-space:nowrap;'>Avg. Q3</th>
-                            <th style='white-space:nowrap;'>Avg. Q4</th>
-                            <th style='white-space:nowrap;'>Avg. Q5</th>
-                            <th style='white-space:nowrap;'>Avg. Q6</th>
-                            <th style='white-space:nowrap;'>Avg. Q7</th>
-                            <th style='white-space:nowrap;'>Avg. Q8</th>
-                            <th style='white-space:nowrap;'>Avg. Q9</th>
-                            <th style='white-space:nowrap;'>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th style='white-space:nowrap;'>Avg. Q1</th>
+                        <th style='white-space:nowrap;'>Avg. Q2</th>
+                        <th style='white-space:nowrap;'>Avg. Q3</th>
+                        <th style='white-space:nowrap;'>Avg. Q4</th>
+                        <th style='white-space:nowrap;'>Avg. Q5</th>
+                        <th style='white-space:nowrap;'>Avg. Q6</th>
+                        <th style='white-space:nowrap;'>Avg. Q7</th>
+                        <th style='white-space:nowrap;'>Avg. Q8</th>
+                        <th style='white-space:nowrap;'>Avg. Q9</th>
+                        <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
@@ -88,7 +85,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -133,25 +130,21 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (External)" type="ReportSection" pagebreak="true">
+    <ReportSection id="trans_review_summary2" name="B. Project Feasibility Summary (External/ISAC)" type="ReportSection" pagebreak="true">
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-EX" class="Project">
@@ -190,7 +183,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -217,7 +210,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -226,22 +218,19 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th style='white-space:nowrap;'>Avg. Q1</th>
-                            <th style='white-space:nowrap;'>Avg. Q2</th>
-                            <th style='white-space:nowrap;'>Avg. Q3</th>
-                            <th style='white-space:nowrap;'>Avg. Q4</th>
-                            <th style='white-space:nowrap;'>Avg. Q5</th>
-                            <th style='white-space:nowrap;'>Avg. Q6</th>
-                            <th style='white-space:nowrap;'>Avg. Q7</th>
-                            <th style='white-space:nowrap;'>Avg. Q8</th>
-                            <th style='white-space:nowrap;'>Avg. Q9</th>
-                            <th style='white-space:nowrap;'>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th style='white-space:nowrap;'>Avg. Q1</th>
+                        <th style='white-space:nowrap;'>Avg. Q2</th>
+                        <th style='white-space:nowrap;'>Avg. Q3</th>
+                        <th style='white-space:nowrap;'>Avg. Q4</th>
+                        <th style='white-space:nowrap;'>Avg. Q5</th>
+                        <th style='white-space:nowrap;'>Avg. Q6</th>
+                        <th style='white-space:nowrap;'>Avg. Q7</th>
+                        <th style='white-space:nowrap;'>Avg. Q8</th>
+                        <th style='white-space:nowrap;'>Avg. Q9</th>
+                        <th style='white-space:nowrap;'>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
@@ -310,7 +299,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nAReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -355,7 +344,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -364,16 +352,13 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
@@ -412,7 +397,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nBReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -439,7 +424,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>
@@ -448,25 +432,22 @@
         <ReportItem id="table_head" type="Static">
             <![CDATA[
                 <table class='wikitable small' id="eval_table" width='100%' frame='box' rules='all'>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Avg. Q1</th>
-                            <th>Avg. Q2</th>
-                            <th>Avg. Q3</th>
-                            <th>Avg. Q4</th>
-                            <th>Avg. Q5</th>
-                            <th>Avg. Q6</th>
-                            <th>Avg. Q7</th>
-                            <th>Avg. Q8</th>
-                            <th>Avg. Q9</th>
-                            <th>Avg. Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <tr>
+                        <th>Project</th>
+                        <th>Avg. Q1</th>
+                        <th>Avg. Q2</th>
+                        <th>Avg. Q3</th>
+                        <th>Avg. Q4</th>
+                        <th>Avg. Q5</th>
+                        <th>Avg. Q6</th>
+                        <th>Avg. Q7</th>
+                        <th>Avg. Q8</th>
+                        <th>Avg. Q9</th>
+                        <th>Avg. Total (out of 5)</th>
+                    </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="TRANS-RMC" class="Project">
             <ReportItem id="script_init" type="StaticReportItem">
                 <![CDATA[
                     {set(q1, 0)}
@@ -532,7 +513,7 @@
                     {set(highlight,)}
                 ]]>
             </ReportItem>
-            <ReportItem id="if" type="If" if="{&lt;({get(total)},3.75)}">
+            <ReportItem id="if" type="If" if="{and({&lt;({get(total)},3.75)},{&gt;({get(nReviewers)},0)})}">
                 <![CDATA[
                     {set(highlight,background:#FFCC00)}
                 ]]>
@@ -577,7 +558,6 @@
         </ReportItemSet>
         <ReportItem id="table_foot" type="Static">
             <![CDATA[
-                    </tbody>
                 </table>
             ]]>
         </ReportItem>

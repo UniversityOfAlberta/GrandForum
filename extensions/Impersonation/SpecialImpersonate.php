@@ -75,6 +75,7 @@ class Impersonate extends SpecialPage {
                 $names[] = $person->getName();
             }
         }
+        $names = array_unique($names);
 	    $wgOut->addScript('\''.implode("','", $names).'\');
 	    var oldOptions = Array();
 
@@ -111,6 +112,7 @@ class Impersonate extends SpecialPage {
                 else{
                     valSelect = val.replace(/\./g, "");
                 }
+                valSelect = unaccentChars(valSelect);
                 if(unaccentChars(val.replace(/\./g, " ")).regexIndexOf(unaccentChars(value)) != -1 || (typeof oldOptions[valSelect] != "undefined" && unaccentChars(oldOptions[valSelect].attr("class")).regexIndexOf(unaccentChars(value)) != -1)){
                     if(unaccentChars(val.replace(/\./g, " ")) == unaccentChars(value)){
                         oldOptions[valSelect].attr("selected", "selected");
@@ -274,7 +276,7 @@ class Impersonate extends SpecialPage {
 	                $roleText = RMC;
 	                
 	        }
-	        $wgOut->addHTML("<option class='".implode(" ", $projs)."' name='$roleText:{$person->getName()}' id='".str_replace(".", "", $person->getName())."'>".str_replace(".", " ", $person->getNameForForms())."</option>\n");
+	        $wgOut->addHTML("<option class='".implode(" ", $projs)."' name='$roleText:{$person->getName()}' id='".unaccentChars(str_replace(".", "", $person->getName()))."'>".str_replace(".", " ", $person->getNameForForms())."</option>\n");
 	    }
 	    $wgOut->addHTML("</select>
 	            </td></tr>

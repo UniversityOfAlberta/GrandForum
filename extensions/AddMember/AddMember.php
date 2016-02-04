@@ -262,7 +262,7 @@ class AddMember extends SpecialPage{
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
-        if($me->isRoleAtLeast(PL)){
+        if($me->isRoleAtLeast(PL) && in_array(CHAMP, $wgRoles)){
             $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){

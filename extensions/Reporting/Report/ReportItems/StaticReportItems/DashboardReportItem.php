@@ -7,6 +7,8 @@ class DashboardReportItem extends StaticReportItem {
 		$table = ($this->getAttr("table", "true") == "true");
 		$details = ($this->getAttr("details", "true") == "true");
 		$limit = $this->getAttr("limit", "0");
+		$sortable = ($this->getAttr("sortable", "false") == "true");
+		$showButton = ($this->getAttr("showButton", "true") == "true");
 		if($table == false){
 		    $this->renderForPDF();
 		    return;
@@ -19,11 +21,11 @@ class DashboardReportItem extends StaticReportItem {
         if($limit > 0){
             $top = $dashboard->copy()->limit(0, 1);
             for($i = 1; $i < $dashboard->nRows(); $i+=$limit){
-                $dash .= $top->copy()->union($dashboard->copy()->limit($i, $limit))->render();
+                $dash .= $top->copy()->union($dashboard->copy()->limit($i, $limit))->render($sortable, $showButton);
             }
         }
         else{
-            $dash = $dashboard->render(false, true);
+            $dash = $dashboard->render($sortable, $showButton);
         }
         $item = $this->processCData($dash);
 		$wgOut->addHTML($item);

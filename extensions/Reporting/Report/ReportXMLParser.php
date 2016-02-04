@@ -6,6 +6,7 @@ class ReportXMLParser {
     var $errors;
     var $parser;
     var $report;
+    static $parserCache = array();
     static $files = array();
     static $pdfFiles = array();
     static $fileMap = array();
@@ -130,6 +131,7 @@ class ReportXMLParser {
                                   'time'      => $time,
                                   'person_id' => $this->report->person->getId(),
                                   'backup'    => $encrypted));
+        DBFunctions::commit();
         if($download){
             header("Content-type: application/force-download");
             if($this->report->project == null){
@@ -209,14 +211,20 @@ class ReportXMLParser {
     }
     
     // Parses the XML document starting at the root
-    function parse(){
-        $this->parser = simplexml_load_string($this->xml);
-        $this->parseReport();
+    function parse($quick=false){
+        if(isset(self::$parserCache[$this->report->xmlName])){
+            $this->parser = self::$parserCache[$this->report->xmlName];
+        }
+        else{
+            $this->parser = simplexml_load_string($this->xml);
+            self::$parserCache[$this->report->xmlName] = $this->parser;
+        }
+        $this->parseReport($quick);
         $this->showErrors();
     }
     
     // Parses the <Report> element of the XML
-    function parseReport(){
+    function parseReport($quick=false){
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
@@ -229,7 +237,7 @@ class ReportXMLParser {
                     $exploded = explode("/", $exploded[count($exploded)-2]);
                     $xml = file_get_contents($xmlFileName);
                     $parser = new ReportXMLParser($xml, $this->report);
-                    $parser->parse();
+                    $parser->parse($quick);
                 }
                 else{
                     if($this->report->xmlName == $attributes->extends){
@@ -268,11 +276,16 @@ class ReportXMLParser {
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }
+            if(isset($attributes->year)){
+                $this->report->year = "{$attributes->year}";
+            }
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }
-            if(isset($children->ReportSection)){
-                $this->parseReportSection($children->ReportSection);
+            if(!$quick){
+                if(isset($children->ReportSection)){
+                    $this->parseReportSection($children->ReportSection);
+                }
             }
         }
     }

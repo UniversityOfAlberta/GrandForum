@@ -140,9 +140,7 @@ class ProjectPage {
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
-                if($project->getPhase() == 1){
-                    $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
-                }
+                $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }

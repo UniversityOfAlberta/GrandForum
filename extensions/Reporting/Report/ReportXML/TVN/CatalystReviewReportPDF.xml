@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Review Report" ajax="true" pdfType="RPTP_CAT_REVIEW_REPORT" disabled="false">
+<Report name="Catalyst Review Report" ajax="true" personId="0" pdfType="RPTP_CAT_REVIEW_REPORT" disabled="false">
     <ReportSection id="cat_review" name="Catalyst Review" tooltip="Review of Catalyst Proposals" type="ReportSection" pagebreak="false">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItemSet id="pagebreak" type="NotFirst">
                 <ReportItem id="pagebreak" type="PageBreak">
                     <![CDATA[
@@ -97,7 +97,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
                 <ReportItem id="script" type="If" if="{and({!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},)},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},0)},{$project_id})},
                                                            {!=({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},)},
@@ -158,7 +158,7 @@
             </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>A. Scientific Excellence (External)</h4>
+                    <h4>A. Scientific Excellence (Ex/ISAC/SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>
@@ -193,7 +193,7 @@
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
                         <td align='right'>
-                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
+                            {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
                                  {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},
                                       {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},
                                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
@@ -209,15 +209,10 @@
                                            )}
                                       )}
                                  )}
-                            )}
+                            )}, 36)}, 5)}, 1)}
                         </td>
                         </tr>
                         <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='10'>
-                            {getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}
-                        </td>
-                        </tr>
                     ]]>
                 </ReportItem>
             </ReportItemSet>
@@ -274,17 +269,24 @@
                                             )}
                                         )}
                                     )}
-                                    {round({divide({get(total)},{get(nAExReviewers)})},1)}
+                                    {round({multiply({divide({divide({get(total)},{get(nAExReviewers)})}, 36)}, 5)},1)}
                                 </th>
                             </tr>
                         </tfoot>
                     </table><br />
                 ]]>
             </ReportItem>
-            
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>B. Project Feasibility (External)</h4>
+                    <h4>B. Project Feasibility (Ex/ISAC/SRC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>
@@ -307,17 +309,11 @@
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
                         <td align='right'>
-                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                            {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                  {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},
                                       {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                  )}
-                            )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='4'>
-                            {getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}
+                            )}, 12)}, 5)}, 1)}
                         </td>
                         </tr>
                     ]]>
@@ -346,16 +342,24 @@
                                             )}
                                         )}
                                     )}
-                                    {round({divide({get(total)},{get(nBExReviewers)})},1)}
+                                    {round({multiply({divide({divide({get(total)},{get(nBExReviewers)})}, 12)}, 5)},1)}
                                 </th>
                             </tr>
                         </tfoot>
                     </table><br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>A. Scientific Excellence (SRC)</h4>
+                    <h4>A. Scientific Excellence (RMC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>
@@ -375,7 +379,7 @@
                         <tbody>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
                         <tr>
@@ -390,7 +394,7 @@
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})}</td>
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})}</td>
                         <td align='right'>
-                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
+                            {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
                                  {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},
                                       {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},
                                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
@@ -406,13 +410,7 @@
                                            )}
                                       )}
                                  )}
-                            )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='10'>
-                            {getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}
+                            )}, 36)}, 5)}, 1)}
                         </td>
                         </tr>
                     ]]>
@@ -471,17 +469,24 @@
                                             )}
                                         )}
                                     )}
-                                    {round({divide({get(total)},{get(nAReviewers)})},1)}
+                                    {round({multiply({divide({divide({get(total)},{get(nAReviewers)})}, 36)}, 5)},1)}
                                 </th>
                             </tr>
                         </tfoot>
                     </table><br />
                 ]]>
             </ReportItem>
-            
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
-                    <h4>B. Project Feasibility (SRC)</h4>
+                    <h4>B. Project Feasibility (RMC)</h4>
                     <table class='wikitable smaller' id="eval_table" width='100%' frame='box' rules='all'>
                         <thead>
                             <tr>
@@ -495,7 +500,7 @@
                         <tbody>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-SRC" includeSelf="true">
+            <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
                 <ReportItem id="row" type="StaticReportItem">
                     <![CDATA[
                         <tr>
@@ -504,17 +509,11 @@
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})}</td>
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}</td>
                         <td align='right'>
-                            {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                            {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
                                  {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},
                                       {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
                                  )}
-                            )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='4'>
-                            {getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}
+                            )}, 12)}, 5)}, 1)}
                         </td>
                         </tr>
                     ]]>
@@ -543,13 +542,21 @@
                                             )}
                                         )}
                                     )}
-                                    {round({divide({get(total)},{get(nBReviewers)})},1)}
+                                    {round({multiply({divide({divide({get(total)},{get(nBReviewers)})}, 12)}, 5)},1)}
                                 </th>
                             </tr>
                         </tfoot>
                     </table><br />
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b>
+                        <small>{getHTML(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
             <ReportItem id="table_head" type="StaticReportItem">
                 <![CDATA[
                     <h4>RMC Review</h4>
@@ -585,7 +592,7 @@
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_HQP,0,{$user_id},{$project_id})}</td>
                         <td align='right'>{getText(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_ENGAGEMENT,0,{$user_id},{$project_id})}</td>
                         <td align='right'>
-                            {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},
+                            {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_IMPACT,0,{$user_id},{$project_id})},
                                  {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_POLICY,0,{$user_id},{$project_id})},
                                       {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_MISSION,0,{$user_id},{$project_id})},
                                            {add({getNumber(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_PRIORITIES,0,{$user_id},{$project_id})},
@@ -599,17 +606,7 @@
                                            )}
                                       )}
                                  )}
-                            )}
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>{$user_name}</td>
-                        <td colspan='9' valign='top'>
-                            <b>Comments:</b><br />
-                            {getHTML(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_COMMENTS,0,{$user_id},{$project_id})}
-                            <br />
-                            <b>Suggestions:</b><br />
-                            {getHTML(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}
+                            )}, 32)}, 5)}, 1)}
                         </td>
                         </tr>
                     ]]>
@@ -663,13 +660,25 @@
                                             )}
                                         )}
                                     )}
-                                    {round({divide({get(total)},{get(nReviewers)})},1)}
+                                    {round({multiply({divide({divide({get(total)},{get(nReviewers)})}, 32)}, 5)},1)}
                                 </th>
                             </tr>
                         </tfoot>
                     </table>
                 ]]>
             </ReportItem>
+            <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="TRANS-EX" includeSelf="true">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <b>{$user_name}</b><br />
+                        <small><b>Comments:</b><br />
+                        {getHTML(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_COMMENTS,0,{$user_id},{$project_id})}
+                        <br />
+                        <b>Suggestions:</b><br />
+                        {getHTML(RP_CAT_REVIEW,CAT_RMC_REVIEW,CAT_RMC_SUGGESTIONS,0,{$user_id},{$project_id})}</small>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
 </Report>

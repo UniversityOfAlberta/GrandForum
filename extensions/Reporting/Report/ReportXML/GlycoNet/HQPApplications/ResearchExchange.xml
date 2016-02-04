@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Research Exchange Program" reportType="RP_HQP_EXCHANGE" pdfType="HQP_EXCHANGE" pdfFiles="HQPApplications/ResearchExchangePDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+        <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -9,7 +9,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
+        <Role role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -398,7 +398,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
                         <td>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="vehicle_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
+        <ReportItem id="lodging_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
             <![CDATA[
                         <td>{$item}</td>
                     </tr>

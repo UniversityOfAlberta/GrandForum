@@ -8,12 +8,13 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 require_once("CCActivitiesTable.php");
 require_once("HQPRegisterTable.php");
 require_once("HQPReviewTable.php");
+require_once("ApplicationsTable.php");
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
-class Report extends AbstractReport{
+class Report extends AbstractReport {
     
     function Report(){
         global $config;
@@ -31,7 +32,7 @@ class Report extends AbstractReport{
         $tabs["Feedback"] = TabUtils::createTab("My Feedback");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         $tabs["Plans"] = TabUtils::createTab("My CC Activity Plans");
-        $tabs["Applications"] = TabUtils::createTab("HQP Application");
+        $tabs["Applications"] = TabUtils::createTab("My Applications");
         return true;
     }
     
@@ -47,6 +48,14 @@ class Report extends AbstractReport{
         if($person->isRole(SD) || $person->isRole(RMC) || $person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReviewFeedback")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Project Review (Feedback)", "{$url}ProjectReviewFeedback", $selected);
+        }
+        if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
+           $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
+            /*$selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "SIPApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP Application", "{$url}SIPApplication", $selected);*/
+            
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CatalystApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Catalyst Application", "{$url}CatalystApplication", $selected);
         }
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
             $projects = array();

@@ -148,6 +148,7 @@ class ReportStorage {
                                   submission_user_id = $impersonateId,
                                   timestamp = timestamp
                               WHERE token = '{$tok}' AND user_id = {$this->_uid};", true);
+        DBFunctions::commit();
         // Refresh.
         $this->load_metadata($tok);
         // Either 0 or 1.
@@ -183,6 +184,7 @@ class ReportStorage {
                                   submission_user_id = $impersonateId,
                                   timestamp = timestamp
                               WHERE token = '{$tok}'", true);
+        DBFunctions::commit();
         // Refresh.
         $this->load_metadata($tok);
         // Either 0 or 1.

@@ -136,12 +136,20 @@ function toggleFullscreen(){
     }
 }
 
-function saveBackup(){
+function saveBackup(download){
+    if(download == undefined || download != false){
+        download = 'true';
+    }
+    else {
+        download = 'false'
+    }
     findAutosaves(updateProgress);
     saveAll(function(){
         updateProgress();
-        var newUrl = $(location).attr('href') + '&saveBackup';
-        window.location = newUrl;
+        var newUrl = $(location).attr('href') + '&saveBackup' + '&download=' + download;
+        if(download != 'false'){
+            window.location = newUrl;
+        }
     });
 }
 

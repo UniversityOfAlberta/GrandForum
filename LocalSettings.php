@@ -154,6 +154,7 @@ if($config->getValue('localizationCache') != ""){
 $wgEnableUploads       = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
+$wgCopyUploadsFromSpecialUpload = true;
 
 ## If you use ImageMagick (or any other shell command) on a
 ## Linux server, this will need to be set to the name of an
@@ -211,9 +212,9 @@ $wgRestrictDisplayTitle = false;
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
 $wgRawHtml = true;
 $wgEnableUploads       = true;
-$wgMaxUploadSize = 1024*1024*20;
+$wgMaxUploadSize = 1024*1024*50;
 ini_set('upload_max_filesize', $wgMaxUploadSize);
-$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav', 'txt');
+$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'doc', 'docx', 'xls', 'xlsx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav', 'txt');
 $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
@@ -242,6 +243,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       ISAC => 3,
                       SRC => 3,
                       ETC => 3,
+                      KTC => 3,
                       IAC => 3,
                       CAC => 3,
                       NCE => 4,
@@ -254,9 +256,12 @@ $wgRoleValues = array(INACTIVE => 0,
                       'PL' => 9,
                       TL => 11,
                       'TL' => 11,
+                      TC => 11,
+                      TA => 11,
                       APL => 11,
                       TC => 11,
                       CF => 11,
+                      NMO => 11,
                       RMC => 12,
                       HQPAC => 13,
                       EVALUATOR => 12,
@@ -271,11 +276,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, HQPC, PS, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, RMC, HQPAC, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, HQPC, PS, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, TA, RMC, HQPAC, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, HQPC, PS, STUDENT, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, PL, APL, TL, TC, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, HQPC, PS, STUDENT, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, PL, APL, TL, TC, TA, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
 
 
 function unaccentChars($str){

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+        <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="hqp_description" permissions="rw" />
@@ -10,7 +10,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
+        <Role role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="hqp_description" permissions="rw" />
@@ -19,7 +19,16 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NFI">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="" />
+            <SectionPermission id="hqp_description" permissions="" />
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="declaration" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Role role="NI">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="" />
             <SectionPermission id="hqp_description" permissions="" />

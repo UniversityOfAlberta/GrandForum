@@ -191,6 +191,18 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="impact" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_IMPACT" rich="true">
+            <![CDATA[
+                <h3>Impact of Findings</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="gaps" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_GAPS" rich="true">
+            <![CDATA[
+                <h3>Knowledge/Research Gaps</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_RES_REVIEW" rich="true">
             <![CDATA[
                 <h3>Scientific Review</h3>
@@ -214,6 +226,12 @@
         <ReportItem id="materials" type="UploadReportItem" blobItem="FINAL_KTEE_UPLOAD" mimeType="application/zip" fileSize="10">
             <![CDATA[
                 <h3>Research Documents</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="implementation" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_KTEE_IMPLEMENTATION" rich="true">
+            <![CDATA[
+                <h3>KT Implementation</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -251,6 +269,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="groups" type="TextareaReportItem" blobItem="FINAL_NET_GROUPS" rich="true">
+            <![CDATA[
+                <h3>Groups/Organizations</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="planning" title="Network Planning Information" blobSection="FINAL_PLANNING" type="EditableReportSection">
         <ReportItem id="findings" type="RadioReportItem" blobItem="FINAL_PLAN_FINDINGS" orientation="vertical" options="Yes|No">
@@ -282,6 +306,24 @@
         <ReportItem id="additional_yes" type="TextareaReportItem" blobItem="FINAL_PLAN_ADDITIONAL_YES" optional="true" width="550px" height="100px">
             <![CDATA[
                 <h4>If Yes, please provide information on the funding agency, the total funding awarded, length of the grant and title of the grant.</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="policy" type="TextareaReportItem" blobItem="FINAL_ALIGN_POLICY" rich="true">
+            <![CDATA[
+                <h3>Policy Makers</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="relevant" type="TextareaReportItem" blobItem="FINAL_ALIGN_RELEVANT" rich="true">
+            <![CDATA[
+                <h3>Relevance of Outcomes</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="FINAL_ALIGN_IMPACT" rich="true">
+            <![CDATA[
+                <h3>Impact</h3>
                 {$item}
             ]]>
         </ReportItem>

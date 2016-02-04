@@ -4,6 +4,7 @@ class Activity {
     
     var $id;
     var $name;
+    var $project;
     
     /**
      * Returns the Activity with the given id
@@ -12,7 +13,7 @@ class Activity {
      */
     function newFromId($id){
         $data = DBFunctions::select(array('grand_activities'),
-                                    array('id', 'name'),
+                                    array('id', 'name', 'project_id'),
                                     array('id' => EQ($id)));
         return new Activity($data);
     }
@@ -23,10 +24,18 @@ class Activity {
      * @param string $id The name of the Activity
      * @return Activity The Activity with the given name
      */
-    function newFromName($name){
-        $data = DBFunctions::select(array('grand_activities'),
-                                    array('id', 'name'),
-                                    array('name' => EQ($name)));
+    function newFromName($name, $projectId=""){
+        if($projectId != ""){
+            $data = DBFunctions::select(array('grand_activities'),
+                                        array('id', 'name', 'project_id'),
+                                        array('name' => EQ($name),
+                                              'project_id' => EQ($projectId)));
+        }
+        else{
+            $data = DBFunctions::select(array('grand_activities'),
+                                        array('id', 'name', 'project_id'),
+                                        array('name' => EQ($name)));
+        }
         return new Activity($data);
     }
     
@@ -38,6 +47,7 @@ class Activity {
         if(isset($data[0])){
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];
+            $this->project = Project::newFromId($data[0]['project_id']);
         }
     }
     
@@ -55,6 +65,14 @@ class Activity {
      */
     function getName(){
         return $this->name;
+    }
+    
+    /**
+     * Returns the Project that this Activity belongs to
+     * @return Project The Project that this Activity belongs to
+     */
+    function getProject(){
+        return $this->project;
     }
     
 }

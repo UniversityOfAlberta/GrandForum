@@ -44,26 +44,8 @@ else{
     exit;
 }
 
-$allPeople = Person::getAllPeople(NI);
-foreach($allPeople as $person){
-    $type = BLOB_EXCEL;
-    $proj = 0;
-    $section = CAT_MILESTONES;
-    $item = CAT_MIL_UPLOAD;
-    $subitem = 0;
-    $blob = new ReportBlob($type, $year, $person->getId(), $proj);
-    $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-    $blob->load($blob_address);
-    $data = $blob->getData();
-    if($data != null && $data != ""){
-        $data = json_decode($data);
-        $data = base64_decode($data->file);
-    }
-    else{
-        echo "No data uploaded for {$person->getNameForForms()}\n";
-        continue;
-    }
-    
+function addMilestones($data, $person, $project){
+    global $config;
     $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
     if ($tmpn === false) {
         // Failed to reserve a temporary file.
@@ -100,7 +82,6 @@ foreach($allPeople as $person){
         $obj->setActiveSheetIndex(0);
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
-        $project = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
         $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         foreach($cells as $rowN => $row){
@@ -108,14 +89,17 @@ foreach($allPeople as $person){
                 foreach($row as $colN => $cell){
                     $cell = trim($cell);
                     if($colN == 1){
-                        $project = $cell;
+                        if($project == ""){
+                            $project = $cell;
+                        }
                     }
                 }
             }
             if($rowN >= 7){
                 $title = "";
+                $leader = "";
                 $quarters = array();
-                $people = array();
+                $people = "";
                 $comments = "";
                 foreach($row as $colN => $cell){
                     $cell = trim($cell);
@@ -173,7 +157,7 @@ foreach($allPeople as $person){
                             $leader = $cell;
                             break;
                         case PERSON_COL:
-                            $people = explode(",", $cell);
+                            $people = $cell;
                             break;
                         case TBD_COL:
                             $comments = $cell;
@@ -217,7 +201,45 @@ foreach($allPeople as $person){
     
     // Delete tmp file
     unlink($tmpn);
-    
+}
+
+$alreadyDone = array();
+$allPeople = Person::getAllPeople(NI);
+foreach($allPeople as $person){
+    $type = BLOB_EXCEL;
+    $proj = 0;
+    $section = CAT_MILESTONES;
+    $item = CAT_MIL_UPLOAD;
+    $subitem = 0;
+    $blob = new ReportBlob($type, $year, $person->getId(), $proj);
+    $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
+    $blob->load($blob_address);
+    $data = $blob->getData();
+    $project = "";
+    if($data != null && $data != ""){
+        $data = json_decode($data);
+        $data = base64_decode($data->file);
+    }
+
+    $leadership = $person->leadership();
+    foreach($leadership as $lead){
+        if(file_exists("docs/{$person->getName()} {$lead->getName()}.xlsx") &&
+           !isset($alreadyDone[$person->getName()][$lead->getName()])){
+            $data = file_get_contents("docs/{$person->getName()} {$lead->getName()}.xlsx");
+            $project = $lead->getName();
+            $alreadyDone[$person->getName()][$lead->getName()] = true;
+            
+            addMilestones($data, $person, $project);
+            $data = false;
+        }
+    }
+    if($data == ""){
+        echo "No data uploaded for {$person->getNameForForms()}\n";
+        continue;
+    }
+    if($data != false){
+        addMilestones($data, $person, $project);
+    }
 }
 
 ?>

@@ -173,7 +173,8 @@ class Notification{
 		            </tr>");
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.dataTable').dataTable({'iDisplayLength': 100, 
-                                                                                                   'aaSorting': [ [3,'desc']]
+                                                                                                   'aaSorting': [ [3,'desc']],
+                                                                                                   'autoWidth': false
                                                                                                   });</script>");
         if(!$history){
             $wgOut->addHTML("<br /><form action='' method='post'><input type='submit' name='markAllNotificationsAsRead' value='Mark All As Read' /></form>");

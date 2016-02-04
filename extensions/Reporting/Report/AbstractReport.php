@@ -92,7 +92,7 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
+    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
         global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
@@ -128,7 +128,12 @@ abstract class AbstractReport extends SpecialPage {
             $exploded = explode(".", $xmlFileName);
             $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
-            $xml = file_get_contents($xmlFileName);
+            if(isset(ReportXMLParser::$parserCache[$this->xmlName])){
+                $xml = "";
+            }
+            else{
+                $xml = file_get_contents($xmlFileName);
+            }
             $parser = new ReportXMLParser($xml, $this);
             if(isset($_COOKIE['showSuccess'])){
                 unset($_COOKIE['showSuccess']);
@@ -146,9 +151,13 @@ abstract class AbstractReport extends SpecialPage {
                     redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
                 }
             }
-            $parser->parse();
+            $parser->parse($quick);
             if(isset($_GET['saveBackup'])){
-                $parser->saveBackup();
+                $download = true;
+                if(isset($_GET['download']) && $_GET['download'] == 'false'){
+                    $download = false;
+                }
+                $parser->saveBackup($download);
             }
             
             $currentSection = @$_GET['section'];
@@ -241,7 +250,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace(" ", "", $section->name)] = $section->getPercentComplete();
+                        $prog[str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name)))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
@@ -312,7 +321,7 @@ abstract class AbstractReport extends SpecialPage {
     function getLatestPDF(){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
             return $report->getLatestPDF();
         }
         $sto = new ReportStorage($this->person);
@@ -573,12 +582,12 @@ abstract class AbstractReport extends SpecialPage {
         $personId = $this->person->getId();
         $projectId = ($this->project != null) ? $this->project->getId() : 0;
         $data = DBFunctions::select(array('grand_report_blobs'),
-                                    array('*'),
+                                    array('COUNT(*)' => 'count'),
                                     array('user_id' => EQ($personId),
                                           'proj_id' => EQ($projectId),
                                           'rp_type' => EQ($this->reportType),
                                           'year' => EQ($this->year)));
-        return (count($data) > 0);
+        return ($data[0]['count'] > 0);
     }
     
     // Checks the permissions of the Person with the required Permissions of the Report
@@ -1144,6 +1153,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn()){
                 permissionError();
             }
+            ini_set("memory_limit","256M");
             $blob = new ReportBlob();
             $blob->loadFromMD5($_GET['id']);
             $data = $blob->getData();
