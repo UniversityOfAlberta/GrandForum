@@ -2903,9 +2903,9 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" type="ReportSection" name="Submit" tooltip="Submit" title="Submit">
+    <!--ReportSection id="submit" type="ReportSection" name="Submit" tooltip="Submit" title="Submit">
         <ReportItem id="submit" type="SimpleReviewSubmit">
             {$item}
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
 </Report>
