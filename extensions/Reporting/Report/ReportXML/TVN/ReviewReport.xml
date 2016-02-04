@@ -1654,6 +1654,7 @@
                 <ReportItem id="table_head" type="StaticReportItem">
                     <![CDATA[
                         <div style="margin: 10px;">
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
                         <h3>A. Scientific Excellence (External/SRC/ISAC)</h3>
                         <table class='wikitable' id="{$project_id}_table1ex">
                             <thead>
