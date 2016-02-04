@@ -239,14 +239,6 @@ $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       PS => 1,
                       EXTERNAL => 2,
-                      HQPC => 3,
-                      ISAC => 3,
-                      SRC => 3,
-                      ETC => 3,
-                      KTC => 3,
-                      IAC => 3,
-                      CAC => 3,
-                      NCE => 4,
                       NI => 5,
                       AR => 5,
                       CI => 6,
@@ -257,31 +249,32 @@ $wgRoleValues = array(INACTIVE => 0,
                       TL => 11,
                       'TL' => 11,
                       TC => 11,
-                      TA => 11,
                       APL => 11,
                       TC => 11,
-                      CF => 11,
-                      NMO => 11,
-                      RMC => 12,
-                      HQPAC => 13,
                       EVALUATOR => 12,
-                      BOD => 12,
-                      BODC => 13,
                       ASD => 13,
                       SD => 13,
-                      GOV => 13,
                       STAFF => 16,
                       MANAGER => 17,
                       ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, HQPC, PS, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, TA, RMC, HQPAC, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, HQPC, PS, STUDENT, EXTERNAL, ISAC, SRC, ETC, IAC, CAC, NCE, AR, CI, PL, APL, TL, TC, TA, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, PARTNER, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, AR, CI, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
+foreach($config->getValue('committees') as $role => $roleDef){
+    define($role, $role);
+    
+    $wgRoleValues[$role] = 11;
+    $wgRoles[] = $role;
+    $wgAllRoles[] = $role;
+}
+
+$config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
     return strtolower(strtr(utf8_decode($str), 
