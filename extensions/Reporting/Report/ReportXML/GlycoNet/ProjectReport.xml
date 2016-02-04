@@ -428,6 +428,12 @@
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="10" mimeType="application/pdf">
+                <![CDATA[
+                    <p><b>Figures Upload</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
