@@ -590,6 +590,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
+	global $config;
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -648,7 +649,7 @@ class Person extends BackboneModel {
                 }
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
-                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC) || $config->getValue('hqpIsPublic') ){
                         $people[] = $person;
                     }
                 }
@@ -1138,8 +1139,9 @@ class Person extends BackboneModel {
      * @return int The id of this Person
      */
     function getId(){
+	global $config;
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC) && !$config->getValue('hqpIsPublic')){
             return 0;
         }
         return $this->id;
@@ -1233,12 +1235,12 @@ class Person extends BackboneModel {
      * @return string The url of this Person's profile page
      */
     function getUrl(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
+        if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') ||$this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
-        else if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+        else if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
