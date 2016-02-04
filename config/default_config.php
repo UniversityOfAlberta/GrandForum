@@ -78,6 +78,8 @@
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
+
+    $config->setValue("hqpIsPublic", false);
     
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
