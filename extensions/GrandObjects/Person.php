@@ -590,6 +590,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
+	global $config;
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -619,7 +620,7 @@ class Person extends BackboneModel {
                         continue;
                     }
                     if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                             if($idOnly){
                                 $people[] = $row;
                             }
@@ -648,7 +649,7 @@ class Person extends BackboneModel {
                 }
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
-                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(NI) || $config->getValue('hqpIsPublic') ){
                         $people[] = $person;
                     }
                 }
@@ -716,7 +717,7 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
                 }
             }
@@ -771,6 +772,25 @@ class Person extends BackboneModel {
                                  'role' => $role->getRole(),
                                  'title' => $role->getTitle());
             }
+        }
+        foreach($this->leadership() as $project){
+            $role = PL;
+            if($project->getType() == 'Administrative'){
+                $role = APL;
+            }
+            $roles[] = array('id' => '',
+                             'role' => $role,
+                             'title' => $project->getName());
+        }
+        foreach($this->getLeadThemes() as $theme){
+            $roles[] = array('id' => '',
+                             'role' => TL,
+                             'title' => $theme->getAcronym());
+        }
+        foreach($this->getCoordThemes() as $theme){
+            $roles[] = array('id' => '',
+                             'role' => TC,
+                             'title' => $theme->getAcronym());
         }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
@@ -908,25 +928,25 @@ class Person extends BackboneModel {
         if($this->isRoleAtLeast(STAFF)){
             return true;
         }
-        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+        if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
             return true;
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             return true;
         }
-        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             return true;
         }
-        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+        if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
             return true;
         }
         return false;
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
-            ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
+           (($this->isRole(NI) && $person->isRoleAtLeast(COMMITTEE)) || // Handles regular NI
+            ($this->isProjectLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
+            ($this->isThemeLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
+            ($this->isThemeCoordinator() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
+            ($this->isRoleAtLeast(COMMITTEE) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
         }
@@ -1138,8 +1158,9 @@ class Person extends BackboneModel {
      * @return int The id of this Person
      */
     function getId(){
+	global $config;
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return 0;
         }
         return $this->id;
@@ -1167,7 +1188,7 @@ class Person extends BackboneModel {
      */
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRole(HQPC)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRoleAtLeast(COMMITTEE)){
             return "{$this->email}";
         }
         return "";
@@ -1233,12 +1254,12 @@ class Person extends BackboneModel {
      * @return string The url of this Person's profile page
      */
     function getUrl(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
+        if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') ||$this->isRoleAtLeast(NI)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
-        else if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+        else if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') || $this->isRoleAtLeast(NI)) && isset($_GET['embed'])){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
@@ -1697,7 +1718,7 @@ class Person extends BackboneModel {
      */
     function getPosition(){
         $university = $this->getUniversity();
-        return (isset($university['position'])) ? $university['position'] : "Unkown";
+        return (isset($university['position'])) ? $university['position'] : "Unknown";
     }    
     
     /**
@@ -1893,7 +1914,7 @@ class Person extends BackboneModel {
      */
     function getRoleString(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return "";
         }
         $roles = $this->getRoles();
@@ -2559,6 +2580,10 @@ class Person extends BackboneModel {
             return ($this->isRole(AR, $project) || 
                     $this->isRole(CI, $project));
         }
+        if($role == NI.'-Candidate'){
+            return ($this->isRole(AR.'-Candidate', $project) || 
+                    $this->isRole(CI.'-Candidate', $project));
+        }
         if($role == PL || $role == 'PL'){
             return $this->isProjectLeader();
         }
@@ -2620,6 +2645,10 @@ class Person extends BackboneModel {
             return ($this->isRoleOn(AR, $date, $project) || 
                     $this->isRoleOn(CI, $date, $project));
         }
+        if($role == NI.'-Candidate'){
+            return ($this->isRoleOn(AR.'-Candidate', $date, $project) || 
+                    $this->isRoleOn(CI.'-Candidate', $date, $project));
+        }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
         if($role == PL || $role == "PL"){
@@ -2671,6 +2700,10 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
                     $this->isRoleDuring(CI, $startRange, $endRange, $project));
+        }
+        if($role == NI.'-Candidate'){
+            return ($this->isRoleDuring(AR.'-Candidate', $startRange, $endRange, $project) || 
+                    $this->isRoleDuring(CI.'-Candidate', $startRange, $endRange, $project));
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
@@ -2724,6 +2757,10 @@ class Person extends BackboneModel {
             return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
                     $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
         }
+        if($role == NI.'-Candidate'){
+            return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange) || 
+                    $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange));
+        }
         if($this->isCandidate()){
             return false;
         }
@@ -2753,6 +2790,10 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtLeast(AR) || 
                     $this->isRoleAtLeast(CI));
+        }
+        if($role == NI.'-Candidate'){
+            return ($this->isRoleAtLeast(AR.'-Candidate') || 
+                    $this->isRoleAtLeast(CI.'-Candidate'));
         }
         $me = Person::newFromWgUser();
         if($this->isCandidate()){
@@ -2793,6 +2834,10 @@ class Person extends BackboneModel {
         if($role == NI){
             return ($this->isRoleAtMost(AR) || 
                     $this->isRoleAtMost(CI));
+        }
+        if($role == NI.'-Candidate'){
+            return ($this->isRoleAtMost(AR.'-Candidate') || 
+                    $this->isRoleAtMost(CI.'-Candidate'));
         }
         if($this->isCandidate()){
             return true;

@@ -354,6 +354,7 @@ EOF;
 		$contactHeader = "";
 		$subRoleHeader = "";
 		$projectsHeader = "";
+		$committees = $config->getValue('committees');
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
@@ -364,7 +365,7 @@ EOF;
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
         }
-        if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
+        if($config->getValue('projectsEnabled') && !isset($committees[$table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
@@ -394,7 +395,8 @@ EOF;
                 $subRoles = $person->getSubRoles();
                 $this->text .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
             }
-            if($config->getValue('projectsEnabled') && $table != BOD && $table != ISAC && $table != CAC && $table != IAC && $table != RMC){
+            
+            if($config->getValue('projectsEnabled') && !isset($committees[$table])){
                 $projects = $person->getProjects();
                 $projs = array();
 			    foreach($projects as $project){

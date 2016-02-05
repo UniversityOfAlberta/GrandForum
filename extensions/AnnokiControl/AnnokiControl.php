@@ -31,6 +31,7 @@ function redirect($url){
     DBFunctions::commit();
     session_write_close();
     header("Location: $url");
+    DBFunctions::commit();
     exit;
 }
 
