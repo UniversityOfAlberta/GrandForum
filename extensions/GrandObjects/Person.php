@@ -620,7 +620,7 @@ class Person extends BackboneModel {
                         continue;
                     }
                     if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                             if($idOnly){
                                 $people[] = $row;
                             }
@@ -649,7 +649,7 @@ class Person extends BackboneModel {
                 }
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
-                    if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC) || $config->getValue('hqpIsPublic') ){
+                    if($me->isLoggedIn() || $person->isRoleAtLeast(NI) || $config->getValue('hqpIsPublic') ){
                         $people[] = $person;
                     }
                 }
@@ -717,7 +717,7 @@ class Person extends BackboneModel {
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
-                if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
                 }
             }
@@ -928,25 +928,25 @@ class Person extends BackboneModel {
         if($this->isRoleAtLeast(STAFF)){
             return true;
         }
-        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+        if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
             return true;
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             return true;
         }
-        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             return true;
         }
-        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+        if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
             return true;
         }
         return false;
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
-            ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
+           (($this->isRole(NI) && $person->isRoleAtLeast(COMMITTEE)) || // Handles regular NI
+            ($this->isProjectLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
+            ($this->isThemeLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
+            ($this->isThemeCoordinator() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
+            ($this->isRoleAtLeast(COMMITTEE) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
         }
@@ -1160,7 +1160,7 @@ class Person extends BackboneModel {
     function getId(){
 	global $config;
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC) && !$config->getValue('hqpIsPublic')){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return 0;
         }
         return $this->id;
@@ -1188,7 +1188,7 @@ class Person extends BackboneModel {
      */
     function getEmail(){
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRole(HQPC)){
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD) || $this->isRoleAtLeast(COMMITTEE)){
             return "{$this->email}";
         }
         return "";
@@ -1256,10 +1256,10 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') ||$this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
+        if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') ||$this->isRoleAtLeast(NI)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
-        else if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+        else if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') || $this->isRoleAtLeast(NI)) && isset($_GET['embed'])){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
@@ -1914,7 +1914,7 @@ class Person extends BackboneModel {
      */
     function getRoleString(){
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(ISAC)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
             return "";
         }
         $roles = $this->getRoles();

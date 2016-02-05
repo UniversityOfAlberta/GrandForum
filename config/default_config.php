@@ -238,6 +238,7 @@
     $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
     $config->setConst("TC",         "TC");
+    $config->setConst("COMMITTEE",  "Committee");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("CHAMP",      "Champion");
     $config->setConst("PARTNER",    "Partner");

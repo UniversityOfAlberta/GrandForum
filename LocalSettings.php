@@ -251,6 +251,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       TC => 11,
                       APL => 11,
                       TC => 11,
+                      COMMITTEE => 12,
                       EVALUATOR => 12,
                       ASD => 13,
                       SD => 13,
@@ -269,7 +270,7 @@ $wgAllRoles = ($config->hasValue('wgAllRoles')) ?
 foreach($config->getValue('committees') as $role => $roleDef){
     define($role, $role);
     
-    $wgRoleValues[$role] = 11;
+    $wgRoleValues[$role] = $wgRoleValues[COMMITTEE];
     $wgRoles[] = $role;
     $wgAllRoles[] = $role;
 }

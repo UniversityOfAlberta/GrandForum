@@ -6,7 +6,7 @@ class PersonAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $me = Person::newFromWgUser();
             $person = Person::newFromId($this->getParam('id'));
-            if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(ISAC))){
+            if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI))){
                 $this->throwError("This user does not exist");
             }
             return $person->toJSON();

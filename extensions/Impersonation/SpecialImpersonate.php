@@ -23,7 +23,7 @@ class Impersonate extends SpecialPage {
 	            $('#mainForm').attr('method', 'get');
 	            $('#mainForm').attr('action', '$wgServer$wgScriptPath/index.php');
 	            $('#button').click(function(){
-                    var page = $('select option:selected').attr('name').split(':')[1];
+                    var page = $('select option:selected').attr('name');
                     if(typeof page != 'undefined'){
                         document.location = '".$wgServer.$wgScriptPath."/index.php?impersonate=' + page;
                     }
@@ -31,7 +31,7 @@ class Impersonate extends SpecialPage {
                 $('#search').keyup(function(event) {
                     if(event.keyCode == 13){
                         // Enter key was pressed
-                        var page = $('select option:selected').attr('name').split(':')[1];
+                        var page = $('select option:selected').attr('name');
                         if(typeof page != 'undefined'){
                             document.location = '".$wgServer.$wgScriptPath."/index.php?impersonate=' + page;
                         }
@@ -262,21 +262,10 @@ class Impersonate extends SpecialPage {
 	        $projects = $person->getProjects();
 	        $roles = $person->getRoles();
 	        $projs = array();
-	        $roleText = $person->getType();
 	        foreach($projects as $project){
 	            $projs[] = $project->getName();
 	        }
-	        foreach($roles as $role){
-	            $projs[] = $role->getRole();
-	            if($role->getRole() == HQP)
-	                $roleText = HQP;
-	            else if($role->getRole() == NI)
-	                $roleText = NI;
-	            else if($role->getRole() == RMC)
-	                $roleText = RMC;
-	                
-	        }
-	        $wgOut->addHTML("<option class='".implode(" ", $projs)."' name='$roleText:{$person->getName()}' id='".unaccentChars(str_replace(".", "", $person->getName()))."'>".str_replace(".", " ", $person->getNameForForms())."</option>\n");
+	        $wgOut->addHTML("<option class='".implode(" ", $projs)."' name='{$person->getName()}' id='".unaccentChars(str_replace(".", "", $person->getName()))."'>".str_replace(".", " ", $person->getNameForForms())."</option>\n");
 	    }
 	    $wgOut->addHTML("</select>
 	            </td></tr>
