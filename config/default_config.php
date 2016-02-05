@@ -223,7 +223,7 @@
      */
     $config->setValue("committees",
         array(
-            
+            "RMC" => "Research Management Committee"
         ));
      
     $config->setConst("INACTIVE",   "Inactive");
