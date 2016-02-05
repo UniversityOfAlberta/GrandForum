@@ -1,0 +1,60 @@
+<?php
+
+$dir = dirname(__FILE__) . '/';
+$wgSpecialPages['AwardApplicationTable'] = 'AwardApplicationTable'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['AwardApplicationTable'] = $dir . 'AwardApplicationTable.i18n.php';
+$wgSpecialPageGroups['AwardApplicationTable'] = 'network-tools';
+
+$wgHooks['SubLevelTabs'][] = 'AwardApplicationTable::createSubTabs';
+
+autoload_register('Reporting/Report/SpecialPages/GlycoNet/ApplicationTabs');
+
+function runAwardApplicationTable($par) {
+    AwardApplicationTable::execute($par);
+}
+
+class AwardApplicationTable extends SpecialPage{
+
+    function AwardApplicationTable() {
+        SpecialPage::__construct("AwardApplicationTable", null, false, 'runAwardApplicationTable');
+    }
+    
+    function userCanExecute($user){
+        $person = Person::newFromUser($user);
+        return ($person->isRoleAtLeast(STAFF));
+    }
+
+    function execute($par){
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        AwardApplicationTable::generateHTML($wgOut);
+    }
+    
+    function generateHTML($wgOut){
+        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
+        
+        $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
+        $ni = Person::getAllPeople(NI);
+        
+        $tabbedPage = new TabbedPage("person");
+
+        $tabbedPage->addTab(new CandidatesTab());
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni));
+        $tabbedPage->showPage();
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        $person = Person::newFromWgUser();
+        
+        if(self::userCanExecute($wgUser)){
+            $selected = @($wgTitle->getText() == "AwardApplicationTable") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Award Applications", "$wgServer$wgScriptPath/index.php/Special:AwardApplicationTable", $selected);
+        }
+        return true;
+    }
+
+}
+
+?>

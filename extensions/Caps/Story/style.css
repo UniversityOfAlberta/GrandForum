@@ -1,0 +1,38 @@
+/* Any custom styles should go here */
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}
+
+div.ui-dialog-content {
+    padding: 0 !important;
+}
+
+div.ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 0.5em 1em 0.5em !important;
+}
+
+table.wikitable {
+    border: hidden !important;
+    margin: 0;
+    padding: 0;
+}
+
+table.wikitable tr.even {
+    background: #FFFFFF;
+}
+
+table.wikitable tr.odd {
+    background: #F2F2F2;
+}
+
+table.wikitable tr.deleted {
+    background: #FEB8B8;
+}

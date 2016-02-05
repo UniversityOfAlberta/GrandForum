@@ -1,0 +1,25 @@
+<p>
+    <button id="addNewStory" title="Create New Story">Create New Story</button>
+</p>
+<div id="addNewStoryDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Add New User Story">
+<form>
+Title:
+<%= HTML.TextArea(this, 'title', {style: 'max-height: 30px; max-width:547px; resize: none;'}) %>
+Story:
+<%= HTML.TextArea(this, 'story', {style: 'max-height: 100px; max-width:547px; resize: none;'}) %>
+</form>
+        <button id="submitStory" style="height:40px">Submit Story</button><span class="throbber" style="display:none;"></span>
+</div>
+<table id="listTable" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Story Title</th>
+	    <th width="5%" style="white-space: nowrap;">Submitted By</th>
+            <th width="5%" style="white-space: nowrap;">Date Submitted</th>
+	    <th width="5%">Approved</th>
+        </tr>
+    </thead>
+    <tbody id="personRows">
+        
+    </tbody>
+</table>
