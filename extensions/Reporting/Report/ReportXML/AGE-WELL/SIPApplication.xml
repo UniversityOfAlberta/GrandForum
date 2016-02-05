@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" pdfType="RPTP_SIP" pdfFiles="SIPApplicationPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -9,7 +9,23 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI-Candidate">
+        <Role role="NI-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External-Candidate">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
             <SectionPermission id="narrative" permissions="rw" />
@@ -18,7 +34,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description">
+    <ReportSection id="description" tooltip="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions" name="Program Description" type="ReportSection" title="2016 AGE-WELL Strategic Investment Program (SIP) Program Description and Application Instructions">
         <ReportItem id="description" type="Static">
             <![CDATA[
                 <h3>Program Description</h3>
@@ -52,12 +68,18 @@
 
                 <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application. For reporting purposes, all partnership activities should be quantified in Part II – Appendix of the application package and supported by a Letter of Support from the partnering organization included in Part III of this application.</p>
 
-                <h3>Application Forms and Process</h3>
-                <p>The SIP application consists of three sections:<br />
+                <h3>Application Instructions</h3>
+                The SIP application consists of three sections:<br />
                 <b>PART 1 - Narrative Application</b> (5 page max, minimum 12 pt font excluding Cover Sheet)<br />
-                <b>PART 2 - Appendix</b> (Excel spreadsheet with tabs for Team, Budget, Partner Contributions, Other Funds, Activities, Timelines and Milestones)<br />
+                <p>Complete sections directly in Forum using the spaces provided. Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
+                <b>PART 2 - Appendix</b> (Team Summary, Budget and Budget Justification, Partner Contributions)<br />
+                <p>Complete Team Summary, HQP and Budget Justification directly in Forum using the sections and drop down menus provided.</p>
+                <p>Budget Template (Excel) are available in Forum (links in each section).  Download, complete and upload filled documents.  Any partner contributions should be added to the Budget Template and supported by a letter signed by the partner.</p>
+                <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
                 <b>PART 3 - Investigator Bio</b> (2 page max, highlighting relevant experience) and Partner Letter of Support (if applicable)</p>
-                <p style="font-weight:bold;color:#FF0000;">SIP applications will be accepted online through the AGE-WELL Forum Research Portal beginning in early 2016.</p>
+                <p>Complete bio directly in Forum using the textbox provided.  Provide a brief bio (2 page max) for the principle investigator.  No specific format/template is required.</p>
+                <p>Upload any letters of support from partners described in Part 2. Submit as PDF(s).</p>
+                <p>Use the Save button at the bottom of the page after each section entry or before moving between sections.</p>
 
                 <h3>Submission Deadlines:</h3>
                 <p>Proposals will be accepted quarterly. Deadlines for 2016 are:
@@ -239,14 +261,142 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="ReportSection" blobSection="APPENDIX">
-        <ReportItem id="upload" type="Upload" blobType="BLOB_RAW" blobItem="UPLOAD" mimeType="application/vnd.ms-excel">
+    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
             <![CDATA[
-                <h3>(Excel spreadsheet with tabs for Team, Budget, Partner Contributions, Other Funds, Activities, Timelines and Milestones)</h3>
-                <a href='../data/AGE-WELL SIP Appendix.xls'>Download Spreadsheet Template</a>
+                <h2>Team Summary</h2>
+                <p class='small'>Use the following code for Role:<br />
+                <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
+                <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
+                <b>&nbsp;&nbsp;Partner</b></p>
                 {$item}
             ]]>
-        </ReportItem> 
+        </ReportItem>
+        <ReportItem id="hqp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP" labels="Name|Institution|Email|Level of Study/Position" types="Text|Text|Text|Text" sizes="150|150|150|" multiple="true">
+            <![CDATA[
+                <h2>Highly Qualified Personnel (HQP)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL Budget.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <p>Please use the following categories in your budget justification as appropriate. Note that SIP funding includes specific budget caps in some categories.</p>
+                <ol>
+                <li><b>Salaries to students</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST2" height="100px">
+            <![CDATA[
+                <li><b>Salaries to non-students</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
+            <![CDATA[
+                <li><b>Professional & Tech. Services/contracts</b>
+                    <ol type="a">
+                        <li>Consultants and business development services (maximum $5,000)</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST4" height="100px">
+            <![CDATA[
+                <li><b>Equipment</b>
+                    <ol type="a">
+                        <li>Purchase of rental</li>
+                        <li>Maintenance costs</li>
+                        <li>Operating costs</li>
+                        <li>Other equipment costs</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST5" height="100px">
+            <![CDATA[
+                <li><b>Computing and Software</b>
+                    <ol type="a">
+                        <li>Specialized software licenses and e-communications costs</li>
+                        <li>E-business enablement costs, website</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just6" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST6" height="100px">
+            <![CDATA[
+                <li><b>Materials, Supplies & Other expenditures</b>
+                    <ol type="a">
+                        <li>Materials and Supplies</li>
+                        <li>Patent costs (maximum $3,000)</li>
+                        <li>Proof of Principle, product validation for market readiness</li>
+                        <li>Prototype development (specify)</li>
+                        <li>Communications/Marketing/Printing/Production (maximum $5,000)</li>
+                        <li>Evaluation costs</li>
+                        <li>Management and Networking (maximum $3,000)</li>
+                    </ol>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="just7" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST7" height="100px">
+            <![CDATA[
+                <li><b>Travel</b>
+                    <ol type="a">
+                        <li>Field trips</li>
+                        <li>Conference, technical shows</li>
+                    </ol>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <!--ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" sizes="||||75" blobItem="OTHER_FUNDS" multiple="true">
+            <![CDATA[
+                <h3>Other Funds</h3>
+                <table class='small'>
+                    <tr>
+                        <th style='width:200px;' align='left'>Type of Grant</th>
+                        <th align='left'>Status</th>
+                    </tr>
+                    <tr>
+                        <td valign='top'>
+                            1. Provincial<br />
+                            2. CIHR/NSERC/SSHRC<br />
+                            3. Other Provincial<br />
+                            4. Other Federal<br />
+                            5. International<br />
+                            6. Other AGE-WELL NCE<br />
+                            7. Other non-AGE-WELL<br />
+                        </td>
+                        <td valign='top'>
+                            PA: Pending Approval<br />
+                            GH: Grant Held<br />
+                            E/C: Expired/Completed<br />
+                        </td>
+                    </tr>
+                </table>
+                {$item}
+            ]]>
+        </ReportItem-->
+        <!--ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
+            <![CDATA[
+                <h2>Milestones</h2>
+                <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
+                {$item}
+            ]]>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
@@ -256,7 +406,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER">
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip">
             <![CDATA[
                 <h3>Partner Letter of Support</h3>
                 <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application.</p>

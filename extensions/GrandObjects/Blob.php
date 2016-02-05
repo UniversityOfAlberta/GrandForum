@@ -412,7 +412,10 @@ class ReportBlob {
 			//echo ">>>> Offending SQL:\n{$sql}\n";
 			throw new DomainException('Address leads to ambiguous data.');
 		}
-		Cache::store($cacheId, $this->_data);
+		if($this->_type != BLOB_RAW){
+		    // Cache the data as long as it isn't a raw type since they can be quite large
+		    Cache::store($cacheId, $this->_data);
+		}
 		return $ret;
 	}
 

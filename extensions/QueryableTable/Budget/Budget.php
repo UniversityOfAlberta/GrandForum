@@ -212,16 +212,17 @@ class Budget extends QueryableTable{
                     if(ord($maxCol) < $colN + 1){
                         break;
                     }
-                    $origCellValue = $cells[$rowN][$colN];
+                    $origCellValue = @$cells[$rowN][$colN];
                     $splitCell = explode("(", $cell);
                     $params = array();
                     $cell = $splitCell[0];
                     if(count($splitCell) > 1){
                         $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
                     }
-                    $origCellValue = utf8_encode($origCellValue);
-                    $origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
+                    //$origCellValue = utf8_encode($origCellValue);
+                    //$origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
                     $origCellValue = preg_replace('/\s\s+/', ' ', $origCellValue);
+                    $origCellValue = trim($origCellValue);
                     $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
                     if(!($cellValue instanceof NACell)){
                         $this->xls[$rowN][$colN] = $cellValue;
@@ -346,9 +347,9 @@ class Budget extends QueryableTable{
             foreach($tab->getElementsByTagName("td") as $td){
                 $td->removeAttribute('width');
                 $td->removeAttribute('nowrap');
-                if(strstr($td->getAttribute('class'), "explicitSpan") === false){
+                /*if(strstr($td->getAttribute('class'), "explicitSpan") === false){
                     $td->setAttribute('colspan', '1');
-                }
+                }*/
                 if(strstr($td->getAttribute('class'), "budgetError") === false && strstr($td->getAttribute('style'), "background") === false){
                     $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
                 }

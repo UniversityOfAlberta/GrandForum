@@ -31,9 +31,6 @@ class GrandAccess {
 	    foreach($me->getThemeProjects() as $project){
 	        $aRights[$i++] = $project->getName();
 	    }
-	    if($me->isRoleAtLeast(MANAGER)){
-	        $aRights[$i++] = RMC;
-	    }
 	    if($me->isRoleAtLeast(STAFF)){
 	        $aRights[$i++] = PL;
 	        $aRights[$i++] = TL;

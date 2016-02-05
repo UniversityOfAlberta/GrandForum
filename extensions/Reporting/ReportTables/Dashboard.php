@@ -140,26 +140,13 @@ EOF;
             else{
                  $hqp_type = ", ".$hqp_type;
             } 
-            
-            //GRAND time percentage
-            $uid = $h->getId();
-            $grand_activity_blob = new ReportBlob($blob_type, $year, $uid, 0);
-            $grand_activity_blob->load($rep_addr);
-            $grand_activity_arr = $grand_activity_blob->getData();
-            $grand_percent = (isset($grand_activity_arr['grand_percent']))? $grand_activity_arr['grand_percent'] : '';
-            $grand_percent = preg_replace('/%/', '', $grand_percent);
-            $grand_percent = (is_numeric($grand_percent))? $grand_percent : 0;
 
             $role = ($h->isRole(HQP))? "HQP" : (($h->isRole(NI))? "NI" : "");
             if($h->isActive() && $role != ""){
-                $effort = "";
-                if(isExtensionEnabled('Reporting')){
-                    $effort = ", {$config->getValue('networkName')}-related effort: {$grand_percent}%";
-                }
                 $html.=<<<EOF
                     <li>
                     <a target='_blank' href='{$url_prefix}{$role}:{$hqp_name}'>
-                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type} {$effort}
+                    $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type}
                     </li>
 EOF;
             }

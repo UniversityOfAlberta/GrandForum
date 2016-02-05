@@ -206,7 +206,7 @@ class AddMaterialAPI extends API{
 	}
 	
 	function updateMedia($material){
-	    global $wgFileExtensions;
+	    global $wgFileExtensions, $wgUser;
 	    if($_POST['media'] == ""){
 	        $sql = "UPDATE `grand_materials`
 	                SET `mediaLocal` = '',
@@ -263,13 +263,16 @@ class AddMaterialAPI extends API{
 	    else{
 	        global $wgRequest;
 	        $wgRequest->setVal("wpUploadFileURL", $_POST['media']);
-            $wgRequest->setVal("wpSourceType", 'web');
+	        $wgRequest->setVal("wpUpload", true);
+            $wgRequest->setVal("wpSourceType", 'url');
             $wgRequest->setVal("action", 'submit');
             $wgRequest->setVal("wpDestFile", $material->getId().".$extension");
             $wgRequest->setVal("wpDestFileWarningAck", true);
             $wgRequest->setVal("wpIgnoreWarning", true);
-	        $upload = new UploadForm($wgRequest);
-	        $upload->execute();
+            $wgRequest->setVal("wpEditToken", $wgUser->getEditToken());
+	        $upload = new SpecialUpload($wgRequest);
+	        $upload->execute(null);
+	        //print_r($upload);
 	        if($upload->mLocalFile != null){
 	            if(!$this->typeSet){
 	                $mime = $upload->mLocalFile->getMimeType();

@@ -224,6 +224,8 @@ class AddMember extends SpecialPage{
     function createForm(){
         global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
+        $committees = $config->getValue('committees');
+        
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
@@ -251,14 +253,7 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && 
-                                            $role != ISAC && 
-                                            $role != IAC && 
-                                            $role != CAC && 
-                                            $role != NCE &&
-                                            $role != RMC &&
-                                            $role != CF &&
-                                            $role != HQPAC){
+            if($me->isRoleAtLeast($role) && !isset($committees[$role])){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
@@ -266,28 +261,8 @@ class AddMember extends SpecialPage{
             $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){
-            if(in_array(ISAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', ISAC)] = ISAC;
-            }
-            if(in_array(IAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
-            }
-            if(in_array(CAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CAC)] = CAC;
-            }
-            if(in_array(RMC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
-            }
-            if(in_array(CF, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CF)] = CF;
-            }
-            if(in_array(HQPAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', HQPAC)] = HQPAC;
-            }
-        }
-        if($me->isRoleAtLeast(MANAGER)){
-            if(in_array(NCE, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
+            foreach($committees as $committee => $def){
+                $roleOptions[$def] = $committee;
             }
         }
         ksort($roleOptions);

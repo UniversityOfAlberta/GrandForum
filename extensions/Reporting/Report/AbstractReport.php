@@ -153,7 +153,11 @@ abstract class AbstractReport extends SpecialPage {
             }
             $parser->parse($quick);
             if(isset($_GET['saveBackup'])){
-                $parser->saveBackup();
+                $download = true;
+                if(isset($_GET['download']) && $_GET['download'] == 'false'){
+                    $download = false;
+                }
+                $parser->saveBackup($download);
             }
             
             $currentSection = @$_GET['section'];

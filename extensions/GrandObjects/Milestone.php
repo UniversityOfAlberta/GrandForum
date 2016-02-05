@@ -7,6 +7,12 @@
 class Milestone {
 
     static $cache = array();
+    static $statuses = array("New" => "#BBBBBB",
+                             "Completed" => "#3399FF",
+                             "On Going" => "#55BB55",
+                             "Late" => "#FFDD00",
+                             "Problem" => "#FF8800",
+                             "Abandoned" => "#FF6666");
 
     var $id;
     var $identifier;
@@ -16,6 +22,7 @@ class Milestone {
     var $project;
     var $leader;
     var $people;
+    var $peopleText;
     var $peopleWaiting;
     var $title;
     var $status;
@@ -104,6 +111,7 @@ class Milestone {
             $this->project = Project::newFromId($data[0]['project_id']);
             $this->leader = $data[0]['leader'];
             $this->people = array();
+            $this->peopleText = $data[0]['people'];
             $this->peopleWaiting = true;
             $this->problem = $data[0]['problem'];
             $this->description = $data[0]['description'];
@@ -252,6 +260,14 @@ class Milestone {
             $this->peopleWaiting = false;
         }
         return $this->people;
+    }
+    
+    /**
+     * Returns the People involved in this Milestone revision
+     * @return array The People involved in this Milestone revision
+     */
+    function getPeopleText(){
+        return $this->peopleText;
     }
 
     /**

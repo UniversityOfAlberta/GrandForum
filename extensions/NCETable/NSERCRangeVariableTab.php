@@ -61,38 +61,25 @@ function showDiv(div_id, details_div_id){
         $this->showContentsTable();
 
         if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->startYear}-{$this->endYear}_".$label){
-        switch (ArrayUtil::get_string($_GET, 'summary')) {
-        /*
-        case 'table2':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            //self::show_grand_table2();
-            break;
-            
-        case 'table3':
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showHQPTable();
-            break;
-        */
-        case 'grand':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
-            self::showContributionsTable();
-            $this->html .= "<a id='Table2.2'></a><h2>Contributions By Project</h2>";
-            self::showContributionsByProjectTable();
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showGrandTables();
-            self::showDisseminations();
-            self::showArtDisseminations();
-            self::showActDisseminations();
-            self::showPublicationList();
-            if(isExtensionEnabled('Reporting')){
-                self::showProjectRequests();
+            switch (ArrayUtil::get_string($_GET, 'summary')) {
+                case 'grand':
+                    $wgOut->addScript($foldscript);
+                    $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
+                    self::showContributionsTable();
+                    $this->html .= "<a id='Table2.2'></a><h2>Contributions By Project</h2>";
+                    self::showContributionsByProjectTable();
+                    $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
+                    self::showGrandTables();
+                    self::showDisseminations();
+                    self::showArtDisseminations();
+                    self::showActDisseminations();
+                    self::showPublicationList();
+                    if(isExtensionEnabled('Reporting')){
+                        self::showProjectRequests();
+                    }
+                    break;
             }
-            break;
         }
-        }
-        //$this->showProductivity();
         
         return $this->html;
     }

@@ -114,15 +114,22 @@ class HQPRegister extends SpecialPage{
             $_POST['wpUserType'] = HQP;
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
-            $wgGroupPermissions['*']['createaccount'] = true;
-            GrandAccess::$alreadyDone = array();
-            $result = APIRequest::doAction('CreateUser', false);
-            $wgGroupPermissions['*']['createaccount'] = false;
-            GrandAccess::$alreadyDone = array();
-            if($result){
-                $form->reset();
-                $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
-                redirect("$wgServer$wgScriptPath");
+            
+            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+                
+            }
+            else{
+                $wgGroupPermissions['*']['createaccount'] = true;
+                GrandAccess::$alreadyDone = array();
+                $result = APIRequest::doAction('CreateUser', false);
+                $wgGroupPermissions['*']['createaccount'] = false;
+                GrandAccess::$alreadyDone = array();
+                if($result){
+                    $form->reset();
+                    $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
+                    redirect("$wgServer$wgScriptPath");
+                }
             }
         }
         HQPRegister::generateFormHTML($wgOut);

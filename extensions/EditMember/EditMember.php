@@ -930,6 +930,7 @@ class EditMember extends SpecialPage{
     function generateRoleFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $me = Person::newFromWgUser();
+        $committees = $config->getValue('committees');
         $myProjects = $me->getProjects(false, true);
         if(!isset($_GET['name'])){
             return;
@@ -987,13 +988,7 @@ class EditMember extends SpecialPage{
             else{
                 $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='display: none; float:right; cursor: pointer;'>[Projects]</a>";
             }
-            if(($role != ISAC  || $me->isRoleAtLeast(STAFF)) &&
-               ($role != IAC   || $me->isRoleAtLeast(STAFF)) &&
-               ($role != CAC   || $me->isRoleAtLeast(STAFF)) &&
-               ($role != HQPAC || $me->isRoleAtLeast(STAFF)) && 
-               ($role != RMC   || $me->isRoleAtLeast(STAFF)) && 
-               ($role != CF    || $me->isRoleAtLeast(STAFF)) &&
-               ($role != NCE   || $me->isRoleAtLeast(MANAGER)) && 
+            if((!isset($committees[$role]) || $me->isRoleAtLeast(STAFF)) &&
                ($me->isRoleAtLeast($role) || ($role == CHAMP && $me->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($me->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$me->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){

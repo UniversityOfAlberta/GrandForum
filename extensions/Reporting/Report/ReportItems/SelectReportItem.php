@@ -8,7 +8,8 @@ class SelectReportItem extends AbstractReportItem {
         $value = $this->getBlobValue();
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
         $items = array();
-		foreach($options as $option){
+        $items[] = "<option value='' style='display:none;' disabled selected hidden>---</option>";
+		foreach($options as $key => $option){
 		    $selected = "";
 		    if($value == $option){
 		        $selected = "selected";

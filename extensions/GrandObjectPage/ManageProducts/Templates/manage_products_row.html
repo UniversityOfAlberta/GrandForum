@@ -39,7 +39,7 @@
 <td style="<% if(!isMine) { %>background: #FFCC00; <% } %>">
     <% var names = new Array();
     _.each(authors, function(author){
-        if(author.id == ""){
+        if(author.id == "" || author.id == null){
             names.push(author.name);
         }
         else{

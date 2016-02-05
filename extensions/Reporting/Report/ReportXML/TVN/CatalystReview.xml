@@ -4,14 +4,20 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="eula" permissions="-" />
             <SectionPermission id="ex_review" permissions="-" />
-            <SectionPermission id="src_review" permissions="" />
+            <SectionPermission id="src_review" permissions="rw" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SRC">
             <SectionPermission id="eula" permissions="-" />
-            <SectionPermission id="ex_review" permissions="-" />
-            <SectionPermission id="src_review" permissions="rw" />
-            <SectionPermission id="rmc_review" permissions="" />
+            <SectionPermission id="ex_review" permissions="rw" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="-" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="ISAC">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="rw" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="-" />
         </Role>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
@@ -19,6 +25,18 @@
             <SectionPermission id="src_review" permissions="" />
             <SectionPermission id="rmc_review" permissions="" />
         </Role>
+        <Person id="831">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="rw" />
+        </Person>
+        <Person id="847">
+            <SectionPermission id="eula" permissions="-" />
+            <SectionPermission id="ex_review" permissions="-" />
+            <SectionPermission id="src_review" permissions="-" />
+            <SectionPermission id="rmc_review" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="eula" name="Agreement" title="Confidentiality Agreement" tooltip="Confidentiality Agreement" blobSection="CAT_SRC_EULA" type="EULA">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to abide by the confidentiality agreement" 
@@ -71,7 +89,10 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItemSet id="if_eula" type="If" if="{or({or({==({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                                      {contains({$user_full_roles},ISAC)}
+                                                     )},
+                                                  {contains({$user_full_roles},SRC)})}">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-EX" class="Project">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                     <ReportItem id="table" type="StaticReportItem">
@@ -83,62 +104,279 @@
                                 <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                             </table>
                             <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                            <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
+                    <ReportItem id="topic" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <div class="scientific">
                             <div style="font-size:150%;font-weight:bold;text-align:center;">A. Scientific Excellence</div>
                             <h2>A1. Knowledge of the Topic</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed</td>
+                                    <td class='small' valign='top'>The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed</td>
+                                    <td class='small' valign='top'>The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed</td>
+                                    <td class='small' valign='top'>The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="gap" type="RadioReportItem"  blobType="BLOB_TEXT" blobItem="CAT_SRC_GAP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="No attempt has been made to identify the knowledge gap pertinent to the proposed work.|An attempt has been made to identify the knowledge gap pertinent to the proposed work and how the work fill the gap but these are superficial and not completely elaborated.|The proposal has satisfactorally identified the knowledge gap and how the proposed work will fill the gap|The proposal has fully and clearly identified the knowledge gap and has completely demonstrated how the proposed work will help fill the gap." orientation="horizontal" showScore="true">
+                    <ReportItem id="gap" blobType="BLOB_TEXT" blobItem="CAT_SRC_GAP" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A2. Knowledge Gap</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>No attempt has been made to identify the knowledge gap pertinent to the proposed work.</td>
+                                    <td class='small' valign='top'>An attempt has been made to identify the knowledge gap pertinent to the proposed work and how the work fill the gap but these are superficial and not completely elaborated.</td>
+                                    <td class='small' valign='top'>The proposal has satisfactorally identified the knowledge gap and how the proposed work will fill the gap</td>
+                                    <td class='small' valign='top'>The proposal has fully and clearly identified the knowledge gap and has completely demonstrated how the proposed work will help fill the gap.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="question" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_QUESTION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research question and/or hypothesis have not been articulated|The research question and/or hypothesis have been somewhat articulated|The research question and/or hypothesis have been articulated|The research question and/or hypothesis have been clearly articulated" orientation="horizontal" showScore="true">
+                    <ReportItem id="question" blobType="BLOB_TEXT" blobItem="CAT_SRC_QUESTION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A3. Research Question</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The research question and/or hypothesis have not been articulated</td>
+                                    <td class='small' valign='top'>The research question and/or hypothesis have been somewhat articulated</td>
+                                    <td class='small' valign='top'>The research question and/or hypothesis have been articulated</td>
+                                    <td class='small' valign='top'>The research question and/or hypothesis have been clearly articulated</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="methodology" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_METHODOLOGY" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The methodology is incongruent with the intent of the research project or has not been identified and/or described.|The methodology is confusing, incomplete, or lacks congruency with the intent of the research project.|The methodology is congruent with the intent of the research project.|The methodology is clearly described, congruent and rigorous." orientation="horizontal" showScore="true">
+                    <ReportItem id="methodology" blobType="BLOB_TEXT" blobItem="CAT_SRC_METHODOLOGY" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A4. Research Methodology</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The methodology is incongruent with the intent of the research project or has not been identified and/or described.</td>
+                                    <td class='small' valign='top'>The methodology is confusing, incomplete, or lacks congruency with the intent of the research project.</td>
+                                    <td class='small' valign='top'>The methodology is congruent with the intent of the research project.</td>
+                                    <td class='small' valign='top'>The methodology is clearly described, congruent and rigorous.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="design" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_DESIGN" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research design, which may include the type of research population and sample size  being studied is inappropriate or has not been identified and/or described.|The research design, which may include the type of research population and sample size  being studied is confusing or incomplete given the research questions and sampling strategy. Some limitations and assumptions have been identified.|The research design, which may include the type of research population and sample size  being studied has been adequately described.  In addition, some of the appropriate and important limitations and assumptions have been clearly stated.|The research design, which may include the type of research population and sample size  being studied purpose, are coherent and fully consistent with the research questions/objectives. In addition,appropriate and important limitations and assumptions have been clearly stated." orientation="horizontal" showScore="true">
+                    <ReportItem id="design" blobType="BLOB_TEXT" blobItem="CAT_SRC_DESIGN" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A5. Research Design</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied is inappropriate or has not been identified and/or described.</td>
+                                    <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied is confusing or incomplete given the research questions and sampling strategy. Some limitations and assumptions have been identified.</td>
+                                    <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied has been adequately described.  In addition, some of the appropriate and important limitations and assumptions have been clearly stated.</td>
+                                    <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied purpose, are coherent and fully consistent with the research questions/objectives. In addition,appropriate and important limitations and assumptions have been clearly stated.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="procedures" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_PROCEDURES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are not identified or inappropiate.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are incompletely identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are somewhat satisfactorily identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are completely identified and fully described." orientation="horizontal" showScore="true">
+                    <ReportItem id="procedures" blobType="BLOB_TEXT" blobItem="CAT_SRC_PROCEDURES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A6. Research Procedures</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are not identified or inappropiate.</td>
+                                    <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are incompletely identified and described.</td>
+                                    <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are somewhat satisfactorily identified and described.</td>
+                                    <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are completely identified and fully described.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="outcomes" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_OUTCOMES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The outcomes of this project has no potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have some positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project have the potential to have a significantly positive effect on practice, policy and socio-economic benefits to Canada." orientation="horizontal" showScore="true">
+                    <ReportItem id="outcomes" blobType="BLOB_TEXT" blobItem="CAT_SRC_OUTCOMES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A7. Research Outcomes</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The outcomes of this project has no potential to have a positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                    <td class='small' valign='top'>The outcomes of this project has the potential to have some positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                    <td class='small' valign='top'>The outcomes of this project has the potential to have a positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                    <td class='small' valign='top'>The outcomes of this project have the potential to have a significantly positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="integration" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_INTEGRATION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="There is no description of how the knowledge will be integrated and translated at the end of the grant.|There is some description of how the knowledge will be integrated and translated at the end of the grant.|There is a description of how the knowledge will be integrated and translated at the end of the grant.|There is a clear description of how the knowledge will be integrated and translated at the end of the grant." orientation="horizontal" showScore="true">
+                    <ReportItem id="integration" blobType="BLOB_TEXT" blobItem="CAT_SRC_INTEGRATION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A8. Knowledge Integration/Translation</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>There is no description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                    <td class='small' valign='top'>There is some description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                    <td class='small' valign='top'>There is a description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                    <td class='small' valign='top'>There is a clear description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="recognition" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_RECOGNITION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed project is not innovative and does not have the potential to be recognized nationally and globally for scientific excellence.|The proposed project has a few innovative components within the project and has some potential to be recognized to nationally and globally for scientific excellence|The proposed project has the potential to be recognized nationally and globally for scientific excellence.|The proposed project has great potential to be recognized nationally and globally for scientific excellence. " orientation="horizontal" showScore="true">
+                    <ReportItem id="recognition" blobType="BLOB_TEXT" blobItem="CAT_SRC_RECOGNITION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>A9. Innovation and Scientific Recognition</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The proposed project is not innovative and does not have the potential to be recognized nationally and globally for scientific excellence.</td>
+                                    <td class='small' valign='top'>The proposed project has a few innovative components within the project and has some potential to be recognized to nationally and globally for scientific excellence</td>
+                                    <td class='small' valign='top'>The proposed project has the potential to be recognized nationally and globally for scientific excellence.</td>
+                                    <td class='small' valign='top'>The proposed project has great potential to be recognized nationally and globally for scientific excellence.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
                     <ReportItem id="total1" type="StaticReportItem">
@@ -164,7 +402,6 @@
                                         )}
                                     )}
                                 </b> (Score out of 36)</p>
-                            <h2>Scientific Excellence</h2>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$project_id}_total5">
                                     {round(
@@ -192,12 +429,14 @@
                                     ,2 )}
                                 </b> (Score converted out of 5)</p>
                             <script type="text/javascript">
-                                $("#proj{$project_id} div.scientific input[type=radio]").click(function(){
+                                $("#proj{$project_id} div.scientific input[type=text]").change(function(){
                                     var total = 0;
-                                    $("#proj{$project_id} .scientific input[type=radio]:checked").each(function(i, v){
-                                        total += parseInt($(v).val());
+                                    $("#proj{$project_id} .scientific input[type=text]").each(function(i, v){
+                                        if(!_.isNaN(parseFloat($(v).val()))){
+                                            total += parseFloat($(v).val());
+                                        }
                                     });
-                                    $("#proj{$project_id}_total").html(total);
+                                    $("#proj{$project_id}_total").html(Math.round(total*100)/100);
                                     $("#proj{$project_id}_total5").html(Math.round((total/36)*5*100)/100 );
                                 });
                             </script>
@@ -211,24 +450,96 @@
                             {$item}<br /><br />
                         ]]>
                     </ReportItem>
-                    <ReportItem id="experience" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_EXPERIENCE" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible given the project team's lack of specific experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any current or past research funding directly relevant to the proposal being reviewed.|The proposed study is unlikely to be feasible given the project team's limited experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some past research funding directly relevant to the proposal being reviewed.|The proposed study is likely feasible given the project team's experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list a few current and past research funding directly relevant to the proposal being reviewed.|The proposed study is feasible given the project team's extensive experience needed to carry out the proposal. The CVs of the Project Leader, Principal Investigators and Co-Invetigators list many current and past research funding directly relevant to the proposal being reviewed." orientation="horizontal" showScore="true">
+                    <ReportItem id="experience" blobType="BLOB_TEXT" blobItem="CAT_SRC_EXPERIENCE" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <div class='feasibility'>
                             <div style="font-size:150%;font-weight:bold;text-align:center;">B. Project Feasibility</div>
                             <h2>B1. Ability to successfully execute project based on experience of project team</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The proposed study is not feasible given the project team's lack of specific experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any current or past research funding directly relevant to the proposal being reviewed.</td>
+                                    <td class='small' valign='top'>The proposed study is unlikely to be feasible given the project team's limited experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some past research funding directly relevant to the proposal being reviewed.</td>
+                                    <td class='small' valign='top'>The proposed study is likely feasible given the project team's experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list a few current and past research funding directly relevant to the proposal being reviewed.</td>
+                                    <td class='small' valign='top'>The proposed study is feasible given the project team's extensive experience needed to carry out the proposal. The CVs of the Project Leader, Principal Investigators and Co-Invetigators list many current and past research funding directly relevant to the proposal being reviewed.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="budget" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_BUDGET" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.|The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.|The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.|The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated." orientation="horizontal" showScore="true">
+                    <ReportItem id="budget" blobType="BLOB_TEXT" blobItem="CAT_SRC_BUDGET" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>B2. Chance of successfully executing project based on the budget</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.</td>
+                                    <td class='small' valign='top'>The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.</td>
+                                    <td class='small' valign='top'>The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.</td>
+                                    <td class='small' valign='top'>The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
-                    <ReportItem id="objectives" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_OBJECTIVES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.|The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives." orientation="horizontal" showScore="true">
+                    <ReportItem id="objectives" blobType="BLOB_TEXT" blobItem="CAT_SRC_OBJECTIVES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                         <![CDATA[
                             <h2>B3. Chance of successfully executing project objectives within the time requested?</h2>
-                            {$item}
+                            <table class='wikitable' width='100%'>
+                                <tr>
+                                    <th width='23%'>Unacceptable<br />
+                                        <small>(score = 0)</small>
+                                    </th>
+                                    <th width='23%'>Borderline<br />
+                                        <small>(score = 1)</small>
+                                    </th>
+                                    <th width='23%'>Good/Solid<br />
+                                        <small>(score = 3)</small>
+                                    </th>
+                                    <th width='23%'>Excellent<br />
+                                        <small>(score = 4)</small>
+                                    </th>
+                                    <th width='8%'>Your score<br />
+                                        <small>(Max 4)</small></th>
+                                </tr>
+                                <tr>
+                                    <td class='small' valign='top'>The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.</td>
+                                    <td class='small' valign='top'>The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.</td>
+                                    <td class='small' valign='top'>The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.</td>
+                                    <td class='small' valign='top'>The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives.</td>
+                                    <td align='center'>{$item}</td>
+                                </tr>
+                            </table>
                         ]]>
                     </ReportItem>
                     <ReportItem id="total2" type="StaticReportItem">
@@ -258,10 +569,12 @@
                                     , 2)}
                                 </b> (Score converted out of 5)</p>
                             <script type="text/javascript">
-                                $("#proj{$project_id} div.feasibility input[type=radio]").click(function(){
+                                $("#proj{$project_id} div.feasibility input[type=text]").change(function(){
                                     var total = 0;
-                                    $("#proj{$project_id} div.feasibility input[type=radio]:checked").each(function(i, v){
-                                        total += parseInt($(v).val());
+                                    $("#proj{$project_id} div.feasibility input[type=text]").each(function(i, v){
+                                        if(!_.isNaN(parseFloat($(v).val()))){
+                                            total += parseFloat($(v).val());
+                                        }
                                     });
                                     $("#proj{$project_id}_feasibility").html(total);
                                     $("#proj{$project_id}_feasibility5").html(Math.round((total/12)*5*100)/100);
@@ -281,17 +594,20 @@
                 </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItem id="if_not_eula" type="If" if="{and({and({!=({getText(RP_CAT_REVIEW,CAT_SRC_EULA,EULA,0,{$user_id},0)},Yes)},
+                                                        {!contains({$user_full_roles},ISAC)}
+                                                       )},
+                                                   {!contains({$user_full_roles},SRC)})}">
             <![CDATA[
                 <p>You need to accept the confidentiality agreement before you have access to any of the review materials.</p>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="src_review" name="SRC Review" blobSection="CAT_SRC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
+    <ReportSection id="src_review" name="Scientific Review" blobSection="CAT_SRC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
-                    <li>Please complete both sections A and B. </li>  
+                    <li>Please complete both sections A and B.</li>  
                     <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale TVN funding opportunities.</li>
                     <li>Observational studies or studies that do not study the impact of interventions will not be funded.</li>
                     <li>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:
@@ -308,7 +624,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-SRC" class="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="CAT-RMC" class="Project">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
@@ -319,62 +635,279 @@
                             <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
                         </table>
                         <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                        <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                     ]]>
                 </ReportItem>
-                <ReportItem id="topic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed|The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed|The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed|The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed" orientation="horizontal" showScore="true">
+                <ReportItem id="topic" blobType="BLOB_TEXT" blobItem="CAT_SRC_TOPIC" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <div class="scientific">
                         <div style="font-size:150%;font-weight:bold;text-align:center;">A. Scientific Excellence</div>
                         <h2>A1. Knowledge of the Topic</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The investigators have demonstrated minimal or no knowledge of the topic for which the research proposal is directed</td>
+                                <td class='small' valign='top'>The investigators have demonstrated incomplete knowledge of the topic for which the research proposal is directed</td>
+                                <td class='small' valign='top'>The investigators have demonstrated satisfactory knowledge of the topic for which the research proposal is directed</td>
+                                <td class='small' valign='top'>The investigators have demonstrated sound and complete knowledge of topic for which the research proposal is directed</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="gap" type="RadioReportItem"  blobType="BLOB_TEXT" blobItem="CAT_SRC_GAP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="No attempt has been made to identify the knowledge gap pertinent to the proposed work.|An attempt has been made to identify the knowledge gap pertinent to the proposed work and how the work fill the gap but these are superficial and not completely elaborated.|The proposal has satisfactorally identified the knowledge gap and how the proposed work will fill the gap|The proposal has fully and clearly identified the knowledge gap and has completely demonstrated how the proposed work will help fill the gap." orientation="horizontal" showScore="true">
+                <ReportItem id="gap" blobType="BLOB_TEXT" blobItem="CAT_SRC_GAP" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A2. Knowledge Gap</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>No attempt has been made to identify the knowledge gap pertinent to the proposed work.</td>
+                                <td class='small' valign='top'>An attempt has been made to identify the knowledge gap pertinent to the proposed work and how the work fill the gap but these are superficial and not completely elaborated.</td>
+                                <td class='small' valign='top'>The proposal has satisfactorally identified the knowledge gap and how the proposed work will fill the gap</td>
+                                <td class='small' valign='top'>The proposal has fully and clearly identified the knowledge gap and has completely demonstrated how the proposed work will help fill the gap.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="question" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_QUESTION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research question and/or hypothesis have not been articulated|The research question and/or hypothesis have been somewhat articulated|The research question and/or hypothesis have been articulated|The research question and/or hypothesis have been clearly articulated" orientation="horizontal" showScore="true">
+                <ReportItem id="question" blobType="BLOB_TEXT" blobItem="CAT_SRC_QUESTION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A3. Research Question</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The research question and/or hypothesis have not been articulated</td>
+                                <td class='small' valign='top'>The research question and/or hypothesis have been somewhat articulated</td>
+                                <td class='small' valign='top'>The research question and/or hypothesis have been articulated</td>
+                                <td class='small' valign='top'>The research question and/or hypothesis have been clearly articulated</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="methodology" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_METHODOLOGY" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The methodology is incongruent with the intent of the research project or has not been identified and/or described.|The methodology is confusing, incomplete, or lacks congruency with the intent of the research project.|The methodology is congruent with the intent of the research project.|The methodology is clearly described, congruent and rigorous." orientation="horizontal" showScore="true">
+                <ReportItem id="methodology"  blobType="BLOB_TEXT" blobItem="CAT_SRC_METHODOLOGY" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A4. Research Methodology</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The methodology is incongruent with the intent of the research project or has not been identified and/or described.</td>
+                                <td class='small' valign='top'>The methodology is confusing, incomplete, or lacks congruency with the intent of the research project.</td>
+                                <td class='small' valign='top'>The methodology is congruent with the intent of the research project.</td>
+                                <td class='small' valign='top'>The methodology is clearly described, congruent and rigorous.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="design" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_DESIGN" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research design, which may include the type of research population and sample size  being studied is inappropriate or has not been identified and/or described.|The research design, which may include the type of research population and sample size  being studied is confusing or incomplete given the research questions and sampling strategy. Some limitations and assumptions have been identified.|The research design, which may include the type of research population and sample size  being studied has been adequately described.  In addition, some of the appropriate and important limitations and assumptions have been clearly stated.|The research design, which may include the type of research population and sample size  being studied purpose, are coherent and fully consistent with the research questions/objectives. In addition,appropriate and important limitations and assumptions have been clearly stated." orientation="horizontal" showScore="true">
+                <ReportItem id="design" blobType="BLOB_TEXT" blobItem="CAT_SRC_DESIGN" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A5. Research Design</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied is inappropriate or has not been identified and/or described.</td>
+                                <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied is confusing or incomplete given the research questions and sampling strategy. Some limitations and assumptions have been identified.</td>
+                                <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied has been adequately described.  In addition, some of the appropriate and important limitations and assumptions have been clearly stated.</td>
+                                <td class='small' valign='top'>The research design, which may include the type of research population and sample size  being studied purpose, are coherent and fully consistent with the research questions/objectives. In addition,appropriate and important limitations and assumptions have been clearly stated.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="procedures" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_PROCEDURES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are not identified or inappropiate.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are incompletely identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are somewhat satisfactorily identified and described.|Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are completely identified and fully described." orientation="horizontal" showScore="true">
+                <ReportItem id="procedures" blobType="BLOB_TEXT" blobItem="CAT_SRC_PROCEDURES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A6. Research Procedures</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are not identified or inappropiate.</td>
+                                <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are incompletely identified and described.</td>
+                                <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are somewhat satisfactorily identified and described.</td>
+                                <td class='small' valign='top'>Procedures and/or instruments for gathering data and the proposed statistical methods for analyzing data are completely identified and fully described.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="outcomes" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_OUTCOMES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The outcomes of this project has no potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have some positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project has the potential to have a positive effect on practice, policy and socio-economic benefits to Canada.|The outcomes of this project have the potential to have a significantly positive effect on practice, policy and socio-economic benefits to Canada." orientation="horizontal" showScore="true">
+                <ReportItem id="outcomes" blobType="BLOB_TEXT" blobItem="CAT_SRC_OUTCOMES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A7. Research Outcomes</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The outcomes of this project has no potential to have a positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                <td class='small' valign='top'>The outcomes of this project has the potential to have some positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                <td class='small' valign='top'>The outcomes of this project has the potential to have a positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                <td class='small' valign='top'>The outcomes of this project have the potential to have a significantly positive effect on practice, policy and socio-economic benefits to Canada.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="integration" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_INTEGRATION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="There is no description of how the knowledge will be integrated and translated at the end of the grant.|There is some description of how the knowledge will be integrated and translated at the end of the grant.|There is a description of how the knowledge will be integrated and translated at the end of the grant.|There is a clear description of how the knowledge will be integrated and translated at the end of the grant." orientation="horizontal" showScore="true">
+                <ReportItem id="integration" blobType="BLOB_TEXT" blobItem="CAT_SRC_INTEGRATION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A8. Knowledge Integration/Translation</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>There is no description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>There is some description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>There is a description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>There is a clear description of how the knowledge will be integrated and translated at the end of the grant.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="recognition" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_RECOGNITION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed project is not innovative and does not have the potential to be recognized nationally and globally for scientific excellence.|The proposed project has a few innovative components within the project and has some potential to be recognized to nationally and globally for scientific excellence|The proposed project has the potential to be recognized nationally and globally for scientific excellence.|The proposed project has great potential to be recognized nationally and globally for scientific excellence. " orientation="horizontal" showScore="true">
+                <ReportItem id="recognition" blobType="BLOB_TEXT" blobItem="CAT_SRC_RECOGNITION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>A9. Innovation and Scientific Recognition</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed project is not innovative and does not have the potential to be recognized nationally and globally for scientific excellence.</td>
+                                <td class='small' valign='top'>The proposed project has a few innovative components within the project and has some potential to be recognized to nationally and globally for scientific excellence</td>
+                                <td class='small' valign='top'>The proposed project has the potential to be recognized nationally and globally for scientific excellence.</td>
+                                <td class='small' valign='top'>The proposed project has great potential to be recognized nationally and globally for scientific excellence.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
                 <ReportItem id="total1" type="StaticReportItem">
@@ -400,7 +933,6 @@
                                     )}
                                 )}
                             </b> (Score out of 36)</p>
-                        <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_total5">
                                 {round(
@@ -428,12 +960,14 @@
                                 ,2 )}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
-                            $("#proj{$project_id} div.scientific input[type=radio]").click(function(){
+                            $("#proj{$project_id} div.scientific input[type=text]").change(function(){
                                 var total = 0;
-                                $("#proj{$project_id} .scientific input[type=radio]:checked").each(function(i, v){
-                                    total += parseInt($(v).val());
+                                $("#proj{$project_id} .scientific input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
                                 });
-                                $("#proj{$project_id}_total").html(total);
+                                $("#proj{$project_id}_total").html(Math.round(total*100)/100);
                                 $("#proj{$project_id}_total5").html(Math.round((total/36)*5*100)/100 );
                             });
                         </script>
@@ -447,24 +981,96 @@
                         {$item}<br /><br />
                     ]]>
                 </ReportItem>
-                <ReportItem id="experience" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_EXPERIENCE" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible given the project team's lack of specific experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any current or past research funding directly relevant to the proposal being reviewed.|The proposed study is unlikely to be feasible given the project team's limited experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some past research funding directly relevant to the proposal being reviewed.|The proposed study is likely feasible given the project team's experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list a few current and past research funding directly relevant to the proposal being reviewed.|The proposed study is feasible given the project team's extensive experience needed to carry out the proposal. The CVs of the Project Leader, Principal Investigators and Co-Invetigators list many current and past research funding directly relevant to the proposal being reviewed." orientation="horizontal" showScore="true">
+                <ReportItem id="experience" blobType="BLOB_TEXT" blobItem="CAT_SRC_EXPERIENCE" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <div class='feasibility'>
                         <div style="font-size:150%;font-weight:bold;text-align:center;">B. Project Feasibility</div>
                         <h2>B1. Ability to successfully execute project based on experience of project team</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not feasible given the project team's lack of specific experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators do not list any current or past research funding directly relevant to the proposal being reviewed.</td>
+                                <td class='small' valign='top'>The proposed study is unlikely to be feasible given the project team's limited experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list some past research funding directly relevant to the proposal being reviewed.</td>
+                                <td class='small' valign='top'>The proposed study is likely feasible given the project team's experience needed to carry out the proposal. The CVs of the Project Leader and Principal Investigators list a few current and past research funding directly relevant to the proposal being reviewed.</td>
+                                <td class='small' valign='top'>The proposed study is feasible given the project team's extensive experience needed to carry out the proposal. The CVs of the Project Leader, Principal Investigators and Co-Invetigators list many current and past research funding directly relevant to the proposal being reviewed.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="budget" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_BUDGET" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.|The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.|The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.|The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated." orientation="horizontal" showScore="true">
+                <ReportItem id="budget" blobType="BLOB_TEXT" blobItem="CAT_SRC_BUDGET" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>B2. Chance of successfully executing project based on the budget</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not feasible because the requested budget is not sufficient to carry out the study.   The applicant does a poor job of describing how the funds are being allocated.</td>
+                                <td class='small' valign='top'>The proposed study is unlikley feasible because the requested budget may not be sufficient to carry out the study.  The applicant does a satisfactory job of describing how the funds are being allocated.</td>
+                                <td class='small' valign='top'>The proposed study is likley feasible because the requested budget is sufficient to carry out the study.  The applicant does a good job of describing how the funds are being allocated.</td>
+                                <td class='small' valign='top'>The proposed study is feasible because the requested budget is sufficient to carry out the study.  The applicant does an excellent job of describing how the funds are being allocated.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="objectives" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_SRC_OBJECTIVES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.|The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.|The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives." orientation="horizontal" showScore="true">
+                <ReportItem id="objectives" blobType="BLOB_TEXT" blobItem="CAT_SRC_OBJECTIVES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>B3. Chance of successfully executing project objectives within the time requested?</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a very poor job of realistically describing all the objectives and the time needed to complete the objectives.</td>
+                                <td class='small' valign='top'>The proposed study is unlikely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a satisfactory job of realistically describing most of the objectives and the time needed to complete the objectives.</td>
+                                <td class='small' valign='top'>The proposed study is likely feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does a good job of realistically describing most of the objectives and the time needed to complete the objectives.</td>
+                                <td class='small' valign='top'>The proposed study is feasible within the total time requested.  The timeline (Gantt chart) and accompanying narrative does an excellent job of realistically describing all the objectives and the time needed to complete the objectives.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
                 <ReportItem id="total2" type="StaticReportItem">
@@ -478,7 +1084,6 @@
                                     )}
                                 )}
                             </b> (Score out of 12)</p>
-                        <h2>Scientific Excellence</h2>
                         <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                             <b id="proj{$project_id}_feasibility5">
                                 {round(
@@ -494,10 +1099,12 @@
                                 , 2)}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
-                            $("#proj{$project_id} div.feasibility input[type=radio]").click(function(){
+                            $("#proj{$project_id} div.feasibility input[type=text]").change(function(){
                                 var total = 0;
-                                $("#proj{$project_id} div.feasibility input[type=radio]:checked").each(function(i, v){
-                                    total += parseInt($(v).val());
+                                $("#proj{$project_id} div.feasibility input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
                                 });
                                 $("#proj{$project_id}_feasibility").html(total);
                                 $("#proj{$project_id}_feasibility5").html(Math.round((total/12)*5*100)/100);
@@ -516,8 +1123,13 @@
                 </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
+        <ReportItem id="footnote" type="StaticReportItem">
+            <![CDATA[
+                <p style='font-size:1.5em;'>Please continue to the Fit Review</p>
+            ]]>
+        </ReportItem>
     </ReportSection>
-    <ReportSection id="rmc_review" name="RMC Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
+    <ReportSection id="rmc_review" name="Fit Review" blobSection="CAT_RMC_REVIEW" tooltip="Review of Catalyst Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -540,60 +1152,247 @@
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
                         <div id="proj{$project_id}">
-                        <table class='wikitable'>
-                            <tr><td><b>Project Leader:</b></td><td>{$project_leaders}</td></tr>
-                            <tr><td><b>Project ID:</b></td><td>{$project_name}</td></tr>
-                            <tr><td><b>Project Title:</b></td><td>{$project_full_name}</td></tr>
-                        </table>
-                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_CAT, RP_CAT_REPORT, RP_CAT_REPORT_UPLOAD, 0, 0, {$project_id})}&mime=application/zip' class='button'>Download Application</a>
+                        <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
                     ]]>
                 </ReportItem>
-                <ReportItem id="impact" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_IMPACT" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposal will not evaluate, or have the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will satisfactorily evaluate, and has the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will do a good job of evaluating, and has good potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.|The proposal will do an excellent job of evaluating, and has excellent potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization." orientation="horizontal" showScore="true">
+                <ReportItem id="impact" blobType="BLOB_TEXT" blobItem="CAT_RMC_IMPACT" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>1. Contribution to Long Term Impact of TVN</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposal will not evaluate, or have the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will satisfactorily evaluate, and has the potential to improve, patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do a good job of evaluating, and has good potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td class='small' valign='top'>The proposal will do an excellent job of evaluating, and has excellent potential to improve patient centered outcomes, patient/family satisfaction, health economic outcomes and/or health resource utilization.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="policy" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_POLICY" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The outcomes of this project will not have a positive effect on practice, policy and/or provide socio- benefits to Canada|The outcomes of this project will have an uncertain or minimal effect on practice, policy and/or socio-economic benefits to Canada|The outcomes of this project will have good potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada|The outcomes of this project will have excellent potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada" orientation="horizontal" showScore="true">
+                <ReportItem id="policy" blobType="BLOB_TEXT" blobItem="CAT_RMC_POLICY" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>2. Contribution to Evidence Informed Practice and/or Policy</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The outcomes of this project will not have a positive effect on practice, policy and/or provide socio- benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have an uncertain or minimal effect on practice, policy and/or socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have good potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td class='small' valign='top'>The outcomes of this project will have excellent potential to have a positive effect on practice, policy and/or provide socio-economic benefits to Canada</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="mission" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_MISSION" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed research is not aligned with TVN's mission which is, &lt;i&gt;“To improve care of frail elderly patients and support their families and caregivers.&lt;/i&gt;”|The proposed research is marginally focused on TVN's mission which is, “&lt;i&gt;To improve care of frail elderly patients and support their families and caregivers.&lt;/i&gt;”|The proposed research is somewhat focused on TVN's mission which is, “&lt;i&gt;To improve care of frail elderly patients and support their families and caregivers.&lt;/i&gt;”|The proposed research is highly focused on TVN's mission which is, “&lt;i&gt;To improve care of frail elderly patients and support their families and caregivers.&lt;/i&gt;”" orientation="horizontal" showScore="true">
+                <ReportItem id="mission" blobType="BLOB_TEXT" blobItem="CAT_RMC_MISSION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>3. Alignment with TVN's Mission</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed research is not aligned with TVN's mission which is, <i>“To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is marginally focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is somewhat focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is highly focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="priorities" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_PRIORITIES" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposed research is not aligned with any of the four TVN priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum).|The proposed research is somewhat aligned with 1 of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)|The proposed research is well aligned with at least one of TVN's strategic priorities (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)|The proposed research is well aligned with more than one of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)" orientation="horizontal" showScore="true">
+                <ReportItem id="priorities" blobType="BLOB_TEXT" blobItem="CAT_RMC_PRIORITIES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>4. Alignment with TVN's Strategic Priorities</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed research is not aligned with any of the four TVN priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed research is somewhat aligned with 1 of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td class='small' valign='top'>The proposed research is well aligned with at least one of TVN's strategic priorities (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td class='small' valign='top'>The proposed research is well aligned with more than one of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="networking" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_NETWORKING" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The proposal does not describe how the research team will engage multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers or stakeholders.  The proposal does not include cross-provincial and/or international collaborations.|The proposal poorly describes how the research team will engage a couple of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary researchers and/or stakeholders.  The proposal includes some cross-provincial and/or international collaborations.|The proposal describes in satisfactory detail how the research team will engage a good number (3 to 4) of multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers and/or stakeholders.  The proposal includes a good number (3 to 4) of cross-provincial and/or international collaborations.|The proposal describes in extensive detail how the research team will engage a large number (5 or more) of multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers and stakeholders.  The proposal includes a substantial number (5 or more) of cross-provincial and international collaborations." orientation="horizontal" showScore="true">
+                <ReportItem id="networking" blobType="BLOB_TEXT" blobItem="CAT_RMC_NETWORKING" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>5. Strength of Networking</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposal does not describe how the research team will engage multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers or stakeholders.  The proposal does not include cross-provincial and/or international collaborations.</td>
+                                <td class='small' valign='top'>The proposal poorly describes how the research team will engage a couple of multi-institutional, multi-provincial, multi-sectoral and/or multidisciplinary/interdisciplinary researchers and/or stakeholders.  The proposal includes some cross-provincial and/or international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in satisfactory detail how the research team will engage a good number (3 to 4) of multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers and/or stakeholders.  The proposal includes a good number (3 to 4) of cross-provincial and/or international collaborations.</td>
+                                <td class='small' valign='top'>The proposal describes in extensive detail how the research team will engage a large number (5 or more) of multi-institutional, multi-provincial, multi-sectoral and multidisciplinary/interdisciplinary researchers and stakeholders.  The proposal includes a substantial number (5 or more) of cross-provincial and international collaborations.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="partnerships" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_PARTNERSHIPS" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The research team does not have any partners or has a few partners that have not met the minimum partner contribution threshold.|The research team has a couple of partners that are providing the minimum in-kind contribution but no cash contribution.  The partners tend to be small regional organizations and/or companies.|The research team has partners that are providing the minimum in-kind and/or cash contributions. The majority of the contribution is in-kind.  The partners tend to be large regional organizations and/or national organizations/companies.|The research team has partners that are providing significantly more than the minimum in-kind and/or cash contribution.  The majority of the contribution is in cash.  The partners are predominantly large regional and/or national organizations/companies." orientation="horizontal" showScore="true">
+                <ReportItem id="partnerships" blobType="BLOB_TEXT" blobItem="CAT_RMC_PARTNERSHIPS" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>6. Strength of Partnerships</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The research team does not have any partners or has a few partners that have not met the minimum partner contribution threshold.</td>
+                                <td class='small' valign='top'>The research team has a couple of partners that are providing the minimum in-kind contribution but no cash contribution.  The partners tend to be small regional organizations and/or companies.</td>
+                                <td class='small' valign='top'>The research team has partners that are providing the minimum in-kind and/or cash contributions. The majority of the contribution is in-kind.  The partners tend to be large regional organizations and/or national organizations/companies.</td>
+                                <td class='small' valign='top'>The research team has partners that are providing significantly more than the minimum in-kind and/or cash contribution.  The majority of the contribution is in cash.  The partners are predominantly large regional and/or national organizations/companies.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="hqp" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_HQP" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="HQP have not been identified as part of the research team.|The number of identified HQP is minimal and their roles in the project have been somewhat  delineated, but do not appear to be meaningful.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).|The number of HQP is reasonable and their roles in the project have been clearly delineated and are meaningful.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).|The number of HQP is high and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.&lt;br /&gt;&lt;br /&gt;Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.)." orientation="horizontal" showScore="true">
+                <ReportItem id="hqp" blobType="BLOB_TEXT" blobItem="CAT_RMC_HQP" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>7. HQP Development</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>HQP have not been identified as part of the research team.</td>
+                                <td class='small' valign='top'>The research team has a couple of partners that are providing the minimum in-kind contribution but no cash contribution.  The partners tend to be small regional organizations and/or companies.</td>
+                                <td class='small' valign='top'>The number of HQP is reasonable and their roles in the project have been clearly delineated and are meaningful.<br /><br />Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is high and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.<br /><br />Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="engagement" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_ENGAGEMENT" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="Patients, family members and knowledge users are not meaningfullly involved, nor are they an integral part of the research team.&lt;br /&gt;&lt;br /&gt;For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.|There is some evidence to suggest that patients, family members and knowledge users may have played , and/or may play a cursory role in the study but are not truely meaningfully involved.&lt;br /&gt;&lt;br /&gt;For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.|There is good evidence to suggest that patients, family members and knowledge users have played a meaningful role, and will continue to play a meaningful role within the research team.&lt;br /&gt;&lt;br /&gt;For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.|There is excellent evidence showing that patients, family members and knowledge users have played a meaningful role, and will continue to play a meaningful role within the research team.&lt;br /&gt;&lt;br /&gt;For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings." orientation="horizontal" showScore="true">
+                <ReportItem id="engagement" blobType="BLOB_TEXT" blobItem="CAT_RMC_ENGAGEMENT" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
                         <h2>8. Citizen Engagement</h2>
-                        {$item}
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Patients, family members and knowledge users are not meaningfullly involved, nor are they an integral part of the research team.<br /><br />For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</td>
+                                <td class='small' valign='top'>There is some evidence to suggest that patients, family members and knowledge users may have played , and/or may play a cursory role in the study but are not truely meaningfully involved.<br /><br />For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</td>
+                                <td class='small' valign='top'>There is good evidence to suggest that patients, family members and knowledge users have played a meaningful role, and will continue to play a meaningful role within the research team.<br /><br />For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</td>
+                                <td class='small' valign='top'>There is excellent evidence showing that patients, family members and knowledge users have played a meaningful role, and will continue to play a meaningful role within the research team.<br /><br />For clarity, meaningful participation includes being involved in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
                     ]]>
                 </ReportItem>
                 <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_RMC_COMMENTS" rich="true">
@@ -657,13 +1456,15 @@
                                 , 2)}
                             </b> (Score converted out of 5)</p>
                         <script type="text/javascript">
-                            $("#proj{$project_id} input[type=radio]").click(function(){
+                            $("#proj{$project_id} input[type=text]").change(function(){
                                 var total = 0;
-                                $("#proj{$project_id} input[type=radio]:checked").each(function(i, v){
-                                    total += parseInt($(v).val());
+                                $("#proj{$project_id} input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
                                 });
-                                $("#proj{$project_id}_total").html(total);
-                                $("#proj{$project_id}_total5").html(Math.round((total/32)*5*100)/100 );
+                                $("#proj{$project_id}_total").html(Math.round(total*100)/100);
+                                $("#proj{$project_id}_total5").html(Math.round((total/32)*5*100)/100);
                             });
                         </script>
                         </div>

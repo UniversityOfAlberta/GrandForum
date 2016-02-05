@@ -11,6 +11,8 @@ function initializeAccessControls(){
 
   //createExtraTables();
   
+  createRoleNamespaces();
+  
   $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
 
   //addMenuJavascript();
@@ -20,6 +22,32 @@ function addMenuJavascript() {
 	global $wgOut, $wgScriptPath;
 	$script = "<script type='text/javascript' src='$wgScriptPath/extensions/AccessControls/selectMenu.js'></script>\n";
 	$wgOut->addScript($script);	
+}
+
+function createRoleNamespaces(){
+    global $wgAllRoles;
+    $nsId = 0;
+    $namespaces = array();
+    $data = DBFunctions::select(array('mw_an_extranamespaces'),
+                                array('nsId', 'nsName'),
+                                array('nsName' => NOTLIKE('%_Talk')));
+    foreach($data as $row){
+        $namespaces[strtoupper($row['nsName'])] = $row['nsId'];
+        $nsId = max($nsId, $row['nsId']);
+    }
+    foreach($wgAllRoles as $role){
+        if(!isset($namespaces[strtoupper($role)])){
+            $nsId += 2;
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId,
+                                      'nsName' => $role,
+                                      'public' => 1));
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId+1,
+                                      'nsName' => $role.'_Talk',
+                                      'public' => 1));
+        }
+    }
 }
 
 /**
