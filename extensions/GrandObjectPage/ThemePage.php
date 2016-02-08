@@ -29,7 +29,7 @@ class ThemePage {
                 $name = $split[0];
             }
             if($title != "Main"){
-                if($theme != null && 
+                if($theme != null && $theme->getId() != 0 &&
                    !$theme->userCanEdit()){
                     TabUtils::clearActions();
                     $wgOut->clearHTML();
