@@ -1079,7 +1079,12 @@ class Person extends BackboneModel {
      */
     function isThemeLeaderOf($project){
         $themes = $this->getLeadThemes();
-        $challenge = $project->getChallenge();
+        if($project instanceof Theme){
+            $challenge = $project;
+        }
+        else {
+            $challenge = $project->getChallenge();
+        }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
                 return true;
@@ -1095,7 +1100,12 @@ class Person extends BackboneModel {
      */
     function isThemeCoordinatorOf($project){
         $themes = $this->getCoordThemes();
-        $challenge = $project->getChallenge();
+        if($project instanceof Theme){
+            $challenge = $project;
+        }
+        else {
+            $challenge = $project->getChallenge();
+        }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
                 return true;

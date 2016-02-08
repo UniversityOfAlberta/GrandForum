@@ -4,41 +4,11 @@ autoload_register('GrandObjectPage/ProjectPage');
 
 $projectPage = new ProjectPage();
 $wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-$wgHooks['ParserBeforeInternalParse'][] = array($projectPage, 'processTheme');
 
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
-
-    function processTheme($parser, $text, $state){
-        global $wgTitle;
-        $name = ($wgTitle != null) ? str_replace("_Talk", "", $wgTitle->getNsText()) : "";
-        $name = str_replace("_", " ", $name);
-        $title = ($wgTitle != null) ? $wgTitle->getText() : "";
-        if($name == ""){
-            // Namespace probably doesn't exist
-            $exploded = explode(":", $title);
-            $name = @$exploded[0];
-            $title = @$exploded[1];
-        }
-        $theme = Theme::newFromName($name);
-        if($theme != null && $theme->getAcronym() != "" && $title == "Information"){
-            $projects = $theme->getProjects();
-            $projectHTML = array();
-            foreach($projects as $project){
-                $url = str_replace(" ", "_", $project->getUrl());
-                $projectHTML[] = "[{$url} {$project->getName()}]";
-            }
-            if(count($projectHTML) > 0){
-                $text = str_replace("== Projects ==\n", "== Projects ==\n<ul><li>".implode("</li><li>", $projectHTML)."</li></ul>", $text);
-            }
-            else{
-                $text = str_replace("== Projects ==\n", "", $text);
-            }
-        }
-        return true;
-    }
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
@@ -51,21 +21,6 @@ class ProjectPage {
             $title = ($article != null) ? $article->getTitle()->getText() : "";
 
             $project = Project::newFromHistoricName($name);
-            
-            $wgOut->addScript("<script type='text/javascript'>
-                function stripAlphaChars(id){
-                    var str = $('#' + id).val();
-                    var out = new String(str); 
-                    out = out.replace(/[^0-9]/g, ''); 
-                    if(out > 100){
-                        out = 100;
-                    }
-                    else if(out < 0){
-                        out = 0;
-                    }
-                    $('#' + id).attr('value', out);
-                }
-            </script>");
             
             if($name == ""){
                 $split = explode(":", $name);
@@ -87,7 +42,7 @@ class ProjectPage {
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
                         !$me->isThemeCoordinatorOf($project) &&
-                        !$me->isRole(CF) && 
+                        !$me->isRole("CF") && 
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
