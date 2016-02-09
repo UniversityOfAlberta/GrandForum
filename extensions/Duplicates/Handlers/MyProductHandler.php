@@ -1,8 +1,8 @@
 <?php
 
 $structure = Product::structure();
-foreach($structure['categories'] as $key => $cat){
-    $publicationHandler = new MyProductHandler("my$key", $key);
+foreach($structure['categories'] as $catkey => $cat){
+    $publicationHandler = new MyProductHandler("my$catkey", $catkey);
 }
 
 class MyProductHandler extends AbstractDuplicatesHandler {
