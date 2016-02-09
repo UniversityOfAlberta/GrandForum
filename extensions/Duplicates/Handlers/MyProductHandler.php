@@ -19,7 +19,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
         $papers = $me->getPapers($this->type, false, 'both');
         $paperArray = array();
         foreach($papers as $paper){
-            $paperArray[] = $paper;
+            $paperArray[$paper->getId()] = $paper;
         }
         return $paperArray;
     }
@@ -28,7 +28,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
         $papers = Paper::getAllPapers('all', $this->type, 'both');
         $paperArray = array();
         foreach($papers as $paper){
-            $paperArray[] = $paper;
+            $paperArray[$paper->getId()] = $paper;
         }
         return $paperArray;
     }
