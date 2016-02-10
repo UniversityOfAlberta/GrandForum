@@ -6,25 +6,32 @@ class PeopleManagedAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             $people = array($me->getReversedName() => $me);
-            foreach($me->getRelations(SUPERVISES, true) as $rel){
-                // Get the list of Supervises
-                $hqp = $rel->getUser2();
-                $people[$hqp->getReversedName()] = $hqp;
-            }
-            foreach($me->getRelations(WORKS_WITH, true) as $rel){
-                // Get list of Works With
-                $user = $rel->getUser2();
-                $people[$user->getReversedName()] = $user;
-            }
-            foreach($me->leadership() as $proj){
-                // Get list of people on current lead projects
-                $members = $proj->getAllPeopleDuring('all', "0000-00-00 00:00:00", "2100-01-01 00:00:00");
-                foreach($members as $member){
-                    $people[$member->getReversedName()] = $member;
+            if($me->isRoleAtLeast(STAFF)){
+                foreach(Person::getAllPeople() as $person){
+                    $people[$person->getReversedName()] = $person;
                 }
             }
-            foreach($me->getManagedPeople() as $person){
-                $people[$person->getReversedName()] = $person;
+            else{
+                foreach($me->getRelations(SUPERVISES, true) as $rel){
+                    // Get the list of Supervises
+                    $hqp = $rel->getUser2();
+                    $people[$hqp->getReversedName()] = $hqp;
+                }
+                foreach($me->getRelations(WORKS_WITH, true) as $rel){
+                    // Get list of Works With
+                    $user = $rel->getUser2();
+                    $people[$user->getReversedName()] = $user;
+                }
+                foreach($me->leadership() as $proj){
+                    // Get list of people on current lead projects
+                    $members = $proj->getAllPeopleDuring('all', "0000-00-00 00:00:00", "2100-01-01 00:00:00");
+                    foreach($members as $member){
+                        $people[$member->getReversedName()] = $member;
+                    }
+                }
+                foreach($me->getManagedPeople() as $person){
+                    $people[$person->getReversedName()] = $person;
+                }
             }
             ksort($people);
             $people = new Collection(array_values($people));

@@ -23,6 +23,7 @@ class RoleAPI extends RESTAPI {
         header('Content-Type: application/json');
         $role->user = $this->POST('userId');
         $role->role = $this->POST('name');
+        $role->projects = $this->POST('projects');
         $role->startDate = $this->POST('startDate');
         $role->endDate = $this->POST('endDate');
         $role->comment = $this->POST('comment');
@@ -47,6 +48,7 @@ class RoleAPI extends RESTAPI {
         }
         header('Content-Type: application/json');
         $role->role = $this->POST('name');
+        $role->projects = $this->POST('projects');
         $role->startDate = $this->POST('startDate');
         $role->endDate = $this->POST('endDate');
         $role->comment = $this->POST('comment');

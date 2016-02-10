@@ -56,12 +56,19 @@ class Role extends BackboneModel {
 	}
 	
 	function toArray(){
+	    $projs = $this->getProjects();
+	    $projects = array();
+	    foreach($projs as $proj){
+	        $projects[] = array('id'   => $proj->getId(),
+	                            'name' => $proj->getName());
+	    }
 	    $json = array('id' => $this->getId(),
 	                  'userId' => $this->user,
 	                  'name' => $this->getRole(),
 	                  'fullName' => $this->getRoleFullName(),
 	                  'title' => $this->getTitle(),
 	                  'comment' => $this->getComment(),
+	                  'projects' => $projects,
 	                  'startDate' => $this->getStartDate(),
 	                  'endDate' => $this->getEndDate());
 	    return $json;
@@ -90,6 +97,12 @@ class Role extends BackboneModel {
             if(count($data) > 0){
                 $id = $data[0]['id'];
                 $this->id = $id;
+                foreach($this->projects as $project){
+	                $p = Project::newFromName($project->name);
+	                DBFunctions::insert('grand_role_projects',
+	                                    array('role_id' => $this->getId(),
+	                                          'project_id' => $p->getId()));
+	            }
                 Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
                 $supervisors = $person->getSupervisors();
                 if(count($supervisors) > 0){
@@ -112,6 +125,14 @@ class Role extends BackboneModel {
 	                                        'end_date'   => $this->getEndDate(),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
+	    DBFunctions::delete('grand_role_projects',
+	                        array('role_id' => EQ($this->getId())));
+	    foreach($this->projects as $project){
+	        $p = Project::newFromName($project->name);
+	        DBFunctions::insert('grand_role_projects',
+	                            array('role_id' => $this->getId(),
+	                                  'project_id' => $p->getId()));
+	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -126,6 +147,10 @@ class Role extends BackboneModel {
 	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
+	    if($status){
+	        $status = DBFunctions::delete('grand_role_projects',
+	                                      array('role_id' => EQ($this->getId())));
+	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;

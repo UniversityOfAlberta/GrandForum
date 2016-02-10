@@ -20,6 +20,7 @@ class ManagePeople extends BackbonePage {
                      'manage_people_row',
                      'edit_roles',
                      'edit_roles_row',
+                     'edit_role_projects',
                      'edit_projects',
                      'edit_projects_row',
                      'edit_universities',

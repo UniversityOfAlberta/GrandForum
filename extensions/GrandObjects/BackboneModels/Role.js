@@ -12,6 +12,7 @@ Role = Backbone.Model.extend({
         name: "",
         title: "",
         comment: "",
+        projects: new Array(),
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         deleted: false
