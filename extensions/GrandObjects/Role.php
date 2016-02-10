@@ -102,6 +102,12 @@ class Role extends BackboneModel {
 	                DBFunctions::insert('grand_role_projects',
 	                                    array('role_id' => $this->getId(),
 	                                          'project_id' => $p->getId()));
+	                if(!$this->getPerson()->isMemberOf($project)){
+	                    DBFunctions::insert('grand_project_members',
+	                                        array('user_id' => $this->getPerson()->getId(),
+	                                              'project_id' => $p->getId(),
+	                                              'start_date' => $this->getStartDate()));
+	                }
 	            }
                 Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
                 $supervisors = $person->getSupervisors();
@@ -112,6 +118,7 @@ class Role extends BackboneModel {
                 }
             }
         }
+        $this->getPerson()->projectCache = array();
         
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
@@ -132,9 +139,16 @@ class Role extends BackboneModel {
 	        DBFunctions::insert('grand_role_projects',
 	                            array('role_id' => $this->getId(),
 	                                  'project_id' => $p->getId()));
+	        if(!$this->getPerson()->isMemberOf($project)){
+                DBFunctions::insert('grand_project_members',
+	                                        array('user_id' => $this->getPerson()->getId(),
+	                                              'project_id' => $p->getId(),
+	                                              'start_date' => $this->getStartDate()));
+            }
 	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
+	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
 	    
         MailingList::subscribeAll($this->getPerson());
