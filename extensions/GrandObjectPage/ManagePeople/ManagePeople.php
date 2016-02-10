@@ -35,7 +35,7 @@ class ManagePeople extends BackbonePage {
         $positions = json_encode(array_values(Person::getAllPositions()));
 
         $departments = json_encode(array_values(Person::getAllDepartments()));
-        $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
+        $organizations = array_unique($uniNames);
         sort($organizations);
         
         $organizations = json_encode($organizations);
