@@ -27,18 +27,18 @@ ManageProductsView = Backbone.View.extend({
             this.listenToOnce(this.products, "sync", $.proxy(function(){
                 me.projects.ready().then($.proxy(function(){
                     this.projects = me.projects.getCurrent();
-                    this.model.ready().then($.proxy(function(){
-                        this.allProjects.ready().then($.proxy(function(){
-                            this.otherProjects = this.allProjects.getCurrent();
-                            this.oldProjects = this.allProjects.getOld();
-                            this.otherProjects.remove(this.projects.models);
-                            this.oldProjects.remove(this.projects.models);
-                            me.projects.ready().then($.proxy(function(){
-                                this.render();
-                            }, this));
-                        }, this));
-                    }, this));
-                }, this));
+                    return this.projects.ready();
+                }, this)).then($.proxy(function(){
+                    return this.allProjects.ready();
+                }. this)).then($.proxy(function(){
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    return me.projects.ready();
+                }, this)).then($.proxy(function(){
+                    this.render();
+                }, this));              
             }, this));
             this.duplicatesDialog = new DuplicatesDialogView(this.products);
         }, this);
@@ -100,11 +100,14 @@ ManageProductsView = Backbone.View.extend({
             }
         });
         this.$("#privateN").html("(" + sum + ")");
+        this.$("#releaseN").html("(" + sum + ")");
         if(sum == 0){
             this.$("#deletePrivate").prop("disabled", true);
+            this.$("#releasePrivate").prop("disabled", true);
         }
         else{
             this.$("#deletePrivate").prop("disabled", false);
+            this.$("#releasePrivate").prop("disabled", false);
         }
         
         // Change the state of the 'selectAll' checkbox
@@ -164,6 +167,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     cacheRows: function(){
+        // Needed so that the search functionality can be updated
         if(this.table != null){
             var rows = this.table.rows().indexes();
             var table = this.table;
@@ -173,7 +177,7 @@ ManageProductsView = Backbone.View.extend({
                 }
             }, this));
         }
-    },
+    },    
     
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
@@ -183,7 +187,6 @@ ManageProductsView = Backbone.View.extend({
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.cacheRows();
-	    this.table.draw();
 	    this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
@@ -191,10 +194,12 @@ ManageProductsView = Backbone.View.extend({
 	    this.$("#listTable_length").empty();
 	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
 	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
+        this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
 	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
     },
     
     toggleSelect: function(e){
+        var wrapper = this.$('#listTable_wrapper').detach();
         var target = $(e.currentTarget);
         var projectId = target.attr('data-project');
         var checked = target.is(":checked");
@@ -206,11 +211,85 @@ ManageProductsView = Backbone.View.extend({
                 view.unselect(projectId);
             }
         });
+        wrapper.appendTo("#currentView");
         this.productChanged();
     },
     
     deletePrivate: function(){
         this.deletePrivateDialog.dialog('open');
+    },
+    
+    releasePrivate: function(){
+        this.$("#saveProducts").prop('disabled', true);
+        this.$(".throbber").show();
+        var xhrs = new Array();
+        this.products.each(function(product){
+            if(product.get('access_id') > 0){
+                product.set('access_id', 0);
+                var duplicates = product.getDuplicates();
+                xhrs.push(duplicates.ready());
+            }
+        });
+        $.when.apply(null, xhrs).done($.proxy(function(){
+            xhrs = new Array();
+            var duplicateProducts = new Array();
+            this.products.each($.proxy(function(product){
+                if(product.dirty){
+                    if(product.duplicates.length > 0){
+                        var newDuplicates = new Array();
+                        product.duplicates.each($.proxy(function(dupe){
+                            var myProduct = this.products.findWhere({id: dupe.get('id')});
+                            if(myProduct != undefined){
+                                // This product is in my table
+                                newDuplicates.push(myProduct);
+                            }
+                            else{
+                                // This product is someone else's
+                                newDuplicates.push(dupe);
+                            }
+                        }, this));
+                        product.duplicates.reset(newDuplicates);
+                        duplicateProducts.push(product);
+                    }
+                    else{
+                        // Save all Dirty Products
+                        xhrs.push(product.save({}, {
+                            success: function(){
+                                // Save was successful, mark it as 'clean'
+                                product.dirty = false;
+                            }
+                        }));
+                    }
+                }
+            }, this));
+            if(duplicateProducts.length > 0){
+                this.duplicatesDialog.model = duplicateProducts;
+                this.duplicatesDialog.open();
+            }
+            $.when.apply(null, xhrs).done($.proxy(function(){
+                // Success
+                clearAllMessages();
+                addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully released");
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this)).fail($.proxy(function(e){
+                // Failure
+                clearAllMessages();
+                var list = new Array();
+                list.push("There was a problem saving the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
+                this.products.each(function(product){
+                    if(product.dirty){
+                        list.push("<li>" + product.get('title') + "</li>");
+                    }
+                });
+                list.push("</ul>");
+                addError(list.join(''));
+                this.$("#saveProducts").prop('disabled', false);
+                this.$(".throbber").hide();
+                this.productChanged();
+            }, this));
+        }, this));
     },
     
     saveProducts: function(){
@@ -299,6 +378,7 @@ ManageProductsView = Backbone.View.extend({
         "click .selectAll": "toggleSelect",
         "click #saveProducts": "saveProducts",
         "click #deletePrivate": "deletePrivate",
+        "click #releasePrivate": "releasePrivate",
         "click #addProductButton": "addProduct",
         "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
@@ -314,7 +394,7 @@ ManageProductsView = Backbone.View.extend({
                     if(view.$("div.popupBox").is(":visible")){
                         // Need to defer the event so that unchecking a project is not in conflict
                         _.defer(function(){
-                            view.model.trigger("change");
+                            view.model.trigger("change", view.model);
                         });
                     }
                 });
@@ -419,9 +499,11 @@ ManageProductsView = Backbone.View.extend({
 	            "Delete": $.proxy(function(){
 	                var model = this.deleteDialog.model;
 	                if(model.get('deleted') != true){
+	                    $("div.throbber", this.deleteDialog).show();
                         model.destroy({
                             success: $.proxy(function(model, response) {
                                 this.deleteDialog.dialog('close');
+                                $("div.throbber", this.deleteDialog).hide();
                                 if(response.deleted == true){
                                     model.set(response);
                                     clearSuccess();
@@ -476,6 +558,7 @@ ManageProductsView = Backbone.View.extend({
                             toDelete.push(product);
                         }
                     });
+                    $("div.throbber", this.deletePrivateDialog).show();
                     _.each(toDelete, function(product){
                         xhrs.push(product.destroy({silent: true}));
                     });
@@ -485,9 +568,11 @@ ManageProductsView = Backbone.View.extend({
                         addSuccess("All private " + productsTerm.pluralize().toLowerCase() + " have been successfully deleted");
                         this.addRows();
                         button.prop("disabled", false);
+                        $("div.throbber", this.deletePrivateDialog).hide();
                         this.deletePrivateDialog.dialog('close');
                     }, this)).fail($.proxy(function(e){
                         // Failure
+                        $("div.throbber", this.deletePrivateDialog).hide();
                         clearAllMessages();
                         var list = new Array();
                         list.push("There was a problem deleting the following " + productsTerm.pluralize().toLowerCase() + ":<ul>");
@@ -500,6 +585,7 @@ ManageProductsView = Backbone.View.extend({
                         addError(list.join(''));
                         this.addRows();
                         button.prop("disabled", false);
+                        $("div.throbber", this.deletePrivateDialog).hide();
                         this.deletePrivateDialog.dialog('close');
                     }, this));
 	            }, this),
@@ -525,6 +611,7 @@ ManageProductsView = Backbone.View.extend({
 	            "Upload": $.proxy(function(e){
 	                var button = $(e.currentTarget);
 	                button.prop("disabled", true);
+	                $("div.throbber", this.ccvDialog).show();
 	                ccvUploaded = $.proxy(function(response, error){
 	                    // Purposefully global so that iframe can access
 	                    if(error == undefined || error == ""){
@@ -540,10 +627,12 @@ ManageProductsView = Backbone.View.extend({
 	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
 	                        }
 	                        button.prop("disabled", false);
+	                        $("div.throbber", this.ccvDialog).hide();
 	                        this.ccvDialog.dialog('close');
 	                    }
 	                    else{
 	                        button.prop("disabled", false);
+	                        $("div.throbber", this.ccvDialog).hide();
 	                        clearAllMessages();
 	                        addError(error);
 	                        this.ccvDialog.dialog('close');
@@ -575,12 +664,15 @@ ManageProductsView = Backbone.View.extend({
 	                var button = $(e.currentTarget);
 	                button.prop("disabled", true);
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
+	                $("div.throbber", this.bibtexDialog).show();
 	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
-	                        this.products.remove(ids);
-                            this.products.add(data.created);
+	                        this.products.remove(ids, {silent: true});
+	                        this.products.trigger("remove");
+                            this.products.add(data.created, {silent: true});
+                            this.products.trigger("add");
                         }
                         clearAllMessages();
                         if(response.errors.length > 0){
@@ -598,6 +690,13 @@ ManageProductsView = Backbone.View.extend({
                             }
                         }
                         button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
+                        this.bibtexDialog.dialog('close');
+	                }, this)).fail($.proxy(function(){
+	                    clearAllMessages();
+	                    addError("There was an error importing the BibTeX references");
+	                    button.prop("disabled", false);
+                        $("div.throbber", this.bibtexDialog).hide();
                         this.bibtexDialog.dialog('close');
 	                }, this));
 	            }, this),
@@ -626,6 +725,7 @@ ManageProductsView = Backbone.View.extend({
 	                    var button = $(e.currentTarget);
 	                    button.prop("disabled", true);
 	                    var value = $("input[name=doi]", this.doiDialog).val();
+	                    $("div.throbber", this.doiDialog).show();
 	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
 	                        var data = response.data;
 	                        if(!_.isUndefined(data.created)){
@@ -641,6 +741,13 @@ ManageProductsView = Backbone.View.extend({
                                 addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
                             }
                             button.prop("disabled", false);
+                            $("div.throbber", this.doiDialog).hide();
+                            this.doiDialog.dialog('close');
+	                    }, this)).fail($.proxy(function(){
+	                        clearAllMessages();
+	                        addError("There was an error importing the DOI reference");
+	                        button.prop("disabled", false);
+                            $("div.throbber", this.doiDialog).hide();
                             this.doiDialog.dialog('close');
 	                    }, this));
 	                }, this)

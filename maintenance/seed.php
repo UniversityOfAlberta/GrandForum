@@ -183,6 +183,7 @@ foreach($wgRoles as $role){
 
 User::createNew("Admin.User1", array('password' => User::crypt("Admin.Pass1"), 'email' => "admin.user1@behat-test.com"));
 User::createNew("Manager.User1", array('password' => User::crypt("Manager.Pass1"), 'email' => "manager.user1@behat-test.com"));
+User::createNew("Staff.User1", array('password' => User::crypt("Staff.Pass1"), 'email' => "staff.user1@behat-test.com"));
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
 User::createNew("PL.User2", array('password' => User::crypt("PL.Pass2"), 'email' => "pl.user2@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
@@ -231,16 +232,17 @@ createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No",
 createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Theme5", 0);
 
 addUserRole("Manager.User1", MANAGER);
-addUserRole("PL.User1", NI);
-addUserRole("TL.User1", NI);
+addUserRole("Staff.User1", STAFF);
+addUserRole("PL.User1", CI);
+addUserRole("TL.User1", CI);
 addUserRole("RMC.User1", RMC);
-addUserRole("RMC.User1", NI);
+addUserRole("RMC.User1", CI);
 addUserRole("RMC.User2", RMC);
 addUserRole("CHAMP.User1", CHAMP);
 addUserRole("CHAMP.User2", CHAMP);
-addUserRole("NI.User1", NI);
-addUserRole("NI.User2", NI);
-addUserRole("NI.User3", NI);
+addUserRole("NI.User1", CI);
+addUserRole("NI.User2", CI);
+addUserRole("NI.User3", CI);
 addUserRole("HQP.User1", HQP);
 addUserRole("HQP.User2", HQP);
 addUserRole("HQP.User3", HQP);

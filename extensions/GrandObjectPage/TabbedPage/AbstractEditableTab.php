@@ -15,7 +15,13 @@ abstract class AbstractEditableTab extends AbstractTab {
         $this->html .= "<br /><input type='submit' name='submit' value='Save {$this->name}' />";
     }
     function showCancelButton(){
-        $this->html .= "&nbsp;&nbsp;<input type='submit' name='submit' value='Cancel' />";
+        $name = str_replace("'", "&#39;", $this->name);
+        $this->html .= "&nbsp;&nbsp;<input id='{$this->id}' type='submit' name='submit' value='Cancel' />";
+        $this->html .= "<script type='text/javascript'>
+            $('input#{$this->id}').click(function(){
+                $(\"<input type='hidden' name='cancel' value='{$name}' />\").insertBefore($('input#{$this->id}'));
+            });
+        </script>";
     }
     
     // Processes the POST data and updates the DB

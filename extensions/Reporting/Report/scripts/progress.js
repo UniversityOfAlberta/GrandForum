@@ -1,6 +1,17 @@
 function setProgress(id, percent){
     if($("#" + id).hasClass('selectedReportTab')){
         $("#reportProgressBar").width(percent + "%");
+        $("#reportProgressLabel").text("Progress (" + percent + "%)");
+        if(percent == 100 && buttonClicked){
+            $("#saveDialog").dialog({
+                width: 'auto',
+                buttons: {
+                    "Ok": function(){
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
     }
 }
 
@@ -14,5 +25,6 @@ function updateProgress(responseStr){
             var val = response[index];
             setProgress(index, val);
         }
+        buttonClicked = false;
     });
 }

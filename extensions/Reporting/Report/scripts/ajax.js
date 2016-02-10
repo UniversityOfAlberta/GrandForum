@@ -174,11 +174,21 @@ $(document).ready(function(){
                 });
             }
             ajaxInstructions = $.get(href + '&showInstructions', function(response){
+                if(response.trim() == ""){
+                    $("#instructionsToggle").hide();
+                    $("#reportInstructions").hide();
+                }
+                else{
+                    $("#instructionsToggle").show();
+                    $("#reportInstructions").show();
+                }
                 $("#reportInstructions > div > div").html("<span id='instructionsHeader'>Instructions</span>" + response);
                 $("#reportInstructions").animate({'opacity' : 1}, animationTime);
             });
         });
     });
+    
+    buttonClicked = false;
     
     function setUpFormSubmit(){
         $.each($("form[name=report] input[type=submit]"), function(index, value){
@@ -186,6 +196,7 @@ $(document).ready(function(){
                 if(timeout != null){
                     clearTimeout(timeout);
                 }
+                buttonClicked = true;
                 autosaveDiv = $('.autosaveSpan');
                 findAutosaves(updateProgress);
                 saveAll(updateProgress);

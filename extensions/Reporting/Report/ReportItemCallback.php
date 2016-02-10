@@ -57,9 +57,20 @@ class ReportItemCallback {
             "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
             "report_has_started" => "getReportHasStarted",
             // People
+            "my_id" => "getMyId",
+            "my_name" => "getMyName",
+            "my_first_name" => "getMyFirstName",
+            "my_last_name" => "getMyLastName",
+            "my_roles" => "getMyRoles",
+            "my_full_roles" => "getMyFullRoles",
+            "parent_id" => "getParentId",
+            "parent_name" => "getParentName",
+            "parent_uni" => "getParentUni",
             "user_name" => "getUserName",
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
+            "user_phone" => "getUserPhone",
+            "user_gender" => "getUserGender",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
@@ -69,10 +80,13 @@ class ReportItemCallback {
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
+            "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
+            "user_project_end_date" => "getUserProjectEndDate",
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
+            "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
             "user_research_time" => "getUserResearchTime",
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
@@ -112,6 +126,7 @@ class ReportItemCallback {
             // RMC
             "rmc_project_rank" => "getRMCProjectRank",
             "rmc_project_confidence" => "getRMCProjectConfidence",
+            "rmc_project_feedback" => "getRMCProjectFeedback",
             // HQP Application
             "hqp_application_uni" => "getHQPApplicationUni",
             "hqp_application_program" => "getHQPApplicationProgram", 
@@ -120,13 +135,38 @@ class ReportItemCallback {
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
             // Other
+            "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
             "index" => "getIndex",
-            "getText" => "getText"
+            "extraIndex" => "getExtraIndex",
+            "getBlobMD5" => "getBlobMD5",
+            "getText" => "getText",
+            "getNumber" => "getNumber",
+            "getHTML" => "getHTML",
+            "getArray" => "getArray",
+            "getExtra" => "getExtra",
+            "concat" =>"concat",
+            "add" => "add",
+            "subtract" => "subtract",
+            "multiply" => "multiply",
+            "divide" => "divide",
+            "round" => "round",
+            "set" => "set",
+            "get" => "get",
+            "and" => "andCond",
+            "or" => "orCond",
+            "contains" => "contains",
+            "!contains" => "notContains",
+            "==" => "eq",
+            "!=" => "neq",
+            ">" => "gt",
+            "<" => "lt",
+            ">=" => "gteq",
+            "<=" => "lteq",
         );
     
     var $reportItem;
@@ -222,7 +262,7 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             $leaders = $project->getLeaders();
             foreach($leaders as $lead){
-                $leads[] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+                $leads[$lead->getReversedName()] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
             }
         }
         if(count($leads) == 0){
@@ -253,8 +293,8 @@ class ReportItemCallback {
         $nis = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END))){
+            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $ni){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59"))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -482,7 +522,7 @@ class ReportItemCallback {
             return;
         }
         //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
-        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         
         $hqp_milestone_comments = "";
         $alreadyDone = array();
@@ -528,7 +568,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -558,7 +598,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_milestone_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -598,7 +638,7 @@ class ReportItemCallback {
     
     function getReportSABComments(){
         $ret = "";
-        $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-01-01', $this->reportItem->getReport()->year.'-12-31');
+        $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-04-01', ($this->reportItem->getReport()->year+1).'-03-31');
         
         $index = 1;
         foreach($sabs as $sab){
@@ -681,7 +721,7 @@ class ReportItemCallback {
         else{
             return;
         }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $ni_comments = "";
         $alreadyDone = array();
         foreach($nis as $ni){
@@ -712,10 +752,10 @@ class ReportItemCallback {
         }
         $me = Person::newFromId($this->reportItem->personId);
         
-        $hqps = $me->getHQPDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $hqps = $me->getHQPDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
         $hqp_comments = "";
         foreach($hqps as $hqp){
-            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59")){
                 $hqp_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $hqp->getId(), $this->reportItem->projectId);
                 $hqp_blob->load($hqp_rep_addr);
                 $hqp_data = $hqp_blob->getData();
@@ -729,6 +769,69 @@ class ReportItemCallback {
         return $hqp_comments;
     }
     
+    function getMyId(){
+        $person = Person::newFromWgUser();
+        return $person->getId();
+    }
+    
+    function getMyName(){
+        $person = Person::newFromWgUser();
+        return $person->getNameForForms();
+    }
+    
+    function getMyFirstName(){
+        $person = Person::newFromWgUser();
+        return $person->getFirstName();
+    }
+    
+    function getMyLastName(){
+        $person = Person::newFromWgUser();
+        return $person->getLastName();
+    }
+    
+    function getMyRoles(){
+        $person = Person::newFromWgUser();
+        $project = Project::newFromId($this->reportItem->projectId);
+        $roles = $person->getRoles();
+        $roleNames = array();
+        foreach($roles as $role){
+            if($project != null && $project->getId() != 0){
+                if($role->hasProject($project)){
+                    $roleNames[$role->getRole()] = $role->getRole();
+                }
+            }
+            else{
+                $roleNames[$role->getRole()] = $role->getRole();
+            }
+        }
+        return implode(", ", $roleNames);
+    }
+    
+    function getMyFullRoles(){
+        $person = Person::newFromWgUser();
+        $project = Project::newFromId($this->reportItem->projectId);
+        $roles = $this->getMyRoles();
+        if($project != null && $project->getId() != 0){
+            if($person->leadershipOf($project)){
+                if($roles != ""){
+                    $roles .= ", PL";
+                }
+                else{
+                    $roles .= "PL";
+                }
+            }
+        }
+        else if($person->isProjectLeader()){
+            if($roles != ""){
+                $roles .= ", PL";
+            }
+            else{
+                $roles .= "PL";
+            }
+        }
+        return $roles;
+    }
+    
     function getUserUrl(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getUrl();
@@ -737,6 +840,30 @@ class ReportItemCallback {
     function getUserEmail(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getEmail();
+    }
+    
+    function getUserPhone(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getPhoneNumber();
+    }
+    
+    function getUserGender(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getGender();
+    }
+    
+    function getParentId(){
+        return $this->reportItem->getParent()->personId;
+    }
+    
+    function getParentName(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getNameForForms();
+    }
+    
+    function getParentUni(){
+        $person = Person::newFromId($this->getParentId());
+        return $person->getUni();
     }
     
     function getUserName(){
@@ -765,19 +892,43 @@ class ReportItemCallback {
     
     function getUserRoles(){
         $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $person->getRoles();
         $roleNames = array();
         foreach($roles as $role){
-            $roleNames[] = $role->getRole();
+            if($project != null && $project->getId() != 0){
+                if($role->hasProject($project)){
+                    $roleNames[$role->getRole()] = $role->getRole();
+                }
+            }
+            else{
+                $roleNames[$role->getRole()] = $role->getRole();
+            }
         }
         return implode(", ", $roleNames);
     }
     
     function getUserFullRoles(){
         $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
         $roles = $this->getUserRoles();
-        if($person->isProjectLeader()){
-            $roles .= ", PL";
+        if($project != null && $project->getId() != 0){
+            if($person->leadershipOf($project)){
+                if($roles != ""){
+                    $roles .= ", PL";
+                }
+                else{
+                    $roles .= "PL";
+                }
+            }
+        }
+        else if($person->isProjectLeader()){
+            if($roles != ""){
+                $roles .= ", PL";
+            }
+            else{
+                $roles .= "PL";
+            }
         }
         return $roles;
     }
@@ -800,6 +951,12 @@ class ReportItemCallback {
         return $university['university'];
     }
     
+    function getUserNationality(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $nationality = $person->getNationality();
+        return $nationality;
+    }
+    
     function getUserSupervisors(){
         $supervisors = array();
         $person = Person::newFromId($this->reportItem->personId);
@@ -809,9 +966,9 @@ class ReportItemCallback {
                 $start = $rel->getStartDate();
                 $end = $rel->getEndDate();
                 if($rel->getUser2()->getId() == $me->getId()){
-                    if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0)) ||
-                       (strcmp($start, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($start, REPORTING_CYCLE_START."00:00:00") >= 0) ||
-                       (strcmp($end, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0)){
+                    if((strcmp($start, REPORTING_YEAR."-04-01 00:00:00") <= 0 && (strcmp($end, REPORTING_YEAR."-04-01 00:00:00") >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0)) ||
+                       (strcmp($start, (REPORTING_YEAR+1)."-03-31 23:59:59") <= 0 && strcmp($start, REPORTING_YEAR."-04-01 00:00:00") >= 0) ||
+                       (strcmp($end, (REPORTING_YEAR+1)."-03-31 23:59:59") <= 0 && strcmp($end, REPORTING_YEAR."-04-01 00:00:00") >= 0)){
                         $sup = $rel->getUser1();
                         $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
                     }
@@ -824,7 +981,7 @@ class ReportItemCallback {
     function getUserProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject()){
                 $deleted = ($project->isDeleted()) ? " (Ended)" : "";
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
@@ -836,10 +993,20 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getUserProjectEndDate(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $project = Project::newFromId($this->reportItem->projectId);
+        $date = $project->getEndDate($person);
+        if($date != "0000-00-00 00:00:00"){
+            return time2date($project->getEndDate($person));
+        }
+        return "";
+    }
+    
     function getUserPhase1Projects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject() && $project->getPhase() == 1){
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
@@ -853,7 +1020,7 @@ class ReportItemCallback {
     function getUserPhase2Projects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             if(!$project->isSubProject() && $project->getPhase() == 2){
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
@@ -864,11 +1031,48 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getTVNFileNumber(){
+        $id = $this->reportItem->personId;
+        
+        $fileNumbers = array(
+            1791    => "IFP2016-01",
+            1790    => "IFP2016-04",
+            249     => "IFP2016-06",
+            1789    => "IFP2016-07",
+            1788    => "IFP2016-08",
+            1787    => "IFP2016-09",
+            1786    => "IFP2016-10",
+            1785    => "IFP2016-11",
+            1784    => "IFP2016-12",
+            456     => "IFP2016-14",
+            1783    => "IFP2016-16",
+            285     => "IFP2016-18",
+            1782    => "IFP2016-20",
+            1781    => "IFP2016-21",
+            1780    => "IFP2016-22",
+            1761    => "IFP2016-23",
+            1779    => "IFP2016-24",
+            1778    => "IFP2016-25",
+            1777    => "IFP2016-28",
+            230     => "IFP2016-30",
+            1776    => "IFP2016-31",
+            1775    => "IFP2016-32",
+            1774    => "IFP2016-33",
+            1773    => "IFP2016-34",
+            1772    => "IFP2016-35"
+        );
+        
+        if(isset($fileNumbers[$id])){
+            return $fileNumbers[$id];
+        }
+        return "";
+    }
+    
     function getUserResearchTime(){
         $person = Person::newFromId($this->reportItem->personId);
         $total = 0;
         $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
-        foreach($person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
+        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
             $blob = new ReportBlob(BLOB_ARRAY, substr(REPORTING_CYCLE_START, 0, 4), $person->getId(), $project->getId());
             $blob->load($rep_addr);
             $data = $blob->getData();
@@ -985,19 +1189,17 @@ class ReportItemCallback {
     }
     
     function getChampOrg(){
-        $person = Person::newFromId($this->reportItem->personId);
-        return $person->getPartnerName();
+        return $this->getUserUni();
     }
     
     function getChampTitle(){
-        $person = Person::newFromId($this->reportItem->personId);
-        return $person->getPartnerTitle();
+        return $this->getUserLevel();
     }
     
     function getChampSubTitle(){
         $person = Person::newFromId($this->reportItem->personId);
-        $org = $person->getPartnerName();
-        $title = $person->getPartnerTitle();
+        $org = $person->getUni();
+        $title = $person->getPosition();
         if($org != "" && $title != ""){
             return "$org, $title";
         }
@@ -1225,6 +1427,28 @@ class ReportItemCallback {
         return "";
     }
     
+    function getRMCProjectFeedback(){
+        $rp = RP_PROJ_REVIEW;
+        $section = PROJ_REVIEW_FEEDBACK;
+        $blobId = PROJ_FEEDBACK_COMM;
+        $subId = "{$this->getUserId()}0{$this->getExtraIndex()}";
+        $projectId = $this->getProjectId();
+        $people = array_merge(Person::getAllPeople(RMC),
+                              Person::getAllPeople(STAFF),
+                              Person::getAllPeople(MANAGER),
+                              Person::getAllPeople(ADMIN),
+                              Person::getAllPeople(SD));
+        $comments = array();
+        foreach($people as $person){
+            $personId = $person->getId();
+            $comment = $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+            if($comment != ""){
+                $comments[] = "<li>{$comment}</li>";
+            }
+        }
+        return "<ul>".implode("\n", $comments)."</ul>";
+    }
+    
     function getHQPApplicationUni(){
         $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_UNI, 0);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
@@ -1252,6 +1476,11 @@ class ReportItemCallback {
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
+    }
+    
+    function getWgUserId(){
+        global $wgUser;
+        return $wgUser->getId();
     }
     
     function getWgServer(){
@@ -1323,11 +1552,153 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getExtraIndex(){
+        $set = $this->reportItem->getSet();
+        while(!($set instanceof ArrayReportItemSet)){
+            $set = $set->getParent();
+            if($set instanceof AbstractReport){
+                return 0;
+            }
+        }
+        foreach($set->getData() as $index => $item){
+            if($item['extra'] == $this->reportItem->extra){
+                return $index;
+            }
+        }
+        return 0;
+    }
+    
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr, true);
+        return $blb->getMD5();
+    }
+    
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        if($index == null){
+            return $blb->getData();
+        }
+        else{
+            $array = $blb->getData();
+            return @$array[$index];
+        }
+    }
+    
     function getText($rp, $section, $blobId, $subId, $personId, $projectId){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
-        return $blb->getData();
+        return nl2br($blb->getData());
+    }
+    
+    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
+        return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+    }
+    
+    function concat($str1, $str2){
+        return "{$str1}{$str2}";
+    }
+    
+    function add($val1, $val2){
+        return $val1 + $val2;
+    }
+    
+    function subtract($val1, $val2){
+        return $val1 - $val2;
+    }
+    
+    function multiply($val1, $val2){
+        return $val1*$val2;
+    }
+    
+    function divide($val1, $val2){
+        return $val1/max(1, $val2);
+    }
+    
+    function round($val, $dec=0){
+        return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function set($key, $val){
+        $this->reportItem->setVariable($key, $val);
+    }
+    
+    function get($key){
+        return $this->reportItem->getVariable($key);
+    }
+    
+    function andCond(){
+        $bool = true;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool && $arg);
+        }
+        return $bool;
+    }
+    
+    function orCond(){
+        $bool = false;
+        $arg_list = func_get_args();
+        foreach($arg_list as $arg){
+            $bool = ($bool || $arg);
+        }
+        return $bool;
+    }
+    
+    function contains($val1, $val2){
+        return (strstr($val1, $val2) !== false);
+    }
+    
+    function notContains($val1, $val2){
+        return !$this->contains($val1, $val2);
+    }
+    
+    function eq($val1, $val2){
+        return ($val1 == $val2);
+    }
+    
+    function neq($val1, $val2){
+        return ($val1 != $val2);
+    }
+    
+    function gt($val1, $val2){
+        return ($val1 > $val2);
+    }
+    
+    function lt($val1, $val2){
+        return ($val1 < $val2);
+    }
+    
+    function gteq($val1, $val2){
+        return ($val1 >= $val2);
+    }
+    
+    function lteq($val1, $val2){
+        return ($val1 <= $val2);
+    }
+    
+    function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
+        $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
+        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $result = $blb->load($addr);
+        $blobValue = $blb->getData();
+        
+        $blobValue = str_replace("</p>", "<br /><br style='font-size:1em;' />", $blobValue);
+        $blobValue = str_replace("<p>", "", $blobValue);
+        $blobValue = str_replace_last("<br /><br style='font-size:1em;' />", "", $blobValue);
+        return "<div class='tinymce'>$blobValue</div>";
+    }
+    
+    function getExtra($index){
+        $set = $this->reportItem->extra;
+        if(isset($set[$index])){
+            return $set[$index];
+        }
+        return "";
     }
     
     function getPostId(){

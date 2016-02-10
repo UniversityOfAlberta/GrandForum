@@ -207,11 +207,15 @@ class Material {
         global $wgServer;
         $html = "";
         if($this->getType() == "img"){
-            $url = $wgServer.Image::imageUrl($this->getMediaLocal());
-            $html .= "<a href='$url'><img style='max-width:800px;max-height:600px;' src='$url'</img></a>";
+            $title = Title::newFromText("File:{$this->getMediaLocal()}");
+            $imagePage = ImagePage::newFromID($title->getArticleId());
+            $url = $wgServer.$imagePage->getFile()->getURL();
+            $html .= "<a href='$url'><img style='max-width:800px;max-height:600px;' src='$url' /></a>";
         }
         else if($this->getType() == "video"){
-            $url = $wgServer.Image::imageUrl($this->getMediaLocal());
+            $title = Title::newFromText("File:{$this->getMediaLocal()}");
+            $imagePage = ImagePage::newFromID($title->getArticleId());
+            $url = $wgServer.$imagePage->getFile()->getURL();
             $html .= "<object CLASSID='clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B' width='800' height='500' CODEBASE='http://www.apple.com/qtactivex/qtplugin.cab'>
                         <param name='src' value='$url'>
                         <param name='qtsrc' value='$url'>
@@ -222,7 +226,9 @@ class Material {
                         </object>";
         }
         else if($this->getType() == "audio"){
-            $url = $wgServer.Image::imageUrl($this->getMediaLocal());
+            $title = Title::newFromText("File:{$this->getMediaLocal()}");
+            $imagePage = ImagePage::newFromID($title->getArticleId());
+            $url = $wgServer.$imagePage->getFile()->getURL();
             $html .= "<embed src='$url' autostart='false'></embed>";
         }
         else if($this->getType() == "youtube"){
@@ -233,7 +239,9 @@ class Material {
         }
         else {
             if($this->getMediaLocal() != ""){
-                $url = $wgServer.Image::imageUrl($this->getMediaLocal());
+                $title = Title::newFromText("File:{$this->getMediaLocal()}");
+                $imagePage = ImagePage::newFromID($title->getArticleId());
+                $url = $wgServer.$imagePage->getFile()->getURL();
                 $html .= "<a href='$url'>{$this->getMediaLocal()}</a>";
             }
             else{

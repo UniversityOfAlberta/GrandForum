@@ -19,7 +19,7 @@ class CCActivitiesTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD) || $person->isRole(APL));
     }
 
     function execute($par){
@@ -49,13 +49,13 @@ class CCActivitiesTable extends SpecialPage{
                 continue;
             }
             $wgOut->addHTML("<tr>");
-            $wgOut->addHTML("<td>{$project->getName()}</td>");
+            $wgOut->addHTML("<td style='white-space:nowrap;'>{$project->getName()}</td>");
         
-            $combined = new DummyReport(RP_CC_PLANNING, new Person(array()), $project);
-            $cc1 = new DummyReport("CC1PlanningPDF", new Person(array()), $project);
-            $cc2 = new DummyReport("CC2PlanningPDF", new Person(array()), $project);
-            $cc3 = new DummyReport("CC3PlanningPDF", new Person(array()), $project);
-            $cc4 = new DummyReport("CC4PlanningPDF", new Person(array()), $project);
+            $combined = new DummyReport(RP_CC_PLANNING, new Person(array()), $project, REPORTING_YEAR, true);
+            $cc1 = new DummyReport("CC1PlanningPDF", new Person(array()), $project, REPORTING_YEAR, true);
+            $cc2 = new DummyReport("CC2PlanningPDF", new Person(array()), $project, REPORTING_YEAR, true);
+            $cc3 = new DummyReport("CC3PlanningPDF", new Person(array()), $project, REPORTING_YEAR, true);
+            $cc4 = new DummyReport("CC4PlanningPDF", new Person(array()), $project, REPORTING_YEAR, true);
             $check = $combined->getLatestPDF();
             $check1 = $cc1->getLatestPDF();
             $check2 = $cc2->getLatestPDF();

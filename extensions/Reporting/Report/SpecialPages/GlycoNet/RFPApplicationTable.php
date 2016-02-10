@@ -19,7 +19,7 @@ class RFPApplicationTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(SD));
     }
 
     function execute($par){
@@ -55,13 +55,13 @@ class RFPApplicationTable extends SpecialPage{
                     <th width='1%'>Last&nbsp;Name</th>
                     <th width='1%'>Email</th>
                     <th>Project Title</th>
-                    <th width='1%'>Generation&nbsp;Date</th>
+                    <th width='1%'>Generation&nbsp;Date (MST)</th>
                     <th width='1%'>PDF&nbsp;Download</th>
                 </tr>
             </thead>
             <tbody>");
         foreach($nis as $ni){
-            $report = new DummyReport($rp, $ni);
+            $report = new DummyReport($rp, $ni, null, REPORTING_YEAR, true);
             $check = $report->getLatestPDF();
             if(isset($check[0])){
                 $pdf = PDF::newFromToken($check[0]['token']);
@@ -75,7 +75,7 @@ class RFPApplicationTable extends SpecialPage{
                 $wgOut->addHTML("<tr>");
                 $wgOut->addHTML("<td>{$ni->getFirstName()}</td><td>{$ni->getLastName()}</td><td><a href='mailto:{$ni->getEmail()}'>{$ni->getEmail()}</a></td>");
                 $wgOut->addHTML("<td>{$title}</td>");
-                $wgOut->addHTML("<td style='white-space:nowrap;'>".time2date($generated)."</td>");
+                $wgOut->addHTML("<td style='white-space:nowrap;'>".time2date($generated, 'F j, Y h:i:s')."</td>");
                 $wgOut->addHTML("<td align='center'><a class='button' href='{$pdf->getUrl()}'>Download</a></td>");
                 $wgOut->addHTML("</tr>");
             }
@@ -92,7 +92,7 @@ class RFPApplicationTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "RFPApplicationTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RFP Application Table", "$wgServer$wgScriptPath/index.php/Special:RFPApplicationTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RFP Applications", "$wgServer$wgScriptPath/index.php/Special:RFPApplicationTable", $selected);
         }
         return true;
     }

@@ -13,9 +13,10 @@ $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 class PersonPage {
 
     function userCanExecute(&$title, &$user, $action, &$result){
+	global $config;
         $name = $title->getNSText();
-        if($name == "HQP"){
-            $result = $user->isLoggedIn();
+        if($name == HQP){
+            $result = $user->isLoggedIn() || $config->getValue('hqpIsPublic');
         }
         return true;
     }
@@ -77,9 +78,15 @@ class PersonPage {
                         }
                     }
                 }
+                foreach($me->getThemeProjects() as $project){
+                    if($person->isMemberOf($project)){
+                        $isSupervisor = true;
+                        break;
+                    }
+                }
                 $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
                 $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
-                $edit = (isset($_GET['edit']) && ($isMe || $isSupervisor));
+                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
                 $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
@@ -92,10 +99,7 @@ class PersonPage {
                     $_POST['submit'] = "Edit Main";
                 }
                 
-                /*
-                 * Start the PersonPage
-                 */
-                
+                // Start the PersonPage
                 $visibility = array();
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
@@ -107,11 +111,15 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
+                    $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                    $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                }
+                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
+                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
+                }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
-                }
-                if($config->getValue('networkName') == 'AGE-WELL' && $person->isRole(HQP)){
-                    $tabbedPage->addTab(new HQPProjectTab($person, $visibility));
                 }
                 $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
@@ -119,12 +127,6 @@ class PersonPage {
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
-                if(isExtensionEnabled('Acknowledgements')){
-                    $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
-                }
                 $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
@@ -165,7 +167,7 @@ class PersonPage {
         return true;
     }
     
-    /*
+    /**
      * Displays the title for this person
      */
     function showTitle($person, $visibility){

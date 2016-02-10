@@ -2,8 +2,14 @@
 
 class GrandAccess {
 
+    static $alreadyDone = array();
+
     static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues;
+        if(isset(self::$alreadyDone[$user->getId()])){
+            return true;
+        }
+        self::$alreadyDone[$user->getId()] = true;
 	    $me = Person::newFromId($user->getId());
 	    $i = 1000;
 	    $oldRights = $aRights;
@@ -15,12 +21,20 @@ class GrandAccess {
 	            $aRights[$i++] = $project->getName();
 	        }
 	    }
+	    if($me->isThemeLeader() || $me->isThemeCoordinator()){
+	        $aRights[$i++] = TL;
+	        $aRights[$i++] = TC;
+	    }
+	    foreach(array_merge($me->getLeadThemes(), $me->getCoordThemes()) as $theme){
+	        $aRights[$i++] = $theme->getAcronym();
+	    }
 	    foreach($me->getThemeProjects() as $project){
 	        $aRights[$i++] = $project->getName();
 	    }
-	    if($me->isRoleAtLeast(MANAGER)){
-	        $aRights[$i++] = RMC;
+	    if($me->isRoleAtLeast(STAFF)){
 	        $aRights[$i++] = PL;
+	        $aRights[$i++] = TL;
+	        $aRights[$i++] = TC;
 	    }
 	    $leadership = $me->leadership();
 	    if(count($leadership) > 0){
@@ -44,6 +58,8 @@ class GrandAccess {
 	    if($me->isRole(NI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
+	        $aRights[$i++] = "NI";
+	        $aRights[$i++] = "NI+";
 	    }
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
@@ -71,6 +87,9 @@ class GrandAccess {
 	            $aRights[$i++] = $role->getRole();
 	            $user->mGroups[] = $role->getRole().'_Wiki';
 	        }
+	    }
+	    foreach($aRights as $right){
+	        $user->mGroups[] = $right;
 	    }
 	    if($user->isLoggedIn()){
 	        $user->mGroups[] = "Poster";

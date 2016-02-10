@@ -148,7 +148,7 @@
         </ReportItem>
         
         <!-- Conflict of Interest Multi -->
-        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" types="NI|text">
+        <ReportItem id="conflict_which" type="MultiTextReportItem" optional="true" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" types="NI|text">
             <![CDATA[
                 <p>If Yes, please indicate which researcher and the relevant company.</p>
                 {$item}
@@ -156,7 +156,7 @@
         </ReportItem>
         
         <!-- Conflict of Interest Companies -->
-        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" types="text">
+        <ReportItem id="conflict_comp" type="MultiTextReportItem" optional="true" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" types="text">
             <![CDATA[
                 <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
                 {$item}
@@ -170,7 +170,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="2">
+        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Graphical Abstract</h2>
                 {$item}
@@ -266,7 +266,7 @@
                 </p>
             ]]>
         </Instructions>
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
                     Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.

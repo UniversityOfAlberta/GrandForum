@@ -173,10 +173,10 @@ class UploadProtection {
   //returns false if there is no NS for the given name
   static function getNsForImageName($imageName){
     global $egAnnokiTablePrefix;
-
     $dbr =& wfGetDB( DB_SLAVE );
     $imageName = self::sanitize($imageName); //selectField does not sanitize
-    return $dbr->selectField("${egAnnokiTablePrefix}upload_permissions", 'nsName', 'upload_name=\''.$imageName."'");
+    $imageName = str_replace("_", " ", $imageName);
+    return $dbr->selectField("${egAnnokiTablePrefix}upload_permissions", 'nsName', 'upload_name=\''.$imageName.'\' OR upload_name=\'File:'.$imageName."'");
   }
 
   static function sanitize($input){

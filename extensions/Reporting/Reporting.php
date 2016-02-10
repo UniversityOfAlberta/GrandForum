@@ -13,14 +13,8 @@ if($extras['ReportStats']){
 if($extras['CreatePDF']){
     require_once("CreatePDF/CreatePDF.php");
 }
-if($extras['ReviewerConflicts']){
-    require_once("ReviewerConflicts/ReviewerConflicts.php");
-}
 if($extras['ReviewResults']){
     require_once("ReviewResults/ReviewResults.php");
-}
-if($extras['SanityChecks']){
-    require_once("SanityChecks/SanityChecks.php");
 }
 if($extras['AdminVisualizations']){
     require_once("AdminVisualizations/AdminVisualizations.php");

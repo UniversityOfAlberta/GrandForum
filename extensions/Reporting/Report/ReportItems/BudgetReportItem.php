@@ -6,17 +6,29 @@ class BudgetReportItem extends AbstractReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
 		$template = $this->getAttr('template', 'GRAND Researcher Budget Request (2015-16).xls');
-		if(isset($_GET['downloadBudget'])){
+		$budgetText = $this->getAttr('budgetText', 'Budget');
+		if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
+	        $data = $this->getBlobValue();
+            $link = $this->getDownloadLink();
+            $html = "";
+            if($data !== null && $data != ""){
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
+            }
+            $item = $this->processCData($html);
+            $wgOut->addHTML($item);
+            return;
+        }
+		if(isset($_GET['downloadBudget']) && $_GET['downloadBudget'] == $this->getPostId()){
 		    $data = $this->getBlobValue();
 		    if($data != null){
 		        $person = Person::newFromId($wgUser->getId());
 		        header('Content-Type: application/vnd.ms-excel');
-		        header("Content-disposition: attachment; filename=\"{$person->getNameForForms()}_Budget.xls\"");
+		        header("Content-disposition: attachment; filename=\"Budget.xls\"");
 		        echo $data;
 		        exit;
 		    }
 		}
-		if(isset($_GET['budgetUploadForm'])){
+		if(isset($_GET['budgetUploadForm']) && $_GET['budgetUploadForm'] == $this->getPostId()){
 		    $this->budgetUploadForm();
 		}
 		$projectGet = "";
@@ -29,37 +41,37 @@ class BudgetReportItem extends AbstractReportItem {
         }
         $wgOut->addHTML("<script type='text/javascript'>
                                 var frameId = 0;
-                                function alertreload(){
-                                    var lastHeight = $('#budgetFrame' + frameId).height();
-                                    $('#budgetFrame' + frameId).remove();
+                                function alertreload{$this->getPostId()}(){
+                                    var lastHeight = $('frame[name={$this->getPostId()}]').height();
+                                    $('#budgetFrame{$this->getPostId()}').remove();
                                     frameId++;
-                                    $('#budgetDiv').html(\"<iframe name='budget' id='budgetFrame\" + frameId + \"' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe>\");
-                                    $('#budgetFrame' + frameId).height(lastHeight);
+                                    $('#budgetDiv{$this->getPostId()}').html(\"<iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe>\");
+                                    $('#budgetFrame{$this->getPostId()}').height(lastHeight);
+                                    
                                 }
-                                function alertsize(pixels){
+                                function alertsize{$this->getPostId()}(pixels){
                                     $('#reportMain > div').stop();
-                                    $('#budgetFrame' + frameId).height(pixels);
-                                    $('#budgetFrame' + frameId).css('max-height', pixels);
+                                    $('#budgetFrame{$this->getPostId()}').height(pixels);
+                                    $('#budgetFrame{$this->getPostId()}').css('max-height', pixels);
                                 }
                             </script>");
 		$wgOut->addHTML("<div>");
-		$wgOut->addHTML("<h2>Download Budget Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>Budget Template</a></li></ul>");
-		$wgOut->addHTML("<h2>Budget Upload</h2>
-		                 <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
+		$wgOut->addHTML("<h2>Download {$budgetText} Template</h2> <ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>");
+		$wgOut->addHTML("<h2>{$budgetText} Upload</h2>
+		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>");
 		$wgOut->addHTML("</div>");
 	}
 	
 	function renderForPDF(){
 	    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+	    $budgetText = $this->getAttr('budgetText', 'Budget');
+	    $html = "";
 	    if(strtolower($this->getAttr("downloadOnly", "false")) == "true"){
 	        $data = $this->getBlobValue();
             $link = $this->getDownloadLink();
-            $html = "";
             if($data !== null && $data != ""){
-                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls'>Download&nbsp;<b>Budget</b></a>";
+                $html = "<a class='externalLink' href='{$link}&fileName=Budget.xls&mime=application/vnd.ms-excel'>Download&nbsp;<b>{$budgetText}</b></a>";
             }
-            $item = $this->processCData($html);
-            $wgOut->addHTML($item);
 	    }
 	    else{
 	        $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
@@ -68,7 +80,9 @@ class BudgetReportItem extends AbstractReportItem {
 		        $budget = new Budget("XLS", $structure, $data);
 		        $budget = $this->filterCols($budget);
 		        $budget = $budget->copy()->filterCols(V_PROJ, array(""));
-		        self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
+		        if($structure == REPORT2_STRUCTURE){
+		            self::checkTotals($budget, $this->getReport()->person, $this->getReport()->year);
+		        }
 		        $errors = self::checkDeletedProjects($budget, $this->getReport()->person, $this->getReport()->year);
 		        foreach($errors as $key => $error){
 	                $budget->errors[0][] = $error;
@@ -76,17 +90,20 @@ class BudgetReportItem extends AbstractReportItem {
 	            if($structure == REPORT2_STRUCTURE){
 	                $budget = $this->colorBudget($budget);
 	            }
-		        $wgOut->addHTML($budget->renderForPDF());
+		        $html .= "<div class='small'>{$budget->renderForPDF()}</div>";
 		    }
 		    else{
-		        $wgOut->addHTML("You have not yet uploaded a budget");
+		        $html .= "You have not yet uploaded a ".strtolower($budgetText);
 		    }
 		}
+		$item = $this->processCData($html);
+		$wgOut->addHTML($item);
 	}
 	
 	function budgetUploadForm(){
 	    global $wgServer, $wgScriptPath;
 	    $structure = constant($this->getAttr('structure', 'REPORT2_STRUCTURE'));
+	    $budgetText = $this->getAttr('budgetText', 'Budget');
 	    if(isset($_POST['upload'])){
 	        $this->save();
 	    }
@@ -108,7 +125,7 @@ class BudgetReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/highlights.css.php' type='text/css' />
                     <script type='text/javascript'>
                         function load_page() {
-                            parent.alertsize($(\"#bodyContent\").height()+38);
+                            parent.alertsize{$this->getPostId()}($(\"#bodyContent\").height()+38);
                         }
                     </script>
                     <style type='text/css'>
@@ -143,26 +160,36 @@ class BudgetReportItem extends AbstractReportItem {
                     </style>";
         if(isset($_POST['upload'])){
             echo "<script type='text/javascript'>
-                        parent.alertreload();
+                        parent.alertreload{$this->getPostId()}();
                     </script>";
+        }
+        if(!$this->getSection()->checkPermission('w')){
+            echo "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('textarea').prop('disabled', 'disabled');
+                    $('input').prop('disabled', 'disabled');
+                    $('button').prop('disabled', 'disabled');
+                });
+            </script>";
         }
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
 	                        <input type='submit' name='upload' value='Upload' />
 	                    </form>";
 	            
 	    $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section=Budget&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&downloadBudget={$this->getPostId()}{$projectGet}{$year}'>Download Uploaded $budgetText</a>";
 		    $budget = new Budget("XLS", $structure, $data);
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));
 		    $person = Person::newFromId($this->personId);
-
-		    self::checkTotals($budget, $person, $this->getReport()->year);
+		    if($structure == REPORT2_STRUCTURE){
+		        self::checkTotals($budget, $person, $this->getReport()->year);
+		    }
 		    $errors = self::checkDeletedProjects($budget, $person, $this->getReport()->year);
 		    foreach($errors as $key => $error){
 	            $budget->errors[0][] = $error;
@@ -173,7 +200,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    echo $budget->render();
 		}
 		else{
-		    echo "You have not yet uploaded a budget";
+		    echo "You have not yet uploaded a ".strtolower($budgetText);
 		}
 		echo "      </div>
 		        </body>
@@ -266,9 +293,6 @@ class BudgetReportItem extends AbstractReportItem {
             if(isset($budget->xls[0][1])){
                 $budget->xls[0][1]->error = "'$name' does not match your own name";
             }
-        }
-        if(!isset($budget->xls[0][1])){
-            $budget->errors[0][] = "There is something wrong with the structure of your budget.";
         }
 	}
 	

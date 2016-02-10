@@ -6,8 +6,18 @@ class ProjectPeopleReportItemSet extends ReportItemSet {
         $data = array();
         $proj = Project::newFromId($this->projectId);
         $proj_id = $this->projectId;
+        $role = $this->getAttr("role", NI);
+        $roles = explode(",", $role);
+        $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
+        $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");
         if($proj != null){
-            $members = $proj->getAllPeopleDuring(NI, REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL);
+            $members = array();
+            foreach($roles as $role){
+                foreach($proj->getAllPeopleDuring($role, $start, $end) as $person){
+                    $members[$person->getReversedName()] = $person;
+                }
+            }
+            ksort($members);
             $alreadySeen = array();
             foreach($members as $m){
                 if(isset($alreadySeen[$m->getId()])){

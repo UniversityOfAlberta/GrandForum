@@ -6,12 +6,14 @@ abstract class ReportItemSet extends AbstractReportItem{
     var $blobIndex;
     var $count;
     var $iteration;
+    var $cached;
 
     // Creates a new ReportItemSet
     function ReportItemSet(){
         $this->items = array();
         $this->blobIndex = "";
         $this->reportCallback = new ReportItemCallback($this);
+        $this->cached = null;
     }
     
     // Creates an empty tuple, with all values of this object
@@ -21,8 +23,16 @@ abstract class ReportItemSet extends AbstractReportItem{
                        'person_id' => $this->personId,
                        'product_id' => $this->productId,
                        'misc' => array(),
+                       'extra' => $this->extra,
                        'item_id' => null);
         return $tuple;
+    }
+    
+    function getCachedData(){
+        if($this->cached == null){
+            $this->cached = $this->getData();
+        }
+        return $this->cached;
     }
     
     // This function must return an array of arrays in the form of array(array('project_id','person_id','milestone_id'))
@@ -183,7 +193,8 @@ abstract class ReportItemSet extends AbstractReportItem{
         $values = array();
         foreach($this->items as $item){
             $id = $item->id;
-            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}";
+            $extraId = $item->getExtraIndex();
+            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
             if($item->id == ""){
                 $id = "none";
             }
@@ -195,7 +206,8 @@ abstract class ReportItemSet extends AbstractReportItem{
     function setBlobValue($values){
         foreach($this->items as $item){
             $id = $item->id;
-            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}";
+            $extraId = $item->getExtraIndex();
+            $secondId = "{$item->personId}_{$item->projectId}_{$item->milestoneId}_extra{$extraId}";
             if($item->id == ""){
                 $id = "none";
             }

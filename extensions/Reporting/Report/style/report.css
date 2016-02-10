@@ -174,8 +174,13 @@
     display:inline-block;
     float:right;
     position: relative;
-    font-size:14px;
+    font-size:12px;
+    line-height: 13px;
     font-weight:bold;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 2px #000000;
+    width:100%;
+    text-align: center;
 }
 
 #reportProgress {
@@ -368,4 +373,13 @@ a.disabled_lnk, div.disabled_bg{
 
 div.disabled_bg h4{
     color: #999 !important;
+}
+
+div.eula {
+    background: #EEEEEE;
+    color: #555555;
+    max-height: 500px;
+    overflow-y: scroll;
+    padding: 5px;
+    border: 1px solid #AAAAAA;
 }

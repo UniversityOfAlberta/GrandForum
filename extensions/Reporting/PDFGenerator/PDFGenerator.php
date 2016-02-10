@@ -92,7 +92,6 @@ abstract class PDFGenerator {
 "/(&upsih;)/",
 "/(&piv;)/",
 "/(&bull;)/",
-"/(&hellip;)/",
 "/(&prime;)/",
 "/(&Prime;)/",
 "/(&oline;)/",
@@ -161,8 +160,42 @@ abstract class PDFGenerator {
 "/(&spades;)/",
 "/(&clubs;)/",
 "/(&hearts;)/",
+"/(&#9210;)/",
 "/(&diams;)/");
-        $str = preg_replace($specials, "<span style='font-family: DejaVu Sans !important;'>$1</span>", $str);
+        $str = preg_replace($specials, "<span style='font-family: dejavu sans !important; line-height:50%;'>$1</span>", $str);
+        $str = str_replace("&#8209;", "-", $str);
+        $str = str_replace("&#61485;", "~", $str);
+        $str = str_replace("&#8208;", "-", $str);
+        $str = str_replace("&#9472;", "-", $str);
+        $str = str_replace("&#64257;", "fi", $str);
+        $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
+        $str = str_replace("‐", "-", $str);
+        $str = str_replace("&lang;", "&#10216;", $str);
+        $str = str_replace("&rang;", "&#10217;", $str);
+        $str = str_replace("&hellip;", "...", $str);
+        $str = str_replace("</html>", "", $str);
+        $str = str_replace("<html>", "", $str);
+        $str = str_replace("<body>", "", $str);
+        $str = str_replace("</body>", "", $str);
+        /*preg_match_all("/(<strong>.*?<\/strong>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</strong> &nbsp;<strong>", $match);
+            $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<em>.*?<\/em>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace(" ", "</em> &nbsp;<em>", $match);
+            $match1 = str_replace(" &nbsp;<em>&nbsp;", " &nbsp;<em>", $match1);
+            $str = str_replace($match, $match1, $str);
+        }
+        preg_match_all("/(<span style=\"text-decoration: underline;\">.*?<\/span>)/", $str, $matches);
+        foreach($matches[1] as $match){
+            $match1 = str_replace("<span style=\"text-decoration: underline;\">", "<u>", $match);
+            $match1 = str_replace_last("</span>", "</u>", $match1);
+            $match1 = str_replace(" ", "</u> &nbsp;<u>", $match1);
+            //$match1 = str_replace(" &nbsp;<u>&nbsp;", " &nbsp;<u>", $match1);
+            $str = str_replace($match, $match1, $str);
+        }*/
         return $str;
     }
     
@@ -189,10 +222,18 @@ abstract class PDFGenerator {
         for($i=0; $i<$as->length; $i++){
             $a = $as->item($i);
             if($a->getAttribute('class') != 'anchor' && 
-               $a->getAttribute('class') != 'externalLink'){
+               $a->getAttribute('class') != 'mce-item-anchor' &&
+               $a->getAttribute('class') != 'externalLink' && 
+               $a->textContent != ""){
                 $i--;
                 DOMRemove($a);
             }
+        }
+        
+        $tds = $dom->getElementsByTagName("td");
+        for($i=0; $i<$tds->length; $i++){
+            $td = $tds->item($i);
+            $td->setAttribute('width', '');
         }
         
         $divs = $dom->getElementsByTagName('div');
@@ -322,7 +363,17 @@ EOF;
 		    
 		    #pdfBody .belowLine {
 		        display: none;
-		    }";
+		    }
+		    
+		    #pdfBody sup {
+		        font-size: 0.8em;
+		        vertical-align: top;
+		    }
+		    
+		    #pdfBody sub {
+		        font-size: 0.8em;
+		    }
+		    ";
         }
         
 		$header .= "
@@ -339,6 +390,28 @@ EOF;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		        text-align: justify;
+		    }
+		    
+		    #pdfBody table {
+		        text-align: initial;
+		    }
+		    
+		    #pdfBody .wikitable {
+		        border: none;
+		    }
+		    
+		    #pdfBody .wikitable th {
+		        background: #EEEEEE;
+		        padding: ".(1*DPI_CONSTANT)."px;
+		    }
+		    
+		    #pdfBody .wikitable td {
+		        background: #FFFFFF;
+		        padding: ".(1*DPI_CONSTANT)."px;
+		    }
+		    
+		    #pdfBody th {
+		        text-align: center;
 		    }
 		    
 		    /* Messages */
@@ -492,6 +565,11 @@ EOF;
 		        display:inline;
 		    }
 		    
+		    #pdfBody table.small {
+		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
+		        display: table;
+		    }
+		    
 		    #pdfBody td.small {
 		        font-size: ".max(10, ($fontSize+(-3*DPI_CONSTANT)))."px;
 		        display:table-cell;
@@ -506,9 +584,28 @@ EOF;
 		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
+		    }
+		    
 		    #pdfBody li {
 		        font-weight: normal !important;
-		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce li {
+		        margin-bottom: 0;
+		    }
+		    
+		    #pdfBody .tinymce ul {
+		        margin-top: 0;
+		        margin-bottom: ".max(9, ($fontSize+(DPI_CONSTANT)))."px;
+		    }
+		    
+		    #pdfBody .tinymce ul ul {
+		        margin-top: 0;
+		        margin-bottom: 0;
 		    }
 		    
 		    #pdfBody b, #pdfBody strong {
@@ -553,6 +650,11 @@ EOF;
             
             #pdfBody .tinymce p {
                 margin-bottom: ".($fontSize)."px;
+            }
+            
+            #pdfBody .tinymce strong {
+                page-break-after: avoid;
+                page-break-before: avoid;
             }
             
             #pdfBody .tinymce ol, #pdfBody .tinymce ul {
@@ -616,24 +718,25 @@ if ( isset($pdf) ) {
              '.PDFGenerator::cmToPixels($margins['top']).', 
              $color, 0.5);
   $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $color, 0.5);
   $pdf->close_object();
   $pdf->add_object($foot, "all");
   $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
   // Center the text
-  $nameWidth = Font_Metrics::get_text_width("'.$headerName.' ", $font, $size);
+  $nameWidth = Font_Metrics::get_text_width("'.utf8_encode($headerName).' ", $font, $size);
   $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
   
-  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.$headerName.'", $font, $size, $color, 0.01);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
+  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
+  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
         if($preview){
+            $html = PDFGenerator::replaceSpecial($html);
             echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
@@ -642,8 +745,8 @@ if ( isset($pdf) ) {
         $html = str_replace("’", '\'', $html);
         $html = str_replace("“", '"', $html);
         $html = str_replace("”", '"', $html);
+        $html = str_replace("…", '...', $html);
         $html = PDFGenerator::replaceSpecial($html);
-        $html = str_replace("&alpha;", "<span style='font-family: DejaVu Sans !important;'>&alpha;</span>", $html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
         $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".(PDFGenerator::cmToPixels($margins['top'] - 0.5)+($fontSize*1.6))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
@@ -652,6 +755,7 @@ if ( isset($pdf) ) {
         //$pdfStr = $dompdf->output();
         $pdfStr = PDFGenerator::processChapters($dompdf, $name);
         unset($dompdf);
+        Image_Cache::clear();
         $GLOBALS['footnotes'] = array();
         $GLOBALS["nFootnotesProcessed"] = 0;
         return array('html' => $finalHTML, 'pdf' => $pdfStr);

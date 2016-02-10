@@ -6,7 +6,100 @@ class ReportXMLParser {
     var $errors;
     var $parser;
     var $report;
+    static $parserCache = array();
+    static $files = array();
+    static $pdfFiles = array();
+    static $fileMap = array();
+    static $pdfMap = array();
+    static $pdfRpMap = array();
     static $time = 0;
+    
+    static function listFiles($dir, $path=""){
+        global $config;
+        $return = array();
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach($files as $file){
+            if(is_dir(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$file}/")){
+                $return = array_merge(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/{$file}/", "{$path}{$file}/"), $return);
+            }
+            else{
+                $return[] = "{$path}{$file}";
+            }
+        }
+        return $return;
+    }
+    
+    static function listReports(){
+        global $config;
+        if(count(self::$files) == 0){
+            $files = array_values(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"));
+            foreach($files as $file){
+                if(strstr($file, "PDF.xml") === false){
+                    self::$files[] = $file;
+                }
+            }
+        }
+        return self::$files;
+    }
+    
+    static function listPDFs(){
+        global $config;
+        if(count(self::$pdfFiles) == 0){
+            $files = array_values(self::listFiles(dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/"));
+            foreach($files as $file){
+                if(strstr($file, "PDF.xml") !== false){
+                    self::$pdfFiles[] = $file;
+                }
+            }
+        }
+        return self::$pdfFiles;
+    }
+    
+    static function findReport($rp){
+        global $config;
+        if(count(self::$fileMap) == 0){
+            $files = self::listReports();
+            foreach($files as $file){
+                $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
+                $xml = file_get_contents($fileName);
+                $parser = simplexml_load_string($xml);
+                if($parser != null){
+                    if($parser->getName() == "Report"){
+                        $attributes = $parser->attributes();
+                        @self::$fileMap[AbstractReport::blobConstant("{$attributes->reportType}")] = $fileName;
+                    }
+                }
+            }
+        }
+        if(isset(self::$fileMap[$rp])){
+            return self::$fileMap[$rp];
+        }
+        return "";
+    }
+    
+    static function findPDFReport($rptp, $returnRp=false){
+        global $config;
+        if(count(self::$pdfMap) == 0){
+            $files = self::listPDFs();
+            foreach($files as $file){
+                $fileName = dirname(__FILE__)."/ReportXML/{$config->getValue('networkName')}/".$file;
+                $xml = file_get_contents($fileName);
+                $parser = simplexml_load_string($xml);
+                if($parser->getName() == "Report"){
+                    $attributes = $parser->attributes();
+                    self::$pdfMap[AbstractReport::blobConstant("{$attributes->pdfType}")] = $fileName;
+                    self::$pdfRpMap[AbstractReport::blobConstant("{$attributes->pdfType}")] = AbstractReport::blobConstant($attributes->reportType);
+                }
+            }
+        }
+        if(!$returnRp && isset(self::$pdfMap[$rptp])){
+            return self::$pdfMap[$rptp];
+        }
+        if($returnRp && isset(self::$pdfRpMap[$rptp])){
+            return self::$pdfRpMap[$rptp];
+        }
+        return "";
+    }
     
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
     // and $report should be the Report object which is being created
@@ -38,6 +131,7 @@ class ReportXMLParser {
                                   'time'      => $time,
                                   'person_id' => $this->report->person->getId(),
                                   'backup'    => $encrypted));
+        DBFunctions::commit();
         if($download){
             header("Content-type: application/force-download");
             if($this->report->project == null){
@@ -117,14 +211,20 @@ class ReportXMLParser {
     }
     
     // Parses the XML document starting at the root
-    function parse(){
-        $this->parser = simplexml_load_string($this->xml);
-        $this->parseReport();
+    function parse($quick=false){
+        if(isset(self::$parserCache[$this->report->xmlName])){
+            $this->parser = self::$parserCache[$this->report->xmlName];
+        }
+        else{
+            $this->parser = simplexml_load_string($this->xml);
+            self::$parserCache[$this->report->xmlName] = $this->parser;
+        }
+        $this->parseReport($quick);
         $this->showErrors();
     }
     
     // Parses the <Report> element of the XML
-    function parseReport(){
+    function parseReport($quick=false){
         global $config;
         if($this->parser->getName() == "Report"){
             $attributes = $this->parser->attributes();
@@ -137,7 +237,7 @@ class ReportXMLParser {
                     $exploded = explode("/", $exploded[count($exploded)-2]);
                     $xml = file_get_contents($xmlFileName);
                     $parser = new ReportXMLParser($xml, $this->report);
-                    $parser->parse();
+                    $parser->parse($quick);
                 }
                 else{
                     if($this->report->xmlName == $attributes->extends){
@@ -152,17 +252,11 @@ class ReportXMLParser {
                 $this->report->setHeaderName("{$attributes->headerName}");
             }
             if(isset($attributes->reportType)){
-                if(!defined($attributes->reportType)){
-                    $this->errors[] = "Report Type '{$attributes->reportType}' does not exist for Report, using RP_RESEARCHER";
-                }
-                $type = (defined($attributes->reportType)) ? constant($attributes->reportType) : RP_RESEARCHER;
+                $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);
             }
             if(isset($attributes->pdfType)){
-                if(!defined($attributes->pdfType)){
-                    $this->errors[] = "PDF Type '{$attributes->pdfType}' does not exist for Report, using RPTP_NORMAL";
-                }
-                $type = (defined($attributes->pdfType)) ? constant($attributes->pdfType) : RPTP_NORMAL;
+                $type = AbstractReport::blobConstant($attributes->pdfType);
                 $this->report->setPDFType($type);
             }
             if(isset($attributes->pdfFiles)){
@@ -182,11 +276,16 @@ class ReportXMLParser {
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }
+            if(isset($attributes->year)){
+                $this->report->year = "{$attributes->year}";
+            }
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }
-            if(isset($children->ReportSection)){
-                $this->parseReportSection($children->ReportSection);
+            if(!$quick){
+                if(isset($children->ReportSection)){
+                    $this->parseReportSection($children->ReportSection);
+                }
             }
         }
     }
@@ -197,12 +296,14 @@ class ReportXMLParser {
         foreach($children as $key => $child){
             if($key == "Role"){
                 $attributes = $child->attributes();
-                $role = (isset($attributes->role)) ? @constant($attributes->role) : MANAGER;
-                if(isset($attributes->role) && @constant($attributes->role) == null){
+                $role = (isset($attributes->role)) ? AbstractReport::blobConstant($attributes->role) : MANAGER;
+                $subType = (isset($attributes->subType)) ? $attributes->subType : "";
+                $subType = (isset($attributes->subRole)) ? $attributes->subRole : $subType;
+                if(isset($attributes->role) && AbstractReport::blobConstant($attributes->role) == null){
                     $role = (string)$attributes->role;
                 }
-                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
                 if($start == null){
                     $this->errors[] = "Start time '{$attributes->start}' does not exist";
                 }
@@ -210,14 +311,14 @@ class ReportXMLParser {
                     $this->errors[] = "Start time '{$attributes->end}' does not exist";
                 }
                 $this->parseRoleSectionPermissions($child, $role);
-                $this->report->addPermission("Role", "{$role}", "{$start}", "{$end}");
+                $this->report->addPermission("Role", array("role" => "{$role}", "subType" => "{$subType}"), "{$start}", "{$end}");
             }
             else if($key == "Project"){
                 $attributes = $child->attributes();
                 $deleted = (isset($attributes->deleted)) ? (strtolower("{$attributes->deleted}") == "true") : false;
                 $projName = (isset($attributes->project)) ? "{$attributes->project}" : "";
-                $start = (isset($attributes->start)) ? @constant($attributes->start) : "0000-00-00";
-                $end = (isset($attributes->end)) ? @constant($attributes->end) : "2100-12-31";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
                 if($start == null){
                     $this->errors[] = "Start time '{$attributes->start}' does not exist";
                 }
@@ -278,6 +379,9 @@ class ReportXMLParser {
             if(isset($attributes->type) || $section != null){
                 if(isset($attributes->type)){
                     $type = "{$attributes->type}";
+                    if(!class_exists($type) && class_exists($type."ReportSection")){
+                        $type = $type."ReportSection";
+                    }
                     if(!class_exists($type)){
                         $this->errors[] = "ReportSection '{$type}' does not exists";
                         continue;
@@ -298,8 +402,15 @@ class ReportXMLParser {
                 if(isset($attributes->id)){
                     $section->setId("{$attributes->id}");
                 }
+                if($this->report->project != null){
+                    $section->setProjectId($this->report->project->getId());
+                }
+                $section->setPersonId($this->report->person->getId());
                 if(isset($attributes->name)){
                     $section->setName("{$attributes->name}");
+                }
+                if(isset($attributes->title)){
+                    $section->setTitle("{$attributes->title}");
                 }
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
@@ -308,10 +419,7 @@ class ReportXMLParser {
                     $section->setDisabled($attributes->tooltip);
                 }
                 if(isset($attributes->blobSection)){
-                    if(!defined($attributes->blobSection)){
-                        $this->errors[] = "Blob Section '{$attributes->blobSection}' does not exist for ReportSection, using SEC_NONE";
-                    }
-                    $sec = (defined($attributes->blobSection)) ? constant($attributes->blobSection) : SEC_NONE;
+                    $sec = AbstractReport::blobConstant($attributes->blobSection);
                     $section->setBlobSection($sec);
                 }
                 if($type == "EditableReportSection" && isset($attributes->autosave)){
@@ -335,10 +443,7 @@ class ReportXMLParser {
                 if(isset($attributes->private)){
                     $section->setPrivate(strtolower($attributes->private) == "true");
                 }
-                if($this->report->project != null){
-                    $section->setProjectId($this->report->project->getId());
-                }
-                $section->setPersonId($this->report->person->getId());
+                
                 foreach($children as $c){
                     if($c->getName() == "Instructions"){
                         $section->setInstructions("{$children->Instructions}");
@@ -391,6 +496,10 @@ class ReportXMLParser {
             if(class_exists($type)){
                 $itemset = new $type();
             }
+            else if(class_exists($type."ReportItemSet")){
+                $type = $type."ReportItemSet";
+                $itemset = new $type();
+            }
             else{
                 $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
                 return;
@@ -433,6 +542,9 @@ class ReportXMLParser {
         if(isset($data['product_id'])){
             $itemset->setProductId($data['product_id']);
         }
+        if(isset($data['extra'])){
+            $itemset->setExtra($data['extra']);
+        }
         if(isset($data['person_id'])){
             $itemset->setPersonId($data['person_id']);
         }
@@ -452,7 +564,7 @@ class ReportXMLParser {
             foreach($newData as $value){
                 foreach($children as $c){
                     if($c->getName() == "ReportItem"){
-                        $item = $this->parseReportItem($itemset, $c);
+                        $item = $this->parseReportItem($itemset, $c, $value);
                     }
                     else if($c->getName() == "ReportItemSet"){
                         $item = $this->parseReportItemSet($itemset, $c, $value);
@@ -464,6 +576,7 @@ class ReportXMLParser {
                     $item->setMilestoneId($value['milestone_id']);
                     $item->setProductId($value['product_id']);
                     $item->setPersonId($value['person_id']);
+                    $item->setExtra($value['extra']);
                     foreach($value['misc'] as $key=>$val){
                         $item->setAttribute("{$key}", "{$val}");
                     }
@@ -480,15 +593,18 @@ class ReportXMLParser {
     }
 
     // Parses the <ReportItem> element of the XML
-    function parseReportItem(&$section, $node){
+    function parseReportItem(&$section, $node, $value=array()){
         $attributes = $node->attributes();
         $item = $section->getReportItemById("{$attributes->id}");
         if(isset($attributes->type) || $item != null){
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";
+                if(!class_exists($type) && class_exists($type."ReportItem")){
+                    $type = $type."ReportItem";
+                }
                 if(!class_exists($type)){
                     $this->errors[] = "ReportItem '{$type}' does not exists";
-                    return;
+                    $item = "StaticReportItem";
                 }
                 $item = new $type();
                 $position = isset($attributes->position) ? "{$attributes->position}" : null;
@@ -515,22 +631,31 @@ class ReportXMLParser {
             if(isset($attributes->private)){
                 $item->setPrivate(strtolower($attributes->private) == "true");
             }
+            if(isset($value['project_id'])){
+                $item->setProjectId($value['project_id']);
+            }
+            if(isset($value['milestone_id'])){
+                $item->setMilestoneId($value['milestone_id']);
+            }
+            if(isset($value['product_id'])){
+                $item->seProductId($value['product_id']);
+            }
+            if(isset($value['person_id'])){
+                $item->setPersonId($value['person_id']);
+            }
+            if(isset($value['extra'])){
+                $item->setExtra($value['extra']);
+            }
             if(isset($attributes->blobType)){
-                if(!defined($attributes->blobType)){
-                    $this->errors[] = "Blob Type '{$attributes->blobType}' does not exist for ReportItem, using BLOB_TEXT";
-                }
-                $t = (defined($attributes->blobType)) ? constant($attributes->blobType) : BLOB_TEXT;
+                $t = AbstractReport::blobConstant($attributes->blobType);
                 $item->setBlobType($t);
             }
             if(isset($attributes->blobItem)){
-                if(!defined($attributes->blobItem)){
-                    $this->errors[] = "Blob Item '{$attributes->blobItem}' does not exist for ReportItem, using null";
-                }
-                $i = (defined($attributes->blobItem)) ? constant($attributes->blobItem) : null;
+                $i = AbstractReport::blobConstant($attributes->blobItem);
                 $item->setBlobItem($i);
             }
             if(isset($attributes->blobSubItem)){
-                $i = (defined($attributes->blobSubItem)) ? constant($attributes->blobSubItem) : $attributes->blobSubItem;
+                $i = AbstractReport::blobConstant($attributes->blobSubItem);
                 $item->setBlobSubItem($i);
             }
             foreach($attributes as $key => $value){
@@ -576,15 +701,6 @@ function encode_binary_data($str){
     if($result !== false && base64_decode($result) === $str){
         return $result;
     }
-    /* DON'T NEED THIS ANYMORE, BUT WILL KEEP IT FOR REFERENCE FOR A WHILE
-    $string = array();
-    $value = utf8_encode($str);
-    for($i = 0; $i < strlen($value); $i++){
-        $ord = ord($value[$i]);
-        $string[] = $ord;
-    }
-    return implode(" ", $string);
-    */
 }
 
 function decode_binary_data($str){

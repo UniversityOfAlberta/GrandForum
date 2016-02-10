@@ -7,13 +7,16 @@
 class Role extends BackboneModel {
 
     static $cache = array();
+    static $projectCache = null;
 
 	var $id;
 	var $user;
     var $role;
+    var $title;
     var $startDate;
     var $endDate;
     var $comment;
+    var $projects = null;
 	
 	// Returns a new Role from the given id
 	static function newFromId($id){
@@ -28,12 +31,24 @@ class Role extends BackboneModel {
 		return $role;
 	}
 	
+	static function generateProjectsCache(){
+	    if(self::$projectCache == null){
+	        $data = DBFunctions::select(array('grand_role_projects'),
+	                                    array('*'));
+	        self::$projectCache = array();
+	        foreach($data as $row){
+	            self::$projectCache[$row['role_id']][] = $row['project_id'];
+	        }
+	    }
+	}
+	
 	// Constructor
 	function Role($data){
 		if(count($data) > 0){
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
+			$this->title = $data[0]['title'];
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
@@ -44,6 +59,8 @@ class Role extends BackboneModel {
 	    $json = array('id' => $this->getId(),
 	                  'userId' => $this->user,
 	                  'name' => $this->getRole(),
+	                  'fullName' => $this->getRoleFullName(),
+	                  'title' => $this->getTitle(),
 	                  'comment' => $this->getComment(),
 	                  'startDate' => $this->getStartDate(),
 	                  'endDate' => $this->getEndDate());
@@ -135,24 +152,8 @@ class Role extends BackboneModel {
 	
 	// Returns all distinct roles
 	static function getDistinctRoles(){
-		// $sql = "SELECT DISTINCT role FROM grand_roles";
-        
-  //       $data = DBFunctions::execSQL($sql);
-  //       $roles = array();
-  //       foreach($data as $row){
-  //           $roles[] = $row['role'];
-  //       }
-        $roles = array(
-        		'BOD' => 90,
-               	'Manager' => 80,
-               	'Champion' => 70,
-               	'RMC' => 70,
-               	'NI' => 60,
-               	'HQP' => 40,
-               	'Staff' => 30
-		);
-
-	    return $roles;
+	    global $config;
+	    return $config->getValue('roleDefs');
 	}
 
 	// Returns whether this Role is still active or not
@@ -175,6 +176,16 @@ class Role extends BackboneModel {
 	    return $this->role;
 	}
 	
+	// Returns the full name of this Role
+	function getRoleFullName(){
+	    global $config;
+	    return $config->getValue('roleDefs', $this->getRole());
+	}
+	
+	function getTitle(){
+	    return $this->title;
+	}
+	
 	// Returns the startDate for this Role
 	function getStartDate(){
 	    return $this->startDate;
@@ -188,6 +199,32 @@ class Role extends BackboneModel {
 	// Returns the comment for this Role
 	function getComment(){
 	    return $this->comment;
+	}
+	
+	function getProjects(){
+	    if($this->projects == null){
+	        self::generateProjectsCache();
+	        $this->projects = array();
+	        if(isset(self::$projectCache[$this->getId()])){
+	            foreach(self::$projectCache[$this->getId()] as $project){
+	                $this->projects[] = Project::newFromId($project);
+	            }
+	        }
+	    }
+	    return $this->projects;
+	}
+	
+	function hasProject($project){
+	    $projects = $this->getProjects();
+	    if(count($projects) == 0){
+	        return true;
+	    }
+	    foreach($projects as $proj){
+	        if($proj->getId() == $project->getId()){
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 }
 ?>

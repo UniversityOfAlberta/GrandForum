@@ -9,17 +9,45 @@ $egAlwaysAllow = array();
 function initializeAccessControls(){
   global $egAnnokiNamespaces, $wgExtraNamespaces;
 
-  createExtraTables();
+  //createExtraTables();
+  
+  createRoleNamespaces();
   
   $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
 
-  addMenuJavascript();
+  //addMenuJavascript();
 }
 
 function addMenuJavascript() {
 	global $wgOut, $wgScriptPath;
 	$script = "<script type='text/javascript' src='$wgScriptPath/extensions/AccessControls/selectMenu.js'></script>\n";
 	$wgOut->addScript($script);	
+}
+
+function createRoleNamespaces(){
+    global $wgAllRoles;
+    $nsId = 0;
+    $namespaces = array();
+    $data = DBFunctions::select(array('mw_an_extranamespaces'),
+                                array('nsId', 'nsName'),
+                                array('nsName' => NOTLIKE('%_Talk')));
+    foreach($data as $row){
+        $namespaces[strtoupper($row['nsName'])] = $row['nsId'];
+        $nsId = max($nsId, $row['nsId']);
+    }
+    foreach($wgAllRoles as $role){
+        if(!isset($namespaces[strtoupper($role)])){
+            $nsId += 2;
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId,
+                                      'nsName' => $role,
+                                      'public' => 1));
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId+1,
+                                      'nsName' => $role.'_Talk',
+                                      'public' => 1));
+        }
+    }
 }
 
 /**
@@ -135,6 +163,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
+    GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
@@ -153,7 +182,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   }
   
   // Check public sections of wiki page
-  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action = 'read'){
+  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
       if($article != null){
           $text = $article->getText();
@@ -185,6 +214,28 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	    ($title->getNamespace() == NS_MAIN || $title->getNamespace() == NS_TALK || 
 	     $title->getNamespace() == NS_HELP || $title->getNamespace() == NS_HELP) && $person->isRoleAtLeast(STAFF)) {
 		return true;
+	}
+	
+	if($person->isRoleAtLeast(STAFF)){
+	    $result = true;
+	    return true;
+	}
+	
+	// TODO: A Hack to allow special access rules for AGE-WELL
+	if($title->getNSText() == "HQP_Wiki" && $title->getText() == "HQP Resources"){
+	    if($action == 'create' || $action == 'edit'){
+	        if($person->isRole(HQP) || $person->isRoleAtLeast(STAFF)){
+	            $result = true;
+	            return true;
+	        }
+	    }
+	    else if($action == 'read'){
+	        // Allow everyone to read
+	        if($person->isLoggedIn()){
+	            $result = true;
+	            return true;
+	        }
+	    }
 	}
 	
 	//sysops are allowed to do anything (if we reach here then the action is not creating/moving a new page
@@ -286,6 +337,21 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	$allowedGroups = getExtraPermissions($title);
 	$allowedGroups[] = $title->getNamespace();
 
+    $nsText = "";
+    if(strstr($title->getText(), ":") !== false){
+        $exploded = explode(":", $title->getText());
+        $nsText = @$exploded[0];
+    }
+    
+    $userGroups = $user->getGroups();
+
+    foreach($userGroups as $group){
+        if($nsText == $group){
+            $result = true;
+            return true;
+        }
+    }
+
 	foreach ($allowedGroups as $index => $group){
 	  if (isPublicNS($group)) {
 	    $result = true;
@@ -297,8 +363,6 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	      }
 	  }
 	}
-
-	$userGroups = $user->getGroups();
 	
 	$userNS = UserNamespaces::getUserNamespace($user);
 	if($wgExtraNamespaces != null){
@@ -321,13 +385,11 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	$result = (count(array_intersect($allowedGroups, $userGroups)) > 0);
-	
 	if ($result) {
-	    
 		return true;
 	}
 	else {
-		if ($user->getId() != 0 && $action == 'read') {
+		if ($user->getId() != 0 && $action == 'read' && ($title->getNamespace() < 100 || isPublicNS($title->getNamespace()))) {
 			return true;
 		}
 		else {

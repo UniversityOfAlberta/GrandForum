@@ -14,12 +14,14 @@ define('HEAD3', -107);
 define('HEAD4', -108);
 define('HEAD1_ROW', -109);
 define('HEAD2_ROW', -110);
+define('STRING', -111);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
 $cellTypes[NA] = "NACell";
 $cellTypes[BLANK] = "BlankCell";
 $cellTypes[READ] = "ReadCell";
+$cellTypes[STRING] = "StringCell";
 $cellTypes[HEAD] = "HeadCell";
 $cellTypes[HEAD_ROW] = "HeadRowCell";
 $cellTypes[HEAD1] = "Head1Cell";
@@ -60,7 +62,7 @@ function STRUCT(){ // Useful for making multi-argument cell structures
     return $cell;
 }
 
-/*
+/**
  * This Class is designed to allow for a queryable table.  
  * Functions like select, where, join etc. can be used to create different types of tables.
  * NOTE: This class creates a mutable object, which means that any queries made upon it will modify the data.
@@ -502,32 +504,42 @@ abstract class QueryableTable {
     
     function isError(){
         $isError = (count($this->errors) > 0);
-        foreach($this->xls as $rowN => $row){
-		    foreach($row as $colN => $cell){
-		        if($cell->error != ""){
-			        $isError = true;
-			        break;
+        if(is_array($this->xls)){
+            foreach($this->xls as $rowN => $row){
+		        foreach($row as $colN => $cell){
+		            if($cell->error != ""){
+			            $isError = true;
+			            break;
+			        }
 			    }
-			}
+		    }
+		}
+		else{
+		    $isError = true;
 		}
 		return $isError;
     }
     
     function showErrorsSimple(){
         $ret = "";
-        foreach($this->xls as $rowN => $row){
-		    foreach($row as $colN => $cell){
-		        if($cell->error != ""){
-			        $ret .= "{$cell->error}<br />\n";
+        if(is_array($this->xls)){
+            foreach($this->xls as $rowN => $row){
+		        foreach($row as $colN => $cell){
+		            if($cell->error != ""){
+			            $ret .= "{$cell->error}<br />\n";
+			        }
 			    }
-			}
-		}
-		if(count($this->errors) > 0){
-		    foreach($this->errors as $rowN => $rowErrors){
-		        foreach($rowErrors as $colN => $error){
-		            $ret .= "$error<br />\n";
+		    }
+		    if(count($this->errors) > 0){
+		        foreach($this->errors as $rowN => $rowErrors){
+		            foreach($rowErrors as $colN => $error){
+		                $ret .= "$error<br />\n";
+		            }
 		        }
 		    }
+		}
+		else{
+		    $ret .= "This is not a valid worksheet<br />\n";
 		}
 		$ret = substr($ret, 0, strlen($ret) - strlen("<br />\n"));
 		return $ret;
@@ -535,16 +547,15 @@ abstract class QueryableTable {
     
     // Shows the errors which arose during readCells()
 	function showErrors(){
-	    $ret = "<ul class='pdfnodisplay'>";
+	    $ret = "<div class='pdfnodisplay'>";
 	    if ($this->status()){
 			if (!$this->isError()) {
 				// All OK.
-				$ret .= "<li>" .
-					"Please verify that the budget preview below is correct. If not, please contact support.</li>";
+				/*$ret .= "<li>" .
+					"Please verify that the budget preview below is correct. If not, please contact support.</li>";*/
 			}
 			else {
-				$ret .= "<li>Please verify that the budget preview below is correct. If not, please contact support.<br />
-				             The following errors were found in your budget:</li><div class='error'>\n";
+				$ret .= "<div class='error'>\n";
 				$ret .= $this->showErrorsSimple();
 				$ret .= "</div>\n";
 			}
@@ -552,7 +563,7 @@ abstract class QueryableTable {
 		else {
 			$ret .= "<div class='error'>The spreadsheet could not be read by the system.</div>";
 		}
-		$ret .= "</ul>\n";
+		$ret .= "</div>\n";
 		
 		return $ret;
 	}
@@ -566,48 +577,50 @@ abstract class QueryableTable {
             if($sortable){
                 $sort = "class='sortable'";
             }
-            $ret[] = "<table id='{$this->id}' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
-            foreach($this->xls as $rowN => $row){
-                $ret[] = "<tr>\n";
-                $i = 0;
-                foreach($row as $colN => $cell){
-                    $class = "";
-                    $errorMsg = "";
-                    $errorMsgEnd = "";
-                    $style = "";
-                    $Cell = $cell;
-                    if($Cell->error != ""){
-                        $class .= " budgetError";
-                        $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
-                        $errorMsgEnd = "</span>";
-                    }
-                    
-                    $cell = $Cell->render();
-                    $style = $Cell->style;
-                    $span = 1;
-                    if(!isset($row[$colN + 1])){
-                        $span = max(1, $this->nCols() - $colN);
-                    }
-                    $span = 1;
-                    for($i=$colN+1; $i < $this->nCols(); $i++){
-                        $c = $this->structure[$rowN][$i];
-                        if($c == NA){
-                            $span++;
+            if(is_array($this->xls)){
+                $ret[] = "<table id='{$this->id}' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
+                foreach($this->xls as $rowN => $row){
+                    $ret[] = "<tr>\n";
+                    $i = 0;
+                    foreach($row as $colN => $cell){
+                        $class = "";
+                        $errorMsg = "";
+                        $errorMsgEnd = "";
+                        $style = "";
+                        $Cell = $cell;
+                        if($Cell->error != ""){
+                            $class .= " budgetError";
+                            $errorMsg = "<span title='{$colN},{$rowN}: {$Cell->error}' class='tooltip'>";
+                            $errorMsgEnd = "</span>";
                         }
-                        else{
-                            break;
+                        
+                        $cell = nl2br($Cell->render());
+                        $style = $Cell->style;
+                        $span = 1;
+                        if(!isset($row[$colN + 1])){
+                            $span = max(1, $this->nCols() - $colN);
                         }
+                        $span = 1;
+                        for($i=$colN+1; $i < $this->nCols(); $i++){
+                            $c = $this->structure[$rowN][$i];
+                            if($c == NA){
+                                $span++;
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                        if($Cell->span != null){
+                            $span = $Cell->span;
+                            $class .= " explicitSpan";
+                        }
+                        $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                        ++$i;
                     }
-                    if($Cell->span != null){
-                        $span = $Cell->span;
-                        $class .= " explicitSpan";
-                    }
-                    $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
-                    ++$i;
+                    $ret[] = "</tr>\n";
                 }
-                $ret[] = "</tr>\n";
+                $ret[] = "</table>\n";
             }
-            $ret[] = "</table>\n";
         }
         return implode("", $ret);
 	}

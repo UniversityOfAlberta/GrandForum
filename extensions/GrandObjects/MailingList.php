@@ -305,6 +305,9 @@ class MailingList extends BackboneModel {
             return 1;
         }
         $email = $person->getEmail();
+        if(trim($person->getEmail()) == ""){
+            return 1;
+        }
         $command =  "echo \"$email\" | /usr/lib/mailman/bin/add_members --welcome-msg=n --admin-notify=n -r - $listname 2> /dev/null";
         exec($command, $output);
         $out = $output;
@@ -347,6 +350,9 @@ class MailingList extends BackboneModel {
         }
         $listname = MailingList::listName($project);
         $email = $person->getEmail();
+        if(trim($person->getEmail()) == ""){
+            return 1;
+        }
         $command =  "/usr/lib/mailman/bin/remove_members -n -N $listname \"$email\" 2> /dev/null";
         exec($command, $output);
         self::$membershipCache = array();

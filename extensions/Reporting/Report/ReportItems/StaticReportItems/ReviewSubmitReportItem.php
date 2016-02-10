@@ -48,6 +48,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                         for(index in data){
                                             var val = data[index];
                                             if(typeof val.tok != 'undefined'){
+                                                index = index.replace('/', '');
                                                 var tok = val.tok;
                                                 var time = val.time;
                                                 var len = val.len;
@@ -174,7 +175,12 @@ EOF;
             $sub = 0;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getLatestPDF();
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
@@ -195,6 +201,7 @@ EOF;
 		    	$show_pdf = $tst;
 		    }
 
+            $file = str_replace("/", "", $file);
 		    $subm_table_row =<<<EOF
 		    <tr>
 		    <td>
@@ -213,7 +220,7 @@ EOF;
 		$wgOut->addHTML("<p>You can submit your most recently generated $reportname PDF for evaluation. Make sure you review it before submitting.<br />Please note:</p>
          <ul>
          <li>If you need to make a correction to your $reportname PDF that is already submitted, you can generate and submit again.</li>
-         <li>If the status of the report is \"Not-Submitted\", a PDF document will be compiled with the current report data and forwarded to the RMC for evaluation. 
+         <li>If the status of the report is \"Not-Submitted\", a PDF document will be compiled with the current report data and forwarded for evaluation. 
          <li>If, on the other hand, the status is \"Submitted\", the last submitted PDF will be used for evaluation, even if subsequent edits have been made and newer PDF documents have been regenerated.
          <li>If you encounter any issues, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a></li>
          </ul></p>\n
@@ -246,7 +253,12 @@ EOF;
             $sub = 0;
             $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getPDF();
         	$subm = "Not Generated/Not Submitted";
         	if (count($check) > 0) {

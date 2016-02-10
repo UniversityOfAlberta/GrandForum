@@ -5,8 +5,11 @@ class ProjectAllPeopleReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $proj = Project::newFromId($this->projectId);
+        $role = $this->getAttr("role", null);
+        $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
+        $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");
         if($proj != null){
-            $members = $proj->getAllPeopleDuring(null, REPORTING_YEAR."-01-01 00:00:00", REPORTING_YEAR."-12-31 23:59:59");
+            $members = $proj->getAllPeopleDuring($role, $start, $end);
             $alreadySeen = array();
             foreach($members as $m){
                 if(isset($alreadySeen[$m->getId()])){

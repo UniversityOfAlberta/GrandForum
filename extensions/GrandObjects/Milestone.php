@@ -7,6 +7,12 @@
 class Milestone {
 
     static $cache = array();
+    static $statuses = array("New" => "#BBBBBB",
+                             "Completed" => "#3399FF",
+                             "On Going" => "#55BB55",
+                             "Late" => "#FFDD00",
+                             "Problem" => "#FF8800",
+                             "Abandoned" => "#FF6666");
 
     var $id;
     var $identifier;
@@ -16,6 +22,7 @@ class Milestone {
     var $project;
     var $leader;
     var $people;
+    var $peopleText;
     var $peopleWaiting;
     var $title;
     var $status;
@@ -29,7 +36,7 @@ class Milestone {
     var $quarters;
     var $comment;
     
-    /*
+    /**
      * Creates a Milestone from the given milestone_id and id
      * @param integer $milestone_id The id of the milestone
      * @param integer $id The id of the revision (optional)
@@ -50,7 +57,7 @@ class Milestone {
         return $milestone;
     }
     
-    /*
+    /**
      * Creates a Milestone from the given revision id
      * @param integer $id The id of the revision
      * @return Milestone The milestone
@@ -63,7 +70,7 @@ class Milestone {
         return $milestone;
     }
 
-    /*
+    /**
      * Creates a new Milestone from the given title and revision id
      * @param string $milestone_title The title of the Milestone
      * @param integer $id The revision id of the Milestone
@@ -104,6 +111,7 @@ class Milestone {
             $this->project = Project::newFromId($data[0]['project_id']);
             $this->leader = $data[0]['leader'];
             $this->people = array();
+            $this->peopleText = $data[0]['people'];
             $this->peopleWaiting = true;
             $this->problem = $data[0]['problem'];
             $this->description = $data[0]['description'];
@@ -117,7 +125,7 @@ class Milestone {
         }
     }
     
-    /*
+    /**
      * Returns the revision id of this Milestone
      * @return integer The revision id of this Milestone
      */
@@ -125,7 +133,7 @@ class Milestone {
         return $this->id;
     }
     
-    /*
+    /**
      * Returns the identifier of this Milestone(used for when it is first created)
      * @return integer The identifier of this Milestone
      */
@@ -133,7 +141,7 @@ class Milestone {
         return $this->identifier;
     }
     
-    /*
+    /**
      * Returns the Activity associated with this Milestone (null if there is no activity)
      * @return Activity The Activity associated with this Milestone
      */
@@ -147,7 +155,7 @@ class Milestone {
         return null;
     }
     
-    /*
+    /**
      * Returns the id of this Milestone
      * @return integer The id of this Milestone
      */
@@ -155,7 +163,7 @@ class Milestone {
         return $this->milestone_id;
     }
 
-    /*
+    /**
      * Returns the parent of this Milestone
      * (Lazy to help avoid potential infinite loops, and to improve performance on Object construction)
      * @return Milestone the parent of this Milestone
@@ -172,7 +180,7 @@ class Milestone {
         return $this->parent;
     }
     
-    /*
+    /**
      * Returns the Milestone revision closest to the given date
      * @param string $date The date of the revision
      * @return Milestone The revision closest to the given date
@@ -202,7 +210,7 @@ class Milestone {
         return $smallestSoFar;
     }
     
-    /*
+    /**
      * Return the title of this Milestone
      * @return string The title of this Milestone
      */
@@ -210,7 +218,7 @@ class Milestone {
         return $this->title;
     }
 
-    /*
+    /**
      * Returns the status of this Milestone
      * @return string The status of this Milestone
      */
@@ -218,7 +226,7 @@ class Milestone {
         return $this->status;
     }
     
-    /*
+    /**
      * Returns the Project that this Milestone belongs to
      * @return Project The Project that this Milestone belongs to
      */
@@ -226,7 +234,7 @@ class Milestone {
         return $this->project;    
     }
     
-    /*
+    /**
      * Returns the Person who leads this Milestone
      * @return Person The Person who leads this Milestone
      */
@@ -234,7 +242,7 @@ class Milestone {
         return Person::newFromId($this->leader);
     }
 
-    /*
+    /**
      * Returns the People involved in this Milestone revision
      * @return array The People involved in this Milestone revision
      */
@@ -253,8 +261,16 @@ class Milestone {
         }
         return $this->people;
     }
+    
+    /**
+     * Returns the People involved in this Milestone revision
+     * @return array The People involved in this Milestone revision
+     */
+    function getPeopleText(){
+        return $this->peopleText;
+    }
 
-    /*
+    /**
      * Returns the problem statement of this Milestone
      * @return string The problem statement of this Milestone
      */
@@ -266,7 +282,7 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->problem)))));
     }
     
-    /*
+    /**
      * Returns the description of this Milestone
      * @return string The description of this Milestone
      */
@@ -278,7 +294,7 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->description)))));
     }
     
-    /*
+    /**
      * Returns the assessement of this Milestone
      * @return string The assessment of this Milestone
      */
@@ -290,7 +306,7 @@ class Milestone {
                str_replace("&lt;br/&gt;", "\n", $this->assessment)))));
     }
     
-    /*
+    /**
      * Returns the Person who modified this Milestone revision
      * @return Person The Person who modified this Milestone revision
      */
@@ -298,7 +314,7 @@ class Milestone {
         return $this->editedBy;
     }
     
-    /*
+    /**
      * Returns the start date of this Milestone
      * @return string The start date of this Milestone
      */
@@ -306,7 +322,7 @@ class Milestone {
         return $this->start_date;
     }
     
-    /*
+    /**
      * Returns the end date of this Milestone
      * @return string The end date of this Milestone
      */
@@ -314,7 +330,7 @@ class Milestone {
         return $this->end_date;
     }
     
-    /*
+    /**
      * Returns which quarters of for each year this milestone is to take place
      * @return array The quarters for each year
      */
@@ -330,7 +346,7 @@ class Milestone {
         return $years;
     }
     
-    /*
+    /**
      * Returns the start date of the very first revision of this Milestone
      * NOTE: This method may be slow if there are many revisions
      * @return string The start date of the very first revision of this Milestone
@@ -345,7 +361,7 @@ class Milestone {
         }
     }
     
-    /*
+    /**
      * Returns the projected end date of this Milestone
      * @return string The projected end date of this Milestone
      */
@@ -353,7 +369,7 @@ class Milestone {
         return $this->projected_end_date;
     }
     
-    /*
+    /**
      * Returns the comment of this Milestone
      * @return string The comment of this Milestone
      */

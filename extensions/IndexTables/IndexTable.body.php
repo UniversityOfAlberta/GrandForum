@@ -1,6 +1,6 @@
 <?php
 
-//require_once("InactiveUsers.php");
+require_once("InactiveUsers.php");
 
 $indexTable = new IndexTable();
 
@@ -47,7 +47,7 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         sort($roles);
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role))){
+            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
@@ -55,32 +55,23 @@ class IndexTable {
         
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
-        if($wgUser->isLoggedIn()){
-            $selected = ($wgTitle->getText() == "Products" || 
-                         $wgTitle->getText() == "Multimedia" ||
-                         $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
-            $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
-            $structure = Product::structure();
-            $categories = array_keys($structure['categories']);
-            foreach($categories as $category){
-                if(Product::countByCategory($category) > 0){
-                    $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
-                }
-            }
-            if(Material::countByCategory() > 0){
-                $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
-            }
-            $tabs['Main']['subtabs'][] = $productsSubTab;
-        }
-        
-        $adminProjects = array();
-        $projects = Project::getAllProjects();
-        foreach($projects as $project){
-            if($project->getType() == 'Administrative'){
-                $adminProjects[$project->getName()] = $project;
+        $selected = ($wgTitle->getText() == "Products" || 
+                     $wgTitle->getText() == "Multimedia" ||
+                     $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
+        $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
+        $structure = Product::structure();
+        $categories = array_keys($structure['categories']);
+        foreach($categories as $category){
+            if(Product::countByCategory($category) > 0){
+                $productsSubTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($category), "$wgServer$wgScriptPath/index.php/Special:Products#/{$category}", "$selected");
             }
         }
+        if(Material::countByCategory() > 0){
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
+        }
+        $tabs['Main']['subtabs'][] = $productsSubTab;
         
+       
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -89,7 +80,7 @@ class IndexTable {
             $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
         }
         
-        if(count($adminProjects) > 0){
+        if(Project::areThereAdminProjects()){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
             $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
@@ -107,10 +98,10 @@ class IndexTable {
                                                                 "$selected");
         }
         
-        if(Wiki::newFromTitle("{$config->getValue('networkName')}:ALL_Conferences")->exists()){
-            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "ALL Conferences") ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Conferences", "$selected");
-        }
+        /*if(Wiki::newFromTitle("{$config->getValue('networkName')}_Conferences")->exists()){
+            $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}_Conferences", "$selected");
+        }*/
         return true;
     }
 	
@@ -196,7 +187,7 @@ class IndexTable {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the projects
 	 * Consists of the following columns
 	 * Acronym | Name 
@@ -209,7 +200,7 @@ class IndexTable {
         if($type != "Administrative"){
             $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
         }
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th>Project Id</th>";
         }
         $data = Project::getAllProjectsEver();
@@ -226,19 +217,19 @@ class IndexTable {
                 if($type != "Administrative"){
                     $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
                 }
-                if($me->isRoleAtLeast(MANAGER)){
+                if($idHeader){
                     $this->text .= "<td>{$proj->getId()}</td>\n";
                 }
                 $this->text .= "</tr>\n";
             }
 	    }
 	    $this->text .= "</tbody></table>";
-		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table for the themes
 	 * Consists of the following columns
 	 * Theme | Name 
@@ -272,19 +263,19 @@ class IndexTable {
 </td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
 EOF;
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
 	
-	/*
+	/**
 	 * Generates the Table of Admin Projects
 	 */
 	private function generateAdminTable(){
 	    global $wgScriptPath, $wgServer, $config;
 	    $me = Person::newFromWgUser();
 	    $activityPlans = "";
-	    if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+	    if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
 	        $activityPlans = "<th>Activity Plans</th>";
 	    }
 		$this->text .=
@@ -303,7 +294,7 @@ EOF;
                 $this->text .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>";
                 $this->text .= "<td>{$project->getFullName()}</td>";
                 $this->text .= "<td>{$leaderString}</td>";
-                if($config->getValue('networkName') == 'AGE-WELL' && $me->isProjectLeader()){
+                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
                     $this->text .= "<td>";
                     $projs = array();
                     $projects = array();
@@ -318,7 +309,7 @@ EOF;
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    if($me->leadershipOf($project)){
+                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
                         $report = "";
                         switch($project->getName()){
                             case "CC1 K-MOB":
@@ -342,7 +333,7 @@ EOF;
                 $this->text .= "</tr>";
             }
         }
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
@@ -355,15 +346,25 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
 		$idHeader = "";
+		$contactHeader = "";
+		$subRoleHeader = "";
 		$projectsHeader = "";
-        if($me->isRoleAtLeast(MANAGER)){
+		$committees = $config->getValue('committees');
+        if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        if($config->getValue('projectsEnabled')){
+        if($me->isLoggedIn() && 
+           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
+            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
+        }
+        if($table == HQP){
+            $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
+        }
+        if($config->getValue('projectsEnabled') && !isset($committees[$table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
@@ -371,11 +372,13 @@ EOF;
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
+                                    {$subRoleHeader}
                                     {$projectsHeader}
                                     <th style='white-space: nowrap;'>University</th>
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
-                                    $idHeader</tr>
+                                    {$contactHeader}
+                                    {$idHeader}</tr>
                                 </thead>
                                 <tbody>
 ";
@@ -387,7 +390,12 @@ EOF;
 <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
 </td>
 ";
-            if($config->getValue('projectsEnabled')){
+            if($subRoleHeader != ""){
+                $subRoles = $person->getSubRoles();
+                $this->text .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
+            }
+            
+            if($config->getValue('projectsEnabled') && !isset($committees[$table])){
                 $projects = $person->getProjects();
                 $projs = array();
 			    foreach($projects as $project){
@@ -411,12 +419,16 @@ EOF;
             $this->text .= "<td align='left'>{$university['university']}</td>";
             $this->text .= "<td align='left'>{$university['department']}</td>";
             $this->text .= "<td align='left'>{$university['position']}</td>";
-			if($me->isRoleAtLeast(MANAGER)){
+            if($contactHeader != ''){
+                $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+            }
+			if($idHeader != ''){
 			    $this->text .= "<td>{$person->getId()}</td>";
 			}
 			$this->text .= "</tr>";
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100});</script>";
+		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>";
 
 		return true;
 	}
@@ -448,7 +460,7 @@ EOF;
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
 	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100});
+	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
 	    </script>";
@@ -481,7 +493,7 @@ EOF;
         $this->text .= "</tbody></table>";
         $this->text .= "<script type='text/javascript'>
 	        $(document).ready(function(){
-	            $('.indexTable').dataTable({'iDisplayLength': 100});
+	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
 	    </script>";

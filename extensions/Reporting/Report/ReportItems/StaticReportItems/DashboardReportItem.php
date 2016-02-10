@@ -7,6 +7,12 @@ class DashboardReportItem extends StaticReportItem {
 		$table = ($this->getAttr("table", "true") == "true");
 		$details = ($this->getAttr("details", "true") == "true");
 		$limit = $this->getAttr("limit", "0");
+		$sortable = ($this->getAttr("sortable", "false") == "true");
+		$showButton = ($this->getAttr("showButton", "true") == "true");
+		if($table == false){
+		    $this->renderForPDF();
+		    return;
+		}
         $dashboard = $this->createDashboard();
         $dashboard = $this->filterCols($dashboard);
         $dashboard = $this->filterRows($dashboard);
@@ -15,11 +21,11 @@ class DashboardReportItem extends StaticReportItem {
         if($limit > 0){
             $top = $dashboard->copy()->limit(0, 1);
             for($i = 1; $i < $dashboard->nRows(); $i+=$limit){
-                $dash .= $top->copy()->union($dashboard->copy()->limit($i, $limit))->render();
+                $dash .= $top->copy()->union($dashboard->copy()->limit($i, $limit))->render($sortable, $showButton);
             }
         }
         else{
-            $dash = $dashboard->render(false, true);
+            $dash = $dashboard->render($sortable, $showButton);
         }
         $item = $this->processCData($dash);
 		$wgOut->addHTML($item);
@@ -62,13 +68,14 @@ class DashboardReportItem extends StaticReportItem {
 	}
 	
 	function createDashboard(){
-	    $person = $this->getReport()->person;
+	    $person = Person::newFromId($this->personId);
 	    $project = Project::newFromId($this->projectId);
 	    $struct = constant($this->getAttr("structure", "NI_REPORT_STRUCTURE"));
-		if($project != null && $struct >= PROJECT_PUBLIC_STRUCTURE){
+	    $tableType = strtolower($this->getAttr("tableType", ""));
+		if(($project != null && $struct >= PROJECT_PUBLIC_STRUCTURE) && $tableType != "person"){
             $dashboard = new DashboardTable($struct, $project);
         }
-        else{
+        else {
             $dashboard = new DashboardTable($struct, $person);
         }
         if($project != null && $project->getName() != null && 

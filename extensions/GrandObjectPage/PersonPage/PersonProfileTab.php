@@ -8,7 +8,7 @@ class PersonProfileTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonProfileTab($person, $visibility){
-        parent::AbstractEditableTab("Profile");
+        parent::AbstractEditableTab("Bio");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -22,8 +22,8 @@ class PersonProfileTab extends AbstractEditableTab {
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
-            $this->html .= "<br />";
         }
+        $this->html .= $this->showFundedProjects($this->person, $this->visibility);
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->person->isRole(NI) || 
@@ -73,9 +73,21 @@ class PersonProfileTab extends AbstractEditableTab {
         $_POST['type'] = "private";
         $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
         APIRequest::doAction('UserProfile', true);
+        if(isset($_POST['role_title'])){
+            foreach($this->person->getRoles() as $role){
+                if(isset($_POST['role_title'][$role->getId()])){
+                    $value = $_POST['role_title'][$role->getId()];
+                    DBFunctions::update('grand_roles', 
+                                        array('title' => $value),
+                                        array('id' => $role->getId()));
+                }
+            }
+        }
+        Person::$rolesCache = array();
         Person::$cache = array();
         Person::$namesCache = array();
         Person::$idsCache = array();
+        
         $this->person = Person::newFromId($this->person->getId());
     }
     
@@ -110,7 +122,11 @@ class PersonProfileTab extends AbstractEditableTab {
                         $src_width = imagesx($src_image);
                         $src_height = imagesy($src_image);
                         $dst_width = 100;
-                        $dst_height = 132;
+                        $dst_height = ($src_height*100)/$src_width;
+                        if($dst_height > 132){
+                            $dst_height = 132;
+                            $dst_width = ($src_width*132)/$src_height;
+                        }
                         $dst_image = imagecreatetruecolor($dst_width, $dst_height);
                         imagealphablending($dst_image, true);
                         
@@ -140,6 +156,7 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
@@ -147,18 +164,13 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
-            if($this->visibility['isChampion']){
-                $_POST['partner'] = @$_POST['org'];
-                $_POST['title'] = @$_POST['title'];
-                $_POST['department'] = @$_POST['department'];
-                $api = new UserPartnerAPI();
-                $api->doAction(true);
-            }
-            else{
-                $api = new UserUniversityAPI();
-                $api->processParams(array());
-                $api->doAction(true);
-            }
+
+            $api = new UserUniversityAPI();
+            $api->processParams(array());
+            $api->doAction(true);
+
+            $api = new UserPhoneAPI();
+            $api->doAction(true);
             $api = new UserTwitterAccountAPI();
             $api->doAction(true);
             $api = new UserWebsiteAPI();
@@ -180,7 +192,7 @@ class PersonProfileTab extends AbstractEditableTab {
         return $error;
     }
     
-    /*
+    /**
      * Displays the profile for this user
      */
     function showProfile($person, $visibility){
@@ -211,11 +223,11 @@ EOF;
         global $config;
         $this->html .= "<table>
                             <tr>
-                                <td align='right' valign='top'><b>{$config->getValue('networkName')} Website:</b></td>
+                                <td align='right' valign='top'><b>Live on Website:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
                             </tr>
                             <tr>
-                                <td align='right' valign='top'><b>{$config->getValue('siteName')}:</b></td>
+                                <td align='right' valign='top'><b>Live on Forum:</b></td>
                                 <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
                             </tr>
                         </table>";
@@ -308,12 +320,12 @@ EOF;
                                                 $('#vis{$chord->index}').empty();
                                             }
                                             else{
-                                                _.defer(function(){
-                                                    $('#vis{$chord->index}').empty();
-                                                    $('#vis{$chord->index}').show();
-                                                    render{$chord->index}(width, height);
-                                                });
+                                                $('#vis{$chord->index}').empty();
+                                                $('#vis{$chord->index}').show();
+                                                render{$chord->index}(width, height);
                                             }
+                                            $('#vis{$chord->index}').height(Math.max(1,height));
+                                            $('#vis{$chord->index}').width(Math.max(1,width));
                                             lastWidth = $('#firstLeft').width();
                                             $('#contact').height(Math.max(height, $('#contact > #card').height()));
                                         }
@@ -323,19 +335,35 @@ EOF;
         return $html;
     }
     
+    function showFundedProjects($person, $visibility){
+        global $config;
+        $html = "";
+        $projects = $person->getProjects();
+        if(count($projects) > 0){
+            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            foreach($projects as $project){
+                $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a></li>";
+            }
+            $html .= "</ul>";
+        }
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
      */
     function showTable($person, $visibility){
+        global $config;
         $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='personProducts' rules='all' frame='box'>
+            $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            $string .= "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Universities</th><th>Authors</th>
+                        <th>Title</th><th>Date</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -356,9 +384,8 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
+                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $paper->getUniversities())."</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
                 $string .= "</tr>";
@@ -375,7 +402,7 @@ EOF;
         return $string;
     }
    
-    /*
+    /**
      * Displays the profile for this user
      */
     function showCCV($person, $visibility){
@@ -388,7 +415,7 @@ EOF;
         }
     }
     
-    /*
+    /**
      * Displays the photo for this person
      */
     function showPhoto($person, $visibility){
@@ -410,7 +437,7 @@ EOF;
                                 <td><input type='file' name='photo' /></td>
                             </tr>
                             <tr>
-                                <td></td><td><small><li>The image will be scaled to 100x132.</li>
+                                <td></td><td><small><li>For best results, the image should be 100x132</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>
@@ -422,10 +449,14 @@ EOF;
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
+                            <tr>
+                                <td align='right'><b>Phone Number:</b></td>
+                                <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
+                            </tr>
                         </table></td>";
     }
     
-   /*
+   /**
     * Displays the contact information for this person
     */
     function showContact($person, $visibility){
@@ -449,25 +480,23 @@ EOF;
         global $wgOut, $wgUser;
         $university = $person->getUniversity();
         $nationality = "";
+        $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(NI, "0000", "9999")){
-                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-                $nationality = "<tr>
-                    <td align='right'><b>Nationality:</b></td>
-                    <td>
-                        <select name='nationality'>
-                            <option value='Canadian' $canSelected>Canadian</option>
-                            <option value='American' $amerSelected>American</option>
-                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                        </select>
-                    </td>
-                </tr>";
-            }
+            $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+            $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
+            $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
+            $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+            $nationality = "<tr>
+                <td align='right'><b>Nationality:</b></td>
+                <td>
+                    <select name='nationality'>
+                        <option value='Canadian' $canSelected>Canadian</option>
+                        <option value='American' $amerSelected>American</option>
+                        <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
+                        <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                    </select>
+                </td>
+            </tr>";
             
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
@@ -482,29 +511,6 @@ EOF;
                     </select>
                 </td>
             </tr>";
-            $partnerHTML = "";
-            if($visibility['isChampion']){
-                $partners = array();
-                foreach(Partner::getAllPartners() as $partner){
-                    $partners[] = $partner->getOrganization();
-                }
-                $wgOut->addScript("<script type='text/javascript'>
-                var partners = [\"".implode("\",\n\"", $partners)."\"];
-                
-                $(document).ready(function(){
-                    $('#partner').autocomplete({
-                        source: partners
-                    });
-                });</script>");
-                $partner = str_replace("'", "&#39;", $person->getPartnerName());
-                $partnerHTML = "<tr>
-                                 <td align='right'><b>Partner:</b></td>
-                                 <td>
-                                    <input type='text' value='{$partner}' id='partner' name='partner' />
-                                 </td>
-                                 </tr>
-                                 ";
-            }
         }
         $this->html .= "<table>
                             <tr>
@@ -513,67 +519,74 @@ EOF;
                             </tr>
                             {$nationality}
                             {$gender}";
-                            
-        if($person->isRole(CHAMP)){
-            $titles = array_merge(array(""), Person::getAllPartnerTitles());
-            $organizations = array_merge(array(""), Person::getAllPartnerNames());
-            $depts = array_merge(array(""), Person::getAllPartnerDepartments());
-            $titleCombo = new ComboBox('title', "Title", $person->getPartnerTitle(), $titles);
-            $orgCombo = new ComboBox('org', "Institution", $person->getPartnerName(), $organizations);
-            $deptCombo = new ComboBox('department', "Department", $person->getPartnerDepartment(), $depts);
-            $orgCombo->attr('style', 'max-width: 250px;');
-            $deptCombo->attr('style', 'max-width: 250px;');
-            $titleCombo->attr('style', 'max-width: 250px;');
-            $this->html .= "<tr>
-                                <td align='right'><b>Title:</b></td>
-                                <td>{$titleCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Institution:</b></td>
-                                <td>{$orgCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Department:</b></td>
-                                <td>{$deptCombo->render()}
-                                </td>
-                            </tr>";
+        
+        $roles = $person->getRoles();
+        $universities = new Collection(University::getAllUniversities());
+        $uniNames = $universities->pluck('name');
+        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+            $positions = Person::getAllPositions();
         }
         else{
-            $universities = new Collection(University::getAllUniversities());
-            $uniNames = $universities->pluck('name');
-            $positions = Person::getAllPositions();
-            $myPosition = "";
-            foreach($positions as $key => $position){
-                if($university['position'] == $position){
-                    $myPosition = $key;
-                }
-            }
-            $departments = Person::getAllDepartments();
-            $organizations = array_unique(array_merge($uniNames, Person::getAllPartnerNames()));
-            sort($organizations);
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
-            $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-            $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-            $titleCombo->attr('style', 'max-width: 250px;');
-            $orgCombo->attr('style', 'max-width: 250px;');
-            $deptCombo->attr('style', 'max-width: 250px;');
-            $this->html .= "<tr>
-                                <td align='right'><b>Title:</b></td>
-                                <td>{$titleCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Institution:</b></td>
-                                <td>{$orgCombo->render()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'><b>Department:</b></td>
-                                <td>{$deptCombo->render()}</td>
-                            </tr>";
+            $positions = array("Other", 
+                               "Graduate Student - Master's", 
+                               "Graduate Student - Doctoral", 
+                               "Post-Doctoral Fellow", 
+                               "Research Associate", 
+                               "Research Assistant", 
+                               "Technician", 
+                               "Summer Student", 
+                               "Undergraduate Student");
         }
+        $myPosition = "";
+        foreach($positions as $key => $position){
+            if($university['position'] == $position){
+                $myPosition = $key;
+            }
+        }
+        if($myPosition == ""){
+            $positions[] = $university['position'];
+            $myPosition = count($positions) - 1;
+        }
+        $departments = Person::getAllDepartments();
+        $organizations = $uniNames;
+        sort($organizations);
+        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+        }
+        else{
+            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+        }
+        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
+        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+        $titleCombo->attr('style', 'max-width: 250px;');
+        $orgCombo->attr('style', 'max-width: 250px;');
+        $deptCombo->attr('style', 'max-width: 250px;');
+        $this->html .= "<tr>
+                            <td align='right'><b>Title:</b></td>
+                            <td>{$titleCombo->render()}</td>
+                        </tr>";
+        if($me->isRoleAtLeast(STAFF)){
+            $this->html .= "<tr>
+                                <td></td>
+                                <td><table>";
+            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
+            foreach($roles as $role){
+                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
+                $this->html .= "<tr>
+                                    <td align='right'><b>{$role->getRole()}:</b></td>
+                                    <td>{$roleTitleCombo->render()}</td>
+                                </tr>";
+            }
+            $this->html .= "</table></td></tr>";
+        }
+        $this->html .= "<tr>
+                            <td align='right'><b>Institution:</b></td>
+                            <td>{$orgCombo->render()}</td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Department:</b></td>
+                            <td>{$deptCombo->render()}</td>
+                        </tr>";
         $this->html .= "</table>";
     }
     

@@ -66,7 +66,7 @@ class PersonBudgetTab extends AbstractEditableTab {
 	    }
     }
     
-    /*
+    /**
      * Displays the budget for this user
      */
     function showBudget($person, $visibility){

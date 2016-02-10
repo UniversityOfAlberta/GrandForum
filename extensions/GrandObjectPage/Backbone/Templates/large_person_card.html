@@ -5,8 +5,7 @@
     <div class="card_description">
         <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
         <span style="display: inline-block; white-space: normal;"><%= this.model.getUniversityString() %></span><br />
-        <br />
-        <table cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0" style="margin-top: 8px;">
             <% if(email != ""){ %>
                 <tr>
                     <td width="100">Email&nbsp;</td>
@@ -29,6 +28,12 @@
                 <tr>
                     <td width="100">Website&nbsp;</td>
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
+                </tr>
+            <% } %>
+            <% if(phone != "" && phone != "http://"){ %>
+                <tr>
+                    <td width="100">Phone Number&nbsp;</td>
+                    <td style="color:#333333;"><%= phone %></td>
                 </tr>
             <% } %>
         </table>

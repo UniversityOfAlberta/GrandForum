@@ -8,7 +8,7 @@ class EditableReportSection extends AbstractReportSection {
     // Creates a new EditableReportSection()
     function EditableReportSection(){
         $this->AbstractReportSection();
-        $this->autosave = false;
+        $this->autosave = true;
     }
     
     // Sets whether or not to use the autosave feature
@@ -48,25 +48,7 @@ class EditableReportSection extends AbstractReportSection {
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";
         }
-        $projectName = "";
-        $phase = "";
         $number = "";
-        if($this->getParent()->person != null && $this->getParent()->person->getId() != 0){
-            $projectName .= ": ".$this->getParent()->person->getNameForForms();
-        }
-        if($this->getParent()->project != null){
-            $projectName .= ": ".$this->getParent()->project->getName();
-            /*if($this->getParent()->project->isSubProject()){
-                $phase = " ({$this->getParent()->project->getParent()->getName()}";
-            }
-            else{
-                $phase = " (Phase {$this->getParent()->project->getPhase()}";
-            }
-            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
-                $phase .= ", Final Report";
-            }
-            $phase .= ")";*/
-        }
         if(count($this->number) > 0){
             $numbers = array();
             foreach($this->number as $n){
@@ -74,22 +56,22 @@ class EditableReportSection extends AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        if($this->getParent()->project != null){
-            $projectName = ": ".$this->getParent()->project->getName();
-        }
         
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                            <div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span></span><span id='reportProgressLabel'>Progress:&nbsp;</span></div>
+                            <div id='reportHeader'>{$number}{$this->title}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'>Progress ({$this->getPercentComplete()}%)</span></span></div>
                              <hr />
                              <div id='reportBody'>");
-                             
-        if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
-            $project = $this->getParent()->project;
-            $date = new DateTime($project->getEffectiveDate());
-            $datestr = date_format($date, 'F d, Y');
-            $wgOut->addHTML("<div class='purpleInfo notQuitable'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project will be inactive, effective $datestr.</div>");
+        if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#reportMain textarea').prop('disabled', 'disabled');
+                    $('#reportMain input').prop('disabled', 'disabled');
+                    $('#reportMain button').prop('disabled', 'disabled');
+                    $('#reportMain select').prop('disabled', 'disabled');
+                    $('#reportMain a.custom-combobox-toggle').hide();
+                });
+            </script>");
         }
-        
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
             if(!$this->getParent()->topProjectOnly || ($this->getParent()->topProjectOnly && !$item->private)){
@@ -102,19 +84,19 @@ class EditableReportSection extends AbstractReportSection {
         if(!DBFunctions::DBWritable()){
             $disabled = "disabled='disabled'";
         }
+        $allSections = $this->getParent()->sections;
+        $saveText = "";
+        foreach($allSections as $section){
+            if($section->name == "Submit" && $section->checkPermission('r')){
+                $saveText = "<br /><small>Once you have saved and reviewed your text you will need to generate/submit your report by going to the <a style='cursor:pointer;' onclick=\"$('a#Submit').click()\">Submit</a> section.</small>";
+            }
+        }
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <input type='submit' value='Save' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />{$saveText}
                              </div>
                          </form></div>\n");
-        if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#reportMain textarea').prop('disabled', 'disabled');
-                $('#reportMain input').prop('disabled', 'disabled');
-                $('#reportMain button').prop('disabled', 'disabled');
-            </script>");
-        }
     }
     
     // Returns the percentage of completion for this section

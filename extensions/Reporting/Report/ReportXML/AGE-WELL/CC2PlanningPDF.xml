@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CC2 Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC2_PLANNING" pdfFiles="CC2PlanningPDF" personId="0" ajax="true" disabled="false">
+<Report name="CC2 Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC2_PLANNING" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="cc2" permissions="rw" />
@@ -79,6 +79,8 @@
                 <h4>How do you think AGE-WELL as an organization could help or support commercialization within the network?</h4>
                 {$item}<br />
             ]]>
+        </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_2_ATTACH" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>
 </Report>

@@ -54,7 +54,9 @@ class TabbedPage {
                         $wgMessage->addSuccess("'{$tab->name}' updated successfully.");
                     }
                 }
-                if(isset($_POST['submit']) && ($_POST['submit'] == "Edit {$tab->name}" || $_POST['submit'] == "{$tab->name}" || $_POST['submit'] == "Cancel" ) ) {
+                if(isset($_POST['submit']) && ($_POST['submit'] == "Edit {$tab->name}" || 
+                                               $_POST['submit'] == "{$tab->name}" || 
+                                               ($_POST['submit'] == "Cancel") && $_POST['cancel'] == "{$tab->name}")){
                     $activeTabIndex = $tab->id;
                     $active_tab = $i;
                 }

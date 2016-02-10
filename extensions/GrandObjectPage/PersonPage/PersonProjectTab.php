@@ -23,7 +23,7 @@ class PersonProjectTab extends AbstractTab {
         return $this->html;
     }
     
-    /*
+    /**
      * Displays the list of projects for this user
      */
     function showProjects($person, $visibility, $status='Active', $type='Research'){

@@ -4,6 +4,7 @@ require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
 require_once("Blob.php");
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
+define("MENTORS", 'Mentors');
 
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
@@ -32,6 +33,8 @@ $apiRequest->addAction('Hidden','role/:id', new RoleAPI());
 // Project
 $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
+$apiRequest->addAction('Hidden','project/:id/members', new ProjectMembersAPI());
+$apiRequest->addAction('Hidden','project/:id/members/:role', new ProjectMembersAPI());
 
 $apiRequest->addAction('Hidden','project/:id/products', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','project/:id/products/:productId', new ProjectProductAPI());

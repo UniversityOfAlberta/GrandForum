@@ -34,8 +34,17 @@
     <%= type %>
 </td>
 <td>
-    <a href="<%= url %>"><%= title %></a>
+    <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
-<td>
-    <%= _.pluck(authors, 'name').join(', ') %>
+<td style="<% if(!isMine) { %>background: #FFCC00; <% } %>">
+    <% var names = new Array();
+    _.each(authors, function(author){
+        if(author.id == "" || author.id == null){
+            names.push(author.name);
+        }
+        else{
+            names.push("<b>" + author.name + "</b>");
+        }
+    }) %>
+    <%= names.join(',&nbsp;') %>
 </td>

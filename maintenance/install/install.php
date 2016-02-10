@@ -16,6 +16,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     $_POST['phase'] = $phase;
     $_POST['effective_date'] = $effective_date;
     $_POST['description'] = $description;
+    $_POST['long_description'] = "";
     $_POST['challenge'] = Theme::newFromName($challenge)->getId();
     $_POST['parent_id'] = $parent_id;
     $_POST['problem'] = $problem;
@@ -199,15 +200,15 @@ if(file_exists("people.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $lname = trim($cells[0]);
-                $fname = trim($cells[1]);
-                $role = trim($cells[2]);
-                $website = trim($cells[3]);
-                $university = trim($cells[4]);
-                $department = trim($cells[5]);
-                $title = trim($cells[6]);
-                $email = trim($cells[7]);
-                $profile = trim($cells[8]);
+                $lname = @trim($cells[0]);
+                $fname = @trim($cells[1]);
+                $role = @trim($cells[2]);
+                $website = @trim($cells[3]);
+                $university = @trim($cells[4]);
+                $department = @trim($cells[5]);
+                $title = @trim($cells[6]);
+                $email = @trim($cells[7]);
+                $profile = @trim($cells[8]);
                 $username = str_replace(" ", "", str_replace("'", "", "$fname.$lname"));
                 
                 User::createNew($username, array('real_name' => "$fname $lname", 
@@ -304,7 +305,6 @@ if(file_exists("project_members.csv")){
             if(count($cells) > 1){
                 $username = $cells[0];
                 $project = $cells[1];
-                
                 if($project != ""){
                     addUserProject($username, $project);
                 }

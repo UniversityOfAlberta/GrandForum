@@ -17,6 +17,7 @@ class ImportBibTeXAPI extends API{
                                'thesis' => 'PHD Thesis',
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
+                               'inbook' => 'Book Chapter',
                                'misc' => 'Misc');
 
     var $structure = null;
@@ -56,7 +57,7 @@ class ImportBibTeXAPI extends API{
            !isset($paper['author'])){
             return null;  
         }
-        $checkBibProduct = Product::newFromBibTeXId($bibtex_id);
+        $checkBibProduct = Product::newFromBibTeXId($bibtex_id, $paper['title']);
         $checkProduct = Product::newFromTitle($paper['title']);
         if($checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
@@ -74,7 +75,28 @@ class ImportBibTeXAPI extends API{
             $product->category = $category;
             $product->type = $type;
         }
-        $structure = $this->structure['categories'][$category]['types'][$type];
+        if(isset($this->structure['categories'][$category]['types'][$type])){
+            // Make sure that the type actually exists
+            $structure = $this->structure['categories'][$category]['types'][$type];
+        }
+        else{
+            $found = false;
+            foreach($this->structure['categories'] as $cat => $cats){
+                if(isset($cats['types'][$type])){
+                    // Then check if the type might exist in a different category
+                    $found = true;
+                    $product->category = $cat;
+                    $product->type = $type;
+                    $structure = $this->structure['categories'][$cat]['types'][$type];
+                    break;
+                }
+            }
+            if(!$found){
+                // If not, then use the Misc type
+                $structure = $this->structure['categories'][$category]['types']['Misc'];
+                $product->type = "Misc: {$type}";
+            }
+        }
         $me = Person::newFromWgUser();
 
         if($product->description == ""){ $product->description = @$paper['abstract']; }

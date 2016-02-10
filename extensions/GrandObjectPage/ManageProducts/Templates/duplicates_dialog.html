@@ -1,5 +1,5 @@
-The following Products have similar titles.  Please verify that they are indeed unique.
-<table frame="box" rules="all" width="100%">
+The following Products have similar titles.  Please verify that they are unique.
+<table frame="box" rules="all" width="100%" class="wikitable">
     <tr>
         <th>Title</th>
         <th>Type</th>
@@ -11,7 +11,10 @@ The following Products have similar titles.  Please verify that they are indeed 
         <td><%= type %></td>
         <td align="center"><%= date %></td>
         <td align="center"><input type="checkbox" value="<%= id %>" /></td>
-    </th>
+    </tr>
+    <tr>
+        <th colspan="4">Potential Duplicates</th>
+    </tr>
 <% duplicates.each(function(duplicate){ %>
     <tr>
         <td><a href="<%= duplicate.get('url') %>" target="_blank"><%= duplicate.get('title') %></a></td>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CC4 Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC4_PLANNING" pdfFiles="CC4PlanningPDF" personId="0" ajax="true" disabled="false">
+<Report name="CC4 Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC4_PLANNING" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="cc4" permissions="rw" />
@@ -55,6 +55,8 @@
                 <h4>How should we measure the effectiveness of the HQP training program?</h4>
                 {$item}<br />
             ]]>
+        </ReportItem>
+        <ReportItem id="attach" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CC_4_ATTACH" mimeType="application/pdf" fileSize="2">
         </ReportItem>
     </ReportSection>
 </Report>

@@ -15,7 +15,12 @@
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
     session_start();
-    error_reporting(E_ALL);
+    if(phpversion() < 5.4){
+        error_reporting(E_ALL);
+    }
+    else{
+        error_reporting(E_ALL ^ E_STRICT);
+    }
     ini_set("display_errors", 1);
 
     header('Cache-Control: no-cache, no-store, must-revalidate');
@@ -103,11 +108,19 @@ $wgEnableEmail      = true;
 $wgEnableUserEmail  = true; # UPO
 
 $wgEmergencyContact = $config->getValue('supportEmail');
-$wgPasswordSender = $config->getValue('siteName').' <'.$config->getValue('supportEmail').'>';
+$wgPasswordSender = $config->getValue('supportEmail');
 
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+
+if(TESTING){
+    $wgEnableEmail      = false;
+    $wgEnableUserEmail  = false; # UPO
+    $wgEmailAuthentication = false;
+    $wgEnotifUserTalk = false; # UPO
+    $wgEnotifWatchlist = false; # UPO
+}
 
 # MySQL specific settings
 $wgDBprefix         = "mw_";
@@ -141,6 +154,7 @@ if($config->getValue('localizationCache') != ""){
 $wgEnableUploads       = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
+$wgCopyUploadsFromSpecialUpload = true;
 
 ## If you use ImageMagick (or any other shell command) on a
 ## Linux server, this will need to be set to the name of an
@@ -198,16 +212,17 @@ $wgRestrictDisplayTitle = false;
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
 $wgRawHtml = true;
 $wgEnableUploads       = true;
-$wgMaxUploadSize = 1024*1024*20;
+$wgMaxUploadSize = 1024*1024*50;
 ini_set('upload_max_filesize', $wgMaxUploadSize);
-$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav', 'txt');
+$wgFileExtensions = array( 'png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff', 'svg', 'psd', 'pdf', 'ppt', 'pptx', 'doc', 'docx', 'xls', 'xlsx', 'tgz', 'zip', 'rar', 'flv', 'mov', 'avi', 'mpeg', 'ogv', 'mp4', 'mkv', 'm4v', 'mp3', 'flac', 'ogg', 'wmv', 'wav', 'txt');
 $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
-$wgPasswordReminderResendTime = 0.25;
+$wgPasswordReminderResendTime = 0.1666; // ~ 10 minutes
 $wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
+$wgDelegating = false;
 $wgRealUser;
 
 if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
@@ -222,52 +237,50 @@ define("FROZEN", false);
 
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
+                      PS => 1,
                       EXTERNAL => 2,
-                      NI => 3,
-                      AR => 3,
-                      CI => 4,
-                      CHAMP => 5,
-                      PL => 6,
-                      'PL' => 6,
-                      TL => 7,
-                      'TL' => 7,
-                      TC => 7,
-                      CF => 7,
-                      ISAC => 8,
-                      IAC => 8,
-                      CAC => 8,
-                      NCE => 9,
-                      RMC => 12,
-                      HQPAC => 13,
+                      NI => 5,
+                      AR => 5,
+                      CI => 6,
+                      CHAMP => 7,
+                      PARTNER => 7,
+                      PL => 9,
+                      'PL' => 9,
+                      TL => 11,
+                      'TL' => 11,
+                      TC => 11,
+                      APL => 11,
+                      TC => 11,
+                      COMMITTEE => 12,
                       EVALUATOR => 12,
-                      BOD => 12,
-                      BODC => 13,
                       ASD => 13,
                       SD => 13,
-                      GOV => 13,
                       STAFF => 16,
                       MANAGER => 17,
                       ADMIN => 100);
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, EXTERNAL, ISAC, IAC, CAC, NCE, NI, RMC, HQPAC, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, AR, CI, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, STUDENT, EXTERNAL, ISAC, IAC, CAC, NCE, NI, AR, CI, PL, TL, RMC, HQPAC, EVALUATOR, CF, BOD, BODC, CHAMP, GOV, ASD, SD, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, AR, CI, PL, APL, TL, TC, EVALUATOR, CHAMP, PARTNER, ASD, SD, STAFF, MANAGER, ADMIN);
+
+foreach($config->getValue('committees') as $role => $roleDef){
+    define($role, $role);
+    
+    $wgRoleValues[$role] = $wgRoleValues[COMMITTEE];
+    $wgRoles[] = $role;
+    $wgAllRoles[] = $role;
+}
+
+$config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
-    $normalizeChars = array("'" => '',
-        'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
-        'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I',
-        'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U',
-        'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a',
-        'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i',
-        'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u',
-        'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f', 'ü'=>'u'
-    );
-    return strtolower(strtr($str, $normalizeChars));
+    return strtolower(strtr(utf8_decode($str), 
+                      utf8_decode('àáâãäåšçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÅŠÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
+                                  'aaaaaasceeeeiiiinooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'));
 }
 
 // Encodes a large json object (usually arrays)
@@ -320,6 +333,14 @@ function array_clean(array $haystack){
 function str_replace_first($search, $replace, $subject) {
     $pos = strpos($subject, $search);
     if ($pos !== false) {
+        $subject = substr_replace($subject, $replace, $pos, strlen($search));
+    }
+    return $subject;
+}
+
+function str_replace_last($search, $replace, $subject) {
+    $pos = strrpos($subject, $search);
+    if($pos !== false) {
         $subject = substr_replace($subject, $replace, $pos, strlen($search));
     }
     return $subject;

@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Textual blob types.
  *
  * These instruct the renderer to act accordingly.
@@ -9,7 +9,7 @@ define('BLOB_TEXT',		1);
 define('BLOB_HTML',		2);
 define('BLOB_WIKI',		3);
 
-/*
+/**
  * Structured blobs.
  *
  * Most structured blobs can be handled as arrays, which are serialized for
@@ -54,7 +54,7 @@ define('BLOB_MILESTONESTATUS',	1032);
 define('BLOB_CONTRIBUTION',	1033);
 
 
-/*
+/**
  * Binary blobs.
  *
  * These blobs hold specialized data, such as PDFs or Excel spreadsheets.
@@ -63,7 +63,7 @@ define('BLOB_PDF',		16384);
 define('BLOB_EXCEL',		16385);
 
 
-/*
+/**
  * Super special blobs.
  *
  * These are corner cases: a blob whose type is undefined.  The NULL blob should
@@ -262,7 +262,7 @@ class ReportBlob {
 			if (strlen($ind) == 0 || strlen($val) == 0)
 				throw new InvalidArgumentException("Empty blob address for key='{$ind}', val='{$val}'.");
 
-			$where_list[] = " {$ind} = {$val}";
+			$where_list[] = " {$ind} = '{$val}'";
 		}
 		$where = implode(' AND ', $where_list);
 
@@ -294,8 +294,8 @@ class ReportBlob {
 			// Insert query.
 			$md5_keys = implode('_', array_values($address));
 	        $md5 = md5("{$this->_proj_id}_{$this->_owner_id}_{$md5_keys}_".time()."_".self::$counter++);
-			$insert_keys = implode(', ', array_keys($address));
-			$insert_data = implode(', ', array_values($address));
+			$insert_keys = implode(',', array_keys($address));
+			$insert_data = "'".implode("','", array_values($address))."'";
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
 				"(edited_by, year, user_id, proj_id, {$insert_keys}, blob_type, data, md5) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
@@ -387,7 +387,7 @@ class ReportBlob {
 			if (strlen($ind) == 0 || strlen($val) == 0)
 				throw new InvalidArgumentException("Empty blob address for key='{$ind}', val='{$val}'.");
 
-			$where_list[] = " {$ind} = {$val}";
+			$where_list[] = " {$ind} = '{$val}'";
 		}
 		$where = implode(' AND ', $where_list);
 
@@ -412,7 +412,10 @@ class ReportBlob {
 			//echo ">>>> Offending SQL:\n{$sql}\n";
 			throw new DomainException('Address leads to ambiguous data.');
 		}
-		Cache::store($cacheId, $this->_data);
+		if($this->_type != BLOB_RAW){
+		    // Cache the data as long as it isn't a raw type since they can be quite large
+		    Cache::store($cacheId, $this->_data);
+		}
 		return $ret;
 	}
 
@@ -429,7 +432,9 @@ class ReportBlob {
 		if ($id == null || !is_numeric($id))
 			return false;
 
-		$res = DBFunctions::execSQL("SELECT * FROM grand_report_blobs WHERE blob_id = {$id};");
+        $res = DBFunctions::select(array('grand_report_blobs'),
+                                   array('*'),
+                                   array('blob_id' => EQ($id)));
 		if (count($res) > 0)
 			// MySQL enforces unique ID.
 			return $this->populate($res[0]);
@@ -443,7 +448,9 @@ class ReportBlob {
 		if ($id == null)
 			return false;
 
-		$res = DBFunctions::execSQL("SELECT * FROM grand_report_blobs WHERE md5 = '{$id}';");
+        $res = DBFunctions::select(array('grand_report_blobs'),
+                                   array('*'),
+                                   array('md5' => EQ($id)));
 		if (count($res) > 0)
 			// MySQL enforces unique ID.
 			return $this->populate($res[0]);

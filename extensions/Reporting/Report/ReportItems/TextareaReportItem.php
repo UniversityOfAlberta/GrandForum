@@ -5,7 +5,8 @@ class TextareaReportItem extends AbstractReportItem {
     function render(){
         global $wgOut, $wgServer, $wgScriptPath;
         $item = $this->getHTML();
-        if($this->getlimit() > 0){
+        $limit = $this->getLimit();
+        if($limit > 0 && !strtolower($this->getAttr('rich', 'false')) == 'true'){
             $item .= "<script type='text/javascript'>
                 $(document).ready(function(){
                     var strlen = $('textarea[name={$this->getPostId()}]').val().length;
@@ -31,13 +32,18 @@ class TextareaReportItem extends AbstractReportItem {
                     });
                 }
                 $(document).ready(function(){
-                    $('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    //$('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
+                    var readOnly = false;
+                    if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
+                        readOnly = true;
+                    }
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
+                        readonly: readOnly,
                         menubar: false,
-                        plugins: 'link image contextmenu charmap lists table paste wordcount',
+                        plugins: 'link image charmap lists table paste wordcount',
                         toolbar: [
-                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                         ],
                         file_browser_callback: function(field_name, url, type, win) {
                             if(type=='image') $('#tinyMCEUploadForm input').click();
@@ -54,8 +60,24 @@ class TextareaReportItem extends AbstractReportItem {
                                 $(el).css('width', el.naturalWidth/$imgConst);
                                 $(el).css('height', el.naturalHeight/$imgConst);
                             });
+                        },
+                        setup: function(ed){
+                            if('$limit' > 0){
+                                var updateCount = function(){
+                                    _.delay(function(){
+                                        var words = $('.mce-wordcount', $(ed.editorContainer)).text().replace('Words:', '').trim();
+                                        changeColor{$this->getPostId()}(null, words);
+                                        $('#{$this->getPostId()}_chars_left').text(words);
+                                    }, 100);
+                                };
+                                ed.on('keydown', updateCount);
+                                ed.on('keyup', updateCount);
+                                ed.on('change', updateCount);
+                                ed.on('init', updateCount);
+                            }
                         }
                     });
+                    initResizeEvent();
                 });
             </script>";
         }
@@ -64,7 +86,8 @@ class TextareaReportItem extends AbstractReportItem {
     }
     
     function calculateHeight($limit){
-        if($limit > 0){
+        $rich = (strtolower($this->getAttr('rich', 'false')) == 'true');
+        if($limit > 0 && !$rich){
             $height = max(125, (pow($limit, 0.75)))."px";
         }
         else{
@@ -80,9 +103,14 @@ class TextareaReportItem extends AbstractReportItem {
         $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
         $height = $this->calculateHeight($limit);
+        $rich = strtolower($this->getAttr('rich', 'false'));
         $item = "";
         if($limit > 0){
             $recommended = $this->getAttr('recommended', false);
+            $words = "characters";
+            if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+                $words = "words";
+            }
             if($recommended){
                 $type = "recommended";
             }
@@ -91,7 +119,7 @@ class TextareaReportItem extends AbstractReportItem {
             }
             
             $item =<<<EOF
-            <p id='limit_{$this->getPostId()}'><span class="pdf_hide inlineMessage">(currently <span id="{$this->getPostId()}_chars_left">0</span> characters out of a {$type} {$limit})</span></p>
+            <p id='limit_{$this->getPostId()}'><span class="pdf_hide inlineMessage">(currently <span id="{$this->getPostId()}_chars_left">0</span> {$words} out of a {$type} {$limit})</span></p>
             <script type='text/javascript'>
                 function changeColor{$this->getPostId()}(element, strlen){
                     var type = "{$type}";
@@ -113,24 +141,32 @@ class TextareaReportItem extends AbstractReportItem {
                     }
                 }
                 $(document).ready(function(){
-                    $('textarea[name={$this->getPostId()}]').off('limit');
-                    $('textarea[name={$this->getPostId()}]').off('keyup');
-                    $('textarea[name={$this->getPostId()}]').off('keypress');
-                    $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
-                    
-                    $('textarea[name={$this->getPostId()}]').keypress(function(){
-                        changeColor{$this->getPostId()}(this, $(this).val().length);
-                    });
-                    $('textarea[name={$this->getPostId()}]').keyup(function(){
-                        changeColor{$this->getPostId()}(this, $(this).val().length);
-                    });
+                    if('$rich' != 'true'){
+                        $('textarea[name={$this->getPostId()}]').off('limit');
+                        $('textarea[name={$this->getPostId()}]').off('keyup');
+                        $('textarea[name={$this->getPostId()}]').off('keypress');
+                        $('textarea[name={$this->getPostId()}]').limit(1000000000000, '#{$this->getPostId()}_chars_left');
+                        
+                        $('textarea[name={$this->getPostId()}]').keypress(function(){
+                            changeColor{$this->getPostId()}(this, $(this).val().length);
+                        });
+                        $('textarea[name={$this->getPostId()}]').keyup(function(){
+                            changeColor{$this->getPostId()}(this, $(this).val().length);
+                        });
+                    }
                 });
             </script>
 EOF;
         }
+        $divHeight = "";
+        if(strtolower($this->getAttr('rich', 'false')) != 'true'){
+            $divHeight = "height:{$height};";
+        }
         $item .= <<<EOF
-            <textarea id="{$this->getPostId()}" rows='$rows' style="height:{$height};width:{$width};" 
+            <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
+                <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};resize: vertical;margin:0;" 
                         name="{$this->getPostId()}">$value</textarea>
+            </div>
 EOF;
         return $item;
     }
@@ -220,6 +256,9 @@ EOF;
         
         $blobValue = "$dom";
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            $blobValue = str_replace("</p>", "<br /><br style='font-size:1em;' />", $blobValue);
+            $blobValue = str_replace("<p>", "", $blobValue);
+            $blobValue = str_replace_last("<br /><br style='font-size:1em;' />", "", $blobValue);
             $html .= "<div class='tinymce'>$blobValue</div>";
         }
         else{
@@ -228,6 +267,19 @@ EOF;
             $html .= nl2br($blobValue);
         }
         return $html;
+    }
+    
+    function getBlobValue(){
+        $value = parent::getBlobValue();
+        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            // Don't alter the text in any way
+        }
+        else{
+            $value = str_replace("<", "&lt;", $value);
+            $value = str_replace(">", "&gt;", $value);
+            nl2br($value);
+        }
+        return $value;
     }
     
     function getLimit(){

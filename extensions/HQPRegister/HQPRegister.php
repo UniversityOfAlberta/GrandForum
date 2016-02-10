@@ -1,14 +1,11 @@
 <?php
 
-require_once("HQPRegisterTable.php");
-require_once("HQPReviewTable.php");
-
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
 $wgSpecialPageGroups['HQPRegister'] = 'network-tools';
 
-//$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
+$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
 
 function runHQPRegister($par) {
     HQPRegister::execute($par);
@@ -22,11 +19,11 @@ class HQPRegister extends SpecialPage{
         $me = Person::newFromWgUser();
         if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
             if(!$me->isLoggedIn()){
-                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>register</a> and then fill out the HQP Application form.</p>";
+                $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
             }
-            else if($me->isRole(HQP.'-Candidate')){
-                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Report?report=HQPApplication'>HQP Application form</a>.</p>";
-            }
+            /*else if($me->isRole(HQP.'-Candidate')){
+                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an Affiliate HQP in {$config->getValue('networkName')} then please fill out the <a href='{$me->getUrl()}?tab=hqp-profile'>HQP Application form</a>.</p>";
+            }*/
         }
         return true;
     }
@@ -64,6 +61,7 @@ class HQPRegister extends SpecialPage{
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
+        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
         $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
@@ -93,7 +91,7 @@ class HQPRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromId($wgUser->getId());
-        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  This will allow you to fill out the HPQ Application form to become officially a part of the network.<br /><br />");
+        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
@@ -101,7 +99,7 @@ class HQPRegister extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -117,11 +115,21 @@ class HQPRegister extends SpecialPage{
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
             
-            $result = APIRequest::doAction('CreateUser', false);
-            if($result){
-                $form->reset();
-                $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
-                redirect("$wgServer$wgScriptPath");
+            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+                
+            }
+            else{
+                $wgGroupPermissions['*']['createaccount'] = true;
+                GrandAccess::$alreadyDone = array();
+                $result = APIRequest::doAction('CreateUser', false);
+                $wgGroupPermissions['*']['createaccount'] = false;
+                GrandAccess::$alreadyDone = array();
+                if($result){
+                    $form->reset();
+                    $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
+                    redirect("$wgServer$wgScriptPath");
+                }
             }
         }
         HQPRegister::generateFormHTML($wgOut);

@@ -11,7 +11,7 @@ $wgHooks['userCan'][] = array($mailList, 'userCanExecute');
 class MailList{
     
     function userCanExecute(&$title, &$user, $action, &$result){
-        global $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath, $config;
         if($action == "read"){
             $me = Person::newFromUser($user);
             if($me->isRoleAtLeast(MANAGER)){
@@ -35,6 +35,9 @@ class MailList{
             if($nsText == "Mail"){
                 $list = strtolower($text);
                 $result = MailingList::isSubscribed($list, $me);
+                if($me->isRoleAtLeast(STAFF) && $list != "support" && $list != strtolower($config->getValue('networkName')."-support")){
+                    $result = true;
+                }
             }
         }
         return true;
@@ -219,9 +222,9 @@ class MailList{
                     function createTable(){
                         $('#mailingListMessages').dataTable({'iDisplayLength': 100,
                                             'aaSorting': [ [0,'desc'], [1,'desc']],
-                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                                            'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                                            'autoWidth': false});
                         $('#mailingListMessages').show();
-                        $('#mailingListMessages').width('100%');
                     }
                     
                     createTable();

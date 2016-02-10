@@ -7,6 +7,7 @@ abstract class AbstractReportSection {
     var $instructions;
     var $permissions;
     var $name;
+    var $title;
     var $sec;
     var $items;
     var $attributes;
@@ -21,12 +22,14 @@ abstract class AbstractReportSection {
     var $reportCallback;
     var $projectId;
     var $personId;
+    var $variables = array();
     
     // Creates a new AbstractReportSection
     function AbstractReportSection(){
         $this->id = "";
         $this->instructions = "";
         $this->name = "";
+        $this->title = "";
         $this->tooltip = "";
         $this->sec = SEC_NONE;
         $this->items = array();
@@ -217,11 +220,20 @@ abstract class AbstractReportSection {
     
     // Sets the Name of this AbstractReportSection
     function setName($name){
+        $name = $this->varSubstitute($name);
         $this->name = $name;
+        $this->title = $name;
+    }
+    
+    // Sets the Title of this AbstractReportSection
+    function setTitle($title){
+        $title = $this->varSubstitute($title);
+        $this->title = $title;
     }
     
     // Sets the tooltip 
     function setTooltip($tooltip){
+        $tooltip = $this->varSubstitute($tooltip);
         $this->tooltip = $tooltip;
     }
 
@@ -337,7 +349,7 @@ abstract class AbstractReportSection {
         if($this->disabled){
             $disabled = "disabled_lnk";
         }
-        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace(" ", "", $this->name)."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}'>{$this->name}</a>\n");
+        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace("'", "", str_replace(" ", "", $this->name)))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}'>{$this->name}</a>\n");
     }
     
     function render(){
@@ -347,25 +359,7 @@ abstract class AbstractReportSection {
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
         }
-        $projectName = "";
-        $phase = "";
         $number = "";
-        if($this->getParent()->person != null && $this->getParent()->person->getId() != 0){
-            $projectName .= ": ".$this->getParent()->person->getNameForForms();
-        }
-        if($this->getParent()->project != null){
-            $projectName .= ": ".$this->getParent()->project->getName();
-            /*if($this->getParent()->project->isSubProject()){
-                $phase = " ({$this->getParent()->project->getParent()->getName()}";
-            }
-            else{
-                $phase = " (Phase {$this->getParent()->project->getPhase()}";
-            }
-            if($this->getParent()->project->getPhase() < PROJECT_PHASE){
-                $phase .= ", Final Report";
-            }
-            $phase .= ")";*/
-        }
         if(count($this->number) > 0){
             $numbers = array();
             foreach($this->number as $n){
@@ -373,14 +367,17 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->name}{$projectName}{$phase}</div>
+        $wgOut->addHTML("<div><div id='reportHeader'>{$number}{$this->title}</div>
         <hr />
         <div id='reportBody'>");
-        if($this->getParent()->project != null && $this->getParent()->project->isDeleted()){
-            $project = $this->getParent()->project;
-            $date = new DateTime($project->getEffectiveDate());
-            $datestr = date_format($date, 'F d, Y');
-            $wgOut->addHTML("<div class='purpleInfo notQuitable'>This is a final report for the project <a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>.  The project will be inactive, effective $datestr.</div>");
+        if(!$this->checkPermission('w')){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#reportMain textarea').prop('disabled', 'disabled');
+                    $('#reportMain input').prop('disabled', 'disabled');
+                    $('#reportMain button').prop('disabled', 'disabled');
+                });
+            </script>");
         }
         //Render all the ReportItems's in the section    
         foreach ($this->items as $item){
@@ -393,13 +390,6 @@ abstract class AbstractReportSection {
 
         //Close up the Section and render
         $wgOut->addHTML("</div></div>");
-        if(!$this->checkPermission('w')){
-            $wgOut->addHTML("<script type='text/javascript'>
-                $('#reportMain textarea').prop('disabled', 'disabled');
-                $('#reportMain input').prop('disabled', 'disabled');
-                $('#reportMain button').prop('disabled', 'disabled');
-            </script>");
-        }
     }
     
     function renderForPDF(){
@@ -412,7 +402,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->name)}</h1></center>");
+        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->title)}</h1></center>");
         if($this->previewOnly){
             $wgOut->addHTML("<span style='color:#FF0000;'>(This section is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Provide the full details here. This section will be provided to your project leaders to assist with their project reporting.)</span>");
         }
@@ -440,6 +430,42 @@ abstract class AbstractReportSection {
         }
         
         return $cdata;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        else{
+            return $this->getParent()->getVariable($key);
+        }
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if(isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        else{
+            $found = $this->getParent()->setVariable($key, $value, $depth + 1);
+            if(!$found && $depth == 0){
+                $this->variables[$key] = $value;
+                return true;
+            }
+        }
+        return false;
     }
     
 }

@@ -30,6 +30,7 @@ function autoload_register($directory){
 function redirect($url){
     session_write_close();
     header("Location: $url");
+    DBFunctions::commit();
     exit;
 }
 
@@ -119,9 +120,6 @@ $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
-$egAnnokiExtensions['Acknowledgements'] = array('name' => 'Acknowledgements',
-                                                'path' => "$IP/extensions/Acknowledgements/Acknowledgements.php");
-
 $egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
                                                 'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 
@@ -194,7 +192,8 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "BlockList" || $key == "Activeusers" || 
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
-             $key == "Recentchangeslinked" || $key == "Tags")){
+             $key == "Recentchangeslinked" || $key == "Tags" ||
+             $key == "CreateAccount")){
             unset($aSpecialPages[$key]);
             continue;
         }

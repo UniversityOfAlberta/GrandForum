@@ -20,6 +20,8 @@ abstract class AbstractReportItem {
     var $projectId;
     var $milestoneId;
     var $productId;
+    var $extra;
+    var $extraIndex;
     var $private;
     var $deleted;
     var $blobItem;
@@ -27,6 +29,7 @@ abstract class AbstractReportItem {
     var $value;
     var $reportCallback;
     var $attributes;
+    var $variables = array();
     
     // Creates a new AbstractReportItem
     function AbstractReportItem(){
@@ -41,6 +44,7 @@ abstract class AbstractReportItem {
         $this->projectId = 0;
         $this->milestoneId = 0;
         $this->productId = 0;
+        $this->extra = array();
         $this->private = false;
         $this->deleted = false;
         $this->reportCallback = new ReportItemCallback($this);
@@ -86,6 +90,9 @@ abstract class AbstractReportItem {
     function getSet(){
         $parent = $this->getParent();
         while(!($parent instanceof ReportItemSet)){
+            if($parent instanceof AbstractReport){
+                break;
+            }
             $parent = $parent->getParent();
         }
         return $parent;
@@ -111,9 +118,14 @@ abstract class AbstractReportItem {
         $this->milestoneId = $id;
     }
     
-    // Sets the Product ID of this AbstractRepotItem
+    // Sets the Product ID of this AbstractReportItem
     function setProductId($id){
         $this->productId = $id;
+    }
+    
+    // Sets the extra data of this AbstractReportItem
+    function setExtra($extra){
+        $this->extra = $extra;
     }
     
     // Sets whether or not this item should be treated as private or not
@@ -185,18 +197,36 @@ abstract class AbstractReportItem {
         return 1;
     }
     
+    function getExtraIndex(){
+        $set = $this->getSet();
+        while(!($set instanceof ArrayReportItemSet)){
+            if($set instanceof AbstractReport){
+                return 0;
+            }
+            $set = $set->getParent();
+        }
+        foreach($set->getCachedData() as $index => $item){
+            if($item['extra'] == $this->extra){
+                return $index;
+            }
+        }
+        return 0;
+    }
+    
     function getPostId(){
         $parent = $this->getParent();
         if($this instanceof AbstractReportItem){
             $postId = str_replace("\"", "", str_replace("]", "", str_replace("[", "", str_replace("'", "", "_{$this->getId()}"))));
         }
         if(!($parent instanceof AbstractReportSection)){
-            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}".$postId;
+            $extraId = $this->getExtraIndex();
+            $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
         }
         else{
-            $postId = str_replace(" ", "", $parent->name).$postId;
+            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", $parent->name))).$postId;
         }
         $postId = str_replace("-", "", $postId);
+        $postId = str_replace(" ", "", $postId);
         return $postId;
     }
     
@@ -212,19 +242,19 @@ abstract class AbstractReportItem {
                     return array();
                 }
                 if(isset($_POST['oldData'][$this->getPostId()]) &&
-                   trim($_POST['oldData'][$this->getPostId()]) == trim($_POST[$this->getPostId()])){
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) == $this->stripBlob($_POST[$this->getPostId()])){
                    // Don't save, but also don't display an error
                    return array();
                 }
                 else if(isset($_POST['oldData'][$this->getPostId()]) && 
-                   trim($_POST['oldData'][$this->getPostId()]) != trim($this->getBlobValue()) &&
-                   trim($_POST[$this->getPostId()]) != trim($this->getBlobValue())){
-                    if(trim($_POST['oldData'][$this->getPostId()]) != trim($_POST[$this->getPostId()])){
+                   $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
+                   $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
+                    if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
                         // Conflict in blob values
                         return array(array('postId' => $this->getPostId(), 
-                                           'value' => trim($this->getBlobValue()),
-                                           'postValue' => trim($_POST[$this->getPostId()]),
-                                           'oldValue' => trim($_POST['oldData'][$this->getPostId()]),
+                                           'value' => $this->stripBlob($this->getBlobValue()),
+                                           'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
+                                           'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
                                            'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                     }
                 }
@@ -233,20 +263,22 @@ abstract class AbstractReportItem {
         }
         return array();
     }
+    
+    private function stripBlob($value){
+        return trim(htmlentities($value, null, 'utf-8', false));
+        return $value;
+    }
 
     // Gets the Blob of this item
     function getBlobValue(){
         $report = $this->getReport();
         $section = $this->getSection();
-        // !!! 
-        //I think there is a bug here. I think ReportBlob should really be given $this-personId, instead of ID of person who created the report 
-        // This needs to be checked
-        // !!!
-        //$blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
         switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -279,20 +311,21 @@ abstract class AbstractReportItem {
         return $value;
     }
     
-    /*
+    /**
      * Returns the MD5 code for this blob
      */
     function getMD5(){
         $report = $this->getReport();
         $section = $this->getSection();
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
 	    $md5 = $blob->getMD5();
 	    return $md5;
     }
     
-    /*
+    /**
      * Returns the download link for this blob
      */
     function getDownloadLink(){
@@ -305,14 +338,19 @@ abstract class AbstractReportItem {
 	    return "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}{$mime}";
     }
     
-    // Sets the Blob value for this item
+    /**
+     * Sets the Blob value for this AbstractReportItem
+     * @param mixed $value The value of this AbstractReportItem
+     */
     function setBlobValue($value){
         $report = $this->getReport();
         $section = $this->getSection();
-        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $this->getReport()->person->getId(), $this->projectId);
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
+	    $this->extraIndex = $this->getExtraIndex();
 	    switch($this->blobType){
             default:
             case BLOB_TEXT:
@@ -336,6 +374,13 @@ abstract class AbstractReportItem {
                     $parent = $parent->getParent();
                 }
                 $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
+                if(is_array($value)){
+                    foreach($value as $k => $v){
+                        if((is_array($v) && implode("", $v) == "") || $v == ""){
+                            unset($value[$k]);
+                        }
+                    }
+                }
                 eval("\$blob_data$accessStr = \$value;");
                 $blob->store($blob_data, $blob_address);
                 break;
@@ -372,12 +417,20 @@ abstract class AbstractReportItem {
         foreach($matches[1] as $k => $m){
             if(isset(ReportItemCallback::$callbacks[$m])){
                 $v = str_replace("$", "\\$", call_user_func(array($this->reportCallback, ReportItemCallback::$callbacks[$m])));
+                $v = str_replace(",", "&#44;", $v);
                 $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
             }
         }
         
-        preg_match_all('/{(.+?)}/', $cdata, $matches);
+        // Support nested function calls
+        preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
+        // Reverse the array so that it gets the inner most first
+        //print_r($matches[1]);
+        //$matches[1] = array_reverse($matches[1]);
+        $recursive = false;
+        $noLongerRecursive = false;
         foreach($matches[1] as $k => $m){
+            $m = $matches[1][$k];
             $e = explode('(', $m);
             if(isset($e[1])){
                 // Function call
@@ -385,21 +438,77 @@ abstract class AbstractReportItem {
                 $a = explode(",", str_replace(")", "", $e[1]));
                 foreach($a as $key => $arg){
                     $arg = trim($arg);
-                    if(defined($arg)){
-                        $a[$key] = constant($arg);
-                    }
-                    else{
-                        $a[$key] = $arg;
-                    }
+                    $a[$key] = AbstractReport::blobConstant($arg);
                 }
                 if(isset(ReportItemCallback::$callbacks[$f])){
-                    $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
-                    $cdata = str_replace("{".$m."}", nl2br($v), $cdata);
+                    if(strstr($m, "{") !== false || strstr($m, "}") !== false){
+                        // Don't process yet if there are recursive calls
+                        $recursive = true;
+                        continue;
+                    }
+                    else{
+                        $v = call_user_func_array(array($this->reportCallback, ReportItemCallback::$callbacks[$f]), $a);
+                        if(is_array($v)){
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", serialize($v), $cdata);
+                        }
+                        else{
+                            $v = str_replace(",", "&#44;", $v);
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", $v, $cdata);
+                        }
+                        if($recursive){
+                            break;
+                        }
+                    }
                 }
             }
         }
-        
+        if($recursive){
+            // There are recursive calls, now call them
+            $cdata = $this->varSubstitute($cdata);
+        }
         return $cdata;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        else{
+            return $this->getParent()->getVariable($key);
+        }
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if($this instanceof ReportItemSet && isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        else{
+            $found = $this->getParent()->setVariable($key, $value, $depth + 1);
+            if(!$found && $depth == 1 && $this instanceof ReportItemSet){
+                $this->variables[$key] = $value;
+                return true;
+            }
+        }
+        return false;
     }
     
 }

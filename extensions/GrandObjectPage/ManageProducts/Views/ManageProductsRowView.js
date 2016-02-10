@@ -28,7 +28,7 @@ ManageProductsViewRow = Backbone.View.extend({
         }
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
+            this.model.trigger("change", this.model);
         }
         this.setDirty(false);
     },
@@ -52,7 +52,7 @@ ManageProductsViewRow = Backbone.View.extend({
         projects.splice(_.indexOf(projects, _.findWhere(projects, {id: projectId})), 1);
         // Only trigger an event if this is a parent
         if(this.$("input[data-project=" + projectId + "]").attr('name') == 'project'){
-            this.model.trigger("change");
+            this.model.trigger("change", this.model);
         }
         this.setDirty(false);
     },
@@ -87,6 +87,7 @@ ManageProductsViewRow = Backbone.View.extend({
                 }
             }
         }
+        
         this.setDirty(true);
     },
     
@@ -150,8 +151,16 @@ ManageProductsViewRow = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-        this.el.innerHTML = this.template(this.model.toJSON());
+        var isMine = {isMine: false};
+        if(_.contains(_.pluck(this.model.get('authors'), 'id'), me.get('id')) ||
+           _.contains(_.pluck(this.model.get('authors'), 'name'), me.get('name')) ||
+           _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0 ||
+           _.intersection(_.pluck(this.model.get('authors'), 'name'), studentNames).length > 0){
+            isMine.isMine = true;
+        }
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
         if(this.parent.table != null){
+            // Need this so that the search functionality is updated
             var data = new Array();
             this.$("td").each(function(i, val){
                 data.push($(val).htmlClean().html());

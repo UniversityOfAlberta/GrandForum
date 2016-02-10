@@ -22,21 +22,6 @@ class ProjectPage {
 
             $project = Project::newFromHistoricName($name);
             
-            $wgOut->addScript("<script type='text/javascript'>
-                function stripAlphaChars(id){
-                    var str = $('#' + id).val();
-                    var out = new String(str); 
-                    out = out.replace(/[^0-9]/g, ''); 
-                    if(out > 100){
-                        out = 100;
-                    }
-                    else if(out < 0){
-                        out = 0;
-                    }
-                    $('#' + id).attr('value', out);
-                }
-            </script>");
-            
             if($name == ""){
                 $split = explode(":", $name);
                 if(count($split) > 1){
@@ -57,7 +42,7 @@ class ProjectPage {
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
                         !$me->isThemeCoordinatorOf($project) &&
-                        !$me->isRole(CF) && 
+                        !$me->isRole("CF") && 
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
@@ -73,7 +58,7 @@ class ProjectPage {
                 $isLead = $project->userCanEdit();
             }
             
-            $isMember = ($me->isMemberOf($project) || $project->getType() == 'Administrative');
+            $isMember = ($project != null && ($me->isMemberOf($project) || $project->getType() == 'Administrative'));
             
             //Adding support for GET['edit']
             if(isset($_GET['edit'])){
@@ -110,9 +95,7 @@ class ProjectPage {
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
-                if($project->getPhase() == 1){
-                    $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
-                }
+                $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }

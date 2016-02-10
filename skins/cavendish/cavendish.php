@@ -42,7 +42,7 @@ class CavendishTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgTitle, $config;
+		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
@@ -237,6 +237,12 @@ class CavendishTemplate extends QuickTemplate {
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    
+		    <?php
+		        foreach($config->constants as $key => $value){
+		            echo "{$key} = '{$value}';\n";
+		        }
+		    ?>
+		    
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
@@ -281,6 +287,9 @@ class CavendishTemplate extends QuickTemplate {
             }
 		    
 		    function unaccentChars(str){
+		        if(str == undefined){
+		            str = "";
+		        }
 		        var dict = {'Š':'S', 'š':'s', 'Ð':'Dj','Ž':'Z', 'ž':'z', 'À':'A', 'Á':'A', 'Â':'A', 'Ã':'A', 'Ä':'A',
                             'Å':'A', 'Æ':'A', 'Ç':'C', 'È':'E', 'É':'E', 'Ê':'E', 'Ë':'E', 'Ì':'I', 'Í':'I', 'Î':'I',
                             'Ï':'I', 'Ñ':'N', 'Ò':'O', 'Ó':'O', 'Ô':'O', 'Õ':'O', 'Ö':'O', 'Ø':'O', 'Ù':'U', 'Ú':'U',
@@ -504,6 +513,10 @@ class CavendishTemplate extends QuickTemplate {
 		            overflow: hidden;
 		            background: #FFFFFF;
 		        }
+			
+			body {
+			    background:#FFFFFF;
+			}
 		        
 		        #side {
 		            display: none;
@@ -551,8 +564,21 @@ class CavendishTemplate extends QuickTemplate {
 		    </style>
 		    <script type="text/javascript">
 		        parent.postMessage(-1, "*");
+		        
+		        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+                var eventer = window[eventMethod];   
+                var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";   
+
+                // Listen to message from parent window
+                eventer(messageEvent,function(e) {
+                    if(e.data.projectUrl != undefined){
+                        $("a.projectUrl").attr('href', function(el){ return e.data.projectUrl + jQuery(this).attr('data-projectId')});
+                        $("a.projectUrl").attr('target', '_parent');
+                    }
+                }, false);
+		        
 		        $(document).ready(function(){
-		            $("a").attr("target", "_blank");
+		            $("a").attr("target", "");
 		            var height = $("#bodyContent").height();
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
@@ -561,7 +587,9 @@ class CavendishTemplate extends QuickTemplate {
 		            }, 100);
 		        });
 		    </script>
-		<?php } ?>
+		<?php
+            header_remove("X-Frame-Options");
+		 } ?>
 	</head>
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
@@ -630,7 +658,7 @@ class CavendishTemplate extends QuickTemplate {
 		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
 		        echo "<a id='status_profile' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
-		        if(!$wgImpersonating){
+		        if(!$wgImpersonating && !$wgDelegating){
 		            $logout = $this->data['personal_urls']['logout'];
 	                $getStr = "";
                     foreach($_GET as $key => $get){
@@ -853,17 +881,33 @@ class CavendishTemplate extends QuickTemplate {
 		    if(isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
+		    $me = Person::newFromWgUser();
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $resources = TabUtils::createToolboxHeader("Resources");
-
-	            $resources['links'][1001] = TabUtils::createToolboxLink("Management Office", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
-	            $resources['links'][1002] = TabUtils::createToolboxLink("SFU Core Facility", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
-	            $resources['links'][1003] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
-	            
+	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
+	            $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
+	            $resources['links'][1003] = TabUtils::createToolboxLink("Technical Resources", "$wgServer$wgScriptPath/index.php/Network_Resources/SFU_Core_Facility");
+	            for($year=date('Y'); $year >= 2014; $year--){
+	                $title = "Conference:{$config->getValue('networkName')}_Annual_Conference_{$year}";
+	                if(Wiki::newFromTitle("{$title}")->exists()){
+	                    $resources['links'][1004] = TabUtils::createToolboxLink("{$year} Conference", "$wgServer$wgScriptPath/index.php/{$title}");
+	                    break;
+	                }
+	            }
+	            $resources['links'][1005] = TabUtils::createToolboxLink("AGE-WELL Seminars", "$wgServer$wgScriptPath/index.php/AGE-WELL_Seminars");
+	            if($me->isRole(TL) || $me->isRole(TC) || $me->isRoleAtLeast(STAFF)){
+	                $resources['links'][1006] = TabUtils::createToolboxLink("WP Coordinators", "$wgServer$wgScriptPath/index.php/".TL.":Workpackage Coordinator");
+	            }
+	            $resources['links'][1007] = TabUtils::createToolboxLink("Funding", "$wgServer$wgScriptPath/index.php/Network_Resources/Funding");
+	            $resources['links'][1007] = TabUtils::createToolboxLink("Weekly Digest", "$wgServer$wgScriptPath/index.php/Network_Resources/Weekly_Digest");
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
+	        }
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
 	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        global $toolbox;
@@ -893,6 +937,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
 		        $person = Person::newFromName($_POST['wpName']);
+		        $user = User::newFromName($_POST['wpName']);
 		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
@@ -903,14 +948,14 @@ class CavendishTemplate extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 15 minutes.</b></p>";
-		        }
-		        else if($person->getUser()->checkTemporaryPassword($_POST['wpPassword'])){
-		            $failMessage = "";
-		            return;
+		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
 		        }
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
+		        }
+		        if($user->checkTemporaryPassword($_POST['wpPassword'])){
+		            $failMessage = "";
+		            return;
 		        }
 		        if(isset($_POST['wpMailmypassword'])){
 		            echo "<script type='text/javascript'>
@@ -920,7 +965,7 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
 <p>
-You must have cookies enabled to log in to $wgSiteName.<br />
+You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
 Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)

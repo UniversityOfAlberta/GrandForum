@@ -85,7 +85,7 @@ EOF;
     
     
     
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getProfileChecks($errors){
@@ -107,7 +107,7 @@ EOF;
 
     }
 
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getHqpChecks($errors){
@@ -145,7 +145,7 @@ EOF;
 
     }
 
-    /*
+    /**
      * Displays the profile checks for this user
      */
     function getProductChecks($errors){
@@ -186,6 +186,7 @@ EOF;
         
         $html = "<div id='duplicateProductsAccordion'>";
         foreach($structure['categories'] as $key => $cat){
+            $key = str_replace(" ", "", $key);
             $dup_pub = new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]);
             $dup_pub->generateBody();
             $html .= "<h4><a href='#'>".Inflect::pluralize($key)."</a></h4>
@@ -266,7 +267,7 @@ EOF;
 
             //Students moved on vs thesis
             $student_errors = array();
-            $students = $person->getStudents('all', true);
+            $students = $person->getHQP(true);
             foreach($students as $s){
                 $student_name = $s->getName();
                 $position = $s->getPosition();
@@ -274,29 +275,6 @@ EOF;
                 $department = $s->getDepartment();
                 $errors = array();
                 $ishqp = $s->isRole(HQP);
-
-                if(isExtensionEnabled('Acknowledgements')){
-                    //Acknowledgements
-                    if($ishqp){
-                        $acks = $s->getAcknowledgements();
-                        if(count($acks) > 0){
-                            $ack_found = false;
-                            foreach ($acks as $a){
-                                $supervisor = $a->getSupervisor();
-                                if($supervisor == $name_normal){
-                                    $ack_found = true;
-                                    break;
-                                }
-                            }
-                            if(!$ack_found){
-                                $errors[] = "No Acknowledgement";
-                            }
-                        }
-                        else{
-                            $errors[] = "No Acknowledgement";
-                        }
-                    }
-                }
 
                 if($ishqp && ($university == "" || $department == "" || $position == "")){
                     $errors[] = "Missing University/Department/Position";

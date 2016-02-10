@@ -319,6 +319,36 @@
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Conference Abstract" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
+                <type lov_id="00000000000000000000000100007001">Abstract</type>
+            </pub_type>
+            <title ccv_id="8e6ee535c95e42ec866b777c7472bafb" ccv_name="Publication Title"></title>
+            <statuses ccv_id="080301b1f1c0464bba7fcfa1fa8fe182" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" ccvtk="conf_name" bibtex="journal" label="Conference Name" type="String">event_title</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" ccvtk="city" label="City" bibtex="address" type="String">event_location</field>
+                <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
+                <field ccv_id="018e656a0f824b1f91a6a2cb33ac61dd" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
+                <field label="ISBN" bibtex="isbn" type="String">isbn</field>
+                <field label="ISSN" bibtex="issn" type="String">issn</field>
+                <field label="DOI" bibtex="doi" type="DOI">doi</field>
+                <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" ccvtk="url" label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
+            <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
+            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
+        </Publication>
 
         <Publication type="PHD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
@@ -388,6 +418,18 @@
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Tech Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field bibtex="school" label="University" type="String">university</field>
+                <field label="Department" type="String">department</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
 
         <Publication type="White Paper" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
@@ -402,6 +444,33 @@
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
             <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Manual" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <title ccv_id="1790f670e1144703a04ffa6268c454c7" ccv_name="Manual Title"></title>
+            <statuses ccv_id="24f82f269eef4156aed0a1f92358c898" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field ccv_id="02b98ee969d34f129c164881b006259c" ccv_name="Volume" bibtex="volume" label="Volume" type="String">volume</field>
+                <field ccv_id="01cc51025d634ed5a72090ae92f51632" ccv_name="Edition" bibtex="volume" label="Edition" type="String">edition</field>
+                <field bibtex="series" label="Series" type="String">series</field>
+                <field ccv_id="07ae2efa7e4d4c3dbe7b908274fb4eb9" ccv_name="Number of Pages" bibtex="pages" label="Number of Pages" type="String">pages</field>
+                <field ccv_id="0bea4007dba7404ea572b009850b7db0" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field ccv_id="8ee878c89ccc43089ee35784a143dddd" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <date ccv_id="68abef7baf294189a44bab18b9fa8b71" ccv_name="Date"></date>
+            <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
+            <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
     </Publications>
 
@@ -479,6 +548,18 @@
             <data></data>
         </Product>
         
+        <Product type="Data Set" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Report of Invention" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Report of Copyright" status="">
+            <data></data>
+        </Product>
+        
         <Product type="Patent" status="">
             <data>
                 <field label="Number" type="String">number</field>
@@ -515,6 +596,21 @@
             </data>
         </Product>
         
-    </Products>    
+    </Products>
+    
+    <!-- Awards -->
+    <Awards category="Award">
+        <Award type="Award">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Award>
+        
+        <Award type="Misc">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Award>
+    </Awards>   
 
 </Products>

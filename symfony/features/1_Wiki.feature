@@ -3,6 +3,12 @@ Feature: Wiki
     As a User
     I need to be able to create and edit wiki pages
 
+    Scenario: NI viewing main page
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php"
+        Then I should see "Main Page"
+        And I should not see "Permission error"
+
     Scenario: NI creates a wiki page
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Phase2Project1:Main"

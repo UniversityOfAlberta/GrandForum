@@ -99,18 +99,17 @@ DuplicatesDialogView = Backbone.View.extend({
             else{
                 duplicate = firstProduct.duplicates.findWhere({id: id});
             }
-            duplicate.duplicates.reset();
+            this.products.remove(id);
             duplicate.destroy({
                 success: function(){
-                
+                    
                 },
                 error: function(){
                 
                 }
             });
         }, this));
-        // Mark the rest as not duplicates
-        this.notDuplicates();
+        this.next();
     },
     
     next: function(){

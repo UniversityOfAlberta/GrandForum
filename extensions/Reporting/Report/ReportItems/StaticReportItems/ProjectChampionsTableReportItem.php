@@ -79,7 +79,7 @@ class ProjectChampionsTableReportItem extends StaticReportItem {
         $first = true;
         foreach($champions as $c){
             $champion = $c['user'];
-            $org = $champion->getPartnerName();
+            $org = $champion->getUni();
             if($org == ""){
                 $uni = University::newFromName($champion->getUni());
             }

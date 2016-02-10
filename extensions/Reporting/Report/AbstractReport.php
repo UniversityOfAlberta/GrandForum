@@ -51,6 +51,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfFiles;
     var $pdfAllProjects;
     var $showInstructions = true;
+    var $variables = array();
     
     /**
      * @param string $tok
@@ -66,69 +67,8 @@ abstract class AbstractReport extends SpecialPage {
         $pers->id = $sto->metadata('user_id');
         $type = $sto->metadata('type');
         $year = $sto->metadata('year');
-        switch($type){
-            case RPTP_NORMAL:
-                $type = "NIReport";
-                break;
-            case RPTP_NI_COMMENTS:
-                $type = "NIReportComments";
-                break;
-            case RPTP_CHAMP:
-                $type = "ChampionReport";
-                break;
-            case RPTP_PROJECT_CHAMP:
-                $type = "ProjectChampionsReportPDF";
-                break;
-            case RPTP_PROJECT_ISAC:
-                $type = "ProjectISACCommentsPDF";
-                break;
-            case RPTP_INPUT:
-                break;
-            case RPTP_LEADER:
-                $type = "ProjectReport";
-                break;
-            case RPTP_SUBPROJECT:
-                $type = "SubProjectReport";
-                break;
-            case RPTP_REVIEWER:
-                $type = "ReviewReport";
-                break;
-            case RPTP_SUPPORTING:
-                break;
-            case RPTP_EVALUATOR:
-                $type = "EvaluatorResearcherReport";
-                break;
-            case RPTP_EVALUATOR_PROJ:
-                break;
-            case RPTP_EVALUATOR_NI:
-                $type = "EvalNIPDFReport";
-                break;
-            case RPTP_LEADER_COMMENTS:
-                $type = "ProjectReportComments";
-                break;
-            case RPTP_LEADER_MILESTONES:
-                $type = "ProjectReportMilestones";
-                break;
-            case RPTP_EXIT_HQP:
-            case RPTP_HQP:
-                $type = "HQPReport";
-                break;
-            case RPTP_HQP_COMMENTS:
-                $type = "HQPReportComments";
-                break;
-            case RPTP_NI_PROJECT_COMMENTS:
-                $type = "ProjectNIComments";
-                break;
-            case RPTP_MTG:
-                $type = "MindTheGap";
-                break;
-            case RPTP_CATALYST:
-                $type = "CatalystReport";
-                break;
-            case RPTP_TRANS:
-                $type = "TranslationalReport";
-                break;
-        }
+        
+        $type = ReportXMLParser::findPDFReport($type, true);
         
         $proj = null;
         $rp_index = new ReportIndex($pers);
@@ -152,8 +92,8 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR){
-        global $wgUser, $wgMessage;
+    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
+        global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
         $this->year = $year;
@@ -186,9 +126,14 @@ abstract class AbstractReport extends SpecialPage {
         }
         if(file_exists($xmlFileName)){
             $exploded = explode(".", $xmlFileName);
-            $exploded = explode("/", $exploded[count($exploded)-2]);
+            $exploded = explode("/ReportXML/{$config->getValue('networkName')}/", $exploded[count($exploded)-2]);
             $this->xmlName = $exploded[count($exploded)-1];
-            $xml = file_get_contents($xmlFileName);
+            if(isset(ReportXMLParser::$parserCache[$this->xmlName])){
+                $xml = "";
+            }
+            else{
+                $xml = file_get_contents($xmlFileName);
+            }
             $parser = new ReportXMLParser($xml, $this);
             if(isset($_COOKIE['showSuccess'])){
                 unset($_COOKIE['showSuccess']);
@@ -206,9 +151,13 @@ abstract class AbstractReport extends SpecialPage {
                     redirect("{$wgServer}{$_SERVER["REQUEST_URI"]}");
                 }
             }
-            $parser->parse();
+            $parser->parse($quick);
             if(isset($_GET['saveBackup'])){
-                $parser->saveBackup();
+                $download = true;
+                if(isset($_GET['download']) && $_GET['download'] == 'false'){
+                    $download = false;
+                }
+                $parser->saveBackup($download);
             }
             
             $currentSection = @$_GET['section'];
@@ -267,7 +216,7 @@ abstract class AbstractReport extends SpecialPage {
                                  <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
                 return;
             }
-            if(isset($_POST['submit']) && $_POST['submit'] == "Save"){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -301,7 +250,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace(" ", "", $section->name)] = $section->getPercentComplete();
+                        $prog[str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name)))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
@@ -370,6 +319,11 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getLatestPDF(){
+        if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
+            $file = $this->pdfFiles[0];
+            $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
+            return $report->getLatestPDF();
+        }
         $sto = new ReportStorage($this->person);
         if($this->project != null){
             if($this->pdfAllProjects){
@@ -386,10 +340,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $year = $c['year'];
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if(strcmp($tst, $largestDate) > 0){
                 $largestDate = $tst;
                 $return = array($c);
@@ -399,6 +350,11 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getPDF($submittedByOwner=false){
+        if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
+            $file = $this->pdfFiles[0];
+            $report = new DummyReport($file, $this->person, $this->project);
+            return $report->getPDF();
+        }
         $sto = new ReportStorage($this->person);
         $foundSameUser = false;
         $foundSubmitted = false;
@@ -445,9 +401,7 @@ abstract class AbstractReport extends SpecialPage {
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
         foreach($check as $c){
-            $tok = $c['token'];
-            $sto->select_report($tok);
-            $tst = $sto->metadata('timestamp');
+            $tst = $c['timestamp'];
             if($c['submitted'] == 1){
                 $c['status'] = "Generated/Submitted";
             }
@@ -628,12 +582,12 @@ abstract class AbstractReport extends SpecialPage {
         $personId = $this->person->getId();
         $projectId = ($this->project != null) ? $this->project->getId() : 0;
         $data = DBFunctions::select(array('grand_report_blobs'),
-                                    array('*'),
+                                    array('COUNT(*)' => 'count'),
                                     array('user_id' => EQ($personId),
                                           'proj_id' => EQ($projectId),
                                           'rp_type' => EQ($this->reportType),
                                           'year' => EQ($this->year)));
-        return (count($data) > 0);
+        return ($data[0]['count'] > 0);
     }
     
     // Checks the permissions of the Person with the required Permissions of the Report
@@ -656,7 +610,10 @@ abstract class AbstractReport extends SpecialPage {
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($this->project != null && $perm['perm'] == CHAMP && $me->isRole(CHAMP)){
+                        if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
+                            $rResult = true;
+                        }
+                        else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
                             }
@@ -668,7 +625,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == PL || $perm['perm'] == "Leadership")){
+                        else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -678,7 +635,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == "SUB-PL")){
+                        else if($this->project != null && ($perm['perm']['role'] == "SUB-PL")){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -688,7 +645,7 @@ abstract class AbstractReport extends SpecialPage {
                                 }
                             }
                         }
-                        else if($this->project != null && ($perm['perm'] == TC || $perm['perm'] == TL)){
+                        else if($this->project != null && ($perm['perm']['role'] == TC || $perm['perm']['role'] == TL)){
                             $project_objs = $me->getThemeProjects();
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -699,12 +656,19 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         else{
-                            if(strstr($perm['perm'], "+") !== false){
-                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm'])), $perm['start'], $perm['end']));
+                            if(strstr($perm['perm']['role'], "+") !== false){
+                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
                             }
                             else{
-                                $rResult = ($rResult || $me->isRoleDuring($perm['perm'], $perm['start'], $perm['end']));
+                                $isMember = true;
+                                if($this->project != null && $this->project->getId() != 0){
+                                    $isMember = $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end'], $this->project);
+                                }
+                                $rResult = ($rResult || ($me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']) && $isMember));
                             }
+                        }
+                        if($perm['perm']['subType'] != ""){
+                            $rResult = ($rResult && ($me->isSubRole($perm['perm']['subType'])));
                         }
                         break;
                     case "Project":
@@ -755,6 +719,9 @@ abstract class AbstractReport extends SpecialPage {
                 $found = true;
                 foreach($this->sectionPermissions[$role][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
+                    if($key == "-"){
+                        return array();
+                    }
                 }
             }
         }
@@ -764,6 +731,9 @@ abstract class AbstractReport extends SpecialPage {
                 $found = true;
                 foreach($this->sectionPermissions[$this->project->getName()][$section->id] as $key => $perm){
                     $permissions[$key] = $perm;
+                    if($key == "-"){
+                        return array();
+                    }
                 }
             }
         }
@@ -771,6 +741,9 @@ abstract class AbstractReport extends SpecialPage {
             $found = true;
             foreach($this->sectionPermissions[$me->getId()][$section->id] as $key => $perm){
                 $permissions[$key] = $perm;
+                if($key == "-"){
+                    return array();
+                }
             }
         }
         if(!$found){
@@ -923,10 +896,14 @@ abstract class AbstractReport extends SpecialPage {
         if(!$this->showInstructions){
             $instructionsHide = "style='display:none;'";
         }
+        $instructions = trim($this->currentSection->getInstructions());
+        if($instructions == ""){
+            $instructionsHide = "style='display:none;'";
+        }
         $wgOut->addHTML("   <div $instructionsHide id='instructionsToggle' class='highlights-text'>.<br />.<br />.</div>\n");
         $wgOut->addHTML("   <div $instructionsHide id='reportInstructions' class='displayTableCell'><div><div>
                                 <span id='instructionsHeader'>Instructions</span>
-                                {$this->currentSection->getInstructions()}
+                                {$instructions}
                             </div></div></div>\n");
         
         $wgOut->addHTML("</div>\n");
@@ -1176,6 +1153,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn()){
                 permissionError();
             }
+            ini_set("memory_limit","256M");
             $blob = new ReportBlob();
             $blob->loadFromMD5($_GET['id']);
             $data = $blob->getData();
@@ -1205,6 +1183,13 @@ abstract class AbstractReport extends SpecialPage {
         return true;
     }
     
+    static function blobConstant($constant){
+        if(defined("{$constant}")){
+            return constant("{$constant}");
+        }
+        return "{$constant}";
+    }
+    
     static function tinyMCEUpload($action){
         $me = Person::newFromWgUser();
         if($action == "tinyMCEUpload"){
@@ -1229,6 +1214,33 @@ abstract class AbstractReport extends SpecialPage {
             exit;
         }
         return true;
+    }
+    
+    /**
+     * Returns the value of the variable with the given key
+     * @param string $key The key of the variable
+     * @return string The value of the variable if found
+     */
+    function getVariable($key){
+        if(isset($this->variables[$key])){
+            return $this->variables[$key];
+        }
+        return "";
+    }
+    
+    /**
+     * Sets the value of the variable with the given key to the given value
+     * @param string $key The key of the variable
+     * @param string $value The value of the variable
+     * @param integer $depth The depth of the function call (should not need to ever pass this)
+     * @return boolean Whether or not the variable was found
+     */
+    function setVariable($key, $value, $depth=0){
+        if(isset($this->variables[$key])){
+            $this->variables[$key] = $value;
+            return true;
+        }
+        return false;
     }
 }
 

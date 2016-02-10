@@ -40,7 +40,6 @@ class EvalReviewCheckboxReportItem extends AbstractReportItem {
         <script type="text/javascript">
         	$('input[name={$this->getPostId()}]').change(function(){
         		if($(this).attr('checked')){
-        			console.log($(this).prev());
         			$(this).prev().remove();
         		}else{
         			$(this).before("<input type='hidden' name='{$this->getPostId()}' value='' />");

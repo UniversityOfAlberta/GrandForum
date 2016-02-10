@@ -55,6 +55,10 @@ class AddMember extends SpecialPage{
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
+                $form->getElementById('university_field')->setPOST('university');
+                $form->getElementById('dept_field')->setPOST('department');
+                $form->getElementById('position_field')->setPOST('position');
+                $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
                     $nss = implode(", ", $_POST['wpNS']);
@@ -87,23 +91,43 @@ class AddMember extends SpecialPage{
     }
     
     function generateViewHTML($wgOut){
-        global $wgScriptPath, $wgServer;
+        global $wgScriptPath, $wgServer, $config, $wgEnableEmail;
         $history = false;
         if(isset($_GET['history']) && $_GET['history'] == true){
             $history = true;
+        }
+        $hqpType = "";
+        if(count($config->getValue('subRoles')) > 0 && !$history){
+            $hqpType = "<th>Sub-Role</th>";
         }
         if($history){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Staff</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Status</th>
+                            <th>Requesting User</th>
+                            <th>User Name</th>
+                            <th>Timestamp</th>
+                            <th>Staff</th>
+                            <th>User Type</th>
+                            <th>Projects</th>
+                            <th>Institution</th>
+                            <th>Candidate</th>
+                            <th>Action</th>
                         </tr></thead><tbody>\n");
         }
         else{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View History</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th> <th>User Name</th> <th>Timestamp</th> <th>Email</th> <th>User Type</th> <th>Projects</th> <th>Accept</th> <th>Ignore</th>
+                            <th>Requesting User</th>
+                            <th>User Name</th>
+                            <th>Timestamp</th>
+                            <th>User Type</th>
+                            <th>Projects</th>
+                            <th>Institution</th>
+                            {$hqpType}
+                            <th>Candidate</th>
+                            <th>Action</th>
                         </tr></thead><tbody>\n");
         }
     
@@ -135,7 +159,7 @@ class AddMember extends SpecialPage{
                     $roles[] = $role->getRole();
                 }
             }
-            $wgOut->addHTML("<tr>
+            $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
                         <td align='left'>
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$request->id}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
                             <div id='{$request->id}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
@@ -145,21 +169,38 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
             }
             else{
-                $wgOut->addHTML("<td align='left'>{$request->getName()}</td>");
+                $wgOut->addHTML("<td align='left'>{$request->getName()}<br />{$request->getEmail()}</td>");
             } 
-            $wgOut->addHTML("<td>{$request->getLastModified()}</td>");
+            $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getLastModified())."</td>");
             if($history){
                 $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
             }
-            $wgOut->addHTML("<td align='left'> {$request->getEmail()}</td> <td>{$request->getRoles()}</td> <td align='left'>{$request->getProjects()}</td> 
-                        <form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
+            $wgOut->addHTML("<td>{$request->getRoles()}</td>
+                             <td align='left'>{$request->getProjects()}</td>
+                             <td>{$request->getUniversity()}<br />
+                                 {$request->getDepartment()}<br />
+                                 {$request->getPosition()}</td> ");
+            if(count($config->getValue('subRoles')) > 0 && !$history){
+                $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>");
+                foreach($config->getValue('subRoles') as $subRole => $fullSubRole){
+                    $wgOut->addHTML("<input type='checkbox' name='subtype[]' value='{$subRole}' />{$fullSubRole}<br />");
+                }
+                $wgOut->addHTML("</td>");
+            }
+            $wpSendMail = ($wgEnableEmail) ? "true" : "false";
+            $wgOut->addHTML("
+                        <td>{$request->getCandidate(true)}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
-                            <input type='hidden' name='wpSendMail' value='true' />");
+                            <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
+                            <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
+                            <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
+                            <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
+                            <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){
                 if($request->isCreated()){
                     $wgOut->addHTML("<td>Accepted</td>");
@@ -169,13 +210,13 @@ class AddMember extends SpecialPage{
                 }
             }
             else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td> <td><input type='submit' name='submit' value='Ignore' /></td>");
+                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input type='submit' name='submit' value='Ignore' /></td>");
             }
             $wgOut->addHTML("</form>
                     </tr>");
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>
-                                            $('#requests').dataTable().fnSort([[2,'desc']]);
+                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }
@@ -183,6 +224,8 @@ class AddMember extends SpecialPage{
     function createForm(){
         global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
+        $committees = $config->getValue('committees');
+        
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
@@ -205,48 +248,21 @@ class AddMember extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
         
         $roleValidations = VALIDATE_NOT_NULL;
-        if($me->isRoleAtLeast(MANAGER)){
+        if($me->isRoleAtLeast(STAFF)){
             $roleValidations = VALIDATE_NOTHING;
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != CHAMP && 
-                                            $role != ISAC && 
-                                            $role != IAC && 
-                                            $role != CAC && 
-                                            $role != NCE &&
-                                            $role != RMC &&
-                                            $role != CF &&
-                                            $role != HQPAC){
+            if($me->isRoleAtLeast($role) && !isset($committees[$role])){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
-        if($me->isRoleAtLeast(PL)){
+        if($me->isRoleAtLeast(PL) && in_array(CHAMP, $wgRoles)){
             $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
         }
         if($me->isRoleAtLeast(STAFF)){
-            if(in_array(ISAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', ISAC)] = ISAC;
-            }
-            if(in_array(IAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
-            }
-            if(in_array(CAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CAC)] = CAC;
-            }
-            if(in_array(RMC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;
-            }
-            if(in_array(CF, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', CF)] = CF;
-            }
-            if(in_array(HQPAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', HQPAC)] = HQPAC;
-            }
-        }
-        if($me->isRoleAtLeast(MANAGER)){
-            if(in_array(NCE, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', NCE)] = NCE;
+            foreach($committees as $committee => $def){
+                $roleOptions[$def] = $committee;
             }
         }
         ksort($roleOptions);
@@ -254,39 +270,39 @@ class AddMember extends SpecialPage{
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
-        
-        $titles = array_merge(array(""), Person::getAllPartnerTitles());
-        $organizations = array_merge(array(""), Person::getAllPartnerNames());
-        $depts = array_merge(array(""), Person::getAllPartnerDepartments());
-        $titleCombo = new ComboBox('title', "Title", "", $titles);
-        $orgCombo = new ComboBox('org', "Organization", "", $organizations);
-        $deptCombo = new ComboBox('department', "Department", "", $depts);
-        /*
+
+        $projects = Project::getAllProjects();
         $universities = Person::getAllUniversities();
-        $positions = Person::getAllPositions();
+        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
-        $universityLabel = new Label("university_label", "University", "The university that the user is a member of", VALIDATE_NOTHING);
-        $universityField = new SelectBox("university_field", "University", "", $universities, VALIDATE_NOTHING);
-        $universityRow = new FormTableRow("university_row");
-        $universityRow->append($universityLabel)->append($universityField);
-        
-        $positionLabel = new Label("position_label", "Title", "The title of this user", VALIDATE_NOTHING);
-        $positionField = new ComboBox("position_field", "Position", "", $positions, VALIDATE_NOTHING);
-        $positionRow = new FormTableRow("university_row");
-        $positionRow->append($positionLabel)->append($positionField);
-        
-        $deptLabel = new Label("dept_label", "Department", "The department of this user", VALIDATE_NOTHING);
-        $deptField = new ComboBox("dept_field", "Department", "", $departments, VALIDATE_NOTHING);
-        $deptRow = new FormTableRow("dept_row");
-        $deptRow->append($deptLabel)->append($deptField);
-        */
-        $projects = Project::getAllProjects();
-        
+        $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
+        $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
+        $candRow = new FormTableRow("cand_row");
+        $candRow->append($candLabel)->append($candField);
+               
         $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
         $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
+        
+        $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
+        $universityField = new ComboBox("university_field", "Instutution", $me->getUni(), $universities, VALIDATE_NOTHING);
+        $universityField->attr("style", "width: 250px;");
+        $universityRow = new FormTableRow("university_row");
+        $universityRow->append($universityLabel)->append($universityField);
+        
+        $deptLabel = new Label("dept_label", "Department", "The department of this user", VALIDATE_NOTHING);
+        $deptField = new ComboBox("dept_field", "Department", $me->getDepartment(), $departments, VALIDATE_NOTHING);
+        $deptField->attr("style", "width: 250px;");
+        $deptRow = new FormTableRow("dept_row");
+        $deptRow->append($deptLabel)->append($deptField);
+        
+        $positionLabel = new Label("position_label", "HQP Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
+        $positionField = new SelectBox("position_field", "HQP Academic Status", "", $positions, VALIDATE_NOTHING);
+        $positionField->attr("style", "width: 260px;");
+        $positionRow = new FormTableRow("university_row");
+        $positionRow->append($positionLabel)->append($positionField);
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -297,10 +313,11 @@ class AddMember extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($rolesRow)
-                  //->append($universityRow)
-                  //->append($positionRow)
-                  //->append($deptRow)
                   ->append($projectsRow)
+                  ->append($universityRow)
+                  ->append($deptRow)
+                  ->append($positionRow)
+                  ->append($candRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);

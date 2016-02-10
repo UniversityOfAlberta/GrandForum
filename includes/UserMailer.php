@@ -162,6 +162,9 @@ class UserMailer {
 	 */
 	public static function send( $to, $from, $subject, $body, $replyto = null, $contentType = 'text/plain; charset=UTF-8' ) {
 		global $wgSMTP, $wgEnotifMaxRecips, $wgAdditionalMailParams, $wgAllowHTMLEmail;
+		if(strstr($body, "<html>") !== false || $contentType == 'text/html; charset=UTF-8'){
+		    $contentType = 'text/html; charset=UTF-8';
+		}
 		$mime = null;
 		if ( !is_array( $to ) ) {
 			$to = array( $to );

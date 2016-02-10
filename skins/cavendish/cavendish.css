@@ -1082,10 +1082,11 @@ del {
 
 .label {
     text-align:right;
-    font-size: 10pt;
+    font-size: 1.0em;
     font-weight: bold;
     vertical-align: top;
     line-height: 27px;
+    white-space:nowrap;
 }
 
 .field {
@@ -1210,6 +1211,12 @@ td.budgetError {
     background: #FEB8B8;
 }
 
+.multiBudget {
+    overflow-x: auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
 /* jQuery dialogs */
 .ui-dialog{
     border: 1px solid #ccc;
@@ -1273,6 +1280,14 @@ input.other_option:focus {
     font-size: 85%;
 }
 
+span.noshow {
+    display: none;
+}
+
+select span.noshow {
+    display: inline-block;
+}
+
 /* Backbone Cards */
 
 .small_card {
@@ -1320,7 +1335,8 @@ input.other_option:focus {
     vertical-align:top;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 285px;
+    min-width: 285px;
+    max-width: 325px;
 }
 
 .small_card .card_description {
@@ -1330,6 +1346,11 @@ input.other_option:focus {
 .large_card .card_description {
     margin-left:  5px;
     margin-right: 5px;
+    line-height: 16px;
+}
+
+.large_card .card_description h1 {
+    line-height: 18px;
 }
 
 .large_card #roles {
@@ -1613,6 +1634,7 @@ div.popupBox {
     position: absolute;
     top: -1px;
     left: 100%;
+    margin-bottom: 3px;
     border: 1px solid #AAAAAA;
     border-bottom: none;
     background: #FFFFFF;

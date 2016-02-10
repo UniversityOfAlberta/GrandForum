@@ -68,35 +68,22 @@ function showDiv(div_id, details_div_id){
         $this->showContentsTable();
 
         if(ArrayUtil::get_string($_GET, 'year') == "tabs_{$this->year}_".$label){
-        switch (ArrayUtil::get_string($_GET, 'summary')) {
-        /*
-        case 'table2':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            //self::show_grand_table2();
-            break;
-            
-        case 'table3':
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showHQPTable();
-            break;
-        */
-        case 'grand':
-            $wgOut->addScript($foldscript);
-            $this->html .= "<a id='Table2.1'></a><h2>Contributions</h2>";
-            self::showContributionsTable();
-            $this->html .= "<a id='Table2.2'></a><h2>Contributions by Project</h2>";
-            self::showContributionsByProjectTable();
-            $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-            self::showGrandTables();
-            self::showDisseminations();
-            self::showArtDisseminations();
-            self::showActDisseminations();
-            self::showPublicationList();
-            break;
+            switch (ArrayUtil::get_string($_GET, 'summary')) {
+                case 'grand':
+                    $wgOut->addScript($foldscript);
+                    $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
+                    $this->html .= "<a id='Table2.1'></a><h3>Table 2.1: Contributions</h3>";
+                    self::showContributionsTable();
+                    $this->html .= "<a id='Table2.2'></a><h3>Table 2.2: Contributions by Project</h3>";
+                    self::showContributionsByProjectTable();
+                    self::showGrandTables();
+                    self::showDisseminations();
+                    self::showArtDisseminations();
+                    self::showActDisseminations();
+                    self::showPublicationList();
+                    break;
+            }
         }
-        }
-        //$this->showProductivity();
         
         return $this->html;
     }
@@ -110,18 +97,62 @@ function showDiv(div_id, details_div_id){
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'>4</span> <span class='toctext'>NCE tables</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
                 <ul>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'><span class='tocnumber'>2.1</span> <span class='toctext'>Table 2.1: Contributions</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'><span class='tocnumber'>2.2</span> <span class='toctext'>Table 2.2: Contributions by Project</span></a></li>
-                <!--<li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?summary=table3#Table3'><span class='tocnumber'>4.2</span> <span class='toctext'>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</span></a></li-->
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'><span class='tocnumber'>4.1</span> <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'><span class='tocnumber'>4.2a</span> <span class='toctext'>Table 4.2a: HQP Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'><span class='tocnumber'>4.2b</span> <span class='toctext'>Table 4.2b: HQP Breakdown by Project</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'><span class='tocnumber'>4.3</span> <span class='toctext'>Table 4.3: NI Breakdown by University</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'><span class='tocnumber'>4.4</span> <span class='toctext'>Table 5: Post Network employment of graduate students</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'><span class='tocnumber'>4.5</span> <span class='toctext'>Table 6: Dissemination of Network Research Results and Collaborations</span></a></li>
-                <li class='toclevel-2'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'><span class='tocnumber'>4.6</span> <span class='toctext'>Table 7: Publications list</span></a></li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'>
+                        <span class='tocnumber'>Table 2.1: </span>
+                        <span class='toctext'>Contributions</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'>
+                        <span class='tocnumber'>Table 2.2: </span>
+                        <span class='toctext'>Contributions by Project</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'>
+                        <span class='tocnumber'></span>
+                        <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'>
+                        <span class='tocnumber'>Table 4.2a: </span>
+                        <span class='toctext'>HQP Breakdown by University</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'>
+                        <span class='tocnumber'>Table 4.2b: </span>
+                        <span class='toctext'>HQP Breakdown by Project</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'>
+                        <span class='tocnumber'>Table 4.3: </span>
+                        <span class='toctext'>NI Breakdown by University</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'>
+                        <span class='tocnumber'>Table 5: </span>
+                        <span class='toctext'>Post Network employment of graduate students</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'>
+                        <span class='tocnumber'>Table 6: </span>
+                        <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
+                    </a>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'>
+                        <span class='tocnumber'>Table 7: </span>
+                        <span class='toctext'>Publications list</span>
+                    </a>
+                </li>
                 </ul>
             </li>
             </ul>
@@ -349,7 +380,7 @@ EOF;
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
-        
+        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>";
         $this->html .= self::getHQPStats();
 
         $canadian = array();
@@ -419,99 +450,76 @@ EOF;
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
-                            "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
+                            "Other"=>"Other");
 
-        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Landed Immigrant"=>array(array(),array()), "Visa Holder"=>array(array(),array()), "Unknown"=>array(array(),array()));
+        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
-            $hqp_table[$val] = array("Female"=>$nations, "Male"=>$nations, "Unknown"=>$nations);
+            $hqp_table[$val] = array("Male"=>$nations, "Female"=>$nations, "Unknown"=>$nations);
         }
 
         //Fill the table
         foreach($hqps as $hqp){
-            $pos = $hqp->getUniversity();
+            $pos = $hqp->getUniversityDuring($this->from, $this->to);
             $pos = (isset($positions[$pos['position']]))? $pos['position'] : "Other";
             $gender = $hqp->getGender();
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
             $nation = (empty($nation))? "Unknown" : $nation;
-            //$thesis = $hqp->getThesis();
-            //$thesis = (!is_null($thesis))? 1 : 0;
+            if($nation == "Landed Immigrant"){
+                $nation = "Canadian";
+            }
+            else if($nation == "Visa Holder"){
+                $nation = "Foreign";
+            }
 
             $hqp_table[$positions[$pos]][$gender][$nation][0][] = $hqp;
-            /*if(!is_null($thesis)){
-                $hqp_table[$positions[$pos]][$gender][$nation][1][] = $thesis;
-            }*/
-        }
-
-        $papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to); 
-        foreach($papers as $paper){
-            $type = $paper->getType();
-            if($type == "PhD Thesis" || $type == "PHD Thesis"){
-                $pos = "PhD";
-            }   
-            else if( $type == "Masters Thesis"){
-                $pos = "Masters";
+            $movedOns = $hqp->getAllMovedOn();
+            foreach($movedOns as $movedOn){
+                if($movedOn['reason'] == 'graduated'){
+                    $hqp_table[$positions[$pos]][$gender][$nation][1][] = $movedOn['thesis'];
+                }
             }
-            else if( $type == "Bachelors Thesis" || $type == "Misc: Honours thesis"){
-                $pos = "Ugrad";
-            }
-            else{
-                continue;
-            }
-
-            $author = $paper->getAuthors();
-            if(count($author) < 1){
-                continue;
-            }
-            $author = $author[0];
-            $gender = $author->getGender();
-            $gender = (empty($gender))? "Unknown" : $gender;
-            $nation = $author->getNationality();
-            $nation = (empty($nation))? "Unknown" : $nation;
-
-            $hqp_table[$pos][$gender][$nation][1][] = $paper;
-
         }
 
         $details_div_id = "hqp_details";
         $html =<<<EOF
          <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+            <tr>
+                <td width='25%'></td>
+                <th width='25%'>HQP</th>
+                <th width='25%'>N. of HQP</th>
+                <th width='25%'>N. of degrees completed</th>
+            </tr>
 EOF;
         
         $total = array(array(), array());
         foreach ($hqp_table as $pos=>$data){
             $html .=<<<EOF
                 <tr>
-                <th>{$pos}</th>
-                <td>
+                <th rowspan='14'>{$pos}</th>
 EOF;
-            $inner_tbl =<<<EOF
-                <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-                <tr>
-                    <td>Graduate Students</td>
-                    <td>Number of Students</td>
-                    <td>Number of Theses Completed</td>
-                 </tr>
-EOF;
+            $inner_tbl = "";
             $total_gen = array(array(), array());
             foreach($data as $gender => $nations){
-
-                $inner_tbl .= "<tr><td align='center'>{$gender}</td><td></td><td></td></tr>";
+                $inner_tbl .= "<tr><td>{$gender}</td><td></td><td></td></tr>";
                 $total_nat = array(array(), array());
                 foreach($nations as $label => $counts){
                     
                     $lnk_id = "lnk_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_" .$pos. "_" .$gender. "_". $label;
-            
-                    $inner_tbl .= "<tr><td>{$label}</td>";
+                    
+                    $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                    $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                                
+                    $inner_tbl .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;{$label}</td>";
                     $num_students = count($counts[0]);
                     $student_details = Dashboard::hqpDetails($counts[0]);
                     if($num_students > 0){
@@ -535,6 +543,10 @@ EOF;
                     //Theses
                     $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_thes_" .$pos. "_" .$gender. "_". $label;
+                    
+                    $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                    $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                    
                     $num_theses = count($counts[1]);
                     $theses_details = Dashboard::paperDetails($counts[1]);
                     if($num_theses > 0){
@@ -561,59 +573,32 @@ EOF;
                     $total_nat[1] = array_merge($total_nat[1], $counts[1]); //+= $counts[1];
                 }
 
-                $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_nat[0]}</td><td>{$total_nat[1]}</td></tr>";
+
                 $lnk_id = "lnk_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_" .$pos. "_" .$gender. "_total";
+                
+                $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+                $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+                
                 $num_total_nat = count($total_nat[0]);
                 $total_nat_details = Dashboard::hqpDetails($total_nat[0]);
-                if($num_total_nat > 0){
-                    $inner_tbl .=<<<EOF
-                        <td>
-                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                        $num_total_nat
-                        </a>
-                        <div style="display: none;" id="$div_id" class="cell_details_div">
-                            <p><span class="label">{$pos} / {$gender} / Total:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                            <ul>$total_nat_details</ul>
-                        </div>
-                        </td>
-EOF;
-                }
-                else{
-                    $inner_tbl .= "<td>0</td>";
-                }
 
                 $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_thes_" .$pos. "_" .$gender. "_total";
                 $num_total_nat_thes = count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
-                if($num_total_nat_thes > 0){
-                    $inner_tbl .=<<<EOF
-                        <td>
-                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                        $num_total_nat_thes
-                        </a>
-                        <div style="display: none;" id="$div_id" class="cell_details_div">
-                            <p><span class="label">Theses: {$pos} / {$gender} / Total:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                            <ul>$total_nat_thes_details</ul>
-                        </div>
-                        </td>
-EOF;
-                }
-                else{
-                    $inner_tbl .= "<td>0</td>";
-                }
-                //$inner_tbl .= "<td>{$total_nat[1]}</td></tr>";
 
                 $total_gen[0] = array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
                 $total_gen[1] = array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
             }   
             
-            $inner_tbl .= "<tr style='font-weight:bold;'><td>Total $pos:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
+            $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
             $lnk_id = "lnk_" .$pos. "_total";
             $div_id = "div_" .$pos. "_total";
+            
+            $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+            $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+            
             $num_total_gen = count($total_gen[0]);
             $total_gen_details = Dashboard::hqpDetails($total_gen[0]);
             if($num_total_gen > 0){
@@ -636,6 +621,10 @@ EOF;
 
             $lnk_id = "lnk_thes_" .$pos. "_total";
             $div_id = "div_thes_" .$pos. "_total";
+            
+            $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
+            $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
+            
             $num_total_gen_thes = count($total_gen[1]);
             $total_gen_thes_details = Dashboard::paperDetails($total_gen[1]);
             if($num_total_gen_thes > 0){
@@ -655,15 +644,14 @@ EOF;
             else{
                 $inner_tbl .= "<td>0</td>";
             }
-            //$inner_tbl .= "<td>{$total_gen[1]}</td></tr>";
-
-            $inner_tbl .= "</table>";           
-            $html .= $inner_tbl."</td></tr>";
+            //$inner_tbl .= "<td>{$total_gen[1]}</td></tr>";         
+            $html .= $inner_tbl."</tr>";
+            $html .= "<tr><th colspan='4'></th></tr>";
             
             $total[0] = array_merge($total[0], $total_gen[0]);// += $total_gen[0];
             $total[1] = array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
         }
-        $html .= "<tr style='font-weight:bold;'><td></td><td>Total Students: "; //Total Thesis: {$total[1]}</td></tr>";
+        $html .= "<tr style='font-weight:bold;'><td></td><td>Total:</td><td>"; //Total Thesis: {$total[1]}</td></tr>";
         $lnk_id = "lnk_total";
         $div_id = "div_total";
         $num_total = count($total[0]);
@@ -681,16 +669,16 @@ EOF;
 EOF;
         }
         else{
-            $html .= "Total Students: 0";
+            $html .= "0";
         }
-
+        $html .= "</td><td>";
         $lnk_id = "lnk_thes_total";
         $div_id = "div_thes_total";
         $num_total_thes = count($total[1]);
         $total_thes_details = Dashboard::paperDetails($total[1]);
         if($num_total_thes > 0){
             $html .=<<<EOF
-;                Total Theses: <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                 $num_total_thes
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
@@ -701,7 +689,7 @@ EOF;
 EOF;
         }
         else{
-            $html .= "; Total Theses: 0";
+            $html .= "0";
         }
 
         //$html .= "; Total Thesis: {$total[1]}</td></tr>";
@@ -717,27 +705,27 @@ EOF;
 
         //Setup the table structure
         $universities = array();
-        $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                            "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
+        $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                            "Technicians / Research Associates"=>array(), "Other"=>array());
 
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
-                            "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
+                            "Other"=>"Other");
 
         //Fill the table
         foreach ($hqps as $hqp){
-            $uniobj = $hqp->getUniversity();
+            $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
-                $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                            "Tech"=>array(), "Other"=>array(), "Unknown"=>array());
+                $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                            "Technicians / Research Associates"=>array(), "Other"=>array());
             }
 
-            $pos = (isset($uniobj['position']))? $uniobj['position'] : "Unknown";
+            $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
             $pos = (isset($positions[$pos]))? $positions[$pos] : "Other";
 
             if($uni == "Unknown"){
@@ -759,10 +747,9 @@ EOF;
          <th>Ugrad</th>
          <th>Masters</th>
          <th>PhD</th>
-         <th>PostDoc</th>
-         <th>Tech</th>
+         <th>Post-Doctoral Fellows</th>
+         <th>Technicians / Research Associates</th>
          <th>Other</th>
-         <th>Unknown</th>
          <th>Total</th>
          </tr>
 EOF;
@@ -774,7 +761,7 @@ EOF;
 EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
-                $uni_id = preg_replace('/ /', '', $uni);
+                $uni_id = str_replace("/", "_", str_replace(" ", "_", $uni));
                 $lnk_id = "lnk_" . $uni_id . "_" . $posi;
                 $div_id = "div_" . $uni_id . "_" . $posi;
 
@@ -838,24 +825,26 @@ EOF;
 
         //Setup the table structure
         $projects = array();
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
-                            "Technician"=>"Tech",
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
                             "Other"=>"Other");
 
         //Fill the table
         foreach ($hqps as $hqp){
             $projs = $hqp->getProjectsDuring($this->from, $this->to);
-            $uni = $hqp->getUni();
-            $pos = $hqp->getPosition();
+            $univ = $hqp->getUniversityDuring($this->from, $this->to);
+            $pos = @$univ['position'];
+            $uni = @$univ['university'];
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
-                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "PostDoc"=>array(), 
-                                                             "Tech"=>array(), "Other"=>array());
+                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                                             "Technicians / Research Associates"=>array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
                 //}
@@ -872,8 +861,8 @@ EOF;
          <th>Ugrad</th>
          <th>Masters</th>
          <th>PhD</th>
-         <th>PostDoc</th>
-         <th>Tech</th>
+         <th>Post-Doctoral Fellows</th>
+         <th>Technicians / Research Associates</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
@@ -885,9 +874,12 @@ EOF;
 EOF;
             $total_proj = array();
             foreach($data as $posi => $hqpa){
-                $proj_id = preg_replace('/ /', '', $projName);
+                $proj_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $projName)));
                 $lnk_id = "lnk_" . $proj_id . "_" . $posi;
                 $div_id = "div_" . $proj_id . "_" . $posi;
+                
+                $lnk_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $lnk_id)));
+                $div_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $div_id)));
 
                 $total_proj = array_merge($total_proj, $hqpa);
                 $num_students = count($hqpa);   
@@ -985,7 +977,7 @@ EOF;
             $grand_percent = preg_replace('/%/', '', $grand_percent);
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
-            $uniobj = $hqp->getUniversity();
+            $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array(array(), 0);
@@ -1010,10 +1002,6 @@ EOF;
          <tr>
          <th>University</th>
          <th>Researchers</th>";
-        if(isExtensionEnabled('Reporting')){
-            // Only show this if the Reporting Extension is enabled, otherwise it will always be 0
-            $html .= "<th>{$config->getValue('networkName')} effort</th>";
-        }
         $html .= "</tr>";
 
         foreach ($universities as $uni=>$data){
@@ -1049,9 +1037,6 @@ EOF;
             else{
                 $html .= "<td>0</td>";
             }
-            if(isExtensionEnabled('Reporting')){
-                $html .= "<td>{$distr}</td>";
-            }
 
             //}
 
@@ -1069,13 +1054,13 @@ EOF;
     function getHQPEmployment($people, $type){
         $movedons = $people;
         
-        $positions = array( "Undergraduate"=>"Ugrad",
-                            "Masters Student"=>"Masters",
-                            "PhD Student"=>"PhD",
-                            "PostDoc"=>"PostDoc",
-                            "Technician"=>"Tech",
-                            "Other"=>"Other",
-                            "Unknown"=>"Unknown");
+        $positions = array( "Undergraduate Student"=>"Ugrad",
+                            "Graduate Student - Master's"=>"Masters",
+                            "Graduate Student - Doctoral"=>"PhD",
+                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Technician"=> "Technicians / Research Associates",
+                            "Research Associate" => "Technicians / Research Associates",
+                            "Other"=>"Other");
         
         $intkeys = array(
             'Canadian' => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
@@ -1113,7 +1098,7 @@ EOF;
             }
             //Movedon data
             else{
-                $m_pos = $m->getUniversity();
+                $m_pos = $m->getUniversityDuring($this->from, $this->to);
                 if(isset($positions[$m_pos['position']])){
                     $m_pos = $m_pos['position'];
                 }
@@ -1144,7 +1129,7 @@ EOF;
         }   
 
         $html =<<<EOF
-            <table cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
+            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
             <th rowspan='2'>Position /<br />Degree completed</th>
             <th colspan='3'>Canadian</th>
@@ -1286,61 +1271,6 @@ EOF;
         return $html;
     }
 
-    static function showHQPTable(){
-        global $wgOut;
-        $wgOut->addScript("<script type='text/javascript'>
-            function showHideTable(id){
-                $('#' + id).toggle();
-            }
-        </script>");
-        $people = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
-        $chunk = "
-<a id='Table3'></a><h3>Table 3: Number of network Research Personnel paid with NCE funds or other funds, by sectors</h3>
-<table class='wikitable sortable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-    <tr><th width='15%'>Name</th><th width='10%'>Type</th><th width='30%'>University</th><th width='25%'>Title</th><th width='20%'>Projects</th></tr>
-";
-        foreach($people as $hqp){
-            if($hqp->getName() == "Sandra.Tpze" ||
-               $hqp->getName() == "Beth" ||
-               $hqp->getName() == "Scott.Newsom" ||
-               $hqp->getName() == "Dinara" ||
-               $hqp->getName() == "Andrea" ||
-               $hqp->getName() == "Bardia"){
-                continue;
-            }
-            $projects = $hqp->getProjects();
-            $university = $hqp->getUniversity();
-            $chunk .= "<tr>
-                           <td valign='top'>{$hqp->getName()}</td>
-                           <td valign='top'>HQP</td>
-                           <td valign='top'>{$university['university']}</td>
-                           <td valign='top'>{$university['position']}</td>
-                           <td style='padding:0;'>";
-            $table = "";
-            $max = 0;
-            foreach($projects as $project){
-                $month = $hqp->getHQPMonth($project);
-                $table .= "<tr>
-                               <td valign='top'>{$project->getName()}</td>
-                               <td>$month</td>
-                           </tr>";
-                if($month != "Unknown" && $month > $max){
-                    $max = $month;
-                }
-            }
-            if($max < 10){
-                $max = "0".$max;
-            }
-            $table = "<span hidden='hidden'>$max</span><table class='wikitable' cellspacing='1' cellpadding='2' rules='all' width='100%'>
-                                <tr><th width='100px'>Project</th><th>Months Active</th></tr>".$table."</table>";
-                           
-            $chunk .= "$table</td></tr>";
-        }
-        $chunk .= "</table>";
-
-        $this->html .= $chunk;
-    }
-
     function showDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
@@ -1358,20 +1288,6 @@ EOF;
             $groups = array();
             $author_ids = array();
             foreach($authors as $author){
-                /* Old interpretation of a group as project
-                $projects = $author->getProjects();
-                if(is_null($projects)){continue;}
-                foreach($projects as $p){
-                    $p_name = $p->getName();
-                    if(array_key_exists($p_name, $pub_projects)){
-                        $pub_projects[$p_name]++;
-                    }
-                    else{
-                        $pub_projects[$p_name] = 1;
-                    }
-                }
-                */
-                
                 $author_ids[] = $author->getId();
                 if($author->getId() == ""){
                     break;
@@ -1392,19 +1308,9 @@ EOF;
                     }
 
                 }
-
-
             }
-            //print_r($author_ids);
             $key = "_r2";
-            /*if( array_search(count($authors), $pub_projects) ){
-                $key = "_r1";
-            }
-            else{
-                $key = "_r2";
-            }*/
-            //print_r($groups);
-            //echo "<br><br>";
+
             foreach($groups as $k=>$sup){
                 if(in_array($k, $author_ids) && count($sup) == count($authors) ){
                     $key = "_r1";
@@ -1617,7 +1523,6 @@ EOF;
                 if($author->getId() == ""){
                     break;
                 }
-                //echo "sdsd".$author->isSupervisor();
                 if($author->isSupervisor()){
                     if(!isset($groups[$author->getId()])){
                         $groups[$author->getId()] = array($author->getId());
@@ -1795,7 +1700,7 @@ EOF;
 
     function showPublicationList(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
+        $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
         $pub_count = array("a1"=>array(), "a2"=>array(), "b"=>array(), "c"=>array());
 
         $alreadyDone = array();
@@ -1809,16 +1714,19 @@ EOF;
             //    continue;
             //}
             switch ($pub->getType()) {
+                // A1: Articles in refereed publications
                 case 'Book':
                 case 'Book Chapter':
+                case 'Edited Book':
                 case 'Collections Paper':
+                case 'Conference Paper':
                 case 'Proceedings Paper':
                     if($status != "Published"){
                         continue 2;
                     }
                     $pub_count["a2"][] = $pub;
                     break;
-
+                // A2: Other refereed contributions
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
                     if($status != "Published" && $status != "Submitted"){
@@ -1826,18 +1734,31 @@ EOF;
                     }
                     $pub_count["a1"][] = $pub;
                     break;
-
+                // C: Specialized Publications
+                case 'Bachelors Thesis':
                 case 'Masters Thesis':
+                case 'Masters Dissertation':
                 case 'PHD Thesis':
+                case 'PHD Dissertation':
                 case 'Tech Report':
+                case 'Abstract':
+                case 'Journal Abstract':
+                case 'Conference Abstract':
+                case 'White Paper':
+                case 'Symposium Record':
+                case 'Industrial Report':
+                case 'Internal Report':
+                case 'Manual':
                     if($status != "Published"){
                         continue 2;
                     }
                     $pub_count["c"][] = $pub;   
                     break;
-
+                // B: Non-refereed contributions
                 case 'Misc':
                 case 'Poster':
+                case 'Book Review':
+                case 'Review Article':
                 default:
                     if($status != "Published"){
                         continue 2;

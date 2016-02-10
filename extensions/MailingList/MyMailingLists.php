@@ -34,6 +34,9 @@ class MyMailingLists extends SpecialPage{
         if($person->isRoleAtLeast(MANAGER)){
             $lists = MailingList::listLists();
         }
+        else if($person->isRoleAtLeast(STAFF)){
+            $lists = array_diff(MailingList::listLists(), array("support", strtolower($config->getValue('networkName'))."-support"));
+        }
         else{
             $lists = MailingList::getPersonLists($person);
         }
@@ -48,13 +51,14 @@ class MyMailingLists extends SpecialPage{
             <input type='submit' value='Submit' />
         </form>");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('.mailTable').dataTable({'iDisplayLength': 100});
+            $('.mailTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
         </script>");
     }
     
     static function createTab(&$tabs){
         global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        if($wgUser->isLoggedIn()){
+        $me = Person::newFromWgUser();
+        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
             $selected = "";
             if($wgTitle->getNSText() == "Mail" || 
                ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){

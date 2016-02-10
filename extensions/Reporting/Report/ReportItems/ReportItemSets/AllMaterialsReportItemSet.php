@@ -7,10 +7,10 @@ class AllMaterialsReportItemSet extends ReportItemSet {
         //$person = Person::newFromId($this->personId);
         
         $type = $this->getAttr('subType', 'NI');
-        if($type == 'NI'){
-            //$subs = Person::getAllPeople($type);
-            $year = (REPORTING_YEAR == date('Y'))? REPORTING_YEAR-1 : REPORTING_YEAR;
-            $subs = Person::getAllEvaluates($type, $year);
+        $class = $this->getAttr('class', 'Person');
+        $year = $this->getReport()->year;
+        if($type != 'SAB' && $type != 'Project' && $class != "Project"){
+            $subs = Person::getAllEvaluates($type, $year, $class);
             $sorted = array();
             foreach ($subs as $s){
                 $rev_name = $s->getReversedName();
@@ -19,13 +19,20 @@ class AllMaterialsReportItemSet extends ReportItemSet {
             ksort($sorted);
             $subs = $sorted;
         }
-        else if($type == 'Project'){
-            $subs = Project::getAllProjects();
+        else {
+            $subs = Person::getAllEvaluates($type, $year, $class);
+            $sorted = array();
+            foreach ($subs as $s){
+                $name = $s->getName();
+                $sorted["{$name}"] = $s;
+            }
+            ksort($sorted);
+            $subs = $sorted;
         }
         if(is_array($subs)){
             foreach($subs as $sub){
                 $tuple = self::createTuple();
-                if($type == "Project"){
+                if($type == "Project" || $type == "SAB" || $class == "Project"){
                     $tuple['project_id'] = $sub->getId();
                 }
                 else{

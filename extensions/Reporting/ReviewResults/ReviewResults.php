@@ -471,7 +471,7 @@ EOF;
                 "Confidence Level of Evaluator" => array(EVL_CONFIDENCE, 0)
             );
 
-            $evaluators = $ni->getEvaluators($type, 2013);
+            $evaluators = $ni->getEvaluators(2013, $type);
         }
         else if($type == "Project"){
             // Project Specific HTML variables

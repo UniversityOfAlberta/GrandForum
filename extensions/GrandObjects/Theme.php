@@ -9,9 +9,11 @@ class Theme {
     static $cache = array();
     
     var $id;
-    var $acronym;
-    var $name;
+    var $acronym = "";
+    var $name = "";
     var $description;
+    var $resources;
+    var $wiki;
     var $phase;
     var $color;
     var $leader = null;
@@ -72,6 +74,8 @@ class Theme {
             $this->acronym = $data[0]['acronym'];
             $this->name = $data[0]['name'];
             $this->description = $data[0]['description'];
+            $this->resources = $data[0]['resources'];
+            $this->wiki = $data[0]['wiki'];
             $this->phase = $data[0]['phase'];
             $this->color = $data[0]['color'];
         }
@@ -110,6 +114,22 @@ class Theme {
     }
     
     /**
+     * Returns this Theme's Resources
+     * @return string This Theme's Resources
+     */
+    function getResources(){
+        return $this->resources;
+    }
+    
+    /**
+     * Returns this Theme's Wiki
+     * @return string This Theme's Wiki
+     */
+    function getWiki(){
+        return $this->wiki;
+    }
+    
+    /**
      * Returns this Theme's phase
      * @return int This Theme's phase
      */
@@ -123,7 +143,7 @@ class Theme {
      */
     function getUrl(){
         global $wgServer, $wgScriptPath, $config;
-        return "{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:{$this->getAcronym()} - {$this->getName()}";
+        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getAcronym()}:Main";
     }
     
     /**
@@ -134,7 +154,7 @@ class Theme {
         return $this->color;
     }
     
-    /*
+    /**
      * Returns all of the leaders regardless of their type
      * @return array An array of all leaders
      */
@@ -154,7 +174,7 @@ class Theme {
         return $leaders;
     }
     
-    /*
+    /**
      * Returns all of the leaders regardless of their type
      * @return array An array of all leaders
      */
@@ -173,7 +193,31 @@ class Theme {
         }
         return $leaders;
     }
-
+    
+    /**
+     * Returns all of the Projects in this Theme
+     * @return array The Projects in this Theme
+     */
+    function getProjects(){
+        $return = array();
+        $projects = Project::getAllProjects();
+        foreach($projects as $project){
+            if($project->getChallenge()->getAcronym() == $this->getAcronym()){
+                $return[$project->getName()] = $project;
+            }
+        }
+        ksort($return);
+        return $return;
+    }
+    
+    /**
+     * Returns whether or not the current user can edit this Theme
+     * @return boolean Whether or not the current user can edit this Theme
+     */
+    function userCanEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->isThemeLeaderOf($this) || $me->isThemeCoordinatorOf($this) || $me->isRoleAtLeast(STAFF));
+    }
 }
 
 ?>

@@ -26,7 +26,6 @@ class Project extends BackboneModel {
     var $budgets;
     var $deleted;
     var $effectiveDate;
-    private $themes;
     private $succ;
     private $preds;
     private $peopleCache = null;
@@ -345,6 +344,13 @@ class Project extends BackboneModel {
         return (count($data) > 0);
     }
     
+    static function areThereAdminProjects(){
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                    array('id'),
+                                    array('type' => EQ('Administrative')));
+        return (count($data) > 0);
+    }
+    
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
     function Project($data){
@@ -374,11 +380,17 @@ class Project extends BackboneModel {
                 $this->effectiveDate = "0000-00-00 00:00:00";
             }
             $this->fullName = false;
-            $this->themes = null;
         }
     }
     
     function toArray(){
+        $leaders = $this->getLeaders();
+        $leads = array();
+        foreach($leaders as $leader){
+            $leads[] = array('id' => $leader->getId(),
+                             'name' => $leader->getNameForForms(),
+                             'url' => $leader->getUrl());
+        }
         $subProjects = $this->getSubProjects();
         $subs = array();
         foreach($subProjects as $sub){
@@ -386,6 +398,8 @@ class Project extends BackboneModel {
                             'name' => $sub->getName(),
                             'url' => $sub->getUrl());
         }
+        $challenge = $this->getChallenge();
+        $theme = $challenge->getAcronym();
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -393,10 +407,12 @@ class Project extends BackboneModel {
                        'longDescription' => $this->getLongDescription(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
+                       'theme' => $theme,
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
+                       'leaders' => $leads,
                        'subprojects' => $subs,
                        'startDate' => $this->getCreated(),
                        'endDate' => $this->getDeleted());
@@ -668,14 +684,15 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRole(NI) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRole(NI) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this)))){
+            if($filter == PL){
+                if($person->leadershipOf($this)){
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || ($currentDate >= $created && $person->isRole($filter)) || $person->isRoleDuring($filter, $created, "9999")) && !$person->isRole(ADMIN)){
+            else if(($filter == null || 
+                     ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
+                     ($person->isRole($filter, $this) && !$person->leadershipOf($this))) && 
+                    !$person->isRole(ADMIN)){
                 $people[$person->getId()] = $person;
             }
         }
@@ -723,14 +740,14 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRoleDuring(NI, $startRange, $endRange) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRole(NI, $startRange, $endRange) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+            if($filter == PL){
+                if($person->leadershipOf($this)){
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || $person->isRoleDuring($filter, $startRange, $endRange)) && ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
+            else if(($filter == null || 
+                     ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                    ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -759,14 +776,14 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == AR || $filter == CI || $filter == PL){
-                if((($filter == AR && $person->isRoleOn(NI, $date) && !$person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == CI && $person->isRoleOn(NI, $date) && $person->isFundedOn($this, $year) && !$person->leadershipOf($this)) ||
-                    ($filter == PL && $person->leadershipOf($this) && !$person->leadershipOf($this)))){
+            if($filter == PL){
+                if($person->leadershipOf($this)){
                     $people[$person->getId()] = $person;
                 }
             }
-            else if(($filter == null || $person->isRoleOn($filter, $date)) && ($includeManager || !$person->isRoleOn(MANAGER, $date))){
+            else if(($filter == null || 
+                     ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
+                    ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                 $people[$person->getId()] = $person;
             }
         }
@@ -848,9 +865,9 @@ EOF;
         $people = $this->getAllPeople(CHAMP);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }
@@ -866,9 +883,9 @@ EOF;
         $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }
@@ -883,9 +900,9 @@ EOF;
         $people = $this->getAllPeopleOn(CHAMP, $date);
         foreach($people as $champ){
             $champs[] = array('user' => $champ,
-                              'org' => $champ->getPartnerName(),
-                              'title' => $champ->getPartnerTitle(),
-                              'dept' => $champ->getPartnerDepartment());
+                              'org' => $champ->getUni(),
+                              'title' => $champ->getPosition(),
+                              'dept' => $champ->getDepartment());
         }
         return $champs;
     }
@@ -959,14 +976,14 @@ EOF;
         return $ret;
     }
     
-    /*
+    /**
      * Returns whether or not the logged in user can edit this project
      * @return boolean Whether or not the logged in user can edit this project
      */
     function userCanEdit(){
         $me = Person::newFromWgUser();
         if(!$me->isRoleAtLeast(STAFF) && 
-           !$me->isRole(CF) &&
+           !$me->isRole("CF") &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&
@@ -982,50 +999,6 @@ EOF;
         }
         return true;
     }
-    
-    // Returns the theme percentage of this project of the given theme index $i
-    // OLD: Only used for phase1 projects, should be refactored somehow
-    function getTheme($i, $history=false){
-        if(!($i >= 1 && $i <= 5)) return 0; // Fail Gracefully if the index was out of bounds, and return 0
-        if($this->themes == null){
-            $this->themes = array();
-            
-            $sql = "(SELECT themes 
-                    FROM grand_project_descriptions d
-                    WHERE d.project_id = '{$this->id}'\n";
-            if(!$history){
-                $sql .= "AND evolution_id = '{$this->evolutionId}'
-                         ORDER BY id DESC LIMIT 1)
-                        UNION
-                        (SELECT themes
-                         FROM grand_project_descriptions d
-                         WHERE d.project_id = '{$this->id}'";
-            }
-            $sql .= "ORDER BY id DESC LIMIT 1)";
-            
-            $data = DBFunctions::execSQL($sql);
-            if(DBFunctions::getNRows() > 0){
-                $themes = explode("\n", $data[0]['themes']);
-                $this->themes = $themes;
-            }
-        }
-        if(isset($this->themes[$i-1])){
-            return $this->themes[$i-1];
-        }
-        return 0;
-    }
-
-    /// Returns all themes for the project as an associative array.
-    // OLD: Only used for phase1 projects, should be refactored somehow
-    function getThemes() {
-        $ret = array('names' => array(), 'values' => array());
-        // Put up the associative array.  Absent values default to 0.
-        list($ret['names'][1], $ret['names'][2], $ret['names'][3], $ret['names'][4], $ret['names'][5]) =
-            array('nMEDIA', 'GamSim', 'AnImage', 'SocLeg', 'TechMeth');
-        list($ret['values'][1], $ret['values'][2], $ret['values'][3], $ret['values'][4], $ret['values'][5]) =
-            array($this->getTheme(1), $this->getTheme(2), $this->getTheme(3), $this->getTheme(4), $this->getTheme(5));
-        return $ret;
-    }
 
     //get the project challenge
     function getChallenge(){
@@ -1038,24 +1011,6 @@ EOF;
                                     array(1));
         if(count($data) > 0){
             return Theme::newFromId($data[0]['id']);
-        }
-        else{
-            // TODO: This should be refactored in the database so that the above query also determines this information
-            // Will need to migrate the data from grand_project_themes into grand_project_challenges
-            $themes = $this->getThemes();
-            $values = $themes['values'];
-            $names = $themes['names'];
-            $largest = 0;
-            $largestKey = 0;
-            if(count($values) > 0){
-                foreach($values as $key => $value){
-                    if($value > $largest){
-                        $largest = $value;
-                        $largestKey = $key;
-                    }
-                }
-                return Theme::newFromId($largestKey);
-            }
         }
         return Theme::newFromName("Not Specified");
     } 
@@ -1297,6 +1252,17 @@ EOF;
         }
     }
     
+    function getActivities(){
+        $activities = array();
+        $data = DBFunctions::select(array('grand_activities'),
+                                    array('id'),
+                                    array('project_id' => $this->getId()));
+        foreach($data as $row){
+            $activities[] = Activity::newFromId($row['id']);
+        }
+        return $activities;
+    }
+    
     // Returns the current milestones of this project
     // If $history is set to true, all the milestones ever for this project are included
     function getMilestones($history=false){
@@ -1332,6 +1298,9 @@ EOF;
                 continue;
             }
             $milestone = Milestone::newFromId($row['milestone_id']);
+            if($milestone->getStatus() == 'Deleted'){
+                continue;
+            }
             $milestoneIds[$milestone->getMilestoneId()] = true;
             $milestones[] = $milestone;
         }
@@ -1550,7 +1519,7 @@ EOF;
         return $alloc;
     }
     
-    /*
+    /**
      * Returns the allocated Budget for this Project
      * @param integer $year The allocation year
      * @return Budget A new allocated Budget
