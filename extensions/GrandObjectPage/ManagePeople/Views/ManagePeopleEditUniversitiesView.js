@@ -69,11 +69,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     
     addUniversity: function(){
         var university = "Unknown";
+	        console.log('pressed');
         this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
     addRows: function(){
+	console.log(this.universities.toJSON());
         this.universities.each($.proxy(function(university, i){
             if(this.universityViews[i] == null){
                 var view = new ManagePeopleEditUniversitiesRowView({model: university});
@@ -131,7 +133,8 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     },
    
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+	console.log(this.model.toJSON());
+	this.$el.html(this.template(this.model.toJSON()));
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=position]").css('max-width', '200px').css('width', '200px');

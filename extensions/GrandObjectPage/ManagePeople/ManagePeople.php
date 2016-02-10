@@ -30,7 +30,7 @@ class ManagePeople extends BackbonePage {
     function getViews(){
         global $wgOut;
         $universities = new Collection(University::getAllUniversities());
-        $uniNames = $universities->pluck('name');
+        $uniNames = json_encode($universities->pluck('name'));
         $positions = json_encode(array_values(Person::getAllPositions()));
 
         $departments = json_encode(array_values(Person::getAllDepartments()));

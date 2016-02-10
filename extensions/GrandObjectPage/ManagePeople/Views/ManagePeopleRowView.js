@@ -79,7 +79,7 @@ ManagePeopleRowView = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         }
-        this.rolesDialog = this.$("#rolesDialog").dialog({
+        this.rolesDialog = this.$("#rolesDialog"+this.model.id).dialog({
 	        autoOpen: false,
 	        modal: true,
 	        show: 'fade',
@@ -107,10 +107,14 @@ ManagePeopleRowView = Backbone.View.extend({
 	                disabled: (allowedRoles.length == 0),
 	                style: "position:absolute;left:0;"
 	            },
-	            "Save": $.proxy(function(e){
+	            "Save": { 
+			text: "Save",
+			id: "SaveButton"+this.model.id,
+		        click: $.proxy(function(e){
 	                this.editRoles.saveAll();
                     this.rolesDialog.dialog('close');
-	            }, this),
+	            }, this)
+		    },
 	            "Cancel": $.proxy(function(){
 	                this.rolesDialog.dialog('close');
 	            }, this)
@@ -209,17 +213,20 @@ ManagePeopleRowView = Backbone.View.extend({
 	            this.editUniversities.undelegateEvents();
 	        }, this),
 	        buttons: {
-	            "+": { 
-	                text: "Add University", 
+	            "+": {
+	                text: "Add University",
+			id: "AddUniButton"+this.model.id, 
 	                click: $.proxy(function(e){
 	                    this.editUniversities.addUniversity();
 	                }, this), 
 	                style: "position:absolute;left:0;"
 	            },
-	            "Save": $.proxy(function(e){
+	            "Save": 
+			$.proxy(function(e){
 	                this.editUniversities.saveAll();
                     this.universitiesDialog.dialog('close');
 	            }, this),
+		   
 	            "Cancel": $.proxy(function(){
 	                this.universitiesDialog.dialog('close');
 	            }, this)
