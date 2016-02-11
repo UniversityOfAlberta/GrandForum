@@ -226,6 +226,12 @@ class PersonProjectsAPI extends RESTAPI {
         MailingList::unsubscribeAll($person);
         DBFunctions::delete('grand_project_members',
                             array('id' => $this->getParam('personProjectId')));
+        foreach($person->getRoles() as $role){
+            DBFunctions::delete('grand_role_projects',
+                                array('role_id'    => $role->getId(),
+                                      'project_id' => $data[0]['project_id']));
+        }
+        
         $person->projects = null;
         MailingList::subscribeAll($person);
         return false;
