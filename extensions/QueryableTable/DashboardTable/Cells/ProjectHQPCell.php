@@ -127,7 +127,7 @@ class ProjectHQPCell extends DashboardCell {
                 }
                 $details .= "</tbody></table><br /><br />\n";
                 $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:AddMember\");' value='Add HQP' />\n";
-                $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />\n";
+                $details .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage People' />\n";
             }
             $table .= $this->dashboardRow($type, $details);
         }

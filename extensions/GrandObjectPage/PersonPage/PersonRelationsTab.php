@@ -25,7 +25,7 @@ class PersonRelationsTab extends AbstractTab {
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
                     if($visibility['edit'] && $visibility['isSupervisor']){
-                        $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditRelations'>Edit Relations</a>";
+                        $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage People</a>";
                     }
                     $this->html .= "<h3>Supervisors</h3>";
                     $this->html .= "<table class='wikitable sortable' width='100%' cellspacing='1' cellpadding='5' rules='all' frame='box'>
@@ -145,7 +145,7 @@ class PersonRelationsTab extends AbstractTab {
                     $this->html .= "Contact your supervisor in order be added as their student";
                 }
                 else if($visibility['isSupervisor']){
-                    $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditRelations'>Edit Relations</a>";
+                    $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage People</a>";
                 }
                 else{
                     $this->html .= "This user has no relations";

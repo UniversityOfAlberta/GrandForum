@@ -62,129 +62,128 @@ class EditMember extends SpecialPage{
             $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
 
             $me = Person::newFromId($wgUser->getId());
-            $message = "";
 
-            if($me->isRoleAtLeast(STAFF)){
-                // Sub-Role Changes
-                $subRoles = @$_POST['sub_wpNS'];
-                if(!is_array($subRoles)){
-                    $subRoles = array();
+            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember'>Click Here</a> to continue Editing Members.");
+
+            // Sub-Role Changes
+            $subRoles = @$_POST['sub_wpNS'];
+            if(!is_array($subRoles)){
+                $subRoles = array();
+            }
+            $subKeys = array_flip($subRoles);
+            $currentSubRoles = $person->getSubRoles();
+            // Removing Sub-Roles
+            foreach($currentSubRoles as $subRole){
+                if(!isset($subKeys[$subRole])){
+                    DBFunctions::delete('grand_role_subtype',
+                                        array('user_id' => EQ($person->getId()),
+                                              'sub_role' => EQ($subRole)));
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a {$subRole}");
                 }
-                $subKeys = array_flip($subRoles);
-                $currentSubRoles = $person->getSubRoles();
-                // Removing Sub-Roles
-                foreach($currentSubRoles as $subRole){
-                    if(!isset($subKeys[$subRole])){
-                        DBFunctions::delete('grand_role_subtype',
-                                            array('user_id' => EQ($person->getId()),
-                                                  'sub_role' => EQ($subRole)));
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a {$subRole}");
-                    }
+            }
+            // Adding Sub-Roles
+            foreach($subRoles as $subRole){
+                if(!$person->isSubRole($subRole)){
+                    DBFunctions::insert('grand_role_subtype',
+                                        array('user_id' => EQ($person->getId()),
+                                              'sub_role' => EQ($subRole)));
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
                 }
-                // Adding Sub-Roles
-                foreach($subRoles as $subRole){
-                    if(!$person->isSubRole($subRole)){
-                        DBFunctions::insert('grand_role_subtype',
-                                            array('user_id' => EQ($person->getId()),
-                                                  'sub_role' => EQ($subRole)));
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a {$subRole}");
-                    }
-                }
-                
-                if(isset($_POST['candidate']) && !$person->isCandidate()){
-                    MailingList::unsubscribeAll($person);
-                    DBFunctions::update('mw_user',
-                                        array('candidate' => '1'),
-                                        array('user_id' => EQ($person->getId())));
-                    $person->candidate = true;
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
-                    MailingList::subscribeAll($person);
-                }
-                else if(!isset($_POST['candidate']) && $person->isCandidate()){
-                    MailingList::unsubscribeAll($person);
-                    DBFunctions::update('mw_user',
-                                        array('candidate' => '0'),
-                                        array('user_id' => EQ($person->getId())));
-                    $person->candidate = false;
-                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
-                    MailingList::subscribeAll($person);
-                }
-                
-                // Project Leadership Changes
-                $pl = array();
-                $pm = array();
-                if(isset($_POST['pl'])){
-                    foreach($_POST['pl'] as $value){
-                        $pl[$value] = $value;
-                    }
-                }
+            }
             
-                $currentPL = array();
-                // Removing Project Leaders
-                foreach($person->leadership() as $project){
-                    if(!isset($pl[$project->getName()])){
-                        // Remove Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'False';
-                        $_POST['role'] = $project->getName();
-                        $_POST['user'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
-                        $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
-                        APIRequest::doAction('DeleteProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', PL))." of {$project->getName()}");
-                    }
-                    $currentPL[$project->getName()] = $project->getName();
-                }
-                
-                // Adding Project Leaders
-                foreach($pl as $project){
-                    if(!isset($currentPL[$project])){
-                        // Add Project Leadership
-                        $_POST['co_lead'] = 'False';
-                        $_POST['manager'] = 'False';
-                        $_POST['role'] = $project;
-                        $_POST['user'] = $person->getName();
-                        APIRequest::doAction('AddProjectLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', PL))." of {$project}");
-                    }
-                }
-                
-                // Theme Leadership Changes
-                $tl = array();
-                if(isset($_POST['tl'])){
-                    foreach($_POST['tl'] as $value){
-                        $tl[$value] = Theme::newFromId($value);
-                    }
-                }
+            if(isset($_POST['candidate']) && !$person->isCandidate()){
+                MailingList::unsubscribeAll($person);
+                DBFunctions::update('mw_user',
+                                    array('candidate' => '1'),
+                                    array('user_id' => EQ($person->getId())));
+                $person->candidate = true;
+                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
+                MailingList::subscribeAll($person);
+            }
+            else if(!isset($_POST['candidate']) && $person->isCandidate()){
+                MailingList::unsubscribeAll($person);
+                DBFunctions::update('mw_user',
+                                    array('candidate' => '0'),
+                                    array('user_id' => EQ($person->getId())));
+                $person->candidate = false;
+                $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
+                MailingList::subscribeAll($person);
+            }
             
-                $currentTL = array();
-                // Removing Theme Leaders
-                foreach($person->getLeadThemes() as $theme){
-                    if(!isset($tl[$theme->getId()])){
-                        // Remove Theme Leadership
-                        $_POST['coordinator'] = 'False';
-                        $_POST['co_lead'] = 'False';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme->getId()]);
-                        $_POST['effective_date'] = $_POST["tl_datepicker"][$theme->getId()];
-                        APIRequest::doAction('DeleteThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
-                    }
-                    $currentTL[$theme->getId()] = $theme->getId();
+            // Project Leadership Changes
+            $pl = array();
+            $pm = array();
+            if(isset($_POST['pl'])){
+                foreach($_POST['pl'] as $value){
+                    $pl[$value] = $value;
                 }
-                
-                // Adding Theme Leaders
-                foreach($tl as $theme){
-                    if(!isset($currentTL[$theme->getId()])){
-                        // Add Theme Leadership
-                        $_POST['coordinator'] = 'False';
-                        $_POST['co_lead'] = 'False';
-                        $_POST['theme'] = $theme->getId();
-                        $_POST['name'] = $person->getName();
-                        APIRequest::doAction('AddThemeLeader', true);
-                        $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
-                    }
+            }
+        
+            $currentPL = array();
+            // Removing Project Leaders
+            foreach($person->leadership() as $project){
+                if(!isset($pl[$project->getName()])){
+                    // Remove Project Leadership
+                    $_POST['co_lead'] = 'False';
+                    $_POST['manager'] = 'False';
+                    $_POST['role'] = $project->getName();
+                    $_POST['user'] = $person->getName();
+                    $_POST['comment'] = @str_replace("'", "", $_POST["pl_comment"][$project->getName()]);
+                    $_POST['effective_date'] = @$_POST["pl_datepicker"][$project->getName()];
+                    APIRequest::doAction('DeleteProjectLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', PL))." of {$project->getName()}");
+                }
+                $currentPL[$project->getName()] = $project->getName();
+            }
+            
+            // Adding Project Leaders
+            foreach($pl as $project){
+                if(!isset($currentPL[$project])){
+                    // Add Project Leadership
+                    $_POST['co_lead'] = 'False';
+                    $_POST['manager'] = 'False';
+                    $_POST['role'] = $project;
+                    $_POST['user'] = $person->getName();
+                    APIRequest::doAction('AddProjectLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', PL))." of {$project}");
+                }
+            }
+            
+            // Theme Leadership Changes
+            $tl = array();
+            if(isset($_POST['tl'])){
+                foreach($_POST['tl'] as $value){
+                    $tl[$value] = Theme::newFromId($value);
+                }
+            }
+        
+            $currentTL = array();
+            // Removing Theme Leaders
+            foreach($person->getLeadThemes() as $theme){
+                if(!isset($tl[$theme->getId()])){
+                    // Remove Theme Leadership
+                    $_POST['coordinator'] = 'False';
+                    $_POST['co_lead'] = 'False';
+                    $_POST['theme'] = $theme->getId();
+                    $_POST['name'] = $person->getName();
+                    $_POST['comment'] = @str_replace("'", "", $_POST["tl_comment"][$theme->getId()]);
+                    $_POST['effective_date'] = $_POST["tl_datepicker"][$theme->getId()];
+                    APIRequest::doAction('DeleteThemeLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
+                }
+                $currentTL[$theme->getId()] = $theme->getId();
+            }
+            
+            // Adding Theme Leaders
+            foreach($tl as $theme){
+                if(!isset($currentTL[$theme->getId()])){
+                    // Add Theme Leadership
+                    $_POST['coordinator'] = 'False';
+                    $_POST['co_lead'] = 'False';
+                    $_POST['theme'] = $theme->getId();
+                    $_POST['name'] = $person->getName();
+                    APIRequest::doAction('AddThemeLeader', true);
+                    $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a ".strtolower($config->getValue('roleDefs', TL))." of {$theme->getAcronym()}");
                 }
             }
             
