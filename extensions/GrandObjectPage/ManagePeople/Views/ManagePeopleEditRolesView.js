@@ -123,8 +123,10 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
         var selectedProject = this.$("#selectedProject option:selected");
         var name = selectedProject.text();
         var projects = this.model.get('projects');
-        projects.push({id: null, name: name});
-        this.model.trigger('change:projects');
+        if(_.where(projects, {name: name}).length == 0){
+            projects.push({id: null, name: name});
+            this.model.trigger('change:projects');
+        }
     },
     
     deleteProject: function(event){

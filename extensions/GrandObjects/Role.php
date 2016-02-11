@@ -102,7 +102,7 @@ class Role extends BackboneModel {
 	                DBFunctions::insert('grand_role_projects',
 	                                    array('role_id' => $this->getId(),
 	                                          'project_id' => $p->getId()));
-	                if(!$this->getPerson()->isMemberOf($project)){
+	                if(!$this->getPerson()->isMemberOf($p)){
 	                    DBFunctions::insert('grand_project_members',
 	                                        array('user_id' => $this->getPerson()->getId(),
 	                                              'project_id' => $p->getId(),
@@ -139,7 +139,7 @@ class Role extends BackboneModel {
 	        DBFunctions::insert('grand_role_projects',
 	                            array('role_id' => $this->getId(),
 	                                  'project_id' => $p->getId()));
-	        if(!$this->getPerson()->isMemberOf($project)){
+	        if(!$this->getPerson()->isMemberOf($p)){
                 DBFunctions::insert('grand_project_members',
 	                                        array('user_id' => $this->getPerson()->getId(),
 	                                              'project_id' => $p->getId(),
