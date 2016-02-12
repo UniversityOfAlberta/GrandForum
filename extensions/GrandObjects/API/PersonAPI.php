@@ -166,6 +166,7 @@ class PersonProjectsAPI extends RESTAPI {
                                           'user_id' => $person->getId()),
                                     array('id' => 'DESC'),
                                     array(1));
+        Notification::addNotification($me, $person, "Project Membership Added", "Effective {$this->POST('startDate')} you join '{$project->getName()}'", "{$person->getUrl()}");
         if(count($data) > 0){
             $this->params['personProjectId'] = $data[0]['id'];
         }
@@ -197,6 +198,9 @@ class PersonProjectsAPI extends RESTAPI {
                                             'comment'    => $this->POST('comment')),
                                       array('id' => $this->getParam('personProjectId')));
         $person->projects = null;
+        if($this->POST('endDate') != '0000-00-00 00:00:00'){
+            Notification::addNotification($me, $person, "Project Membership Removed", "Effective {$this->POST('endDate')} you are no longer a member of '{$project->getName()}'", "{$person->getUrl()}");
+        }
         MailingList::subscribeAll($person);
         if(!$status){
             $this->throwError("The project <i>{$project->getName()}</i> could not be updated");
@@ -231,7 +235,7 @@ class PersonProjectsAPI extends RESTAPI {
                                 array('role_id'    => $role->getId(),
                                       'project_id' => $data[0]['project_id']));
         }
-        
+        Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from '{$project->getName()}'", "{$person->getUrl()}");
         $person->projects = null;
         MailingList::subscribeAll($person);
         return false;
