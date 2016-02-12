@@ -58,23 +58,24 @@ class ProjectDescriptionTab extends AbstractEditableTab {
         }
         else{
             $this->html .= "<textarea name='long_description' style='height:500px;'>{$description}</textarea>";
+            $this->html .= "<script type='text/javascript'>
+                $('textarea[name=long_description]').tinymce({
+                    theme: 'modern',
+                    menubar: false,
+                    plugins: 'link image charmap lists table paste wordcount',
+                    toolbar: [
+                        'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                    ],
+                    paste_postprocess: function(plugin, args) {
+                        var p = $('p', args.node);
+                        p.each(function(i, el){
+                            $(el).css('line-height', 'inherit');
+                        });
+                    }
+                });
+            </script>";
         }
-        $this->html .= "<script type='text/javascript'>
-            $('textarea[name=long_description]').tinymce({
-                theme: 'modern',
-                menubar: false,
-                plugins: 'link image charmap lists table paste wordcount',
-                toolbar: [
-                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
-                ],
-                paste_postprocess: function(plugin, args) {
-                    var p = $('p', args.node);
-                    p.each(function(i, el){
-                        $(el).css('line-height', 'inherit');
-                    });
-                }
-            });
-        </script>";
+        
     }
 
 }    
