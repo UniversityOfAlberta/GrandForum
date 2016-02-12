@@ -539,7 +539,7 @@ class EditMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(STAFF)){
             $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
