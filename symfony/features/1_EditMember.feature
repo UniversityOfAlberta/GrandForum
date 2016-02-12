@@ -3,6 +3,39 @@ Feature: EditMember
     As a User I need to be able to request role/project changes
     As an Admin I need to be able to accept role/project changes
 
+    Scenario: Staff removing HQP from mailing list
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Manage People"
+        And I click by css "#addExistingMember"
+        And I select "HQP User4" from "select"
+        And I click "Add"
+        And I wait "100"
+        And "hqp.user4@behat-test.com" should be subscribed to "test-hqps"
+        And I click by css "#editRoles"
+        And I select "CI" from "name"
+        And I click by css "#SaveButton18"
+        And I wait "100"
+        Then "hqp.user4@behat-test.com" should not be subscribed to "test-hqps"
+
+    Scenario: Staff adding HQP to a mailing list by changing Role
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Manage People"
+        And "hqp.user4@behat-test.com" should not be subscribed to "test-hqps"
+        And I click by css "#editRoles"
+        And I select "HQP" from "name"
+        And I click by css "#SaveButton18"
+        And I wait "100"
+        Then "hqp.user4@behat-test.com" should be subscribed to "test-hqps"
+
+   Scenario: Staff adding HQP to a mailing list by adding University
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
+        When I follow "Manage People"
+        And I click by css "#editUniversities"
+        And I click by css "#AddUniButton18"
+        And I wait "100"
+        And I fill in "combo_university" with "University of Alberta"
+        And I wait "100"
+
     Scenario: Staff Making HQP a candidate
         Given I am logged in as "Staff.User1" using password "Staff.Pass1"
         When I follow "Edit Roles"
