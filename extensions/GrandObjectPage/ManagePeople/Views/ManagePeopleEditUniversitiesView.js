@@ -43,28 +43,20 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     saveAll: function(){
         var copy = this.universities.toArray();
         clearAllMessages();
+        var requests = new Array();
         _.each(copy, $.proxy(function(university){
             if(university.get('deleted') != "true"){
-                university.save(null, {
-                    success: function(){
-                        addSuccess("Universities saved");
-                    },
-                    error: function(){
-                        addError("Universities could not be saved");
-                    }
-                });
+                requests.push(university.save(null));
             }
             else {
-                university.destroy(null, {
-                    success: function(){
-                        addSuccess("Universities saved");
-                    },
-                    error: function(){
-                        addError("Universities could not be saved");
-                    }
-                });
+                requests.push(university.destroy(null));
             }
         }, this));
+        $.when.apply($, requests).then(function(){
+            addSuccess("Universities saved");
+        }).fail(function(){
+            addError("Universities could not be saved");
+        });
     },
     
     addUniversity: function(){

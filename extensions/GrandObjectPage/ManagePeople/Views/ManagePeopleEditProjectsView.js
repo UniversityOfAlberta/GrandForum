@@ -42,30 +42,22 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     saveAll: function(){
         var copy = this.projects.toArray();
         clearAllMessages();
+        var requests = new Array();
         _.each(copy, $.proxy(function(project){
             if(_.contains(allowedProjects, project.get('name'))){
                 if(project.get('deleted') != "true"){
-                    project.save(null, {
-                        success: function(){
-                            addSuccess("Projects saved");
-                        },
-                        error: function(){
-                            addError("Projects could not be saved");
-                        }
-                    });
+                    requests.push(project.save(null));
                 }
                 else {
-                    project.destroy(null, {
-                        success: function(){
-                            addSuccess("Projects saved");
-                        },
-                        error: function(){
-                            addError("Projects could not be saved");
-                        }
-                    });
+                    requests.push(project.destroy(null));
                 }
             }
         }, this));
+        $.when.apply($, requests).done(function(){
+            addSuccess("Projects saved");
+        }).fail(function(){
+            addError("Projects could not be saved");
+        });
     },
     
     addProject: function(){
