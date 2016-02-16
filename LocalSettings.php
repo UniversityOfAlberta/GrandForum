@@ -278,9 +278,9 @@ foreach($config->getValue('committees') as $role => $roleDef){
 $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
-    return str_replace("β", "ss", str_replace("ß", "ss", strtolower(strtr(utf8_decode($str), 
+    return strtolower(strtr(utf8_decode($str), 
                       utf8_decode('àáâãäåšçèéêëìíîïñòóôõöøùúûüýÿÀÁÂÃÄÅŠÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
-                                  'aaaaaasceeeeiiiinoooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'))));
+                                  'aaaaaasceeeeiiiinoooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'));
 }
 
 // Encodes a large json object (usually arrays)
