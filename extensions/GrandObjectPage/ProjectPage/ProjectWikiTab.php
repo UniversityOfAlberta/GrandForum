@@ -67,7 +67,7 @@ class ProjectWikiTab extends AbstractTab {
         </script>";
         
         $pages = $this->project->getWikiPages();
-        $this->html .= "<h2>Search Wiki Pages</h2><table id='projectWikiPages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+        $this->html .= "<h2>Wiki Pages</h2><table id='projectWikiPages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
@@ -89,8 +89,35 @@ class ProjectWikiTab extends AbstractTab {
             }
         }
         $this->html .= "</tbody></table>";
+        
+        $pages = $this->project->getFiles();
+        $this->html .= "<h2>Uploaded Files</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+        $this->html .= "<tbody>\n";
+        foreach($pages as $page){
+            if($page->getTitle()->getText() != "Main"){
+                $this->html .= "<tr>\n";
+                $revId = $page->getRevIdFetched();
+                $revision = Revision::newFromId($revId);
+			    $date = $revision->getTimestamp();
+			    $year = substr($date, 0, 4);
+			    $month = substr($date, 4, 2);
+			    $day = substr($date, 6, 2);
+			    $hour = substr($date, 8, 2);
+			    $minute = substr($date, 10, 2);
+			    $second = substr($date, 12, 2);
+			    $editor = Person::newFromId($revision->getRawUser());
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
+                $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
+                $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
+                $this->html .= "</tr>\n";
+            }
+        }
+        $this->html .= "</tbody></table>";
         $this->html .= "<script type='text/javascript'>
             $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+        </script>";
+        $this->html .= "<script type='text/javascript'>
+            $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
         </script>";
         return $this->html;
     }

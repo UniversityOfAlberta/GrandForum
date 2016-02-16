@@ -8,11 +8,9 @@
     require_once("ThemePage.php");
     require_once("ContributionPage.php");
     require_once("MaterialPage.php");
-    //require_once("FormPage.php");
     require_once("ManageProducts/ManageProducts.php");
     require_once("AddContributionPage.php");
     require_once("AddMultimediaPage.php");
-    //require_once("AddFormPage.php");
     require_once("EditRelations.php");
     require_once("Products/Products.php");
     
