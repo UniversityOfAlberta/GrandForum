@@ -731,7 +731,7 @@ class Paper extends BackboneModel{
                         $unserialized[] = $auth->id;
                     }
                     else{
-                        $unserialized[] = $auth->name;
+                        $unserialized[] = $auth->fullname;
                     }
                 }
             }
@@ -1332,7 +1332,7 @@ class Paper extends BackboneModel{
                     $authors[] = $author->id;
                 }
                 else{
-                    $authors[] = $author->name;
+                    $authors[] = $author->fullname;
                 }
             }
             foreach($this->projects as $project){
@@ -1425,7 +1425,7 @@ class Paper extends BackboneModel{
                     $authors[] = $author->id;
                 }
                 else{
-                    $authors[] = $author->name;
+                    $authors[] = $author->fullname;
                 }
             }
             foreach($this->projects as $project){
@@ -1562,6 +1562,7 @@ class Paper extends BackboneModel{
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
+				   'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){
