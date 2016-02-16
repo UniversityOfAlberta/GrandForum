@@ -224,7 +224,7 @@ class IndexTable {
             }
 	    }
 	    $this->text .= "</tbody></table>";
-		$this->text .= "</div><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+		$this->text .= "<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
 
 		return true;
 	}
