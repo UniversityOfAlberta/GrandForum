@@ -157,8 +157,8 @@ if(file_exists("provinces.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $prov = mysql_real_escape_string($cells[0]);
-                $color = mysql_real_escape_string($cells[1]);
+                $prov = DBFunctions::escape($cells[0]);
+                $color = DBFunctions::escape($cells[1]);
                 DBFunctions::execSQL("INSERT INTO `grand_provinces` (`province`,`color`)
                                       VALUES ('$prov','$color')", true); 
             }
@@ -175,12 +175,12 @@ if(file_exists("universities.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $uni = mysql_real_escape_string($cells[0]);
-                $prov = Province::newFromName(mysql_real_escape_string($cells[1]));
-                $lat = mysql_real_escape_string($cells[2]);
-                $long = mysql_real_escape_string($cells[3]);
-                $order = mysql_real_escape_string($cells[4]);
-                $default = mysql_real_escape_string($cells[5]);
+                $uni = DBFunctions::escape($cells[0]);
+                $prov = Province::newFromName(DBFunctions::escape($cells[1]));
+                $lat = DBFunctions::escape($cells[2]);
+                $long = DBFunctions::escape($cells[3]);
+                $order = DBFunctions::escape($cells[4]);
+                $default = DBFunctions::escape($cells[5]);
                 DBFunctions::execSQL("INSERT INTO `grand_universities` (`university_name`,`province_id`,`latitude`,`longitude`,`order`,`default`)
                                       VALUES ('$uni','{$prov->getId()}','$lat','$long','$order','$default')", true); 
             }
@@ -234,11 +234,11 @@ if(file_exists("themes.csv")){
         foreach($lines as $line){
             $cells = str_getcsv($line);
             if(count($cells) > 1){
-                $acronym = mysql_real_escape_string($cells[0]);
-                $name = mysql_real_escape_string($cells[1]);
-                $description = mysql_real_escape_string($cells[2]);
-                $phase = mysql_real_escape_string($cells[3]);
-                $color = mysql_real_escape_string($cells[4]);
+                $acronym = DBFunctions::escape($cells[0]);
+                $name = DBFunctions::escape($cells[1]);
+                $description = DBFunctions::escape($cells[2]);
+                $phase = DBFunctions::escape($cells[3]);
+                $color = DBFunctions::escape($cells[4]);
                 if($name != ""){
                     DBFunctions::execSQL("INSERT INTO `grand_themes` (`acronym`,`name`,`description`,`phase`,`color`)
                                           VALUES('$acronym','$name','$description','$phase','$color')", true);

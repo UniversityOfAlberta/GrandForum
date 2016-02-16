@@ -188,12 +188,15 @@ $(document).ready(function(){
         });
     });
     
+    buttonClicked = false;
+    
     function setUpFormSubmit(){
         $.each($("form[name=report] input[type=submit]"), function(index, value){
             $(value).click(function(){
                 if(timeout != null){
                     clearTimeout(timeout);
                 }
+                buttonClicked = true;
                 autosaveDiv = $('.autosaveSpan');
                 findAutosaves(updateProgress);
                 saveAll(updateProgress);
