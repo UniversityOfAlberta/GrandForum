@@ -1150,21 +1150,21 @@ class Paper extends BackboneModel{
         foreach($this->getAuthors() as $a){
             if($a->getId()){
                 if($hyperlink){
-                    $name = $a->getNameForForms();
+                    $name = $a->getNameForProduct();
                     if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $name = "<u>{$a->getNameForForms()}</u>";
+                        $name = "<u>{$a->getNameForProduct()}</u>";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
                             (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                        $name = "<i>{$a->getNameForForms()}</i>";
+                        $name = "<i>{$a->getNameForProduct()}</i>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                 }
                 else{
-                    $au[] = "<b>". $a->getNameForForms() ."</b>";
+                    $au[] = "<b>". $a->getNameForProduct() ."</b>";
                 }
             }else{
-                $au[] = $a->getNameForForms();
+                $au[] = $a->getNameForProduct();
             }
         }
         $au = implode(',&nbsp;', $au);
@@ -1561,7 +1561,7 @@ class Paper extends BackboneModel{
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
-                                   'name' => $author->getNameForForms(),
+                                   'name' => $author->getNameForProduct(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){

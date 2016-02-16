@@ -1465,6 +1465,19 @@ class Person extends BackboneModel {
         else
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
+
+    function getNameForProduct(){
+	global $config;
+	if($this->getId() == 0){
+	    return $this->getNameForForms();
+	}
+        $format = strtolower($config->getValue("nameFormat"));
+	$format = str_replace("%first", $this->getFirstName(), $format);
+        $format = str_replace("%last", $this->getLastName(), $format);
+        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
+        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
+	return $format;
+    }
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
