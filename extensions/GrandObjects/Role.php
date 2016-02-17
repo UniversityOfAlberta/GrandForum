@@ -97,16 +97,18 @@ class Role extends BackboneModel {
             if(count($data) > 0){
                 $id = $data[0]['id'];
                 $this->id = $id;
-                foreach($this->projects as $project){
-	                $p = Project::newFromName($project->name);
-	                DBFunctions::insert('grand_role_projects',
-	                                    array('role_id' => $this->getId(),
-	                                          'project_id' => $p->getId()));
-	                if(!$this->getPerson()->isMemberOf($p)){
-	                    DBFunctions::insert('grand_project_members',
-	                                        array('user_id' => $this->getPerson()->getId(),
-	                                              'project_id' => $p->getId(),
-	                                              'start_date' => $this->getStartDate()));
+                if(is_array($this->projects)){
+                    foreach($this->projects as $project){
+	                    $p = Project::newFromName($project->name);
+	                    DBFunctions::insert('grand_role_projects',
+	                                        array('role_id' => $this->getId(),
+	                                              'project_id' => $p->getId()));
+	                    if(!$this->getPerson()->isMemberOf($p)){
+	                        DBFunctions::insert('grand_project_members',
+	                                            array('user_id' => $this->getPerson()->getId(),
+	                                                  'project_id' => $p->getId(),
+	                                                  'start_date' => $this->getStartDate()));
+	                    }
 	                }
 	            }
                 Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
