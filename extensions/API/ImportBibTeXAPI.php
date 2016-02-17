@@ -124,9 +124,11 @@ class ImportBibTeXAPI extends API{
                     $firstName = trim($names[1]);
                     $lastName = trim($names[0]);
                     $obj->name = trim("$firstName $lastName");
+                    $obj->fullname = trim("$firstName $lastName");
                 }
                 else{
                     $obj->name = trim($author);
+                    $obj->fullname = trim($author);
                 }
                 $product->authors[] = $obj;
             }
