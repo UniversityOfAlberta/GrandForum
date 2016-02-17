@@ -11,8 +11,51 @@ class ProjectWikiTab extends AbstractTab {
         $this->visibility = $visibility;
     }
     
+    function uploadFile(){
+        global $wgRequest, $wgUser, $wgMessage;
+        
+        $name = $this->project->getName()." ".$_FILES['wpUploadFile']['name'];
+
+        $wgRequest->setVal("wpUpload", true);
+        $wgRequest->setVal("wpSourceType", 'file');
+        $wgRequest->setVal("action", 'submit');
+        $wgRequest->setVal("wpDestFile", $name);
+        $wgRequest->setVal("wpDestFileWarningAck", true);
+        $wgRequest->setVal("wpIgnoreWarning", true);
+        $wgRequest->setVal("wpEditToken", $wgUser->getEditToken());
+
+        $upload = new SpecialUpload($wgRequest);
+	    $upload->execute(null);
+	    if($upload->mLocalFile != null){
+	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
+	                                    array('*'),
+	                                    array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
+	        if(count($data) == 0){
+	            DBFunctions::insert("mw_an_upload_permissions",
+	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
+	                                      "nsName" => str_replace(" ", "_", $this->project->getName())));
+	        }
+	        else{
+	            DBFunctions::update("mw_an_upload_permissions",
+	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
+	                                      "nsName" => str_replace(" ", "_", $this->project->getName())),
+	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
+	        }
+	        $wgMessage->addSuccess("The file <b>{$_FILES['wpUploadFile']['name']}</b> was uploaded successfully");
+	    }
+	    else{
+	        $wgMessage->addError("There was a problem uploading the file");
+	    }
+	    redirect("{$this->project->getUrl()}?tab=wiki");
+    }
+    
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
+        
+        if(isset($_FILES['wpUploadFile'])){
+            $this->uploadFile();
+        }
+        
         $project = $this->project;
         $me = Person::newFromWgUser();
         $edit = $this->visibility['edit'];
@@ -47,7 +90,7 @@ class ProjectWikiTab extends AbstractTab {
                 return false;
             }
         </script>
-        <a class='button' id='newWikiPage'>New Wiki Page</a>
+        <a class='button' id='newWikiPage'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>Upload File</a>
         <div id='newWikiPageDiv' style='display:none;'>
             <h2>Create New Wiki Page</h2>
             <form action='' onSubmit='clickButton'>
@@ -58,11 +101,27 @@ class ProjectWikiTab extends AbstractTab {
             </table>
             </form>
         </div>
+        <div id='newFileDiv' style='display:none;'>
+            <h2>Upload File</h2>
+            <form action='{$this->project->getUrl()}?tab=wiki' method='post' enctype='multipart/form-data' onSubmit='clickButton'>
+            <table>
+                <tr>
+                    <td><b>File:</b></td>
+                    <td><input id='newPageTitle' type='file' name='wpUploadFile' /></td>
+                    <td><input type='submit' id='createPageButton' value='Upload' /></td>
+                </tr>
+            </table>
+            </form>
+        </div>
         <script type='text/javascript'>
             $('#createPageButton').click(clickButton);
             $('#newWikiPage').click(function(){
                 $(this).css('display', 'none');
                 $('#newWikiPageDiv').show('fast');
+            });
+            $('#newFilePage').click(function(){
+                $(this).css('display', 'none');
+                $('#newFileDiv').show('fast');
             });
         </script>";
         
