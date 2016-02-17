@@ -67,11 +67,11 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->handleContactEdit();
         $_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
-        $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
-        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
+        $_POST['profile'] = $_POST['public_profile'];
+        $_POST['profile'] = $_POST['profile'];
         APIRequest::doAction('UserProfile', true);
         $_POST['type'] = "private";
-        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
+        $_POST['profile'] = $_POST['private_profile'];
         APIRequest::doAction('UserProfile', true);
         if(isset($_POST['role_title'])){
             foreach($this->person->getRoles() as $role){
@@ -221,16 +221,33 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
-        $this->html .= "<table>
-                            <tr>
-                                <td align='right' valign='top'><b>Live on Website:</b></td>
-                                <td><textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea></td>
-                            </tr>
-                            <tr>
-                                <td align='right' valign='top'><b>Live on Forum:</b></td>
-                                <td><textarea style='width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea></td>
-                            </tr>
-                        </table>";
+        $this->html .= "
+                           
+                                <h3>Live on Website:</h3>
+                                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
+			  
+                            
+                                <h3>Live on Forum:</h3>
+                                <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
+                            
+                        ";
+         $this->html .= "<script type='text/javascript'>
+            $('textarea.profile').tinymce({
+                theme: 'modern',
+                menubar: false,
+                plugins: 'link image charmap lists table paste wordcount',
+                toolbar: [
+                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                ],
+                paste_postprocess: function(plugin, args) {
+                    var p = $('p', args.node);
+                    p.each(function(i, el){
+                        $(el).css('line-height', 'inherit');
+                    });
+                }
+            });
+        </script>";
+
     }
     
     function showCloud($person, $visibility){
@@ -376,7 +393,7 @@ EOF;
                 $names = array();
                 foreach($paper->getAuthors() as $author){
                     if($author->getId() != 0 && $author->getUrl() != ""){
-                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
+                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForProduct()}</a>";
                     }
                     else{
                         $names[] = $author->getNameForForms();

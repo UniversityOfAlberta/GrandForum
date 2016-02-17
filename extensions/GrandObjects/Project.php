@@ -1078,6 +1078,26 @@ EOF;
         return $articles;
     }
     
+    /**
+     * Returns an array of file Articles that belong to this Project
+     * @return array Returns an array of file Articles that belong to this Project
+     */
+    function getFiles(){
+        $sql = "SELECT p.page_id
+                FROM mw_an_upload_permissions u, mw_page p
+                WHERE u.nsName = REPLACE('{$this->getName()}', ' ', '_')
+                AND (u.upload_name = REPLACE(p.page_title, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', p.page_title), '_', ' '))";
+        $data = DBFunctions::execSQL($sql);
+        $articles = array();
+        foreach($data as $row){
+            $article = Article::newFromId($row['page_id']);
+            if($article != null){
+                $articles[] = $article;
+            }
+        }
+        return $articles;
+    }
+    
     // Returns an array of papers relating to this project
     function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
