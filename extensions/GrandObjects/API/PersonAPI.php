@@ -441,14 +441,15 @@ class PersonRelationsAPI extends RESTAPI {
             foreach($relations as $type){
                 foreach($type as $id => $relation){
                     if($id == $this->getParam('relId')){
-                        return json_encode($relation);
+                        return $relation->toJSON();
                     }
                 }
             }
         }
         else{
             // All Relations
-            return json_encode(flatten($relations));
+            $collection = new Collection(flatten($relations));
+            return $collection->toJSON();
         }
     }
     
@@ -464,6 +465,7 @@ class PersonRelationsAPI extends RESTAPI {
         $relation->type = $this->POST('type');
         $relation->startDate = $this->POST('startDate');
         $relation->endDate = $this->POST('endDate');
+        $relation->projects = $this->POST('projects');
         $relation->comment = $this->POST('comment');
         $relation->create();
         return $this->doGET();
@@ -485,6 +487,7 @@ class PersonRelationsAPI extends RESTAPI {
         $relation->type = $this->POST('type');
         $relation->startDate = $this->POST('startDate');
         $relation->endDate = $this->POST('endDate');
+        $relation->projects = $this->POST('projects');
         $relation->comment = $this->POST('comment');
         $relation->update();
         return $this->doGET();

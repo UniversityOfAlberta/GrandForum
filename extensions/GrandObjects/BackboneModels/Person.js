@@ -216,6 +216,7 @@ PersonRelation = RelationModel.extend({
         user2: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
+        projects: new Array(),
         name: "",
         comment: "",
         deleted: false

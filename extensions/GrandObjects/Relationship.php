@@ -106,10 +106,16 @@ class Relationship extends BackboneModel {
     function create(){
         $me = Person::newFromWgUser();
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+            $projects = array();
+            foreach($this->projects as $project){
+                $proj = Project::newFromName($project->name);
+                $projects[] = $proj->getId();
+            }
             $status = DBFunctions::insert('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
+                                                'projects' => serialize($projects),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()));
@@ -136,10 +142,16 @@ class Relationship extends BackboneModel {
     function update(){
         $me = Person::newFromWgUser();
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+            $projects = array();
+            foreach($this->projects as $project){
+                $proj = Project::newFromName($project->name);
+                $projects[] = $proj->getId();
+            }
             $status = DBFunctions::update('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
                                                 'type' => $this->getType(),
+                                                'projects' => serialize($projects),
                                                 'start_date' => $this->getStartDate(),
                                                 'end_date' => $this->getEndDate(),
                                                 'comment' => $this->getComment()),
@@ -172,12 +184,19 @@ class Relationship extends BackboneModel {
     }
     
     function toArray(){
+        $projs = $this->getProjects();
+	    $projects = array();
+	    foreach($projs as $proj){
+	        $projects[] = array('id'   => $proj->getId(),
+	                            'name' => $proj->getName());
+	    }
         return array(
             'id' => $this->getId(),
             'user1' => $this->user1,
             'user2' => $this->user2,
             'type' => $this->getType(),
             'startDate' => $this->getStartDate(),
+            'projects' => $projects,
             'endDate' => $this->getEndDate(),
             'comment' => $this->getComment()
         );

@@ -95,6 +95,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     initialize: function(){
         this.listenTo(this.model, "change", this.update);
+        this.listenTo(this.model, "change:projects", this.renderProjects);
         this.template = _.template($('#edit_relations_row_template').html());
     },
     
@@ -108,8 +109,28 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         this.model.set('endDate', '0000-00-00');
     },
     
+    addProject: function(event){
+        var selectedProject = this.$("#selectedProject option:selected");
+        var name = selectedProject.text();
+        var projects = this.model.get('projects');
+        if(_.where(projects, {name: name}).length == 0){
+            projects.push({id: null, name: name});
+            this.model.trigger('change:projects');
+        }
+    },
+    
+    deleteProject: function(event){
+        var el = $(event.currentTarget);
+        var projects = _.filter(this.model.get('projects'), function(project){
+            return project.name != el.attr('data-project-id');
+        });
+        this.model.set('projects', projects);
+    },
+    
     events: {
-        "click #infinity": "setInfinite"
+        "click #infinity": "setInfinite",
+        "click .roleProject": "deleteProject",
+        "click #addProject": "addProject"
     },
     
     update: function(){
@@ -120,9 +141,21 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
             this.$el.removeClass('deleted');
         }
     },
+    
+    renderProjects: function(){
+        this.$("#projects").empty();
+        var template = _.template($("#edit_role_projects_template").html());
+        _.each(this.model.get('projects'), $.proxy(function(proj){
+            this.$("#projects").append(template(proj));
+        }, this));
+        if(this.$("#projects tr").length == 0){
+            this.$("#projects").append("<tr><td align='center' colspan='2'>No Projects</td></tr>");
+        }
+    },
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderProjects();
         return this.$el;
     }, 
     
