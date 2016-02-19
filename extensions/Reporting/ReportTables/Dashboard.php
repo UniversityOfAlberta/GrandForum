@@ -94,7 +94,7 @@ class Dashboard{
             if($h->isActive() && $role != ""){
                 $html.=<<<EOF
                     <li>
-                    <a target='_blank' href='{$url_prefix}{$role}:{$hqp_name}'>
+                    <a target='_blank' href='{$h->getUrl()}'>
                     $hqp_name_read</a>{$hqp_uni}{$hqp_type}
                     </li>
 EOF;
@@ -145,7 +145,7 @@ EOF;
             if($h->isActive() && $role != ""){
                 $html.=<<<EOF
                     <li>
-                    <a target='_blank' href='{$url_prefix}{$role}:{$hqp_name}'>
+                    <a target='_blank' href='{$h->getUrl()}'>
                     $hqp_name_read</a>, {$role}{$hqp_uni}{$hqp_type}
                     </li>
 EOF;

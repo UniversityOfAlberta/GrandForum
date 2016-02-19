@@ -984,6 +984,9 @@ EOF;
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array(array(), 0);
