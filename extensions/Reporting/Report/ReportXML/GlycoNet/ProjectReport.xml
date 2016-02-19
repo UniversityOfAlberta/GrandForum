@@ -239,7 +239,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
-        <ReportItemSet id="is_pl" type="If" if="{or({contains({$my_full_roles},PL)},{contains({$my_full_roles},CI)})}">
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <ReportItem id="note" type="StaticReportItem">
                 <![CDATA[
@@ -263,6 +263,44 @@
                     <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                         <![CDATA[
                             <p><b>Did the trainee graduate or transition to the workforce? Describe.</b>  <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>How was cross-disciplinary training/experience achieved?</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Cross-reference training initiative progress to deliverables included in the original proposal.</b></p>
+                            {$item}<br />
+                            <br />
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
+            <!-- Network Investigator View -->
+            <ReportItemSet id="hqps" type="PersonSupervisesReportItemSet" project="{$project_name}" personId="{$my_id}">
+                <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                    <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Describe role of the trainee within the project</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Describe any training initiatives undertaken during the funding period</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b> <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
                             {$item}
                         ]]>
                     </ReportItem>
