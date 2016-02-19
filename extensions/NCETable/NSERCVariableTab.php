@@ -843,9 +843,14 @@ EOF;
         foreach ($hqps as $hqp){
             $projs = $hqp->getProjectsDuring($this->from, $this->to);
             $univ = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($positions[$univ['position']])){
+                $univ = $hqp->getUniversity();
+            }
+            
             $pos = @$univ['position'];
             $uni = @$univ['university'];
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
+            
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
