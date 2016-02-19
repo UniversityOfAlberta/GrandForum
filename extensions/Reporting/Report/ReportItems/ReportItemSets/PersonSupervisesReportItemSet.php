@@ -13,7 +13,7 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         foreach($person->getHQPDuring($start, $end) as $hqp){
             if((count($positions) == 0 || array_search($hqp->getPosition(), $positions) !== false) &&
                ($subType == "" || $hqp->isSubRole($subType))){
-                if($this->getAttr('project', "") || ($project != null && $project->getId() != 0 && $hqp->isMemberOfDuring($project, $start, $end))){
+                if($this->getAttr('project', "") == "" || ($project != null && $project->getId() != 0 && $hqp->isRoleDuring(HQP, $start, $end, $project))){
                     $tuple = self::createTuple();
                     $tuple['person_id'] = $hqp->getId();
                     $data[] = $tuple;
