@@ -722,6 +722,9 @@ EOF;
         //Fill the table
         foreach ($hqps as $hqp){
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
