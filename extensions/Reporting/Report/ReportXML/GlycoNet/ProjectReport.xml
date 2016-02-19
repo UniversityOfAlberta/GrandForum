@@ -19,7 +19,7 @@
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="budget" permissions="--" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="--" />
             <SectionPermission id="review" permissions="--" />
         </Role>
@@ -109,11 +109,19 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" type="ReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
+    <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
             <![CDATA[
                 {$item}<br />
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+            <![CDATA[
+                <br /><br /><br /><br /><br />
+                <h3>Comments</h3>
+                <p>If any of the milestones have been delayed or abandoned, please comment on them below.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -254,7 +262,7 @@
                     </ReportItem>
                     <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b></p>
+                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b>  <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -448,17 +456,44 @@
             <![CDATA[
                 <h2>Productivity</h2>
                 <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Table and Justification">
-        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
+        <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
                 <h3>Budget Justification</h3>
-                <p><b>Provide a written justification for any significant (??>20%??) deviation from the original budget in your approved proposal.</b></p>
+                <p><b>Provide a written justification for any significant (>20%) deviation from the original budget in your approved proposal.</b></p>
                 <p>Provide details of all stipends paid, including names, positions and amounts paid.</p>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <ReportItem id="just" type="StaticReportItem">
+                <![CDATA[
+                    {set(just,)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+                <ReportItem id="comments" type="StaticReportItem">
+                    <![CDATA[
+                        {set(just,{concat({get(just)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
