@@ -1,7 +1,7 @@
 StoryView = Backbone.View.extend({
 
     initialize: function(){
-	console.log(this.model);
+	//console.log(this.model);
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Story does not exist.");
@@ -17,14 +17,13 @@ StoryView = Backbone.View.extend({
     renderAuthors: function(){
         var views = Array();
         var that = this;
-        _.each(this.model.get('authors'), function(author, index){
-            var link = new Link({id: author.id,
-                                 text: author.name.replace(/&quot;/g, ''),
-                                 url: author.url,
+	var author = this.model.get('author');
+        var link = new Link({id: author.id,
+                             text: author.name.replace(/&quot;/g, ''),
+                             url: author.url,
                                  target: ''});
-            views.push(new PersonLinkView({model: link}).render());
-        });
-        var csv = new CSVView({el: this.$('#productAuthors'), model: views});
+        views.push(new PersonLinkView({model: link}).render());
+        var csv = new CSVView({el: this.$('#storyAuthor'), model: views});
         csv.separator = ', ';
         csv.render();
     },
@@ -33,9 +32,8 @@ StoryView = Backbone.View.extend({
         main.set('title', this.model.get('title'));
         this.$el.empty();
         var data = this.model.toJSON();
-        //_.extend(data, dateTimeHelpers);
         this.$el.html(this.template(data));
-        //this.renderAuthors();
+        this.renderAuthors();
         return this.$el;
     }
 

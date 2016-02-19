@@ -1,4 +1,5 @@
-<td align="right"><%= title %></td>
-<td  style="white-space: nowrap;"><%= user %></td>
+<td align="right"><a target="_blank" href="<%= url %>"><%= title %></a>
+</td>
+<td  style="white-space: nowrap;"><%= author.name %></td>
 <td  style="white-space: nowrap;"><%= date_submitted %></td>
-<td><%= approved %></td>
+<td><% if(approved==1){ %>Yes<%} else{ %> No <% } %></td>

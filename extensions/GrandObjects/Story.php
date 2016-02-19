@@ -185,11 +185,17 @@ class Story extends BackboneModel{
             if(!$wgUser->isLoggedIn()){
 		return array();
             }
+	    $user = Person::newFromId($this->user);
+	    $author = array('id'=> $user->getId(),
+			    'name' => $user->getNameForForms(),
+			    'url' => $user->getUrl());
             $json = array('id' => $this->getId(),
                           'rev_id' => $this->getRevId(),
                           'user' => $this->user,
+			  'author' => $author,
 			  'title' => $this->getTitle(),
                           'story' => $this->getStory(),
+			  'url' => $this->getUrl(),
                           'date_submitted' => $this->getDateSubmitted(),
                           'approved' => $this->getApproved());
             return $json;
@@ -217,6 +223,18 @@ class Story extends BackboneModel{
             }
             return false;
 	}
+
+    /**
+     * Returns the url of this Paper's page
+     * @return string The url of this Paper's page
+     */
+    function getUrl(){
+        global $wgServer, $wgScriptPath;
+        if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryPage#/{$this->getId()}";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryPage?embed#/{$this->getId()}";
+    }
 
     }
 ?>

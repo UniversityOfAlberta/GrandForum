@@ -51,6 +51,7 @@ $apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI())
 //Story
 $apiRequest->addAction('Hidden','story', new StoryAPI());
 $apiRequest->addAction('Hidden','story/:id', new StoryAPI());
+$apiRequest->addAction('Hidden', 'story/:id/author', new PersonStoryAPI());
 $apiRequest->addAction('Hidden','stories', new StoriesAPI());
 // PDF
 $apiRequest->addAction('Hidden','pdf/:id', new PDFAPI());

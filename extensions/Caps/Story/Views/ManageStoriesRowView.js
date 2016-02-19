@@ -19,7 +19,6 @@ ManageStoriesRowView = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-        this.el.innerHTML = this.template(this.model.toJSON());
         if(this.parent.table != null){
             var data = new Array();
             this.$("td").each(function(i, val){
@@ -33,7 +32,14 @@ ManageStoriesRowView = Backbone.View.extend({
             this.$("td").each(function(i, val){
                 $(val).addClass(classes[i]);
             });
-        }
+        } 
+        var isMine = {isMine: false};
+        /*if(_.contains(_.pluck(this.model.get('author'), 'id'), me.get('id')) ||
+           _.intersection(_.pluck(this.model.get('author'), 'id'), students).length > 0){
+            isMine.isMine = true;
+        }*/
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
+        console.log(this.model);
         return this.$el;
     }
 });
