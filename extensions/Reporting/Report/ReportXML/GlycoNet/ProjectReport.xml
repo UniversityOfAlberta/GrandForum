@@ -116,14 +116,16 @@
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
             ]]>
         </ReportItem>
-        <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
-            <![CDATA[
-                <br /><br /><br /><br /><br />
-                <h3>Comments</h3>
-                <p>If any of the milestones have been delayed or abandoned, please comment on them below.</p>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+                <![CDATA[
+                    <br /><br /><br /><br /><br />
+                    <h3>Comments</h3>
+                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.</p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
