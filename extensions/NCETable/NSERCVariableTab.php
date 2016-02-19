@@ -468,10 +468,10 @@ EOF;
         //Fill the table
         foreach($hqps as $hqp){
             $pos = $hqp->getUniversityDuring($this->from, $this->to);
-            $pos = (isset($positions[$pos['position']])) ? $pos['position'] : "Other";
             if(!isset($positions[$pos['position']])){
                 $pos = $hqp->getUniversity();
             }
+            $pos = (isset($positions[$pos['position']])) ? $pos['position'] : "Other";
             $gender = $hqp->getGender();
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
