@@ -9,14 +9,19 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         this.model.fetch();
         this.projectViews = new Array();
         this.template = _.template($('#edit_projects_template').html());
+        this.person.getRoles();
+        this.person.getUniversities();
         this.model.ready().then($.proxy(function(){
             this.projects = this.model;
             this.listenTo(this.projects, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
-                this.render();
-            }, this));
+            return this.person.roles;
+        }, this)).then($.proxy(function(){
+            return this.person.universities;
+        }, this)).then($.proxy(function(){
+            console.log(this.person.roles.getCurrent());
+            console.log(this.person.universities.getCurrent());
+            this.render();
         }, this));
-        
         var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
         setInterval($.proxy(function(){
