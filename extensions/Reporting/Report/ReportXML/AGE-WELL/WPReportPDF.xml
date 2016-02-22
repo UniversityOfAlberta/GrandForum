@@ -21,7 +21,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" tooltip="Executive Summary" name="Executive Summary" title="1. Executive Summary" blobSection="SUMMARY" type="EditableReportSection">
-        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" limit="1800">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" limit="3600">
             <![CDATA[
                 <p>Describe the top three achievements, successes, contributions, success stories from your WP and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
                 {$item}
@@ -55,13 +55,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="additional" tooltip="Additional Information" name="Additional Information" title="3. Additional Information" blobSection="INFORMATION" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="outcomes" type="TextareaReportItem" blobItem="OUTCOMES">
+        <ReportItem id="outcomes" type="TextareaReportItem" blobItem="OUTCOMES" limit="2000">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
+        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" limit="2000">
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
                 {$item}
