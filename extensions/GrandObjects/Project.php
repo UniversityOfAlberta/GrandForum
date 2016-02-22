@@ -666,7 +666,6 @@ EOF;
                 }
             }
         }
-        
         if(!Cache::exists("project{$this->id}_people")){
             $sql = "SELECT m.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
                     FROM grand_project_members m, mw_user u

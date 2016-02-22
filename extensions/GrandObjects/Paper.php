@@ -730,8 +730,11 @@ class Paper extends BackboneModel{
                     if(isset($auth->id)){
                         $unserialized[] = $auth->id;
                     }
-                    else{
+                    else if(isset($auth->fullname)){
                         $unserialized[] = $auth->fullname;
+                    }
+                    else{
+                        $unserialized[] = $auth->name;
                     }
                 }
             }
@@ -1331,8 +1334,11 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
-                else{
+                else if(isset($author->fullname)){
                     $authors[] = $author->fullname;
+                }
+                else{
+                    $authors[] = $author->name;
                 }
             }
             foreach($this->projects as $project){
@@ -1424,8 +1430,12 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
-                else{
+                else if(isset($author->fullname)){
                     $authors[] = $author->fullname;
+                }
+                else{
+                    // This is more for legacy purposes
+                    $authors[] = $author->name;
                 }
             }
             foreach($this->projects as $project){

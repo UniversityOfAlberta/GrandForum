@@ -953,7 +953,7 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
 		        }
-		        if($user->checkTemporaryPassword($_POST['wpPassword'])){
+		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
 		            $failMessage = "";
 		            return;
 		        }
