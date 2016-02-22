@@ -9,12 +9,30 @@ StoryView = Backbone.View.extend({
         });
 	this.model.bind('change', this.render, this);
         this.template = _.template($('#story_template').html());
+
     },
 
     events: {
+        "click #editStory": "editStory",
+    },
+
+    editStory: function(){
+//must add a  thing here so cannot hack
+	if(me.id == this.model.get('author').id && this.model.get('approved') ==0){
+            document.location = document.location + '/edit';
+	}
+	else{
+	    return "";
+	}
     },
 
     renderAuthors: function(){
+	if(_.findWhere(me.get('roles'), {"role":"Admin"}) == undefined && _.findWhere(me.get('roles'), {"role":"Manager"}) == undefined){
+            if(me.id != this.model.get('author').id || this.model.get('approved') == 1){
+                $("#deleteStory").remove();
+                $("#editStory").remove();
+	    }
+	}
         var views = Array();
         var that = this;
 	var author = this.model.get('author');

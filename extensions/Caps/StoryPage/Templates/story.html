@@ -4,9 +4,9 @@
 <h2>Description</h2>
 <%= story.replace(/\n/g, "<br />") %>
 <h2>Information</h2>
-Date Submitted: <%= date_submitted  %><br>
-Approved: <% if(approved==1){ %>Yes<%} else{ %> No <% } %>
+<b>Date Submitted:</b> <%= date_submitted  %><br>
+<b>Approved:</b> <% if(approved==1){ %>Yes<%} else{ %> No <% } %>
 <% if(parseInt(me.get('id')) > 0) { %>
-    <br />
+    <br /><br />
     <button id='editStory'>Edit Story</button>&nbsp;<button id='deleteStory'>Delete Story</button>
 <% } %>

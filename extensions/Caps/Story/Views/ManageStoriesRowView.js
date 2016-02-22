@@ -13,9 +13,35 @@ ManageStoriesRowView = Backbone.View.extend({
         this.parent = options.parent;
         this.listenTo(this.model, "change", this.render);
     },
+
+    events: {
+        "change input[type=checkbox]": "toggleSelect",
+
+    },
+
+    toggleSelect: function(e){
+        this.setDirty(true);
+
+
+
+    },
+
+    setDirty: function(trigger){
+        this.model.dirty = true;
+        if(trigger){
+            this.model.trigger("dirty");
+        }
+    },
+
     
     render: function(){
         var classes = new Array();
+        var isMine = {"isMine": false};
+	if(this.model.get('author').id == me.id){
+             isMine.isMine = true;
+	}
+        var mod = _.extend(this.model.toJSON(), isMine);
+        this.el.innerHTML = this.template(mod);
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
@@ -33,13 +59,6 @@ ManageStoriesRowView = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         } 
-        var isMine = {isMine: false};
-        /*if(_.contains(_.pluck(this.model.get('author'), 'id'), me.get('id')) ||
-           _.intersection(_.pluck(this.model.get('author'), 'id'), students).length > 0){
-            isMine.isMine = true;
-        }*/
-        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
-        console.log(this.model);
         return this.$el;
     }
 });

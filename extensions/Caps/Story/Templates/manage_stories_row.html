@@ -1,5 +1,20 @@
-<td align="right"><a target="_blank" href="<%= url %>"><%= title %></a>
+<td align="right">
+    <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
-<td  style="white-space: nowrap;"><%= author.name %></td>
-<td  style="white-space: nowrap;"><%= date_submitted %></td>
-<td><% if(approved==1){ %>Yes<%} else{ %> No <% } %></td>
+<td  style="white-space: nowrap;">
+    <%= author.name %>
+</td>
+<td  style="white-space: nowrap;">
+    <%= date_submitted %>
+</td>
+<td align="center">
+    <% if(me.id != 1){ %>
+    	<% if(approved==1){ %>
+	    Yes
+    	<%} else{ %>
+	     No 
+	<% } %>
+    <%} else{%>
+        <span style="display:none;"><%= approved %></span><%= HTML.CheckBox(this, 'approved', {value:1,default:0}) %>
+    <%}%>
+</td>
