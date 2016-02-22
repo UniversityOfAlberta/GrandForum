@@ -238,7 +238,7 @@ class PersonProjectsAPI extends RESTAPI {
         Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from '{$project->getName()}'", "{$person->getUrl()}");
         $person->projects = null;
         MailingList::subscribeAll($person);
-        return false;
+        return $this->doGET();
     }
 }
 
@@ -427,7 +427,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
         MailingList::subscribeAll($person);
-        return false;
+        return $this->doGET();
     }
 }
 
@@ -500,7 +500,7 @@ class PersonRelationsAPI extends RESTAPI {
             $this->throwError("This Relationship does not exist");
         }
         $relation->delete();
-        return false;
+        return $this->doGET();
     }
 }
 
