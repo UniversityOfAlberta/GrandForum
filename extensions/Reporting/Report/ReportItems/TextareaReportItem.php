@@ -6,7 +6,7 @@ class TextareaReportItem extends AbstractReportItem {
         global $wgOut, $wgServer, $wgScriptPath;
         $item = $this->getHTML();
         $limit = $this->getLimit();
-        if($limit > 0 && !strtolower($this->getAttr('rich', 'false')) == 'true'){
+        if($limit > 0 && strtolower($this->getAttr('rich', 'false')) != 'true'){
             $item .= "<script type='text/javascript'>
                 $(document).ready(function(){
                     var strlen = $('textarea[name={$this->getPostId()}]').val().length;
