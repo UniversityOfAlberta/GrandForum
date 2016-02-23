@@ -151,7 +151,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
     }
     
-    function showMilestones(){
+    function showMilestones($pdf=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $project = $this->project;
         
@@ -187,8 +187,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 height: 24px;
             }
         </style>";
+        $commentsHeader = "";
         $statusHeader = "";
-        $statusColspan = 3;
+        $statusColspan = 2;
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -225,12 +226,16 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             else{
                 $statusHeader = "<th>Status</th>";
             }
-            $statusColspan = 4;
+            $statusColspan++;
             if(!$this->canEditMilestone(null)){
-                $this->html .= "<p>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='../skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
+                $this->html .= "<p>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
             }
         }
-        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
+        if(!$pdf){
+            $commentsHeader = "<th></th>";
+            $statusColspan++;
+        }
+        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest smaller dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
                             <th colspan='2' width='33%'></th>
@@ -256,7 +261,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             <th>Q4</th>
                             <th class='left_border'>Leader</th>
                             <th>Personnel</th>
-                            <th></th>
+                            {$commentsHeader}
                             {$statusHeader}
                         </tr>
                         </thead>
@@ -316,7 +321,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
                 $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
-                $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='../skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
+                $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
                 $leader = $milestone->getLeader();
                 $peopleText = $milestone->getPeopleText();
                 $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
@@ -340,7 +345,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 }
                 $this->html .= "<td class='left_border' align='center' style='white-space:nowrap;'>{$leaderText}</td>";
                 $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
-                $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+                if(!$pdf){
+                    $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+                }
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $statuses = array();
                     foreach(Milestone::$statuses as $status => $color){
@@ -362,95 +369,97 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
         $this->html .= "</tbody>
                         </table>";
-        $this->html .= "<table style='float:right;'>
-                            <tr>
-                                <th>Legend</th>
-                            </tr>";
-        foreach(Milestone::$statuses as $status => $color){
-            $this->html .= "<tr>
-                                <td class='smallest'><div style='text-align:center;padding:1px 3px;background:{$color};border:1px solid #555555;white-space:nowrap;'>$status</div></td>
-                            </tr>";
-        }
-        $this->html .= "</table>";
-        $this->html .= "<script type='text/javascript'>
-            var colors = ".json_encode(Milestone::$statuses).";
-            
-            $('#milestones_table td').qtip();
-            $('#milestones_table td.comment img').qtip({
-                position: {
-                    my: 'topRight',
-                    at: 'bottomLeft'
-                }
-            });
-            
-            $('#milestones_table div.comment').click(function(){
-                var that = $(this);
-                $('.comment_dialog', $(this).parent()).dialog({
-                    width: 'auto',
-                    buttons: {
-                        'Done': function(){
-                            $(this).dialog('close');
-                        }
-                    },
-                    close: function(event, ui){
-                        $(this).parent().prependTo(that.parent());
+        if(!$pdf){
+            $this->html .= "<table style='float:right;'>
+                                <tr>
+                                    <th>Legend</th>
+                                </tr>";
+            foreach(Milestone::$statuses as $status => $color){
+                $this->html .= "<tr>
+                                    <td class='smallest'><div style='text-align:center;padding:1px 3px;background:{$color};border:1px solid #555555;white-space:nowrap;'>$status</div></td>
+                                </tr>";
+            }
+            $this->html .= "</table>";
+            $this->html .= "<script type='text/javascript'>
+                var colors = ".json_encode(Milestone::$statuses).";
+                
+                $('#milestones_table td').qtip();
+                $('#milestones_table td.comment img').qtip({
+                    position: {
+                        my: 'topRight',
+                        at: 'bottomLeft'
                     }
                 });
-            });
-            
-            var changeColor = function(){
-                var checked = $(this).is(':checked');
-                if(checked){
-                    var status = $('td#status select', $(this).parent().parent()).val();
+                
+                $('#milestones_table div.comment').click(function(){
+                    var that = $(this);
+                    $('.comment_dialog', $(this).parent()).dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Done': function(){
+                                $(this).dialog('close');
+                            }
+                        },
+                        close: function(event, ui){
+                            $(this).parent().prependTo(that.parent());
+                        }
+                    });
+                });
+                
+                var changeColor = function(){
+                    var checked = $(this).is(':checked');
+                    if(checked){
+                        var status = $('td#status select', $(this).parent().parent()).val();
+                        var color = colors[status];
+                        $(this).parent().css('background', color);
+                    }
+                    else{
+                        $(this).parent().css('background', '#FFFFFF');
+                    }
+                };
+                
+                $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+                $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
+                $('#milestones_table td#status select').change(function(){
+                    var status = $(this).val();
                     var color = colors[status];
-                    $(this).parent().css('background', color);
-                }
-                else{
-                    $(this).parent().css('background', '#FFFFFF');
-                }
-            };
-            
-            $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
-            $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
-            $('#milestones_table td#status select').change(function(){
-                var status = $(this).val();
-                var color = colors[status];
-                $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
-            });
-            
-            $('#addActivity').click(function(){
-                $('#addActivityDialog').dialog({
-                    width: 'auto',
-                    buttons: {
-                        'Add Activity': function(){
-                            $(this).parent().prependTo($('#milestones'));
-                            $('input[value=\"Save Milestones\"]').click();
-                            $(this).dialog('close');
-                        },
-                        Cancel: function(){
-                            $(this).dialog('close');
-                        }
-                    }
+                    $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
                 });
-            });
-            
-            $('#addMilestone').click(function(){
-                $('#addMilestoneDialog').dialog({
-                    width: 'auto',
-                    buttons: {
-                        'Add Milestone': function(){
-                            $(this).parent().prependTo($('#milestones'));
-                            $('input[value=\"Save Milestones\"]').click();
-                            $(this).dialog('close');
-                        },
-                        Cancel: function(){
-                            $(this).dialog('close');
+                
+                $('#addActivity').click(function(){
+                    $('#addActivityDialog').dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Add Activity': function(){
+                                $(this).parent().prependTo($('#milestones'));
+                                $('input[value=\"Save Milestones\"]').click();
+                                $(this).dialog('close');
+                            },
+                            Cancel: function(){
+                                $(this).dialog('close');
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            
-        </script>";
+                
+                $('#addMilestone').click(function(){
+                    $('#addMilestoneDialog').dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Add Milestone': function(){
+                                $(this).parent().prependTo($('#milestones'));
+                                $('input[value=\"Save Milestones\"]').click();
+                                $(this).dialog('close');
+                            },
+                            Cancel: function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                });
+                
+            </script>";
+        }
     }
 
 }    

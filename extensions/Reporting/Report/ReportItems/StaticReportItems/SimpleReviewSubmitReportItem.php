@@ -17,7 +17,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
-		        
 		            $('#generateButton').click(function(){
 		                $('#generateButton').prop('disabled', true);
 		                $('#generate_success').html('');
@@ -76,6 +75,9 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$disabled = "";
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
+		}
+		if(!$this->getReport()->isComplete()){
+		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
 		$wgOut->addHTML("<p>Generate a PDF with the data submitted: <button id='generateButton' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
