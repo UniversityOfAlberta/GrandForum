@@ -595,6 +595,20 @@ abstract class AbstractReport extends SpecialPage {
         return ($data[0]['count'] > 0);
     }
     
+    /**
+     * Returns whether or not the Report is complete or not
+     * @return boolean Whether or not the Report is complete or not
+     */
+    function isComplete(){
+        $complete = true;
+        foreach($this->sections as $section){
+            if($section instanceof EditableReportSection){
+                $complete = ($complete && $section->getPercentComplete() == 100);
+            }
+        }
+        return $complete;
+    }
+    
     // Checks the permissions of the Person with the required Permissions of the Report
     function checkPermissions(){
         global $wgUser;
