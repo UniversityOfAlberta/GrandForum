@@ -84,11 +84,19 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
             }
         }, this));
     },
+    
+    showCard: function(){
+        
+        var card = new LargePersonCardView({el: this.$("#card"), model: this.person});
+        card.render();
+        this.$("#accordion").accordion();
+    },
        
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        this.showCard();
         return this.$el;
     }
 
