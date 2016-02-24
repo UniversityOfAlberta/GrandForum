@@ -40,6 +40,8 @@ ManagePeopleRowView = Backbone.View.extend({
 	                $("html").css("overflow", "auto");
 	                this.editRoles.stopListening();
 	                this.editRoles.undelegateEvents();
+	                clearInterval(this.editRoles.interval);
+	                this.editRoles.interval = null;
 	            }, this),
 	            buttons: {
 	                "+": { 
@@ -87,6 +89,8 @@ ManagePeopleRowView = Backbone.View.extend({
 	                $("html").css("overflow", "auto");
 	                this.editProjects.stopListening();
 	                this.editProjects.undelegateEvents();
+	                clearInterval(this.editProjects.interval);
+	                this.editProjects.interval = null;
 	            }, this),
 	            buttons: {
 	                "+": { 
@@ -134,6 +138,8 @@ ManagePeopleRowView = Backbone.View.extend({
 	                $("html").css("overflow", "auto");
 	                this.editRelations.stopListening();
 	                this.editRelations.undelegateEvents();
+	                clearInterval(this.editRelations.interval);
+	                this.editRelations.interval = null;
 	            }, this),
 	            buttons: {
 	                "+": { 
@@ -180,6 +186,8 @@ ManagePeopleRowView = Backbone.View.extend({
 	                $("html").css("overflow", "auto");
 	                this.editUniversities.stopListening();
 	                this.editUniversities.undelegateEvents();
+	                clearInterval(this.editUniversities.interval);
+	                this.editUniversities.interval = null;
 	            }, this),
 	            buttons: {
 	                "+": { 
