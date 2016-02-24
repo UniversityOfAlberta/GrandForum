@@ -18,8 +18,6 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         }, this)).then($.proxy(function(){
             return this.person.universities;
         }, this)).then($.proxy(function(){
-            console.log(this.person.roles.getCurrent());
-            console.log(this.person.universities.getCurrent());
             this.render();
         }, this));
         var dims = {w:0, h:0};
