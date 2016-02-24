@@ -94,6 +94,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     tagName: 'tr',
     
     initialize: function(){
+        this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.listenTo(this.model, "change:projects", this.renderProjects);
         this.template = _.template($('#edit_relations_row_template').html());
@@ -156,6 +157,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProjects();
+        this.update();
         return this.$el;
     }, 
     

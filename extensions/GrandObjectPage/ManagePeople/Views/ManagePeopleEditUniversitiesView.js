@@ -13,9 +13,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.model.ready().then($.proxy(function(){
             this.universities = this.model;
             this.listenTo(this.universities, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
-                this.render();
-            }, this));
+            this.render();
         }, this));
         
         var dims = {w:0, h:0};
@@ -95,6 +93,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     tagName: 'tr',
     
     initialize: function(){
+        this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
     },
@@ -130,6 +129,7 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
         this.$("[name=position]").combobox();
+        this.update();
         return this.$el;
     }, 
     

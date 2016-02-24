@@ -158,6 +158,7 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProjects();
+        this.update();
         return this.$el;
     }, 
     

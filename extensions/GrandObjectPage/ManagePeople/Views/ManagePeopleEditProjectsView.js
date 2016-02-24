@@ -101,6 +101,7 @@ ManagePeopleEditProjectsRowView = Backbone.View.extend({
     tagName: 'tr',
     
     initialize: function(){
+        this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_projects_row_template').html());
     },
@@ -130,6 +131,7 @@ ManagePeopleEditProjectsRowView = Backbone.View.extend({
    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        this.update();
         return this.$el;
     }, 
     
