@@ -10,10 +10,7 @@ class AddRelationAPI extends API{
     }
 
     function processParams($params){
-        $_POST['name1'] = str_replace("'", "&#39;", $_POST['name1']);
-        $_POST['name2'] = str_replace("'", "&#39;", $_POST['name2']);
-        $_POST['type'] = str_replace("'", "&#39;", $_POST['type']);
-        $_POST['project_relations'] = str_replace("'", "&#39;", $_POST['project_relations']);
+        
     }
 
 	function doAction($noEcho=false){
@@ -57,9 +54,12 @@ class AddRelationAPI extends API{
                     $projectIds[] = $project->getId();
                 }
             }
-            DBFunctions::execSQL("INSERT INTO grand_relations
-                                  (`user1`,`user2`,`type`,`projects`,`start_date`)
-                                  VALUES ('{$person1->getId()}','{$person2->getId()}','{$_POST['type']}','".serialize($projectIds)."',CURRENT_TIMESTAMP)", true);
+            DBFunctions::insert('grand_relations',
+                                array('user1' => $person1->getId(),
+                                      'user2' => $person2->getId(),
+                                      'type' => $_POST['type'],
+                                      'projects' => serialize($projectIds),
+                                      'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             if(!$noEcho){
                 echo "{$person1->getNameForForms()} relation with {$person2->getNameForForms()} added.\n";
             }
