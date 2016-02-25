@@ -38,8 +38,8 @@ Feature: AddMember
         And "new.user@behat-test.com" should be subscribed to "test-hqps"
         And unsubscribe "new.user@behat-test.com" from "test-hqps"
         
-    Scenario: NI Requesting a candidate user
-        Given I am logged in as "NI.User1" using password "NI.Pass1"
+    Scenario: Staff Requesting a candidate user
+        Given I am logged in as "Staff.User1" using password "Staff.Pass1"
         When I follow "Add Member"
         And I fill in "first_name_field" with "New"
         And I fill in "last_name_field" with "Candidate"

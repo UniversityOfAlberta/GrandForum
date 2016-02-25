@@ -81,7 +81,7 @@ Feature: EditMember
     Scenario: Adding Supervises relations
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage People"
-        And I press "Add Existing Member"
+        And I press "Edit Existing Member"
         And I select "HQP User4" from "select"
         And I click "Add"
         And I wait "1000"

@@ -107,9 +107,11 @@ class Relationship extends BackboneModel {
         $me = Person::newFromWgUser();
         if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
             $projects = array();
-            foreach($this->projects as $project){
-                $proj = Project::newFromName($project->name);
-                $projects[] = $proj->getId();
+            if(is_array($this->projects)){
+                foreach($this->projects as $project){
+                    $proj = Project::newFromName($project->name);
+                    $projects[] = $proj->getId();
+                }
             }
             $status = DBFunctions::insert('grand_relations',
                                           array('user1' => $this->user1,
