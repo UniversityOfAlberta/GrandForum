@@ -37,8 +37,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
                 }
                 this.$el.dialog("option","position", {
                     my: "center center",
-                    at: "center center",
-                    offset: "0 -75%"
+                    at: "center center"
                 });
             }
             dim.w1 = this.$el.width();
