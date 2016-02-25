@@ -267,6 +267,7 @@ class AddMember extends SpecialPage{
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
+        $rolesLabel->attr('style', 'width:160px;');
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
@@ -280,6 +281,9 @@ class AddMember extends SpecialPage{
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
+        if(!$me->isRoleAtLeast(STAFF)){
+            $candRow->attr('style', 'display:none;');
+        }
                
         $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
         $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
@@ -301,8 +305,9 @@ class AddMember extends SpecialPage{
         $positionLabel = new Label("position_label", "HQP Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
         $positionField = new SelectBox("position_field", "HQP Academic Status", "", $positions, VALIDATE_NOTHING);
         $positionField->attr("style", "width: 260px;");
-        $positionRow = new FormTableRow("university_row");
+        $positionRow = new FormTableRow("position_row");
         $positionRow->append($positionLabel)->append($positionField);
+        $positionRow->attr('id', 'position_row');
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -335,6 +340,28 @@ class AddMember extends SpecialPage{
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());
+        $wgOut->addHTML("<script type='text/javascript'>
+            var fn = function(){
+                var found = false;
+                var otherFound = false;
+                $.each($('input[name=\"role_field[]\"]:checked'), function(id, el){
+                    found = (found || $(el).val() == '".HQP."');
+                    otherFound = (otherFound || $(el).val() != '".HQP."');
+                });
+                if(found){
+                    $('#position_row').show();
+                }
+                else{
+                    $('#position_row').hide();
+                }
+                $('#roleWarning').remove();
+                if(found && otherFound){
+                    $('#role_label').after('<div id=\'roleWarning\' style=\'width:156px;\' class=\'inlineWarning\'>HQP should not be selected with any other role.  Are you sure you want to proceed?</div>');
+                }
+            }
+            $('input[name=\"role_field[]\"]').change(fn);
+            fn();
+        </script>");
         $wgOut->addHTML("</form>");
     }
     

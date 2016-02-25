@@ -6,13 +6,13 @@
         <li>You have a 'Works With' relation with that member</li>
         <li>You are the project leader of a project that the member is on</li>
     </ul>
-    If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Add Existing Member' button.  If the person does not exist, then you will need to add them by clicking the 'Add New Member' button.
+    If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Edit Existing Member' button.  If the person does not exist, then you will need to add them by clicking the 'Add New Member' button.
 </p>
 <p>
     <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
-    <button id="addExistingMember" title="Adds an existing member to the list below">Add Existing Member</button>
+    <button id="addExistingMember" title="Adds an existing member to the list below">Edit Existing Member</button>
 </p>
-<div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Add Existing Member">
+<div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Edit Existing Member">
     <p>Select the person you would like to show up in your table and then press "Save".</p>
     <p><select id="selectExistingMember" name="select"></select></p>
 </div>

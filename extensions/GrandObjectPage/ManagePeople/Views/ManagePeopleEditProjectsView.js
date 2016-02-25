@@ -22,18 +22,31 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
             this.render();
         }, this));
         // Reposition the dialog when the window is resized or the dialog is resized
+        var dim = {w1: 0,
+                   h1: 0,
+                   w2: 0,
+                   h2: 0};
         this.interval = setInterval($.proxy(function(){
-            this.$el.dialog("option","position", {
-                my: "center center",
-                at: "center center",
-                offset: "0 -75%"
-            });
-            if(this.$el.height() >= $(window).height() - 100){
-                this.$el.height($(window).height() - 100);
+            if(this.$el.width() != dim.w1 ||
+               this.$el.height() != dim.h1 ||
+               $(window).width() != dim.w2 ||
+               $(window).height() != dim.h2){
+                if(this.$el.height() >= $(window).height() - 100){
+                    this.$el.height($(window).height() - 100);
+                }
+                else{
+                    this.$el.height('auto');
+                }
+                this.$el.dialog("option","position", {
+                    my: "center center",
+                    at: "center center",
+                    offset: "0 -75%"
+                });
             }
-            else{
-                this.$el.height('auto');
-            }
+            dim.w1 = this.$el.width();
+            dim.h1 = this.$el.height();
+            dim.w2 = $(window).width();
+            dim.h2 = $(window).height();
 	    }, this), 100);
     },
     
