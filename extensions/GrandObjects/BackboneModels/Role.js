@@ -1,7 +1,7 @@
 Role = Backbone.Model.extend({
 
     initialize: function(){
-
+        this.set('projects', []);
     },
 
     urlRoot: 'index.php?action=api.role',
@@ -12,7 +12,7 @@ Role = Backbone.Model.extend({
         name: "",
         title: "",
         comment: "",
-        projects: new Array(),
+        projects: null,
         startDate: new Date().toISOString().substr(0, 10),
         endDate: "",
         deleted: false
