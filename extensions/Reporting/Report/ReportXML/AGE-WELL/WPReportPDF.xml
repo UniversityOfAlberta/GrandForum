@@ -23,7 +23,6 @@
     <ReportSection id="summary" tooltip="Executive Summary" name="Executive Summary" title="1. Executive Summary" blobSection="SUMMARY" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" limit="3600">
             <![CDATA[
-                <p>Describe the top three achievements, successes, contributions, success stories from your WP and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
                 {$item}
             ]]>
         </ReportItem>

@@ -14,7 +14,12 @@ class DummyReport extends AbstractReport{
         $this->readOnly = true;
         $projectName = null;
         if($project != null){
-            $projectName = $project->getName();
+            if($project instanceof Project){
+                $projectName = $project->getName();
+            }
+            else if($project instanceof Theme){
+                $projectName = $project->getAcronym();
+            }
         }
         $topProjectOnly = false;
         /*if($projectName != null){
