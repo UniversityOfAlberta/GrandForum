@@ -102,7 +102,13 @@ EOF;
             $tok = false;
             $tst = '';
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
+            if($this->getReport()->project instanceof Project){
+                $project = Project::newFromId($this->projectId);
+            }
+            else if($this->getReport()->project instanceof Theme){
+            $project = Theme::newFromId($this->projectId);
+            }
             $report = new DummyReport($file, $person, $project);
         	$check = $report->getPDF();
         	if (count($check) > 0) {
