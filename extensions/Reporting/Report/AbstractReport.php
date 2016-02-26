@@ -438,7 +438,12 @@ abstract class AbstractReport extends SpecialPage {
     // Sets the name of this Report
     function setName($name){
         if($this->project != null){
-            $this->name = $name.": {$this->project->getName()}";
+            if($this->project instanceof Project){
+                $this->name = $name.": {$this->project->getName()}";
+            }
+            else if($this->project instanceof Theme){
+                $this->name = $name.": {$this->project->getAcronym()}";
+            }
         }
         else{
             $this->name = $name;
