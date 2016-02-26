@@ -120,7 +120,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($projectName != null){
             $this->project = Project::newFromName($projectName);
-            if($this->project != null &&
+            if($this->project == null ||
                $this->project->getId() == 0){
                 // Try themes
                 $this->project = Theme::newFromName($projectName);
