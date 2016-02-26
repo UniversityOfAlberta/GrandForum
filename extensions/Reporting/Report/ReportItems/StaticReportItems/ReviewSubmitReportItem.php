@@ -8,7 +8,12 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
-		    $projectGet = "&project={$this->getReport()->project->getName()}";
+		    if($this->getReport()->project instanceof Project){
+                $projectGet = "&project={$this->getReport()->project->getName()}";
+            }
+            else if($this->getReport()->project instanceof Theme){
+                $projectGet = "&project={$this->getReport()->project->getAcronym()}";
+            }
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
