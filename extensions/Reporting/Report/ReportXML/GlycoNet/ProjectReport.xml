@@ -348,7 +348,7 @@
             </ReportItem>
             <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>How was cross-disciplinary training/experience achieved?</b></p>
+                    <p><b>How was cross-disciplinary training/experience achieved?  Describe any cross-disciplinary training or experiences that you participated in over the last year.</b></p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -562,6 +562,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation of the Review" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>
