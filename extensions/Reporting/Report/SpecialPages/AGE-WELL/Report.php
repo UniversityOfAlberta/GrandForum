@@ -67,8 +67,8 @@ class Report extends AbstractReport {
         if($person->isRole(TL) || $person->isRole(TC)){
             $themes = array_merge($person->getLeadThemes(), $person->getCoordThemes());
             foreach($themes as $theme){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "WPReport" && @$_GET['project'] == $theme->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getName()}", "{$url}WPReport&project={$theme->getName()}", $selected);
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "WPReport" && @$_GET['project'] == $theme->getAcronym())) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", "{$url}WPReport&project={$theme->getAcronym()}", $selected);
             }
         }
         if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
