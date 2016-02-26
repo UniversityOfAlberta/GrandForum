@@ -109,15 +109,17 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function canEdit(){
         $me = Person::newFromWgUser();
-        
-        $milestones = $this->project->getMilestones(true);
-        foreach($milestones as $milestone){
-            if($milestone->getLeader()->getId() == $me->getId()){
-                return true;
+        if($me->isLoggedIn()){
+            $milestones = $this->project->getMilestones(true);
+            foreach($milestones as $milestone){
+                if($milestone->getLeader()->getId() == $me->getId()){
+                    return true;
+                }
             }
+            
+            return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
         }
-        
-        return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
+        return false;
     }
     
     function canEditMilestone($milestone){
