@@ -665,11 +665,23 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         else if($this->project != null && ($perm['perm']['role'] == TC || $perm['perm']['role'] == TL)){
-                            $project_objs = $me->getThemeProjects();
-                            if(count($project_objs) > 0){
-                                foreach($project_objs as $project){
-                                    if($project->getId() == $this->project->getId()){
-                                        $rResult = true;
+                            if($this->project instanceof Project){
+                                $project_objs = $me->getThemeProjects();
+                                if(count($project_objs) > 0){
+                                    foreach($project_objs as $project){
+                                        if($project->getId() == $this->project->getId()){
+                                            $rResult = true;
+                                        }
+                                    }
+                                }
+                            }
+                            else if($this->project instanceof Theme){
+                                $project_objs = array_merge($me->getLeadThemes(), $me->getCoordThemes());
+                                if(count($project_objs) > 0){
+                                    foreach($project_objs as $project){
+                                        if($project->getId() == $this->project->getId()){
+                                            $rResult = true;
+                                        }
                                     }
                                 }
                             }
