@@ -267,7 +267,7 @@
                     </ReportItem>
                     <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b>  <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
+                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b></p>
                             {$item}
                         ]]>
                     </ReportItem>
