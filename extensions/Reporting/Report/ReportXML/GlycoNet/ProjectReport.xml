@@ -251,6 +251,11 @@
                     <div class='info'>HQP responses may be edited by the Project Leader, Network Investigators, and by the HQP themselves.</div>
                 ]]>
             </ReportItem>
+            <ReportItem id="info" type="StaticReportItem">
+                <![CDATA[
+                    <p>Below are the HQP which are in {$project_name}.  If no HQP are listed, or some are missing then you can add them to the project by going to <a href='https://forum.glyconet.ca/index.php/Special:EditMember' target='_blank'>Edit Member</a></p>
+                ]]>
+            </ReportItem>
             <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}">
@@ -289,6 +294,11 @@
         </ReportItemSet>
         <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
+            <ReportItem id="info" type="StaticReportItem">
+                <![CDATA[
+                    <p>Below are the HQP which you supervise in {$project_name}.  If no HQP are listed, or some are missing then you can add them by going to <a href='https://forum.glyconet.ca/index.php/Special:EditRelations' target='_blank'>Edit Relations</a></p>
+                ]]>
+            </ReportItem>
             <ReportItemSet id="hqps" type="PersonSupervisesReportItemSet" project="{$project_name}" personId="{$my_id}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}">
