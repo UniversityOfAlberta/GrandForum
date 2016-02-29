@@ -349,6 +349,7 @@ EOF;
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
+		$emailHeader = "";
 		$idHeader = "";
 		$contactHeader = "";
 		$subRoleHeader = "";
