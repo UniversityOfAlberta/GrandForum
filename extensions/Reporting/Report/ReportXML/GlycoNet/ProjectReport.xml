@@ -267,7 +267,7 @@
                     </ReportItem>
                     <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                         <![CDATA[
-                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b>  <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
+                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b></p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -348,7 +348,7 @@
             </ReportItem>
             <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>How was cross-disciplinary training/experience achieved?</b></p>
+                    <p><b>How was cross-disciplinary training/experience achieved?  Describe any cross-disciplinary training or experiences that you participated in over the last year.</b></p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -562,6 +562,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation of the Review" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="snitynsk@ualberta.ca,enanak@ualberta.ca" />
     </ReportSection>
 </Report>

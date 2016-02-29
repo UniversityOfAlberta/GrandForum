@@ -7,7 +7,12 @@ class ReviewReportItem extends StaticReportItem {
 		$project = $this->getReport()->project;
 		$projectGet = "";
 		if($project != null){
-		    $projectGet = "&project={$project->getName()}";
+		    if($project instanceof Project){
+                $projectGet = "&project={$project->getName()}";
+            }
+            else if($project instanceof Theme){
+                $projectGet = "&project={$project->getAcronym()}";
+            }
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){

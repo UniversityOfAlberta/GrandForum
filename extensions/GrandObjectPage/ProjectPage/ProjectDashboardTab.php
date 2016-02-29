@@ -130,7 +130,15 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function showEditTopProducts($project, $visibility){
         global $config;
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to 10 research outcomes that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in the annual report.</small><br />";
+        $this->html .= "<small>Select up to 10 research outcomes that you believe showcase the productivity of {$project->getName()} the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in the annual report. ie:
+        <ul>
+            <li>Publication in a high-impact journal</li>
+            <li>Major partnerships or collaborations</li>
+            <li>Licensing a product</li>
+            <li>High profile awards</li>
+            <li>Formation of a start-up company</li>
+        </ul>
+        </small>";
         $products = $project->getTopProducts();
         $i = 0;
         foreach($products as $product){

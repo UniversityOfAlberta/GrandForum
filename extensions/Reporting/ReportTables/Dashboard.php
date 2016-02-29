@@ -199,35 +199,36 @@ EOF;
     static function paperDetails($papers){
         global $wgServer, $wgScriptPath;
         
-        $html = "";    
-        foreach($papers as $p){
-            if($p instanceof Paper){
-                $pap_data = $p->getData();
-                $event_title = "";
-                if(isset($pap_data['event_title'])){
-                    $event_title = "; Event Title: ".$pap_data['event_title'];
-                }else if(isset($pap_data['book_title'])){
-                    $event_title = "; Book Title: ".$pap_data['book_title'];
-                }else if(isset($pap_data['journal_title'])){
-                    $event_title = "; Journal Title: ".$pap_data['journal_title'];
+        $html = "";
+        if(is_array($papers)){
+            foreach($papers as $p){
+                if($p instanceof Paper){
+                    $pap_data = $p->getData();
+                    $event_title = "";
+                    if(isset($pap_data['event_title'])){
+                        $event_title = "; Event Title: ".$pap_data['event_title'];
+                    }else if(isset($pap_data['book_title'])){
+                        $event_title = "; Book Title: ".$pap_data['book_title'];
+                    }else if(isset($pap_data['journal_title'])){
+                        $event_title = "; Journal Title: ".$pap_data['journal_title'];
+                    }
+                    
+                    $pap_authors = $p->getAuthors();    
+                    $author_arr = array();    
+                    foreach ($pap_authors as $pap_auth){
+                        $author_arr[] = $pap_auth->getNameForForms();
+                    }
+                    $author_str = implode(',', $author_arr);
+                    
+                    $pap_title = $p->getTitle();
+                    $pap_status = $p->getStatus();
+                    $html.= "EOF
+                        <li>
+                        <a target='_blank' href='{$p->getUrl()}'>
+                        $pap_title
+                        </a>$event_title; $pap_status; Authors: $author_str
+                        </li>";
                 }
-                
-                $pap_authors = $p->getAuthors();    
-                $author_arr = array();    
-                foreach ($pap_authors as $pap_auth){
-                    $author_arr[] = $pap_auth->getNameForForms();
-                }
-                $author_str = implode(',', $author_arr);
-                
-                $pap_title = $p->getTitle();
-                $pap_status = $p->getStatus();
-                $html.=<<<EOF
-                    <li>
-                    <a target='_blank' href='{$p->getUrl()}'>
-                    $pap_title
-                    </a>$event_title; $pap_status; Authors: $author_str
-                    </li>
-EOF;
             }
         }
         return $html;

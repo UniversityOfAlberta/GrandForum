@@ -8,7 +8,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
-		    $projectGet = "&project={$this->getReport()->project->getName()}";
+		    if($this->getReport()->project instanceof Project){
+                $projectGet = "&project={$this->getReport()->project->getName()}";
+            }
+            else if($this->getReport()->project instanceof Theme){
+                $projectGet = "&project={$this->getReport()->project->getAcronym()}";
+            }
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
@@ -97,7 +102,13 @@ EOF;
             $tok = false;
             $tst = '';
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
+            if($this->getReport()->project instanceof Project){
+                $project = Project::newFromId($this->projectId);
+            }
+            else if($this->getReport()->project instanceof Theme){
+            $project = Theme::newFromId($this->projectId);
+            }
             $report = new DummyReport($file, $person, $project);
         	$check = $report->getPDF();
         	if (count($check) > 0) {
