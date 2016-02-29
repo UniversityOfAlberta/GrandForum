@@ -550,7 +550,7 @@ EOF;
                     $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
                     $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
                     
-                    $num_theses = count($counts[1]);
+                    $num_theses = @count($counts[1]);
                     $theses_details = Dashboard::paperDetails($counts[1]);
                     if($num_theses > 0){
                         $inner_tbl .=<<<EOF
