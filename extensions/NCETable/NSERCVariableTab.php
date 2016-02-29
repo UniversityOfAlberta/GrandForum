@@ -551,7 +551,7 @@ EOF;
                     $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
                     
                     $num_theses = @count($counts[1]);
-                    $theses_details = Dashboard::paperDetails($counts[1]);
+                    $theses_details = @Dashboard::paperDetails($counts[1]);
                     if($num_theses > 0){
                         $inner_tbl .=<<<EOF
                             <td>
@@ -572,8 +572,8 @@ EOF;
 
                     //$inner_tbl .= "<td>{$counts[1]}</td></tr>";
                     //$inner_tbl .= "<tr><td>{$label}</td><td>{$counts[0]}</td><td>{$counts[1]}</td></tr>";
-                    $total_nat[0] = array_merge($total_nat[0], $counts[0]); // += $num_students;
-                    $total_nat[1] = array_merge($total_nat[1], $counts[1]); //+= $counts[1];
+                    $total_nat[0] = @array_merge($total_nat[0], $counts[0]); // += $num_students;
+                    $total_nat[1] = @array_merge($total_nat[1], $counts[1]); //+= $counts[1];
                 }
 
 
