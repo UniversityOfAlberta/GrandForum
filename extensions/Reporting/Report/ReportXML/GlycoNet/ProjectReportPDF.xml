@@ -192,7 +192,7 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="10" mimeType="application/pdf">
+        <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p><b>Figures Upload</b></p>
                 {$item}
