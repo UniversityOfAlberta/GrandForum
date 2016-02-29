@@ -117,7 +117,7 @@
             <![CDATA[
                 {$item}<br />
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
