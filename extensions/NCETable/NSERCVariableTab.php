@@ -591,8 +591,8 @@ EOF;
                 $num_total_nat_thes = count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
 
-                $total_gen[0] = array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
-                $total_gen[1] = array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
+                $total_gen[0] = @array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
+                $total_gen[1] = @array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
             }   
             
             $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
@@ -651,8 +651,8 @@ EOF;
             $html .= $inner_tbl."</tr>";
             $html .= "<tr><th colspan='4'></th></tr>";
             
-            $total[0] = array_merge($total[0], $total_gen[0]);// += $total_gen[0];
-            $total[1] = array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
+            $total[0] = @array_merge($total[0], $total_gen[0]);// += $total_gen[0];
+            $total[1] = @array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
         }
         $html .= "<tr style='font-weight:bold;'><td></td><td>Total:</td><td>"; //Total Thesis: {$total[1]}</td></tr>";
         $lnk_id = "lnk_total";
