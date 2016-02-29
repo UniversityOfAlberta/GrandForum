@@ -202,7 +202,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
                 $managerImpersonating = false;
@@ -275,6 +275,19 @@ abstract class AbstractReport extends SpecialPage {
                     }
                     $report = new DummyReport($file, $this->person, $this->project, $this->year);
                     $report->submitReport();
+                    if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == ""){
+                        $check = $report->getLatestPDF();
+                    	if (count($check) > 0) {
+                    		$tok = $check[0]['token'];
+                    	}
+                    	
+                    	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
+                    	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                                   "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                                   "X-Mailer: PHP/" . phpversion();
+                        $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
+                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                    }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
                 exit;
