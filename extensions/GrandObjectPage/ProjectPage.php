@@ -11,7 +11,7 @@ $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 class ProjectPage {
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -91,7 +91,9 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
+                if($config->getValue('projectLongDescription')){
+                    $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
+                }
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
