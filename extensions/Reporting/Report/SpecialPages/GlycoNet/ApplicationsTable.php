@@ -30,19 +30,15 @@ class ApplicationsTable extends SpecialPage{
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
-        $nis = array_merge(Person::getAllPeople(NI), 
-                           Person::getAllCandidates(NI),
-                           Person::getAllPeople(EXTERNAL),
-                           Person::getAllCandidates(EXTERNAL));
-        
-        $hqps = Person::getAllPeople(HQP);
+        $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
+        $ni = Person::getAllPeople(NI);
         
         $tabbedPage = new TabbedPage("person");
 
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP', $nis, 2015, "SIP"));
-        $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis, 2015, "Catalyst"));
-        $tabbedPage->addTab(new ApplicationTab('RP_CIP', $nis, 2015, "CIP"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $hqps, 2015, "Summer Institute 2016"));
+        $tabbedPage->addTab(new CandidatesTab());
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp, 2015, "Research Exchange"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp, 2015, "Summer"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni, 2015, "Tech Workshop"));
         $tabbedPage->showPage();
     }
     

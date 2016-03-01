@@ -22,7 +22,9 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
 
+
 autoload_register('Reporting/Report');
+autoload_register('Reporting/Report/ApplicationTabs');
 autoload_register('Reporting/Report/ReportSections');
 autoload_register('Reporting/Report/ReportItems');
 autoload_register('Reporting/Report/ReportItems/StaticReportItems');
