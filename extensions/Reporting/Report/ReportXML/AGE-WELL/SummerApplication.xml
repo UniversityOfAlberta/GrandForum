@@ -37,7 +37,7 @@ Co-Creating Possibilities: Living Well With Dementia">
                 <b>Application Requirements:</b>
                 <ul>
                     <li>Fully completed application form</li>
-                    <li>Current CV</li>
+                    <li>Current CV uploaded to <a target='_blank' href='{$user_url}?tab=hqp-profile'>HQP Profile</a> tab</li>
                 </ul>
 
                 <p><b>Application Procedure:</b><br />
@@ -147,6 +147,11 @@ All complete applications will be reviewed by members of the Summer Institute St
             <![CDATA[
                 <p><b>What would you bring to a transdisciplinary team trying to create a solution/technology for older adults living with dementia?  Please include any special skills or experience with participatory research, business, plans, intellectual property, prototyping, programming languages etc. (1/2 page)</b></p>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="StaticReportItem">
+            <![CDATA[
+                
             ]]>
         </ReportItem>
     </ReportSection>
