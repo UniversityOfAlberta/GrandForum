@@ -1079,7 +1079,12 @@ class Person extends BackboneModel {
      */
     function isThemeLeaderOf($project){
         $themes = $this->getLeadThemes();
-        $challenge = $project->getChallenge();
+        if($project instanceof Theme){
+            $challenge = $project;
+        }
+        else {
+            $challenge = $project->getChallenge();
+        }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
                 return true;
@@ -1095,7 +1100,12 @@ class Person extends BackboneModel {
      */
     function isThemeCoordinatorOf($project){
         $themes = $this->getCoordThemes();
-        $challenge = $project->getChallenge();
+        if($project instanceof Theme){
+            $challenge = $project;
+        }
+        else {
+            $challenge = $project->getChallenge();
+        }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
                 return true;
@@ -1464,6 +1474,19 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+    }
+
+    function getNameForProduct(){
+	global $config;
+	if($this->getId() == 0){
+	    return $this->getNameForForms();
+	}
+        $format = strtolower($config->getValue("nameFormat"));
+	$format = str_replace("%first", $this->getFirstName(), $format);
+        $format = str_replace("%last", $this->getLastName(), $format);
+        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
+        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
+	return $format;
     }
     
     // Returns the user's profile.

@@ -169,7 +169,7 @@ function onUserCan(&$title, &$user, $action, &$result) {
 }
  
 function onUserCan2(&$title, &$user, $action, &$result) {
-  global $wgExtraNamespaces, $egAnProtectUploads, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
+  global $wgExtraNamespaces, $wgMessage, $egAnProtectUploads, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
   $person = Person::newFromId($user->getId());
   
   // Is API set?
@@ -180,7 +180,23 @@ function onUserCan2(&$title, &$user, $action, &$result) {
         return true;
     }
   }
-  
+ 
+
+  if($title->getNamespace() >= 0){
+      $article = Wiki::newFromId($title->getArticleID());
+      if($article->canView()){
+	if(!$article->isApproved() && $action=='delete'){
+	    $wgMessage->addInfo("This article is awaiting approval.");
+	}
+	$result=true;
+      }
+      else{
+	$result=false;
+	return false;
+      }
+  }
+
+
   // Check public sections of wiki page
   if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
@@ -585,6 +601,23 @@ AND `page_is_redirect` =0";
     }
 
     return true;
+}
+
+function pageContentSaveComplete($article){
+    $id = $article->getId();
+    $data = DBFunctions::select(array('grand_page_approved'),
+                                array('*'),
+                                array('page_id'=>$id));
+   if(count($data)===0){
+    DBFunctions::insert('grand_page_approved',
+                         array("page_id" => $id,
+                               "approved" => 0));
+    }
+    else{
+        DBFunctions::update('grand_page_approved',
+                            array("approved"=>0),
+                            array("page_id"=>$id));
+    }
 }
 
 ?>

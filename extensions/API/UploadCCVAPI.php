@@ -104,6 +104,7 @@ class UploadCCVAPI extends API{
             }
             $obj = new stdClass;
             $obj->name = trim($author);
+            $obj->fullname = trim($author);
             $product->authors[] = $obj;
         }
         foreach($paper as $key => $field){

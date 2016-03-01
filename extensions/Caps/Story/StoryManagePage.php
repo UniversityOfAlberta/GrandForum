@@ -16,13 +16,17 @@ class StoryManagePage extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
 		     'manage_stories',
-		     'manage_stories_row');
+		     'manage_stories_row',
+		     'story',
+		     'story_edit');
     }
     
     function getViews(){
         return array('Backbone/*',
 		     'ManageStoriesView',
-		     'ManageStoriesRowView');
+		     'ManageStoriesRowView',
+		     'StoryView',
+		     'StoryEditView');
     }
     
     function getModels(){

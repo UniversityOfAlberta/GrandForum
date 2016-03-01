@@ -25,11 +25,13 @@ class Wiki extends BackboneModel {
 	}
 	
 	function Wiki($article){
-		$this->id = $article->getId();
-		$this->ns = $article->getTitle()->getNsText();
-		$this->title = $article->getTitle()->getText();
-		$this->url = $article->getTitle()->getFullURL();
-		$this->article = $article;
+		if($article != null){
+		    $this->id = $article->getId();
+		    $this->ns = $article->getTitle()->getNsText();
+		    $this->title = $article->getTitle()->getText();
+		    $this->url = $article->getTitle()->getFullURL();
+		    $this->article = $article;
+		}
 	}
 	
 	function getText(){
@@ -63,6 +65,31 @@ class Wiki extends BackboneModel {
 	
 	function getCacheId(){
 	    global $wgSitename;
+	}
+	function isApproved(){
+            $data = DBFunctions::select(array("grand_page_approved"=>"a",
+                                              "mw_revision"=>"r"),
+                                        array("a.approved", "r.rev_user"),
+                                        array("a.page_id"=>EQ(COL("r.rev_page")),
+                                              "r.rev_page"=>$this->getId(),
+					      "a.approved"=>1),
+                                        array("rev_id"=>"DESC"));
+	    return (count($data)>0);
+
+	}
+
+	function canView(){
+	    $me = Person::newFromWgUser();
+	    $data = DBFunctions::select(array("grand_page_approved"=>"a", 
+					      "mw_revision"=>"r"),
+					array("a.approved", "r.rev_user"),
+					array("a.page_id"=>EQ(COL("r.rev_page")),
+					      "r.rev_page"=>$this->getId()), 
+					array("rev_id"=>"DESC"));
+	    if (count($data)>0){
+		return ($data[0]['approved'] || $me->getId() === $data[0]['rev_user'] || $me->isRoleAtLeast(STAFF));
+	    }
+	    return true;
 	}
 }
 ?>

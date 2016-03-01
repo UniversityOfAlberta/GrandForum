@@ -635,7 +635,7 @@ class CavendishTemplate extends QuickTemplate {
                         $text = "YouTube";
                         break;
                 }
-                echo "<a class='changeImg highlights-text-hover' name='$img' href='$link' target='_blank'>
+                echo "<a class='changeImg highlights-text-hover' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
 	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
 	                  </a>";
 	        }
@@ -935,7 +935,7 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
-		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
+		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
 		                $failMessage .= "<b>Password request failed</b>";
@@ -950,7 +950,7 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
 		        }
-		        if($user->checkTemporaryPassword($_POST['wpPassword'])){
+		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
 		            $failMessage = "";
 		            return;
 		        }

@@ -109,7 +109,20 @@ class UploadProtection {
 
   static function buildUploadDBEntry($image){
     global $egAnnokiTablePrefix, $wgRequest;
-
+    $id = $image->getTitle()->getArticleID();
+    $data = DBFunctions::select(array('grand_page_approved'),
+				array('*'),
+				array('page_id'=>$id));
+   if(count($data)===0){
+    DBFunctions::insert('grand_page_approved',
+			 array("page_id" => $id,
+			       "approved" => 0));
+    }
+    else{
+	DBFunctions::update('grand_page_approved',
+			    array("approved"=>0),
+			    array("page_id"=>$id));
+    }
     $selectedNamespace = $wgRequest->getText('wpUploadNamespace');
 
     if ($selectedNamespace == ''){

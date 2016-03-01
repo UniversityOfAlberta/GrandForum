@@ -19,7 +19,9 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        "*actions": "defaultRoute"
+        "": "defaultRoute",
+	":id":"viewStory",
+	":id/edit":"editStory",
     }
 });
 
@@ -32,6 +34,27 @@ pageRouter.on('route:defaultRoute', function (actions) {
     var stories = new Stories();
     stories.fetch();
     this.currentView = new ManageStoriesView({el: $("#currentView"), model: stories});
+});
+
+pageRouter.on('route:viewStory', function (id) {
+    main.set('title', 'Story');
+    this.closeCurrentView();
+    var story = new Story({'id':id});
+    this.closeCurrentView();
+    story.fetch();
+    this.currentView = new StoryView({el: $("#currentView"), model: story});
+});
+
+pageRouter.on('route:editStory', function (category, id) {
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var story = new Story({'id': id});
+        this.closeCurrentView();
+        this.currentView = new StoryEditView({el: $("#currentView"), model: story});
+    }
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

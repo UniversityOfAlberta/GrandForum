@@ -231,9 +231,9 @@ class Story extends BackboneModel{
     function getUrl(){
         global $wgServer, $wgScriptPath;
         if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
-            return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryPage#/{$this->getId()}";
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryManagePage#/{$this->getId()}";
         }
-        return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryPage?embed#/{$this->getId()}";
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:StoryManagePage?embed#/{$this->getId()}";
     }
 
     }

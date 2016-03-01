@@ -2,13 +2,10 @@ ManageStoriesView = Backbone.View.extend({
 
     table: null,
     subViews: new Array(),
-    allStories: null,
     stories: null,
     newStoryDialog: null,
 
     initialize: function(){
-        this.allStories = new Stories();
-        this.allStories.fetch();
         this.template = _.template($('#manage_stories_template').html());
         this.listenTo(this.model, "sync", function(){
             this.stories = this.model;

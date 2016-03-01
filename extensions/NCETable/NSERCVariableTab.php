@@ -468,7 +468,10 @@ EOF;
         //Fill the table
         foreach($hqps as $hqp){
             $pos = $hqp->getUniversityDuring($this->from, $this->to);
-            $pos = (isset($positions[$pos['position']]))? $pos['position'] : "Other";
+            if(!isset($positions[$pos['position']])){
+                $pos = $hqp->getUniversity();
+            }
+            $pos = (isset($positions[$pos['position']])) ? $pos['position'] : "Other";
             $gender = $hqp->getGender();
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
@@ -719,6 +722,9 @@ EOF;
         //Fill the table
         foreach ($hqps as $hqp){
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
@@ -837,9 +843,14 @@ EOF;
         foreach ($hqps as $hqp){
             $projs = $hqp->getProjectsDuring($this->from, $this->to);
             $univ = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($positions[$univ['position']])){
+                $univ = $hqp->getUniversity();
+            }
+            
             $pos = @$univ['position'];
             $uni = @$univ['university'];
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
+            
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
@@ -978,6 +989,9 @@ EOF;
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array(array(), 0);

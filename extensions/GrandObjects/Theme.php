@@ -12,6 +12,8 @@ class Theme {
     var $acronym = "";
     var $name = "";
     var $description;
+    var $resources;
+    var $wiki;
     var $phase;
     var $color;
     var $leader = null;
@@ -72,6 +74,8 @@ class Theme {
             $this->acronym = $data[0]['acronym'];
             $this->name = $data[0]['name'];
             $this->description = $data[0]['description'];
+            $this->resources = $data[0]['resources'];
+            $this->wiki = $data[0]['wiki'];
             $this->phase = $data[0]['phase'];
             $this->color = $data[0]['color'];
         }
@@ -110,6 +114,22 @@ class Theme {
     }
     
     /**
+     * Returns this Theme's Resources
+     * @return string This Theme's Resources
+     */
+    function getResources(){
+        return $this->resources;
+    }
+    
+    /**
+     * Returns this Theme's Wiki
+     * @return string This Theme's Wiki
+     */
+    function getWiki(){
+        return $this->wiki;
+    }
+    
+    /**
      * Returns this Theme's phase
      * @return int This Theme's phase
      */
@@ -123,7 +143,7 @@ class Theme {
      */
     function getUrl(){
         global $wgServer, $wgScriptPath, $config;
-        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getAcronym()}:Information";
+        return "{$wgServer}{$wgScriptPath}/index.php/{$this->getAcronym()}:Main";
     }
     
     /**
@@ -189,7 +209,15 @@ class Theme {
         ksort($return);
         return $return;
     }
-
+    
+    /**
+     * Returns whether or not the current user can edit this Theme
+     * @return boolean Whether or not the current user can edit this Theme
+     */
+    function userCanEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->isThemeLeaderOf($this) || $me->isThemeCoordinatorOf($this) || $me->isRoleAtLeast(STAFF));
+    }
 }
 
 ?>

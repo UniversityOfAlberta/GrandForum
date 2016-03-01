@@ -19,34 +19,35 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        ":id": "defaultRoute",
-        ":idi/edit": "editStory"
-
+        "": "defaultRoute", 
+	":id": "viewThread",
+	":id/edit": "editThread",
     }
 });
 
 // Initiate the router
 var pageRouter = new PageRouter;
 
-pageRouter.on('route:defaultRoute', function (id) {
-    main.set('title', 'Story');
+pageRouter.on('route:defaultRoute', function (actions) {
+    main.set('title', 'My Threads');
     this.closeCurrentView();
-    var story = new Story({'id':id});
-    this.closeCurrentView();
-    story.fetch();
-    this.currentView = new StoryView({el: $("#currentView"), model: story});
+    var threads = new Threads();
+    threads.fetch();
+    this.currentView = new MyThreadsView({el: $("#currentView"), model: threads});
 });
 
-pageRouter.on('route:editStory', function (category, id) {
-    if(!me.isLoggedIn()){
-        clearAllMessages();
-        addError("You do not have permissions to view this page");
-    }
-    else{
-        var story = new Story({'id': id});
-        this.closeCurrentView();
-        this.currentView = new StoryEditView({el: $("#currentView"), model: story});
-    }
+pageRouter.on('route:viewThread', function (id) {
+    this.closeCurrentView();
+    var thread = new Thread({'id':id});
+    thread.fetch();
+    this.currentView = new ThreadView({el: $("#currentView"), model: thread});
+});
+
+pageRouter.on('route:editThread', function (id) {
+    this.closeCurrentView();
+    var thread = new Thread({'id':id});
+    thread.fetch();
+    this.currentView = new ThreadEditView({el: $("#currentView"), model: thread});
 });
 
 

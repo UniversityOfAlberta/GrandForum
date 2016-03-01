@@ -181,7 +181,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_ALLOCATION', 0);
                 $result = $blb->load($addr);
                 $allocation = $blb->getData();
-                // Deviations
+                // Justification
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);

@@ -1,8 +1,8 @@
 <?php
 
 $structure = Product::structure();
-foreach($structure['categories'] as $key => $cat){
-    $publicationHandler = new ProductHandler(strtolower($key), $key);
+foreach($structure['categories'] as $catkey => $cat){
+    $publicationHandler = new ProductHandler(strtolower($catkey), $catkey);
 }
 
 function paper_lengthSort($a, $b){
@@ -26,7 +26,7 @@ class ProductHandler extends AbstractDuplicatesHandler {
             $this->papers = array();
             $paperLengths = array();
             foreach($papers as $paper){
-                $this->papers[] = $paper;
+                $this->papers[$paper->getId()] = $paper;
             }
             usort($this->papers, 'paper_lengthSort');
         }

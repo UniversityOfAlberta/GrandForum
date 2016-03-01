@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="CC Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF,CC1PlanningPDF,CC2PlanningPDF,CC3PlanningPDF,CC4PlanningPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+        <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="cc1" permissions="rw" />
             <SectionPermission id="cc2" permissions="rw" />
@@ -10,7 +10,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TL">
+        <Role role="TL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="cc1" permissions="rw" />
             <SectionPermission id="cc2" permissions="rw" />
@@ -19,7 +19,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="TC">
+        <Role role="TC">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="cc1" permissions="rw" />
             <SectionPermission id="cc2" permissions="rw" />

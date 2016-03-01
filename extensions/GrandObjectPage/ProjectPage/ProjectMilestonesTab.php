@@ -226,8 +226,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $statusHeader = "<th>Status</th>";
             }
             $statusColspan = 4;
+            if(!$this->canEditMilestone(null)){
+                $this->html .= "<p>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='../skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
+            }
         }
-        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;' >";
+        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
                             <th colspan='2' width='33%'></th>

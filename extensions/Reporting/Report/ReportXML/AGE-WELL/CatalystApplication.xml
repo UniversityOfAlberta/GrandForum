@@ -397,6 +397,13 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO">
+        <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
+            <![CDATA[
+                <h3>Investigator Bio</h3>
+                <p>Please submit a brief bio (2 page maximum) for each named investigator from Part 2, highlighting experience and activities relevant to the application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="partners" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Partner Organization/ Research Receptor|Potential Conflict of Interest|Role in Project and Specific&lt;br /&gt;Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" sizes="175|75|175|75|75">
             <![CDATA[
                 <p>List each organization that will partner in the project, their specific roles (i.e. research receptor, knowledge user, financial/in-kind support), and the cash and in-kind contributions anticipated from the partner(s) to the project. All financial information provided in the budget in the Budget and Activities section should also appear in the pertinent areas of the project budget, and individuals from these organizations that will be participating as project team members should also be listed in the Project Team List.</p>

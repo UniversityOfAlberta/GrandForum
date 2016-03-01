@@ -16,14 +16,10 @@ ManageStoriesRowView = Backbone.View.extend({
 
     events: {
         "change input[type=checkbox]": "toggleSelect",
-
     },
 
     toggleSelect: function(e){
         this.setDirty(true);
-
-
-
     },
 
     setDirty: function(trigger){
@@ -33,7 +29,6 @@ ManageStoriesRowView = Backbone.View.extend({
         }
     },
 
-    
     render: function(){
         var classes = new Array();
         var isMine = {"isMine": false};

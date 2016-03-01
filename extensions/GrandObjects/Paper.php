@@ -730,6 +730,9 @@ class Paper extends BackboneModel{
                     if(isset($auth->id)){
                         $unserialized[] = $auth->id;
                     }
+                    else if(isset($auth->fullname)){
+                        $unserialized[] = $auth->fullname;
+                    }
                     else{
                         $unserialized[] = $auth->name;
                     }
@@ -1150,21 +1153,21 @@ class Paper extends BackboneModel{
         foreach($this->getAuthors() as $a){
             if($a->getId()){
                 if($hyperlink){
-                    $name = $a->getNameForForms();
+                    $name = $a->getNameForProduct();
                     if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $name = "<u>{$a->getNameForForms()}</u>";
+                        $name = "<u>{$a->getNameForProduct()}</u>";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
                             (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                        $name = "<i>{$a->getNameForForms()}</i>";
+                        $name = "<i>{$a->getNameForProduct()}</i>";
                     }
                     $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                 }
                 else{
-                    $au[] = "<b>". $a->getNameForForms() ."</b>";
+                    $au[] = "<b>". $a->getNameForProduct() ."</b>";
                 }
             }else{
-                $au[] = $a->getNameForForms();
+                $au[] = $a->getNameForProduct();
             }
         }
         $au = implode(',&nbsp;', $au);
@@ -1331,6 +1334,9 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
+                }
                 else{
                     $authors[] = $author->name;
                 }
@@ -1424,7 +1430,11 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
+                }
                 else{
+                    // This is more for legacy purposes
                     $authors[] = $author->name;
                 }
             }
@@ -1561,7 +1571,8 @@ class Paper extends BackboneModel{
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
-                                   'name' => $author->getNameForForms(),
+                                   'name' => $author->getNameForProduct(),
+				   'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){
