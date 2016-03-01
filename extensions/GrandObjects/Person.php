@@ -2734,7 +2734,7 @@ class Person extends BackboneModel {
                 else if($project != null && count($r->getProjects()) == 0){
                     // Projects are not explicitely specified
                     $skip = true;
-                    foreach($this->getProjects() as $p){
+                    foreach($this->getProjectsDuring($startRange, $endRange) as $p){
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
