@@ -13,7 +13,19 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="NI">
+        <Role role="CI">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="--" />
+            <SectionPermission id="review" permissions="--" />
+            <SectionPermission id="submit" permissions="--" />
+        </Role>
+        <Role role="AR">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
