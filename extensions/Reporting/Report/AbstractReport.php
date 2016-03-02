@@ -760,7 +760,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         $found = false;
         $roles = $me->getRights();
-        if($this->project != null && $this->project->getId() != 0){
+        if($this->project != null && $this->project->getId() != 0 && $this->project instanceof Project){
             $roles = array($me->getRoleOn($this->project));
         }
         else{
