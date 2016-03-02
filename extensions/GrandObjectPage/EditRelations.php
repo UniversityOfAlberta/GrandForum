@@ -25,16 +25,16 @@ class EditRelations extends SpecialPage{
     function updateRelations($type, $name){
         global $wgUser;
         $person = Person::newFromId($wgUser->getId());
-        $_POST['name1'] = str_replace("'", "&#39;", $person->getNameForForms());
-        $_POST['type'] = $type;
+        $_POST['name1'] = $person->getNameForForms();
+        $_POST['type'] = str_replace("'", "&#39;", $type);
         $currentNames = array();
         foreach($person->getRelations($type) as $relation){
-            $currentNames[] = str_replace("'", "&#39;", $relation->getUser2()->getNameForForms());
+            $currentNames[] = $relation->getUser2()->getNameForForms();
         }
         $names = array();
         if(isset($_POST[$name]) && is_array($_POST[$name])){
             foreach($_POST[$name] as $name){
-                $names[] = str_replace("'", "&#39;", $name);
+                $names[] = $name;
             }
         }
         foreach($names as $name){

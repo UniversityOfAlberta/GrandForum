@@ -19,7 +19,7 @@ class ProjectMilestoneTableReportItem extends StaticReportItem {
         $project = Project::newFromId($this->projectId);
         if($project != null){
             $tab = new ProjectMilestonesTab($project, array('edit' => 0));
-            $tab->showMilestones();
+            $tab->showMilestones(true);
             $item = $tab->html;
             $item = $this->processCData($item);
             $wgOut->addHTML($item);

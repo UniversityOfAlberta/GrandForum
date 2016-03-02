@@ -22,7 +22,9 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
 
+
 autoload_register('Reporting/Report');
+autoload_register('Reporting/Report/ApplicationTabs');
 autoload_register('Reporting/Report/ReportSections');
 autoload_register('Reporting/Report/ReportItems');
 autoload_register('Reporting/Report/ReportItems/StaticReportItems');
@@ -120,6 +122,11 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($projectName != null){
             $this->project = Project::newFromName($projectName);
+            if($this->project == null ||
+               $this->project->getId() == 0){
+                // Try themes
+                $this->project = Theme::newFromName($projectName);
+            }
         }
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;
@@ -197,7 +204,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
                 $managerImpersonating = false;
@@ -270,6 +277,19 @@ abstract class AbstractReport extends SpecialPage {
                     }
                     $report = new DummyReport($file, $this->person, $this->project, $this->year);
                     $report->submitReport();
+                    if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == ""){
+                        $check = $report->getLatestPDF();
+                    	if (count($check) > 0) {
+                    		$tok = $check[0]['token'];
+                    	}
+                    	
+                    	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
+                    	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                                   "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                                   "X-Mailer: PHP/" . phpversion();
+                        $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
+                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                    }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
                 exit;
@@ -433,7 +453,12 @@ abstract class AbstractReport extends SpecialPage {
     // Sets the name of this Report
     function setName($name){
         if($this->project != null){
-            $this->name = $name.": {$this->project->getName()}";
+            if($this->project instanceof Project){
+                $this->name = $name.": {$this->project->getName()}";
+            }
+            else if($this->project instanceof Theme){
+                $this->name = $name.": {$this->project->getAcronym()}";
+            }
         }
         else{
             $this->name = $name;
@@ -590,6 +615,20 @@ abstract class AbstractReport extends SpecialPage {
         return ($data[0]['count'] > 0);
     }
     
+    /**
+     * Returns whether or not the Report is complete or not
+     * @return boolean Whether or not the Report is complete or not
+     */
+    function isComplete(){
+        $complete = true;
+        foreach($this->sections as $section){
+            if($section instanceof EditableReportSection){
+                $complete = ($complete && $section->getPercentComplete() == 100);
+            }
+        }
+        return $complete;
+    }
+    
     // Checks the permissions of the Person with the required Permissions of the Report
     function checkPermissions(){
         global $wgUser;
@@ -646,11 +685,23 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         else if($this->project != null && ($perm['perm']['role'] == TC || $perm['perm']['role'] == TL)){
-                            $project_objs = $me->getThemeProjects();
-                            if(count($project_objs) > 0){
-                                foreach($project_objs as $project){
-                                    if($project->getId() == $this->project->getId()){
-                                        $rResult = true;
+                            if($this->project instanceof Project){
+                                $project_objs = $me->getThemeProjects();
+                                if(count($project_objs) > 0){
+                                    foreach($project_objs as $project){
+                                        if($project->getId() == $this->project->getId()){
+                                            $rResult = true;
+                                        }
+                                    }
+                                }
+                            }
+                            else if($this->project instanceof Theme){
+                                $project_objs = array_merge($me->getLeadThemes(), $me->getCoordThemes());
+                                if(count($project_objs) > 0){
+                                    foreach($project_objs as $project){
+                                        if($project->getId() == $this->project->getId()){
+                                            $rResult = true;
+                                        }
                                     }
                                 }
                             }

@@ -5,17 +5,26 @@ class ApplicationTab extends AbstractTab {
     var $rp;
     var $people;
 
-    function ApplicationTab($rp, $people){
+    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
-        $this->people = $people;
+        $newPeople = array();
+        foreach($people as $person){
+            $newPeople[$person->getId()] = $person;
+        }
+        $this->people = $newPeople;
         if(is_array($this->rp)){
-            $report = new DummyReport($this->rp[0], $me);
+            $report = new DummyReport($this->rp[0], $me, null, $year);
         }
         else{
-            $report = new DummyReport($this->rp, $me);
+            $report = new DummyReport($this->rp, $me, null, $year);
         }
-        parent::AbstractTab($report->name);
+        if($title == null){
+            parent::AbstractTab($report->name);
+        }
+        else{
+            parent::AbstractTab($title);
+        }
     }
 
     function generateBody(){

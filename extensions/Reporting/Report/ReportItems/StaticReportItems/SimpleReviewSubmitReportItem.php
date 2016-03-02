@@ -8,7 +8,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
-		    $projectGet = "&project={$this->getReport()->project->getName()}";
+		    if($this->getReport()->project instanceof Project){
+                $projectGet = "&project={$this->getReport()->project->getName()}";
+            }
+            else if($this->getReport()->project instanceof Theme){
+                $projectGet = "&project={$this->getReport()->project->getAcronym()}";
+            }
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
@@ -17,7 +22,6 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
-		        
 		            $('#generateButton').click(function(){
 		                $('#generateButton').prop('disabled', true);
 		                $('#generate_success').html('');
@@ -77,6 +81,9 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
 		}
+		if(!$this->getReport()->isComplete()){
+		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
+		}
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
 		$wgOut->addHTML("<p>Generate a PDF with the data submitted: <button id='generateButton' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
@@ -95,7 +102,13 @@ EOF;
             $tok = false;
             $tst = '';
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
+            if($this->getReport()->project instanceof Project){
+                $project = Project::newFromId($this->projectId);
+            }
+            else if($this->getReport()->project instanceof Theme){
+            $project = Theme::newFromId($this->projectId);
+            }
             $report = new DummyReport($file, $person, $project);
         	$check = $report->getPDF();
         	if (count($check) > 0) {
