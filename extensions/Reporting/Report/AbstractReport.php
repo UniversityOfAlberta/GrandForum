@@ -760,9 +760,14 @@ abstract class AbstractReport extends SpecialPage {
         }
         $found = false;
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-        foreach($roleObjs as $role){
-            $roles[] = $role->getRole();
+        if($this->project != null && $this->project->getId() != 0){
+            $roles = array($me->getRoleOn($this->project));
+        }
+        else{
+            $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            foreach($roleObjs as $role){
+                $roles[] = $role->getRole();
+            }
         }
         $permissions = array();
         foreach($roles as $role){
