@@ -1,15 +1,8 @@
-<p>
-    <button id="addNewStory" title="Create New Story">Create New Story</button>
-</p>
-<div id="addNewStoryDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Add New User Story">
-<form>
-Title:
-<%= HTML.TextArea(this, 'title', {style: 'max-height: 30px; max-width:547px; resize: none;'}) %>
-Story:
-<%= HTML.TextArea(this, 'story', {style: 'max-height: 100px; max-width:547px; resize: none;'}) %>
-</form>
-        <button id="submitStory" style="height:40px">Submit Story</button><span class="throbber" style="display:none;"></span>
+<div id="editDialog" style="display:none'"></div>
+<div>
+    <button id="addStoryButton">Add Story</button>
 </div>
+<br />
 <table id="listTable" frame="box" rules="all">
     <thead>
         <tr>

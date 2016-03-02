@@ -45,13 +45,14 @@ pageRouter.on('route:viewStory', function (id) {
     this.currentView = new StoryView({el: $("#currentView"), model: story});
 });
 
-pageRouter.on('route:editStory', function (category, id) {
+pageRouter.on('route:editStory', function (id) {
     if(!me.isLoggedIn()){
         clearAllMessages();
         addError("You do not have permissions to view this page");
     }
     else{
         var story = new Story({'id': id});
+	story.fetch();
         this.closeCurrentView();
         this.currentView = new StoryEditView({el: $("#currentView"), model: story});
     }

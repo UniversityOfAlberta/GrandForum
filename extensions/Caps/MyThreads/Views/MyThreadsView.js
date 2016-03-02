@@ -20,8 +20,7 @@ MyThreadsView = Backbone.View.extend({
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height()*0.75,
-            width: 800,
-            title: "Create " + productsTerm
+            width: 800
         });
         this.editDialog.dialog('open');
     },
@@ -45,7 +44,7 @@ MyThreadsView = Backbone.View.extend({
 	    this.table.draw();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
     },
-    
+
     events: {
 	"click #addThreadButton" : "addThread",
     },

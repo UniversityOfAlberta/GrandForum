@@ -14,6 +14,11 @@ StoryView = Backbone.View.extend({
 
     events: {
         "click #editStory": "editStory",
+	"click #deleteStory": "deleteStory",
+    },
+
+    deleteStory: function(){
+	this.model.destroy();
     },
 
     editStory: function(){

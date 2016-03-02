@@ -56,7 +56,7 @@ class Thread extends BackboneModel{
                                             array('user_id'=>$me->getId()));*/
 
 		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%'
-			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName`\"%'";
+			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName\"%'";
                 $data = DBFunctions::execSQL($statement);
             }
             if(count($data) >0){

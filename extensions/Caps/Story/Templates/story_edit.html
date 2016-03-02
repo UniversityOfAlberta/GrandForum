@@ -1,13 +1,14 @@
 Title:<br \>
-<%= HTML.TextArea(this, 'title', {style: 'max-height: 30px; max-width:547px; resize: none;'}) %><br \>
+<%= HTML.TextArea(this, 'title', {style: 'max-height: 30px; max-width:600px; resize: none;'}) %><br \>
+<br \>
 Story:<br \>
-<%= HTML.TextArea(this, 'story', {style: 'max-height: 100px; max-width:547px; resize: none;'}) %>
+<%= HTML.TextArea(this, 'story', {style: 'max-height: 300px; max-width:600px; resize: none;'}) %>
 <% if(!this.isDialog){ %>
     <br />
 <% } %>
 <% if(!this.isDialog){ %>
     <div style="width:180px;display:inline-block;">
-        <button id='saveProduct'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Story </button><span class="throbber" style="display:none;"></span>
+        <button id='saveStory'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Story </button><span class="throbber" style="display:none;"></span>
     </div>
     <div style="width:180px;display:inline-block;">
         <button id='cancel'>Cancel</button>

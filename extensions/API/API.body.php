@@ -157,6 +157,10 @@ class APIRequest{
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
+                $this->addAction('Hidden', 'approvePage', new ApprovePageAPI());
+                $this->addAction('Hidden', 'approveStory', new ApproveStoryAPI());
+
+
 	}
 }
 

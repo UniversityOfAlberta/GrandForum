@@ -9,6 +9,22 @@ MyThreadsRowView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
     },
 
+    renderAuthors: function(){
+	console.log(this.model.get('authors'));
+        var views = Array();
+        var that = this;
+        _.each(this.model.get('authors'), function(author, index){
+            var link = new Link({id: author.id,
+                                 text: author.name.replace(/&quot;/g, ''),
+                                 url: author.url,
+                                 target: ''});
+            views.push(new PersonLinkView({model: link}).render());
+        });
+        var csv = new CSVView({el: this.$('#threadUsers'+this.model.id), model: views});
+        csv.separator = ', ';
+        csv.render();
+    },
+
     events: {
     },
 

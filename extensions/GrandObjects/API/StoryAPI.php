@@ -18,11 +18,6 @@ class StoryAPI extends RESTAPI {
         $story->user = $this->POST('user');
         $story->title = $this->POST('title');
         $story->story = $this->POST('story');
-        $story->date_submitted = $this->POST('date_submitted');
-        $story->approved = $this->POST('approved');
-        if($story->exists()){
-            $this->throwError("A story like that  already exists");
-        }
         $status = $story->create();
         if(!$status){
             $this->throwError("The user <i>{$story->getName()}</i> could not be created");
@@ -37,11 +32,11 @@ class StoryAPI extends RESTAPI {
             $this->throwError("This story does not exist");
         }
         $story->id = $this->POST('id');
+        $story->rev_id = $this->POST('rev_id');
         $story->user = $this->POST('user');
         $story->title = $this->POST('title');
         $story->story = $this->POST('story');
         $story->date_submitted = $this->POST('date_submitted');
-        $story->approved = $this->POST('approved');
         $status = $story->update();
         if(!$status){
             $this->throwError("The story could not be updated");

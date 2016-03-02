@@ -1,8 +1,20 @@
 <td align="right">
     <a href="<%= url %>"><%= title %></a>
 </td>
+<td align="right" style="width:10px">
+    <%= posts.length %>
+</td>
 <td style="white-space: nowrap;">
-    <a href="<%= author.url %>"><%= author.name %></a>
+    <% var names = new Array();
+    _.each(authors, function(author){
+        if(author.id == "" || author.id == null){
+            names.push(author.realname);
+        }
+        else{
+            names.push(author.realname);
+        }
+    }) %>
+    <%= names.join(',&nbsp;') %>
 </td>
 <td style="white-space: nowrap;">
     <a href="<%= author.url %>"><%= author.name %></a>

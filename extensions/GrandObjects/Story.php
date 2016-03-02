@@ -60,6 +60,18 @@ class Story extends BackboneModel{
             return $stories;
         }
 
+        static function getAllUnapprovedStories(){
+            $stories = array();
+            $data = DBFunctions::select(array("grand_user_stories"),
+                                        array("rev_id"),
+                                        array("approved"=>EQ(COL(0))));
+            foreach($data as $row){
+                $stories[] = Story::newFromId($row['rev_id']);
+            }
+
+            return $stories;
+        }
+
 //-----Getters----//	
 	// Returns the id of this Story
 	function getId(){
@@ -129,14 +141,18 @@ class Story extends BackboneModel{
 	    if($this->getUser() == ""){
 		$this->user = $me->getId();
 	    }
+	    $data = DBFunctions::select(array('grand_user_stories'),
+					array('*'),
+					array());
+	    $id = count($data)+1;//have to manually add for now because may do revisions in the future
             if($me->isRoleAtLeast(AR)){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_user_stories',
-                                              array('id' => $this->getId(),
-                                                    'user_id' => $this->user,
+                                              array('id' => $id,
+						    'user_id' => $this->user,
 						    'title' => $this->getTitle(),
                                                     'story' => $this->getStory(),
-                                                    'approved' => $this->getApproved()),true);
+                                                    'approved' => 0),true);
                 if($status){
                     DBFunctions::commit();
                     return true;
@@ -155,7 +171,7 @@ class Story extends BackboneModel{
 						    'title' => $this->getTitle(),
                                                     'story' => $this->getStory(),
                                                     'date_submitted' => $this->getDateSubmitted(),
-                                                    'approved' => $this->getApproved()),
+                                                    'approved' => 0),
                                               array('rev_id' => EQ($this->rev_id)));
                 if($status){
 		    DBFunctions::commit();

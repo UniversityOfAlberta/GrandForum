@@ -33,11 +33,38 @@ class Wiki extends BackboneModel {
 		    $this->article = $article;
 		}
 	}
-	
+
+        function getId(){
+            return $this->id;
+        }
+
 	function getText(){
 	    return $this->article->getContent();
 	}
-	
+
+        function getTitle(){
+            return $this->title;
+        }
+
+        function getUrl(){
+            return $this->url;
+        }
+
+	function getArticle(){
+	    return $this->article;
+	}
+
+	function getNewestAuthor(){
+            $data = DBFunctions::select(array("mw_revision"),
+                                        array("rev_user"),
+                                        array("rev_page"=>$this->getId()),
+                                        array("rev_id"=>"DESC"));
+	    if(count($data)>0){
+		return Person::newFromId($data[0]['rev_user']);
+	    }
+	    return null;
+	}
+
 	function toArray(){
 	    $json = array('id' => $this->getId(),
 	                  'ns' => $this->ns,
@@ -58,6 +85,18 @@ class Wiki extends BackboneModel {
 	function delete(){
 	    
 	}
+
+	static function getAllUnapprovedPages(){
+	    $pages = array();
+            $data = DBFunctions::select(array("grand_page_approved"),
+                                        array("page_id"),
+                                        array("approved"=>EQ(COL(0))));
+	    foreach($data as $row){
+		$pages[] = Wiki::newFromId($row['page_id']);
+	    }
+            
+	    return $pages;
+	}
 	
 	function exists(){
         return $this->article->exists();
@@ -66,6 +105,7 @@ class Wiki extends BackboneModel {
 	function getCacheId(){
 	    global $wgSitename;
 	}
+
 	function isApproved(){
             $data = DBFunctions::select(array("grand_page_approved"=>"a",
                                               "mw_revision"=>"r"),

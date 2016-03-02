@@ -4,7 +4,6 @@ StoryEditView = Backbone.View.extend({
     parent: null,
 
     initialize: function(options){
-	console.log(this.model); //this ends up empty
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:description", this.render);
@@ -37,7 +36,7 @@ StoryEditView = Backbone.View.extend({
         if(this.model.get('title').trim() == ""){
             return "The Story must have a title";
         }
-        else if(this.model.get('description').trim() == ""){
+        else if(this.model.get('story').trim() == ""){
             return "The Story must have a description";
         }
         return "";
@@ -78,7 +77,6 @@ StoryEditView = Backbone.View.extend({
         else{
             this.allPeople = new People();
             this.allPeople.fetch();
-            var spin = spinner("productAuthors", 10, 20, 10, 3, '#888');
             this.allPeople.bind('sync', function(){
                 if(this.allPeople.length > 0){
                 }
