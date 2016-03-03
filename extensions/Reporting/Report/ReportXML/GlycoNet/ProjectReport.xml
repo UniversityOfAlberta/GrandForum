@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="achievements" permissions="-" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="-" />
+            <SectionPermission id="ktee" permissions="r" />
+            <SectionPermission id="budget" permissions="-" />
+            <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
+        <Role role="CI">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
+        <Role role="AR">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
@@ -14,45 +53,6 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="CI">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="networking" permissions="rw" />
-            <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="contributions" permissions="rw" />
-            <SectionPermission id="review" permissions="--" />
-            <SectionPermission id="submit" permissions="--" />
-        </Role>
-        <Role role="AR">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="networking" permissions="rw" />
-            <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="contributions" permissions="rw" />
-            <SectionPermission id="review" permissions="--" />
-            <SectionPermission id="submit" permissions="--" />
-        </Role>
-        <Role role="HQP">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="milestones" permissions="--" />
-            <SectionPermission id="achievements" permissions="--" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="networking" permissions="--" />
-            <SectionPermission id="ktee" permissions="r" />
-            <SectionPermission id="budget" permissions="--" />
-            <SectionPermission id="contributions" permissions="--" />
-            <SectionPermission id="review" permissions="--" />
-            <SectionPermission id="submit" permissions="--" />
-        </Role>
     </Permissions>
     <ReportSection id="instructions" type="ReportSection" name="Instructions">
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -63,9 +63,9 @@
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile</li>
-                        <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                         <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                        <li>Edit the role of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                         <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
                     </ul>
                     <p><b>To complete your section of the report:</b></p>
@@ -85,6 +85,8 @@
                         <li>Submit project report to GlycoNet Administrative Centre</li>
                     </ul><br />
                     <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -96,9 +98,9 @@
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile</li>
-                        <li>Update your products*, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                         <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
-                        <li>Edit the role of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                     </ul>
                     <p><b>To complete your section of the report:</b></p>
                     <ul>
@@ -115,6 +117,8 @@
                         </li>
                     </ul><br />
                     <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -122,7 +126,7 @@
             <!-- HQP View -->
             <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>Deadline: April 1</b></p>
+                    <p><b>Deadline: March 29</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
@@ -132,6 +136,8 @@
                     <ul>
                         <li>Fill in the HQP section in the Project Report</li>
                     </ul>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>
