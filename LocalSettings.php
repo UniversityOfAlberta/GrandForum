@@ -278,6 +278,8 @@ foreach($config->getValue('committees') as $role => $roleDef){
 $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
+    $str = str_replace('š', 's', $str);
+    $str = str_replace('Š', 'S', $str);
     return strtolower(strtr(utf8_decode($str), 
                       utf8_decode('àáâãäåçèéêëìíîïñòóôõöøùúûüýÿÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
                                   'aaaaaaceeeeiiiinoooooouuuuyyAAAAAACEEEEIIIINOOOOOUUUUY'));
