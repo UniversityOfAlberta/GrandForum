@@ -183,7 +183,75 @@ class GlobalSearchAPI extends RESTAPI {
 	                $ids[] = intval($key);
 	            }
                 break;
-            case 'wikipage':
+        case 'stories':
+                $data = array();
+                $projects = Story::getAllUserStories();
+                foreach($projects as $project){
+                    $pName = unaccentChars(str_replace(".", " ", $project->getTitle()));
+                    $names = array_merge(explode(" ", unaccentChars($pName)));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $data[] = array('story_id' => $project->getId(),
+                                        'story_title' => $project->getTitle());
+                    }
+                }
+                $results = array();
+                foreach($data as $row){
+                    $project = Story::newFromId($row['story_id']);
+                    similar_text(unaccentChars($row['story_title']), unaccentChars($origSearch), $percent);
+                    if($project->isOwnedBy($me)){
+                        $percent += 50;
+                    }
+                    $results[$row['story_id']] = $percent;
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
+                break;
+        case 'threads':
+                $data = array();
+                $projects = Thread::getAllThreads();
+                foreach($projects as $project){
+                    $pName = unaccentChars(str_replace(".", " ", $project->getTitle()));
+                    $names = array_merge(explode(" ", unaccentChars($pName)));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $data[] = array('thread_id' => $project->getId(),
+                                        'thread_title' => $project->getTitle());
+                    }
+                }
+                $results = array();
+                foreach($data as $row){
+                    $project = Thread::newFromId($row['thread_id']);
+                    similar_text(unaccentChars($row['thread_title']), unaccentChars($origSearch), $percent);
+                    if($project->getThreadOwner() === $me->getId()){
+                        $percent += 50;
+                    }
+                    $results[$row['thread_id']] = $percent;
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }   
+                break; 
+	case 'wikipage':
                 $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);

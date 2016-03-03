@@ -6,12 +6,13 @@
 </td>
 <td style="white-space: nowrap;">
     <% var names = new Array();
-    _.each(authors, function(author){
+    _.each(users, function(author){
+	console.log(author);
         if(author.id == "" || author.id == null){
-            names.push(author.realname);
+            names.push(author.name);
         }
         else{
-            names.push(author.realname);
+            names.push("<a href='"+author.url+"'>"+author.name+"</a>");
         }
     }) %>
     <%= names.join(',&nbsp;') %>
@@ -21,4 +22,11 @@
 </td>
 <td style="white-space: nowrap;">    
     <%= date_created %>
+</td>
+<td style="white-space: nowrap;">
+    <% if(users.length > 1){ %>
+	Yes
+    <% } else{%>
+	No
+    <% } %>
 </td>

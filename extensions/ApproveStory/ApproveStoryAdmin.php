@@ -1,10 +1,10 @@
 <?php
 
-$approvePageAdmin = new ApprovePageAdmin();
+$approvePageAdmin = new ApproveStoryAdmin();
 
-$notificationFunctions[] = 'ApprovePageAdmin::createNotification';
+$notificationFunctions[] = 'ApproveStoryAdmin::createNotification';
 
-class ApprovePageAdmin {
+class ApproveStoryAdmin {
 
         static function createNotification(){
                 global $notifications, $wgUser, $wgServer, $wgScriptPath;
@@ -18,4 +18,3 @@ class ApprovePageAdmin {
         }
 }
 ?>
-

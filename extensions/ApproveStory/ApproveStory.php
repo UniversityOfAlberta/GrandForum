@@ -6,6 +6,9 @@ $wgExtensionMessagesFiles['ApproveStory'] = $dir . 'ApproveStory.i18n.php';
 
 require_once("ApproveStoryAdmin.php");
 
+function runApproveStory($par) {
+  ApproveStory::execute($par);
+}
 
 class ApproveStory extends SpecialPage{
 
@@ -56,6 +59,6 @@ class ApproveStory extends SpecialPage{
                                             $('#requests').css('display', 'table');
                                          </script>");
     }
-    
+
 }
 ?>

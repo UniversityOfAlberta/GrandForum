@@ -142,6 +142,9 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
 
+$egAnnokiExtensions['Caps'] = array('name' => 'Caps',
+                                         'path' => "$IP/extensions/Caps/Caps.php");
+
 $egAnnokiExtensions['ApprovePage'] = array('name' => 'ApprovePage',
                                          'path' => "$IP/extensions/ApprovePage/ApprovePage.php");
 
@@ -149,8 +152,6 @@ $egAnnokiExtensions['ApproveStory'] = array('name' => 'ApproveStory',
                                          'path' => "$IP/extensions/ApproveStory/ApproveStory.php");
 
 
-$egAnnokiExtensions['Caps'] = array('name' => 'Caps',
-                                         'path' => "$IP/extensions/Caps/Caps.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

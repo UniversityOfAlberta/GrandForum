@@ -110,7 +110,14 @@ GlobalSearchResultsView = Backbone.View.extend({
         },
         "pdfResults" : function(){
             return new PDFResultsView({parent: this, model: new GlobalSearch({group: 'pdf', search: ''})});
+        },
+        "storyResults" : function(){
+            return new StoryResultsView({parent: this, model: new GlobalSearch({group: 'stories', search: ''})});
+        },
+	"threadResults" : function(){
+            return new ThreadResultsView({parent: this, model: new GlobalSearch({group: 'threads', search: ''})});
         }
+
     },
     
     allResultsDone: function(){
@@ -395,6 +402,38 @@ ProjectResultsView = ResultsView.extend({
     
     render: function(){
         this.$el.html(this.template({group: "Projects"}));
+    }
+});
+
+StoryResultsView = ResultsView.extend({
+    maxResults: 4,
+
+    createCardView: function(model){
+        return new SmallStoryCardView({model: model});
+    },
+
+    createModel: function(obj){
+        return new Story({id: obj});
+    },
+
+    render: function(){
+        this.$el.html(this.template({group: "Stories"}));
+    }
+});
+
+ThreadResultsView = ResultsView.extend({
+    maxResults: 4,
+
+    createCardView: function(model){
+        return new SmallThreadCardView({model: model});
+    },
+
+    createModel: function(obj){
+        return new Thread({id: obj});
+    },
+
+    render: function(){
+        this.$el.html(this.template({group: "Threads"}));
     }
 });
 

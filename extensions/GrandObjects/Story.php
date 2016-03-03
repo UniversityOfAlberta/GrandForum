@@ -225,7 +225,11 @@ class Story extends BackboneModel{
         function getCacheId(){
             global $wgSitename;
         }
-	
+
+	function isOwnedBy($person){
+	    return ($this->getUser()->getId() === $person->getId());
+	}
+
 	function approve(){
             $me = Person::newFromWgUser();
             if($me->isRoleAtLeast(ADMIN)){

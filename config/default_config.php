@@ -135,6 +135,8 @@
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
+	//ApprovePage,
+	//ApproveStory,
 	//'Caps'
     ));
     

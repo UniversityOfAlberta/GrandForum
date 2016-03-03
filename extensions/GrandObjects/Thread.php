@@ -223,8 +223,15 @@ class Thread extends BackboneModel{
 	    $author = array('id'=> $user->getId(),
 			    'name' => $user->getNameForForms(),
 			    'url' => $user->getUrl());
+	    $authors = array();
+	    foreach($this->getUsers() as $user){
+		$authors[] = array('id'=>$user->getId(),
+				   'name' => $user->getNameForForms(),
+				   'url' => $user->getUrl());
+	    }
             $json = array('id' => $this->getId(),
 			  'author' => $author,
+			  'users' => $authors,
 			  'authors' => $this->getUsers(),
 			  'title' => $this->getTitle(),
 			  'posts' => $this->getPosts(),
