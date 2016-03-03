@@ -279,8 +279,8 @@ $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config
 
 function unaccentChars($str){
     return strtolower(strtr(utf8_decode($str), 
-                      utf8_decode('àáâãäåšçèéêëìíîïñòóôõöøùúûüýÿÀÁÂÃÄÅŠÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
-                                  'aaaaaasceeeeiiiinoooooouuuuyyAAAAAASCEEEEIIIINOOOOOUUUUY'));
+                      utf8_decode('àáâãäåçèéêëìíîïñòóôõöøùúûüýÿÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 
+                                  'aaaaaaceeeeiiiinoooooouuuuyyAAAAAACEEEEIIIINOOOOOUUUUY'));
 }
 
 // Encodes a large json object (usually arrays)
