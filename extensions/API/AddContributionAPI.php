@@ -100,6 +100,14 @@ class AddContributionAPI extends API{
             }
             
             Contribution::$cache = array();
+            if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                         array('*'),
+                                         array('id' => $contribution->getId(),
+                                               'user_id' => $me->getId()))) == 0){
+                DBFunctions::insert('grand_contribution_edits',
+                                    array('id' => $contribution->getId(),
+                                          'user_id' => $me->getId()));
+            }
             $contributionAfter = Contribution::newFromName($_POST['title']);
             // Notification for new authors
             foreach($contributionAfter->getPeople() as $author){
@@ -164,7 +172,7 @@ class AddContributionAPI extends API{
                 $id = $data[0]['id'];
             }
             $_POST['access_id'] = (isset($_POST['access_id'])) ? $_POST['access_id'] : 0;
-                
+            
             DBFunctions::insert('grand_contributions',
                                 array('id' => $id + 1,
                                       'name' => $_POST['title'],
@@ -173,6 +181,9 @@ class AddContributionAPI extends API{
                                       'access_id' => $_POST['access_id'],
                                       'start_date' => $_POST['start_date'],
                                       'end_date' => $_POST['end_date']));
+            DBFunctions::insert('grand_contribution_edits',
+                                array('id' => $id + 1,
+                                      'user_id' => $me->getId()));
             Contribution::$cache = array();
             $contribution = Contribution::newFromName($_POST['title']);
             foreach($_POST['projects'] as $project){

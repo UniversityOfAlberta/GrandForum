@@ -349,11 +349,15 @@ EOF;
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
 		$me = Person::newFromId($wgUser->getId());
 		$data = Person::getAllPeople($table);
+		$emailHeader = "";
 		$idHeader = "";
 		$contactHeader = "";
 		$subRoleHeader = "";
 		$projectsHeader = "";
 		$committees = $config->getValue('committees');
+		if($me->isLoggedIn()){
+		    $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
+		}
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
@@ -378,6 +382,7 @@ EOF;
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$contactHeader}
+                                    {$emailHeader}
                                     {$idHeader}</tr>
                                 </thead>
                                 <tbody>
@@ -422,6 +427,9 @@ EOF;
             if($contactHeader != ''){
                 $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+            }
+            if($emailHeader != ''){
+                $this->text .= "<td>{$person->getEmail()}</td>";
             }
 			if($idHeader != ''){
 			    $this->text .= "<td>{$person->getId()}</td>";

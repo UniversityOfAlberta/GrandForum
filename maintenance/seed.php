@@ -14,6 +14,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     $_POST['phase'] = $phase;
     $_POST['effective_date'] = $effective_date;
     $_POST['description'] = $description;
+    $_POST['long_description'] = $description;
     $_POST['challenge'] = Theme::newFromName($challenge)->getId();
     $_POST['parent_id'] = $parent_id;
     $_POST['problem'] = $problem;

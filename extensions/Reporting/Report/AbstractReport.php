@@ -22,7 +22,9 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
 
+
 autoload_register('Reporting/Report');
+autoload_register('Reporting/Report/ApplicationTabs');
 autoload_register('Reporting/Report/ReportSections');
 autoload_register('Reporting/Report/ReportItems');
 autoload_register('Reporting/Report/ReportItems/StaticReportItems');
@@ -758,9 +760,14 @@ abstract class AbstractReport extends SpecialPage {
         }
         $found = false;
         $roles = $me->getRights();
-        $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-        foreach($roleObjs as $role){
-            $roles[] = $role->getRole();
+        if($this->project != null && $this->project->getId() != 0 && $this->project instanceof Project){
+            $roles = array($me->getRoleOn($this->project));
+        }
+        else{
+            $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            foreach($roleObjs as $role){
+                $roles[] = $role->getRole();
+            }
         }
         $permissions = array();
         foreach($roles as $role){

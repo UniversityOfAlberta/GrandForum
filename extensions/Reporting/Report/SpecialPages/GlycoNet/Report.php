@@ -6,7 +6,7 @@ $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 require_once("RFPApplicationTable.php");
-require_once("AwardApplicationTable.php");
+require_once("ApplicationsTable.php");
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';

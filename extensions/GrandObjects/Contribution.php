@@ -11,7 +11,7 @@ class Contribution {
     var $id;
     var $name;
     var $rev_id;
-    var $people;
+    var $people = array();
     var $peopleWaiting;
     var $projects;
     var $projectsWaiting;
@@ -39,10 +39,12 @@ class Contribution {
         $sql = "SELECT *
                 FROM grand_contributions
                 WHERE id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
                 ORDER BY rev_id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
+        if(!$contribution->isAllowedToEdit()){
+            $contribution = new Contribution(array());
+        }
         self::$cache["id$id"] = &$contribution;
         return $contribution;
     }
@@ -57,10 +59,12 @@ class Contribution {
                 FROM grand_contributions c1, grand_contributions c2
                 WHERE c1.name = '$name'
                 AND c1.id = c2.id
-                AND (c2.access_id = '{$me->getId()}' OR c2.access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")
                 ORDER BY c2.rev_id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
+        if(!$contribution->isAllowedToEdit()){
+            $contribution = new Contribution(array());
+        }
         self::$cache["$name"] = &$contribution;
         return $contribution;
     }
@@ -73,10 +77,12 @@ class Contribution {
         }
         $sql = "SELECT *
                 FROM grand_contributions
-                WHERE rev_id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
+                WHERE rev_id = '$id'";
         $data = DBFunctions::execSQL($sql);
         $contribution = new Contribution($data);
+        if(!$contribution->isAllowedToEdit()){
+            $contribution = new Contribution(array());
+        }
         self::$cache["rev$id"] = &$contribution;
         return $contribution;
     }
@@ -108,12 +114,14 @@ class Contribution {
     static function getAllContributions(){
         $me = Person::newFromWgUser();
         $sql = "SELECT DISTINCT id
-                FROM `grand_contributions`
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).")";
+                FROM `grand_contributions`";
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
         foreach($data as $row){
-            $contributions[] = Contribution::newFromId($row['id']);
+            $c = Contribution::newFromId($row['id']);
+            if($c->getId() != 0){
+                $contributions[] = $c;
+            }
         }
         return $contributions;
     }
@@ -127,8 +135,7 @@ class Contribution {
 	    $sql = "SELECT id, name
                 FROM(SELECT id, name, rev_id
                      FROM `grand_contributions`
-                     WHERE name LIKE '%' 
-                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
+                     WHERE name LIKE '%'";
 	    foreach($splitPhrase as $word){
 	        $sql .= "AND name LIKE '%$word%'\n";
 	    }
@@ -139,20 +146,7 @@ class Contribution {
 	    $contributions = array();
 	    foreach($data as $row){
 	        $contribution = Contribution::newFromId($row['id']);
-	        $isMe = false;
-	        foreach($contribution->getPeople() as $person){
-	            if($person == $me->getName() || ($person instanceof Person && $person->getId() == $me->getId())){
-	                $isMe = true;
-	                break;
-	            }
-	        }
-	        foreach($contribution->getProjects() as $project){
-	            if($me->leadershipOf($project)){
-	                $isMe = true;
-	                break;
-	            }
-	        }
-	        if($isMe){
+	        if($contribution->getId() != 0){
 	            $contributions[] = array("id" => $row['id'], "name" => $row['name']);
 	        }
 	    }
@@ -174,8 +168,7 @@ class Contribution {
         $sql = "SELECT DISTINCT id
                 FROM grand_contributions
                 WHERE '$startDate' <= end_date
-                AND '$endDate' >= start_date
-                AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)).") \n";
+                AND '$endDate' >= start_date ";
 
         if(!is_null($type) && $type != ""){
             $sql .= " AND type = '{$type}'";
@@ -184,7 +177,10 @@ class Contribution {
         $data = DBFunctions::execSQL($sql);
         $contributions = array();
         foreach($data as $row){
-            $contributions[] = Contribution::newFromId($row['id']);
+            $contribution = Contribution::newFromId($row['id']);
+            if($contribution->getId() != 0){
+                $contributions[] = $contribution;
+            }
         }
 
         return $contributions;
@@ -640,6 +636,51 @@ class Contribution {
      */
     function getDate(){
         return $this->date;
+    }
+    
+    /**
+     * Returns whether or not this logged in user can edit this Contribution
+     */
+    function isAllowedToEdit($me=null){
+        // There might be some inefficiencies in this function.
+        // There could probably be some stuff cached to speed it up.
+        if($me == null){
+            $me = Person::newFromWgUser();
+        }
+        if($me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        if($this->getAccessId() == $me->getId()){
+            return true;
+        }
+        foreach($this->getPeople() as $person){
+            if($person == $me->getName() || ($person instanceof Person && $person->getId() == $me->getId())){
+                return true;
+            }
+        }
+        if($me->isRoleAtLeast(NI)){
+            foreach($this->getProjects() as $project){
+                if($me->isMemberOf($project) ||
+                   $me->leadershipOf($project) || 
+                   $me->isThemeLeaderOf($project) ||
+                   $me->isThemeCoordinatorOf($project)){
+                    return true;
+                }
+            }
+        }
+        if(count(DBFunctions::select(array('grand_contribution_edits'),
+                                     array('*'),
+                                     array('id' => $this->getId(),
+                                           'user_id' => $me->getId()))) > 0){
+            return true;
+        }
+        $hqps = $me->getHQP(true);
+        foreach($hqps as $hqp){
+            if($this->isAllowedToEdit($hqp)){
+                return true;
+            }
+        }
+        return false;
     }
     
     // Returns an array of strings representing all the custom misc types

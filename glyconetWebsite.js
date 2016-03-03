@@ -53,10 +53,15 @@ function initSideBar(){
     jQuery("#committees").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Committees</h3>");
     jQuery("#committees").append("<div class='menu-committees-container'>");
     jQuery("#committees > div.menu-committees-container").append("<ul class='roleList' id='committees-members'>");
-    addTab("#committees-members", "bod", "Board of Directors");
-    addTab("#committees-members", "sab", "Scientific Advisory Board");
-    addTab("#committees-members", "rmc", "Research Management Committee");
-    addTab("#committees-members", "gta", "GlycoNet Trainee Association");
+    addTab("#committees-members", "bod",  "Board of Directors");
+    addTab("#committees-members", "cc",   "Commercialization Committee");
+    addTab("#committees-members", "exec", "Executive Committee");
+    addTab("#committees-members", "fac",  "Finance and Audit Committee");
+    addTab("#committees-members", "gta",  "GlycoNet Trainee Association");
+    addTab("#committees-members", "nomc", "Nominating Committee");
+    addTab("#committees-members", "sab",  "Scientific Advisory Board");
+    addTab("#committees-members", "rmc",  "Research Management Committee");
+    addTab("#committees-members", "etc",  "Training Committee");
                                    
     jQuery("ul.roleList li a").click(function(e){
         scroll(0,0);
@@ -239,3 +244,8 @@ initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
 initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
 initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 3);
 initTab("GTA", "#gta", "tab-7", ['position','university','email'], 3);
+initTab("CC", "#cc", "tab-8", ['position','university','email'], 3);
+initTab("EXEC", "#exec", "tab-9", ['position','university','email'], 3);
+initTab("FAC", "#fac", "tab-10", ['position','university','email'], 3);
+initTab("NOMC", "#nomc", "tab-11", ['position','university','email'], 3);
+initTab("ETC", "#etc", "tab-12", ['position','university','email'], 3);
