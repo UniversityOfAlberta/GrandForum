@@ -221,7 +221,8 @@
         <ReportItem id="table" type="ProjectMilestoneTable">
             <![CDATA[
                 {$item}<br />
-                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
+                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
+                <small>(Opens in a new Tab)</small>
                 <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
