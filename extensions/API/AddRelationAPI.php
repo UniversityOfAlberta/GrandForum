@@ -19,6 +19,12 @@ class AddRelationAPI extends API{
 
 		$person1 = Person::newFromNameLike($_POST['name1']);
 		$person2 = Person::newFromNameLike($_POST['name2']);
+		if($person1->getName() == ""){
+		    $person1 = Person::newFromName($_POST['name1']);
+		}
+		if($person2->getName() == ""){
+		    $person2 = Person::newFromName($_POST['name2']);
+		}
 		if(!$noEcho){
             if($person1->getName() == null){
                 echo "There is no person by the name of '{$_POST['name1']}'\n";

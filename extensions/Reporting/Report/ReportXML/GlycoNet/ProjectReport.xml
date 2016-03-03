@@ -23,7 +23,7 @@
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="contributions" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -36,7 +36,7 @@
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="contributions" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
         </Role>
@@ -66,6 +66,7 @@
                         <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                         <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
                         <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
                     </ul>
                     <p><b>To complete your section of the report:</b></p>
                     <ul>
