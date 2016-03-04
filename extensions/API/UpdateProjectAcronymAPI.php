@@ -33,7 +33,7 @@ class UpdateProjectAcronymAPI extends API{
 		    return $error;
 		}
 	    
-	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-]+$/", $_POST['new_acronym'])){
+	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['new_acronym'])){
 	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
 	    }
