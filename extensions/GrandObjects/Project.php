@@ -1158,6 +1158,9 @@ EOF;
             else{
                 $product = Product::newFromId($row['product_id']);
             }
+            if($product->getTitle() == ""){
+                continue;
+            }
             $year = substr($product->getDate(), 0, 4);
             $authors = $product->getAuthors();
             $name = "";
