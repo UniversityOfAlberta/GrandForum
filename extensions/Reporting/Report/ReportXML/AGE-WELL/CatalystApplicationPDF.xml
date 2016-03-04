@@ -284,7 +284,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Partner Organization/ Research Receptor|Potential Conflict of Interest|Role in Project and Specific&lt;br /&gt;Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" class="wikitable">
+        <ReportItem id="partners" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Partner Organization/ Research Receptor|Potential Conflict of Interest|Role in Project and Specific&lt;br /&gt;Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" class="wikitable smaller">
             <![CDATA[
                 <h3>Partners</h3>
                 {$item}
