@@ -43,7 +43,7 @@ class CreateProjectAPI extends API{
 	    $me = Person::newFromUser($wgUser);
 	    $parent_id = (isset($_POST['parent_id'])) ? $_POST['parent_id'] : 0;
 	    $parentProj = Project::newFromId($parent_id);
-	    $_POST['acronym'] = str_replace(" ", "-", $_POST['acronym']);
+	    $_POST['acronym'] = @$_POST['acronym'];
 	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['acronym'])){
 	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
@@ -77,7 +77,7 @@ class CreateProjectAPI extends API{
 	    DBFunctions::begin();
 	    $data = DBFunctions::select(array('mw_an_extranamespaces'),
 	                               array('nsId'),
-	                               array('nsName' => EQ($_POST['acronym'])));
+	                               array('nsName' => EQ(str_replace(' ', '_', $_POST['acronym']))));
 	    $stat = true;
 	    if(count($data) > 0){
 	        $nsId = $data[0]['nsId'];
@@ -85,7 +85,7 @@ class CreateProjectAPI extends API{
 	    else{
 	        $stat = DBFunctions::insert('mw_an_extranamespaces',
 	                                    array('nsId' => $nsId,
-	                                          'nsName' => $_POST['acronym'],
+	                                          'nsName' => str_replace(' ', '_', $_POST['acronym']),
 	                                          'public' => '1'),
 	                                    true);
 	    }
