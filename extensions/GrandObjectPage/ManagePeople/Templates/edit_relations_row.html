@@ -1,11 +1,11 @@
 <td><%= HTML.Select(this, 'type', {options: ['Works With', 'Supervises']}) %></td>
 <td style="white-space:nowrap;">
-    <table id="projects" style="width:100%;font-size:0.75em;">
+    <table id="projects" style="width:100%;">
 
     </table>
     <hr style="background-color:#aaa;" />
     <div style="white-space: nowrap;">
-        <select id="selectedProject" style="font-size: 0.75em;">
+        <select id="selectedProject">
             <% _.each(allowedProjects, function(project){ %>
                 <option><%= project %></option>
             <% }) %>
@@ -17,5 +17,5 @@
 </td>
 <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
 <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
-<td><%= HTML.TextArea(this, 'comment', {style: 'max-height: 56px; font-size:0.75em; resize: none;'}) %></td>
+<td><%= HTML.TextArea(this, 'comment', {style: 'max-height: 56px; resize: none;'}) %></td>
 <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: 'true', default: 'false'}) %></td>
