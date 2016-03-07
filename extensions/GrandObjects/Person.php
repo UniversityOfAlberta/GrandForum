@@ -3453,11 +3453,20 @@ class Person extends BackboneModel {
     function getTopProducts(){
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
+                                    array('product_type','product_id'),
                                     array('type' => EQ('PERSON'),
                                           'obj_id' => EQ($this->getId())));
         foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
+            if($row['product_type'] == "CONTRIBUTION"){
+                $product = Contribution::newFromId($row['product_id']);
+                $year = $product->getStartYear();
+            }
+            else{
+                $product = Product::newFromId($row['product_id']);
+            }
+            if($product->getTitle() == ""){
+                continue;
+            }
             $year = substr($product->getDate(), 0, 4);
             $authors = $product->getAuthors();
             $name = "";
