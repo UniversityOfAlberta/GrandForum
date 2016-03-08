@@ -116,7 +116,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     return true;
                 }
             }
-            
             return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
         }
         return false;
@@ -292,6 +291,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
+                }
+                else if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                    $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
+                    $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
+                              <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
+                              {$title}";
                 }
                 else{
                     $title = $milestone->getTitle();
