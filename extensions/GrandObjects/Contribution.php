@@ -196,6 +196,11 @@ class Contribution {
         return $this->rev_id;
     }
     
+    // Alias for getName
+    function getTitle(){
+        return $this->name;
+    }
+    
     // Returns the name of this Contribution
     function getName(){
         return $this->name;
@@ -242,6 +247,11 @@ class Contribution {
             return array();
         }
         return $this->projects;
+    }
+    
+    // Alias for getPeople()
+    function getAuthors(){
+        return $this->getPeople();
     }
     
     // Returns the array of the projects relating to this contribution

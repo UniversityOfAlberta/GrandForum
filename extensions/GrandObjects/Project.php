@@ -45,8 +45,8 @@ class Project extends BackboneModel {
         if($id == -1){
             $project = new Project(array());
             $project->id = $id;
-            $project->name = $config->getValue('networkName');
-            $project->fullName = $config->getValue('networkName');
+            $project->name = "Other";
+            $project->fullName = "Other";
             $project->clear = true;
             self::$cache[$project->id] = &$project;
             self::$cache[$project->name] = &$project;
@@ -99,7 +99,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$name])){
             return self::$cache[$name];
         }
-        if($name == $config->getValue('networkName')){
+        if($name == $config->getValue('networkName') || $name == "Other"){
             return Project::newFromId(-1);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
@@ -162,7 +162,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$title])){
             return self::$cache[$title];
         }
-        if($title == $config->getValue('networkName')){
+        if($title == $config->getValue('networkName') || $title == "Other"){
             return Project::newFromName($title);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
@@ -257,7 +257,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
-        if($name == $config->getValue('networkName')){
+        if($name == $config->getValue('networkName') || $name == "Other"){
             return Project::newFromName($name);
         }
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
@@ -1147,11 +1147,20 @@ EOF;
     function getTopProducts(){
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
+                                    array('product_type','product_id'),
                                     array('type' => EQ('PROJECT'),
                                           'obj_id' => EQ($this->getId())));
         foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
+            if($row['product_type'] == "CONTRIBUTION"){
+                $product = Contribution::newFromId($row['product_id']);
+                $year = $product->getStartYear();
+            }
+            else{
+                $product = Product::newFromId($row['product_id']);
+            }
+            if($product->getTitle() == ""){
+                continue;
+            }
             $year = substr($product->getDate(), 0, 4);
             $authors = $product->getAuthors();
             $name = "";

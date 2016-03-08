@@ -24,11 +24,15 @@ class ProjectDashboardTab extends AbstractEditableTab {
             DBFunctions::delete('grand_top_products',
                                 array('type' => EQ('PROJECT'),
                                       'obj_id' => EQ($this->project->getId())));
-            foreach($_POST['top_products'] as $productId){
-                if($productId != ""){
+            foreach($_POST['top_products'] as $product){
+                if($product != ""){
+                    $exploded = explode("_", $product);
+                    $type = $exploded[0];
+                    $productId = $exploded[1];
                     DBFunctions::insert('grand_top_products',
                                         array('type' => 'PROJECT',
                                               'obj_id' => $this->project->getId(),
+                                              'product_type' => $type,
                                               'product_id' => $productId));
                 }
             }
@@ -92,10 +96,16 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $html .= "<optgroup label='$plural'>";
         $count = 0;
         foreach($products as $product){
-            if($category == $product->getCategory()){
+            if($product instanceof Contribution && $category == "Contribution"){
+                $selected = ($value == $product->getId()) ? "selected='selected'" : "";
+                $year = $product->getStartYear();
+                $html .= "<option value='CONTRIBUTION_{$product->getId()}' $selected>($year) {$product->getTitle()}</option>";
+                $count++;
+            }
+            else if($product instanceof Paper && $category == $product->getCategory()){
                 $selected = ($value == $product->getId()) ? "selected='selected'" : "";
                 $year = substr($product->getDate(), 0, 4);
-                $html .= "<option value='{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
+                $html .= "<option value='PRODUCT_{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
                 $count++;
             }
         }
@@ -107,7 +117,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     private function selectList($project, $value){
-        $allProducts = $project->getPapers('all', "0000-00-00", "2100-01-01");
+        $productStructure = Product::structure();
+        $categories = @array_keys($productStructure['categories']);
+        $allProducts = array_merge($project->getPapers('all', "0000-00-00", "2100-01-01"),
+                                   $project->getContributions());
         $products = array();
         foreach($allProducts as $product){
             $date = $product->getDate();
@@ -117,12 +130,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $products = array_reverse($products);
         $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
-        $html .= $this->optGroup($products, "Publication", $value);
-        $html .= $this->optGroup($products, "Artifact", $value);
-        $html .= $this->optGroup($products, "Activity", $value);
-        $html .= $this->optGroup($products, "Presentation", $value);
-        $html .= $this->optGroup($products, "Press", $value);
-        $html .= $this->optGroup($products, "Award", $value);
+        foreach($categories as $category){
+            $html .= $this->optGroup($products, $category, $value);
+        }
+        $html .= $this->optGroup($products, "Contribution", $value);
         $html .= "</select><br />";
         return $html;
     }
@@ -168,7 +179,16 @@ class ProjectDashboardTab extends AbstractEditableTab {
                                     <td align='center'><b>".$config->getValue('productsValue')."</b></td>
                                 </th>";
             foreach($products as $product){
-                $year = substr($product->getDate(), 0, 4);
+                if($product instanceof Contribution){
+                    $year = $product->getStartYear();
+                    $category = "Contribution";
+                    $citation = "<a href='{$product->getUrl()}'>{$product->getTitle()}</a>";
+                }
+                else{
+                    $year = substr($product->getDate(), 0, 4);
+                    $category = $product->getCategory();
+                    $citation = $product->getProperCitation();
+                }
                 if($year == "0000"){
                     $year = "";
                 }
@@ -177,8 +197,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 }
                 $this->html .= "<tr>
                                     <td align='center'>{$year}</td>
-                                    <td>{$product->getCategory()}</td>
-                                    <td>{$product->getProperCitation()}</td>
+                                    <td>{$category}</td>
+                                    <td>{$citation}</td>
                                 </tr>";
             }
             $this->html .= "</table><i>Last updated on: $date</i><br />";
