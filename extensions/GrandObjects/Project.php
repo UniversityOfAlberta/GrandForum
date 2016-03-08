@@ -99,7 +99,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$name])){
             return self::$cache[$name];
         }
-        if($name == $config->getValue('networkName') || $name == "Other"){
+        if($name == "Other"){
             return Project::newFromId(-1);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
@@ -162,7 +162,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$title])){
             return self::$cache[$title];
         }
-        if($title == $config->getValue('networkName') || $title == "Other"){
+        if($title == "Other"){
             return Project::newFromName($title);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
@@ -257,7 +257,7 @@ class Project extends BackboneModel {
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
         }
-        if($name == $config->getValue('networkName') || $name == "Other"){
+        if($name == "Other"){
             return Project::newFromName($name);
         }
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
