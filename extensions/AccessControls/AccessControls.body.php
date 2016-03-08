@@ -46,6 +46,18 @@ function createRoleNamespaces(){
                                 array('nsId' => $nsId+1,
                                       'nsName' => $role.'_Talk',
                                       'public' => 1));
+            
+        }
+        if(!isset($namespaces[strtoupper($role."_Wiki")])){
+            $nsId += 2;
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId,
+                                      'nsName' => $role."_Wiki",
+                                      'public' => 0));
+            DBFunctions::insert('mw_an_extranamespaces',
+                                array('nsId' => $nsId+1,
+                                      'nsName' => $role.'_Wiki_Talk',
+                                      'public' => 0));
         }
     }
 }
