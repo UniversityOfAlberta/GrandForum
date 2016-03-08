@@ -212,7 +212,7 @@ class IndexTable {
 	        if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
 	            $this->text .= "
                     <tr>
-                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>";
                 if($type != "Administrative"){
                     $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
@@ -413,7 +413,7 @@ EOF;
 				        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
 				    }
 			    }
-			    $this->text .= "<td align='left'>".implode("<br />", $projs)."</td>";
+			    $this->text .= "<td align='left'style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
 			}
 			$university = $person->getUniversity();
             $this->text .= "<td align='left'>{$university['university']}</td>";
