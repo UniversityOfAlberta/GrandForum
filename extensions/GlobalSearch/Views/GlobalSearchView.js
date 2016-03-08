@@ -64,6 +64,7 @@ GlobalSearchView = Backbone.View.extend({
             case 39:
             case 40:
             case 13:
+            case 16:
                 break;
             default:
                 var value = this.$("#globalSearchInput").val();

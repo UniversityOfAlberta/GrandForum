@@ -20,7 +20,7 @@ ThreadView = Backbone.View.extend({
     },
 
     editThread: function(){
-        if(me.id == this.model.get('author').id || me.get('roles') == 'Admin'){
+        if(me.id == this.model.get('author').id || _.findWhere(me.get('roles'), {"role":"Admin"}) != undefined ||  _.findWhere(me.get('roles'), {"role":"Manager"}) != undefined){
             document.location = document.location + '/edit';
         }
         else{

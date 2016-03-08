@@ -33,7 +33,7 @@ class GlobalSearchAPI extends RESTAPI {
                     $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
-			$name = preg_quote($name);
+                        $name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;

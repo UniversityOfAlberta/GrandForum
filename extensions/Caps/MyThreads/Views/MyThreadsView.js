@@ -30,8 +30,8 @@ MyThreadsView = Backbone.View.extend({
 	}
 	else{
             this.editDialog.dialog({
-                height: 200,
-                width: 800,
+                height: $(window).height()*0.60,
+                width: 580,
                 title: "Create Thread"
             });
 	}

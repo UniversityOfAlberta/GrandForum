@@ -24,11 +24,15 @@ class PersonDashboardTab extends AbstractEditableTab {
             DBFunctions::delete('grand_top_products',
                                 array('type' => EQ('PERSON'),
                                       'obj_id' => EQ($this->person->getId())));
-            foreach($_POST['top_products'] as $productId){
-                if($productId != ""){
+            foreach($_POST['top_products'] as $product){
+                if($product != ""){
+                    $exploded = explode("_", $product);
+                    $type = $exploded[0];
+                    $productId = $exploded[1];
                     DBFunctions::insert('grand_top_products',
                                         array('type' => 'PERSON',
                                               'obj_id' => $this->person->getId(),
+                                              'product_type' => $type,
                                               'product_id' => $productId));
                 }
             }
@@ -95,10 +99,16 @@ class PersonDashboardTab extends AbstractEditableTab {
         $html .= "<optgroup label='$plural'>";
         $count = 0;
         foreach($products as $product){
-            if($category == $product->getCategory()){
+            if($product instanceof Contribution && $category == "Contribution"){
+                $selected = ($value == $product->getId()) ? "selected='selected'" : "";
+                $year = $product->getStartYear();
+                $html .= "<option value='CONTRIBUTION_{$product->getId()}' $selected>($year) {$product->getTitle()}</option>";
+                $count++;
+            }
+            else if($product instanceof Paper && $category == $product->getCategory()){
                 $selected = ($value == $product->getId()) ? "selected='selected'" : "";
                 $year = substr($product->getDate(), 0, 4);
-                $html .= "<option value='{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
+                $html .= "<option value='PRODUCT_{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
                 $count++;
             }
         }
@@ -110,8 +120,10 @@ class PersonDashboardTab extends AbstractEditableTab {
     }
     
     private function selectList($person, $value){
-        $structure = Product::structure();
-        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public');
+        $productStructure = Product::structure();
+        $categories = @array_keys($productStructure['categories']);
+        $allProducts = array_merge($person->getPapers('all', true, 'grand', true, 'Public'),
+                                   $person->getContributions());
         $products = array();
         foreach($allProducts as $product){
             $date = $product->getDate();
@@ -121,9 +133,10 @@ class PersonDashboardTab extends AbstractEditableTab {
         $products = array_reverse($products);
         $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
         $html .= "<option value=''>---</option>";
-        foreach($structure['categories'] as $cat => $types){
-            $html .= $this->optGroup($products, "$cat", $value);
+        foreach($categories as $category){
+            $html .= $this->optGroup($products, $category, $value);
         }
+        $html .= $this->optGroup($products, "Contribution", $value);
         $html .= "</select><br />";
         return $html;
     }
@@ -131,7 +144,14 @@ class PersonDashboardTab extends AbstractEditableTab {
     function showEditTopProducts($person, $visibility, $max=5){
         global $config;
         $this->html .= "<h2>Top Research Outcomes</h2>";
-        $this->html .= "<small>Select up to {$max} research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in your annual report.</small><br />";
+        $this->html .= "<small>Select up to {$max} research outcomes that you believe showcase your productivity the greatest.  The order that you specify them in does not matter.  The ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be sorted in descending order by date.  These top ".strtolower(Inflect::pluralize($config->getValue('productsTerm')))." will be shown in your annual report.
+        <ul>
+            <li>Publication in a high-impact journal</li>
+            <li>Major partnerships or collaborations</li>
+            <li>Licensing a product</li>
+            <li>High profile awards</li>
+            <li>Formation of a start-up company</li>
+        </ul></small><br />";
         $products = $person->getTopProducts();
         $i = 0;
         foreach($products as $product){
@@ -168,6 +188,16 @@ class PersonDashboardTab extends AbstractEditableTab {
                 if($i == $max){
                     break;
                 }
+                if($product instanceof Contribution){
+                    $year = $product->getStartYear();
+                    $category = "Contribution";
+                    $citation = "<a href='{$product->getUrl()}'>{$product->getTitle()}</a>";
+                }
+                else{
+                    $year = substr($product->getDate(), 0, 4);
+                    $category = $product->getCategory();
+                    $citation = $product->getProperCitation();
+                }
                 $year = substr($product->getDate(), 0, 4);
                 if($year == "0000"){
                     $year = "";
@@ -177,8 +207,8 @@ class PersonDashboardTab extends AbstractEditableTab {
                 }
                 $this->html .= "<tr>
                                     <td align='center'>{$year}</td>
-                                    <td>{$product->getCategory()}</td>
-                                    <td>{$product->getProperCitation()}</td>
+                                    <td>{$category}</td>
+                                    <td>{$citation}</td>
                                 </tr>";
                 $i++;
             }

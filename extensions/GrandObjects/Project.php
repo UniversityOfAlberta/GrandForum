@@ -37,9 +37,20 @@ class Project extends BackboneModel {
      * @return Project The Project with the given id
      */
     static function newFromId($id){
+        global $config;
         $me = Person::newFromWgUser();
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
+        }
+        if($id == -1){
+            $project = new Project(array());
+            $project->id = $id;
+            $project->name = "Other";
+            $project->fullName = "Other";
+            $project->clear = true;
+            self::$cache[$project->id] = &$project;
+            self::$cache[$project->name] = &$project;
+            return $project;
         }
         $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.bigbet
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
@@ -72,8 +83,9 @@ class Project extends BackboneModel {
             self::$cache[$project->name] = &$project;
             return $project;
         }
-        else
+        else {
             return null;
+        }
     }
     
     /**
@@ -82,9 +94,13 @@ class Project extends BackboneModel {
      * @return Project The Project with the given name
      */
     static function newFromName($name){
+        global $config;
         $me = Person::newFromWgUser();
         if(isset(self::$cache[$name])){
             return self::$cache[$name];
+        }
+        if($name == $config->getValue('networkName') || $name == "Other"){
+            return Project::newFromId(-1);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
                                           'grand_project_evolution' => 'e',
@@ -130,8 +146,9 @@ class Project extends BackboneModel {
             //self::$cache[$project->name] = &$project;
             return $project;
         }
-        else
+        else {
             return null;
+        }
     }
     
     /**
@@ -140,9 +157,13 @@ class Project extends BackboneModel {
      * @return Project The Project with the given title
      */
     static function newFromTitle($title){
+        global $config;
         $me = Person::newFromWgUser();
         if(isset(self::$cache[$title])){
             return self::$cache[$title];
+        }
+        if($title == $config->getValue('networkName') || $title == "Other"){
+            return Project::newFromName($title);
         }
         $data = DBFunctions::select(array('grand_project' => 'p',
                                           'grand_project_evolution' => 'e',
@@ -205,6 +226,9 @@ class Project extends BackboneModel {
         if(isset(self::$cache[$id.'_'.$evolutionId])){
             return self::$cache[$id.'_'.$evolutionId];
         }
+        if($id == -1){
+            return Project::newFromId($id);
+        }
         $sqlExtra = ($evolutionId != null) ? $sqlExtra = "AND e.id = $evolutionId" : "";
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
@@ -228,9 +252,13 @@ class Project extends BackboneModel {
      * @return Project The Project with the given historic name
      */
     static function newFromHistoricName($name){
+        global $config;
         $me = Person::newFromWgUser();
         if(isset(self::$cache['h_'.$name])){
             return self::$cache['h_'.$name];
+        }
+        if($name == $config->getValue('networkName') || $name == "Other"){
+            return Project::newFromName($name);
         }
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
@@ -590,6 +618,9 @@ EOF;
     // Returns the url of this Project's profile page
     function getUrl(){
         global $wgServer, $wgScriptPath;
+        if($this->id == -1){
+            return "{$wgServer}{$wgScriptPath}/index.php";
+        }
         return "{$wgServer}{$wgScriptPath}/index.php/{$this->getName()}:Main";
     }
     
@@ -1116,11 +1147,20 @@ EOF;
     function getTopProducts(){
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
+                                    array('product_type','product_id'),
                                     array('type' => EQ('PROJECT'),
                                           'obj_id' => EQ($this->getId())));
         foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
+            if($row['product_type'] == "CONTRIBUTION"){
+                $product = Contribution::newFromId($row['product_id']);
+                $year = $product->getStartYear();
+            }
+            else{
+                $product = Product::newFromId($row['product_id']);
+            }
+            if($product->getTitle() == ""){
+                continue;
+            }
             $year = substr($product->getDate(), 0, 4);
             $authors = $product->getAuthors();
             $name = "";

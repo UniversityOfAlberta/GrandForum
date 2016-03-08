@@ -29,7 +29,7 @@ class ContributionPage {
             if($name != "Contribution"){
                 return true;
             }
-            if($wgUser->isLoggedIn() && $me->isRoleAtLeast(NI)){
+            if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
                 $cName = $title;
                 $contribution = Contribution::newFromId($cName);
                 if($contribution != null && $contribution->getId() !== null && isset($_GET['create'])){
@@ -354,7 +354,7 @@ class ContributionPage {
                             foreach($allPeople as $person){
                                 if(is_array($personNames) && array_search($person->getNameForForms(), $personNames) === false &&
                                    $person->getNameForForms() != "WikiSysop" &&
-                                   $person->isRoleAtLeast(NI)){
+                                   $person->isRoleAtLeast(HQP)){
                                     $list[] = $person->getNameForForms();
                                 }
                             }
@@ -375,7 +375,7 @@ class ContributionPage {
                                     }
                                 }
                                 else{
-                                    $texts[] = $person;
+                                    $texts[] = str_replace('"', "", $person);
                                 }
                             }
                             $wgOut->addHTML(implode(", ", $texts));
@@ -562,6 +562,7 @@ class ContributionPage {
                             }
                         }
                         $projs = Project::getAllProjects();
+                        $projs[] = Project::newFromId(-1);
                         
                         $projList = new ProjectList("projects", "Projects", $pProjects, $projs);
                         $wgOut->addHTML($projList->render());
@@ -616,9 +617,9 @@ class ContributionPage {
                 $wgOut->output();
                 $wgOut->disable();
             }
-            else if(!$me->isRoleAtLeast(NI)){
+            else if(!$me->isRoleAtLeast(HQP)){
                 $wgOut->setPageTitle("Permission Error");
-                $wgOut->addHTML("You must be at least a NI to view this page");
+                $wgOut->addHTML("You must be at least an HQP to view this page");
                 $wgOut->output();
                 $wgOut->disable();
             }

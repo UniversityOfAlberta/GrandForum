@@ -89,7 +89,7 @@ function generateContributionScript($category){
 class AddContributionPage extends SpecialPage{
 
 	function AddContributionPage() {
-		SpecialPage::__construct("AddContributionPage", NI.'+', true, 'runAddContributionPage');
+		SpecialPage::__construct("AddContributionPage", HQP.'+', true, 'runAddContributionPage');
 	}
 
 	function execute($par){
@@ -107,7 +107,7 @@ class AddContributionPage extends SpecialPage{
 	static function createToolboxLinks(&$toolbox){
 	    global $wgServer, $wgScriptPath;
 	    $me = Person::newFromWgUser();
-	    if($me->isRoleAtLeast(NI)){
+	    if($me->isRoleAtLeast(HQP)){
 	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add/Edit Contribution", "$wgServer$wgScriptPath/index.php/Special:AddContributionPage");
 	    }
 	    return true;
