@@ -268,6 +268,14 @@
                 <h1>Dissemination of Project Research Results</h1>
                 <p>Please add all Publications, Abstracts, Patents etc. by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'><b>Manage Products</b></a>.  
                    When you add these products please make sure that the product is associated with the project <b>{$project_name}</b>.</p>
+                <p>Please make sure that you input all:</p>
+                <ul>
+                    <li>Refereed Contributions (i.e. articles, letters, notes, communications, review articles, papers in refereed conference proceedings, monographs, books, book chapters, government publications) (manuscripts may be included in an appendix).<br />
+                        (Note: Include bibliographic details, in the following order: author(s), year of publication, title, book or journal name and number, pages and publisher.)</li>
+                    <li>Non-Refereed Contributions (i.e. papers, letters, papers in conference proceedings, review articles)
+                    <li>Specialized Publications (i.e. industrial reports, thesis, technical reports, internal reports, discussions or abstracts, symposium records)</li>
+                    <li>Intellectual Property and Licenses (i.e. patent applications, patents issued, copyrights, non-exclusive/exclusive licenses executed or under negotiation)</li>
+                </ul>
                 {$item}<br />
             ]]>
         </ReportItem>
