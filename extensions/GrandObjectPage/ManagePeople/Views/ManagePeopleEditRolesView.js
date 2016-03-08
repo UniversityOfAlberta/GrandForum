@@ -15,6 +15,9 @@ ManagePeopleEditRolesView = Backbone.View.extend({
             this.roles = this.model.getAll();
             this.listenTo(this.roles, "add", this.addRows);
             this.model.ready().then($.proxy(function(){
+                this.roles.each(function(r){
+                    r.startTracking();
+                });
                 this.render();
             }, this));
         }, this));
@@ -52,7 +55,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         clearAllMessages();
         var requests = new Array();
         _.each(copy, $.proxy(function(role){
-            if(_.contains(allowedRoles, role.get('name'))){
+            if(_.contains(allowedRoles, role.get('name')) && role.unsavedAttributes() != false){
                 if(role.get('deleted') != "true"){
                     requests.push(role.save(null));
                 }
@@ -69,7 +72,11 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     },
     
     addRole: function(){
-        this.roles.add(new Role({name: "HQP", userId: this.person.get('id')}));
+        var role = new Role();
+        role.startTracking();
+        role.set("name", "HQP");
+        role.set("userId", this.person.get('id'));
+        this.roles.add(role);
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
@@ -121,9 +128,10 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
     addProject: function(event){
         var selectedProject = this.$("#selectedProject option:selected");
         var name = selectedProject.text();
-        var projects = this.model.get('projects');
+        var projects = this.model.get('projects').slice();
         if(_.where(projects, {name: name}).length == 0){
             projects.push({id: null, name: name});
+            this.model.set('projects', projects);
             this.model.trigger('change:projects');
         }
     },

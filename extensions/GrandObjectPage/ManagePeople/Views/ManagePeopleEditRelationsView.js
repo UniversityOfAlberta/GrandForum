@@ -13,9 +13,10 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         this.model.ready().then($.proxy(function(){
             this.relations = this.model;
             this.listenTo(this.relations, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
-                this.render();
-            }, this));
+            this.relations.each(function(r){
+                r.startTracking();
+            });
+            this.render();
         }, this));
         
         var dims = {w:0, h:0};
@@ -48,15 +49,17 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     saveAll: function(){
-        var copy = this.relations.where({'user2': this.person.get('id')})
+        var copy = this.relations.where({'user2': this.person.get('id')});
         clearAllMessages();
         var requests = new Array();
         _.each(copy, $.proxy(function(relation){
-            if(relation.get('deleted') != "true"){
-                requests.push(relation.save(null));
-            }
-            else {
-                requests.push(relation.destroy(null));
+            if(relation.unsavedAttributes() != false){
+                if(relation.get('deleted') != "true"){
+                    requests.push(relation.save(null));
+                }
+                else {
+                    requests.push(relation.destroy(null));
+                }
             }
         }, this));
         $.when.apply($, requests).then(function(){
@@ -67,7 +70,12 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     addRelation: function(){
-        this.relations.add(new PersonRelation({type: 'Works With', user1: me.get('id'), user2: this.person.get('id')}));
+        var relation = new PersonRelation();
+        relation.startTracking();
+        relation.set("type", "Works With");
+        relation.set("user1", me.get('id'));
+        relation.set("user2", this.person.get('id'));
+        this.relations.add(relation);
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
@@ -108,10 +116,6 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         this.template = _.template($('#edit_relations_row_template').html());
     },
     
-    delete: function(){
-        this.model.delete = true;
-    },
-    
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
         this.$("input[name=endDate]").val('0000-00-00');
@@ -121,9 +125,10 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     addProject: function(event){
         var selectedProject = this.$("#selectedProject option:selected");
         var name = selectedProject.text();
-        var projects = this.model.get('projects');
+        var projects = this.model.get('projects').slice();
         if(_.where(projects, {name: name}).length == 0){
             projects.push({id: null, name: name});
+            this.model.set('projects', projects);
             this.model.trigger('change:projects');
         }
     },

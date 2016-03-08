@@ -11,14 +11,12 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         this.projectViews = new Array();
         this.template = _.template($('#edit_projects_template').html());
         this.person.getRoles();
-        this.person.getUniversities();
         this.model.ready().then($.proxy(function(){
             this.projects = this.model;
             this.listenTo(this.projects, "add", this.addRows);
-            return this.person.roles;
-        }, this)).then($.proxy(function(){
-            return this.person.universities;
-        }, this)).then($.proxy(function(){
+            this.projects.each(function(p){
+                p.startTracking();
+            });
             this.render();
         }, this));
         // Reposition the dialog when the window is resized or the dialog is resized
@@ -54,7 +52,7 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
         clearAllMessages();
         var requests = new Array();
         _.each(copy, $.proxy(function(project){
-            if(_.contains(allowedProjects, project.get('name'))){
+            if(_.contains(allowedProjects, project.get('name')) && project.unsavedAttributes() != false){
                 if(project.get('deleted') != "true"){
                     requests.push(project.save(null));
                 }
@@ -72,7 +70,11 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     
     addProject: function(){
         var project = _.first(allowedProjects);
-        this.projects.add(new PersonProject({name: project, personId: this.person.get('id')}));
+        var personProject = new PersonProject();
+        personProject.startTracking();
+        personProject.set("name", project);
+        personProject.set("personId", this.person.get('id'));
+        this.projects.add(personProject);
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
@@ -93,7 +95,6 @@ ManagePeopleEditProjectsView = Backbone.View.extend({
     },
     
     showCard: function(){
-        
         var card = new LargePersonCardView({el: this.$("#card"), model: this.person});
         card.render();
         this.$("#accordion").accordion();
@@ -117,10 +118,6 @@ ManagePeopleEditProjectsRowView = Backbone.View.extend({
         this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_projects_row_template').html());
-    },
-    
-    delete: function(){
-        this.model.delete = true;
     },
     
     // Sets the end date to infinite (0000-00-00)

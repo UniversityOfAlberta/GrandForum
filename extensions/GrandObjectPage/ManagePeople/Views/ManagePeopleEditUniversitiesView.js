@@ -14,6 +14,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.model.ready().then($.proxy(function(){
             this.universities = this.model;
             this.listenTo(this.universities, "add", this.addRows);
+            this.universities.each(function(u){
+                u.startTracking();
+            });
             this.render();
         }, this));
         
@@ -50,11 +53,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         clearAllMessages();
         var requests = new Array();
         _.each(copy, $.proxy(function(university){
-            if(university.get('deleted') != "true"){
-                requests.push(university.save(null));
-            }
-            else {
-                requests.push(university.destroy(null));
+            if(university.unsavedAttributes() != false){
+                if(university.get('deleted') != "true"){
+                    requests.push(university.save(null));
+                }
+                else {
+                    requests.push(university.destroy(null));
+                }
             }
         }, this));
         $.when.apply($, requests).then(function(){
@@ -65,8 +70,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     },
     
     addUniversity: function(){
-        var university = "Unknown";
-        this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
+        var university = new PersonUniversity();
+        university.startTracking();
+        university.set("university", "Unknown");
+        university.set("department", "Unknown");
+        university.set("position", "Unknown");
+        university.set("personId", this.person.get('id'));
+        this.universities.add(university);
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
@@ -103,10 +113,6 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
-    },
-    
-    delete: function(){
-        this.model.delete = true;
     },
     
     // Sets the end date to infinite (0000-00-00)
