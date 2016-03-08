@@ -73,6 +73,12 @@ class IndexTable {
             }
             $tabs['Main']['subtabs'][] = $productsSubTab;
         }
+
+      $selected = ($wgTitle->getText() == "ALL Stories" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
+        $storiesSubTab = TabUtils::createSubTab("User Stories", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
+        if($wgUser->isLoggedIn()){
+	    $tabs['Main']['subtabs'][] = $storiesSubTab;
+	}
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');
         $themeNames = $themesColl->pluck('getName()');
@@ -171,6 +177,10 @@ class IndexTable {
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
 				    $this->generateThemesTable();
 				    break;
+                           case 'ALL Stories':
+                                $wgOut->setPageTitle("User Stories");
+                                $this->generateUserStoriesTable();
+                                break;
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
@@ -508,6 +518,33 @@ EOF;
 	    </script>";
 	    return true;
 	}
+
+       private function generateUserStoriesTable(){
+	   global $wgUser,$wgOut;
+	   if(!$wgUser->isLoggedIn()){
+		permissionError();
+	   }
+           $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+                        <thead><tr><th style='white-space:nowrap;'>Title</th>
+                        <th style='white-space:nowrap;'>Submitted By</th>
+                        <th style='white-space:nowrap;'>Date Submitted</th>
+                        </tr></thead><tbody>";
+
+           $stories = Story::getAllUserStories();
+           foreach($stories as $story){
+		if($story->getApproved()){
+                    $this->text .= "<tr><td align='right'><a href='".$story->getUrl()."'>".$story->getTitle()."</a></td>
+                                <td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>
+                                <td>".$story->getDateSubmitted()."</td></tr>";
+		}
+
+
+           }
+           $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
+
+        return true;
+        }
+
 }
 
 ?>

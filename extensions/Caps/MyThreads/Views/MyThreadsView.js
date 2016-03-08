@@ -16,12 +16,25 @@ MyThreadsView = Backbone.View.extend({
 
     addThread: function(){
         var model = new Thread({author: {id: me.id, name:me.get('name'), url:me.get('url')}});
-        var view = new ThreadEditView({el: this.editDialog, model: model, isDialog: true});
+	var model2 = new Post({'user_id':me.id});
+        var view = new ThreadEditView({el: $('#editThreadView', this.editDialog), model: model, isDialog: true});
+	var view2 = new PostView({el: $('#editPostView', this.editDialog), model: model2, isDialog: true});
         this.editDialog.view = view;
-        this.editDialog.dialog({
-            height: $(window).height()*0.75,
-            width: 800
-        });
+	this.editDialog.view2 = view2;
+        if(_.findWhere(me.get('roles'), {"role":"Admin"}) != undefined ||  _.findWhere(me.get('roles'), {"role":"Manager"}) != undefined){ 
+	    this.editDialog.dialog({
+ 		height: $(window).height()*0.75,
+            	width: 800,
+            	title: "Create Thread"
+            });
+	}
+	else{
+            this.editDialog.dialog({
+                height: 200,
+                width: 800,
+                title: "Create Thread"
+            });
+	}
         this.editDialog.dialog('open');
     },
     
@@ -72,13 +85,24 @@ MyThreadsView = Backbone.View.extend({
                     {
                         text: "Save Thread",
                         click: $.proxy(function(){
-                        this.editDialog.view.model.save(null, {
+                        var m = this.editDialog.view.model.save(null, {
                             success: $.proxy(function(){
 				this.$(".throbber").hide();
                 		this.$("#saveThread").prop('disabled', false);
-                		clearAllMessages();
-                		document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:MyThreads";
-
+				this.editDialog.view2.model.set("thread_id", m.responseJSON.id);
+				this.editDialog.view2.model.save(null, {
+                            	    success: $.proxy(function(){
+                                	this.$(".throbber").hide();
+                                	this.$("#saveThread").prop('disabled', false);
+                                	clearAllMessages();
+                                	document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:MyThreads";		
+                            	    }, this),
+                            	    error: $.proxy(function(){
+                                	this.$(".throbber").hide();
+                                	clearAllMessages();
+                                	addError("There was a problem saving the Post", true);
+                            	    }, this)
+                            	});
                             }, this),
                             error: $.proxy(function(){
                 		this.$(".throbber").hide();

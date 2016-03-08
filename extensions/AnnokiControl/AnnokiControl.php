@@ -151,8 +151,6 @@ $egAnnokiExtensions['ApprovePage'] = array('name' => 'ApprovePage',
 $egAnnokiExtensions['ApproveStory'] = array('name' => 'ApproveStory',
                                          'path' => "$IP/extensions/ApproveStory/ApproveStory.php");
 
-
-
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){

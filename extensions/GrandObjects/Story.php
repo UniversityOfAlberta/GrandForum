@@ -49,18 +49,22 @@ class Story extends BackboneModel{
 	    else{
                 $data = DBFunctions::select(array('grand_user_stories'),
                                             array('rev_id'),
-					    array('user_id'=>$me->getId()));
+					    array('approved'=>EQ(COL(1))));
 	    }
             if(count($data) >0){
                 foreach($data as $storyId){
-                    $story = Story::newFromId($storyId['rev_id']);
-                    $stories[] = $story;
+                    $stories[] = Story::newFromId($storyId['rev_id']);
                 }
             }
             return $stories;
         }
 
         static function getAllUnapprovedStories(){
+            $me = Person::newFromWgUser();
+
+	    if(!$me->isRoleAtLeast(MANAGER)){
+		permissionError();
+	    }	
             $stories = array();
             $data = DBFunctions::select(array("grand_user_stories"),
                                         array("rev_id"),
@@ -229,6 +233,25 @@ class Story extends BackboneModel{
 	function isOwnedBy($person){
 	    return ($this->getUser()->getId() === $person->getId());
 	}
+
+	function canView(){
+            $me = Person::newFromWgUser();
+	    $bool = false;
+	    if($me->isLoggedIn() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
+		$bool = true;
+	    }
+	    return $bool;
+	}
+
+        function canEdit(){
+            $me = Person::newFromWgUser();
+            $bool = false;
+            if($me->isLoggedIn() && !$this->getApproved() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER))){
+                $bool = true;
+            }
+            return $bool;
+        }
+
 
 	function approve(){
             $me = Person::newFromWgUser();

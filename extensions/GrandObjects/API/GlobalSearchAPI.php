@@ -33,6 +33,7 @@ class GlobalSearchAPI extends RESTAPI {
                     $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
+			$name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;
@@ -108,6 +109,7 @@ class GlobalSearchAPI extends RESTAPI {
                                          explode(" ", unaccentChars($pFullName)));
                     $found = true;
                     foreach($searchNames as $name){
+                        $name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;
@@ -151,6 +153,7 @@ class GlobalSearchAPI extends RESTAPI {
                                          explode(" ", $pType));
                     $found = true;
                     foreach($searchNames as $name){
+                        $name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;
@@ -191,6 +194,7 @@ class GlobalSearchAPI extends RESTAPI {
                     $names = array_merge(explode(" ", unaccentChars($pName)));
                     $found = true;
                     foreach($searchNames as $name){
+                        $name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;
@@ -225,6 +229,7 @@ class GlobalSearchAPI extends RESTAPI {
                     $names = array_merge(explode(" ", unaccentChars($pName)));
                     $found = true;
                     foreach($searchNames as $name){
+                        $name = preg_quote($name);
                         $grepped = preg_grep("/^$name.*/", $names);
                         if(count($grepped) == 0){
                             $found = false;

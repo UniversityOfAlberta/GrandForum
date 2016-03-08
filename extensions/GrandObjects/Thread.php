@@ -162,9 +162,15 @@ class Thread extends BackboneModel{
                                               array('user_id' => $this->user_id,
 						    'users' => serialize($users),
                                                     'title' => $this->title), true);
+                $data = DBFunctions::select(array('grand_threads'),
+                                       array('id'),
+                                       array('user_id' =>$this->user_id,
+					     'title' => $this->title),
+                                       array('date_created'=>'desc')
+                                       );
                 if($status){
                     DBFunctions::commit();
-                    return true;
+                    return Thread::newFromId($data[0]['id']);
                 }
             }
             return false;
@@ -214,6 +220,34 @@ class Thread extends BackboneModel{
 	}
 //--------General Functions-------//
 
+        function canView(){
+            $me = Person::newFromWgUser();
+            $bool = false;
+	    $threads = Thread::getAllThreads();
+	    $ids = array();
+	    foreach($threads as $thread){
+		$ids[] = $thread->getId();
+	    }
+            if($me->isLoggedIn() && ($me->getId() === $this->getThreadOwner()->getId() 
+				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids))){
+                $bool = true;
+            }
+            return $bool;
+        }
+
+        function canEdit(){
+            $me = Person::newFromWgUser();
+            $bool = false;
+            if($me->isLoggedIn() && $me->isRoleAtLeast(MANAGER)){
+                $bool = true;
+            }
+            return $bool;
+        }
+
+	function addUser($person){
+	    $this->users[] = $person;
+	}
+	
         function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){

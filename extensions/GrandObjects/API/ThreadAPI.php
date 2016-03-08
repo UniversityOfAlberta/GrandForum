@@ -5,7 +5,7 @@ class ThreadAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $me = Person::newFromWgUser();
             $thread = Thread::newFromId($this->getParam('id'));
-            if(!$me->isLoggedIn() || ($me->getId() != $thread->getThreadOwner()->getId() && !($me->isRoleAtLeast(MANAGER)))){
+            if(!$thread->canView()){
                 permissionError();
             }
             return $thread->toJSON();
@@ -13,15 +13,22 @@ class ThreadAPI extends RESTAPI {
     }
 
     function doPOST(){
+        $me = Person::newFromWgUser();
         $thread = new Thread(array());
         $thread->setTitle($this->POST('title'));
         $thread->setUserId($this->POST('author')->id);
-        $thread->setUsers($this->POST('authors'));
+	if($me->isRoleAtLeast(MANAGER)){
+            $thread->setUsers($this->POST('authors'));
+	}
+        $me = Person::newFromWgUser();
+	if(count($this->POST('authors')) == 0){
+	    $thread->setUsers(array($me));
+	}
         $status = $thread->create();
-        if(!$status){
+        if($status === false){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be created");
         }
-        return true;
+        return $status->toJSON();
     }
 
     function doPUT(){
@@ -29,6 +36,9 @@ class ThreadAPI extends RESTAPI {
         if($thread == null || $thread->getTitle() == ""){
             $this->throwError("This thread does not exist");
         }
+	elseif(!$thread->canEdit()){
+            permissionError();
+	}
         $thread->setTitle($this->POST('title'));
         $thread->setUsers($this->POST('authors'));
         $status = $thread->update();

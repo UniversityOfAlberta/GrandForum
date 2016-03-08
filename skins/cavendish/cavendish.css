@@ -1477,7 +1477,7 @@ select span.noshow {
     cursor: pointer;
 }
 
-.projectIcon, .productIcon, .wikiIcon, .pdfIcon {
+.projectIcon, .productIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
     width: 15px;
     height:15px;
     display: inline-block;
@@ -1497,6 +1497,14 @@ select span.noshow {
 
 .pdfIcon {
     background: url('../pdf.gif');
+}
+
+.threadIcon {
+    background: url('../thread.gif');
+}
+
+.storyIcon {
+    background: url('../story.gif');
 }
 
 .throbber {

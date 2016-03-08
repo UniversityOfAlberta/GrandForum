@@ -36,7 +36,7 @@ class ApproveStory extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>Timestamp</th>
-                            <th>Page</th>
+                            <th>Story Title</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
    //for loop adding here 
@@ -48,7 +48,7 @@ class ApproveStory extends SpecialPage{
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a>
                         </td>");
             $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getDateSubmitted())."</td>");
-            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$request->getTitle()}</a></td>
+            $wgOut->addHTML("<td align='right'><a target='_blank' href='{$request->getUrl()}'>{$request->getTitle()}</a></td>
 			        <input type='hidden' name='id' value='{$request->getId()}' />");
             $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td>");
             $wgOut->addHTML("</form>

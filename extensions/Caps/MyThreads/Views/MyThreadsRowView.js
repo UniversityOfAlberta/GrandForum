@@ -10,7 +10,6 @@ MyThreadsRowView = Backbone.View.extend({
     },
 
     renderAuthors: function(){
-	console.log(this.model.get('authors'));
         var views = Array();
         var that = this;
         _.each(this.model.get('authors'), function(author, index){

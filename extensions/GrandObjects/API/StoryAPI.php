@@ -6,7 +6,7 @@ class StoryAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $me = Person::newFromWgUser();
             $story = Story::newFromId($this->getParam('id'));
-            if(!$me->isLoggedIn() || ($me->getId() != $story->user && !($me->isRoleAtLeast(MANAGER)))){
+            if(!$story->canView()){
 		permissionError();
             }
             return $story->toJSON();
@@ -15,7 +15,8 @@ class StoryAPI extends RESTAPI {
 
     function doPOST(){
         $story = new Story(array());
-        $story->user = $this->POST('user');
+        $me = Person::newFromWgUser();
+        $story->user = $me->getId();
         $story->title = $this->POST('title');
         $story->story = $this->POST('story');
         $status = $story->create();
@@ -30,6 +31,9 @@ class StoryAPI extends RESTAPI {
         $story = Story::newFromId($this->getParam('id'));
         if($story == null || $story->getTitle() == ""){
             $this->throwError("This story does not exist");
+        }
+        elseif(!$story->canEdit()){
+            permissionError();
         }
         $story->id = $this->POST('id');
         $story->rev_id = $this->POST('rev_id');
@@ -65,7 +69,7 @@ class StoriesAPI extends RESTAPI {
     
     function doGET(){
         $me = Person::newFromWgUser();
-        $stories = new Collection(Story::getAllUserStories());
+        $stories = new Collection($me->getUserStories());
         return $stories->toJSON();
     }
     

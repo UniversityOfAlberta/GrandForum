@@ -3297,20 +3297,6 @@ class Person extends BackboneModel {
         return $papersArray;
     }
 
-    function getUserStories(){
-	$stories = array();
-	$data = DBFunctions::select(array('grand_user_stories'),
-                                    array('rev_id'),
-                                    array('user_id' => EQ($this->getId())));
-        if(count($data) > 0){
-	    foreach($data as $storydata){
-		$story = Story::newFromId($storydata['rev_id']);
-		$stories[] = $story;
-	    }
-        }
-	return $stories;
-    }
-    
     /**
      * Returns when this Person's top products were last updated
      * @return string When this Person's to products were last updated
@@ -3401,6 +3387,17 @@ class Person extends BackboneModel {
     function getLeaderEndDate($project){
         $dates = $this->getLeaderDates($project, 'leader');
         return $dates['end_date'];
+    }
+
+    function getUserStories(){
+	$stories = array();
+	$data = DBFunctions::select(array('grand_user_stories'),
+				    array('rev_id'),
+				    array('user_id' => EQ(COL($this->getId()))));
+	foreach($data as $row){
+	    $stories[] = Story::newFromId($row['rev_id']);
+	}
+	return $stories;
     }
     
     /**

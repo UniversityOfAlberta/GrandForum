@@ -5,17 +5,22 @@ class PostAPI extends RESTAPI {
         if($this->getParam('id') != ""){
             $me = Person::newFromWgUser();
             $post = Post::newFromId($this->getParam('id'));
-            //if(!$me->isLoggedIn() || ($me->getId() != $thread->getUser()->getId() && !($me->isRoleAtLeast(MANAGER)))){
-              //  permissionError();
-            //}
+            if(!$post->canView()){
+                permissionError();
+            }
             return $post->toJSON();
         }
     }
 
     function doPOST(){
+        $me = Person::newFromWgUser();
         $post = new Post(array());
+	$thread = Thread::newFromId($this->POST('thread_id'));
+        if(!$thread->canView()){
+            permissionError();
+        }
         $post->setThreadId($this->POST('thread_id'));
-        $post->setUserId($this->POST('user_id'));
+        $post->setUserId($me->getId());
         $post->setMessage($this->POST('message'));
         $post = $post->create();
         if($post === false){
@@ -35,9 +40,7 @@ class PostAPI extends RESTAPI {
 class PostsAPI extends RESTAPI {
 
     function doGET(){
-        $me = Person::newFromWgUser();
-        $threads = new Collection(Thread::getAllThreads());
-        return $threads->toJSON();
+        return false;
     }
 
     function doPOST(){
@@ -57,47 +60,12 @@ class PostsAPI extends RESTAPI {
 class PersonPostAPI extends RESTAPI {
 
     function doGET(){
-        // Get Authors
-        $product = Story::newFromId($this->getParam('id'));
-        $author = $product->getUser();
-        if($author->getId()){
-            $array = array('productId' => $this->getParam('id'),
-                           'id' => $author->getId(),
-                           'personUrl' => $author->getUrl(),
-                           'authorName' => $author->getNameForForms(),
-                           );
-                $json = $array;
-        }
-    return json_encode($json);
+        return false;
+
     }
 
     function doPOST(){
-/*        global $wgUser;
-        if($wgUser->isLoggedIn()){
-            $product = Paper::newFromId($this->getParam('id'));
-            $person = Person::newFromId($this->getParam('personId'));
-            $serializedAuthors = $product->authors;
-            $authors = $product->getAuthors();
-            $found = false;
-            foreach($authors as $author){
-                if($author->getId() == $person->getId()){
-                    $found = true;
-                }
-            }
-            if(!$found){
-                $authors = unserialize($serializedAuthors);
-                $authors[] = $person->getId();
-                DBFunctions::update('grand_products',
-                                    array('authors' => serialize($authors)),
-                                    array('id' => $product->getId()));
-                Paper::$cache = array();
-                Paper::$dataCache = array();
-            }
-        }
-        else{
-            $this->throwError("Author was not added");
-        }*/
-        return $this->doGET();
+        return false;
     }
 
     function doPUT(){
@@ -105,26 +73,8 @@ class PersonPostAPI extends RESTAPI {
     }
 
     function doDELETE(){
-        /*global $wgUser;
-        if($wgUser->isLoggedIn()){
-            $product = Paper::newFromId($this->getParam('id'));
-            $person = Person::newFromId($this->getParam('personId'));
-            $serializedAuthors = $product->authors;
-            $authors = $product->getAuthors();
-            foreach($authors as $key => $author){
-                if($author->getId() == $person->getId()){
-                    $serializedAuthors = unserialize($serializedAuthors);
-                    unset($serializedAuthors[$key]);
-                    DBFunctions::update('grand_products',
-                                        array('authors' => serialize($serializedAuthors)),
-                                        array('id' => $product->getId()));
-                    return;
-                }
-            }
-        }
-        else{
-            $this->throwError("Author was not deleted");
-        }*/
+        return false;
     }
+
 }
 ?>

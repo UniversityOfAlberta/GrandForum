@@ -138,6 +138,11 @@ class Post extends BackboneModel{
 	}
 //--------General Functions-------//
 
+        function canView(){
+            $thread = Thread::newFromId($this->getThreadId());
+	    return $thread->canView();
+        }
+
         function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){

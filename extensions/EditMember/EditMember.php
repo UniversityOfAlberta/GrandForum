@@ -16,12 +16,7 @@ function runEditMember($par) {
 class EditMember extends SpecialPage{
 
     function EditMember() {
-        if(FROZEN){
-            SpecialPage::__construct("EditMember", STAFF.'+', true, 'runEditMember');
-        }
-        else{
-            SpecialPage::__construct("EditMember", NI.'+', true, 'runEditMember');
-        }
+        SpecialPage::__construct("EditMember", MANAGER.'+', true, 'runEditMember');
     }
 
     function execute($par){
@@ -89,7 +84,7 @@ class EditMember extends SpecialPage{
                                 });
                             }
                            </script>");
-        if(isset($_GET['action']) && $_GET['action'] == "view" && $me->isRoleAtLeast(STAFF)){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && $me->isRoleAtLeast(MANAGER)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 // Admin Accepted
                 EditMember::handleAdminAccept();
@@ -1389,7 +1384,7 @@ class EditMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(MANAGER)){
             $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;

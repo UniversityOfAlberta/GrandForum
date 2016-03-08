@@ -7,7 +7,6 @@
 <td style="white-space: nowrap;">
     <% var names = new Array();
     _.each(users, function(author){
-	console.log(author);
         if(author.id == "" || author.id == null){
             names.push(author.name);
         }

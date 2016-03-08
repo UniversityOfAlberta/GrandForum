@@ -93,8 +93,9 @@ ThreadEditView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-	console.log(this.model);
-        this.renderAuthors();
+        if(_.findWhere(me.get('roles'), {"role":"Admin"}) != undefined ||  _.findWhere(me.get('roles'), {"role":"Manager"}) != undefined){
+            this.renderAuthors();
+	}
         return this.$el;
     }
 

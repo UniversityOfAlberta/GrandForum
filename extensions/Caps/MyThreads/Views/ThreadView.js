@@ -12,10 +12,14 @@ ThreadView = Backbone.View.extend({
 
     events: {
         "click #EditThreadButton": "editThread",
+	"click #BackButton": "back",
+    },
+
+    back: function(){
+	document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:MyThreads";
     },
 
     editThread: function(){
-	console.log(me);
         if(me.id == this.model.get('author').id || me.get('roles') == 'Admin'){
             document.location = document.location + '/edit';
         }
@@ -52,6 +56,9 @@ ThreadView = Backbone.View.extend({
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
+        if(_.findWhere(me.get('roles'), {"role":"Admin"}) == undefined &&  _.findWhere(me.get('roles'), {"role":"Manager"}) == undefined){
+            $("#EditThreadButton").remove();
+        }
         this.addRows();
         return this.$el;
     }

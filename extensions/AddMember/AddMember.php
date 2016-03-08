@@ -12,18 +12,13 @@ autoload_register('AddMember/Validations');
 class AddMember extends SpecialPage{
 
     function AddMember() {
-        if(FROZEN){
-            parent::__construct("AddMember", STAFF.'+', true);
-        }
-        else{
-            parent::__construct("AddMember", NI.'+', true);
-        }
+        parent::__construct("AddMember", MANAGER.'+', true);
     }
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
-        if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
+        if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(MANAGER)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 $request = UserCreateRequest::newFromId($_POST['id']);
                 $sendEmail = "false";
@@ -327,7 +322,7 @@ class AddMember extends SpecialPage{
     function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
         $user = Person::newFromId($wgUser->getId());
-        if($user->isRoleAtLeast(STAFF)){
+        if($user->isRoleAtLeast(MANAGER)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
         }
         $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
@@ -341,7 +336,7 @@ class AddMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(MANAGER)){
             $toolbox['People']['links'][0] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;

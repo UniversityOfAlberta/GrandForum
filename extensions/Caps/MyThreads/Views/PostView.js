@@ -3,12 +3,19 @@ PostView = Backbone.View.extend({
     parent: null,
     row: null,
     template: _.template($('#post_template').html()),
+    isDialog: false,
     
     initialize: function(options){
         this.parent = options.parent;
+	if(options.isDialog != undefined){
+            this.isDialog = options.isDialog;
+        }
 	if(this.model.isNew()){
 	    this.render();
 	}
+        if(this.isDialog){
+            $('#submitPost').remove();
+        }
         this.listenTo(this.model, "sync", this.render);
     },
 
