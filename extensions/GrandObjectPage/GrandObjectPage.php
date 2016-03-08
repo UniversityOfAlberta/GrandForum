@@ -12,6 +12,7 @@
     require_once("ManageProducts/ManageProducts.php");
     require_once("AddContributionPage.php");
     require_once("AddMultimediaPage.php");
+    require_once("ManagePeopleHistory.php");
     require_once("Products/Products.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
