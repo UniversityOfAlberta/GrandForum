@@ -14,7 +14,7 @@ class UpdateProjectAcronymAPI extends API{
 
 	function doAction($noEcho=false){
 	    global $wgUser, $wgMessage;
-	    $_POST['new_acronym'] = str_replace(" ", "-", $_POST['new_acronym']);
+	    $_POST['new_acronym'] = @$_POST['new_acronym'];
 	    $project = Project::newFromName($_POST['old_acronym']);
 	    $newProj = Project::newFromName($_POST['new_acronym']);
 	    $me = Person::newFromWgUser();
@@ -33,7 +33,7 @@ class UpdateProjectAcronymAPI extends API{
 		    return $error;
 		}
 	    
-	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-]+$/", $_POST['new_acronym'])){
+	    if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['new_acronym'])){
 	        $wgMessage->addError("The project acronym cannot contain any special characters");
 	        return false;
 	    }
@@ -53,7 +53,7 @@ class UpdateProjectAcronymAPI extends API{
 		                        array(),
 		                        true);
 		    DBFunctions::update('mw_an_extranamespaces',
-		                        array('nsName' => $_POST['new_acronym']),
+		                        array('nsName' => str_replace(' ', '_', $_POST['new_acronym'])),
 		                        array('nsId' => $project->getId()),
 		                        array(),
 		                        true);

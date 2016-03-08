@@ -468,7 +468,10 @@ EOF;
         //Fill the table
         foreach($hqps as $hqp){
             $pos = $hqp->getUniversityDuring($this->from, $this->to);
-            $pos = (isset($positions[$pos['position']]))? $pos['position'] : "Other";
+            if(!isset($positions[$pos['position']])){
+                $pos = $hqp->getUniversity();
+            }
+            $pos = (isset($positions[$pos['position']])) ? $pos['position'] : "Other";
             $gender = $hqp->getGender();
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
@@ -547,8 +550,8 @@ EOF;
                     $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
                     $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
                     
-                    $num_theses = count($counts[1]);
-                    $theses_details = Dashboard::paperDetails($counts[1]);
+                    $num_theses = @count($counts[1]);
+                    $theses_details = @Dashboard::paperDetails($counts[1]);
                     if($num_theses > 0){
                         $inner_tbl .=<<<EOF
                             <td>
@@ -569,8 +572,8 @@ EOF;
 
                     //$inner_tbl .= "<td>{$counts[1]}</td></tr>";
                     //$inner_tbl .= "<tr><td>{$label}</td><td>{$counts[0]}</td><td>{$counts[1]}</td></tr>";
-                    $total_nat[0] = array_merge($total_nat[0], $counts[0]); // += $num_students;
-                    $total_nat[1] = array_merge($total_nat[1], $counts[1]); //+= $counts[1];
+                    $total_nat[0] = @array_merge($total_nat[0], $counts[0]); // += $num_students;
+                    $total_nat[1] = @array_merge($total_nat[1], $counts[1]); //+= $counts[1];
                 }
 
 
@@ -588,8 +591,8 @@ EOF;
                 $num_total_nat_thes = count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
 
-                $total_gen[0] = array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
-                $total_gen[1] = array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
+                $total_gen[0] = @array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
+                $total_gen[1] = @array_merge($total_gen[1], $total_nat[1]); //+= $total_nat[1];
             }   
             
             $inner_tbl .= "<tr style='font-weight:bold;'><td>Total:</td>"; //<td>{$total_gen[0]}</td><td>{$total_gen[1]}</td></tr>";
@@ -648,8 +651,8 @@ EOF;
             $html .= $inner_tbl."</tr>";
             $html .= "<tr><th colspan='4'></th></tr>";
             
-            $total[0] = array_merge($total[0], $total_gen[0]);// += $total_gen[0];
-            $total[1] = array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
+            $total[0] = @array_merge($total[0], $total_gen[0]);// += $total_gen[0];
+            $total[1] = @array_merge($total[1], $total_gen[1]);//+= $total_gen[1];
         }
         $html .= "<tr style='font-weight:bold;'><td></td><td>Total:</td><td>"; //Total Thesis: {$total[1]}</td></tr>";
         $lnk_id = "lnk_total";
@@ -719,6 +722,9 @@ EOF;
         //Fill the table
         foreach ($hqps as $hqp){
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
@@ -837,9 +843,14 @@ EOF;
         foreach ($hqps as $hqp){
             $projs = $hqp->getProjectsDuring($this->from, $this->to);
             $univ = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($positions[$univ['position']])){
+                $univ = $hqp->getUniversity();
+            }
+            
             $pos = @$univ['position'];
             $uni = @$univ['university'];
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
+            
             foreach($projs as $project){
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
@@ -978,6 +989,9 @@ EOF;
             $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $hqp->getUniversity();
+            }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array(array(), 0);

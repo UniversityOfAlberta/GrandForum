@@ -1019,24 +1019,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether or not this Person has been funded on the given Project
-     * @param Project $project The Project that the Person has been funded
-     * @param string $year The year in which the Person has been funded
-     * @return boolean Whether or not this Person has been funded
-     */
-    function isFundedOn($project, $year){
-        if(count(self::$allocationsCache) == 0){
-            $data = DBFunctions::select(array('grand_allocations'),
-                                        array('user_id', 'project_id', 'year', 'amount'));
-            foreach($data as $row){
-                self::$allocationsCache[$row['year']][$row['user_id']][$row['project_id']] = $row['amount'];
-            }
-        }
-        return (isset(self::$allocationsCache[$year][$this->getId()][$project->getId()]) &&
-                self::$allocationsCache[$year][$this->getId()][$project->getId()] > 0);   
-    }
-    
-    /**
      * Returns the amount of time that this Person has been on the specified project
      * @param Project $project The Project that the Person has been on
      * @param string $format The format for the time (Defaults to number of days)
@@ -1474,6 +1456,19 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+    }
+
+    function getNameForProduct(){
+	global $config;
+	if($this->getId() == 0){
+	    return $this->getNameForForms();
+	}
+        $format = strtolower($config->getValue("nameFormat"));
+	$format = str_replace("%first", $this->getFirstName(), $format);
+        $format = str_replace("%last", $this->getLastName(), $format);
+        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
+        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
+	return $format;
     }
     
     // Returns the user's profile.
@@ -2029,16 +2024,16 @@ class Person extends BackboneModel {
         if($year == null){
             $year = date('Y');
         }
-        if($this->isRole(NI) && !$this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+        if($this->isRoleOn(AR, $year, $project) && !$this->leadershipOf($project)){
             return AR;
         }
-        else if($this->isRole(NI) && $this->isFundedOn($project, $year) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(CI, $year, $project) && !$this->leadershipOf($project)){
             return CI;
         }
         else if($this->leadershipOf($project)){
             return PL;
         }
-        else if($this->isRole(HQP)){
+        else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
         }
         return $this->getType();
@@ -2727,8 +2722,19 @@ class Person extends BackboneModel {
             foreach($role_objs as $r){
                 $skip = false;
                 if($project != null && count($r->getProjects()) > 0){
+                    // Projects are explicitely specified
                     $skip = true;
                     foreach($r->getProjects() as $p){
+                        if($p->getId() == $project->getId()){
+                            $skip = false;
+                            break;
+                        }
+                    }
+                }
+                else if($project != null && count($r->getProjects()) == 0){
+                    // Projects are not explicitely specified
+                    $skip = true;
+                    foreach($this->getProjectsDuring($startRange, $endRange) as $p){
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
@@ -3313,11 +3319,20 @@ class Person extends BackboneModel {
     function getTopProducts(){
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
+                                    array('product_type','product_id'),
                                     array('type' => EQ('PERSON'),
                                           'obj_id' => EQ($this->getId())));
         foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
+            if($row['product_type'] == "CONTRIBUTION"){
+                $product = Contribution::newFromId($row['product_id']);
+                $year = $product->getStartYear();
+            }
+            else{
+                $product = Product::newFromId($row['product_id']);
+            }
+            if($product->getTitle() == ""){
+                continue;
+            }
             $year = substr($product->getDate(), 0, 4);
             $authors = $product->getAuthors();
             $name = "";

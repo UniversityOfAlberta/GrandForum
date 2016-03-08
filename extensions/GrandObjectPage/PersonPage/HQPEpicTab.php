@@ -113,7 +113,7 @@ class HQPEpicTab extends AbstractEditableTab {
             $this->generateRow("1 Online Activity in Understanding Impact (e.g. participate in discussion forum on quality of life)",
                                array(HQP_EPIC_IMPACT_DESC, HQP_EPIC_IMPACT_SUP, HQP_EPIC_IMPACT_HQP, HQP_EPIC_IMPACT_NMO)).
             "<tr>
-                <th colspan='4'>Self-Selected Activites</th>
+                <th colspan='4'>Self-Selected Activities</th>
             </tr>".
             $this->generateRow("1 Unique Activity of your choice that involves experiential 
 learning, mentorship, or AGE-WELL network activities (e.g. be mentored by an expert stakeholder)",
@@ -165,7 +165,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (Post-Doctoral Fellows)</th>
             </tr>
             <tr>
-                <th width='25%'>Minimum Doctoral Certificate Requirements</th>
+                <th width='25%'>Minimum Post-Doctoral Certificate Requirements</th>
                 <th width='50%'>Details of Activity Chosen</th>
                 <th>Approved<br />(supervisor)</th>
                 <th>Completed<br />(HQP)</th>
@@ -194,7 +194,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             $this->generateRow("1 Online Activity in Understanding Impact (e.g. participate in discussion forum on quality of life)",
                                array(HQP_EPIC_IMPACT_DESC, HQP_EPIC_IMPACT_SUP, HQP_EPIC_IMPACT_HQP, HQP_EPIC_IMPACT_NMO)).
             "<tr>
-                <th colspan='4'>Self-Selected Activites</th>
+                <th colspan='4'>Self-Selected Activities</th>
             </tr>".
             $this->generateRow("1 Unique Activity of your choice that involves experiential 
 learning, mentorship, or AGE-WELL network activities (e.g. be mentored by an expert stakeholder)",
@@ -269,7 +269,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             $this->generateRow("1 Online Activity in a different core competency than above (e.g. write a blog entry about a conference you attended)",
                                array(HQP_EPIC_BLOG_DESC, HQP_EPIC_BLOG_SUP, HQP_EPIC_BLOG_HQP, HQP_EPIC_BLOG_NMO)).
             "<tr>
-                <th colspan='4'>Self-Selected Activites</th>
+                <th colspan='4'>Self-Selected Activities</th>
             </tr>".
             $this->generateRow("1 Activity of your choice from remaining core competency area(s) (e.g. discuss end-user concerns with a stakeholder)",
                                array(HQP_EPIC_SELF_DESC, HQP_EPIC_SELF_SUP, HQP_EPIC_SELF_HQP, HQP_EPIC_SELF_NMO)).
@@ -340,7 +340,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             $this->generateRow("1 Online Activity in a different core competency than above (e.g. write a blog entry about a conference you attended)",
                                array(HQP_EPIC_BLOG_DESC, HQP_EPIC_BLOG_HQP, HQP_EPIC_BLOG_NMO)).
             "<tr>
-                <th colspan='4'>Self-Selected Activites</th>
+                <th colspan='4'>Self-Selected Activities</th>
             </tr>".
             $this->generateRow("1 Activity of your choice from remaining core competency area(s) (e.g. discuss end-user concerns with a stakeholder)",
                                array(HQP_EPIC_SELF_DESC, HQP_EPIC_SELF_HQP, HQP_EPIC_SELF_NMO)).
@@ -390,7 +390,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 <th style='font-size:1.2em;' colspan='4'>AGE-WELL EPIC CHECKLIST (WP/CC Funded HQP)</th>
             </tr>
             <tr>
-                <th width='25%'>Minimum Affiliate HQP Certificate Requirements</th>
+                <th width='25%'>Minimum WP/CC (staff) HQP Certificate Requirements</th>
                 <th width='50%'>Details of Activity Chosen</th>
                 <th>Completed<br />(HQP)</th>
                 <th>Completed<br />(NMO)</th>
@@ -412,7 +412,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             $this->generateRow("1 Online Activity in a different core competency than above (e.g. write a blog entry about a conference you attended)",
                                array(HQP_EPIC_BLOG_DESC, HQP_EPIC_BLOG_HQP, HQP_EPIC_BLOG_NMO)).
             "<tr>
-                <th colspan='4'>Self-Selected Activites</th>
+                <th colspan='4'>Self-Selected Activities</th>
             </tr>".
             $this->generateRow("1 Activity of your choice from remaining core competency area(s) (e.g. discuss end-user concerns with a stakeholder)",
                                array(HQP_EPIC_SELF_DESC, HQP_EPIC_SELF_HQP, HQP_EPIC_SELF_NMO)).

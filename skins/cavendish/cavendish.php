@@ -923,7 +923,7 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 		}
 		else {
-		    global $wgSiteName;
+		    global $wgSiteName, $wgOut;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
@@ -935,7 +935,7 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
-		        if($person == null || $person->getName() == "" || $person->getName() != $_POST['wpName']){
+		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
 		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
 		            if(isset($_POST['wpMailmypassword'])){
 		                $failMessage .= "<b>Password request failed</b>";
@@ -950,7 +950,7 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
 		        }
-		        if($user->checkTemporaryPassword($_POST['wpPassword'])){
+		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
 		            $failMessage = "";
 		            return;
 		        }
@@ -960,6 +960,28 @@ class CavendishTemplate extends QuickTemplate {
 		            </script>";
 		            exit;
 		        }
+		        $wgOut->clearHTML();
+		        $wgOut->addHTML("
+                <p>Typical problems with login:</p>
+                <ol>
+                    <li>You have no account setup for you yet
+                        <ul>
+                            <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
+                        </ul>
+                    </li>
+                    <li>There is an account but you do not remember your ID
+                        <ul>
+                            <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
+                            <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
+                            <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
+                        </ul>
+                    </li>
+                    <li>You know your ID but not your password
+                        <ul>
+                            <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
+                        </ul>
+                    </li>
+                </ol>");
 		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
 <p>
 You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />

@@ -42,7 +42,12 @@ class EditableReportSection extends AbstractReportSection {
         }
         $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
         if($this->getParent()->project != null){
-            $action .= "&project=".urlencode($this->getParent()->project->getName());
+            if($this->getParent()->project instanceof Project){
+                $action .= "&project=".urlencode($this->getParent()->project->getName());
+            }
+            else if($this->getParent()->project instanceof Theme){
+                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
+            }
         }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){

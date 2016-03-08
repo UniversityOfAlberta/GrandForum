@@ -1,8 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Progress Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProjectReport" personId="0" ajax="true" disabled="false">
+<Report name="Project Report" reportType="RP_PROGRESS" pdfType="RPTP_PROGRESS" pdfFiles="ProjectReportPDF" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="achievements" permissions="-" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="-" />
+            <SectionPermission id="ktee" permissions="r" />
+            <SectionPermission id="budget" permissions="-" />
+            <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
+        <Role role="CI">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
+        <Role role="AR">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="achievements" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -11,30 +51,98 @@
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
-        </Role>
-        <Role role="NI">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="achievements" permissions="rw" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="networking" permissions="rw" />
-            <SectionPermission id="ktee" permissions="rw" />
-            <SectionPermission id="budget" permissions="--" />
-            <SectionPermission id="contributions" permissions="--" />
-            <SectionPermission id="review" permissions="--" />
-        </Role>
-        <Role role="HQP">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="milestones" permissions="--" />
-            <SectionPermission id="achievements" permissions="--" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="networking" permissions="--" />
-            <SectionPermission id="ktee" permissions="r" />
-            <SectionPermission id="budget" permissions="--" />
-            <SectionPermission id="contributions" permissions="--" />
-            <SectionPermission id="review" permissions="--" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
+    <ReportSection id="instructions" type="ReportSection" name="Instructions">
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
+            <ReportItem id="note" type="StaticReportItem">
+                <![CDATA[
+                    <p><b>Deadline: April 15</b></p>
+                    <p><b>Before completing the report:</b></p>
+                    <ul>
+                        <li>Update the personal information on your Forum profile</li>
+                        <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Add top research outcomes (found in the “Dashboard” tab on your project page)</li>
+                    </ul>
+                    <p><b>To complete your section of the report:</b></p>
+                    <ul>
+                        <li>Fill in all applicable sections of the Project Report:
+                            <ul>
+                                <li>Milestones (all)</li>
+                                <li>Achievements</li>
+                                <li>HQP</li>
+                                <li>Networking</li>
+                                <li>KTEE</li>
+                                <li>Budget</li>
+                                <li>Partner Contributions</li>
+                            </ul>
+                        </li>
+                        <li>Generate and preview project report PDF</li>
+                        <li>Submit project report to GlycoNet Administrative Centre</li>
+                    </ul><br />
+                    <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
+            <!-- Network Investigator View -->
+            <ReportItem id="info" type="StaticReportItem">
+                <![CDATA[
+                    <p><b>Deadline: April 1</b></p>
+                    <p><b>Before completing the report:</b></p>
+                    <ul>
+                        <li>Update the personal information on your Forum profile</li>
+                        <li>Update your products*, including publications, awards, presentations, patents, etc., either manually or by uploading your CCV; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Add any new members (trainees and collaborators) who are not already in the Forum (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Edit the roles and relations of any trainees that you supervise (see “Managing People” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Add top research outcomes (found in the “Dashboard” tab on your profile page)</li>
+                    </ul>
+                    <p><b>To complete your section of the report:</b></p>
+                    <ul>
+                        <li>Fill in all applicable sections of the Project Report:
+                            <ul>
+                                <li>Milestones (assigned milestones only)</li>
+                                <li>Achievements</li>
+                                <li>HQP</li>
+                                <li>Networking</li>
+                                <li>KTEE</li>
+                                <li>Budget</li>
+                                <li>Partner Contributions</li>
+                            </ul>
+                        </li>
+                    </ul><br />
+                    <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},HQP)},{!contains({$my_full_roles},PL)})}">
+            <!-- HQP View -->
+            <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Deadline: March 29</b></p>
+                    <p><b>Before completing the report:</b></p>
+                    <ul>
+                        <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                        <li>Update your products, including publications, awards, presentations, patents, etc.; be sure to assign each one to a GlycoNet project, if applicable (see “Managing Products” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
+                    </ul>
+                    <p><b>To complete your section of the report:</b></p>
+                    <ul>
+                        <li>Fill in the HQP section in the Project Report</li>
+                    </ul>
+                    <p><b>Need further assistance?</b></p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Ryan Snitynsky (snitynsk@ualberta.ca).</p>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
     <ReportSection id="information" type="ReportSection" name="Project Information">
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
@@ -109,13 +217,24 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="milestones" type="ReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
+    <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
             <![CDATA[
                 {$item}<br />
-                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a>
+                <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
+                <small>(Opens in a new Tab)</small>
+                <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
+                <![CDATA[
+                    <h3>Comments</h3>
+                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.</p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -231,11 +350,16 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
-        <ReportItemSet id="is_pl" type="If" if="{or({contains({$my_full_roles},PL)},{contains({$my_full_roles},CI)})}">
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <ReportItem id="note" type="StaticReportItem">
                 <![CDATA[
                     <div class='info'>HQP responses may be edited by the Project Leader, Network Investigators, and by the HQP themselves.</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="info" type="StaticReportItem">
+                <![CDATA[
+                    <p>Below are the HQP which are in {$project_name}.  If no HQP are listed, or some are missing then you can add them to the project by going to <a href='https://forum.glyconet.ca/index.php/Special:EditMember' target='_blank'>Edit Member</a></p>
                 ]]>
             </ReportItem>
             <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
@@ -255,6 +379,49 @@
                     <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                         <![CDATA[
                             <p><b>Did the trainee graduate or transition to the workforce? Describe.</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>How was cross-disciplinary training/experience achieved?</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Cross-reference training initiative progress to deliverables included in the original proposal.</b></p>
+                            {$item}<br />
+                            <br />
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({contains({$my_full_roles},CI)},{!contains({$my_full_roles},PL)})}">
+            <!-- Network Investigator View -->
+            <ReportItem id="info" type="StaticReportItem">
+                <![CDATA[
+                    <p>Below are the HQP which you supervise in {$project_name}.  If no HQP are listed, or some are missing then you can add them by going to <a href='https://forum.glyconet.ca/index.php/Special:EditRelations' target='_blank'>Edit Relations</a></p>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="hqps" type="PersonSupervisesReportItemSet" project="{$project_name}" personId="{$my_id}">
+                <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                    <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Describe role of the trainee within the project</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Describe any training initiatives undertaken during the funding period</b></p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
+                        <![CDATA[
+                            <p><b>Did the trainee graduate or transition to the workforce? Describe.</b> <a href='{$user_url}?tab=hqp-alumni' target='_blank'>Update HQP Alumni</a></p>
                             {$item}
                         ]]>
                     </ReportItem>
@@ -297,7 +464,7 @@
             </ReportItem>
             <ReportItem id="disciplinary" type="TextareaReportItem" blobItem="DISCIPLINARY" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>How was cross-disciplinary training/experience achieved?</b></p>
+                    <p><b>How was cross-disciplinary training/experience achieved?  Describe any cross-disciplinary training or experiences that you participated in over the last year.</b></p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -428,7 +595,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="10" mimeType="application/pdf">
+            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
                 <![CDATA[
                     <p><b>Figures Upload</b></p>
                     {$item}
@@ -448,17 +615,44 @@
             <![CDATA[
                 <h2>Productivity</h2>
                 <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Table and Justification">
-        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
+        <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
                 <h3>Budget Justification</h3>
-                <p><b>Provide a written justification for any significant (??>20%??) deviation from the original budget in your approved proposal.</b></p>
+                <p><b>Provide a written justification for any significant (>20%) deviation from the original budget in your approved proposal.</b></p>
                 <p>Provide details of all stipends paid, including names, positions and amounts paid.</p>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <ReportItem id="just" type="StaticReportItem">
+                <![CDATA[
+                    {set(just,)}
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet">
+                <ReportItem id="comments" type="StaticReportItem">
+                    <![CDATA[
+                        {set(just,{concat({get(just)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,BUDGET,JUSTIFICATION,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(just)}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" blobSubItem="{$my_id}">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
@@ -482,5 +676,8 @@
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation of the Review" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="snitynsk@ualberta.ca,enanak@ualberta.ca" />
     </ReportSection>
 </Report>

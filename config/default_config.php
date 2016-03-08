@@ -75,10 +75,16 @@
     
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
+
+    $config->setValue("nameFormat", "%First %Last");
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
+    // Whether or not projects have 'long descriptions'
+    $config->setValue("projectLongDescription", true);
+
+    // Whether or not HQPs are public
     $config->setValue("hqpIsPublic", false);
     
     // Whether or not to allow bigBetProjects

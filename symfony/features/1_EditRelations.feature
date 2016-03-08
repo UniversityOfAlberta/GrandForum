@@ -21,6 +21,6 @@ Feature: EditRelations
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Edit Relations"
         And I follow "Works With"
-        And I select "NI User2" from "rightcoworkers"
+        And I select "NI User3" from "rightcoworkers"
         And I press "moveLeftcoworkers"
         And I press "Save Relations"

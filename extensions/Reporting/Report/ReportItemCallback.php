@@ -794,14 +794,16 @@ class ReportItemCallback {
         $project = Project::newFromId($this->reportItem->projectId);
         $roles = $person->getRoles();
         $roleNames = array();
-        foreach($roles as $role){
-            if($project != null && $project->getId() != 0){
-                if($role->hasProject($project)){
+        if(is_array($roles)){
+            foreach($roles as $role){
+                if($project != null && $project->getId() != 0){
+                    if($role->hasProject($project)){
+                        $roleNames[$role->getRole()] = $role->getRole();
+                    }
+                }
+                else{
                     $roleNames[$role->getRole()] = $role->getRole();
                 }
-            }
-            else{
-                $roleNames[$role->getRole()] = $role->getRole();
             }
         }
         return implode(", ", $roleNames);
