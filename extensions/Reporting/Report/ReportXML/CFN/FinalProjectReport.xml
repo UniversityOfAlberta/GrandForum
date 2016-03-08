@@ -265,10 +265,10 @@
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <h2>Dissemination of Project Research Results</h2>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  
-                   Make sure that the product is associated with the project '{$project_name}'.</p>
-                {$item}
+                <h1>Dissemination of Project Research Results</h1>
+                <p>Please add all Publications, Abstracts, Patents etc. by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'><b>Manage Products</b></a>.  
+                   When you add these products please make sure that the product is associated with the project <b>{$project_name}</b>.</p>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="materials" type="UploadReportItem" blobItem="FINAL_KTEE_UPLOAD" mimeType="application/zip" fileSize="10">
