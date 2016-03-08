@@ -104,6 +104,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             // Still show the edit interface 
             redirect("{$this->project->getUrl()}?tab=milestones&edit");
         }
+        Messages::addSuccess("'Milestones' updated successfully.");
         redirect("{$this->project->getUrl()}?tab=milestones");
     }
     
