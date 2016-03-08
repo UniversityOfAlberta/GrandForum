@@ -3,7 +3,6 @@
 require_once("SpecialImpersonate.php");
 
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
-$wgHooks['UserGetRights'][] = 'changeGroups';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 $wgHooks['UnknownAction'][] = 'getUserMode';
 
@@ -217,18 +216,6 @@ function checkSupervisesImpersonee(){
         }
     }
     return false;
-}
-
-function changeGroups($user, &$aRights){
-    global $wgRoles;
-    foreach($aRights as $key => $right){
-        if($key >= 1000){
-            continue;
-        }
-        unset($aRights[$key]);
-    }
-    $aRights[0] = 'read';
-    return true;
 }
 
 function clearImpersonation( &$user, &$inject_html, $old_name ){
