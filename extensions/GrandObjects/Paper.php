@@ -1403,7 +1403,7 @@ class Paper extends BackboneModel{
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product is public
                     foreach($this->getAuthors() as $author){
-                        if($author instanceof Person && $me->getId() != $author->getId()){
+                        if($author instanceof Person && $me->getId() != $author->getId() && $author->getId() != 0){
                             Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
                         }
                     }
@@ -1490,7 +1490,7 @@ class Paper extends BackboneModel{
                                 $found = true;
                             }
                         }
-                        if(!$found && $oldAuthor instanceof Person && $me->getId() != $oldAuthor->getId()){
+                        if(!$found && $oldAuthor instanceof Person && $me->getId() != $oldAuthor->getId() && $oldAuthor->getId() != 0){
                             // Author was Deleted
                             Notification::addNotification($me, $oldAuthor, "Author Removed", "You have been removed as an author from the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
                         }
@@ -1502,7 +1502,7 @@ class Paper extends BackboneModel{
                                 $found = true;
                             }
                         }
-                        if(!$found && $author instanceof Person && $me->getId() != $author->getId()){
+                        if(!$found && $author instanceof Person && $me->getId() != $author->getId() && $author->getId() != 0){
                             // Author was Added
                             Notification::addNotification($me, $author, "Author Added", "You have been added as an author to the ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i>", "{$this->getUrl()}");
                         }
@@ -1545,7 +1545,7 @@ class Paper extends BackboneModel{
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product was public
                     foreach($this->getAuthors() as $author){
-                        if($author instanceof Person && $me->getId() != $author->getId()){
+                        if($author instanceof Person && $me->getId() != $author->getId() && $author->getId() != 0){
                             Notification::addNotification($me, $author, "{$this->getCategory()} Deleted", "Your ".strtolower($this->getCategory())." entitled <i>{$this->getTitle()}</i> has been deleted", "{$this->getUrl()}");
                         }
                     }
