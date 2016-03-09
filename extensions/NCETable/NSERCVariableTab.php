@@ -323,7 +323,7 @@ EOF;
     
     function showContributionsByProjectTable(){
         $projects = Project::getAllProjectsEver();
-        
+        $projects[] = Project::newFromId(-1);
         $this-> html .= "<table class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
                             <thead>
                                 <th>Project Name</th>
