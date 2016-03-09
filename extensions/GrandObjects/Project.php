@@ -568,6 +568,10 @@ EOF;
             $data = DBFunctions::execSQL($sql);
             $this->preds = array();
             foreach($data as $row){
+                if($row['project_id'] == -1){
+                    $row['project_id'] = 0;
+                    $row['last_id'] = 0;
+                }
                 $pred = Project::newFromHistoricId($row['project_id'], $row['last_id']);
                 if($pred != null && $pred->getName() != ""){
                     if($pred->getId() == $this->id){
