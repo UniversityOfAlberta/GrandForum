@@ -166,8 +166,8 @@ class PersonProjectsAPI extends RESTAPI {
                                           'user_id' => $person->getId()),
                                     array('id' => 'DESC'),
                                     array(1));
-        Notification::addNotification($person, Person::newFromId(0), "Project Membership Added", "Effective {$this->POST('startDate')} you join '{$project->getName()}'", "{$person->getUrl()}");
-        Notification::addNotification($me, $person, "Project Membership Added", "Effective {$this->POST('startDate')} you join '{$project->getName()}'", "{$person->getUrl()}");
+        Notification::addNotification($person, Person::newFromId(0), "Project Membership Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> joins <b>{$project->getName()}</b>", "{$person->getUrl()}");
+        Notification::addNotification($me, $person, "Project Membership Added", "Effective {$this->POST('startDate')} you join <b>{$project->getName()}</b>", "{$person->getUrl()}");
         if(count($data) > 0){
             $this->params['personProjectId'] = $data[0]['id'];
         }
@@ -199,9 +199,9 @@ class PersonProjectsAPI extends RESTAPI {
                                             'comment'    => $this->POST('comment')),
                                       array('id' => $this->getParam('personProjectId')));
         $person->projects = null;
-        Notification::addNotification($me, $person, "Project Membership Removed", "The project membership ({$project->getName()}) of {$person->getNameForForms()} has been changed", "{$person->getUrl()}");
+        Notification::addNotification($me, $person, "Project Membership Removed", "The project membership ({$project->getName()}) of <b>{$person->getNameForForms()}</b> has been changed", "{$person->getUrl()}");
         if($this->POST('endDate') != '0000-00-00 00:00:00'){
-            Notification::addNotification($me, $person, "Project Membership Removed", "Effective {$this->POST('endDate')} you are no longer a member of '{$project->getName()}'", "{$person->getUrl()}");
+            Notification::addNotification($me, $person, "Project Membership Removed", "Effective {$this->POST('endDate')} you are no longer a member of <b>{$project->getName()}</b>", "{$person->getUrl()}");
         }
         MailingList::subscribeAll($person);
         if(!$status){
@@ -237,8 +237,8 @@ class PersonProjectsAPI extends RESTAPI {
                                 array('role_id'    => $role->getId(),
                                       'project_id' => $data[0]['project_id']));
         }
-        Notification::addNotification($person, Person::newFromId(0), "Project Membership Removed", "'{$project->getName()}' has been removed from '{$project->getName()}'", "{$person->getUrl()}");
-        Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from '{$project->getName()}'", "{$person->getUrl()}");
+        Notification::addNotification($person, Person::newFromId(0), "Project Membership Removed", "<b>{$person->getNameForForms()}</b> has been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
+        Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
         $person->projects = null;
         MailingList::subscribeAll($person);
         return json_encode(array());

@@ -20,7 +20,8 @@ class ManagePeopleHistory extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-	    $data = DBFunctions::execSQL("SELECT * 
+		$notifications = array();
+	    $data = DBFunctions::execSQL("SELECT id 
 	                                  FROM grand_notifications
 	                                  WHERE user_id = 0
 	                                  AND (name = 'Role Changed' OR
@@ -31,9 +32,34 @@ class ManagePeopleHistory extends SpecialPage{
 	                                       name = 'Project Membership Added')
 	                                  ORDER BY time DESC");
 	    foreach($data as $row){
-	        $notifications[] = Notification($row['name'], $row['description'], $row['url'], $row['time']);
+	        $notifications[] = Notification::newFromId($row['id']);
 	    }
-	    
+	    $wgOut->addHTML("<table id='manageMemberHistory' frame='box' rules='all'>
+	                        <thead>
+	                            <tr>
+	                                <th>Type</th>
+	                                <th>User Name</th>
+	                                <th>Description</th>
+	                                <th>Timestamp</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>");
+	    foreach($notifications as $notification){
+	        $wgOut->addHTML("<tr>
+	                            <td>{$notification->name}</td>
+	                            <td>{$notification->creator->getNameForForms()}</td>
+	                            <td>{$notification->description}</td>
+	                            <td>{$notification->time}</td>
+	                        </tr>");
+	    }
+	    $wgOut->addHTML("   </tbody>
+	                     </table>");
+	    $wgOut->addHTML("<script type='text/javascript'>
+	        $('#manageMemberHistory').dataTable({'iDisplayLength': 100,
+                'aaSorting': [[3,'desc']],
+                'autoWidth': false,
+                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+	    </script>");
 	}
 }
 
