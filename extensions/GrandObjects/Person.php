@@ -2993,17 +2993,16 @@ class Person extends BackboneModel {
             return true;
         }
         foreach($this->getRoles() as $r){
-            if($r->getRole() != "" && $wgRoleValues[$r->getRole()] <= $wgRoleValues[$role]){
-                return true;
+            if($r->getRole() != "" && $wgRoleValues[$r->getRole()] > $wgRoleValues[$role]){
+                return false;
             }
         }
-        if($wgRoleValues[PL] <= $wgRoleValues[$role]){
+        if($wgRoleValues[PL] > $wgRoleValues[$role]){
             if($this->isProjectLeader()){
-                return true;
+                return false;
             }
         }
-        
-        return false;
+        return true;
     }
     
     /**

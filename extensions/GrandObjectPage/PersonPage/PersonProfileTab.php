@@ -540,10 +540,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $positions = Person::getAllPositions();
-        }
-        else{
+        if($person->isRoleAtMost(HQP)){
             $positions = array("Other", 
                                "Graduate Student - Master's", 
                                "Graduate Student - Doctoral", 
@@ -553,6 +550,9 @@ EOF;
                                "Technician", 
                                "Summer Student", 
                                "Undergraduate Student");
+        }
+        else{
+            $positions = Person::getAllPositions();
         }
         $myPosition = "";
         foreach($positions as $key => $position){
@@ -567,11 +567,11 @@ EOF;
         $departments = Person::getAllDepartments();
         $organizations = $uniNames;
         sort($organizations);
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+        if($person->isRoleAtMost(HQP)){
+            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
         }
         else{
-            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
         }
         $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
         $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
