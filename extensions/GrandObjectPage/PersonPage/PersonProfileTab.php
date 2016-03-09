@@ -540,7 +540,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
+        if(!$person->isRoleAtMost(HQP) && !$person->isRoleAtMost(HQP.'-Candidate')){
             $positions = Person::getAllPositions();
         }
         else{
