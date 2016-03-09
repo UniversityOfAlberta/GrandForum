@@ -540,10 +540,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if(!$person->isRoleAtMost(HQP) && !$person->isRoleAtMost(HQP.'-Candidate')){
-            $positions = Person::getAllPositions();
-        }
-        else{
+        if($person->isRoleAtMost(HQP) || $person->isRoleAtMost(HQP.'-Candidate')){
             $positions = array("Other", 
                                "Graduate Student - Master's", 
                                "Graduate Student - Doctoral", 
@@ -553,6 +550,9 @@ EOF;
                                "Technician", 
                                "Summer Student", 
                                "Undergraduate Student");
+        }
+        else{
+            $positions = Person::getAllPositions();
         }
         $myPosition = "";
         foreach($positions as $key => $position){
