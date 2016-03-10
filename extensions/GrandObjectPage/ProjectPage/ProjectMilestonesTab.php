@@ -237,7 +237,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $commentsHeader = "<th></th>";
             $statusColspan++;
         }
-        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smaller dashboard' style='width:100%; border: 2px solid #555555;'>";
+        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
                             <th colspan='2'></th>
