@@ -351,7 +351,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
-                $this->html .= "<td class='left_border' align='center' style='white-space:nowrap;'>{$leaderText}</td>";
+                $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
                 $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
                 if(!$pdf){
                     $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
