@@ -678,6 +678,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation of the Review" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="snitynsk@ualberta.ca,enanak@ualberta.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <!--ReportItem id="review" type="ReviewSubmitReportItem" emails="snitynsk@ualberta.ca,enanak@ualberta.ca" /-->
     </ReportSection>
 </Report>
