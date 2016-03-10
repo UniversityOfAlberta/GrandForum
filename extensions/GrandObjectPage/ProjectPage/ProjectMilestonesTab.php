@@ -18,7 +18,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function handleEdit(){
         global $config;
-        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $startMonth = substr($startDate, 5, 2);
+        //$startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $me = Person::newFromWgUser();
         
         $_POST['user_name'] = $me->getName();
@@ -155,9 +158,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function showMilestones($pdf=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+        $me = Person::newFromWgUser();
         $project = $this->project;
-        
-        $startYear = @substr($config->getValue('projectPhaseDates', $project->getPhase()), 0, 4);
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $startMonth = substr($startDate, 5, 2);
+        //$startYear = @substr($config->getValue('projectPhaseDates', $project->getPhase()), 0, 4);
         
         $activities = array();
         $activityNames = array();
@@ -223,7 +229,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                                 <a class='button' id='addActivity'>Add Activity</a>&nbsp;
                                 <a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
             
-                $statusHeader = "<th>Status</th><th width='1%'>Delete?</td>";
+                $statusHeader = "<th>Status</th>";
+                if($me->isRoleAtLeast(STAFF)){
+                    $statusHeader .= "<th width='1%'>Delete?</td>";
+                }
             }
             else{
                 $statusHeader = "<th>Status</th>";
@@ -232,18 +241,22 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             if(!$this->canEditMilestone(null)){
                 $this->html .= "<p>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
             }
+            else {
+                $this->html .= "<p>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
+            }
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
             $statusColspan++;
         }
-        $this->html .= "<table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
+        $this->html .= "<p><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.
+                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
                             <th colspan='2'></th>
-                            <th colspan='4' class='left_border'>".($startYear)."</th>
-                            <th colspan='4' class='left_border'>".($startYear+1)."</th>
-                            <th colspan='4' class='left_border'>".($startYear+2)."</th>
+                            <th colspan='4' class='left_border'>Year 1</th>
+                            <th colspan='4' class='left_border'>Year 2</th>
+                            <th colspan='4' class='left_border'>Year 3</th>
                             <th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
@@ -365,7 +378,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $selectBox = new SelectBox("milestone_status[$activityId][{$milestone->getMilestoneId()}]", "status", $milestone->getStatus(), $statuses);
                     $statusText = $selectBox->render();
                     $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
-                    if($this->canEditMilestone(null)){
+                    if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
                     }
                 }
