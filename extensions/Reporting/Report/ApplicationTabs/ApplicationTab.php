@@ -70,7 +70,13 @@ class ApplicationTab extends AbstractTab {
         foreach($this->people as $person){
             if(is_array($report)){
                 foreach($report as $rep){
-                    $rep->person = $person;
+                    if($person instanceof Project){
+                        $rep->project = $person;
+                        $rep->person = Person::newFromId(0);
+                    }
+                    else{
+                        $rep->person = $person;
+                    }
                 }
                 $first = $report[0];
             }

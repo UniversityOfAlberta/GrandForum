@@ -32,6 +32,7 @@ class ApplicationsTable extends SpecialPage{
         
         $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         $ni = Person::getAllPeople(NI);
+        $projects = Project::getAllProjects();
         
         $tabbedPage = new TabbedPage("person");
 
@@ -39,6 +40,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp, 2015, "Research Exchange"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp, 2015, "Summer"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni, 2015, "Tech Workshop"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $projects, 2015, "Project Report"));
         $tabbedPage->showPage();
     }
     
@@ -48,7 +50,7 @@ class ApplicationsTable extends SpecialPage{
         
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Applications", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
         }
         return true;
     }
