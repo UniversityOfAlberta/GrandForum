@@ -249,7 +249,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $commentsHeader = "<th></th>";
             $statusColspan++;
         }
-        $this->html .= "<p><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.
+        $this->html .= "<p><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br />
+                            New Milestones have titles in bold.
+                        </p>
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
@@ -309,11 +311,19 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 else if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
-                              <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
-                              {$milestoneTitle}";
+                              <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
+                    if($milestone->isNew()){
+                        $title .= "<b>$title</b>";
+                    }
+                    else{
+                        $title .= $milestoneTitle;
+                    }
                 }
                 else{
                     $title = $milestone->getTitle();
+                    if($milestone->isNew()){
+                        $title = "<b>$title</b>";
+                    }
                 }
                 $this->html .= "<td>{$title}</td>";
                 $quarters = $milestone->getQuarters();
