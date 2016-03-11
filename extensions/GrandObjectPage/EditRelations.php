@@ -61,7 +61,7 @@ class EditRelations extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         $wgOut->addHTML("Here you can edit all the relations relevant to your role.");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
         $wgOut->addScript("<script type='text/javascript'>
@@ -79,28 +79,51 @@ class EditRelations extends SpecialPage{
         if(isset($_POST['submit']) &&
            $_POST['submit'] == "Save Relations"){
             // Process Submit
-            $this->updateRelations(SUPERVISES, 'hqps');
-            $this->updateRelations(MENTORS, 'mentors');
-            $this->updateRelations(WORKS_WITH, 'coworkers');
+            foreach($config->getValue('relationTypes') as $type){
+                if($type == SUPERVISES){
+                    $this->updateRelations($type, 'hqps');
+                }
+                else if($type == MENTORS){
+                    $this->updateRelations(MENTORS, 'mentors');
+                }   
+                else if ($type == WORKS_WITH){
+                    $this->updateRelations(WORKS_WITH, 'coworkers');
+                }
+            }
             redirect("$wgServer$wgScriptPath/index.php/Special:EditRelations");
         }
         $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:EditRelations' method='post'>");
         $wgOut->addHTML("<div id='tabs'>
-                    <ul>
-                        <li><a href='#tabs-1'>Supervises</a></li>
-                        <li><a href='#tabs-2'>Mentors</a></li>
-                        <li><a href='#tabs-3'>Works With</a></li>
-                    </ul>
-                    <div id='tabs-1'>");
-                        EditRelations::generateSupervisesHTML($person, $wgOut);
-        $wgOut->addHTML("</div>
-                    <div id='tabs-2'>");
-                        EditRelations::generateMentorsHTML($person, $wgOut);
-        $wgOut->addHTML("</div>
-                    <div id='tabs-3'>");
-                        EditRelations::generateWorksWithHTML($person, $wgOut);
-        $wgOut->addHTML("</div>
-                    </div>");
+                    <ul>");
+        foreach($config->getValue('relationTypes') as $type){
+            if($type == SUPERVISES){
+                $wgOut->addHTML("<li><a href='#tabs-1'>Supervises</a></li>");
+            }
+            else if($type == MENTORS){
+                $wgOut->addHTML("<li><a href='#tabs-2'>Mentors</a></li>");
+            }   
+            else if ($type == WORKS_WITH){
+                $wgOut->addHTML("<li><a href='#tabs-3'>Works With</a></li>");
+            }
+        }            
+        $wgOut->addHTML("</ul>");
+        foreach($config->getValue('relationTypes') as $type){
+            if($type == SUPERVISES){
+                $wgOut->addHTML("<div id='tabs-1'>");
+                EditRelations::generateSupervisesHTML($person, $wgOut);
+                $wgOut->addHTML("</div>");
+            }
+            else if($type == MENTORS){
+                $wgOut->addHTML("<div id='tabs-2'>");
+                EditRelations::generateMentorsHTML($person, $wgOut);
+                $wgOut->addHTML("</div>");
+            }   
+            else if ($type == WORKS_WITH){
+                $wgOut->addHTML("<div id='tabs-3'>");
+                EditRelations::generateWorksWithHTML($person, $wgOut);
+                $wgOut->addHTML("</div>");
+            }
+        }
         $wgOut->addHTML("<br /><input type='submit' name='submit' value='Save Relations' />
                          </form>");
     }
