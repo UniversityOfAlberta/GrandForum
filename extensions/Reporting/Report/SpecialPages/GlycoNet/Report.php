@@ -73,7 +73,7 @@ class Report extends AbstractReport{
         }*/
         if($person->isRole(NI) || $person->isRole(HQP)){
             foreach($person->getProjects() as $project){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport")) ? "selected" : false;
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectReport&project={$project->getName()}", $selected);
             }
         }
