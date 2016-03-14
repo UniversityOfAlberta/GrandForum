@@ -6,7 +6,7 @@ $wgSpecialPages['ManagePeopleHistory'] = 'ManagePeopleHistory'; # Let MediaWiki 
 $wgExtensionMessagesFiles['ManagePeopleHistory'] = $dir . 'ManagePeopleHistory.i18n.php';
 $wgSpecialPageGroups['ManagePeopleHistory'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'contributionSearch';
+$wgHooks['SubLevelTabs'][] = 'ManagePeopleHistory::createSubTabs';
 
 function runManagePeopleHistory($par){
     ManagePeopleHistory::execute($par);
@@ -15,7 +15,12 @@ function runManagePeopleHistory($par){
 class ManagePeopleHistory extends SpecialPage{
 
 	function ManagePeopleHistory() {
-		SpecialPage::__construct("ManagePeopleHistory", STAFF.'+', true, 'runManagePeopleHistory');
+		SpecialPage::__construct("ManagePeopleHistory", null, false, 'runManagePeopleHistory');
+	}
+	
+	function userCanExecute($wgUser){
+	    $person = Person::newFromUser($wgUser);
+	    return $person->isRoleAtLeast(STAFF);
 	}
 
 	function execute($par){
@@ -61,6 +66,16 @@ class ManagePeopleHistory extends SpecialPage{
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
 	    </script>");
 	}
+	
+	static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+
+        if(self::userCanExecute($wgUser)){
+            $selected = @($wgTitle->getText() == "ManagePeopleHistory") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Manage People Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleHistory", $selected);
+        }
+        return true;
+    }
 }
 
 ?>
