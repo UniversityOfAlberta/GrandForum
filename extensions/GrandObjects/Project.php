@@ -1353,7 +1353,7 @@ EOF;
             $sql .= "\nAND start_date > end_date
                      AND status != 'Abandoned' AND status != 'Closed'";
         }
-        $sql .= "\nORDER BY activity_id, projected_end_date";
+        $sql .= "\nORDER BY activity_id, milestone_id";
         $data = DBFunctions::execSQL($sql);
         
         foreach($data as $row){

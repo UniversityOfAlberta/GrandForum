@@ -151,6 +151,11 @@
     $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
                                                  2 => "2015-04-01 00:00:00"));
     
+    // The types of relations which are enabld (Supervises/Mentors/Works With)    
+    $config->setValue("relationTypes", array("Supervises",
+                                             "Mentors",
+                                             "Works With"));
+    
     /*
      * PDF Config
      */

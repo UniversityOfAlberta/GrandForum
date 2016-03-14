@@ -265,6 +265,10 @@ class ProjectMilestoneAPI extends API{
 		                              'start_date'          => EQ(COL('CURRENT_TIMESTAMP')),
 		                              'projected_end_date'  => "{$_POST['end_date']}-00"));
             Milestone::$cache = array();
+            $staffs = array_merge(Person::getAllPeople(STAFF), Person::getAllPeople(MANAGER));
+            foreach($staffs as $staff){
+                Notification::addNotification($me, $staff, "Milestone Added", "A new milestone <i>{$_POST['title']}</i> has been added to the project <b>{$project->getName()}</b>", "");
+            }
             //$this->updatePeople($people);
         }
         
