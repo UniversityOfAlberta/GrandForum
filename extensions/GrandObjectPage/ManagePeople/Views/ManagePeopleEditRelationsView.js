@@ -72,7 +72,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     addRelation: function(){
         var relation = new PersonRelation();
         relation.startTracking();
-        relation.set("type", "Works With");
+        relation.set("type", _.first(relationTypes));
         relation.set("user1", me.get('id'));
         relation.set("user2", this.person.get('id'));
         this.relations.add(relation);
