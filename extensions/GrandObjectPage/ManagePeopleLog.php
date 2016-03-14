@@ -2,20 +2,20 @@
 
 $dir = dirname(__FILE__) . '/';
 
-$wgSpecialPages['ManagePeopleHistory'] = 'ManagePeopleHistory'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['ManagePeopleHistory'] = $dir . 'ManagePeopleHistory.i18n.php';
-$wgSpecialPageGroups['ManagePeopleHistory'] = 'network-tools';
+$wgSpecialPages['ManagePeopleLog'] = 'ManagePeopleLog'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['ManagePeopleLog'] = $dir . 'ManagePeopleLog.i18n.php';
+$wgSpecialPageGroups['ManagePeopleLog'] = 'network-tools';
 
-$wgHooks['SubLevelTabs'][] = 'ManagePeopleHistory::createSubTabs';
+$wgHooks['SubLevelTabs'][] = 'ManagePeopleLog::createSubTabs';
 
-function runManagePeopleHistory($par){
-    ManagePeopleHistory::execute($par);
+function runManagePeopleLog($par){
+    ManagePeopleLog::execute($par);
 }
 
-class ManagePeopleHistory extends SpecialPage{
+class ManagePeopleLog extends SpecialPage{
 
-	function ManagePeopleHistory() {
-		SpecialPage::__construct("ManagePeopleHistory", null, false, 'runManagePeopleHistory');
+	function ManagePeopleLog() {
+		SpecialPage::__construct("ManagePeopleLog", null, false, 'runManagePeopleLog');
 	}
 	
 	function userCanExecute($wgUser){
@@ -71,8 +71,8 @@ class ManagePeopleHistory extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 
         if(self::userCanExecute($wgUser)){
-            $selected = @($wgTitle->getText() == "ManagePeopleHistory") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Manage People Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleHistory", $selected);
+            $selected = @($wgTitle->getText() == "ManagePeopleLog") ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Manage People Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleLog", $selected);
         }
         return true;
     }
