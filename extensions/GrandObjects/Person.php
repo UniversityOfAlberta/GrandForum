@@ -2356,7 +2356,8 @@ class Person extends BackboneModel {
         $endRange = DBFunctions::escape($endRange);
         $sql = "SELECT *
                 FROM grand_relations
-                WHERE user1 = '{$this->id}'\n";
+                WHERE user1 = '{$this->id}'
+                AND user1 != user2 \n";
         if($type == "public"){
             $sql .= "AND type != '".WORKS_WITH."'\n"; 
         }
@@ -2392,6 +2393,7 @@ class Person extends BackboneModel {
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
                     WHERE user1 = '{$this->id}'
+                    AND user1 != user2
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'
@@ -2409,6 +2411,7 @@ class Person extends BackboneModel {
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
                     WHERE user1 = '{$this->id}'
+                    AND user1 != user2
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'
@@ -2428,6 +2431,7 @@ class Person extends BackboneModel {
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
                     WHERE user1 = '{$this->id}'
+                    AND user1 != user2
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'
@@ -2919,12 +2923,14 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
@@ -2945,6 +2951,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
+                AND user1 != user2
                 AND type = 'Supervises'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
@@ -2999,6 +3006,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
+                AND user1 != user2
                 AND type = 'Supervises'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
@@ -3037,12 +3045,14 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
@@ -3058,6 +3068,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
+                AND user1 != user2
                 AND type = 'Supervises'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
@@ -3079,6 +3090,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
+                AND user1 != user2
                 AND type = 'Supervises'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
@@ -3113,12 +3125,14 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
+                        AND user1 != user2
                         AND type = 'Supervises'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
@@ -3129,6 +3143,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
+                AND user1 != user2
                 AND type = 'Supervises'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
