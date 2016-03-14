@@ -507,6 +507,7 @@ EOF;
                 <td align='right'><b>Nationality:</b></td>
                 <td>
                     <select name='nationality'>
+                        <option value=''>---</option>
                         <option value='Canadian' $canSelected>Canadian</option>
                         <option value='American' $amerSelected>American</option>
                         <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
@@ -522,7 +523,7 @@ EOF;
                 <td align='right'><b>Gender:</b></td>
                 <td>
                     <select name='gender'>
-                        <option value='' $blankSelected>----</option>
+                        <option value='' $blankSelected>---</option>
                         <option value='Male' $maleSelected>Male</option>
                         <option value='Female' $femaleSelected>Female</option>
                     </select>
