@@ -16,6 +16,7 @@ Classes
    contribution
    milestone
    partner
+   pdf
    person
    product
    project
