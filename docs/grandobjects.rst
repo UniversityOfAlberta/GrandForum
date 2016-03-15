@@ -17,4 +17,4 @@ Classes
    project
    relationship
    role
-   
+   wiki
