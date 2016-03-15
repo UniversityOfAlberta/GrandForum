@@ -12,6 +12,7 @@ Classes
    :maxdepth: 1
    
    backbonemodel
+   contribution
    person
    product
    project
