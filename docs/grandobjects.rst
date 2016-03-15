@@ -12,3 +12,5 @@ Classes
    :maxdepth: 1
    
    person
+   project
+   product

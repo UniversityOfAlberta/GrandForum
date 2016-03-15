@@ -4,7 +4,7 @@ Person.php
 ==========
 
 ================     =====
-**Location:**        extensions/GrandObject
+**Location:**        extensions/GrandObjects/Person.php
 **Source Code:**     `master`_
 **Classes:**         `Person`_
 ================     =====
