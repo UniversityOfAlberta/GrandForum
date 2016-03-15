@@ -181,7 +181,7 @@ class Person extends BackboneModel {
      * @param string $alias The alias of the Person
      * @return Person the Person from the given alias
      */
-    static function newFromAlias($alias) {
+    static function newFromAlias($alias){
         // Normalize the alias: trim, remove duplicate spaces / dots, and strip HTML.
         $alias = preg_replace(
                 array('/\s+/', '/\.+/', '/\s*\.+\s*/', '/<[^>]*>/'),
