@@ -11,7 +11,7 @@ Project.php
 
 Description
 -----------
-The Project class is used to access data from the grand_project table (additional tables are used in joins).  A Project may contain multiple evolutions which can be accessed using the getPreds() method.  The project belongs to a Theme, and will contain members and leaders.
+The Project class is used to access data from the grand_project table (additional tables are used in joins).  A Project may contain multiple evolutions which can be accessed using the getPreds() method.  The project belongs to a Theme, and will contain members and leaders.  Projects can be 'disabled' in the system by editing the value of the ``projectsEnabled`` config variable.
 
 Static Factory Methods
 ----------------------
