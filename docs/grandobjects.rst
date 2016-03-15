@@ -11,8 +11,10 @@ Classes
 .. toctree::
    :maxdepth: 1
    
+   activity
    backbonemodel
    contribution
+   milestone
    partner
    person
    product
