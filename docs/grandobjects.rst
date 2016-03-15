@@ -19,4 +19,5 @@ Classes
    project
    relationship
    role
+   theme
    wiki
