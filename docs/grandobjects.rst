@@ -11,6 +11,7 @@ Classes
 .. toctree::
    :maxdepth: 1
    
+   backbonemodel
    person
    product
    project
