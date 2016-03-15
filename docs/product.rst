@@ -11,7 +11,7 @@ Product.php (Paper)
 
 Description
 -----------
-The Product class is used to access data from the grand_products table.  The Product class is an alias of the Paper class.  Paper.php may end up being depricated in favor of Product.php in the future.  A Product contains common information like authors, title, description and date.  The specific attributes for each type of Product is contained in the $data array, and the structure of these fields are defined in the ``extenstions/GrandObjects/ProductStructures/`` xml files.  These files will define all of the categories, and types that can be used for the respective forum instance.
+The Product class is used to access data from the ``grand_products`` table.  The Product class is an alias of the Paper class.  Paper.php may end up being depricated in favor of Product.php in the future.  A Product contains common information like authors, title, description and date.  The specific attributes for each type of Product is contained in the $data array, and the structure of these fields are defined in the ``extenstions/GrandObjects/ProductStructures/`` xml files.  These files will define all of the categories, and types that can be used for the respective forum instance.  Products can be associated with Projects, and if they are, then are considered part of the network.
 
 Static Factory Methods
 ----------------------

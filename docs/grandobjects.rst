@@ -12,6 +12,8 @@ Classes
    :maxdepth: 1
    
    person
-   project
    product
+   project
+   relationship
    role
+   
