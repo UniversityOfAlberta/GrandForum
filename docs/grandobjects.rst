@@ -13,6 +13,7 @@ Classes
    
    backbonemodel
    contribution
+   partner
    person
    product
    project
