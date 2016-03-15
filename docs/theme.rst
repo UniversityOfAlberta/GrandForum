@@ -11,7 +11,7 @@ Theme.php
 
 Description
 -----------
-The Theme class is used to access data from the ``grand_themes`` table.  A Theme is a grouping of Projects, so to get the Projects in the Theme use the ``getProjects()` method.  Themes contain leaders just like Projects.  The name of 'theme' throughout the Forum can be renamed by changing the ``projectThemes`` config variable.
+The Theme class is used to access data from the ``grand_themes`` table.  A Theme is a grouping of Projects, so to get the Projects in the Theme use the ``getProjects()`` method.  Themes contain leaders just like Projects.  The name of 'theme' throughout the Forum can be renamed by changing the ``projectThemes`` config variable.
 
 Static Factory Methods
 ----------------------
