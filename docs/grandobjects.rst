@@ -14,3 +14,4 @@ Classes
    person
    project
    product
+   role
