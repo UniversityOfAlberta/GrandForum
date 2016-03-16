@@ -1947,46 +1947,50 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                    <ReportItem id="row" type="StaticReportItem">
-                        <![CDATA[
-                            <tr>
-                            <td>{$user_name}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>
-                                {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
-                                     {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},
-                                          {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},
-                                               {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
-                                                    {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},
-                                                         {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},
-                                                              {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},
-                                                                   {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},
-                                                                        {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})}
-                                                                   )}
-                                                              )}
-                                                         )}
-                                                    )}
-                                               )}
-                                          )}
-                                     )}
-                                )},36)},5)},2)}
-                            </td>
-                            <td>
-                                <div style='max-height: 115px; overflow-y: auto;'>
-                                    {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}
-                                </div>
-                            </td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
+                    <ReportItemSet id="if" type="IfReportItemSet" if="{and({!=({$user_name},Josef Amann)},
+                                                                           {!=({$user_name},Denise Stockley)}
+                                                                      )}">
+                        <ReportItem id="row" type="StaticReportItem">
+                            <![CDATA[
+                                <tr>
+                                <td>{$user_name}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>
+                                    {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_TOPIC,0,{$user_id},{$project_id})},
+                                         {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_GAP,0,{$user_id},{$project_id})},
+                                              {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_QUESTION,0,{$user_id},{$project_id})},
+                                                   {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_METHODOLOGY,0,{$user_id},{$project_id})},
+                                                        {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_DESIGN,0,{$user_id},{$project_id})},
+                                                             {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_PROCEDURES,0,{$user_id},{$project_id})},
+                                                                  {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OUTCOMES,0,{$user_id},{$project_id})},
+                                                                       {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_INTEGRATION,0,{$user_id},{$project_id})},
+                                                                            {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_RECOGNITION,0,{$user_id},{$project_id})}
+                                                                       )}
+                                                                  )}
+                                                             )}
+                                                        )}
+                                                   )}
+                                              )}
+                                         )}
+                                    )},36)},5)},2)}
+                                </td>
+                                <td>
+                                    <div style='max-height: 115px; overflow-y: auto;'>
+                                        {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS1,0,{$user_id},{$project_id})}
+                                    </div>
+                                </td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
                 </ReportItemSet>
                 <ReportItem id="table_foot" type="StaticReportItem">
                     <![CDATA[
@@ -2072,28 +2076,32 @@
                     ]]>
                 </ReportItem>
                 <ReportItemSet id="evaluators2" type="EvaluatorReportItemSet" subType="CAT-RMC" includeSelf="true">
-                    <ReportItem id="row" type="StaticReportItem">
-                        <![CDATA[
-                            <tr>
-                            <td>{$user_name}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},2)}</td>
-                            <td align='right'>
-                                {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
-                                     {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},
-                                          {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
-                                     )}
-                                )},12)},5)},2)}
-                            </td>
-                            <td>
-                                <div style='max-height: 115px; overflow-y: auto;'>
-                                    {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}
-                                </div>
-                            </td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
+                    <ReportItemSet id="if" type="IfReportItemSet" if="{and({!=({$user_name},Josef Amann)},
+                                                                           {!=({$user_name},Denise Stockley)}
+                                                                      )}">
+                        <ReportItem id="row" type="StaticReportItem">
+                            <![CDATA[
+                                <tr>
+                                <td>{$user_name}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>{round({getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})},2)}</td>
+                                <td align='right'>
+                                    {round({multiply({divide({add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_EXPERIENCE,0,{$user_id},{$project_id})},
+                                         {add({getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_BUDGET,0,{$user_id},{$project_id})},
+                                              {getNumber(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_OBJECTIVES,0,{$user_id},{$project_id})}
+                                         )}
+                                    )},12)},5)},2)}
+                                </td>
+                                <td>
+                                    <div style='max-height: 115px; overflow-y: auto;'>
+                                        {getText(RP_CAT_REVIEW,CAT_SRC_REVIEW,CAT_SRC_COMMENTS2,0,{$user_id},{$project_id})}
+                                    </div>
+                                </td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
                 </ReportItemSet>
                 <ReportItem id="table_foot" type="StaticReportItem">
                     <![CDATA[

@@ -511,6 +511,7 @@ EOF;
                 <td align='right'><b>Nationality:</b></td>
                 <td>
                     <select name='nationality'>
+                        <option value=''>---</option>
                         <option value='Canadian' $canSelected>Canadian</option>
                         <option value='American' $amerSelected>American</option>
                         <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
@@ -526,7 +527,7 @@ EOF;
                 <td align='right'><b>Gender:</b></td>
                 <td>
                     <select name='gender'>
-                        <option value='' $blankSelected>----</option>
+                        <option value='' $blankSelected>---</option>
                         <option value='Male' $maleSelected>Male</option>
                         <option value='Female' $femaleSelected>Female</option>
                     </select>
@@ -544,10 +545,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $positions = Person::getAllPositions();
-        }
-        else{
+        if($person->isRoleAtMost(HQP)){
             $positions = array("Other", 
                                "Graduate Student - Master's", 
                                "Graduate Student - Doctoral", 
@@ -557,6 +555,9 @@ EOF;
                                "Technician", 
                                "Summer Student", 
                                "Undergraduate Student");
+        }
+        else{
+            $positions = Person::getAllPositions();
         }
         $myPosition = "";
         foreach($positions as $key => $position){
@@ -571,11 +572,11 @@ EOF;
         $departments = Person::getAllDepartments();
         $organizations = $uniNames;
         sort($organizations);
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+        if($person->isRoleAtMost(HQP)){
+            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
         }
         else{
-            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
         }
         $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
         $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);

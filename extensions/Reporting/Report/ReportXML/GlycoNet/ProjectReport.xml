@@ -186,7 +186,9 @@
             <![CDATA[
                 </table>
                 </p>
-                <p><b>Trainees and role:</b>
+                <p><b>Trainees and role:</b><br />
+                    If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a> (note you must be the HQPs supervisor in order to add them).
+                </p>
                 <table class='wikitable'>
                     <tr>
                         <th>Name</th>
@@ -213,7 +215,6 @@
         <ReportItem id="hqp_table" type="StaticReportItem">
             <![CDATA[
                 </table>
-                </p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -230,7 +231,9 @@
             <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
                 <![CDATA[
                     <h3>Comments</h3>
-                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.</p>
+                    <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
+                        <b>Please Note:</b> If a new milestone is to be added, it must first be approved by the RMC.
+                    </p>
                     {$item}
                 ]]>
             </ReportItem>

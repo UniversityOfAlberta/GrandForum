@@ -68,17 +68,6 @@ Feature: Wiki
         """
         And I press "Save page"
         
-    Scenario: NI using template editor
-        Given I am logged in as "NI.User1" using password "NI.Pass1"
-        When I go to "index.php/Phase2Project1:TestTemplate?action=createFromTemplate"
-        And I select "NewTemplate" from "templateChooser"
-        And I press "Create page using selected template"
-        And I fill in "NewTemplate0|var1MAIN" with "VAR1"
-        And I fill in "NewTemplate0|var2MAIN" with "VAR2"
-        And I press "Save page"
-        Then I should see "VAR1"
-        And I should see "VAR2"
-        
     Scenario: NI searches for Wiki Page
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I fill in "globalSearchInput" with "Test"
