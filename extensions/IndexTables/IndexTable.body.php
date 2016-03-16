@@ -520,10 +520,12 @@ EOF;
 	}
 
        private function generateUserStoriesTable(){
-	   global $wgUser,$wgOut;
+	   global $wgUser,$wgOut, $config;
 	   if(!$wgUser->isLoggedIn()){
 		permissionError();
 	   }
+	   $this->text .= "Below are all the current stories in {$config->getValue('networkName')}.  To search for a story in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
+
            $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
                         <th style='white-space:nowrap;'>Submitted By</th>
