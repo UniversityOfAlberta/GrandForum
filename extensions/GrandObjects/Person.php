@@ -2038,7 +2038,23 @@ class Person extends BackboneModel {
         else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
         }
+        else if($this->isRoleOn("FAKENI", $year, $project)){
+            return "FAKENI";
+        }
         return $this->getType();
+    }
+    
+    function getRolesOnProject($project){
+        $roles = array();
+        foreach($this->getRoles() as $role){
+            if($role->hasProject($project)){
+                $roles[] = $role->getRole();
+            }
+        }
+        if($this->leadershipOf($project)){
+            $roles[] = PL;
+        }
+        return $roles;
     }
     
     /**
