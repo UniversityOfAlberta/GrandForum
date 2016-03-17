@@ -225,6 +225,7 @@ class AddMember extends SpecialPage{
         global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
         $committees = $config->getValue('committees');
+        $aliases = $config->getValue('roleAliases');
         
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
@@ -253,7 +254,7 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && !isset($committees[$role])){
+            if($me->isRoleAtLeast($role) && !isset($committees[$role]) && !isset($aliases[$role])){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
@@ -263,6 +264,9 @@ class AddMember extends SpecialPage{
         if($me->isRoleAtLeast(STAFF)){
             foreach($committees as $committee => $def){
                 $roleOptions[$def] = $committee;
+            }
+            foreach($aliases as $alias => $role){
+                $roleOptions[$alias] = $alias;
             }
         }
         ksort($roleOptions);

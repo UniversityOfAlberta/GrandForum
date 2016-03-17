@@ -1907,8 +1907,10 @@ class Person extends BackboneModel {
      */
     function getType(){
         $roles = $this->getRoles();
-        if($roles != null && count($roles) > 0){
-            return $roles[count($roles) - 1]->getRole();
+        foreach($roles as $role){
+            if(!$role->isAlias()){
+                return $role->getRole();
+            }
         }
         return null;
     }
