@@ -7,7 +7,7 @@ class ProjectPeopleNoLeadersReportItemSet extends ReportItemSet {
         $proj = Project::newFromId($this->projectId);
         $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
         $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        $roles = explode(",", $this->getAttr("roles", ""));
+        $roles = explode(",", $this->getAttr("roles", NI));
         if($proj != null){
             $members = array();
             foreach($roles as $role){
