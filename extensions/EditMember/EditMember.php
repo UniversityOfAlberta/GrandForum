@@ -438,7 +438,7 @@ class EditMember extends SpecialPage{
                          <input type='submit' name='submit' value='Submit Request' onSubmit />
                          </form>");
     }
-    
+
     function generateSubRoleFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $me = Person::newFromWgUser();

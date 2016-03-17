@@ -137,6 +137,9 @@ class PersonVisualizationsTab extends AbstractTab {
                                   'content' => Inflect::pluralize($config->getValue('productsTerm')),
                                   'className' => 'visOrange'));
             foreach($person->getRoles(true) as $role){
+                if($role->isAlias()){
+                    continue;
+                }
                 $start = substr($role->getStartDate(), 0, 10);
                 $end = substr($role->getEndDate(), 0, 10);
                 if($end == "0000-00-00"){

@@ -24,6 +24,7 @@ Developer Documentation
    migrations
    mailing lists
    conventions
+   files
    hooks
    
 .. _extension-docs:   

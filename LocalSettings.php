@@ -275,6 +275,15 @@ foreach($config->getValue('committees') as $role => $roleDef){
     $wgAllRoles[] = $role;
 }
 
+foreach($config->getValue('roleAliases') as $alias => $role){
+    define($alias, $alias);
+    $wgRoleValues[$alias] = $wgRoleValues[$role];
+    $wgRoles[] = $alias;
+    $wgAllRoles[] = $alias;
+    
+    $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), array($alias => $alias)));
+}
+
 $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
