@@ -2021,8 +2021,10 @@ class Person extends BackboneModel {
      * Returns the role that this Person is on the given Project
      * @param Project $project The Project to check the roles of
      * @param integer $year The year to check
+     * @param boolean $aliases Whether or not to include alias roles in the return
+     * @return string The name of the role
      */
-    function getRoleOn($project, $year=null){
+    function getRoleOn($project, $year=null, $aliases=false){
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
@@ -2038,23 +2040,10 @@ class Person extends BackboneModel {
         else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
         }
-        else if($this->isRoleOn("FAKENI", $year, $project)){
+        else if($aliases && $this->isRoleOn("FAKENI", $year, $project)){
             return "FAKENI";
         }
         return $this->getType();
-    }
-    
-    function getRolesOnProject($project){
-        $roles = array();
-        foreach($this->getRoles() as $role){
-            if($role->hasProject($project)){
-                $roles[] = $role->getRole();
-            }
-        }
-        if($this->leadershipOf($project)){
-            $roles[] = PL;
-        }
-        return $roles;
     }
     
     /**
