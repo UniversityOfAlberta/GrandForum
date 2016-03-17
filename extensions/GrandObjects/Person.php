@@ -2024,7 +2024,7 @@ class Person extends BackboneModel {
      */
     function getRoleOn($project, $year=null){
         if($year == null){
-            $year = date('Y');
+            $year = date('Y-m-d');
         }
         if($this->isRoleOn(AR, $year, $project) && !$this->leadershipOf($project)){
             return AR;
