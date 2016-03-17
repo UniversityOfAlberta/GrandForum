@@ -1622,6 +1622,9 @@ class ReportItemCallback {
     }
     
     function round($val, $dec=0){
+        if($val == ""){
+            return "";
+        }
         return number_format(round($val, $dec), $dec, ".", "");
     }
     
