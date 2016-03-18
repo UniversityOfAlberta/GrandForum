@@ -181,13 +181,19 @@ class PersonProductAPI extends RESTAPI {
     function doGET(){
         if($this->getParam(0) == "person"){
             // Get Products
+            $me = Person::newFromWgUser();
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
             $onlyPublic = true;
             if($this->getParam(3) == "private"){
                 $onlyPublic = false;
             }
-            $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
+            if($me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
+                $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
+            }
+            else{
+                $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
+            }
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),
