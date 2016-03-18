@@ -456,6 +456,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
@@ -709,7 +710,7 @@ EOF;
         //Setup the table structure
         $universities = array();
         $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Other"=>array());
+                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
 
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
@@ -717,6 +718,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         //Fill the table
@@ -728,7 +730,7 @@ EOF;
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Other"=>array());
+                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
@@ -755,6 +757,7 @@ EOF;
          <th>PhD</th>
          <th>Post-Doctoral Fellows</th>
          <th>Technicians / Research Associates</th>
+         <th>Professional End Users</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
@@ -837,6 +840,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         //Fill the table
@@ -855,7 +859,7 @@ EOF;
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
                         $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                                             "Technicians / Research Associates"=>array(), "Other"=>array());
+                                                             "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
                 //}
@@ -874,6 +878,7 @@ EOF;
          <th>PhD</th>
          <th>Post-Doctoral Fellows</th>
          <th>Technicians / Research Associates</th>
+         <th>Professional End Users</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
@@ -1074,6 +1079,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
         
         $intkeys = array(

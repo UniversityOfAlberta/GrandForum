@@ -548,7 +548,8 @@ EOF;
                                "Post-Doctoral Fellow", 
                                "Research Associate", 
                                "Research Assistant", 
-                               "Technician", 
+                               "Technician",
+                               "Professional End User",
                                "Summer Student", 
                                "Undergraduate Student");
         }
