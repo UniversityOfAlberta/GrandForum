@@ -13,7 +13,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="information" type="HeaderReportSection" name="Project Information">
+    <ReportSection id="information" type="HeaderReportSection" name="Project Information" blobSection="INFORMATION">
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
                 <p><b>Theme:</b>           {$project_theme}</p>
@@ -84,6 +84,12 @@
             <![CDATA[
                 </table>
                 </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p><b>Figures Upload</b></p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -190,12 +196,6 @@
             <![CDATA[
                 <p><b>Describe the impact or research outcomes of this project over the funding period that may result in the creation of intellectual property, outlicensing efforts, licenses negotiated or granted to industry, start-up companies created and similar entrepreneurial ventures.</b></p>
                 {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
-            <![CDATA[
-                <p><b>Figures Upload</b></p>
-                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">

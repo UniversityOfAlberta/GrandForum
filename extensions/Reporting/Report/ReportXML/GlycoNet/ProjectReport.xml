@@ -161,7 +161,7 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="information" type="ReportSection" name="Project Information">
+    <ReportSection id="information" type="ReportSection" name="Project Information" blobSection="INFORMATION">
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
                 <p><b>Theme:</b>           {$project_theme}</p>
@@ -235,6 +235,15 @@
                 </table>
             ]]>
         </ReportItem>
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
+            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
+                <![CDATA[
+                    <p><b>Figures Upload</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="milestones" type="EditableReportSection" blobSection="MILESTONES" name="Milestones" title="Milestones">
         <ReportItem id="table" type="ProjectMilestoneTable">
@@ -616,12 +625,6 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
-                <![CDATA[
-                    <p><b>Figures Upload</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="not_pl" type="If" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
@@ -646,7 +649,7 @@
             <![CDATA[
                 <h3>Budget Justification</h3>
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
-                <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions and amounts paid.</p>
+                <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions, amounts paid, and percentage of time/salary devoted to the Network. Network Investigators should indicate the percentage of time dedicated to the Network from their overall activities.</p>
             ]]>
         </ReportItem>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -683,6 +686,36 @@
             <![CDATA[
                 {$item}<br />
                 <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:AddContributionPage' target='_blank'>Add/Edit Contributions</a>
+            ]]>
+        </ReportItem>
+        <ReportItem id="eligible" type="Popup" title="What are eligible contributions?" text="
+            &lt;b&gt;Partner contributions may include:&lt;/b&gt;
+            &lt;ol type=a&gt;
+                &lt;li&gt;Cash contributions&lt;/li&gt;
+                &lt;li&gt;In-kind contributions
+                    &lt;ul&gt;
+                        &lt;li&gt;Equipment &amp; software&lt;/li&gt;
+                        &lt;li&gt;Materials&lt;/li&gt;
+                        &lt;li&gt;Logistical support of fieldwork&lt;/li&gt;
+                        &lt;li&gt;Provision of services&lt;/li&gt;
+                        &lt;li&gt;Use of company facilities&lt;/li&gt;
+                        &lt;li&gt;Salaries of scientific staff&lt;/li&gt;
+                        &lt;li&gt;Salaries of managerial and administrative staff&lt;/li&gt;
+                        &lt;li&gt;Project related travel&lt;/li&gt;
+                        &lt;li&gt;Other&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+            &lt;/ol&gt;
+            &lt;b&gt;Do not include:&lt;/b&gt;
+            &lt;ul&gt;
+                &lt;li&gt;grants from federal granting agencies, such as NSERC, CIHR, SSHRC, CFI or Genome Canada and its provincial centres for research, equipment, etc.;&lt;/li&gt;
+                &lt;li&gt;contributions from partners who are funded by federal granting agencies, such as NCE, NSERC, CIHR, SSHRC, CFI or Genome Canada.&lt;/li&gt;
+                &lt;li&gt;salaries of individuals who are eligible to receive funds directly from the granting agencies (e.g. faculty members of postsecondary institutions) and any associated administrative overhead costs.&lt;/li&gt;
+                &lt;li&gt;contributions or contracts outside of the scope of the network’s activities.&lt;/li&gt;
+                &lt;li&gt;time on committees and boards.&lt;/li&gt;
+            &lt;/ul&gt;">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
