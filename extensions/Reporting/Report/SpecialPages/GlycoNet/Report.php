@@ -71,6 +71,14 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABReview", $selected);
         }*/
+        if($person->isRole(NI) || $person->isRole(HQP) || $person->isRole(FAKENI)){
+            foreach($person->getProjects() as $project){
+                if($person->isRole(NI, $project) || $person->isRole(HQP, $project) || $person->isRole(FAKENI, $project)){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectReport&project={$project->getName()}", $selected);
+                }
+            }
+        }
         if(count($person->getEvaluates("SAB-Catalyst")) > 0 && !$person->isRole(RMC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABCatalystReview")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SAB Review", "{$url}SABCatalystReview", $selected);

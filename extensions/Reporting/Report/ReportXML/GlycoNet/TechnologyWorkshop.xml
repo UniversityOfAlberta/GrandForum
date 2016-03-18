@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" pdfFiles="TechnologyWorkshopPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NI">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />

@@ -19,7 +19,7 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         if($config->getValue('projectsEnabled')){
-            $project = Project::newFromHistoricName($wgTitle->getNSText());
+            $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
             $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
                          !($me->isMemberOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
             $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");

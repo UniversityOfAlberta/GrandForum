@@ -1,7 +1,7 @@
 Welcome to The Forum's documentation!
 =====================================
 
-The Forum is a collaborative social network tool which can be used by research networks.  The Forum is based off of Mediawiki_ but is heavily modified with extensions to support the networking features.
+The Forum is a collaborative social network tool which can be used by research networks.  The Forum is based off of Mediawiki_ but is heavily modified with extensions to support the networking and reporting features.
 
 .. _Mediawiki: http://www.mediawiki.org/wiki/MediaWiki
 
@@ -24,6 +24,7 @@ Developer Documentation
    migrations
    mailing lists
    conventions
+   files
    hooks
    
 .. _extension-docs:   
@@ -34,6 +35,7 @@ Extension Documentation
 .. toctree::
    :maxdepth: 2
 
+   grandobjects
    project evolution
    messages
    backbonepage

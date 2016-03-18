@@ -579,6 +579,10 @@ EOF;
 		        font-size: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		    }
 		    
+		    #pdfBody .smallest {
+		        font-size: ".max(8, ($fontSize+(-6*DPI_CONSTANT)))."px;
+		    }
+		    
 		    #pdfBody ul {
 		        margin-top: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;
 		        margin-bottom: ".max(9, ($fontSize+(-4*DPI_CONSTANT)))."px;

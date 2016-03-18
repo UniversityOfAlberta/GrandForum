@@ -361,6 +361,11 @@ class Milestone {
         }
     }
     
+    
+    function isNew(){
+        return ("2016-03-11 00:00:00" <= $this->getVeryStartDate());
+    }
+    
     /**
      * Returns the projected end date of this Milestone
      * @return string The projected end date of this Milestone
