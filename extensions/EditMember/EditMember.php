@@ -378,7 +378,7 @@ class EditMember extends SpecialPage{
                     $_POST['theme'] = $theme->getId();
                     $_POST['name'] = $person->getName();
                     $_POST['comment'] = @str_replace("'", "", $_POST["tc_comment"][$theme->getId()]);
-                    $_POST['effective_date'] = $_POST["tc_datepicker"][$theme->getId()];
+                    $_POST['effective_date'] = @$_POST["tc_datepicker"][$theme->getId()];
                     APIRequest::doAction('DeleteThemeLeader', true);
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
                 }
