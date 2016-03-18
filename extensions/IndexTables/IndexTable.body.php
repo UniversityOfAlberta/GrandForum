@@ -16,6 +16,7 @@ class IndexTable {
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
+        $aliases = $config->getValue('roleAliases');
         if($config->getValue('projectsEnabled')){
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
             $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
@@ -47,7 +48,7 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         sort($roles);
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
+            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
