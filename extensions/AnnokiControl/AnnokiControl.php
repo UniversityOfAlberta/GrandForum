@@ -141,6 +141,9 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
 
+$egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
+                                         'path' => "$IP/extensions/MyThreads/MyThreads.php");
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){

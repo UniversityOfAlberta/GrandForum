@@ -48,6 +48,14 @@ $apiRequest->addAction('Hidden','university/:id', new UniversityAPI());
 // Wiki
 $apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
 $apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
+//Thread
+$apiRequest->addAction('Hidden','thread', new ThreadAPI());
+$apiRequest->addAction('Hidden','thread/:id', new ThreadAPI());
+$apiRequest->addAction('Hidden','threads', new ThreadsAPI());
+//Post
+$apiRequest->addAction('Hidden','post', new PostAPI());
+$apiRequest->addAction('Hidden','post/:id', new PostAPI());
+$apiRequest->addAction('Hidden','posts', new PostsAPI());
 // PDF
 $apiRequest->addAction('Hidden','pdf/:id', new PDFAPI());
 // MailingList
@@ -72,6 +80,8 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Thread.js'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Post.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js'></script>\n";
     

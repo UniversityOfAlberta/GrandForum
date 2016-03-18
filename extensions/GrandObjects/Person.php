@@ -2038,6 +2038,58 @@ class Person extends BackboneModel {
         }
         return $this->getType();
     }
+
+    /*
+     * Returns a list of roles (strings) which this Person is allowed to edit
+     * @return array A list of roles (string) which this Person is allowed to edit
+     */
+    function getAllowedRoles(){
+        global $wgRoleValues, $wgRoles;
+        $maxValue = 0;
+        $roles = array();
+        foreach($this->getRoles() as $role){
+            $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
+        }
+        foreach($wgRoleValues as $role => $value){
+            if($value <= $maxValue && array_search($role, $wgRoles) !== false){
+                $roles[$role] = $role;
+            }
+        }
+        sort($roles);
+        return $roles;
+    }
+    
+    /*
+     * Returns a list of projects (strings) which this Person is allowed to edit
+     * @returns array A list of projects (strings) which this Person is allowed to edit
+     */
+    function getAllowedProjects(){
+        $projects = array();
+        foreach($this->getProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->leadership() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->getThemeProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        if($this->isRoleAtLeast(STAFF)){
+            foreach(Project::getAllProjects() as $project){
+                if(!$project->isSubProject()){
+                    $projects[$project->getId()] = $project->getName();
+                }
+            }
+        }
+        asort($projects);
+        return array_values($projects);
+    }
     
     /**
      * Returns the first role that this Person had
@@ -2201,6 +2253,7 @@ class Person extends BackboneModel {
         $roles = $this->getSubRoles();
         return (array_search($subRole, $roles) !== false);
     }
+
     
     /**
      * Returns all of the Projects that this Person has been a member of
