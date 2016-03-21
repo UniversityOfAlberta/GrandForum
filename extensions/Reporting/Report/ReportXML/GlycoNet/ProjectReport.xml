@@ -319,7 +319,7 @@
             </ReportItem>
             <ReportItem id="deliverables_popup" type="PopupReportItem" title="NI Comments" text="{get(deliverables)}">
                 <![CDATA[
-                    <p><b>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</b></p>
+                    <p><b>Cross-reference networking & partnership accomplishments to the initial deliverables and milestones set out in the original proposal.</b></p>
                     {$item}
                 ]]>
             </ReportItem>
