@@ -438,11 +438,15 @@ function wfReportTimeOld() {
 
 // http://stackoverflow.com/questions/4757061/which-ics-parser-written-in-php-is-good
 function icsToArray($icsFile) {
+    $icsFile = str_replace("\r", "", $icsFile);
     $icsFile = str_replace("\n ", "", $icsFile);
     $icsData = explode("BEGIN:", $icsFile);
 
     foreach($icsData as $key => $value) {
-        $icsDatesMeta[$key] = explode("\n", $value);
+        $data = explode("\n", $value);
+        if($data[0] == "VEVENT"){
+            $icsDatesMeta[$key] = explode("\n", $value);
+        }
     }
 
     foreach($icsDatesMeta as $key => $value) {
