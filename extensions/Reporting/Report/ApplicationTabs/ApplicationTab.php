@@ -93,8 +93,12 @@ class ApplicationTab extends AbstractTab {
                 $first = $report;
             }
             if($first->hasStarted()){
+                $pName = $person->getName();
+                if($person instanceof Theme){
+                    $pName = "{$person->getAcronym()}: {$person->getName()}";
+                }
                 $this->html .= "<tr>
-                    <td>{$person->getName()}</td>";
+                    <td>{$pName}</td>";
                 if(is_array($report)){
                     foreach($report as $rep){
                         $pdf = $rep->getPDF();
