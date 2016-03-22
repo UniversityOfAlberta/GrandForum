@@ -56,7 +56,7 @@ class ApplicationsTable extends SpecialPage{
         
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Applications", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
         }
         return true;
     }
