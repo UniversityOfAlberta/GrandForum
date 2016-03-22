@@ -37,6 +37,8 @@ class ApplicationsTable extends SpecialPage{
         
         $hqps = Person::getAllPeople(HQP);
         
+        $wps = Theme::getAllThemes();
+        
         $tabbedPage = new TabbedPage("person");
 
         $tabbedPage->addTab(new ApplicationTab('RP_SIP', $nis, 2015, "SIP 01-2016"));
@@ -44,6 +46,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis, 2015, "Catalyst"));
         $tabbedPage->addTab(new ApplicationTab('RP_CIP', $nis, 2015, "CIP"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $hqps, 2015, "Summer Institute 2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $wps, 2015, "WP Report"));
         $tabbedPage->showPage();
     }
     
