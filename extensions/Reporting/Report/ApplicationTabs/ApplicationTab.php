@@ -70,7 +70,8 @@ class ApplicationTab extends AbstractTab {
         foreach($this->people as $person){
             if(is_array($report)){
                 foreach($report as $rep){
-                    if($person instanceof Project){
+                    if($person instanceof Project ||
+                       $person instanceof Theme){
                         $rep->project = $person;
                         $rep->person = Person::newFromId(0);
                     }
@@ -81,7 +82,14 @@ class ApplicationTab extends AbstractTab {
                 $first = $report[0];
             }
             else{
-                $report->person = $person;
+                if($person instanceof Project ||
+                   $person instanceof Theme){
+                    $report->project = $person;
+                    $report->person = Person::newFromId(0);
+                }
+                else{
+                    $report->person = $person;
+                }
                 $first = $report;
             }
             if($first->hasStarted()){
