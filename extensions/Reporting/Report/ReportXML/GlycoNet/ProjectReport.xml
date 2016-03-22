@@ -241,6 +241,27 @@
                 <![CDATA[
                     <p><b>Figures Upload</b></p>
                     {$item}
+                    If any NIs have uploaded figures, they will be listed below.  You can use them to compile a the figures for the above upload.
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="OldNI,FAKENI">
+                <ReportItemSet id="if_null" type="If" if="{!=({getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})},)}">
+                    <ReportItem id="ni_upload" type="StaticReportItem">
+                        <![CDATA[
+                            <p><b>{$user_name}</b><br />
+                            <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})}&mime=application/pdf'>Download Figures</a></p>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItemSet id="not_pl" type="If" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+            <!-- Network Investigator View -->
+            <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" blobSubItem="{$my_id}" fileSize="20" mimeType="application/pdf">
+                <![CDATA[
+                    <p><b>Figures Upload</b></p>
+                    Your upload will be forwarded to the project leader.
+                    {$item}
                 ]]>
             </ReportItem>
         </ReportItemSet>
