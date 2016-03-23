@@ -160,11 +160,12 @@ class Theme {
      */
     function getLeaders(){
         $leaders = array();
-        $data = DBFunctions::select(array("grand_theme_leaders"),
-                                    array("user_id"),
-                                    array("theme" => $this->getId(),
-                                          "coordinator" => EQ("False"),
-                                          "end_date" => EQ("0000-00-00 00:00:00")));
+        $data = DBFunctions::execSQL("SELECT user_id
+                                      FROM grand_theme_leaders
+                                      WHERE theme = '{$this->getId()}'
+                                      AND coordinator = 'False'
+                                      AND (end_date = '0000-00-00 00:00:00' OR
+                                           end_date > CURRENT_TIMESTAMP)");
         if(count($data) > 0){
             foreach($data as $row){
                 $leader = Person::newFromId($row['user_id']);
@@ -180,11 +181,12 @@ class Theme {
      */
     function getCoordinators(){
         $leaders = array();
-        $data = DBFunctions::select(array("grand_theme_leaders"),
-                                    array("user_id"),
-                                    array("theme" => $this->getId(),
-                                          "coordinator" => EQ("True"),
-                                          "end_date" => EQ("0000-00-00 00:00:00")));
+        $data = DBFunctions::execSQL("SELECT user_id
+                                      FROM grand_theme_leaders
+                                      WHERE theme = '{$this->getId()}'
+                                      AND coordinator = 'True'
+                                      AND (end_date = '0000-00-00 00:00:00' OR
+                                           end_date > CURRENT_TIMESTAMP)");
         if(count($data) > 0){
             foreach($data as $row){
                 $leader = Person::newFromId($row['user_id']);
