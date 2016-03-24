@@ -339,7 +339,7 @@ EOF;
                             <tbody>";
         foreach($projects as $project){
             //if($project->getPhase() == 1){
-                $contributions = $project->getContributions();
+                $contributions = $project->getContributionsDuring($this->year);
                 foreach($contributions as $contribution){
                     $partners = $contribution->getPartners();
                     $nRows = max(1, count($partners));
