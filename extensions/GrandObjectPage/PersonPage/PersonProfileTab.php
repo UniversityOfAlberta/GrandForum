@@ -35,7 +35,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
         $extra[] = $this->showTwitter($this->person, $this->visibility);
         
-        
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
             if($e == ""){
@@ -44,6 +43,16 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
+        $this->html .= "<script type='text/javascript'>
+            setInterval(function(){
+                if($('#bodyContent').width() < 650){
+                    $('td#firstRight').hide();
+                }
+                else{
+                    $('td#firstRight').show();
+                }
+            }, 33);
+        </script>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
     }
