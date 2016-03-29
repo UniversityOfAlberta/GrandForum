@@ -45,11 +45,18 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= "<script type='text/javascript'>
             setInterval(function(){
+                var table = $('#personProducts').DataTable();
                 if($('#bodyContent').width() < 650){
                     $('td#firstRight').hide();
+                    
+                    table.column(1).visible(false);
+                    table.column(2).visible(false);
                 }
                 else{
                     $('td#firstRight').show();
+                    
+                    table.column(1).visible(true);
+                    table.column(2).visible(true);
                 }
             }, 33);
         </script>";
@@ -419,7 +426,7 @@ EOF;
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personProducts').dataTable({
+                    var personProducts = $('#personProducts').dataTable({
                         'order': [[ 1, 'desc' ]],
                         'autoWidth': false
                     });
