@@ -48,12 +48,14 @@ class PersonProfileTab extends AbstractEditableTab {
                 var table = $('#personProducts').DataTable();
                 if($('#bodyContent').width() < 650){
                     $('td#firstRight').hide();
+                    $('.chordChart').hide();
                     
                     table.column(1).visible(false);
                     table.column(2).visible(false);
                 }
                 else{
                     $('td#firstRight').show();
+                    $('.chordChart').show();
                     
                     table.column(1).visible(true);
                     table.column(2).visible(true);
@@ -360,7 +362,7 @@ EOF;
                                             $('#vis{$chord->index}').height(Math.max(1,height));
                                             $('#vis{$chord->index}').width(Math.max(1,width));
                                             lastWidth = $('#firstLeft').width();
-                                            $('#contact').height(Math.max(height, $('#contact > #card').height()));
+                                            $('#contact').height(Math.max(172, Math.max(height, $('#contact > #card').height())));
                                         }
                                     }, 100);
                                 });
@@ -494,7 +496,7 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:172px;min-height:150px'>";
+        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;min-height:172px'>";
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
