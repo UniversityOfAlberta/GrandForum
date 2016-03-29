@@ -35,7 +35,8 @@ class ApplicationsTable extends SpecialPage{
                            Person::getAllPeople(EXTERNAL),
                            Person::getAllCandidates(EXTERNAL));
         
-        $hqps = Person::getAllPeople(HQP);
+        $hqps = array_merge(Person::getAllPeople(HQP), 
+                            Person::getAllCandidates(HQP));
         
         $wps = Theme::getAllThemes();
         

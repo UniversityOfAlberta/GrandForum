@@ -7,6 +7,12 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2016" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2016&lt;br /&gt;
 Co-Creating Possibilities: Living Well With Dementia">
