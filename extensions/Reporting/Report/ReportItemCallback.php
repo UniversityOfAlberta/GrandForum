@@ -1570,9 +1570,12 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
