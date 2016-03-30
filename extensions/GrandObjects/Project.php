@@ -856,10 +856,14 @@ EOF;
     }
     
     // Returns the contributions relevant to this project during the given year
-    function getContributionsDuring($year){
+    function getContributionsDuring($startYear, $endYear=null){
+        if($endYear == null){
+            $endYear = $startYear;
+        }
         $contribs = array();
         foreach($this->getContributions() as $contrib){
-            if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
+            if($startYear <= $contrib->getEndDate() && 
+               $endYear >= $contrib->getStartDate()){
                 $contribs[] = $contrib;
             }
         }
