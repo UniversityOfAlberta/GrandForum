@@ -348,7 +348,6 @@ EOF;
                                         var widthDiff = leftWidth - cardWidth;
                                         newWidth = Math.min(maxWidth, widthDiff);
                                         if($('#vis{$chord->index}').is(':visible') && (width != newWidth || $('#vis{$chord->index} svg').width() != width)){
-                                            console.log('hello');
                                             width = newWidth;
                                             height = width;
                                             if(width < 100){
