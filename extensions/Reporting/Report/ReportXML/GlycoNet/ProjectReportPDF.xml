@@ -41,7 +41,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="co-investigators" type="ProjectPeopleNoLeaders">
+        <ReportItemSet id="co-investigators" type="ProjectPeopleNoLeaders" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-15 00:00:00">
             <ReportItem id="investigators_info" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -67,7 +67,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP">
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-15 00:00:00">
             <ReportItem id="hqp_info" type="StaticReportItem">
                 <![CDATA[
                     <tr>
