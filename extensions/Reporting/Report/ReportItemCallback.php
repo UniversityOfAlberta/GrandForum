@@ -977,6 +977,14 @@ class ReportItemCallback {
                 }
             }
         }
+        if(count($supervisors) == 0){
+            foreach(Person::getAllPeople('all') as $person){
+                foreach($person->getRelations(SUPERVISES, true) as $rel){
+                    $sup = $rel->getUser1();
+                    $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
+                }
+            }
+        }
         return implode(", ", $supervisors);
     }
     
