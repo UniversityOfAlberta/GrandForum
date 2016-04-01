@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfFiles="IFPProgressReportPDF" ajax="true" year="2016">
+<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfFiles="IFP2016ProgressReportPDF" year="2016" ajax="true">
     <Permissions>
         <Role role="HQP" subType="IFP">
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="mentorship" permissions="rw" />
             <SectionPermission id="collab" permissions="rw" />
+            <SectionPermission id="mentorship" permissions="rw" />
+            <SectionPermission id="external" permissions="rw" />
             <SectionPermission id="dissemination" permissions="rw" />
             <SectionPermission id="capacity" permissions="rw" />
             <SectionPermission id="partners" permissions="rw" />
@@ -17,11 +17,9 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="NI">
-            <SectionPermission id="milestones" permissions="" />
-            <SectionPermission id="ktee" permissions="" />
-            <SectionPermission id="external" permissions="" />
-            <SectionPermission id="mentorship" permissions="" />
             <SectionPermission id="collab" permissions="" />
+            <SectionPermission id="mentorship" permissions="" />
+            <SectionPermission id="external" permissions="" />
             <SectionPermission id="dissemination" permissions="" />
             <SectionPermission id="capacity" permissions="" />
             <SectionPermission id="partners" permissions="" />
@@ -34,7 +32,7 @@
             <SectionPermission id="submit" permissions="" />
         </Role>
     </Permissions>
-    <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Progress" blobSection="IFP_PROG_MILESTONES" tooltip="1. Fellowship Project Progress" type="EditableReportSection">
+    <ReportSection id="collab" name="Collaborative Project" tooltip="1. Online Collaborative Project" title="1. Online Collaborative Project" blobSection="IFP_PROG_COLLAB" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <b>Name:&nbsp;</b>{$user_name}<br />
@@ -50,42 +48,24 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_MILESTONES" labels="Project Deliverables|Description of Milestones and Deliverables|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="200|300|125" multiple="true" class="wikitable">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="175|200|125" multiple="true">
             <![CDATA[
-                <h2>Status of Project Milestone and Deliverables</h2>
-                <p>Outline in the table below milestones & deliverables as approved in your original proposal/learning plan and their status.  
-                   Also, list any milestones/deliverables that were amended, removed/deleted or added since the approval of your original proposal.  
-                   New milestones & deliverables should be highlighted and details should be presented in the next section as to why new milestones were necessary for the completion of the project.
-                </p>
+                <h3>Status of OCP Milestones</h3>
+                <p>Outline in the table below milestones and research outputs as indicated in the project proposal, subsequent amendments, and their status of completion.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_DELETED" labels="Deleted or New Milestone or Deliverable|Reasons for Deletion or Addition" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+        <ReportItem id="progress" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_COLLAB_PROGRESS" rich="true" limit="500">
             <![CDATA[
-                <h3>Deleted or New Milestones/Deliverables</h3>
-                <p>If applicable, explain why a milestone/deliverable was deleted, or why a new milestones/deliverable was added.</p>
+                <h3>Individual Progress with the OCP</h3>
+                <p>Please describe your progress with the online collaborative project and completed learning outcomes as indicated in the individual learning plan.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_DELAYED" labels="Delayed Milestone or Deliverable|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+        <ReportItem id="benefits" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_COLLAB_BENEFITS" rich="true" limit="500">
             <![CDATA[
-                <h3>Delayed Milestones/Deliverables*</h3>
-                <p>If applicable, explain why a milestone/deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how CFN can assist.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
-            <![CDATA[
-                <h3>Other Challenges*</h3>
-                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during this reporting period and briefly describe identified solutions/ways forward and describe if/how CFN can assist.</p>
-                {$item}
-                <b style='color:red;'>* Please contact CFN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact CFN via <a href='mailto:training@cfn-nce.ca'>training@cfn-nce.ca</a>.</b>
-            ]]>
-        </ReportItem>
-        <ReportItem id="placement" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_PLACEMENT" rich="true">
-            <![CDATA[
-                <h3>External Placement</h3>
-                <p>In the box below, please update CFN on whether an external placement has been secured and provide further details of start-date/end-date and planned/completed activities.</p>
+                <h3>Benefits & Challenges of Interdisciplinary Collaboration</h3>
+                <p>Please outline how multidisciplinary collaboration has enhanced this project. Summarize any challenges encountered in working together and briefly describe any identified solutions/way forward.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -104,12 +84,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pfss" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_PFSS" size="5" min="0" max="10000">
-            <![CDATA[
-                <p><b>How many times have you met with your PFSS Mentor to-date?</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="mentorship" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_PROGRAM" rich="true" limit="500">
             <![CDATA[
                 <h3>Key ideas</h3>
@@ -118,25 +92,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="collab" name="Collaborative Project" tooltip="3. Online Collaborative Project" title="3. Online Collaborative Project" blobSection="IFP_PROG_COLLAB" type="EditableReportSection">
-        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="175|200|125" multiple="true">
+    <ReportSection id="external" name="External Placement" tooltip="3. External Placement" title="3. External Placement" blobSection="IFP_PROG_EXTERNAL" type="EditableReportSection">
+        <ReportItem id="other" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_EXTERNAL_UPDATE" rich="true">
             <![CDATA[
-                <h3>Status of OCP Milestones</h3>
-                <p>Outline in the table below milestones and research outputs as indicated in the group learning plan or subsequent amendments, and their status of completion.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="progress" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_COLLAB_PROGRESS" rich="true" limit="500">
-            <![CDATA[
-                <h3>Individual Progress with the OCP</h3>
-                <p>Please describe your progress with the online collaborative project and completed learning outcomes as indicated in the individual learning plan.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_COLLAB_BENEFITS" rich="true" limit="500">
-            <![CDATA[
-                <h3>Benefits & Challenges of Interdisciplinary Collaboration</h3>
-                <p>Please outline how multidisciplinary collaboration has enhanced this project. Summarize any challenges encountered in working together and briefly describe any identified solutions/way forward.</p>
+                <p>Please provide a detailed update on your progress with the external placement, including information on the placement location, start-date/end-date, and planned/completed activities.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -286,7 +245,7 @@
             <ReportItem id="assessment" type="StaticReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
                 <![CDATA[
                     <h2>{$user_name}</h2>
-                    <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                    <h3>What is your overall assessment of the Fellow’s progress during the past three months?</h3>
                     <i>{getHTML(RP_IFP_PROGRESS,IFP_PROG_SUPERVISOR,IFP_PROG_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
                 ]]>
             </ReportItem>
@@ -303,7 +262,7 @@
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
                     <![CDATA[
-                        <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                        <h3>What is your overall assessment of the Fellow’s progress during the past three months?</h3>
                         {$item}
                     ]]>
                 </ReportItem>

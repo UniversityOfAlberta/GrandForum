@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFPFinalReportPDF" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP" subType="IFP">
+        <Role role="HQP" subType="IFP">
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="external" permissions="rw" />
@@ -12,11 +12,11 @@
             <SectionPermission id="network" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="supervisor1" permissions="r" />
-            <SectionPermission id="supervisor2" permissions="" />
+            <SectionPermission id="supervisor2" permissions="--" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NI">
             <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="ktee" permissions="" />
             <SectionPermission id="external" permissions="" />

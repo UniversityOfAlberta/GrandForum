@@ -342,6 +342,7 @@ abstract class AbstractReport extends SpecialPage {
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
             $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
+            $report->year = $this->year;
             return $report->getLatestPDF();
         }
         $sto = new ReportStorage($this->person);
@@ -372,7 +373,8 @@ abstract class AbstractReport extends SpecialPage {
     function getPDF($submittedByOwner=false){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year);
+            $report->year = $this->year;
             return $report->getPDF();
         }
         $sto = new ReportStorage($this->person);
