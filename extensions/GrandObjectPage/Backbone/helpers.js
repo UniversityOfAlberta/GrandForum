@@ -249,7 +249,8 @@ HTML.TagIt = function(view, attr, options){
     }
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var current = tagitView.tagit("assignedTags");
         var newItems = Array();
         for(cId in current){
@@ -261,7 +262,7 @@ HTML.TagIt = function(view, attr, options){
         var field = attr.substr(0, index);
         eval("view.model.set({" + field + ": newItems}, {silent:true});");
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     return el;
 }
 
@@ -274,28 +275,21 @@ HTML.Switcheroo = function(view, attr, options){
     var subName = attr.substr(index+1);
 
     $(el).attr('name', HTML.Name(attr));
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + options.name + ']'] = function(e){
         var current = switcherooView.switcheroo().getValue();
         var newItems = Array();
         var index = attr.indexOf('.');
         var subName = attr.substr(index+1);
-        var field = attr.substr(0, index);
-        eval("var oldItems = view.model.get('" + field + "');");
         for(cId in current){
             var c = current[cId];
-            var obj = _.findWhere(oldItems, {name: c});
             var tuple = {};
-            if(obj != null){
-                tuple = obj;
-            }
-            else{
-                tuple[subName] = c;
-            }
+            tuple[subName] = c;
             newItems.push(tuple);
         }
-        
+        var field = attr.substr(0, index);
         eval("view.model.set({" + field + ": newItems}, {silent:true});");
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     return el;
 }
