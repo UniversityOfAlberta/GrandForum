@@ -262,10 +262,16 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" title="Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" title="Networking/Collaborations" blobSection="FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_NET_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
