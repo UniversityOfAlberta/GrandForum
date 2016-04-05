@@ -237,11 +237,17 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activities" tooltip="8. Networking Activities" title="8. Networking Activities" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking/Collaborations" tooltip="8. Networking/Collaborations" title="8. Networking/Collaborations" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
                 <p>Describe any networking activities you undertook during the fellowship program.  These activities should include project team meetings with academic or industry collaborators, inside or outside of your institution.  These activities should also include meetings that have led to any additional partnerships described above or anticipated partnerships or collaborations that you anticipate might result in the future.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
