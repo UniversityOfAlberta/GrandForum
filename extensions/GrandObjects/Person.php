@@ -590,7 +590,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
-	global $config;
+        global $config;
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -1150,7 +1150,7 @@ class Person extends BackboneModel {
      * @return int The id of this Person
      */
     function getId(){
-	global $config;
+        global $config;
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return 0;
@@ -1458,41 +1458,41 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
 
-                              private function formatName($matches){
-                                 foreach($matches as $key=>$match){
-                                        $match1 = $match;
-                                        $match2 = $match;
-                                        $match1 = str_replace("%first", $this->getFirstName(), $match1);
-                                        $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
-                                        $match1 = str_replace("%last", $this->getLastName(), $match1);
-                                        $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
-                                        $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
-                                        $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+    private function formatName($matches){
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            $match1 = str_replace("%first", $this->getFirstName(), $match1);
+            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+            $match1 = str_replace("%last", $this->getLastName(), $match1);
+            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
 
-                                        $match2 = str_replace("%first", "", $match2);
-                                        $match2 = str_replace("%middle", "", $match2);
-                                        $match2 = str_replace("%last", "", $match2);
-                                        $match2 = str_replace("%f", "", $match2);
-                                        $match2 = str_replace("%m", "", $match2);
-                                        $match2 = str_replace("%l", "", $match2);
-                                        if($match1 == $match2){
-                                             $matches[$key] = "";
-                                        }
-                                        else{
-                                            $matches[$key] = str_replace("}","",str_replace("{","",$match1));
-                                        }
-                                 }
-                                 return implode("",$matches);
-                              }
+            $match2 = str_replace("%first", "", $match2);
+            $match2 = str_replace("%middle", "", $match2);
+            $match2 = str_replace("%last", "", $match2);
+            $match2 = str_replace("%f", "", $match2);
+            $match2 = str_replace("%m", "", $match2);
+            $match2 = str_replace("%l", "", $match2);
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("",$matches);
+    }
 
     function getNameForProduct(){
         global $config;
         if($this->getId() == 0){
             return $this->getNameForForms();
         }
-	$firstname = $this->getFirstName();
-	$middlename = $this->getMiddleName();
-	$lastname = $this->getLastName();
+        $firstname = $this->getFirstName();
+        $middlename = $this->getMiddleName();
+        $lastname = $this->getLastName();
 
         $regex = "/\{.*?\}/";
         $format = strtolower($config->getValue("nameFormat"));
@@ -3907,13 +3907,13 @@ class Person extends BackboneModel {
                     AND year = '{$year}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-	            $this->isEvaluator[$year] = true;
-	        }
-	        else {
-	            $this->isEvaluator[$year] = false;
-	        }
-	    }
-	    return $this->isEvaluator[$year];
+                $this->isEvaluator[$year] = true;
+            }
+            else {
+                $this->isEvaluator[$year] = false;
+            }
+        }
+        return $this->isEvaluator[$year];
     }
     
     /**
