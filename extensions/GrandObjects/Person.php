@@ -1459,17 +1459,44 @@ class Person extends BackboneModel {
     }
 
     function getNameForProduct(){
-	global $config;
-	if($this->getId() == 0){
-	    return $this->getNameForForms();
-	}
+        global $config;
+        if($this->getId() == 0){
+            return $this->getNameForForms();
+        }
+        $regex = "/\{.*?\}/";
         $format = strtolower($config->getValue("nameFormat"));
-	$format = str_replace("%first", $this->getFirstName(), $format);
-        $format = str_replace("%last", $this->getLastName(), $format);
-        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
-        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
-	return $format;
+        $format = preg_replace_callback($regex,
+                              function($matches){
+                                 foreach($matches as $key=>$match){
+                                        $match1 = $match;
+                                        $match2 = $match;
+                                        $match1 = str_replace("%first", $this->getFirstName(), $match1);
+                                        $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+                                        $match1 = str_replace("%last", $this->getLastName(), $match1);
+                                        $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+                                        $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+                                        $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+
+                                        $match2 = str_replace("%first", "", $match2);
+                                        $match2 = str_replace("%middle", "", $match2);
+                                        $match2 = str_replace("%last", "", $match2);
+                                        $match2 = str_replace("%f", "", $match2);
+                                        $match2 = str_replace("%m", "", $match2);
+                                        $match2 = str_replace("%l", "", $match2);
+                                        if($match1 == $match2){
+                                             $matches[$key] = "";
+                                        }
+                                        else{
+                                            $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+                                        }
+                                 }
+                                 return implode("",$matches);
+                              },
+                               $format);
+        return $format;
     }
+
+
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
