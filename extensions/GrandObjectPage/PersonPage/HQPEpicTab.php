@@ -23,7 +23,7 @@ class HQPEpicTab extends AbstractEditableTab {
             return ($this->visibility['isMe'] || 
                     $this->visibility['isSupervisor'] ||
                     $me->isRoleAtLeast(SD) ||
-                    $me->isEvaluatorOf($this->person, "Summer-Institute", YEAR, "Person"));
+                    $me->isEvaluatorOf($this->person, "RP_SUMMER", YEAR, "Person"));
         }
     }
 
