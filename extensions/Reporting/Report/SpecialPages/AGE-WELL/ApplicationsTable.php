@@ -62,7 +62,7 @@ class ApplicationsTable extends SpecialPage{
                     }
                 }
             }
-            $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $hqps, 2015, "Summer Institute 2016"));
+            $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2015, "Summer Institute 2016"));
         }
         if($me->isRoleAtLeast(SD)){
             $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $wps, 2015, "WP Report"));
