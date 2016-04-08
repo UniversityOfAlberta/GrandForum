@@ -22,7 +22,8 @@ class HQPEpicTab extends AbstractEditableTab {
            $this->person->isSubRole("WP/CC Funded HQP")){
             return ($this->visibility['isMe'] || 
                     $this->visibility['isSupervisor'] ||
-                    $me->isRoleAtLeast(SD));
+                    $me->isRoleAtLeast(SD) ||
+                    $me->isEvaluatorOf($this->person, "Summer-Institute", YEAR, "Person"));
         }
     }
 

@@ -3999,6 +3999,16 @@ class Person extends BackboneModel {
         $subs = array_values($subs);
         return $subs;
     }
+    
+    function isEvaluatorOf($object, $type, $year = YEAR, $class = "Person"){
+        $evals = $this->getEvaluates($type, $year, $class);
+        foreach($evals as $eval){
+            if($eval == $object){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns a list of the evaluators who are evaluating this Person
