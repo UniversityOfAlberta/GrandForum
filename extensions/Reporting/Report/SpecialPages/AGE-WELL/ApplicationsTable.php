@@ -30,8 +30,6 @@ class ApplicationsTable extends SpecialPage{
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
-        $me = Person::newFromWgUser();
-        
         $nis = array_merge(Person::getAllPeople(NI), 
                            Person::getAllCandidates(NI),
                            Person::getAllPeople(EXTERNAL),
@@ -48,20 +46,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', $nis, 2015, "SIP 04-2016"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis, 2015, "Catalyst"));
         $tabbedPage->addTab(new ApplicationTab('RP_CIP', $nis, 2015, "CIP"));
-        if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0){
-            $summerHQPs = array();
-            if($me->isRoleAtLeast(SD)){
-                $summerHQPs = $hqps;
-            }
-            else{
-                foreach($hqps as $hqp){
-                    $me->isEvaluatorOf($hqp, 'RP_SUMMER', 2015, "Person"){
-                        $summerHQPs[] = $hqp;
-                    }
-                }
-            }
-            $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $hqps, 2015, "Summer Institute 2016"));
-        }
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $hqps, 2015, "Summer Institute 2016"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $wps, 2015, "WP Report"));
         $tabbedPage->showPage();
     }
