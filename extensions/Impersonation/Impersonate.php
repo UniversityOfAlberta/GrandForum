@@ -149,7 +149,7 @@ function impersonate(){
 }
 
 function getImpersonatingMessage(){
-    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle;
+    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle, $wgReadOnly;
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);
@@ -189,6 +189,9 @@ function getImpersonatingMessage(){
             $stopImpersonating = "?stopImpersonating";
             $impersonate = "?impersonate={$person->getName()}";
             $renewSession = "?renewSession";
+        }
+        if(!$wgDelegating){
+            $wgReadOnly = "The wiki is currently in read-only mode while you are impersonating <b>{$person->getNameForForms()}</b>.";
         }
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
         $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire in ".ceil($time/(60))." minutes.<br />

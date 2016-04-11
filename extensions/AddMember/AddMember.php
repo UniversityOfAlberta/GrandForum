@@ -220,6 +220,7 @@ class AddMember extends SpecialPage{
         global $wgRoles, $wgUser, $config;
         $me = Person::newFromUser($wgUser);
         $committees = $config->getValue('committees');
+        $aliases = $config->getValue('roleAliases');
         
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
@@ -248,7 +249,7 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && !isset($committees[$role])){
+            if($me->isRoleAtLeast($role) && !isset($committees[$role]) && !isset($aliases[$role])){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
@@ -259,6 +260,9 @@ class AddMember extends SpecialPage{
             foreach($committees as $committee => $def){
                 $roleOptions[$def] = $committee;
             }
+            foreach($aliases as $alias => $role){
+                $roleOptions[$alias] = $alias;
+            }
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
@@ -268,7 +272,7 @@ class AddMember extends SpecialPage{
 
         $projects = Project::getAllProjects();
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);

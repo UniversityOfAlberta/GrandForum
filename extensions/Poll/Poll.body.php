@@ -30,7 +30,12 @@ class PollView {
 	function viewPoll($action, $article){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		if($action == "viewPoll"){
-			$this->pollCollection = PollCollection::newFromId($_GET['id']);
+			if($_GET['id'] == "latest"){
+			    $this->pollCollection = PollCollection::getLatest();
+			}
+			else{
+			    $this->pollCollection = PollCollection::newFromId($_GET['id']);
+			}
 			if($this->pollCollection != null){
 				$groups = $wgUser->getGroups();
 				$found = false;
@@ -62,10 +67,14 @@ class PollView {
 					$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
 				
 					if($notVotedYet){
+						$embed = "";
 						if(isset($_POST['submit'])){
 							$wgOut->addHTML("Not all questions were answered.<br />");
 						}
-						$wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}' method='post'>");
+						if(isset($_GET['embed'])){
+						    $embed = "&embed";
+						}
+						$wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}$embed' method='post'>");
 					}
 					foreach($this->pollCollection->getPolls() as $poll){
 						if($isOwner){
@@ -158,7 +167,6 @@ class PollView {
 		else if($submitted){
 			$option = $poll->getOption($_POST["choice{$poll->id}"]);
 			$option->addVote($wgUser->getId());
-			$wgOut->addHTML("Vote added<br />");
 			$this->resultsHTML($wgOut, $poll);
 		}
 		else{
@@ -171,12 +179,12 @@ class PollView {
 		$submitted = (isset($_POST['submit']) && isset($_POST['submit']) && $this->allQuestionsAnswered());
 		$wgOut->setPageTitle($this->pollCollection->name);
 		if($this->pollCollection->hasUserVoted($wgUser->getId())){
-			$wgOut->addHTML("Thank you for your submission");
+			$this->resultsHTML($wgOut,$poll);
 		}
 		else if($submitted){
 			$option = Option::newFromId($_POST["choice{$poll->id}"]);
 			$option->addVote($wgUser->getId());
-			$wgOut->addHTML("Vote added<br />");
+			$this->resultsHTML($wgOut,$poll);
 		}
 		else{
 			$this->pollCollectionHTML($wgOut, $poll);

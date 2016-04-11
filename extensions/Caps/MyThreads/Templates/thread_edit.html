@@ -3,6 +3,9 @@ Title:<br \>
 <br \><div id="threadPeople">
 
 </div>
+<% if(this.isDialog){ %>
+Question Details:
+<% } %>
 <% if(!this.isDialog){ %>
     <div style="width:180px;display:inline-block;">
         <button id='saveThread'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Thread </button>

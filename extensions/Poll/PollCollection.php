@@ -38,6 +38,17 @@ class PollCollection {
 			return null;
 		}
 	}
+
+	static function getLatest(){
+                $rows = DBFunctions::select(array('grand_poll_collection'),
+                                            array('collection_id'),
+					    array(),
+					    array('collection_id'=>"desc"));
+		if(count($rows)>0){
+		    return self::newFromId($rows[0]['collection_id']);
+		}
+		return null;
+	}
 	
 	function getPolls(){
 	    if($this->polls == null){

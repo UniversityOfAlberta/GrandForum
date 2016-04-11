@@ -43,6 +43,9 @@ Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
             $message = 'An account has been created for your e-mail address on {{SITENAME}} ($4) named "$2", with password "$3".
 You should log in and change your password now.';
             break;
+        case "readonlytext":
+            $message = '$1';
+            break;
     }
     return true;
   }

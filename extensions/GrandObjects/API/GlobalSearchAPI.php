@@ -16,6 +16,10 @@ class GlobalSearchAPI extends RESTAPI {
         switch($group){
             case 'people':
                 $data = array();
+		if(!$me->isLoggedIn()){
+		    $results = $data;
+		    break;
+		}
                 $people = DBFunctions::select(array('mw_user'),
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));

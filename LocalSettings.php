@@ -275,6 +275,15 @@ foreach($config->getValue('committees') as $role => $roleDef){
     $wgAllRoles[] = $role;
 }
 
+foreach($config->getValue('roleAliases') as $alias => $role){
+    define($alias, $alias);
+    $wgRoleValues[$alias] = $wgRoleValues[$role];
+    $wgRoles[] = $alias;
+    $wgAllRoles[] = $alias;
+    
+    $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), array($alias => $alias)));
+}
+
 $config->setValue('roleDefs', array_merge($config->getValue('roleDefs'), $config->getValue('committees')));
 
 function unaccentChars($str){
@@ -425,4 +434,48 @@ function wfReportTimeOld() {
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
+}
+
+// http://stackoverflow.com/questions/4757061/which-ics-parser-written-in-php-is-good
+function icsToArray($icsFile) {
+    $icsFile = str_replace("\r", "", $icsFile);
+    $icsFile = str_replace("\n ", "", $icsFile);
+    $icsData = explode("BEGIN:", $icsFile);
+
+    foreach($icsData as $key => $value) {
+        $data = explode("\n", $value);
+        if($data[0] == "VEVENT"){
+            $icsDatesMeta[$key] = explode("\n", $value);
+        }
+    }
+
+    foreach($icsDatesMeta as $key => $value) {
+        foreach($value as $subKey => $subValue) {
+            if ($subValue != "") {
+                if ($key != 0 && $subKey == 0) {
+                    $icsDates[$key]["BEGIN"] = $subValue;
+                } else {
+                    $subValueArr = explode(":", $subValue, 2);
+                    $value = @$subValueArr[0];
+                    if(strstr($value, ";") !== false){
+                        $values = explode(";", $value);
+                        $array = array();
+                        foreach($values as $k => $val){
+                            if(strstr($val, "=") !== false){
+                                $val = explode("=", $val);
+                                $array[$val[0]] = $val[1];
+                            }
+                        }
+                        $array['VALUE'] = $subValueArr[1];
+                        $icsDates[$key][$values[0]][] = $array;
+                    }
+                    else{
+                        $icsDates[$key][$value] = $subValueArr[1];
+                    }
+                }
+            }
+        }
+    }
+
+    return $icsDates;
 }

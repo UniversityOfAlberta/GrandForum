@@ -58,6 +58,14 @@ class University extends BackboneModel {
         }
         return $unis;
     }
+
+    static function getNearestUniversity(){
+	$sql = "SELECT * , SQRT( POW( ABS( latitude -53 ) , 2 ) + POW( ABS( longitude +113 ) , 2 ) ) AS dist
+FROM `grand_universities` WHERE `university_name` <> 'Unknown'
+ORDER BY `dist` ASC";
+	$data = DBFunctions::execSQL($sql);
+	return $data;
+    }
     
     function University($data){
         if(count($data) > 0){

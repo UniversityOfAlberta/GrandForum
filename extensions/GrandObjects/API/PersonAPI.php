@@ -3,8 +3,11 @@
 class PersonAPI extends RESTAPI {
     
     function doGET(){
+	$me = Person::newFromWgUser();
+	if(!$me->isLoggedIn()){
+	    $this->throwError("You are not logged in");
+	}
         if($this->getParam('id') != ""){
-            $me = Person::newFromWgUser();
             $person = Person::newFromId($this->getParam('id'));
             if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI))){
                 $this->throwError("This user does not exist");
@@ -14,6 +17,10 @@ class PersonAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You are not logged in");
+        }
         $person = new Person(array());
         $person->email = $this->POST('email');
         $person->name = $this->POST('name');
@@ -35,6 +42,11 @@ class PersonAPI extends RESTAPI {
     }
     
     function doPUT(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You are not logged in");
+
+        }
         $person = Person::newFromId($this->getParam('id'));
         if($person == null || $person->getName() == ""){
             $this->throwError("This user does not exist");
@@ -72,6 +84,11 @@ class PersonAPI extends RESTAPI {
 class PeopleAPI extends RESTAPI {
     
     function doGET(){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You are not logged in");
+
+        }
         if($this->getParam('role') != ""){
             $university = "";
             if($this->getParam('university') != ""){
@@ -181,13 +198,19 @@ class PersonProductAPI extends RESTAPI {
     function doGET(){
         if($this->getParam(0) == "person"){
             // Get Products
+            $me = Person::newFromWgUser();
             $person = Person::newFromId($this->getParam('id'));
             $json = array();
             $onlyPublic = true;
             if($this->getParam(3) == "private"){
                 $onlyPublic = false;
             }
-            $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
+            if($me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
+                $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
+            }
+            else{
+                $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
+            }
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),

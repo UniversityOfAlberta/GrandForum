@@ -373,7 +373,7 @@ class EditMember extends SpecialPage{
                     $_POST['theme'] = $theme->getId();
                     $_POST['name'] = $person->getName();
                     $_POST['comment'] = @str_replace("'", "", $_POST["tc_comment"][$theme->getId()]);
-                    $_POST['effective_date'] = $_POST["tc_datepicker"][$theme->getId()];
+                    $_POST['effective_date'] = @$_POST["tc_datepicker"][$theme->getId()];
                     APIRequest::doAction('DeleteThemeLeader', true);
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is no longer a ".strtolower($config->getValue('roleDefs', TC))." of {$theme->getAcronym()}");
                 }
@@ -926,6 +926,7 @@ class EditMember extends SpecialPage{
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $me = Person::newFromWgUser();
         $committees = $config->getValue('committees');
+        $aliases = $config->getValue('roleAliases');
         $myProjects = $me->getProjects(false, true);
         if(!isset($_GET['name'])){
             return;
@@ -984,6 +985,7 @@ class EditMember extends SpecialPage{
                 $projectLink = "&nbsp;<a id='role_{$roleId}_projects' onClick='openRoleProjects(\"$roleId\");' style='display: none; float:right; cursor: pointer;'>[Projects]</a>";
             }
             if((!isset($committees[$role]) || $me->isRoleAtLeast(STAFF)) &&
+               (!isset($aliases[$role]) || $me->isRoleAtLeast(STAFF)) &&
                ($me->isRoleAtLeast($role) || ($role == CHAMP && $me->isRoleAtLeast(PL)))){
                 $boxes .= "&nbsp;<input id='role_$role' type='checkbox' name='r_wpNS[]' value='".$role."' ";
                 if($me->isRole(NI) && $role == HQP && ($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')) && !$me->relatedTo($person,"Supervises") && count($person->getSupervisors()) > 0 ){

@@ -92,6 +92,9 @@ class PersonStoryAPI extends RESTAPI {
     function doGET(){
         // Get Authors
         $product = Story::newFromId($this->getParam('id'));
+            if(!$product->canView()){
+                permissionError();
+            }
         $author = $product->getUser();
         if($author->getId()){
             $array = array('productId' => $this->getParam('id'),

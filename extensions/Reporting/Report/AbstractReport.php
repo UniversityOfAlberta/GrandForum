@@ -761,7 +761,7 @@ abstract class AbstractReport extends SpecialPage {
         $found = false;
         $roles = $me->getRights();
         if($this->project != null && $this->project->getId() != 0 && $this->project instanceof Project){
-            $roles = array($me->getRoleOn($this->project));
+            $roles = array($me->getRoleOn($this->project, null, true));
         }
         else{
             $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);

@@ -15,6 +15,9 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser;
+        if(!$wgUser->isLoggedIn()){
+	    throwPermissionError();
+	}
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
@@ -552,7 +555,8 @@ EOF;
                                "Post-Doctoral Fellow", 
                                "Research Associate", 
                                "Research Assistant", 
-                               "Technician", 
+                               "Technician",
+                               "Professional End User",
                                "Summer Student", 
                                "Undergraduate Student");
         }
