@@ -205,12 +205,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Table and Justification">
-        <ReportItem id="header" type="StaticReportItem">
-            <![CDATA[
-                <h3>Budget Justification</h3>
-            ]]>
-        </ReportItem>
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
             <ReportItem id="just" type="StaticReportItem">
                 <![CDATA[

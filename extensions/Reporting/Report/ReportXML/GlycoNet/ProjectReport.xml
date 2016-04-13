@@ -665,10 +665,9 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Table and Justification">
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget" title="Budget Justification">
         <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
-                <h3>Budget Justification</h3>
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
                 <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions, amounts paid, and percentage of time/salary devoted to the Network. Network Investigators should indicate the percentage of time dedicated to the Network from their overall activities.</p>
             ]]>
