@@ -26,12 +26,13 @@ $egAnProtectUploads = true; //Setting this to false will expose all existing pro
 $wgUploadPath = "$wgScriptPath/AnnokiUploadAuth.php";
 
 //this is needed in order for users to be able to protect pages in their namespace or to delete pages
-$wgGroupPermissions['user']['protect']          = true;
+$wgGroupPermissions['user']['protect'] = true;
 $wgGroupPermissions['user']['delete'] = true;
 $wgGroupPermissions['user']['browsearchive'] = true;
 $wgGroupPermissions['user']['undelete'] = true;
 $wgGroupPermissions['user']['deletedhistory'] = true;
-$wgGroupPermissions['user']['createaccount'] = true;
+$wgGroupPermissions['user']['createaccount'] = false;
+$wgGroupPermissions['Manager']['createaccount'] = true;
 $wgGroupPermissions['user']['upload_by_url'] = true;
 $wgGroupPermissions['*']['createaccount'] = false;
 
@@ -53,8 +54,8 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
 $wgHooks['PageContentSaveComplete'][] = 'pageContentSaveComplete';
-
-
+$wgHooks['PageHistoryBeforeList'][] = 'pageHistoryBeforeList';
+$wgHooks['OutputPageParserOutput'][] = 'clearSubLevelTabs';
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
 if ($egAnProtectUploads){

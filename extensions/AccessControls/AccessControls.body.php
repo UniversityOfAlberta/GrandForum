@@ -632,4 +632,19 @@ function pageContentSaveComplete($article){
     }
 }
 
+function pageHistoryBeforeList($article, $context){
+    global $wgUser, $wgOut;
+    if(!$wgUser->isLoggedIn()){
+	$wgOut->clearHTML();
+	permissionError();
+	return true;
+    }
+}
+function clearSubLevelTabs($article){
+    global $wgUser;
+    if(!$wgUser->isLoggedIn()){
+	TabUtils::clearActions();
+    }
+    return true;
+}
 ?>

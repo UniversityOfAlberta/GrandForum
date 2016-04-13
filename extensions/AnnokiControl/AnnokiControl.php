@@ -193,12 +193,37 @@ function getTableName($baseName) {
 
 $wgHooks['SpecialPage_initList'][] = 'orderSpecialPages';
 function orderSpecialPages(&$aSpecialPages){
+    global $wgUser;
     $me = Person::newFromWgUser();
     $array1 = array();
     $array2 = array();
     $skip = false;
+    //print_r($wgUser->getGroups());
+
+
     foreach($aSpecialPages as $key => $page){
-        //echo "$key\n";
+	$SpecialPage = new $page();
+    //print_r($page ."\n");
+
+	$group = $SpecialPage->getFinalGroupName();
+	if(!$me->isLoggedIn() && 
+	  ($key != "Userlogin" && $key != "PasswordReset")){
+	    unset($aSpecialPages[$key]);
+	    continue;
+	}
+	elseif($me->isLoggedIn() && 
+	      ($group == "maintenance" || $group == "pages" ||
+	       $group == "changes" || $group == "redirects" ||
+	       $group == "highuse" || $group == "wiki" || 
+	       $page == "SpecialComparePages" || $page == "SpecialExport" ||
+	       $page == "SpecialWhatLinksHere" || $page == "SpecialImport" ||
+	       $page == "SpecialListFiles" || $page == "FileDuplicateSearchPage" ||
+	       $page == "ListDuplicatedFilesPage" || $page == "MIMEsearchPage" ||
+	       $page == "SpecialCreateAccount" || $page == "SpecialContributions" ||
+	       $page == "DeletedContributionsPage")){
+	    unset($aSpecialPages[$key]);
+	    continue;
+	}
         if(!$me->isRoleAtLeast(STAFF) && 
             ($key == "Log" || $key == "Listusers" ||
              $key == "Listgrouprights" || $key == "Contributions" ||
@@ -206,7 +231,7 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
-             $key == "CreateAccount")){
+             $key == "CreateAccount" || $page == "SpecialUndelete")){
             unset($aSpecialPages[$key]);
             continue;
         }
