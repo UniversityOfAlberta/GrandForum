@@ -7,9 +7,6 @@
         <Role role="STAFF+">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
-        <Role role="CF">
-            <SectionPermission id="comments" permissions="rw" />
-        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" project="CC2 TECH-TRANS" />
     </Permissions>
     <ReportSection id="comments" tooltip="Commercialization and Technology Transfer" name="CC2 Comments" blobSection="CC_PLANNING_2" type="EditableReportSection">

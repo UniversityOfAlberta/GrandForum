@@ -310,7 +310,7 @@ EOF;
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF) || $me->isRole(CF)){
+                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
                         $report = "";
                         switch($project->getName()){
                             case "CC1 K-MOB":

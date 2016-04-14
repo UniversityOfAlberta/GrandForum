@@ -7,9 +7,6 @@
         <Role role="STAFF+">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
-        <Role role="CF">
-            <SectionPermission id="comments" permissions="rw" />
-        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" project="CC3 T-WORK" />
     </Permissions>
     <ReportSection id="comments" tooltip="Transdisciplinary Working" name="CC3 Comments" blobSection="CC_PLANNING_3" type="EditableReportSection">
