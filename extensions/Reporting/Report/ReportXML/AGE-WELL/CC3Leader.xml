@@ -4,7 +4,10 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF+">
+        <Role role="STAFF+">
+            <SectionPermission id="comments" permissions="rw" />
+        </Role>
+        <Role role="CF">
             <SectionPermission id="comments" permissions="rw" />
         </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" project="CC3 T-WORK" />
