@@ -3592,7 +3592,8 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a leader of a given Project
      */
     function leadershipOf($project, $type=null) {
-        if($project instanceof Project){
+        if($project instanceof Project ||
+           $project instanceof Theme){
             $p = $project;
         }
         else{
@@ -3617,7 +3618,7 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        if(!$p->clear){
+        if($p instanceof Project && !$p->clear){
             foreach($p->getPreds() as $pred){
                 if($this->leadershipOf($pred, $type)){
                     return true;

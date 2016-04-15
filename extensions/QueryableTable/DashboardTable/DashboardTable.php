@@ -267,7 +267,7 @@ class DashboardTable extends QueryableTable{
                                     }
                                     if($cell instanceof PublicationCell){
                                         $paper = Paper::newFromId($item);
-                                        $type = $paper->getCCVType();
+                                        $type = $paper->getType();
                                         if(!isset($firstTimeType[$type])){
                                             if(count($firstTimeType) > 0){
                                                 $details .= "</ul></li>\n";
