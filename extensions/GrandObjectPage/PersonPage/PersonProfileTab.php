@@ -559,7 +559,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if($person->isRoleAtMost(HQP)){
+        if($person->isRole(HQP) && $person->isRoleAtMost(HQP)){
             $positions = array("Other", 
                                "Graduate Student - Master's", 
                                "Graduate Student - Doctoral", 
