@@ -11,7 +11,7 @@
             foreach($people as $person){
                 if($person->isRoleDuring(HQP, $start, $end) && !$person->leadershipOf($project) && !$person->isRoleDuring(NI, $start, $end)){
                     if(!$person->isRole(CHAMP)){
-                        $this->array[] = $person->getName();
+                        $this->array[$person->getName()] = $person->getName();
                     }
                 }
             }            
