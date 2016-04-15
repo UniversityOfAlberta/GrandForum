@@ -587,7 +587,7 @@ EOF;
         $departments = Person::getAllDepartments();
         $organizations = $uniNames;
         sort($organizations);
-        if($person->isRoleAtMost(HQP)){
+        if($person->isRole(HQP) && $person->isRoleAtMost(HQP)){
             $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
         }
         else{
