@@ -28,7 +28,7 @@
                     $contributions = $project->getContributions();
                     $values = array();
                     foreach($contributions as $contribution){
-                        if($contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
+                        if($contribution->getEndDate() >= $start && $contribution->getStartDate() <= $end){
                             $people = $contribution->getPeople();
                             foreach($people as $p){
                                 if($p instanceof Person && $p->getId() == $person->getId()){
@@ -49,7 +49,7 @@
                 $contributions = $project->getContributions();
                 $values = array();
                 foreach($contributions as $contribution){
-                    if($contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
+                    if($contribution->getEndDate() >= $start && $contribution->getStartDate() <= $end){
                         $values['All'][""][] = $contribution->getId();
                     }
                 }
