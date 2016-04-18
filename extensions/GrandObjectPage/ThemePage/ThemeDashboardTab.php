@@ -36,7 +36,6 @@ class ThemeDashboardTab extends AbstractTab {
             $this->html .= "<div style='overflow: auto;'>";
             $multiDashboard = new MultiDashboardTable();
             $dashboard = new DashboardTable(THEME_PUBLIC_STRUCTURE, $theme);
-            $dashboard->filterCols(HEAD, array('Contributions'));
             $multiDashboard->add($dashboard, "Overall");
             foreach($theme->getProjects() as $project){
                 $dashboard = new DashboardTable(THEME_PUBLIC_STRUCTURE, $project);
@@ -52,7 +51,6 @@ class ThemeDashboardTab extends AbstractTab {
                 
                 $multiDashboard = new MultiDashboardTable();
                 $dashboard = new DashboardTable(THEME_PUBLIC_STRUCTURE, $theme, $i.'-01-01', $i.'-12-31');
-                $dashboard->filterCols(HEAD, array('Contributions'));
                 $multiDashboard->add($dashboard, "Overall");
                 foreach($theme->getProjects() as $project){
                     $dashboard = new DashboardTable(THEME_PUBLIC_STRUCTURE, $project, $i.'-01-01', $i.'-12-31');
