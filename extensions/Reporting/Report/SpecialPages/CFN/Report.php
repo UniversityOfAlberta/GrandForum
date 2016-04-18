@@ -34,7 +34,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        $hqps = $person->getHQPDuring(REPORTING_CYCLE_START, REPORTING_NCE_END);
+        $hqps = $person->getHQPDuring(REPORTING_CYCLE_START, REPORTING_NCE_PRODUCTION);
         $projects = $person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         if($person->isRole(PL) && !$person->isRole(HQP)){
             foreach($person->leadership() as $project){
