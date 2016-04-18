@@ -223,7 +223,9 @@ class Theme {
     function getPapers($category="all", $startRange = false, $endRange = false){
         $papers = array();
         foreach($this->getProjects() as $project){
-            $papers = array_merge($papers, $project->getPapers($category, $startRange, $endRange));
+            foreach($project->getPapers($category, $startRange, $endRange) as $paper){
+                $papers[$paper->getId()] = $paper;
+            }
         }
         return $papers;
     }
@@ -231,7 +233,9 @@ class Theme {
     function getMultimedia(){
         $multimedia = array();
         foreach($this->getProjects() as $project){
-            $multimedia = array_merge($multimedia, $project->getMultimedia());
+            foreach($project->getMultimedia() as $mult){
+                $multimedia[$mult->getId()] = $mult;
+            }
         }
         return $multimedia;
     }
@@ -239,7 +243,9 @@ class Theme {
     function getContributions(){
         $contributions = array();
         foreach($this->getProjects() as $project){
-            $contributions = array_merge($contributions, $project->getContributions());
+            foreach($project->getContributions() as $contribution){
+                $contributions[$contribution->getId()] = $contribution;
+            }
         }
         return $contributions;
     }
@@ -263,7 +269,9 @@ class Theme {
     function getSubProjects(){
         $subProjects = array();
         foreach($this->getProjects() as $project){
-            $subProjects = array_merge($subProjects, $project->getSubProjects());
+            foreach($project->getSubProjects() as $sub){
+                $subProjects[$sub->getId()] = $sub;
+            }
         }
         return $subProjects;
     }
@@ -271,7 +279,9 @@ class Theme {
     function getAllPeople($filter = null){
         $people = array();
         foreach($this->getProjects() as $project){
-            $people = array_merge($people, $project->getAllPeople($filter));
+            foreach($project->getAllPeople($filter) as $person){
+                $people[$person->getName()] = $person;
+            }
         }
         return $people;
     }
@@ -279,7 +289,9 @@ class Theme {
     function getAllPeopleDuring($filter = null, $startRange = false, $endRange = false, $includeManager=false){
         $people = array();
         foreach($this->getProjects() as $project){
-            $people = array_merge($people, $project->getAllPeopleDuring($filter, $startRange, $endRange, $includeManager));
+            foreach($project->getAllPeopleDuring($filter, $startRange, $endRange, $includeManager) as $person){
+                $people[$person->getName()] = $person;
+            }
         }
         return $people;
     }

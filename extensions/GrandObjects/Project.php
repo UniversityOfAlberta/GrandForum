@@ -26,6 +26,7 @@ class Project extends BackboneModel {
     var $budgets;
     var $deleted;
     var $effectiveDate;
+    var $theme;
     private $succ;
     private $preds;
     private $peopleCache = null;
@@ -1040,17 +1041,22 @@ EOF;
 
     //get the project challenge
     function getChallenge(){
-        $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
-                                          'grand_themes' => 't'),
-                                    array('t.id'),
-                                    array('t.id' => EQ(COL('pc.challenge_id')),
-                                          'pc.project_id' => EQ($this->id)),
-                                    array('pc.id' => 'DESC'),
-                                    array(1));
-        if(count($data) > 0){
-            return Theme::newFromId($data[0]['id']);
+        if($this->theme == null){
+            $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
+                                              'grand_themes' => 't'),
+                                        array('t.id'),
+                                        array('t.id' => EQ(COL('pc.challenge_id')),
+                                              'pc.project_id' => EQ($this->id)),
+                                        array('pc.id' => 'DESC'),
+                                        array(1));
+            if(count($data) > 0){
+                $this->theme = Theme::newFromId($data[0]['id']);
+            }
+            else{
+                $this->theme = Theme::newFromName("Not Specified");
+            }
         }
-        return Theme::newFromName("Not Specified");
+        return $this->theme;
     } 
     
     // Returns the description of the Project
