@@ -1,6 +1,7 @@
 <?php
 
 require_once("DashboardTableTypes.php");
+require_once("MultiDashboardTable.php");
 
 class DashboardTable extends QueryableTable{
     
