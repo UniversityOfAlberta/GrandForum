@@ -53,6 +53,7 @@ class Person extends BackboneModel {
     var $contributions;
     var $multimedia;
     var $aliases = false;
+    var $roleHistory;
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
@@ -2007,10 +2008,14 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                $data = DBFunctions::select(array('grand_roles'),
-                                            array('*'),
-                                            array('user_id' => $this->id),
-                                            array('end_date' => 'DESC'));
+                if($this->roleHistory === null){
+                    $data = DBFunctions::select(array('grand_roles'),
+                                                array('*'),
+                                                array('user_id' => $this->id),
+                                                array('end_date' => 'DESC'));
+                    $this->roleHistory = $data;
+                }
+                $data = $this->roleHistory;
             }
             else{
                 $sql = "SELECT *
@@ -2202,12 +2207,18 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        
-        $sql = "SELECT *
-                FROM grand_roles
-                WHERE user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
+        $cacheId = "personRolesDuring".$this->id."_".$date;
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
+            $sql = "SELECT *
+                    FROM grand_roles
+                    WHERE user_id = '{$this->id}'
+                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+            $data = DBFunctions::execSQL($sql);
+            Cache::store($cacheId, $data);
+        }
         $roles = array();
         foreach($data as $row){
             $roles[] = new Role(array(0 => $row));
