@@ -152,10 +152,16 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" title="Networking Activities" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" title="Networking/Collaborations" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>

@@ -3,6 +3,7 @@
 class ProjectRolesCell extends Cell{
     
     function ProjectRolesCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+        global $config;
         $start = "0000";
         $end = "2100";
         if(count($params) == 1){
@@ -46,8 +47,9 @@ class ProjectRolesCell extends Cell{
                     break;
                 }
             }
+            $committees = $config->getValue('committees');
             foreach($person->getRoles() as $role){
-                if($role->getRole() == HQP || $role->getRole() == NI || $role->getRole() == CHAMP){
+                if(!isset($committees[$role->getRole()])){
                     $values[] = $role->getRole();
                 }
             }

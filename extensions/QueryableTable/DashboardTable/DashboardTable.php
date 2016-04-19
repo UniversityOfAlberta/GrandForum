@@ -1,6 +1,7 @@
 <?php
 
 require_once("DashboardTableTypes.php");
+require_once("MultiDashboardTable.php");
 
 class DashboardTable extends QueryableTable{
     
@@ -267,7 +268,7 @@ class DashboardTable extends QueryableTable{
                                     }
                                     if($cell instanceof PublicationCell){
                                         $paper = Paper::newFromId($item);
-                                        $type = $paper->getCCVType();
+                                        $type = $paper->getType();
                                         if(!isset($firstTimeType[$type])){
                                             if(count($firstTimeType) > 0){
                                                 $details .= "</ul></li>\n";

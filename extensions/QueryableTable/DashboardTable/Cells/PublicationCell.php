@@ -11,7 +11,7 @@ abstract class PublicationCell extends DashboardCell {
             foreach($values as $item){
                 $paper = Paper::newFromId($item);
                 $status = $paper->getStatus();
-                $value = $paper->getCCVType();
+                $value = $paper->getType();
                 $data = $paper->getData();
                 $extra = 0;
                 if(!isset($data['peer_reviewed']) || $data['peer_reviewed'] == "No"){

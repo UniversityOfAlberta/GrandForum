@@ -323,6 +323,10 @@ class AddMember extends SpecialPage{
                   ->append($positionRow)
                   ->append($candRow)
                   ->append($submitRow);
+                  
+        if(!$me->isRoleAtLeast(STAFF)){
+            $formTable->getElementById("cand_row")->attr('style', 'display:none;');
+        }
         
         $formContainer->append($formTable);
         return $formContainer;

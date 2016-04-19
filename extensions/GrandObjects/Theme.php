@@ -154,6 +154,30 @@ class Theme {
         return $this->color;
     }
     
+    function getCreated(){
+        $start = "9999";
+        foreach($this->getProjects() as $project){
+            $start = min($start, $project->getCreated());
+        }
+        return $start;
+    }
+    
+    function isDeleted(){
+        $isDeleted = true;
+        foreach($this->getProjects() as $project){
+            $isDeleted = ($isDeleted && $project->isDeleted());
+        }
+        return $isDeleted;
+    }
+    
+    function getDeleted(){
+        $deleted = "0000";
+        foreach($this->getProjects() as $project){
+            $deleted = max($deleted, $project->getDeleted());
+        }
+        return $deleted;
+    }
+    
     /**
      * Returns all of the leaders regardless of their type
      * @return array An array of all leaders
@@ -196,6 +220,36 @@ class Theme {
         return $leaders;
     }
     
+    function getPapers($category="all", $startRange = false, $endRange = false){
+        $papers = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getPapers($category, $startRange, $endRange) as $paper){
+                $papers[$paper->getId()] = $paper;
+            }
+        }
+        return $papers;
+    }
+    
+    function getMultimedia(){
+        $multimedia = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getMultimedia() as $mult){
+                $multimedia[$mult->getId()] = $mult;
+            }
+        }
+        return $multimedia;
+    }
+    
+    function getContributions(){
+        $contributions = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getContributions() as $contribution){
+                $contributions[$contribution->getId()] = $contribution;
+            }
+        }
+        return $contributions;
+    }
+    
     /**
      * Returns all of the Projects in this Theme
      * @return array The Projects in this Theme
@@ -210,6 +264,36 @@ class Theme {
         }
         ksort($return);
         return $return;
+    }
+    
+    function getSubProjects(){
+        $subProjects = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getSubProjects() as $sub){
+                $subProjects[$sub->getId()] = $sub;
+            }
+        }
+        return $subProjects;
+    }
+    
+    function getAllPeople($filter = null){
+        $people = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getAllPeople($filter) as $person){
+                $people[$person->getName()] = $person;
+            }
+        }
+        return $people;
+    }
+    
+    function getAllPeopleDuring($filter = null, $startRange = false, $endRange = false, $includeManager=false){
+        $people = array();
+        foreach($this->getProjects() as $project){
+            foreach($project->getAllPeopleDuring($filter, $startRange, $endRange, $includeManager) as $person){
+                $people[$person->getName()] = $person;
+            }
+        }
+        return $people;
     }
     
     /**

@@ -8,8 +8,8 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         $positions = array_filter(explode("|", $this->getAttr('pos', "")));
         $subType = $this->getAttr('subType', $this->getAttr('subRole', ""));
         $project = Project::newFromName($this->getAttr('project', ""));
-        $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
-        $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");
+        $start = $this->getAttr("startDate", $this->getReport()->year."-04-01 00:00:00");
+        $end = $this->getAttr("endDate", ($this->getReport()->year+1)."-03-31 23:59:59");
         foreach($person->getHQPDuring($start, $end) as $hqp){
             if((count($positions) == 0 || array_search($hqp->getPosition(), $positions) !== false) &&
                ($subType == "" || $hqp->isSubRole($subType))){

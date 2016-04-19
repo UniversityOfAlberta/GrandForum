@@ -53,6 +53,7 @@ class Person extends BackboneModel {
     var $contributions;
     var $multimedia;
     var $aliases = false;
+    var $roleHistory;
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
@@ -590,7 +591,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
-	global $config;
+        global $config;
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -1150,7 +1151,7 @@ class Person extends BackboneModel {
      * @return int The id of this Person
      */
     function getId(){
-	global $config;
+        global $config;
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return 0;
@@ -1458,18 +1459,49 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
 
-    function getNameForProduct(){
-	global $config;
-	if($this->getId() == 0){
-	    return $this->getNameForForms();
-	}
-        $format = strtolower($config->getValue("nameFormat"));
-	$format = str_replace("%first", $this->getFirstName(), $format);
-        $format = str_replace("%last", $this->getLastName(), $format);
-        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
-        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
-	return $format;
+    private function formatName($matches){
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            $match1 = str_replace("%first", $this->getFirstName(), $match1);
+            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+            $match1 = str_replace("%last", $this->getLastName(), $match1);
+            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+
+            $match2 = str_replace("%first", "", $match2);
+            $match2 = str_replace("%middle", "", $match2);
+            $match2 = str_replace("%last", "", $match2);
+            $match2 = str_replace("%f", "", $match2);
+            $match2 = str_replace("%m", "", $match2);
+            $match2 = str_replace("%l", "", $match2);
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("",$matches);
     }
+
+    function getNameForProduct(){
+        global $config;
+        if($this->getId() == 0){
+            return $this->getNameForForms();
+        }
+        $firstname = $this->getFirstName();
+        $middlename = $this->getMiddleName();
+        $lastname = $this->getLastName();
+
+        $regex = "/\{.*?\}/";
+        $format = strtolower($config->getValue("nameFormat"));
+        $format = preg_replace_callback($regex,"self::formatName",$format);
+        return $format;
+    }
+
+
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
@@ -1976,10 +2008,14 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                $data = DBFunctions::select(array('grand_roles'),
-                                            array('*'),
-                                            array('user_id' => $this->id),
-                                            array('end_date' => 'DESC'));
+                if($this->roleHistory === null){
+                    $data = DBFunctions::select(array('grand_roles'),
+                                                array('*'),
+                                                array('user_id' => $this->id),
+                                                array('end_date' => 'DESC'));
+                    $this->roleHistory = $data;
+                }
+                $data = $this->roleHistory;
             }
             else{
                 $sql = "SELECT *
@@ -2223,12 +2259,18 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        
-        $sql = "SELECT *
-                FROM grand_roles
-                WHERE user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
+        $cacheId = "personRolesDuring".$this->id."_".$date;
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
+            $sql = "SELECT *
+                    FROM grand_roles
+                    WHERE user_id = '{$this->id}'
+                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+            $data = DBFunctions::execSQL($sql);
+            Cache::store($cacheId, $data);
+        }
         $roles = array();
         foreach($data as $row){
             $roles[] = new Role(array(0 => $row));
@@ -2977,7 +3019,7 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                if($this->historyHqps != null){
+                if($this->historyHqps !== null){
                     return $this->historyHqps;
                 }
                 $sql = "SELECT *
@@ -3614,7 +3656,8 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a leader of a given Project
      */
     function leadershipOf($project, $type=null) {
-        if($project instanceof Project){
+        if($project instanceof Project ||
+           $project instanceof Theme){
             $p = $project;
         }
         else{
@@ -3639,7 +3682,7 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        if(!$p->clear){
+        if($p instanceof Project && !$p->clear){
             foreach($p->getPreds() as $pred){
                 if($this->leadershipOf($pred, $type)){
                     return true;
@@ -3929,13 +3972,13 @@ class Person extends BackboneModel {
                     AND year = '{$year}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-	            $this->isEvaluator[$year] = true;
-	        }
-	        else {
-	            $this->isEvaluator[$year] = false;
-	        }
-	    }
-	    return $this->isEvaluator[$year];
+                $this->isEvaluator[$year] = true;
+            }
+            else {
+                $this->isEvaluator[$year] = false;
+            }
+        }
+        return $this->isEvaluator[$year];
     }
     
     /**
@@ -4020,6 +4063,16 @@ class Person extends BackboneModel {
         ksort($subs);
         $subs = array_values($subs);
         return $subs;
+    }
+    
+    function isEvaluatorOf($object, $type, $year = YEAR, $class = "Person"){
+        $evals = $this->getEvaluates($type, $year, $class);
+        foreach($evals as $eval){
+            if($eval == $object){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
