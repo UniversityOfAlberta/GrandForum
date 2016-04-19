@@ -136,7 +136,7 @@ Products = Backbone.Collection.extend({
         }
         else if(_.isArray(this.url)){
             this.temp = [];
-            this.fetchMultiple(0, 100); // Fetch 100 at a time
+            this.fetchMultiple(0, 500); // Fetch 500 at a time
         }
         else{
             return Backbone.Collection.prototype.fetch.call(this, options);
@@ -151,6 +151,8 @@ Products = Backbone.Collection.extend({
             self.temp = self.temp.concat(data);
             if(_.size(data) == count){
                 // There's probably more, so keep calling
+                //self.reset(self.temp, {silent: true});
+                //self.trigger('partialSync', start, count);
                 self.fetchMultiple(start + count, count);
             }
             else{

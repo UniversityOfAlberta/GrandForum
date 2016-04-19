@@ -438,11 +438,15 @@ function wfReportTimeOld() {
 
 // http://stackoverflow.com/questions/4757061/which-ics-parser-written-in-php-is-good
 function icsToArray($icsFile) {
+    $icsFile = str_replace("\r", "", $icsFile);
     $icsFile = str_replace("\n ", "", $icsFile);
     $icsData = explode("BEGIN:", $icsFile);
 
     foreach($icsData as $key => $value) {
-        $icsDatesMeta[$key] = explode("\n", $value);
+        $data = explode("\n", $value);
+        if($data[0] == "VEVENT"){
+            $icsDatesMeta[$key] = explode("\n", $value);
+        }
     }
 
     foreach($icsDatesMeta as $key => $value) {
@@ -459,14 +463,20 @@ function icsToArray($icsFile) {
                         foreach($values as $k => $val){
                             if(strstr($val, "=") !== false){
                                 $val = explode("=", $val);
-                                $array[$val[0]] = $val[1];
+                                $array[$val[0]] = str_replace('\n', "\n", 
+                                                  str_replace('\,', ',', 
+                                                  str_replace('\;', ';', $val[1])));
                             }
                         }
-                        $array['VALUE'] = $subValueArr[1];
+                        $array['VALUE'] = str_replace('\n', "\n", 
+                                          str_replace('\,', ',', 
+                                          str_replace('\;', ';', $subValueArr[1])));
                         $icsDates[$key][$values[0]][] = $array;
                     }
                     else{
-                        $icsDates[$key][$value] = $subValueArr[1];
+                        $icsDates[$key][$value] = str_replace('\n', "\n", 
+                                                  str_replace('\,', ',', 
+                                                  str_replace('\;', ';', $subValueArr[1])));
                     }
                 }
             }

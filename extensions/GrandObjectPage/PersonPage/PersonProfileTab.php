@@ -35,7 +35,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $extra[] = $this->showDoughnut($this->person, $this->visibility);
         $extra[] = $this->showTwitter($this->person, $this->visibility);
         
-        
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
             if($e == ""){
@@ -44,6 +43,25 @@ class PersonProfileTab extends AbstractEditableTab {
         }
         $this->html .= "</td><td id='firstRight' valign='top' width='40%' style='padding-top:15px;padding-left:15px;'>".implode("<hr />", $extra)."</td></tr>";
         $this->html .= "</table>";
+        $this->html .= "<script type='text/javascript'>
+            setInterval(function(){
+                var table = $('#personProducts').DataTable();
+                if($('#bodyContent').width() < 650){
+                    $('td#firstRight').hide();
+                    $('.chordChart').hide();
+                    
+                    table.column(1).visible(false);
+                    table.column(2).visible(false);
+                }
+                else{
+                    $('td#firstRight').show();
+                    $('.chordChart').show();
+                    
+                    table.column(1).visible(true);
+                    table.column(2).visible(true);
+                }
+            }, 33);
+        </script>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
     }
@@ -329,7 +347,7 @@ EOF;
                                         var cardWidth = $('#firstLeft div#card').width();
                                         var widthDiff = leftWidth - cardWidth;
                                         newWidth = Math.min(maxWidth, widthDiff);
-                                        if($('#vis{$chord->index}').is(':visible') && width != newWidth){
+                                        if($('#vis{$chord->index}').is(':visible') && (width != newWidth || $('#vis{$chord->index} svg').width() != width)){
                                             width = newWidth;
                                             height = width;
                                             if(width < 100){
@@ -344,7 +362,7 @@ EOF;
                                             $('#vis{$chord->index}').height(Math.max(1,height));
                                             $('#vis{$chord->index}').width(Math.max(1,width));
                                             lastWidth = $('#firstLeft').width();
-                                            $('#contact').height(Math.max(height, $('#contact > #card').height()));
+                                            $('#contact').height(Math.max(172, Math.max(height, $('#contact > #card').height())));
                                         }
                                     }, 100);
                                 });
@@ -410,7 +428,7 @@ EOF;
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personProducts').dataTable({
+                    var personProducts = $('#personProducts').dataTable({
                         'order': [[ 1, 'desc' ]],
                         'autoWidth': false
                     });
@@ -478,7 +496,7 @@ EOF;
     */
     function showContact($person, $visibility){
         global $wgOut, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
-        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;height:172px;min-height:150px'>";
+        $this->html .= "<div id='contact' style='white-space: nowrap;position:relative;min-height:172px'>";
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>

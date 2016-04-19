@@ -35,6 +35,7 @@ Feature: Products
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
+        And I wait "500"
         And I select "Public" from "access"
         And I press "Save Publication"
         Then I should see "New Publication"
@@ -53,10 +54,14 @@ Feature: Products
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
+        And I wait "500"
+        And I select "NI User2" from "rightauthors"
+        And I press "<<"
         And fill in "description" with "This is an edited description"
         And I press "Save Publication"
         Then I wait "1000"
         Then I should see "This is an edited description"
+        Then I should see "NI User2"
         
     Scenario: Deleting a Publication
         Given I am logged in as "NI.User1" using password "NI.Pass1"

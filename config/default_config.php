@@ -133,7 +133,8 @@
         //'Solr',
         //'TravelForm',
         //'AdvancedSearch',
-        'CCVExport'
+        'CCVExport',
+	'MyThreads'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,

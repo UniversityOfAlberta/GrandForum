@@ -180,7 +180,8 @@ EOF;
         <thead>
         <tr>
             <th width="27%">Name</th>
-            <th width="15%">Partners</th>
+            <th width="10%">Partners</th>
+            <th width="5%">Types</th>
             <th width="15%">Related Members</th>
             <th width="15%">Related Projects</th>
             <th width="10%">Updated</th>
@@ -195,7 +196,7 @@ EOF;
         $dialog_js =<<<EOF
             <script type="text/javascript">
 EOF;
-        $contributions = Contribution::getContributionsDuring(null, $this->year-1);
+        $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
         $totalCash = 0;
         $totalKind = 0;
         $totalTotal = 0;
@@ -212,12 +213,14 @@ EOF;
             $partners = $contr->getPartners();
 
             $partners_array = array();
+            $subType_array = array();
             $details = "";
             foreach($partners as $p){
                 $org = $p->getOrganization();
                 if(!empty($org)){
                     $partners_array[] = $org;
                 }
+                $subType_array[] = $contr->getHumanReadableSubTypeFor($p);
                 
                 $tmp_type = $contr->getTypeFor($p);
                 $hrType = $contr->getHumanReadableTypeFor($p);
@@ -265,6 +268,7 @@ EOF;
                 }
             }
             $people_names = implode(', ', $people_names);
+            $subType_names = implode(', ', $subType_array);
 
             $project_names = array();
             foreach ($projects as $p) {
@@ -289,6 +293,7 @@ EOF;
                     <tr>
                         <td><span class="contribution_descr" title="{$descr}">{$name}</span></td>
                         <td>{$partner_names}</td>
+                        <td>{$subType_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
                         
@@ -309,7 +314,7 @@ EOF;
         $html .= "</tbody>
         <tfoot>
             <tr>
-                <th colspan='5'></th>
+                <th colspan='6'></th>
                 <th>$".number_format($totalCash, 2)."</th>
                 <th>$".number_format($totalKind, 2)."</th>
                 <th>$".number_format($totalTotal, 2)."</th>
@@ -329,6 +334,7 @@ EOF;
                                 <th>Project Name</th>
                                 <th>Contribution</th>
                                 <th>Partner</th>
+                                <th>Type</th>
                                 <th>Cash</th>
                                 <th>In-Kind</th>
                                 <th>Sub-Total</th>
@@ -339,7 +345,7 @@ EOF;
                             <tbody>";
         foreach($projects as $project){
             //if($project->getPhase() == 1){
-                $contributions = $project->getContributions();
+                $contributions = $project->getContributionsDuring($this->from, $this->to);
                 foreach($contributions as $contribution){
                     $partners = $contribution->getPartners();
                     $nRows = max(1, count($partners));
@@ -349,6 +355,7 @@ EOF;
                     if(count($partners) > 0){
                         foreach($partners as $i => $partner){
                             $this->html .= "<td>{$partner->organization}</td>
+                                            <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
                                             <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";

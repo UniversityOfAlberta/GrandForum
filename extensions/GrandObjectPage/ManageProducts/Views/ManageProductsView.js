@@ -68,6 +68,10 @@ ManageProductsView = Backbone.View.extend({
         this.bibtexDialog.dialog('open');
     },
     
+    uploadCalendar: function(){
+        this.calendarDialog.dialog('open');
+    },
+    
     productChanged: function(){
         // Count how many products there are dirty
         var sum = 0;
@@ -146,6 +150,8 @@ ManageProductsView = Backbone.View.extend({
         }, this));
         // Then add new ones
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
+        //var start = new Date().getTime();
+        var frag = document.createDocumentFragment();
         this.products.each($.proxy(function(p, i){
             if(!_.contains(models, p.id)){
                 // Product isn't in the table yet
@@ -155,15 +161,18 @@ ManageProductsView = Backbone.View.extend({
                 }
                 var row = new ManageProductsViewRow({model: p, parent: this});
                 this.subViews.push(row);
-                this.$("#productRows").append(row.$el);
+                frag.appendChild(row.el);
             }
         }, this));
         _.each(this.subViews, function(row){
             row.render();
         });
-        var end = new Date();
+        this.$("#productRows").append(frag);
         this.createDataTable(order, searchStr);
         this.productChanged();
+        this.$("#listTable").show();
+        //var end = new Date().getTime();
+        //console.log(end - start);
     },
     
     cacheRows: function(){
@@ -382,7 +391,8 @@ ManageProductsView = Backbone.View.extend({
         "click #addProductButton": "addProduct",
         "click #addFromDOIButton": "addFromDOI",
         "click #uploadCCVButton": "uploadCCV",
-        "click #importBibTexButton": "importBibTeX"
+        "click #importBibTexButton": "importBibTeX",
+        "click #uploadCalendarButton": "uploadCalendar"
     },
     
     render: function(){
@@ -759,6 +769,58 @@ ManageProductsView = Backbone.View.extend({
 	                }, this)
 	            }
 	        ]
+	    });
+	    this.calendarDialog = this.$("#calendarDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "800px",
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Upload": $.proxy(function(e){
+	                var button = $(e.currentTarget);
+	                button.prop("disabled", true);
+	                $("div.throbber", this.calendarDialog).show();
+	                icsUploaded = $.proxy(function(response, error){
+	                    // Purposefully global so that iframe can access
+	                    if(error == undefined || error == ""){
+	                        this.products.add(response.created, {silent: true});
+	                        this.addRows();
+	                        clearAllMessages();
+                            var nCreated = response.created.length;
+                            var nError = response.error.length;
+                            if(nCreated > 0){
+	                            addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created");
+	                        }
+	                        if(nError > 0){
+	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+	                        }
+	                        button.prop("disabled", false);
+	                        $("div.throbber", this.calendarDialog).hide();
+	                        this.calendarDialog.dialog('close');
+	                    }
+	                    else{
+	                        button.prop("disabled", false);
+	                        $("div.throbber", this.calendarDialog).hide();
+	                        clearAllMessages();
+	                        addError(error);
+	                        this.calendarDialog.dialog('close');
+	                    }
+	                }, this);
+	                var form = $("form", this.calendarDialog);
+	                form.submit();
+	            }, this),
+	            "Cancel": $.proxy(function(){
+	                this.calendarDialog.dialog('close');
+	            }, this)
+	        }
 	    });
 	    $(window).resize($.proxy(function(){
 	        this.editDialog.dialog({height: $(window).height()*0.75});
