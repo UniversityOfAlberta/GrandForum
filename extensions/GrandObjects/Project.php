@@ -28,6 +28,7 @@ class Project extends BackboneModel {
     var $deleted;
     var $effectiveDate;
     var $theme;
+    var $subProjects;
     private $succ;
     private $preds;
     private $peopleCache = null;
@@ -1432,19 +1433,21 @@ EOF;
      * @return array An array of this Project's current Sub-Projects
      */
     function getSubProjects(){
-        $subprojects = array();
+        if($this->subProjects === null){
+            $this->subProjects = array();
 
-        $data = DBFunctions::select(array('grand_project'),
-                                    array('*'),
-                                    array('parent_id' => EQ($this->id)),
-                                    array('name' => 'ASC'));
-        foreach($data as $row){
-            $subproject = Project::newFromId($row['id']);
-            if(!$subproject->isDeleted()){
-                $subprojects[] = $subproject;
+            $data = DBFunctions::select(array('grand_project'),
+                                        array('*'),
+                                        array('parent_id' => EQ($this->id)),
+                                        array('name' => 'ASC'));
+            foreach($data as $row){
+                $subproject = Project::newFromId($row['id']);
+                if(!$subproject->isDeleted()){
+                    $this->subProjects[] = $subproject;
+                }
             }
         }
-        return $subprojects;
+        return $this->subProjects;
     }
     
     /**
