@@ -12,7 +12,7 @@ class PeopleWikiTab extends AbstractTab {
     }
     
     function uploadFile(){
-        global $wgRequest, $wgUser, $wgMessage, $wgServer, $wgScriptPath;
+        global $wgRequest, $wgUser, $wgMessage, $wgServer, $wgScriptPath, $config;
         
         $name = $this->table." ".$_FILES['wpUploadFile']['name'];
 
@@ -46,7 +46,7 @@ class PeopleWikiTab extends AbstractTab {
 	    else{
 	        $wgMessage->addError("There was a problem uploading the file");
 	    }
-	    redirect("{$wgServer}{$wgScriptPath}/index.php/CANet:ALL_{$this->table}?tab=wiki");
+	    redirect("{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki");
     }
     
     function generateBody(){
@@ -103,7 +103,7 @@ class PeopleWikiTab extends AbstractTab {
         </div>
         <div id='newFileDiv' style='display:none;'>
             <h2>Upload File</h2>
-            <form action='$wgServer$wgScriptPath/index.php/CANet:ALL_{$this->table}?tab=wiki' method='post' enctype='multipart/form-data' onSubmit='clickButton'>
+            <form action='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki' method='post' enctype='multipart/form-data' onSubmit='clickButton'>
             <table>
                 <tr>
                     <td><b>File:</b></td>

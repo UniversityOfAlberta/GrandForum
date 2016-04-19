@@ -16,7 +16,7 @@ ThreadView = Backbone.View.extend({
     },
 
     back: function(){
-	document.location = "http://grand.cs.ualberta.ca/canet/index.php/Special:MyThreads";
+	document.location = wgServer+wgScriptPath+"/index.php/Special:MyThreads";
     },
 
     editThread: function(){
