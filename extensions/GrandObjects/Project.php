@@ -7,6 +7,7 @@
 class Project extends BackboneModel {
 
     static $cache = array();
+    static $projectCache = array();
 
     var $id;
     var $evolutionId;
@@ -288,22 +289,25 @@ class Project extends BackboneModel {
         else{
             $subProjects = LIKE("%");
         }
-        $data = DBFunctions::select(array('grand_project'),
-                                    array('id', 'name'),
-                                    array('parent_id' => $subProjects),
-                                    array('name' => 'ASC'));
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['id']);
-            if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
-                    $projects[$project->getName()] = $project;
+        if(!isset(self::$projectCache[$subProjects])){
+            $data = DBFunctions::select(array('grand_project'),
+                                        array('id', 'name'),
+                                        array('parent_id' => $subProjects),
+                                        array('name' => 'ASC'));
+            $projects = array();
+            foreach($data as $row){
+                $project = Project::newFromId($row['id']);
+                if($project != null && $project->getName() != ""){
+                    if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
+                        $projects[$project->getName()] = $project;
+                    }
                 }
             }
+            ksort($projects);
+            $projects = array_values($projects);
+            self::$projectCache[$subProjects] = $projects;
         }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
+        return self::$projectCache[$subProjects];
     }
     
     static function getAllProjectsDuring($startDate, $endDate, $subProjects=false){

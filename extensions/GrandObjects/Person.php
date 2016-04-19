@@ -2955,7 +2955,7 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                if($this->historyHqps != null){
+                if($this->historyHqps !== null){
                     return $this->historyHqps;
                 }
                 $sql = "SELECT *
