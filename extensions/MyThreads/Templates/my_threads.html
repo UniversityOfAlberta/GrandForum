@@ -1,0 +1,29 @@
+<div id="editDialog" style="display:none;">
+<div id="editThreadView"></div>
+<div id="editPostView"></div>
+</div>
+<p>
+    This page is used to manage all your message threads.  Threads will show up in this list if one of the following conditions is true.
+    <ul>
+        <li>You are a member of the board/committee that is allowed to view the message board.</li>
+        <li>Your role is higher than the board/committee that is allowed to view the message board.</li>
+    </ul>
+</p>
+<div>
+    <button id="addThreadButton">Add Thread</button>
+</div>
+<br />
+<table id="listTable" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Title</th>
+	    <th>Posts</th>
+            <th width="5%">Thread Group</th>
+            <th width="5%" style="white-space: nowrap;">Created By</th>
+            <th width="5%" style="white-space: nowrap;">Date Created</th>
+        </tr>
+    </thead>
+    <tbody id="personRows">
+
+    </tbody>
+</table>
