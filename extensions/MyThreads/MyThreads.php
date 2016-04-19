@@ -15,22 +15,22 @@ class MyThreads extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
-		     'my_threads',
+             'my_threads',
                      'my_threads_row',
-		     'thread',
-		     'post',
-		     'thread_edit'
-		    );
+             'thread',
+             'post',
+             'thread_edit'
+            );
     }
     
     function getViews(){
         return array('Backbone/*',
-		     'MyThreadsView',
+             'MyThreadsView',
                      'MyThreadsRowView',
-		     'ThreadView',
+             'ThreadView',
                      'PostView',
-		     'ThreadEditView'
-		    );
+             'ThreadEditView'
+        );
     }
     
     function getModels(){

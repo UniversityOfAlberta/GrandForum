@@ -16,16 +16,16 @@ MyThreadsView = Backbone.View.extend({
 
     addThread: function(){
         var model = new Thread({author: {id: me.id, name:me.get('name'), url:me.get('url')}});
-	var model2 = new Post({'user_id':me.id});
+        var model2 = new Post({'user_id':me.id});
         var view = new ThreadEditView({el: $('#editThreadView', this.editDialog), model: model, isDialog: true});
-	var view2 = new PostView({el: $('#editPostView', this.editDialog), model: model2, isDialog: true});
+        var view2 = new PostView({el: $('#editPostView', this.editDialog), model: model2, isDialog: true});
         this.editDialog.view = view;
-	this.editDialog.view2 = view2;
-	this.editDialog.dialog({
- 		height: $(window).height()*0.65,
-            	width: 800,
-            	title: "Create Thread"
-            });
+        this.editDialog.view2 = view2;
+        this.editDialog.dialog({
+            height: $(window).height()*0.65,
+            width: 800,
+            title: "Create Thread"
+        });
         this.editDialog.dialog('open');
     },
     
@@ -41,16 +41,16 @@ MyThreadsView = Backbone.View.extend({
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
-	                                                 'aLengthMenu': [[-1], ['All']]});
-	    this.table.draw();
-	    this.table.order(order);
-	    this.table.search(searchStr);
-	    this.table.draw();
-	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+                                                     'aLengthMenu': [[-1], ['All']]});
+        this.table.draw();
+        this.table.order(order);
+        this.table.search(searchStr);
+        this.table.draw();
+        this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
     },
 
     events: {
-	"click #addThreadButton" : "addThread",
+        "click #addThreadButton" : "addThread",
     },
 
     render: function(){
@@ -78,36 +78,35 @@ MyThreadsView = Backbone.View.extend({
                         click: $.proxy(function(){
                         var m = this.editDialog.view.model.save(null, {
                             success: $.proxy(function(){
-				this.$(".throbber").hide();
-                		this.$("#saveThread").prop('disabled', false);
-				this.editDialog.view2.model.set("thread_id", m.responseJSON.id);
-				this.editDialog.view2.model.save(null, {
-                            	    success: $.proxy(function(){
-                                	this.$(".throbber").hide();
-                                	this.$("#saveThread").prop('disabled', false);
-                                    	this.editDialog.dialog("close");
-                                	clearAllMessages();
-					this.model.fetch()
-                			addSuccess("Thread has been successfully saved");
-                            	    }, this),
-                            	    error: $.proxy(function(){
-                                	this.$(".throbber").hide();
-                                	clearAllMessages();
-                                	addError("There was a problem saving the Post", true);
-                            	    }, this)
-                            	});
+                                this.$(".throbber").hide();
+                                this.$("#saveThread").prop('disabled', false);
+                                this.editDialog.view2.model.set("thread_id", m.responseJSON.id);
+                                this.editDialog.view2.model.save(null, {
+                                    success: $.proxy(function(){
+                                        this.$(".throbber").hide();
+                                        this.$("#saveThread").prop('disabled', false);
+                                        this.editDialog.dialog("close");
+                                        clearAllMessages();
+                                        this.model.fetch();
+                                        addSuccess("Thread has been successfully saved");
+                                    }, this),
+                                    error: $.proxy(function(){
+                                        this.$(".throbber").hide();
+                                        clearAllMessages();
+                                        addError("There was a problem saving the Post", true);
+                                    }, this)
+                                });
                             }, this),
                             error: $.proxy(function(){
-                		this.$(".throbber").hide();
-                		clearAllMessages();
-                		addError("There was a problem saving the Thread", true);
+                                this.$(".throbber").hide();
+                                clearAllMessages();
+                                addError("There was a problem saving the Thread", true);
                             }, this)
                         });
                     }, this)
                 }
             ]
-            });
-
+        });
         return this.$el;
     }
 });

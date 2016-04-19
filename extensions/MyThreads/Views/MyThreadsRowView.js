@@ -25,15 +25,14 @@ MyThreadsRowView = Backbone.View.extend({
     },
 
     events: {
+        
     },
 
     render: function(){
-        console.log("me");
-
         var isMine = {"isMine": false};
-	if(this.model.get('author').id == me.id){
-             isMine.isMine = true;
-	}
+        if(this.model.get('author').id == me.id){
+            isMine.isMine = true;
+        }
         var mod = _.extend(this.model.toJSON(), isMine);
         this.el.innerHTML = this.template(mod);
         return this.$el;

@@ -20,8 +20,8 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-	":id": "viewThread",
-	":id/edit": "editThread",
+        ":id": "viewThread",
+        ":id/edit": "editThread",
     }
 });
 

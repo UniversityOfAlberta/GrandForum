@@ -7,16 +7,16 @@ ThreadView = Backbone.View.extend({
                 this.$el.html("This Thread does not exist.");
             }, this)
         });
-	this.model.bind('sync', this.render);//change to on
+        this.model.bind('sync', this.render);//change to on
     },
 
     events: {
         "click #EditThreadButton": "editThread",
-	"click #BackButton": "back",
+        "click #BackButton": "back",
     },
 
     back: function(){
-	document.location = wgServer+wgScriptPath+"/index.php/Special:MyThreads";
+        document.location = wgServer+wgScriptPath+"/index.php/Special:MyThreads";
     },
 
     editThread: function(){
@@ -30,14 +30,14 @@ ThreadView = Backbone.View.extend({
             this.table.destroy();
             this.table = null;
         }
-	var models = _.pluck(this.model.get('posts'), 'id');
-	_.each(models, function(p){
-	    var mod = new Post({'id':p});
-	    mod.fetch();
-  	    var row = new PostView({model: mod, parent: this});
+        var models = _.pluck(this.model.get('posts'), 'id');
+        _.each(models, function(p){
+            var mod = new Post({'id':p});
+            mod.fetch();
+            var row = new PostView({model: mod, parent: this});
             this.$("#personRows").append(row.$el);
-	});
-	this.addNewRow();
+        });
+        this.addNewRow();
     },
 
     addNewRow: function(){
