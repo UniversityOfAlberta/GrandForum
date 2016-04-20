@@ -10,8 +10,8 @@ span#infinity:hover {
     cursor: pointer;
 }
 
-div.ui-dialog-content {
-    padding: 0 !important;
+#editDialog {
+    font-size: 9pt;
 }
 
 div.ui-dialog-buttonpane {
