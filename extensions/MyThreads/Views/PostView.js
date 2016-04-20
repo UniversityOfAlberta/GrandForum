@@ -14,7 +14,7 @@ PostView = Backbone.View.extend({
             this.render();
         }
         if(this.isDialog){
-            $('#submitPost').remove();
+            //this.$('#submitPost').remove();
         }
         this.listenTo(this.model, "sync", this.render);
     },

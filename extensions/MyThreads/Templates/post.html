@@ -1,4 +1,4 @@
-<% if(id != null) {%>
+<% if(id != null){ %>
     <div class="thread-message" width="100%">
         <table padding="0">
         <tbody>
@@ -26,12 +26,16 @@
             <%= nl2br(message) %>
         </div>
     </div>
-<%} else{ %>
-    <h2>Reply to Thread</h2>
+<% } else { %>
+    <% if(!this.isDialog){ %>
+        <h2 id="replyHeader">Reply to Thread</h2>
+    <% } %>
     <div id="addMessage" align="right">
         <%= HTML.TextArea(this, 'message', {style: 'max-height: 200px; resize: none;'}) %>
         <br>
-        <button id="submitPost" type="button">Add Reply</button>
+        <% if(!this.isDialog){ %>
+            <button id="submitPost" type="button">Add Reply</button>
+        <% } %>
         <span class="throbber" style="display:none;"></span>
     </div>
 <% } %>
