@@ -1,6 +1,10 @@
 <div>
-    <button id="EditThreadButton">Edit Thread</button> &nbsp; <button id="BackButton">Back</button>
-
+    <% if(me.get('id') == author.id || 
+       _.where(me.toJSON().roles, {role: 'Manager'}).length > 0 || 
+       _.where(me.toJSON().roles, {role: 'Admin'}).length > 0){ %>
+        <button id="EditThreadButton">Edit Thread</button> &nbsp; 
+    <% } %>
+    <button id="BackButton">Back</button>
 </div>
 <br />
 <div id="posts">

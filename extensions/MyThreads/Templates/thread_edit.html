@@ -5,15 +5,14 @@
 </tr>
 <tr>
     <td>
-        <% var def = (roles == "") ? ["Choose Group..."] : []; %>
+        <% var def = [{option: "Choose Group...", value: ""}]; %>
         <b>Group:</b>
     </td>
     <td><%= HTML.Select(this, 'roles', {options: def.concat(allowedRoles)}) %></td>
 </tr>
 </table>
-<br /><div id="threadPeople">
-
-</div>
+<br />
+<div id="threadPeople"></div>
 <% if(this.isDialog){ %>
 <h2>Description</h2>
 <% } %>

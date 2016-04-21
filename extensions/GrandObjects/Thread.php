@@ -60,6 +60,7 @@ class Thread extends BackboneModel {
             foreach($roles as $role){
                 $statement .= " OR `roles` LIKE '%\"{$role}\"%'";
             }
+            $statement .= " OR `roles` LIKE '%\"\"%'";
             $data = DBFunctions::execSQL($statement);
         }
         if(count($data) >0){
@@ -200,7 +201,7 @@ class Thread extends BackboneModel {
                 $users[] = $user->name;
             }
         }
-        if($me->isRoleAtLeast(ADMIN) || in_array($this->getRole(), $me->getAllowedRoles())){
+        if($me->isRoleAtLeast(ADMIN) || $me->getId() == $this->user_id){
             $status = DBFunctions::update('grand_threads',
                                           array('users'=>serialize($users),
                                                 'roles' =>serialize($this->roles),
@@ -242,7 +243,8 @@ class Thread extends BackboneModel {
         if($me->isLoggedIn() && ($me->getId() === $this->getThreadOwner()->getId() ||
                                  $me->isRoleAtLeast(MANAGER) ||
                                  in_array($this->getId(), $ids) ||
-                                 in_array($this->getRole(), $me->getAllowedRoles()))){
+                                 in_array($this->getRole(), $me->getAllowedRoles()) ||
+                                 $this->getRole() == "")){
             $bool = true;
         }
         return $bool;
