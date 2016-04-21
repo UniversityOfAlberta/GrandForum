@@ -62,9 +62,9 @@ body {
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
 	color: #333333;
 	
-	box-shadow: 0 0 3px #D8D8D8;
-    -moz-box-shadow: 0 0 3px #D8D8D8;
-    -webkit-box-shadow: 0 0 3px #D8D8D8;
+	box-shadow: 0 0 3px #FFFFFF;
+    -moz-box-shadow: 0 0 3px #FFFFFF;
+    -webkit-box-shadow: 0 0 3px #FFFFFF;
 }
 
 #side {
@@ -77,9 +77,6 @@ body {
     width:200px;
     min-width:200px;
     max-width:200px;
-    border-width: 0 1px 0 0;
-    border-style: solid;
-    border-color: #E0E0E0;
 }
 
 #side.menu-in {
@@ -93,22 +90,21 @@ body {
 
 #sideToggle {
     width: 30px;
-    height: 71px;
+    height: 70px;
     line-height: 65px;
     top: 46px;
     bottom: 0;
     left: 0;
     position: absolute;
     text-align: center;
-    font-weight: bold;
+    font-weight: normal;
     cursor: pointer;
     color: #888888;
     z-index: 100;
-    background: #FFFFFF;
-    border-width: 0 1px 0 1px;
-    border-style: solid;
-    border-color: #E0E0E0;
+    background: #BDE8FA;
     z-index: 1000;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -118,7 +114,7 @@ body {
 }
 
 #sideToggle:hover {
-    background:#F0F0F0;
+    background:#BDE8FA;
 }
 
 #spacer {
@@ -133,8 +129,6 @@ body {
     top: 145px;
     position:absolute;
     padding: 10px;
-
-    border: 1px solid #E0E0E0;
 }
 
 #bodyContent.menu-in {
@@ -175,6 +169,8 @@ input[type="submit"] {
 /* General Structure */
 body,td,th,input { /* redundant rules for bad browsers  */
 	font-family: Verdana, sans-serif;
+	background:#FFFFFF;
+	color:#3C6576;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -397,11 +393,11 @@ address {
 }
 
 input {
-    border: 1px solid #AAA;
+    border: 0px solid #AAA;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
-	border-radius:4px;
+	border-radius:30px;
 	display:inline-block;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 10pt;
@@ -1357,6 +1353,22 @@ select span.noshow {
 }
 
 /* Global Search */
+::-webkit-input-placeholder {
+   color: #3E6B8B;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #3E6B8B;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #3E6B8B;  
+}
+
+:-ms-input-placeholder {  
+   color: #3E6B8B;  
+}
+
 #globalSearchInput {
     font-size: 12px !important;
     padding: 6px;
@@ -1365,15 +1377,15 @@ select span.noshow {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    -moz-border-radius: 5px 0 0 5px;
-	-webkit-border-radius: 5px 0 0 5px;
-	border-radius: 5px 0 0 5px;
+    -moz-border-radius: 0px 0 0 5px;
+	-webkit-border-radius: 0px 0 0 5px;
+	border-radius: 0px 0 0 5px;
 	border-width: 1px 0 1px 1px;
 	border-style: solid;
-	border-color: #E0E0E0;
-	height:16px;
+	border-color: #99D6F2;
+	height:29px;
 	color: #555555;
-	font-weight: bold;
+	font-weight: normal;
 	background: #99D6F2;
 
 }
@@ -1381,16 +1393,16 @@ select span.noshow {
 #globalSearchInput:focus {
     border-width: 1px 0 1px 1px !important;
 	border-style: solid !important;
-	border-color: #E0E0E0 !important;
+	border-color: #99D6F2 !important;
 }
 
 #globalSearchThrobber {
 	border-width: 1px 0 1px 0;
 	border-style: solid;
-	border-color: #E0E0E0;
+	border-color: #99D6F2;
 	display: inline-block;
 	width: 22px;
-	height:22px;
+	height:35px;
 	padding: 3px;
 	vertical-align: top;
 	background: #99D6F2;
@@ -1404,17 +1416,17 @@ select span.noshow {
     margin: 0;
     border-width: 1px 1px 1px 0;
 	border-style: solid;
-	border-color: #E0E0E0;
+	border-color: #99D6F2;
     font-size: 12px;
     padding: 4px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    -moz-border-radius: 0 5px 5px 0;
-	-webkit-border-radius: 0 5px 5px 0;
-	border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 0px 5px 0;
+	-webkit-border-radius: 0 0px 5px 0;
+	border-radius: 0 0px 5px 0;
 	width: 20px;
-	height: 20px;
+	height: 33px;
 	vertical-align:top;
 }
 

@@ -850,10 +850,9 @@ class CavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
-		echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
-	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
+		/*echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
+	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";*/
     ?>
-    </ul>Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.</td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
@@ -914,13 +913,13 @@ class CavendishTemplate extends QuickTemplate {
 	        $i = 0;
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
-	                $hr = ($i > 0) ? "<hr />" : "";
-	                echo "<span class='highlights-text'>{$hr}{$header['text']}</span><ul class='pBody'>";
+	                $hr = ($i > 0) ? "" : "";
+	                echo "<span class='pBodyTitle$i'>{$hr}{$header['text']}</span><ul class='pBody$i'>";
 	                ksort($header['links']);
 	                foreach($header['links'] as $lKey => $link){
 	                    echo "<li><a class='highlights-background-hover' href='{$link['href']}'>{$link['text']}</a></li>";
 	                }
-	                echo "</ul>";
+	                echo "</ul><br>";
 	                $i++;
 	            }
 	        }
@@ -1077,34 +1076,31 @@ If you have forgotten your password please enter your login and ID and request a
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    
-		    echo "<span class='highlights-text'>Login</span>
-			<ul class='pBody'>";
+		    echo "
+			<ul class='pBodyLogin'>";
 		    echo <<< EOF
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td valign='middle' align='right' style='width:1%;'>Username:</td>
-			<td class="mw-input">
-				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
+			<td class="mw-input mw-input-string">
+				<input type='text' class='loginText' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Username"
 					tabindex="1" size='20' />
 			</td>
 		</tr>
 		<tr>
-			<td valign='middle' align='right' style='width:1%;'><label for='wpPassword1'>Password:</label></td>
-			<td class="mw-input">
-				<input type='password' class='loginPassword dark' style='width:97%' name="wpPassword" id="wpPassword1"
+			<td class="mw-input mw-input-string">
+				<input type='password' class='loginPassword' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Password"
 					tabindex="2" size='20' />
 			</td>
 		</tr>
-		    <tr><td colspan="2"><br /></td></tr>
 		<tr>
 			<!--td></td-->
-			<td colspan="2" class="mw-input">
+			<td colspan="2" class="mw-input mw-input-string">
 				<input type='checkbox' name="wpRemember"
 					tabindex="4"
 					value="1" id="wpRemember"
-										/> <label for="wpRemember">Remember my login on this computer</label>
+										/> <label for="wpRemember">Remember my Login</label>
 			</td>
 		</tr>
 	    <tr>

@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 /* Input */
 
 .selected .highlights-tab, .highlights-tab:hover {
-    border-width: 3px 0 0 0;
+    border-width: 0px 0 0 0;
     border-style: solid;
     border-color: $hl;
     color: $hl !important;

@@ -10,6 +10,8 @@
 	
 	
 	#ignored {}
+
+body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#topheader {
 	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #FFFFFF) ) !important;
@@ -25,7 +27,6 @@
 	    height: 35px;
 	    padding: 5px 25px 5px 25px;
 	    z-index: 1001;
-	    border-bottom: 1px solid #E0E0E0;
 	    color: #333333;
 	    text-shadow: 1px 1px 0 #FFFFFF;
 	    font-size: 12px;
@@ -44,7 +45,7 @@
 	#topheader .search {
 	    position:absolute;
 	    left: 200px;
-	    top: 8px;
+	    top: 0px;
 	    text-shadow: none;
 	    font-weight: normal;
 	}
@@ -80,6 +81,7 @@
 	    right: 0;
 	    overflow-x: hidden;
 	    height: 100%;
+	    background:#ffffff;
 	}
 	
 	#outerHeader.menu-in {
@@ -93,7 +95,7 @@
 		height: 40px;
 		padding: 0;
 		padding: 5px 30px 0 0;
-		border-width: 0 0 1px 1px;
+		border-width: 0 0 0px 0px;
 		border-style: solid;
 		border-color: #E0E0E0;
 	    overflow:hidden;
@@ -113,21 +115,19 @@
 	#header ul a {
 	    height: 45px;
 		display: block;
-		font-weight: bold;
-		color: #555555;
+		font-weight: normal;
+		color: #3C6584;
 		text-decoration: none;
 		line-height:46px;
 		padding: 0 7px 0 7px;
 	}
 	
 	#header ul a:hover {
-	    height: 42px;
-	    line-height: 40px;
+	    font-weight:bold;
 	}
 	
 	#header li.selected a {
-	    height: 42px;
-	    line-height: 40px;
+	    font-weight:bold;
 	}
 	
 	/* SUB MENU */
@@ -135,26 +135,29 @@
 	#submenu ul a {
 		display: block;
 		padding: 0 5px 0 5px;
-		font-weight: bold;
-		color: #555555;
+		font-weight: normal;
+		color: #3FB4E5;
 		text-decoration: none;
 		line-height:25px;
 		height: 25px;
 		white-space: nowrap;
+		background-color:#BDE8FA;
+
 	}
 	
 	#submenu ul a:hover * {
 	    text-decoration: none;
+	    color:white;
 	}
 	
 	#submenu ul a:hover {
-	    line-height:19px;
-	    height: 22px;
+	    color:white;
+	    background:#589EA6;
+	    border-top-left-radius: 10px;
+	    border-top-right-radius: 10px;
 	}
 	
 	#submenu ul li.selected a {
-	    line-height:19px;
-	    height: 22px;
 	}
 	
 	#submenu ul.dropdown div.actions a {
@@ -283,8 +286,8 @@
 		display: block;
 		padding: 8px 10px;
 		text-decoration: none;
-		color: #555555;
-		font-weight: bold;
+		color: #3C6576;
+		font-weight: normal;
 	}
 	#nav li a[href^="http://"] {
 	}
@@ -331,9 +334,59 @@
 		padding: 0px;
 	}
 	
-	#nav .pBody {
+	#nav .pBody0 {
 		border: none;
+		background: #BDE8FA;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+
 	}
+
+	#nav .pBody1{
+                border: none;
+                background: #99D6F2;
+                border-bottom-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+	}
+
+        #nav .pBodyLogin {
+                border: none;
+                background: #FFFFFF;
+                border-radius: 10px;
+
+        }
+
+        #nav .pBodyTitle0 {
+                border: none;
+                color: #426C7E;
+                background: #BDE8FA;
+                border-top-right-radius: 10px;
+                border-top-left-radius: 10px;
+
+        }
+
+        #nav .pBodyTitle1 {
+                border: none;
+		color: #426C7E;
+                background: #99D6F2;
+                border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+        }
+
+        #nav .loginText{
+            background:#AADDD1;
+            -webkit-box-shadow: 0 0 0px 1000px #AADDD1 inset;
+        }
+
+        #nav .loginPassword{
+            background:#A2D29C;
+            -webkit-box-shadow: 0 0 0px 1000px #A2D29C inset;
+        }
+
+        #nav .mw-input-string{
+            background:#FFFFFF;
+
+        }
 
 /* Footer */
 

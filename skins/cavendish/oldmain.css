@@ -75,7 +75,7 @@ a:active {
 	color: #faa700;
 }
 a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 a.stub {
 	color: #772233;

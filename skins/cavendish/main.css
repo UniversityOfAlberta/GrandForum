@@ -37,7 +37,8 @@ img.ui-datepicker-trigger{
 
 #header .top-nav {
     background-color:#BDE8FA;
-    border-radius:10px;
+    border-top-right-radius: 10px;
+
 }
 
 #header .top-nav-mid {
@@ -125,19 +126,20 @@ img.ui-datepicker-trigger{
 }
 
 div#submenu {
-    background: #FFFFFF;
+    background: #BDE8FA;
     height: 25px;
     position: absolute;
-    top: 92px;
+    top: 91px;
     left: 0;
-    right: 0;
+    right: 30px;
     z-index: 998;
-    border-width: 0 0 1px 1px;
-    border-style: solid;
-    border-color: #E0E0E0;
-    box-shadow: 0 0 3px #D8D8D8;
-    -moz-box-shadow: 0 0 3px #D8D8D8;
-    -webkit-box-shadow: 0 0 3px #D8D8D8;
+    border-color: #BDE8FA;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 0 0 3px #BDE8FA;
+    -moz-box-shadow: 0 0 3px #BDE8FA;
+    -webkit-box-shadow: 0 0 3px #BDE8FA;
 }
 
 div#header {
