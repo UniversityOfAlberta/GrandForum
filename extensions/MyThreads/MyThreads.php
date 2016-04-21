@@ -10,7 +10,7 @@ class MyThreads extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromWgUser();
-        return ($me->isRoleAtLeast(HQP) || $me-isRoleAtLeast(HQP.'-Candidate'));
+        return $me->isRoleAtLeast(HQP);
     }
     
     function getTemplates(){
