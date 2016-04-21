@@ -2090,12 +2090,14 @@ class Person extends BackboneModel {
         global $wgRoleValues, $wgRoles;
         $maxValue = 0;
         $roles = array();
-        foreach($this->getRoles() as $role){
-            $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
-        }
-        foreach($wgRoleValues as $role => $value){
-            if($value <= $maxValue && array_search($role, $wgRoles) !== false){
-                $roles[$role] = $role;
+        if(is_array($this->getRoles())){
+            foreach($this->getRoles() as $role){
+                $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
+            }
+            foreach($wgRoleValues as $role => $value){
+                if($value <= $maxValue && array_search($role, $wgRoles) !== false){
+                    $roles[$role] = $role;
+                }
             }
         }
         sort($roles);

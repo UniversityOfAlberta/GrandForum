@@ -6,7 +6,7 @@ class PostAPI extends RESTAPI {
             $me = Person::newFromWgUser();
             $post = Post::newFromId($this->getParam('id'));
             if(!$post->canView()){
-                permissionError();
+                $this->throwError("You must be logged in to view this post");
             }
             return $post->toJSON();
         }
@@ -15,9 +15,9 @@ class PostAPI extends RESTAPI {
     function doPOST(){
         $me = Person::newFromWgUser();
         $post = new Post(array());
-	$thread = Thread::newFromId($this->POST('thread_id'));
+        $thread = Thread::newFromId($this->POST('thread_id'));
         if(!$thread->canView()){
-            permissionError();
+            $this->throwError("You must be logged in to view this post");
         }
         $post->setThreadId($this->POST('thread_id'));
         $post->setUserId($me->getId());

@@ -13,9 +13,6 @@ PostView = Backbone.View.extend({
         if(this.model.isNew()){
             this.render();
         }
-        if(this.isDialog){
-            //this.$('#submitPost').remove();
-        }
         this.listenTo(this.model, "sync", this.render);
     },
 
@@ -36,7 +33,7 @@ PostView = Backbone.View.extend({
              isMine.isMine = true;
         }
         var mod = _.extend(this.model.toJSON(), isMine);
-        this.el.innerHTML = this.template(mod);
+        this.$el.html(this.template(mod));
         return this.$el;
     }
 });
