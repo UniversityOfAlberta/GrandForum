@@ -137,9 +137,6 @@ div#submenu {
     border-bottom-left-radius: 15px;
     border-top-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    box-shadow: 0 0 3px #BDE8FA;
-    -moz-box-shadow: 0 0 3px #BDE8FA;
-    -webkit-box-shadow: 0 0 3px #BDE8FA;
 }
 
 div#header {

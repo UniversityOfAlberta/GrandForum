@@ -51,8 +51,13 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	}
 	
 	#topheader .login {
-	    float: right;
-	    height: 100%;
+    	    position: absolute;
+    	    right: 30px;
+    	    top: 0px;
+    	    height: 100%;
+    	    background: #99D6F2;
+    	    border-bottom-left-radius: 10px;
+    	    border-bottom-right-radius: 10px;
 	}
 	
 	#topheader .login a {
