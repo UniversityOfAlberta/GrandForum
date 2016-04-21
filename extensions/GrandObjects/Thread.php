@@ -281,7 +281,7 @@ class Thread extends BackboneModel {
         $json = array('id' => $this->getId(),
                       'author' => $author,
                       'users' => $authors,
-                      'authors' => $this->getUsers(),
+                      'authors' => $authors,
                       'roles' => $this->getRole(),
                       'title' => $this->getTitle(),
                       'posts' => $this->getPosts(),
