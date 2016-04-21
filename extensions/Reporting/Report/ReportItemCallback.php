@@ -977,6 +977,16 @@ class ReportItemCallback {
                 }
             }
         }
+        if(count($supervisors) == 0){
+            foreach(Person::getAllPeople('all') as $person){
+                foreach($person->getRelations(SUPERVISES, true) as $rel){
+                    if($rel->getUser2()->getId() == $me->getId()){
+                        $sup = $rel->getUser1();
+                        $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
+                    }
+                }
+            }
+        }
         return implode(", ", $supervisors);
     }
     
@@ -1570,9 +1580,12 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
@@ -1594,7 +1607,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
-        return nl2br($blb->getData());
+        return str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
     }
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){

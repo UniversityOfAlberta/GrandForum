@@ -32,6 +32,7 @@ class ThreadAPI extends RESTAPI {
     }
 
     function doPUT(){
+        $me = Person::newFromWgUser();
         $thread = Thread::newFromId($this->getParam('id'));
         if($thread == null || $thread->getTitle() == ""){
             $this->throwError("This thread does not exist");
@@ -39,6 +40,9 @@ class ThreadAPI extends RESTAPI {
 	elseif(!$thread->canEdit()){
             permissionError();
 	}
+        if(count($this->POST('authors')) == 0){
+            $thread->setUsers(array($me));
+        }
         $thread->setTitle($this->POST('title'));
         $thread->setUsers($this->POST('authors'));
         $status = $thread->update();

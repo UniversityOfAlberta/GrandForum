@@ -7,6 +7,7 @@
 class Project extends BackboneModel {
 
     static $cache = array();
+    static $projectCache = array();
 
     var $id;
     var $evolutionId;
@@ -26,6 +27,8 @@ class Project extends BackboneModel {
     var $budgets;
     var $deleted;
     var $effectiveDate;
+    var $theme;
+    var $subProjects;
     private $succ;
     private $preds;
     private $peopleCache = null;
@@ -287,22 +290,25 @@ class Project extends BackboneModel {
         else{
             $subProjects = LIKE("%");
         }
-        $data = DBFunctions::select(array('grand_project'),
-                                    array('id', 'name'),
-                                    array('parent_id' => $subProjects),
-                                    array('name' => 'ASC'));
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['id']);
-            if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
-                    $projects[$project->getName()] = $project;
+        if(!isset(self::$projectCache[$subProjects])){
+            $data = DBFunctions::select(array('grand_project'),
+                                        array('id', 'name'),
+                                        array('parent_id' => $subProjects),
+                                        array('name' => 'ASC'));
+            $projects = array();
+            foreach($data as $row){
+                $project = Project::newFromId($row['id']);
+                if($project != null && $project->getName() != ""){
+                    if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
+                        $projects[$project->getName()] = $project;
+                    }
                 }
             }
+            ksort($projects);
+            $projects = array_values($projects);
+            self::$projectCache[$subProjects] = $projects;
         }
-        ksort($projects);
-        $projects = array_values($projects);
-        return $projects;
+        return self::$projectCache[$subProjects];
     }
     
     static function getAllProjectsDuring($startDate, $endDate, $subProjects=false){
@@ -856,10 +862,14 @@ EOF;
     }
     
     // Returns the contributions relevant to this project during the given year
-    function getContributionsDuring($year){
+    function getContributionsDuring($startYear, $endYear=null){
+        if($endYear == null){
+            $endYear = $startYear;
+        }
         $contribs = array();
         foreach($this->getContributions() as $contrib){
-            if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
+            if($startYear <= $contrib->getEndDate() && 
+               $endYear >= $contrib->getStartDate()){
                 $contribs[] = $contrib;
             }
         }
@@ -1036,17 +1046,22 @@ EOF;
 
     //get the project challenge
     function getChallenge(){
-        $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
-                                          'grand_themes' => 't'),
-                                    array('t.id'),
-                                    array('t.id' => EQ(COL('pc.challenge_id')),
-                                          'pc.project_id' => EQ($this->id)),
-                                    array('pc.id' => 'DESC'),
-                                    array(1));
-        if(count($data) > 0){
-            return Theme::newFromId($data[0]['id']);
+        if($this->theme == null){
+            $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
+                                              'grand_themes' => 't'),
+                                        array('t.id'),
+                                        array('t.id' => EQ(COL('pc.challenge_id')),
+                                              'pc.project_id' => EQ($this->id)),
+                                        array('pc.id' => 'DESC'),
+                                        array(1));
+            if(count($data) > 0){
+                $this->theme = Theme::newFromId($data[0]['id']);
+            }
+            else{
+                $this->theme = Theme::newFromName("Not Specified");
+            }
         }
-        return Theme::newFromName("Not Specified");
+        return $this->theme;
     } 
     
     // Returns the description of the Project
@@ -1418,19 +1433,21 @@ EOF;
      * @return array An array of this Project's current Sub-Projects
      */
     function getSubProjects(){
-        $subprojects = array();
+        if($this->subProjects === null){
+            $this->subProjects = array();
 
-        $data = DBFunctions::select(array('grand_project'),
-                                    array('*'),
-                                    array('parent_id' => EQ($this->id)),
-                                    array('name' => 'ASC'));
-        foreach($data as $row){
-            $subproject = Project::newFromId($row['id']);
-            if(!$subproject->isDeleted()){
-                $subprojects[] = $subproject;
+            $data = DBFunctions::select(array('grand_project'),
+                                        array('*'),
+                                        array('parent_id' => EQ($this->id)),
+                                        array('name' => 'ASC'));
+            foreach($data as $row){
+                $subproject = Project::newFromId($row['id']);
+                if(!$subproject->isDeleted()){
+                    $this->subProjects[] = $subproject;
+                }
             }
         }
-        return $subprojects;
+        return $this->subProjects;
     }
     
     /**

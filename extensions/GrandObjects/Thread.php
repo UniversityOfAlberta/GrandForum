@@ -17,7 +17,7 @@ class Thread extends BackboneModel{
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
                 $this->user_id = $data[0]['user_id'];
-		$this ->users = $data[0]['users'];
+		$this->users = unserialize($data[0]['users']);
                 $this->title = $data[0]['title'];
                 $this->date_created = $data[0]['date_created'];
 		$this->posts = $this->getPosts();
@@ -84,7 +84,7 @@ class Thread extends BackboneModel{
 
         function getUsers(){
 	    $people = array();
-	    foreach(unserialize($this->users) as $pId){
+	    foreach($this->users as $pId){
 		if(is_numeric($pId)){	
 	    	    $person = Person::newFromId($pId);
 		}
@@ -135,7 +135,7 @@ class Thread extends BackboneModel{
 
         function setDateCreated($date){
             $this->date_created = $date;
-        }   
+        }
 
 //-----Db methods----//
 	

@@ -43,26 +43,26 @@
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to abide by the confidentiality agreement">
             <![CDATA[
                 <b>CONFIDENTIALITY AGREEMENT</b>
-                <p>This Confidentiality Agreement is given to the Technology Evaluation in the Elderly Network (TVN) in consideration of my role as a Grant Reviewer to review grant application(s) (Information) for TVN.</p>
-                <p>I acknowledge that as part of my role as a Grant Reviewer for TVN I may be given access to information that is of a personal, confidential and/ or proprietary nature, for example: names, e-mail addresses, financial information, funding applications and their status, trade secrets, research data, and any other information for the purpose of fulfilling my obligations.</p>
+                <p>This Confidentiality Agreement is given to the Canadian Frailty Network (CFN) in consideration of my role as a Grant Reviewer to review grant application(s) (Information) for CFN.</p>
+                <p>I acknowledge that as part of my role as a Grant Reviewer for CFN I may be given access to information that is of a personal, confidential and/ or proprietary nature, for example: names, e-mail addresses, financial information, funding applications and their status, trade secrets, research data, and any other information for the purpose of fulfilling my obligations.</p>
                 <p>I, therefore agree:</p>
                 <ul>
                     <li>To hold all Information in trust and strict confidence and agree that it shall be used only for the purposes required to fulfill my role as a Grant Reviewer, and shall not be used for any other purpose, or disclosed to any third party.</li>
-                    <li>To keep all Information in my control or possession in a secure location to which only I and other persons who are authorized to view this information, and have signed a confidentiality agreement with TVN, have access.</li>
+                    <li>To keep all Information in my control or possession in a secure location to which only I and other persons who are authorized to view this information, and have signed a confidentiality agreement with CFN, have access.</li>
                     <li>To take all necessary steps to keep all Information secure and to protect such Information from unauthorized use, reproduction or disclosure.</li>
                     <li>To maintain the absolute confidentiality of all Information in recognition of the privacy and proprietary rights of others at all times.</li>
                     <li>To comply with all privacy laws and regulations, which apply to the collection, use and disclosure of personal information.</li>
-                    <li>At the conclusion of my role as a Grant Reviewer, or upon demand by TVN, to return all Information, including prototypes, code, written notes, photographs, sketches, models, memoranda or notes taken, to TVN’s possession and the responsible manager/director.</li>
-                    <li>Not to disclose any Information to any employee, consultant or third party unless they agree to execute and be bound by the terms of this agreement and have been approved by TVN in an official, legal capacity.</li>
+                    <li>At the conclusion of my role as a Grant Reviewer, or upon demand by CFN, to return all Information, including prototypes, code, written notes, photographs, sketches, models, memoranda or notes taken, to CFN’s possession and the responsible manager/director.</li>
+                    <li>Not to disclose any Information to any employee, consultant or third party unless they agree to execute and be bound by the terms of this agreement and have been approved by CFN in an official, legal capacity.</li>
                 </ul>
                 <p>I understand that a breach of confidentiality or misuse of Information could result legal action.</p>
-                <p>I understand that this Agreement survives the termination of my relationship with TVN.</p>
+                <p>I understand that this Agreement survives the termination of my relationship with CFN.</p>
                 <p>The laws of Ontario, Canada shall govern this Agreement and its validity, construction and effect.</p>
                 <p>I fully understand and accept responsibilities set above relating to personal, confidential and/or proprietary Information:</p>
                 <ul>
                     <li>Personal Information is any information about an "identifiable individual".</li>
-                    <li>Confidential Information is any information which is designated by TVN as confidential.</li>
-                    <li>Proprietary Information is any information which is designated by TVN as proprietary like trade secrets, and research data.</li>
+                    <li>Confidential Information is any information which is designated by CFN as confidential.</li>
+                    <li>Proprietary Information is any information which is designated by CFN as proprietary like trade secrets, and research data.</li>
                 </ul>
                 {$item}
             ]]>
@@ -73,7 +73,7 @@
             <![CDATA[
                 <ol>
                     <li>Please complete both sections A and B. </li>  
-                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale TVN funding opportunities.</li>
+                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale CFN funding opportunities.</li>
                     <li>Observational studies or studies that do not study the impact of interventions will not be funded.</li>
                     <li>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:
                         <ul>
@@ -613,7 +613,7 @@
             <![CDATA[
                 <ol>
                     <li>Please complete both sections A and B.</li>  
-                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale TVN funding opportunities.</li>
+                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale CFN funding opportunities.</li>
                     <li>Observational studies or studies that do not study the impact of interventions will not be funded.</li>
                     <li>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:
                         <ul>
@@ -1144,14 +1144,14 @@
             <![CDATA[
                 <ol>
                     <li>Please complete all sections.</li>
-                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale TVN funding opportunities.</li>
+                    <li>Goal of the Competition: The Catalyst Program supports novel/innovative pilot, feasibility, and/or translational studies.  Proposals must demonstrate future scalability by providing a description of future plans to implement the study across Canada in a future grant submission. It is expected that successful Catalyst grants will be suitable for future larger scale CFN funding opportunities.</li>
                     <li>When reviewing/scoring grants please consider that the applicant's were informed that proposals will be judged on the following:</li>
                     <ol type="i">
                         <li>Investigator will need to map out how the current and future research plans will help accelerate improvement in care for frail elderly Canadians and their caregivers, and provide a socio-economic benefit for Canada.  Observational studies or studies that do not study the impact of interventions will not be funded.</li>
-                        <li>Research projects must fit within TVN’s strategic priorities (i.e., Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes; Improving care across the continuum)</li>
-                        <li>Research projects must fit within TVN’s patient-oriented research themes (i.e., Improving end-of-life care (EOL)/advance care planning (ACP); Improving acute care/critical care; Optimizing community care/residential care; Optimizing transitions of care)</li>
-                        <li>Proposals must demonstrate significant partnerships which will increase translation of project results into policy and/or practice.  Potential for commercialization of research results is an asset although not required.  Proposals must have demonstrated committed cash or eligible in-kind contributions from NCE-eligible partners totaling a minimum of 50% of TVN’s funding. To be clear, if $100,000 is requested from TVN the applicants must secure an additional minimum $50,000 in partner contributions.</li>
-                        <li>Networking: In general TVN seeks projects that represent the collaborative efforts of investigators in more than one discipline and at more than one institution, from more than one province, and with the involvement of partners and stakeholders from multiple sectors.  Note: For these smaller Catalyst grants investigators were advised that minimally the proposal needed to describe future plans to address these networking requirements.</li>
+                        <li>Research projects must fit within CFN’s strategic priorities (i.e., Matching care to values; Empowering, engaging and supporting patients and their families and caregivers; Improving clinical outcomes; Improving care across the continuum)</li>
+                        <li>Research projects must fit within CFN’s patient-oriented research themes (i.e., Improving end-of-life care (EOL)/advance care planning (ACP); Improving acute care/critical care; Optimizing community care/residential care; Optimizing transitions of care)</li>
+                        <li>Proposals must demonstrate significant partnerships which will increase translation of project results into policy and/or practice.  Potential for commercialization of research results is an asset although not required.  Proposals must have demonstrated committed cash or eligible in-kind contributions from NCE-eligible partners totaling a minimum of 50% of CFN’s funding. To be clear, if $100,000 is requested from CFN the applicants must secure an additional minimum $50,000 in partner contributions.</li>
+                        <li>Networking: In general CFN seeks projects that represent the collaborative efforts of investigators in more than one discipline and at more than one institution, from more than one province, and with the involvement of partners and stakeholders from multiple sectors.  Note: For these smaller Catalyst grants investigators were advised that minimally the proposal needed to describe future plans to address these networking requirements.</li>
                         <li>Research teams must include patients and families, knowledge users, and HQP as meaningfully involved and integral team members.</li>
                     </ol>
                 </ol>
@@ -1167,7 +1167,7 @@
                 </ReportItem>
                 <ReportItem id="impact" blobType="BLOB_TEXT" blobItem="CAT_RMC_IMPACT" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>1. Contribution to Long Term Impact of TVN</h2>
+                        <h2>1. Contribution to Long Term Impact of CFN</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
                                 <th width='23%'>Unacceptable<br />
@@ -1227,7 +1227,7 @@
                 </ReportItem>
                 <ReportItem id="mission" blobType="BLOB_TEXT" blobItem="CAT_RMC_MISSION" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>3. Alignment with TVN's Mission</h2>
+                        <h2>3. Alignment with CFN's Mission</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
                                 <th width='23%'>Unacceptable<br />
@@ -1246,10 +1246,10 @@
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The proposed research is not aligned with TVN's mission which is, <i>“To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
-                                <td class='small' valign='top'>The proposed research is marginally focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
-                                <td class='small' valign='top'>The proposed research is somewhat focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
-                                <td class='small' valign='top'>The proposed research is highly focused on TVN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is not aligned with CFN's mission which is, <i>“To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is marginally focused on CFN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is somewhat focused on CFN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
+                                <td class='small' valign='top'>The proposed research is highly focused on CFN's mission which is, “<i>To improve care of frail elderly patients and support their families and caregivers.</i>”</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1257,7 +1257,7 @@
                 </ReportItem>
                 <ReportItem id="priorities" blobType="BLOB_TEXT" blobItem="CAT_RMC_PRIORITIES" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
                     <![CDATA[
-                        <h2>4. Alignment with TVN's Strategic Priorities</h2>
+                        <h2>4. Alignment with CFN's Strategic Priorities</h2>
                         <table class='wikitable' width='100%'>
                             <tr>
                                 <th width='23%'>Unacceptable<br />
@@ -1276,10 +1276,10 @@
                                     <small>(Max 4)</small></th>
                             </tr>
                             <tr>
-                                <td class='small' valign='top'>The proposed research is not aligned with any of the four TVN priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum).</td>
-                                <td class='small' valign='top'>The proposed research is somewhat aligned with 1 of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
-                                <td class='small' valign='top'>The proposed research is well aligned with at least one of TVN's strategic priorities (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
-                                <td class='small' valign='top'>The proposed research is well aligned with more than one of TVN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td class='small' valign='top'>The proposed research is not aligned with any of the four CFN priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum).</td>
+                                <td class='small' valign='top'>The proposed research is somewhat aligned with 1 of CFN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td class='small' valign='top'>The proposed research is well aligned with at least one of CFN's strategic priorities (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
+                                <td class='small' valign='top'>The proposed research is well aligned with more than one of CFN's priority areas (1. Foster matching care to values, 2. Empower, engage and support patients and their Families/caregivers, 3. Improve clinical outcomes, 4. Improve care across the continuum)</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>
@@ -1368,8 +1368,8 @@
                             <tr>
                                 <td class='small' valign='top'>HQP have not been identified as part of the research team.</td>
                                 <td class='small' valign='top'>The research team has a couple of partners that are providing the minimum in-kind contribution but no cash contribution.  The partners tend to be small regional organizations and/or companies.</td>
-                                <td class='small' valign='top'>The number of HQP is reasonable and their roles in the project have been clearly delineated and are meaningful.<br /><br />Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
-                                <td class='small' valign='top'>The number of HQP is high and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.<br /><br />Meaningful involvement in the research components of a TVN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is reasonable and their roles in the project have been clearly delineated and are meaningful.<br /><br />Meaningful involvement in the research components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
+                                <td class='small' valign='top'>The number of HQP is high and more importantly they appear to have significant meaningful, and clearly defined roles in the project that are well beyond the traditional HQP role.<br /><br />Meaningful involvement in the research components of a CFN-funded project would include such activities such as data collection, data synthesis, report writing, etc., but would exclude tasks that are more related to administration and/or coordination (e.g. data entry, meeting scheduling, minute taking, completion and distribution of paperwork, etc.).</td>
                                 <td align='center'>{$item}</td>
                             </tr>
                         </table>

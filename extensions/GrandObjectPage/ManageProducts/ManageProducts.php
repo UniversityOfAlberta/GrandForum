@@ -11,7 +11,7 @@ class ManageProducts extends BackbonePage {
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isRoleAtLeast(INACTIVE);
+        return $person->isLoggedIn();
     }
     
     function getTemplates(){

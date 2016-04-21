@@ -36,7 +36,7 @@
     <ReportSection id="information" tooltip="1. Project and Team Information" name="Project Information" title="1. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <b>TVN Project File Number:&nbsp;</b>{$project_name}<br />
+                <b>CFN Project File Number:&nbsp;</b>{$project_name}<br />
                 <b>Project Title:&nbsp;</b>{$project_full_name}<br />
                 <b>Project Leader:&nbsp;</b>{$project_leaders}<br />
             ]]>
@@ -67,7 +67,7 @@
         <ReportItem id="funded_head" type="StaticReportItem">
             <![CDATA[
                 <tr>
-                    <th colspan='4'>TVN Funded Investigators</th>
+                    <th colspan='4'>CFN Funded Investigators</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -97,7 +97,7 @@
         <ReportItem id="nonfunded_head" type="StaticReportItem">
             <![CDATA[
                 <tr>
-                    <th colspan='4'>Non-TVN Funded Investigators</th>
+                    <th colspan='4'>Non-CFN Funded Investigators</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -207,7 +207,7 @@
                 <h2>Incomplete, Delayed, Deleted or New Milestones/Deliverables</h2>
                 <p>If applicable, explain why a milestone/deliverable was not completed, deleted, or why a new milestones/deliverable was added.</p>
                 {$item}
-                <b style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via <a href='mailto:research@tvn-nce.ca'>research@tvn-nce.ca</a>.</b>
+                <b style='color:red;'>* Please contact CFN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact CFN via <a href='mailto:research@cfn-nce.ca'>research@cfn-nce.ca</a>.</b>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -327,11 +327,17 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activities" title="6. Networking Activities" tooltip="6. Networking Activities" blobSection="FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking/Collaborations" title="6. Networking/Collaborations" tooltip="6. Networking/Collaborations" blobSection="FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="FINAL_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
                 <p>Identify any networking activity your project team undertook during this final reporting period and describe the outcomes as they relate to the completion of your project and to the development of collaborations.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="FINAL_NET_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -408,14 +414,14 @@
         <ReportItem id="themes" type="RadioReportItem" blobItem="FINAL_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Research Themes</h3>
-                <p><small>Which TVN research themes does your project most closely fall under?</small></p>
+                <p><small>Which CFN research themes does your project most closely fall under?</small></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" blobItem="FINAL_PLAN_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <h3>Strategic Priorities</h3>
-                <p><small>Which TVN strategic priorities does your project most closely fall under?</small></p>
+                <p><small>Which CFN strategic priorities does your project most closely fall under?</small></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -440,7 +446,7 @@
     <ReportSection id="alignment" name="NCE Alignment" tooltip="8. Alignment with NCE Mission" title="8. Alignment with NCE Mission" blobSection="FINAL_ALIGN" type="EditableReportSection">
         <ReportItem id="multi" type="TextareaReportItem" blobItem="FINAL_ALIGN_MULTI" rich="true">
             <![CDATA[
-                <p>TVN is a network funded by the federal Networks of Centres of Excellence (NCE) and as such must align with the mission and requirements of NCE.</p>
+                <p>CFN is a network funded by the federal Networks of Centres of Excellence (NCE) and as such must align with the mission and requirements of NCE.</p>
                 <p>Now that your project is complete, please provide a succinct update to each question below explaining how this research aligns with NCE requirements.</p>
                 <h3>How has multidisciplinary and/or multisectoral collaborations enhanced this research?</h3>
                 {$item}
@@ -466,15 +472,15 @@
                     <li>General: This Financial Reporting form contains three (3) tabs.
                         <ol>
                             <li>Actual Expenditures up to March 31, 2015</li>
-                            <li>Supporting Detailed Information for TVN funds spent</li>
+                            <li>Supporting Detailed Information for CFN funds spent</li>
                             <li>Supporting Detailed Information for Matching (Cash/In-kind) Contributions from Internal/External sources</li>
                         </ol>
                     </li>
                     <li>The shaded cells are locked to protect the template and the formulas. Please enter your figures and explanations in the clear cells provided in each tab.<br />
-                        <small><b>NOTE:</b> TVN's fiscal year runs from April 1 to March 31, therefore, your budget/expenditure figures should match to the TVN fiscal year (e.g. a project with 1-year budget/expenditure may be covered by 2 TVN fiscal years).</small>
+                        <small><b>NOTE:</b> CFN's fiscal year runs from April 1 to March 31, therefore, your budget/expenditure figures should match to the CFN fiscal year (e.g. a project with 1-year budget/expenditure may be covered by 2 CFN fiscal years).</small>
                     </li>
-                    <li>Financial Report ending March 31, 2014 TVN total expenditures incurred should equal Approved Form 300 box 11B. Form 300 for year ending March 31, 2015 should be posted to the FDSR system by May 1, 2015.</li>
-                    <li>Specific details of each field from Summary should be provided on the 3rd tab 'TVN funds spent Details' and the 4th tab 'Partner Contribution Details' accordingly.</li>
+                    <li>Financial Report ending March 31, 2014 CFN total expenditures incurred should equal Approved Form 300 box 11B. Form 300 for year ending March 31, 2015 should be posted to the FDSR system by May 1, 2015.</li>
+                    <li>Specific details of each field from Summary should be provided on the 3rd tab 'CFN funds spent Details' and the 4th tab 'Partner Contribution Details' accordingly.</li>
                     <li><b>Partner Contribution Details:</b><br />
                         <p>Detailed information should be provided by <b><u>one table per each source of funding</u></b>.</p>
                         <p>Please carefully review information on expense eligibility, NCE-eligible partner, and contribution eligibility and valuation. Please consult your host institution’s research services unit if assistance is needed in determining eligibility and valuation of your project costs.</p>
@@ -631,7 +637,7 @@
                 <ReportItem id="training" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" orientation="horizontal" options="Yes|No">
                     <![CDATA[
                         <tr>
-                            <td class='label'>Participating in the TVN Training Program?</td>
+                            <td class='label'>Participating in the CFN Training Program?</td>
                             <td>{$item}</td>
                         </tr>
                     ]]>

@@ -233,6 +233,8 @@ class CavendishTemplate extends QuickTemplate {
 		<script type='text/javascript'>
 		
 		    // Configs
+		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
+		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    
 		    <?php

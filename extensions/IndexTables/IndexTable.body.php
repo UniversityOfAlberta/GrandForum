@@ -1,6 +1,8 @@
 <?php
 
 require_once("InactiveUsers.php");
+require_once('PeopleWikiTab.php');
+require_once('PeopleTableTab.php');
 
 $indexTable = new IndexTable();
 
@@ -112,6 +114,8 @@ class IndexTable {
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
             $tabs['Main']['subtabs'][] = TabUtils::createSubTab("Conferences", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}_Conferences", "$selected");
         }*/
+
+
         return true;
     }
 	
@@ -228,7 +232,7 @@ class IndexTable {
 	        if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
 	            $this->text .= "
                     <tr>
-                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>";
                 if($type != "Administrative"){
                     $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
@@ -362,98 +366,14 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table){
-		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
-		$me = Person::newFromId($wgUser->getId());
-		$data = Person::getAllPeople($table);
-		$emailHeader = "";
-		$idHeader = "";
-		$contactHeader = "";
-		$subRoleHeader = "";
-		$projectsHeader = "";
-		$committees = $config->getValue('committees');
-		if($me->isLoggedIn()){
-		    $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
-		}
-        if($me->isRoleAtLeast(ADMIN)){
-            $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
-        }
-        if($me->isLoggedIn() && 
-           ($table == TL || $table == TC || $wgRoleValues[$table] >= $wgRoleValues[SD])){
-            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
-        }
-        if($table == HQP){
-            $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
-        }
-        if($config->getValue('projectsEnabled') && !isset($committees[$table])){
-            $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
-        }
-        $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
-		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                            <thead>
-                                <tr>
-                                    <th style='white-space: nowrap;'>Name</th>
-                                    {$subRoleHeader}
-                                    {$projectsHeader}
-                                    <th style='white-space: nowrap;'>University</th>
-                                    <th style='white-space: nowrap;'>Department</th>
-                                    <th style='white-space: nowrap;'>Title</th>
-                                    {$contactHeader}
-                                    {$emailHeader}
-                                    {$idHeader}</tr>
-                                </thead>
-                                <tbody>
-";
-		foreach($data as $person){
-		    
-			$this->text .= "
-<tr>
-<td align='left' style='white-space: nowrap;'>
-<a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
-</td>
-";
-            if($subRoleHeader != ""){
-                $subRoles = $person->getSubRoles();
-                $this->text .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
-            }
-            
-            if($config->getValue('projectsEnabled') && !isset($committees[$table])){
-                $projects = $person->getProjects();
-                $projs = array();
-			    foreach($projects as $project){
-			        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
-				        $subprojs = array();
-				        foreach($project->getSubProjects() as $subproject){
-				            if($person->isMemberOf($subproject)){
-				                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-				            }
-				        }
-				        $subprojects = "";
-				        if(count($subprojs) > 0){
-				            $subprojects = "(".implode(", ", $subprojs).")";
-				        }
-				        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-				    }
-			    }
-			    $this->text .= "<td align='left'>".implode("<br />", $projs)."</td>";
-			}
-			$university = $person->getUniversity();
-            $this->text .= "<td align='left'>{$university['university']}</td>";
-            $this->text .= "<td align='left'>{$university['department']}</td>";
-            $this->text .= "<td align='left'>{$university['position']}</td>";
-            if($contactHeader != ''){
-                $this->text .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                $this->text .= "<td align='left'>{$person->getPhoneNumber()}</td>";
-            }
-            if($emailHeader != ''){
-                $this->text .= "<td>{$person->getEmail()}</td>";
-            }
-			if($idHeader != ''){
-			    $this->text .= "<td>{$person->getId()}</td>";
-			}
-			$this->text .= "</tr>";
-		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>";
-
+	    $me = Person::newFromWgUser();
+	    $tabbedPage = new TabbedPage("people");
+	    $visibility = true;
+	    $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
+	    if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
+            	$tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+	    }
+            $tabbedPage->showPage();
 		return true;
 	}
 	

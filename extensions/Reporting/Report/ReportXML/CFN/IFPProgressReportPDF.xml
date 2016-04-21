@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfType="RPTP_IFP_PROGRESS" ajax="true">
+<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfType="RPTP_IFP_PROGRESS" ajax="true" year="2016">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -93,7 +93,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="dissemination" name="Dissemination" tooltip="4. Dissemination of Fellowship Work" title="4. Dissemination of Fellowship Work" blobSection="IFP_PROG_DISS" type="ReportSection">
+    <ReportSection id="dissemination" name="Dissemination" tooltip="Dissemination of Fellowship Work" title="Dissemination of Fellowship Work" blobSection="IFP_PROG_DISS" type="ReportSection">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Dissemination</h2>
@@ -145,17 +145,23 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partners" title="Partnerships and other Funding" blobSection="IFP_PROG_PARTNERS" type="EditableReportSection">
-        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" multiple="true" class="wikitable">
+        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your CFN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" multiple="true" class="wikitable">
             <![CDATA[
                 <small>{$item}</small>
                 <small>* Fiscal Year runs from Apr.1 to Mar.31.</small>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" title="Networking Activities" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" title="Networking/Collaborations" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -164,14 +170,14 @@
         <ReportItem id="themes" type="RadioReportItem" blobItem="IFP_PROG_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Network Planning Information</h3>
-                <h4>Which TVN research themes does your project most closely fall under?</h4>
+                <h4>Which CFN research themes does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" blobItem="IFP_PROG_PLAN_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <h3>Strategic Priorities</h3>
-                <h4>Which TVN strategic priorities does your project most closely fall under?</h4>
+                <h4>Which CFN strategic priorities does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>

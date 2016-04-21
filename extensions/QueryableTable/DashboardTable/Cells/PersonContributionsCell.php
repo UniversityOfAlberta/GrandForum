@@ -28,7 +28,7 @@
                     $contributions = $person->getContributions();
                     $values = array();
                     foreach($contributions as $contribution){
-                        if($contribution->belongsToProject($project) && $contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
+                        if($contribution->belongsToProject($project) && $contribution->getEndDate() >= $start && $contribution->getStartDate() <= $end){
                             foreach($contribution->getPartners() as $partner){
                                 $type = $contribution->getHumanReadableTypeFor($partner);
                                 $values[$type][$partner->getOrganization()][] = $contribution->getId();
@@ -43,7 +43,7 @@
                 $contributions = $person->getContributions();
                 $values = array();
                 foreach($contributions as $contribution){
-                    if($contribution->getEndYear() >= $start && $contribution->getStartYear() <= $end){
+                    if($contribution->getEndDate() >= $start && $contribution->getStartDate() <= $end){
                         $values['All'][""][] = $contribution->getId();
                     }
                 }

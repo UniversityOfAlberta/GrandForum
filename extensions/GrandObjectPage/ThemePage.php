@@ -67,6 +67,9 @@ class ThemePage {
                 $tabbedPage = new TabbedPage("theme");
                 $tabbedPage->addTab(new ThemeMainTab($theme, $visibility));
                 $tabbedPage->addTab(new ThemeBudgetTab($theme, $visibility));
+                if($isLead){
+                    $tabbedPage->addTab(new ThemeDashboardTab($theme, $visibility));
+                }
                 /*$tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));

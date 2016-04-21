@@ -88,6 +88,14 @@ class HQPExitTab extends AbstractEditableTab {
                 break;
             }
         }
+        foreach($this->person->getProjects(true) as $project){
+            if($me->leadershipOf($project) || 
+               $me->isThemeLeaderOf($project) || 
+               $me->isThemeCoordinatorOf($project)){
+                $found = true;
+                break;
+            }
+        }
         return ($found || $me->getId() == $this->person->getId() || $me->isRoleAtLeast(STAFF));
     }
     

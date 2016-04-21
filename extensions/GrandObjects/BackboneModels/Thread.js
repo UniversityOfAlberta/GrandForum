@@ -17,7 +17,7 @@ Thread = Backbone.Model.extend({
             url: "",
             date_created: "0000-00-00 00:00:00",
         };
-    }
+    },
 });
 
 Threads = Backbone.Collection.extend({

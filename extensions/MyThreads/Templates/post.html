@@ -1,0 +1,41 @@
+<% if(id != null){ %>
+    <div class="thread-message" width="100%">
+        <table padding="0">
+        <tbody>
+            <tr>
+                <td rowspan="2">
+                    <img class="photo" src="<%= author.photo %>">
+                </td>
+                <td valign="top">
+                    <b>From:</b>
+                </td>
+                <td valign="top">
+                    <a href="<%= author.url %>"><b><%= author.name %></b></a>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <b>Date:</b>
+                </td>
+                <td valign="top">
+                    <%= date_created %>
+                </td>
+            </tr>
+        </table>
+        <div class="inner-message">
+            <%= nl2br(message) %>
+        </div>
+    </div>
+<% } else { %>
+    <% if(!this.isDialog){ %>
+        <h2 id="replyHeader">Reply to Thread</h2>
+    <% } %>
+    <div id="addMessage" align="right">
+        <%= HTML.TextArea(this, 'message', {style: 'max-height: 200px; resize: none;'}) %>
+        <br>
+        <% if(!this.isDialog){ %>
+            <button id="submitPost" type="button">Add Reply</button>
+        <% } %>
+        <span class="throbber" style="display:none;"></span>
+    </div>
+<% } %>

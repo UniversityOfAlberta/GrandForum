@@ -11,7 +11,7 @@
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <h4 style='font-size:1.40em;'>Project Progress Report<br />Period Ending {getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id}}</h4><br />
-                <p><b><u>TVN Project File Number</u></b></p>{$project_name}<br /><br />
+                <p><b><u>CFN Project File Number</u></b></p>{$project_name}<br /><br />
                 <p><b><u>Project Title</u></b></p>{$project_full_name}<br /><br />
                 <p><b><u>Project Leader</u></b></p>{$project_leaders}<br />
             ]]>
@@ -31,7 +31,7 @@
         <ReportItem id="funded_head" type="StaticReportItem">
             <![CDATA[
                 <tr>
-                    <th colspan='4'>TVN Funded Investigators</th>
+                    <th colspan='4'>CFN Funded Investigators</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -61,7 +61,7 @@
         <ReportItem id="nonfunded_head" type="StaticReportItem">
             <![CDATA[
                 <tr>
-                    <th colspan='4'>Non-TVN Funded Investigators</th>
+                    <th colspan='4'>Non-CFN Funded Investigators</th>
                 </tr>
             ]]>
         </ReportItem>
@@ -236,10 +236,16 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" title="Networking Activities" blobSection="PROG_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" title="Networking/Collaborations" blobSection="PROG_NETWORK" type="EditableReportSection">
         <ReportItem id="activities" type="TextareaReportiTem" blobItem="PROG_NET_ACTIVITY" rich="true">
             <![CDATA[
                 <h3>Team Meetings & Exchanges</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROG_NET_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -248,14 +254,14 @@
         <ReportItem id="themes" type="RadioReportItem" blobItem="PROG_PLAN_THEMES" orientation="vertical" options="Improvement of End of Life (EOL) Care/Advance Care Planning (ACP)Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Research Themes</h3>
-                <h4>Which TVN research themes does your project most closely fall under?</h4>
+                <h4>Which CFN research themes does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" blobItem="PROG_PLAN_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <h3>Strategic Priorities</h3>
-                <h4>Which TVN strategic priorities does your project most closely fall under?</h4>
+                <h4>Which CFN strategic priorities does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>
@@ -402,7 +408,7 @@
                 <ReportItem id="training" type="RadioReportItem" blobType="BLOB_ARRAY" blobItem="SSA_HQP_TRAIN" blobSubItem="{$user_id}" options="Yes|No">
                     <![CDATA[
                         <tr>
-                            <td class='label'>Participating in the TVN Training Program?</td>
+                            <td class='label'>Participating in the CFN Training Program?</td>
                             <td>{$item}</td>
                         </tr>
                     ]]>
