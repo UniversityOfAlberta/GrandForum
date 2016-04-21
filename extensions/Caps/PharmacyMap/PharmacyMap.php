@@ -16,12 +16,14 @@ class PharmacyMap extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
 		     'pharmacy_map',
+		     'pharmacy_add',
 		    );
     }
     
     function getViews(){
         return array('Backbone/*',
 		     'PharmacyMapView',
+		     'PharmacyAddView',
 		    );
     }
     

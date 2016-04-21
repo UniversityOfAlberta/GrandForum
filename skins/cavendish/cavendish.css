@@ -1374,6 +1374,8 @@ select span.noshow {
 	height:16px;
 	color: #555555;
 	font-weight: bold;
+	background: #99D6F2;
+
 }
 
 #globalSearchInput:focus {
@@ -1391,13 +1393,14 @@ select span.noshow {
 	height:22px;
 	padding: 3px;
 	vertical-align: top;
-	background: #FFF;
+	background: #99D6F2;
+
 }
 
 #globalSearchButton {
     display: inline-block;
     filter: none;
-    background: #fff !important;
+    background: #99D6F2;
     margin: 0;
     border-width: 1px 1px 1px 0;
 	border-style: solid;

@@ -14,9 +14,11 @@ class PersonProfileTab extends AbstractEditableTab {
     }
 
     function generateBody(){
-        global $wgUser;
+        global $wgUser, $wgOut;
         if(!$wgUser->isLoggedIn()){
-	    throwPermissionError();
+            $wgOut->clearHTML();
+	    $this->html = permissionError();
+	    return;
 	}
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";

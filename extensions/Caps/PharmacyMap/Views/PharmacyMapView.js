@@ -6,19 +6,21 @@ PharmacyMapView = Backbone.View.extend({
         this.model.bind('sync', this.render);//change to on
     },
 
-    events: {
-        "click #addMarker": "Location",
+    events:{
+        "click #addPharmacy": "addPharmacy",
+
     },
 
-    Location: function(){
-	console.log(lat);
+    addPharmacy: function(){
+            document.location = document.location + '#/add';
     },
 
     initMap: function(){
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
 	    center:{lat:43.6560817, lng:-79.390945},
-	    zoom:8
+	    zoom:8,
+	    width:'100%'
 	});
 
 	var input = document.getElementById('lat');
@@ -56,17 +58,26 @@ PharmacyMapView = Backbone.View.extend({
         });
     },
 
-    AddMarker: function(location){
-	var marker = new google.maps.Marker({
-	    position: location,
-	    map: map,
-	    data:"pharm"
-	});
-    },
+    AddMarkers: function(group){
+	_.each(group, function(val){
+	    if(val.latitude != null){
+		var pharmLoc = new google.maps.LatLng(val.latitude, val.longitude);
+		var marker = new google.maps.Marker({
+		    position: pharmLoc,
+		    map: map,
+		    data:"pharm",
+		    title:val.name
+		});
 
-    TestMarker: function(){
-	var centralPark = new google.maps.LatLng(44.500, -80.450);
-	this.AddMarker(centralPark);
+		var infowindow = new google.maps.InfoWindow({
+    		    content: val.name
+  		});
+
+  		marker.addListener('click', function(){
+    		    infowindow.open(map, marker);
+  		});
+	    }
+	});
     },
 
     render: function(){
@@ -74,8 +85,8 @@ PharmacyMapView = Backbone.View.extend({
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
-	this.initMap(); 
-	this.TestMarker();
+	this.initMap();
+	this.AddMarkers(data); 
         return this.$el;
     }
 

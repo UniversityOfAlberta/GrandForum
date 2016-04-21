@@ -139,7 +139,7 @@ class IndexTable {
 		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
 		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
-		    if(!$result){
+		    if(!$result || !$wgUser->isLoggedIn()){
 	            $wgOut->loginToUse();
 		        $wgOut->output();
 		        $wgOut->disable();

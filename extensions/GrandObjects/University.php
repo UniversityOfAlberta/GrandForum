@@ -15,8 +15,9 @@ class University extends BackboneModel {
     var $longitude;
     var $color;
     var $province;
-    var $order;
-    var $isDefault;
+    var $order = 1000;
+    var $isDefault = 0;
+    var $provinceString;
     
     static function newFromId($id){
         if(isset($cache[$id])){
@@ -94,9 +95,27 @@ ORDER BY `dist` ASC";
         return $json;
     }
     
-    function create(){ 
-        return false;
-    }
+    function create(){
+            $me = Person::newFromWgUser();
+            if($me->isRoleAtLeast(AR)){
+                DBFunctions::begin();
+                $status = DBFunctions::insert('grand_universities',
+                                              array('`university_name`' => $this->getName(),
+						    '`short_name`' => $this->getShortName(),
+                                                    '`province_id`' => $this->getProvince(),
+                                                    '`latitude`' => $this->getLatitude(),
+						    '`longitude`' => $this->getLongitude(),
+						    '`order`' => $this->getOrder(),
+						    '`default`' => $this->isDefault()
+						   ),true);
+                if($status){
+                    DBFunctions::commit();
+                    return true;
+                }
+            }
+            return false; 
+   }
+    
     
     function update(){
         return false;
@@ -138,6 +157,9 @@ ORDER BY `dist` ASC";
     }
     
     function getProvince(){
+        if($this->province == ""){
+            $this->province = $this->findProvince($this->province_string);
+        }
         return $this->province;
     }
     
@@ -151,6 +173,58 @@ ORDER BY `dist` ASC";
     
     function isDefault(){
         return $this->isDefault;
+    }
+
+    function setId($var){
+        $this->id = $var;
+    }
+
+    function setName($var){
+        $this->name = $var;
+    }
+
+    function setShortName($var){
+        $this->shortName = $var;
+    }
+
+    function setLatitude($var){
+        $this->latitude = $var;
+    }
+
+    function setLongitude($var){
+        $this->longitude = $var;
+    }
+
+    function setProvinceString($var){
+       $this->provinceString = $var;
+    }
+
+    function setProvince($var){
+       $this->province = $var;
+    }
+
+    function setColor($var){
+        $this->color = $var;
+    }
+
+    function setOrder($var){
+        $this->order = $var;
+    }
+
+    function setDefault($var){
+        $this->isDefault = $var;
+    }
+
+
+    private function findProvince($prov){
+        $sql = "SELECT *
+                FROM grand_provinces
+                WHERE province LIKE '$prov'";
+        $data = DBFunctions::execSQL($sql);
+	if(count($data)>0){
+	    return $data[0]['id'];
+	}
+	return 1;
     }
     
 }

@@ -12,7 +12,7 @@
 	#ignored {}
 	
 	#topheader {
-	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #F0F0F0) ) !important;
+	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #FFFFFF) ) !important;
         background:-moz-linear-gradient( center top, #f8f8f8 5%, #F0F0F0 100% ) !important;
         background: -o-linear-gradient(top, #f8f8f8, #F0F0F0) !important;
         filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#F0F0F0');

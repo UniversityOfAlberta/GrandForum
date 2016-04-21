@@ -37,6 +37,6 @@ table.wikitable tr.deleted {
     background: #FEB8B8;
 }
 #map {
-    width:500px;
+    width:100%;
     height:400px;
 }

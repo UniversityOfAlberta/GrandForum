@@ -161,7 +161,12 @@ class PersonPage {
                 // User does not exist
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle("User Does Not Exist");
+		if(!$wgUser->isLoggedIn()){
+		    permissionError();
+		}
+		else{
+                    $wgOut->setPageTitle("User Does Not Exist");
+		}
                 $wgOut->addHTML("There is no user '$role:$name'");
                 $wgOut->output();
                 $wgOut->disable();

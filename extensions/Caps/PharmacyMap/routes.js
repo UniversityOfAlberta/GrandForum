@@ -20,8 +20,7 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-	":id": "viewThread",
-	":id/edit": "editThread",
+	"add": "addPharm",
     }
 });
 
@@ -30,24 +29,22 @@ var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
     this.closeCurrentView();
-    var threads = new Threads();
-    threads.fetch();
-    this.currentView = new PharmacyMapView({el: $("#currentView"), model: threads});
+    var pharms = new Universities();
+    pharms.fetch();
+    this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
 });
 
-pageRouter.on('route:viewThread', function (id) {
+pageRouter.on('route:addPharm', function (actions) {
     this.closeCurrentView();
-    var thread = new Thread({'id':id});
-    thread.fetch();
-    this.currentView = new PharmacyMapView({el: $("#currentView"), model: thread});
+    var pharms = new University();
+    pharms.fetch();
+    this.currentView = new PharmacyAddView({el: $("#currentView"), model: pharms});
+   /*this.closeCurrentView();
+    var pharms = new Universities();
+    pharms.fetch();
+    this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});*/
 });
 
-pageRouter.on('route:editThread', function (id) {
-    this.closeCurrentView();
-    var thread = new Thread({'id':id});
-    thread.fetch();
-    this.currentView = new PharmacyMapView({el: $("#currentView"), model: thread});
-});
 
 
 // Start Backbone history a necessary step for bookmarkable URL's

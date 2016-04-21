@@ -16,7 +16,18 @@ class UniversityAPI extends RESTAPI {
     }
     
     function doPOST(){
-        return $this->doGet();
+        $uni = new University(array());
+        $me = Person::newFromWgUser();
+        $uni->setName($this->POST('name'));
+        $uni->setShortName($this->POST('address'));
+        $uni->setLatitude($this->POST('latitude'));
+	$uni->setLongitude($this->POST('longitude'));
+	$uni->setProvinceString($this->POST('province_string'));
+        $status = $uni->create();
+        if(!$status){
+            $this->throwError("There was an error");
+        }
+        return true;
     }
     
     function doPUT(){

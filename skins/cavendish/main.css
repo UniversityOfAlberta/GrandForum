@@ -35,6 +35,15 @@ img.ui-datepicker-trigger{
     height: 100%;
 }
 
+#header .top-nav {
+    background-color:#BDE8FA;
+    border-radius:10px;
+}
+
+#header .top-nav-mid {
+    background-color:#BDE8FA;
+}
+
 #header li {
     height: 100%;
     color: #333333;

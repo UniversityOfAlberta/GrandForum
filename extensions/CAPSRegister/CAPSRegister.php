@@ -69,7 +69,7 @@ class CAPSRegister extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
 
         $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-        $roleField = new SelectBox("role_field", "Role", "Choose one..",array("Physician", "Pharmacist", "Physician/Pharmacist Staff"), VALIDATE_NOT_NULL);
+        $roleField = new SelectBox("role_field", "Role", "Choose one..",array("Physician", "Pharmacist", "Other (specify)"), VALIDATE_NOT_NULL);
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField);
 
