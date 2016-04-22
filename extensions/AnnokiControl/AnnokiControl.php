@@ -203,11 +203,10 @@ function orderSpecialPages(&$aSpecialPages){
 
     foreach($aSpecialPages as $key => $page){
 	$SpecialPage = new $page();
-    //print_r($page ."\n");
 
 	$group = $SpecialPage->getFinalGroupName();
 	if(!$me->isLoggedIn() && 
-	  ($key != "Userlogin" && $key != "PasswordReset")){
+	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister")){
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}

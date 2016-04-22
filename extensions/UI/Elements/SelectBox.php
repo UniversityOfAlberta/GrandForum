@@ -10,7 +10,7 @@ class SelectBox extends UIElement {
     }
     
     function renderSelect(){
-        $html = "<select {$this->renderAttr()} name='{$this->id}'>";
+        $html = "<select {$this->renderAttr()} name='{$this->id}' id='{$this->id}'>";
         $selectedFound = false;
         foreach($this->options as $key => $option){
             $selected = "";
