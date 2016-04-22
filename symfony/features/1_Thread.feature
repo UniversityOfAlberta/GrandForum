@@ -53,6 +53,21 @@ Feature: Threads
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:MyThreads"
         And I follow "New NI Thread By Admin.User1"
-        And I wait "500"
+        And I wait "100"
         Then I should see "This is the description."
-  
+        And I fill in "message" with "Hello World"
+        And I press "Add Reply"
+        And I wait "100"
+        Then I should see "Hello World"
+        
+    Scenario: Editing a post as NI
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:MyThreads"
+        And I follow "New NI Thread By Admin.User1"
+        And I wait "500"
+        And I click by css ".edit-icon"
+        And I fill in "message" with "Edited Message"
+        And I press "Save"
+        And I wait "100"
+        Then I should see "Edited Message"
+        
