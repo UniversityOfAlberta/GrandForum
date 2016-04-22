@@ -38,13 +38,12 @@ MyThreadsView = Backbone.View.extend({
         this.createDataTable();
     },
     
-    createDataTable: function(order, searchStr){
+    createDataTable: function(){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
-        this.table.order(order);
-        this.table.search(searchStr);
+        this.table.order([4, 'desc']);
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
     },

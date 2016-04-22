@@ -55,4 +55,4 @@ Feature: Threads
         And I follow "New NI Thread By Admin.User1"
         And I wait "500"
         Then I should see "This is the description."
-   
+  
