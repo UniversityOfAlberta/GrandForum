@@ -69,12 +69,18 @@ class CAPSRegister extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
 
         $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-        $roleField = new SelectBox("role_field", "Role", "Choose one..",array("Physician", "Pharmacist", "Other (Specify)"), VALIDATE_NOT_NULL);
+        $roleField = new SelectBox("role_field", "Role", "",array("Physician", "Pharmacist", "Other (Specify)"), VALIDATE_NOT_NULL);
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField);
 
+        $otherRoleLabel = new Label("other_role_label", "Specify Role", "The role of the user", VALIDATE_NOT_NULL);
+        $otherRoleField = new TextField("other_role_field", "other_Role", "", VALIDATE_NOT_NULL);
+        $otherRoleRow = new FormTableRow("other_role_row");
+	$otherRoleRow->attr("style","display:none");
+        $otherRoleRow->append($otherRoleLabel)->append($otherRoleField);
+
         $languageLabel = new Label("language_label", "Language", "The language of the user", VALIDATE_NOT_NULL);
-        $languageField = new SelectBox("language_field", "Language", "Choose one..",array("English", "French"), VALIDATE_NOT_NULL);
+        $languageField = new SelectBox("language_field", "Language", "",array("English", "French"), VALIDATE_NOT_NULL);
         $languageRow = new FormTableRow("language_row");
         $languageRow->append($languageLabel)->append($languageField);
        
@@ -100,13 +106,19 @@ class CAPSRegister extends SpecialPage{
         $clinicRow->append($clinicLabel)->append($clinicField->attr('size', 20));
 
         $specialtyLabel = new Label("specialty_label", "Specialty", "The specialty of the user", VALIDATE_NOTHING);
-        $specialtyField = new SelectBox("specialty_field", "Specialty", "Choose one..",array("Family Physician/General Practitioner",
+        $specialtyField = new SelectBox("specialty_field", "Specialty", "",array("Family Physician/General Practitioner",
 											     "Obstetrician/Gynecologist",
 											     "Pediatrician",
 											     "Other (Specify)"), VALIDATE_NOTHING);
         $specialtyRow = new FormTableRow("specialty_row");
 	$specialtyRow->attr('style','display:none');
         $specialtyRow->append($specialtyLabel)->append($specialtyField);
+
+        $otherSpecialtyLabel = new Label("other_specialty_label", "Specify Specialty", "The specialty of the user", VALIDATE_NOT_NULL);
+        $otherSpecialtyField = new TextField("other_specialty_field", "other_Specialty", "", VALIDATE_NOT_NULL);
+        $otherSpecialtyRow = new FormTableRow("other_specialty_row");
+        $otherSpecialtyRow->attr("style","display:none");
+        $otherSpecialtyRow->append($otherSpecialtyLabel)->append($otherSpecialtyField);
  
         $yearsLabel = new Label("years_label", "Years in Practice", "The years of practice of the user", VALIDATE_NOTHING);
         $yearsField = new TextField("years_field", "Years of Practice", "", VALIDATE_NOTHING);
@@ -115,7 +127,7 @@ class CAPSRegister extends SpecialPage{
         $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
         $provisionLabel = new Label("provision_label", "Prior Provision of<br>Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
-        $provisionField = new SelectBox("provision_field", "Prior Provision of Abortion Services", "Choose one..", array("Yes","No"), VALIDATE_NOTHING);
+        $provisionField = new HorizontalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
         $provisionRow = new FormTableRow("provision_row");
         $provisionRow->attr('style','display:none');
         $provisionRow->append($provisionLabel)->append($provisionField);
@@ -132,6 +144,18 @@ class CAPSRegister extends SpecialPage{
 	$disclosureField = new HorizontalRadioBox("disclosure", "disclosure",array("disclosure"), array("I agree", "I disagree"));
 	$disclosureLabelRow->append($disclosureLabel);
 	$disclosureRow->append($emptyElement)->append($disclosureField)->attr("id","disclosure");
+
+	$pharmacyNameLabel = new Label("pharmacy_name_label", "Pharmacy Name", "Pharmacy Name", VALIDATE_NOT_NULL);
+	$pharmacyField = new TextField("pharmacy_name_field", "Pharmacy Name", "", VALIDATE_NOT_NULL);
+	$pharmacyRow = new FormTableRow("pharmacy_name_row");
+	$pharmacyRow->append($pharmacyNameLabel)->append($pharmacyField);
+        $pharmacyRow->attr("style","display:none");
+
+        $pharmacyAddressLabel = new Label("pharmacy_address_label", "Pharmacy Address", "Pharmacy Address", VALIDATE_NOT_NULL);
+        $pharmacyAddressField = new TextField("pharmacy_address_field", "Pharmacy Address", "", VALIDATE_NOT_NULL);
+        $pharmacyAddressRow = new FormTableRow("pharmacy_address_row");
+	$pharmacyAddressRow->attr("style","display:none");
+        $pharmacyAddressRow->append($pharmacyAddressLabel)->append($pharmacyAddressField);
 
         $fileLabel = new Label("file_label", "Proof of Certification", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING);
         $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOTHING);
@@ -156,12 +180,16 @@ class CAPSRegister extends SpecialPage{
                   ->append($cityRow)
                   ->append($provinceRow)
                   ->append($roleRow)
+		  ->append($otherRoleRow)
 		  ->append($clinicRow)
 		  ->append($specialtyRow)
+		  ->append($otherSpecialtyRow)
 		  ->append($yearsRow)
 		  ->append($provisionRow)
                   ->append($disclosureLabelRow)
 		  ->append($disclosureRow)
+		  ->append($pharmacyRow)
+		  ->append($pharmacyAddressRow)
 		  ->append($fileRow)
                   ->append($captchaRow)
                   ->append($submitRow);
@@ -184,9 +212,16 @@ class CAPSRegister extends SpecialPage{
         			        toggleFields();
     				    });
 				    $('#disclosure0').click(function (){
-					console.log('hi');
-					
+					$('#pharmacy_address_label').parent().parent().show();
+                                        $('#pharmacy_name_label').parent().parent().show();
 				    });
+                                    $('#disclosure1').click(function (){
+ 					$('#pharmacy_address_label').parent().parent().hide();
+                                        $('#pharmacy_name_label').parent().parent().hide();
+				    });
+                                    $('#specialty_field').change(function () {
+                                        specialtySpecify();
+                                    });
 				});
 
 				function toggleFields() {
@@ -205,13 +240,29 @@ class CAPSRegister extends SpecialPage{
 				    if ($('#role_field').val() == 'Pharmacist'){
 					$('#disclosure_div').parent().parent().show();
                                         $('input[name=disclosure]').parent().parent().show();
+
 				    }
 				    else{
                                         $('#disclosure_div').parent().parent().hide();
                                         $('input[name=disclosure]').parent().parent().hide();
-				    }
 
-				}</script>");	
+				    }
+                                    if ($('#role_field').val() == 'Other (Specify)'){
+                                        $('#other_role_label').parent().parent().show();
+				    }
+				    else{
+					$('#other_role_label').parent().parent().hide();
+				    }
+				}
+                                function specialtySpecify() {
+                                    if ($('#specialty_field').val() == 'Other (Specify)'){
+                                        $('#other_specialty_label').parent().parent().show();
+                                    }
+                                    else{
+                                        $('#other_specialty_label').parent().parent().hide();
+                                    }
+				}
+		</script>");	
         $wgOut->addHTML("</form>");
     }
     
