@@ -30,7 +30,17 @@ class PostAPI extends RESTAPI {
     }
 
     function doPUT(){
-        return false;
+        $me = Person::newFromWgUser();
+        $post = Post::newFromId($this->getParam('id'));
+        if(!$post->canEdit()){
+            $this->throwError("You must be logged in to view this post");
+        }
+        $post->setMessage($this->POST('message'));
+        $post = $post->update();
+        if($post === false){
+            $this->throwError("The post could not be created");
+        }
+        return $post->toJSON();
     }
     function doDELETE(){
         return false;

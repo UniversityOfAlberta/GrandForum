@@ -116,7 +116,7 @@ class Post extends BackboneModel{
                                           array('id' => EQ($this->id)));
             if($status){
                 DBFunctions::commit();
-                return true;
+                return $this;
             }
         }
         return false;
@@ -140,6 +140,11 @@ class Post extends BackboneModel{
     function canView(){
         $thread = Thread::newFromId($this->getThreadId());
         return $thread->canView();
+    }
+    
+    function canEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->getId() == $this->user_id);
     }
 
     function toArray(){

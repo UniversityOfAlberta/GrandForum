@@ -4,6 +4,7 @@ PostView = Backbone.View.extend({
     row: null,
     template: _.template($('#post_template').html()),
     isDialog: false,
+    oldMessage: "",
     
     initialize: function(options){
         this.parent = options.parent;
@@ -17,13 +18,32 @@ PostView = Backbone.View.extend({
     },
 
     events: {
+        "click .edit-icon": "editPost",
         "click #submitPost": "submitPost",
+        "click #cancel": "cancel",
+        "click #save": "save",
+    },
+    
+    editPost: function(){
+        this.oldMessage = this.model.get('message');
+        this.editing = true;
+        this.render();
     },
 
     submitPost: function(){
         this.model.save();
-        // this.parent.$("#personRows").append(this.$el);
         this.parent.addNewRow();
+    },
+    
+    cancel: function(){
+        this.editing = false;
+        this.model.set('message', this.oldMessage);
+        this.render();
+    },
+    
+    save: function(){
+        this.editing = false;
+        this.model.save();
     },
 
     render: function(){
