@@ -1437,6 +1437,10 @@ EOF;
     function showArtDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", $this->from, $this->to);
+        
+        if(count($publications) == 0){
+            return;
+        }
 
         $types = Paper::getCategoryTypes("Artifact");
 
@@ -1527,6 +1531,11 @@ EOF;
     function showActDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", $this->from, $this->to);
+        
+        if(count($publications) == 0){
+            return;
+        }
+        
         //echo (sizeof($publications ));
         $types = Paper::getCategoryTypes("Activity");
 
