@@ -25,14 +25,14 @@ class Province {
     }
     
     static function newFromName($name){
-        if(isset($cache[$name])){
+      /*  if(isset($cache[$name])){
             return $cache[$name];
-        }
+        }*/
         $data = DBFunctions::select(array('grand_provinces'),
                                     array('*'),
                                     array('province' => EQ($name)));
         $prov = new Province($data);
-        $cache[$name] = $prov;
+    //    $cache[$name] = $prov;
         return $prov;
     }
     

@@ -4,18 +4,12 @@
     </div>
     <div class="card_description">
         <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
-        <span style="display: inline-block; white-space: normal;"><%= this.model.getUniversityString() %></span><br />
+        <span style="display: inline-block; white-space: normal;"><%= this.model.getCapsString() %></span><br />
         <table cellpadding="0" cellspacing="0" style="margin-top: 8px;">
             <% if(email != ""){ %>
                 <tr>
                     <td width="100">Email&nbsp;</td>
                     <td style="color:#333333;"><a href="mailto:<%= email %>"><%= email %></a></td>
-                </tr>
-            <% } %>
-            <% if(nationality != ""){ %>
-                <tr>
-                    <td width="100">Nationality&nbsp;</td>
-                    <td style="color:#333333;"><%= nationality %></td>
                 </tr>
             <% } %>
             <% if(gender != ""){ %>
@@ -34,6 +28,12 @@
                 <tr>
                     <td width="100">Phone Number&nbsp;</td>
                     <td style="color:#333333;"><%= phone %></td>
+                </tr>
+            <% } %>
+            <% if(this.model.getCapsRoleString().indexOf("Physician") != -1){ %>
+                <tr>
+                    <td width="100">Accepting referrals?&nbsp;</td>
+                    <td style="color:#333333;"><%= accept_referrals %></td>
                 </tr>
             <% } %>
         </table>

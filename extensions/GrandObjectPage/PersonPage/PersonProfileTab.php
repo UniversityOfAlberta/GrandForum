@@ -169,11 +169,19 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
+	    $_POST['city'] = @$_POST['city'];
+	    $_POST['province'] = @$_POST['province'];
+	    $_POST['specialty'] = @$_POST['specialty'];
+	    $_POST['referral'] = @$_POST['referral'];
+
 
             $api = new UserUniversityAPI();
             $api->processParams(array());
             $api->doAction(true);
 
+	    $api = new UserCapsAPI();
+	    $api->processParams(array());
+	    $api->doAction(true);
             $api = new UserPhoneAPI();
             $api->doAction(true);
             $api = new UserTwitterAccountAPI();
@@ -506,23 +514,6 @@ EOF;
         $nationality = "";
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-            $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-            $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-            $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-            $nationality = "<tr>
-                <td align='right'><b>Nationality:</b></td>
-                <td>
-                    <select name='nationality'>
-                        <option value=''>---</option>
-                        <option value='Canadian' $canSelected>Canadian</option>
-                        <option value='American' $amerSelected>American</option>
-                        <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                        <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                    </select>
-                </td>
-            </tr>";
-            
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
             $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
@@ -544,75 +535,48 @@ EOF;
                             </tr>
                             {$nationality}
                             {$gender}";
-        
-        $roles = $person->getRoles();
-        $universities = new Collection(University::getAllUniversities());
-        $uniNames = $universities->pluck('name');
-        if($person->isRoleAtMost(HQP)){
-            $positions = array("Other", 
-                               "Graduate Student - Master's", 
-                               "Graduate Student - Doctoral", 
-                               "Post-Doctoral Fellow", 
-                               "Research Associate", 
-                               "Research Assistant", 
-                               "Technician",
-                               "Professional End User",
-                               "Summer Student", 
-                               "Undergraduate Student");
-        }
-        else{
-            $positions = Person::getAllPositions();
-        }
-        $myPosition = "";
-        foreach($positions as $key => $position){
-            if($university['position'] == $position){
-                $myPosition = $key;
-            }
-        }
-        if($myPosition == ""){
-            $positions[] = $university['position'];
-            $myPosition = count($positions) - 1;
-        }
-        $departments = Person::getAllDepartments();
-        $organizations = $uniNames;
-        sort($organizations);
-        if($person->isRoleAtMost(HQP)){
-            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
-        }
-        else{
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
-        }
-        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-        $titleCombo->attr('style', 'max-width: 250px;');
-        $orgCombo->attr('style', 'max-width: 250px;');
-        $deptCombo->attr('style', 'max-width: 250px;');
-        $this->html .= "<tr>
-                            <td align='right'><b>Title:</b></td>
-                            <td>{$titleCombo->render()}</td>
-                        </tr>";
-        if($me->isRoleAtLeast(STAFF)){
+	$role_strings = array();
+	$roles = $person->getRoles();
+        foreach($roles as $role){
+	    $role_strings[] = $role->role;
+	}
+	    $city = new TextField('city', 'city', $person->getCity());
+	    $this->html .= "<tr>
+				<td align='right'><b>City:</b></td>
+				<td>{$city->render()}</td>
+			</tr>";
+            $province = new TextField('province', 'province', $person->getProvince());
             $this->html .= "<tr>
-                                <td></td>
-                                <td><table>";
-            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
-            foreach($roles as $role){
-                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
-                $this->html .= "<tr>
-                                    <td align='right'><b>{$role->getRole()}:</b></td>
-                                    <td>{$roleTitleCombo->render()}</td>
-                                </tr>";
-            }
-            $this->html .= "</table></td></tr>";
-        }
-        $this->html .= "<tr>
-                            <td align='right'><b>Institution:</b></td>
-                            <td>{$orgCombo->render()}</td>
-                        </tr>
-                        <tr>
-                            <td align='right'><b>Department:</b></td>
-                            <td>{$deptCombo->render()}</td>
+                                <td align='right'><b>Province:</b></td>
+                                <td>{$province->render()}</td>
                         </tr>";
+	if(($visibility['isMe'] || $visibility['isSupervisor']) && in_array("Physician", $role_strings)){
+
+            $blankSelected = ($person->getAcceptReferrals() == "") ? "selected='selected'" : "";
+            $yesSelected = ($person->getAcceptReferrals() == "Yes") ? "selected='selected'" : "";
+            $noSelected = ($person->getAcceptReferrals() == "No") ? "selected='selected'" : "";
+            $referral = "<tr>
+                <td align='right'><b>Are you accepting referrals for Mifepristone?:</b></td>
+                <td>
+                    <select name='referral'>
+                        <option value='' $blankSelected>---</option>
+                        <option value='Yes' $yesSelected>Yes</option>
+                        <option value='No' $noSelected>No</option>
+                    </select>
+                </td>
+            </tr>";
+
+            $specialty = array("--","Family Physician/General Practitioner", "Obstetrician/Gynecologist", "Pediatrician");
+            $specialtyCombo = new ComboBox('specialty', "Specialty", $person->getSpecialty(), $specialty);
+            $specialtyCombo->attr('style', 'max-width: 250px;');
+            $this->html .= "<tr>
+                                <td align='right'><b>Specialty:</b></td>
+                                <td>{$specialtyCombo->render()}</td>
+                        </tr>
+			{$referral}";
+	}
+
+        $this->html .= "</table></td></tr>";
         $this->html .= "</table>";
     }
     

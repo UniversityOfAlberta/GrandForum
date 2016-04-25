@@ -133,6 +133,8 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
+                $this->addAction('User Accounts', 'updateUserCapsInfo', new UserCapsAPI());
+
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());

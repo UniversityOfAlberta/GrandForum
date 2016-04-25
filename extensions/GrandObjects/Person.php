@@ -60,6 +60,16 @@ class Person extends BackboneModel {
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
+    //CAPS specific
+    var $postal_code;
+    var $city;
+    var $province;
+    var $province_string;
+    var $specialty;
+    var $years_in_practice;
+    var $prior_abortion_service;
+    var $accept_referrals;
+
     
     /**
      * Returns a new Person from the given id
@@ -756,6 +766,9 @@ class Person extends BackboneModel {
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
         }
+
+	$this->getCapsPersonalInformation();
+	
     }
     
     function toArray(){
@@ -811,7 +824,14 @@ class Person extends BackboneModel {
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
-                      'url' => $this->getUrl());
+                      'url' => $this->getUrl(),
+		      'postal_code' => $this->getPostalCode(),
+		      'city' => $this->getCity(),
+		      'province' => $this->getProvince(),
+		      'specialty' => $this->getSpecialty(),
+		      'years_in_practice' => $this->getYearsInPractice(),
+		      'prior_abortion_service' => $this->getPriorAbortionService(),
+		      'accept_referrals' => $this->getAcceptReferrals());
         return $json;
     }
     
@@ -850,6 +870,18 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
+
+             $status = DBFunctions::insert('grand_personal_caps_info',
+                                     array('user_id' => $this->getId(),
+					   'postal_code' => $this->getPostalCode(),
+                                           'city' => $this->getCity(),
+                                           'province' => $this->getProvince(),
+                                           'specialty' => $this->getSpecialty(),
+                                           'years_in_practice' => $this->getYearsInPractice(),
+                                           'prior_abortion_service' => $this->getPriorAbortionService(),
+                                           'accept_referrals' => $this->getAcceptReferrals()),
+					   true);
+
             DBFunctions::commit();
             Person::$cache = array();
             Person::$namesCache = array();
@@ -891,6 +923,18 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+
+
+	     $province = Province::newFromName($this->getProvinceString());
+	     $status = DBFunctions::update('grand_personal_caps_info',
+				     array('postal_code' => $this->getPostalCode(),
+					   'city' => $this->getCity(),
+					   'province' =>$province->getId(),
+					   'specialty' => $this->getSpecialty(),
+					   'years_in_practice' => $this->getYearsInPractice(),
+					   'prior_abortion_service' => $this->getPriorAbortionService(),
+					   'accept_referrals' => $this->accept_referrals),
+				      array('user_id' =>EQ($this->getId())));
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
@@ -1229,7 +1273,86 @@ class Person extends BackboneModel {
     function getTwitter(){
         return $this->twitter;
     }
-    
+
+    /**
+     * Returns the postal code of this Person
+     * @return string The postal code of this Person
+     */
+    function getPostalCode(){
+        return $this->postal_code;
+    }
+
+    /**
+     * Returns the city of this Person
+     * @return string The city of this Person
+     */
+    function getCity(){
+        return $this->city;
+    }
+   
+    /**
+     * Returns the province ID of this Person
+     * @return string The province ID of this Person
+     */
+    function getProvince(){
+	$province = "";
+        $data = DBFunctions::select(array('grand_provinces'),
+                                    array('*'),
+                                    array('id' => $this->province));
+        if(count($data)>0){
+            $province = $data[0]['province'];
+        }
+        return $province;
+
+    }
+
+    /**
+     * Returns the province of this Person
+     * @return string The province of this Person
+     */
+    function getProvinceString(){
+        return $this->province_string;
+
+    }
+
+    /**
+     * Returns the specialty of this Person
+     * @return string The specialty of this Person
+     */
+    function getSpecialty(){
+        return $this->specialty;
+    }
+
+    /**
+     * Returns the city of this Person
+     * @return string The city of this Person
+     */
+    function getYearsInPractice(){
+        return $this->years_in_practice;
+    }
+
+    /**
+     * Returns the city of this Person
+     * @return string The city of this Person
+     */
+    function getPriorAbortionService(){
+	if($this->prior_abortion_service === 0){
+	     return false;
+	}
+        return true;
+    }
+
+    /**
+     * Returns the city of this Person
+     * @return string The city of this Person
+     */
+    function getAcceptReferrals(){
+        if($this->accept_referrals == 0){
+             return "No";
+        }
+        return "Yes";
+    }
+ 
     /**
      * Returns the url of this Person's website
      * @return string The url of this Person's website
@@ -1992,7 +2115,10 @@ class Person extends BackboneModel {
             $roles = array();
             if(count($data) > 0){
                 foreach($data as $row){
-                    $roles[] = new Role(array($row));
+	            $role = new Role(array($row));
+		    if($role->id != null){
+                        $roles[] = new Role(array($row));
+		    }
                 }
             }
             return $roles;
@@ -2001,7 +2127,10 @@ class Person extends BackboneModel {
         if($this->roles == null && $this->id != null){
             if(isset(self::$rolesCache[$this->id])){
                 foreach(self::$rolesCache[$this->id] as $row){
-                    $this->roles[] = new Role(array(0 => $row));
+		    $role = new Role(array($row));
+                    if($role->id != null){
+                        $this->roles[] = $role;
+                    }
                 }
             }
             else{
@@ -4120,6 +4249,25 @@ class Person extends BackboneModel {
             return true;
         }
         return false;
+    }
+  
+    function getCapsPersonalInformation(){
+	$caps_info = array();
+        $data = DBFunctions::select(array('grand_personal_caps_info'),
+                                    array('*'),
+                                    array('user_id' => $this->id));
+	if(count($data)>0){
+	    $this->postal_code = $data[0]['postal_code'];
+	    $this->city = $data[0]['city'];
+	    $this->province = $data[0]['province'];
+	    $this->specialty = $data[0]['specialty'];
+	    $this->years_in_practice = $data[0]['years_in_practice'];
+	    $this->prior_abortion_service = $data[0]['prior_abortion_service'];
+	    $this->accept_referrals = $data[0]['accept_referrals'];
+	    $caps_info = $data[0];
+	}
+	return $caps_info;
+
     }
 }
 ?>

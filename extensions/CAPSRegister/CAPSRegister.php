@@ -99,8 +99,8 @@ class CAPSRegister extends SpecialPage{
 	$provinceRow = new FormTableRow("province_row");
         $provinceRow->append($provinceLabel)->append($provinceField->attr('size', 20));
         
-	$clinicLabel = new Label("clinic_label", "Clinic/Hospital Name", "The clinic of the user", VALIDATE_NOT_NULL);
-        $clinicField = new TextField("clinic_field", "Clinic/Hospital Name", "", VALIDATE_NOT_NULL);
+	$clinicLabel = new Label("clinic_label", "Clinic/Hospital Name", "The clinic of the user", VALIDATE_NOTHING);
+        $clinicField = new TextField("clinic_field", "Clinic/Hospital Name", "", VALIDATE_NOTHING);
         $clinicRow = new FormTableRow("clinic_row");
 	$clinicRow->attr('style','display:none');
         $clinicRow->append($clinicLabel)->append($clinicField->attr('size', 20));
@@ -114,8 +114,8 @@ class CAPSRegister extends SpecialPage{
 	$specialtyRow->attr('style','display:none');
         $specialtyRow->append($specialtyLabel)->append($specialtyField);
 
-        $otherSpecialtyLabel = new Label("other_specialty_label", "Specify Specialty", "The specialty of the user", VALIDATE_NOT_NULL);
-        $otherSpecialtyField = new TextField("other_specialty_field", "other_Specialty", "", VALIDATE_NOT_NULL);
+        $otherSpecialtyLabel = new Label("other_specialty_label", "Specify Specialty", "The specialty of the user", VALIDATE_NOTHING);
+        $otherSpecialtyField = new TextField("other_specialty_field", "other_Specialty", "", VALIDATE_NOTHING);
         $otherSpecialtyRow = new FormTableRow("other_specialty_row");
         $otherSpecialtyRow->attr("style","display:none");
         $otherSpecialtyRow->append($otherSpecialtyLabel)->append($otherSpecialtyField);
@@ -126,8 +126,8 @@ class CAPSRegister extends SpecialPage{
         $yearsRow->attr('style','display:none');
         $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
-        $provisionLabel = new Label("provision_label", "Prior Provision of<br>Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
-        $provisionField = new HorizontalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
+        $provisionLabel = new Label("provision_label", "Prior Provision of<hr style='height:0pt; visibility:hidden;'/>Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
+        $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
         $provisionRow = new FormTableRow("provision_row");
         $provisionRow->attr('style','display:none');
         $provisionRow->append($provisionLabel)->append($provisionField);
@@ -145,22 +145,33 @@ class CAPSRegister extends SpecialPage{
 	$disclosureLabelRow->append($disclosureLabel);
 	$disclosureRow->append($emptyElement)->append($disclosureField)->attr("id","disclosure");
 
-	$pharmacyNameLabel = new Label("pharmacy_name_label", "Pharmacy Name", "Pharmacy Name", VALIDATE_NOT_NULL);
-	$pharmacyField = new TextField("pharmacy_name_field", "Pharmacy Name", "", VALIDATE_NOT_NULL);
+	$pharmacyNameLabel = new Label("pharmacy_name_label", "Pharmacy Name", "Pharmacy Name", VALIDATE_NOTHING);
+	$pharmacyField = new TextField("pharmacy_name_field", "Pharmacy Name", "", VALIDATE_NOTHING);
 	$pharmacyRow = new FormTableRow("pharmacy_name_row");
 	$pharmacyRow->append($pharmacyNameLabel)->append($pharmacyField);
         $pharmacyRow->attr("style","display:none");
 
-        $pharmacyAddressLabel = new Label("pharmacy_address_label", "Pharmacy Address", "Pharmacy Address", VALIDATE_NOT_NULL);
-        $pharmacyAddressField = new TextField("pharmacy_address_field", "Pharmacy Address", "", VALIDATE_NOT_NULL);
+        $pharmacyAddressLabel = new Label("pharmacy_address_label", "Pharmacy Address", "Pharmacy Address", VALIDATE_NOTHING);
+        $pharmacyAddressField = new TextField("pharmacy_address_field", "Pharmacy Address", "", VALIDATE_NOTHING);
         $pharmacyAddressRow = new FormTableRow("pharmacy_address_row");
 	$pharmacyAddressRow->attr("style","display:none");
         $pharmacyAddressRow->append($pharmacyAddressLabel)->append($pharmacyAddressField);
 
-        $fileLabel = new Label("file_label", "Proof of Certification", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING);
+       /* $fileLabel = new Label("file_label", "Proof of Certification:</div>
+					      <div style='text-align:right; font-size:0.7em'>
+					      <a href='#!' onclick='$(\"#fileUploadInfo\").dialog({width:\"221px\",position:{my: \"center\", at:\"center\", of: window}})'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);*/
+        $fileLabel = new Label("file_label", "Proof of Certification:</div>
+                                              <div style='text-align:right; font-size:0.7em'>
+                                              <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);
         $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOTHING);
         $fileRow = new FormTableRow("file_row");
+	$fileRow->attr('style','line-height: 10px;');
         $fileRow->append($fileLabel)->append($fileField);
+
+        $referenceLabel = new Label("reference_label", "Name of Reference", "The physician or pharmacist who referred the user", VALIDATE_NOTHING);
+        $referenceField = new TextField("reference_field", "Name of Reference", "", VALIDATE_NOTHING);
+        $referenceRow = new FormTableRow("reference_row");
+        $referenceRow->append($referenceLabel)->append($referenceField);
 
         $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOT_NULL);
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
@@ -191,6 +202,7 @@ class CAPSRegister extends SpecialPage{
 		  ->append($pharmacyRow)
 		  ->append($pharmacyAddressRow)
 		  ->append($fileRow)
+		  ->append($referenceRow)
                   ->append($captchaRow)
                   ->append($submitRow);
         
@@ -201,6 +213,7 @@ class CAPSRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromId($wgUser->getId());
+	$wgOut->addHTML("<div id='fileUploadInfo' style='display:none'>Please upload a copy of your proof of certification from the Mifepristone training program.</div>");
         $wgOut->addHTML("Each submitted form is reviewed by an administrator. You will be contacted by email with your login details when your submission has been approved. You may need to check your spam/junk mail for the registration email.  If you do not get an email after a few business days, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:CAPSRegister' method='post' enctype='multipart/form-data'>\n");
         $form = self::createForm();
@@ -262,6 +275,15 @@ class CAPSRegister extends SpecialPage{
                                         $('#other_specialty_label').parent().parent().hide();
                                     }
 				}
+				function openDialog(){
+					$('#fileUploadInfo').dialog({width:'200px',position:{my: 'center', at:'center', of: window},     buttons: {
+        'OK': function () {
+            $(this).dialog('close')
+        }
+    }});
+					$('.ui-dialog-titlebar').hide();
+
+				}
 		</script>");	
         $wgOut->addHTML("</form>");
     }
@@ -271,6 +293,8 @@ class CAPSRegister extends SpecialPage{
         $form = self::createForm();
         $status = $form->validate();
         if($status){
+	    print_r($form->getElementById('email_field')->value);
+	
             $firstname = $form->getElementById('first_name_field')->setPOST('wpFirstName');
             $lastname = $form->getElementById('last_name_field')->setPOST('wpLastName');
 ST('wpEmail');
