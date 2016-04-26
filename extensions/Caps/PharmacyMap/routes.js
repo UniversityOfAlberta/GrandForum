@@ -20,8 +20,7 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-	":id": "viewThread",
-	":id/edit": "editThread",
+	"add": "addPharm"
     }
 });
 
@@ -35,7 +34,8 @@ pageRouter.on('route:defaultRoute', function (actions) {
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: threads});
 });
 
-pageRouter.on('route:viewThread', function (id) {
+pageRouter.on('route:addPharm', function (id) {
+
     this.closeCurrentView();
     var thread = new Thread({'id':id});
     thread.fetch();
