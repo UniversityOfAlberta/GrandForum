@@ -401,20 +401,18 @@ class Person extends BackboneModel {
             $sql = "SELECT user_id, university_name, department, position, end_date
                     FROM (SELECT * 
                           FROM grand_user_university 
-                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) 
-                         uu, grand_universities u, grand_positions p 
+                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) uu,
+                          grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
                     GROUP BY user_id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                if(!isset(self::$universityCache[$row['user_id']])){
-                    self::$universityCache[$row['user_id']] = 
-                        array("university" => $row['university_name'],
-                              "department" => $row['department'],
-                              "position"   => $row['position'],
-                              "date"       => $row['end_date']);
-                }
+                self::$universityCache[$row['user_id']] = 
+                    array("university" => $row['university_name'],
+                          "department" => $row['department'],
+                          "position"   => $row['position'],
+                          "date"       => $row['end_date']);
             }
         }
     }
@@ -459,6 +457,7 @@ class Person extends BackboneModel {
                                         array('deleted' => NEQ(1),
                                               'candidate' => NEQ(1)),
                                         array('user_name' => 'ASC'));
+            
             foreach($data as $row){
                 self::$allPeopleCache[] = $row['user_id'];
             }

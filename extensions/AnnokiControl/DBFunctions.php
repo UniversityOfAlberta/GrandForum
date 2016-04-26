@@ -293,6 +293,7 @@ class DBFunctions {
             $value = DBFunctions::escape($value);
             $limitSQL[] = "{$value} ";
         }
+        
         $sql = "SELECT ".implode(", ", $colSQL)." FROM ".implode(", ", $fromSQL)." ";
         if(count($whereSQL) > 0){
             $sql .= "WHERE ";
@@ -311,6 +312,7 @@ class DBFunctions {
                 $sql .= $where."\n";
             }
         }
+        
         if(count($orderSQL) > 0){
             $sql .= "ORDER BY ".implode(", ", $orderSQL);
         }
