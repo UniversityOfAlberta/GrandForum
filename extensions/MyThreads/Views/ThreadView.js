@@ -47,7 +47,7 @@ ThreadView = Backbone.View.extend({
    },
 
     render: function(){
-        main.set('title', this.model.get('title'));
+        main.set('title', striphtml(this.model.get('title')));
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));

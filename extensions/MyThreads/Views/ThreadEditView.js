@@ -9,7 +9,7 @@ ThreadEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
-                main.set('title', this.model.get('title'));
+                main.set('title', striphtml(this.model.get('title')));
             }
         });
         if(options.isDialog != undefined){
