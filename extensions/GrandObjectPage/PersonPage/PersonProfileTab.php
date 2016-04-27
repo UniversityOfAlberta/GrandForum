@@ -559,7 +559,7 @@ EOF;
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        if($person->isRole(HQP) && $person->isRoleAtMost(HQP)){
+        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
             $positions = array("Other", 
                                "Graduate Student - Master's", 
                                "Graduate Student - Doctoral", 
@@ -587,7 +587,7 @@ EOF;
         $departments = Person::getAllDepartments();
         $organizations = $uniNames;
         sort($organizations);
-        if($person->isRole(HQP) && $person->isRoleAtMost(HQP)){
+        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
             $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
         }
         else{
