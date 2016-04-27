@@ -1394,7 +1394,7 @@ EOF;
                 <td align='center'>{$n_a1_r2} {$d_a1_r2}</td>
             </tr>
             <tr>
-                <th align='left' colspan='2'>Other published refereed contributions</th>
+                <th align='left' colspan='2'>Other refereed contributions</th>
             </tr>
             <tr>
                 <td valign='top'>&emsp;All authors from one research group</td>
@@ -1405,7 +1405,7 @@ EOF;
                 <td align='center'>{$n_a2_r2}  {$d_a2_r2}</td>
             </tr>
             <tr>
-                <th align='left' colspan='2'>Published non-refereed contributions</th>
+                <th align='left' colspan='2'>Non-refereed contributions</th>
             </tr>
             <tr>
                 <td valign='top'>&emsp;All authors from one research group</td>
