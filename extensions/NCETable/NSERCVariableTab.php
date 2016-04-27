@@ -1733,9 +1733,9 @@ EOF;
             }
             $alreadyDone[$pub->getId()] = true;
             $status = $pub->getStatus();
-            //if($status != "Published"){
-            //    continue;
-            //}
+            if($status == "Rejected"){
+                continue;
+            }
             switch ($pub->getType()) {
                 // A1: Articles in refereed publications
                 case 'Book':
@@ -1744,17 +1744,11 @@ EOF;
                 case 'Collections Paper':
                 case 'Conference Paper':
                 case 'Proceedings Paper':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["a2"][] = $pub;
                     break;
                 // A2: Other refereed contributions
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    if($status != "Published" && $status != "Submitted"){
-                        continue 2;
-                    }
                     $pub_count["a1"][] = $pub;
                     break;
                 // C: Specialized Publications
@@ -1772,9 +1766,6 @@ EOF;
                 case 'Industrial Report':
                 case 'Internal Report':
                 case 'Manual':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["c"][] = $pub;   
                     break;
                 // B: Non-refereed contributions
@@ -1783,9 +1774,6 @@ EOF;
                 case 'Book Review':
                 case 'Review Article':
                 default:
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["b"][] = $pub;
             }
         }
