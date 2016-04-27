@@ -1308,10 +1308,10 @@ EOF;
             $authors = $pub->getAuthors();
             $pub_projects = array();
             $status = $pub->getStatus();
-            //if($status != "Published"){
-            //    continue;
-            //}
-            //echo $pub->getId();
+            if($status == "Rejected"){
+                continue;
+            }
+            
             $groups = array();
             $author_ids = array();
             foreach($authors as $author){
@@ -1349,31 +1349,18 @@ EOF;
                 case 'Book Chapter':
                 case 'Collections Paper':
                 case 'Proceedings Paper':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $dissem["a2".$key][] = $pub;
                     break;
-
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    if($status != "Published" && $status != "Submitted"){
-                        continue 2;
-                    }
                     $dissem["a1".$key][] = $pub;
                     break;
-
                 case 'Masters Thesis':
                 case 'PhD Thesis':
                 case 'Tech Report':
-                    break;
-
                 case 'Misc':
                 case 'Poster':
                 default:
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $dissem["b".$key][] = $pub;
             }
             //break;
