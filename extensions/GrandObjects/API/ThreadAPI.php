@@ -67,7 +67,25 @@ class ThreadsAPI extends RESTAPI {
 
     function doGET(){
         $me = Person::newFromWgUser();
-        $threads = new Collection(Thread::getAllThreads());
+        if($this->getParam('search') == ""){
+            $threads = new Collection(Thread::getAllThreads());
+        }
+        else{
+            $threads = array();
+            $search = DBFunctions::escape(str_replace('%', '\%', strtolower($this->getParam('search'))));
+            $data = DBFunctions::execSQL("SELECT t.id
+                                          FROM grand_posts p, grand_threads t
+                                          WHERE p.thread_id = t.id
+                                          AND (LOWER(p.message) LIKE '%{$search}%' OR 
+                                               LOWER(t.title)   LIKE '%{$search}%')");
+            foreach($data as $row){
+                $thread = Thread::newFromId($row['id']);
+                if($thread->canView()){
+                    $threads[] = $thread;
+                }
+            }
+            $threads = new Collection($threads);
+        }
         return $threads->toJSON();
     }
 
