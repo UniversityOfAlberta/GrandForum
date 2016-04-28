@@ -73,7 +73,7 @@ class ThreadsAPI extends RESTAPI {
         else{
             $threads = array();
             $search = DBFunctions::escape(str_replace('%', '\%', strtolower($this->getParam('search'))));
-            $data = DBFunctions::execSQL("SELECT t.id
+            $data = DBFunctions::execSQL("SELECT DISTINCT t.id
                                           FROM grand_posts p, grand_threads t
                                           WHERE p.thread_id = t.id
                                           AND (LOWER(p.message) LIKE '%{$search}%' OR 
