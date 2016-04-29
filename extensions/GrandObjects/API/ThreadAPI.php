@@ -76,7 +76,7 @@ class ThreadsAPI extends RESTAPI {
             $data = DBFunctions::execSQL("SELECT DISTINCT t.id
                                           FROM grand_posts p, grand_threads t
                                           WHERE p.thread_id = t.id
-                                          AND (LOWER(p.message) LIKE '%{$search}%' OR 
+                                          AND (MATCH(p.message) AGAINST ('{$search}') OR 
                                                LOWER(t.title)   LIKE '%{$search}%')");
             foreach($data as $row){
                 $thread = Thread::newFromId($row['id']);

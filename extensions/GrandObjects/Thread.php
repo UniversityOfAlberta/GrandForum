@@ -111,7 +111,7 @@ class Thread extends BackboneModel {
     function getPosts(){
         $posts = array();
         $data = DBFunctions::select(array('grand_posts'),
-                                    array('*'),
+                                    array('id'),
                                     array('thread_id'=>$this->getId()));
         foreach($data as $row){
             $posts[] = Post::newFromId($row['id']);
@@ -278,26 +278,30 @@ class Thread extends BackboneModel {
                                'name' => $user->getNameForForms(),
                                'url' => $user->getUrl());
         }
+        $posts = array();
+        foreach($this->getPosts() as $post){
+            $posts[] = array('id' => $post->getId());
+        }
         $json = array('id' => $this->getId(),
                       'author' => $author,
                       'users' => $authors,
                       'authors' => $authors,
                       'roles' => $this->getRole(),
                       'title' => $this->getTitle(),
-                      'posts' => $this->getPosts(),
+                      'posts' => $posts,
                       'url' => $this->getUrl(),
                       'date_created' => $this->getDateCreated());
-            return $json;
-        }
+        return $json;
+    }
 
-        function exists(){
-            $thread = Thread::newFromId($this->getId());
-            return ($thread != null && $thread->getId() != "");
-        }
+    function exists(){
+        $thread = Thread::newFromId($this->getId());
+        return ($thread != null && $thread->getId() != "");
+    }
 
-        function getCacheId(){
-            global $wgSitename;
-        }
+    function getCacheId(){
+        global $wgSitename;
+    }
 
     /**
      * Returns the url of this Paper's page
