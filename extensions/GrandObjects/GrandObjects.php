@@ -53,6 +53,9 @@ $apiRequest->addAction('Hidden','story', new StoryAPI());
 $apiRequest->addAction('Hidden','story/:id', new StoryAPI());
 $apiRequest->addAction('Hidden', 'story/:id/author', new PersonStoryAPI());
 $apiRequest->addAction('Hidden','stories', new StoriesAPI());
+$apiRequest->addAction('Hidden','storycomments', new StoryCommentAPI());
+$apiRequest->addAction('Hidden','storycomment/:id', new StoryCommentAPI());
+
 //Thread
 $apiRequest->addAction('Hidden','thread', new ThreadAPI());
 $apiRequest->addAction('Hidden','thread/:id', new ThreadAPI());
@@ -90,7 +93,8 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Post.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js'></script>\n";
-    
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/StoryComment.js'></script>\n";
+ 
     return true;
 }
 ?>

@@ -31,6 +31,23 @@ StoryView = Backbone.View.extend({
 	}
     },
 
+    addRows: function(){
+	var models = _.pluck(this.model.get('comments'), 'id');
+	_.each(models, function(p){
+	    var mod = new StoryComment({'id':p});
+	    mod.fetch();
+	    var row = new CommentView({model:mod, parent:this});
+	    this.$("#commentRows").append(row.$el);
+	});
+	this.addNewRow();
+   },
+
+    addNewRow: function(){
+        var newComment = new Comment({'story_id':this.model.id, 'user_id':me.id});
+        var row = new CommentView({model: newComment, parent: this});
+        this.$("#commentRows").append(row.$el);
+   },
+
     renderAuthors: function(){
 	if(_.findWhere(me.get('roles'), {"role":"Admin"}) == undefined && _.findWhere(me.get('roles'), {"role":"Manager"}) == undefined){
             if(me.id != this.model.get('author').id || this.model.get('approved') == 1){
@@ -57,6 +74,7 @@ StoryView = Backbone.View.extend({
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
         this.renderAuthors();
+	this.addRows();
         return this.$el;
     }
 

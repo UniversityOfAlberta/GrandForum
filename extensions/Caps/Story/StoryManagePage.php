@@ -18,7 +18,8 @@ class StoryManagePage extends BackbonePage {
 		     'manage_stories',
 		     'manage_stories_row',
 		     'story',
-		     'story_edit');
+		     'story_edit',
+		     'comment');
     }
     
     function getViews(){
@@ -26,7 +27,8 @@ class StoryManagePage extends BackbonePage {
 		     'ManageStoriesView',
 		     'ManageStoriesRowView',
 		     'StoryView',
-		     'StoryEditView');
+		     'StoryEditView',
+		     'CommentView');
     }
     
     function getModels(){
