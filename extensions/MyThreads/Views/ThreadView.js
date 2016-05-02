@@ -24,18 +24,13 @@ ThreadView = Backbone.View.extend({
     },
 
     addRows: function(){
-        if(this.table != undefined){
-            order = this.table.order();
-            searchStr = this.table.search();
-            this.table.destroy();
-            this.table = null;
-        }
+        this.$("#postRows").empty();
         var models = _.pluck(this.model.get('posts'), 'id');
         _.each(models, function(p){
             var mod = new Post({'id':p});
             mod.fetch();
             var row = new PostView({model: mod, parent: this});
-            this.$("#personRows").append(row.$el);
+            this.$("#postRows").append(row.$el);
         });
         this.addNewRow();
     },
@@ -43,7 +38,7 @@ ThreadView = Backbone.View.extend({
     addNewRow: function(){
         var newPost = new Post({'thread_id':this.model.id, 'user_id':me.id});
         var row = new PostView({model: newPost, parent: this});
-        this.$("#personRows").append(row.$el);
+        this.$("#postRows").append(row.$el);
    },
 
     render: function(){
