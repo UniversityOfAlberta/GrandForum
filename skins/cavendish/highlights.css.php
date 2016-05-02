@@ -46,15 +46,12 @@ h1, h2, h3, h4, h5, h6, h7 {
     border-width: 0px 0 0 0;
     border-style: solid;
     border-color: $hl;
-    color: $hl !important;
+    color: white !important;
 }
 
 input:focus, textarea:focus {
     outline: none;
     border: 1px solid $hl !important;
-	box-shadow: inset 0 0 2px $hl;
-    -moz-box-shadow: inset 0 0 2px $hl;
-    -webkit-box-shadow: inset 0 0 2px $hl;
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
@@ -66,11 +63,12 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    color:#606060 !important;
+    color:#ffffff !important;
+    border-radius: 20px;
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
-    color:#606060 !important;
+    color:#ffffff !important;
 }
 
 /* Icons */
@@ -108,6 +106,9 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
 	color: $hl;
+	font-weight:bold;
+	background:#76C9EB;
+	border-radius:15px;
 }
 
 .ui-datepicker {

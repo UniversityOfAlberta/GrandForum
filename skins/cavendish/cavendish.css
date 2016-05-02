@@ -482,16 +482,7 @@ select {
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
-    background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
-    background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
-    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
-    background-color:#f8f8f8 !important;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    border-radius:3px;
-    border:1px solid #AAAAAA !important;
+    background:#4AB4BD !important;
     display:inline-block;
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px;
@@ -499,17 +490,10 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     padding:5px 20px;
     text-decoration:none;
     font-weight: bold !important;
-    text-shadow:1px 1px 0px #FFFFFF;
-    box-shadow:inset 0 0 1px 0 #f8f8f8;
     white-space:nowrap;
 	margin:2px;
 	text-align:center;
-	-webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    border-width:0px;
 }
 
 button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
@@ -525,11 +509,6 @@ button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
-    background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
-    background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
-    background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#E8E8E8;
     font-family: Arial, Verdana, sans-serif;
     font-size:13px;
@@ -537,9 +516,6 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:ho
     display:inline-block;
     border-color:#888888;
     font-weight: bold;
-    -moz-box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
-    box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
     text-decoration:none; 
     cursor:pointer;
     padding:5px 20px;
@@ -845,19 +821,20 @@ button.mce-close {
 .ui-widget-header{
 	background: none;
 	border: none;
-	border-bottom: 1px solid #d3d3d3;
+	border-bottom: 0px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	background: #EEE; /* for non-css3 browsers */
+	background: #ffffff; /* for non-css3 browsers */
+	border:0px;
 }
 
 .ui-dialog {
     -moz-box-shadow:    0 0 10px -1px #000;
     -webkit-box-shadow: 0 0 10px -1px #000;
     box-shadow:         0 0 10px -1px #000;
-    border: 1px solid #888 !important;
+    border: 0px solid #888 !important;
 }
 
 .ui-datepicker-calendar a.ui-state-default {
@@ -869,8 +846,10 @@ button.mce-close {
 }
 
 .ui-tabs .ui-tabs-nav li a {
-	color: #555555;
-	font-weight: bold;				
+	color: #4D7694;
+	font-weight: normal;
+	background:#BDE8FA;
+	border-radius:15px;				
 }
 
 .ui-tabs .ui-tabs-nav li{
@@ -885,7 +864,7 @@ button.mce-close {
 	margin: 0 2px 0 2px;
 	padding-bottom: 1px;
 	background: #FFFFFF; /* for non-css3 browsers */
-	border-color: #CCCCCC;
+	border-color: #ffffff;
 }
 
 div#person .ui-tabs-panel {

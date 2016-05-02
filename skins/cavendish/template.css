@@ -54,7 +54,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
     	    position: absolute;
     	    right: 30px;
     	    top: 0px;
-    	    height: 100%;
+    	    height: 96%;
     	    background: #99D6F2;
     	    border-bottom-left-radius: 10px;
     	    border-bottom-right-radius: 10px;
@@ -128,11 +128,11 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	}
 	
 	#header ul a:hover {
-	    font-weight:bold;
+	    font-weight:normal;
 	}
 	
 	#header li.selected a {
-	    font-weight:bold;
+	    font-weight:normal;
 	}
 	
 	/* SUB MENU */
@@ -141,7 +141,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
 		display: block;
 		padding: 0 5px 0 5px;
 		font-weight: normal;
-		color: #3FB4E5;
+		color: #30AEE2;
 		text-decoration: none;
 		line-height:25px;
 		height: 25px;
@@ -152,11 +152,9 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#submenu ul a:hover * {
 	    text-decoration: none;
-	    color:white;
 	}
 	
 	#submenu ul a:hover {
-	    color:white;
 	    background:#589EA6;
 	    border-top-left-radius: 10px;
 	    border-top-right-radius: 10px;
