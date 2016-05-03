@@ -124,7 +124,7 @@ class EditRelations extends SpecialPage{
                 $wgOut->addHTML("</div>");
             }
         }
-        $wgOut->addHTML("<br /><input type='submit' name='submit' value='Save Relations' />
+        $wgOut->addHTML("<br /><input id='submitRelationsButton' type='submit' name='submit' value='Save Relations' />
                          </form>");
     }
     

@@ -36,7 +36,12 @@ echo <<<EOF
     font-color: #FFFFFF !important;
 }
 
-h1, h2, h3, h4, h5, h6, h7 {
+h1 {
+    color:#37B0E1;
+}
+
+
+h2, h3, h4, h5, h6, h7 {
     color: $hc !important;
 }
 
@@ -46,6 +51,7 @@ h1, h2, h3, h4, h5, h6, h7 {
     border-width: 0px 0 0 0;
     border-style: solid;
     border-color: $hl;
+    background:transparent;
     color: white !important;
 }
 

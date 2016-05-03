@@ -42,7 +42,7 @@ class CavendishTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config;
+		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config, $wgLang;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
@@ -208,6 +208,7 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
 		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
+		    var wgLang = "<?php echo $wgLang->getCode(); ?>";
 		</script>
 		<?php echo $wgOut->getScript(); ?>
 		<!-- site js -->
@@ -392,6 +393,15 @@ class CavendishTemplate extends QuickTemplate {
 		                });
 		            }
                 });*/
+
+		    if(wgLang == 'en'){
+			$('.en').show();
+			$('.fr').remove();
+		    }
+		    else{
+			$('.fr').show();
+			$('.en').remove();
+		    }
                 
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
@@ -1108,7 +1118,7 @@ EOF;
 	                foreach($header['links'] as $lKey => $link){
 	                    echo "<li><a class='highlights-background-hover' href='{$link['href']}'>{$link['text']}</a></li>";
 	                }
-	                echo "</ul><br>";
+	                echo "</ul>";
 	                $i++;
 	            }
 	        }

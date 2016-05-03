@@ -8,11 +8,11 @@ abstract class AbstractInlineEditableTab extends AbstractEditableTab {
     
     function showEditButton(){
         global $wgServer, $wgScriptPath, $wgTitle;
-        $this->html .= "<br /><input type='submit' name='submit' value='{$this->name}' />";
+        $this->html .= "<br /><input id='Save{$this->name}' type='submit' name='submit' value='{$this->name}' />";
     }
     
     function showSaveButton(){
-        $this->html .= "<br /><input type='submit' name='submit' value='{$this->name}' />";
+        $this->html .= "<br /><input id='Save{$this->name}' type='submit' name='submit' value='{$this->name}' />";
     }
     
     function showCancelButton(){

@@ -71,6 +71,34 @@ img.ui-datepicker-trigger{
 
 /* SUB MENU */
 
+#moveLeftcoworkers{
+    background:#7ABF72 !important;
+}
+
+#moveRightcoworkers{
+    background:#FF7C3E !important;
+}
+
+#moveUpcoworkers{
+    background:#76C9EB !important;
+}
+
+#moveDowncoworkers{
+    background:#76C9EB !important;
+}
+
+#submitRelationsButton{
+    background:#76C9EB !important;
+}
+
+#SaveBio{
+    background:#7ABF72 !important;
+}
+
+#next{
+    background:#7ABF72 !important;
+}
+
 #submenu ul {
     padding-right: 1em;
     padding-left: 0;
@@ -84,6 +112,7 @@ img.ui-datepicker-trigger{
     list-style: none;
     z-index: 90; /* below the H1 */
     line-height: 0.8em;
+    opacity:0.925;
     width: auto;
 }
 
@@ -95,7 +124,6 @@ img.ui-datepicker-trigger{
     font-size: 11px;
     margin: 0 0 0 6px;
     float: left;
-    
     background: #BDE8FA;
     /*
     border: solid #E0E0E0;
@@ -122,7 +150,7 @@ img.ui-datepicker-trigger{
 }
 
 #submenu ul li:hover.selected{
-    background: #FFFFFF;
+    background: transparent;
 }
 
 div#submenu {
@@ -275,7 +303,7 @@ h1,h2,h3,h4,h5,h6 {
     font-weight: normal;
     padding-top: .5em;
     padding-bottom: .17em;
-    border-bottom: 1px solid #E0E0E0;
+    border-bottom: 0px solid #E0E0E0;
 }
 
 h1 {

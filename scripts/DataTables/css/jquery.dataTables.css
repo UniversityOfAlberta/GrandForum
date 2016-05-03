@@ -3,11 +3,11 @@
  * Table
  */
 table.dataTable {
-	margin: 0 auto;
+	margin: 0;
 	clear: both;
 	width: 100%;
 	border-color: #ffffff;
-	border-width: 2px 1px 0 1px;
+	border-width: 2px 0 0 0;
 	color: #222;
 }
 
@@ -45,8 +45,8 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd { background-color: #F3F3F3; }
-table.dataTable tr.even { background-color: white; }
+table.dataTable tr.odd td{ background-color: #F7F7F7; }
+table.dataTable tr.even td{ background-color: #E8E8E8; }
 
 table.dataTable tr.odd td.sorting_1 { background-color: #F7F7F7; }
 table.dataTable tr.odd td.sorting_2 { background-color: #F7F7F7; }

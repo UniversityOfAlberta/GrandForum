@@ -726,7 +726,7 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("</select>
                 </td></tr>
                 <tr><td>
-            <input type='submit' name='next' value='Next' />
+            <input id='next' type='submit' name='next' value='Next' />
         </form></td></tr></table>");
     }
     
