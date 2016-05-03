@@ -2083,7 +2083,7 @@ class Person extends BackboneModel {
         }
         else {
             foreach($this->getRoles() as $role){
-                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole())){
+                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
                     return $role->getRole();
                 }
             }
