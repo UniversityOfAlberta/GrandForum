@@ -2061,6 +2061,8 @@ class Person extends BackboneModel {
      * @return string The name of the role
      */
     function getRoleOn($project, $year=null, $aliases=false){
+        global $config;
+        $committees = $config->getValue('committees');
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
@@ -2078,6 +2080,13 @@ class Person extends BackboneModel {
         }
         else if($aliases && $this->isRoleOn("FAKENI", $year, $project)){
             return "FAKENI";
+        }
+        else {
+            foreach($this->getRoles() as $role){
+                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole())){
+                    return $role->getRole();
+                }
+            }
         }
         return $this->getType();
     }
