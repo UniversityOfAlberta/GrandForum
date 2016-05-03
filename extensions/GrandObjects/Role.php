@@ -44,7 +44,10 @@ class Role extends BackboneModel {
 	
 	// Constructor
 	function Role($data){
+		$me = Person::newFromWgUser();
 		if(count($data) > 0){
+		    if($data[0]['role'] != 'Expert' || $me->isRoleAtLeast(MANAGER) || $me->getId() == $data[0]['user_id']){
+			
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
 			$this->role = $data[0]['role'];
@@ -52,6 +55,7 @@ class Role extends BackboneModel {
 			$this->startDate = $data[0]['start_date'];
 			$this->endDate = $data[0]['end_date'];
 			$this->comment = $data[0]['comment'];
+		    }
 		}
 	}
 	

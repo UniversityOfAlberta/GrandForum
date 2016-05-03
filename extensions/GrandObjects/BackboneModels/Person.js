@@ -89,6 +89,34 @@ Person = Backbone.Model.extend({
         return university.join('<br />');
     },
 
+    getCapsRoleString: function(){
+        var roles = this.get('roles');
+        var roles_string = new Array();
+        for(var i =0; i<(roles).length; i++){
+            roles_string.push(roles[i].role);
+        }
+	return roles_string.join(", ");
+    },
+
+    getCapsString: function(){
+        var university = new Array();
+        university.push(this.getCapsRoleString());
+        if(this.get('specialty') != null && this.get('specialty') !='' && this.getCapsRoleString().indexOf('Physician') > -1){
+            university.push(this.get('specialty'));
+        }
+	if(this.get('city') != null || this.get('city') != '' || this.get('province') != null || this.get('province') != ''){
+            if(this.get('city') != null && this.get('city') != ''){
+                var city = this.get('city');
+            } 
+	    if(this.get('province') != '' && this.get('city') != null){
+	        city = city + ', ' + this.get('province');
+	    }
+	    university.push(city);
+	}
+	console.log(university);
+        return university.join('<br />');
+    },
+
     urlRoot: 'index.php?action=api.person',
     
     defaults: {
@@ -109,7 +137,13 @@ Person = Backbone.Model.extend({
         department: '',
         publicProfile: '',
         privateProfile: '',
-        url: ''
+        url: '',
+	city:'',
+	accept_referrals:false,
+	specialty:'',
+	postal_code:'',
+	province:'',
+	prior_abortion_service:false
     }
 });
 

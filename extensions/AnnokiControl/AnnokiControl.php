@@ -198,29 +198,79 @@ function orderSpecialPages(&$aSpecialPages){
     $array1 = array();
     $array2 = array();
     $skip = false;
-    //print_r($wgUser->getGroups());
-
-
     foreach($aSpecialPages as $key => $page){
-	$SpecialPage = new $page();
-    //print_r($page ."\n");
-
-	$group = $SpecialPage->getFinalGroupName();
+	$unwanted = array("BrokenRedirects",
+			  "Deadendpages",
+			  "DoubleRedirects",
+			  "Longpages",
+			  "Ancientpages",
+			  "Lonelypages",
+			  "Fewestrevisions",
+			  "Withoutinterwiki",
+			  "Protectedpages",
+			  "Protectedtitles",
+			  "Shortpages",
+			  "Uncategorizedcategories",
+			  "Uncategorizedimages",
+			  "Uncategorizedpages",
+			  "Uncategorizedtemplates",
+			  "Unusedcategories",
+			  "Unusedimages",
+			  "Unusedtemplates",
+			  "Unwatchedpages",
+			  "Wantedcategories",
+			  "Wantedfiles",
+			  "Wantedpages",
+			  "Wantedtemplates",
+			  "Allpages",
+			  "Prefixindex",
+			  "Categories",
+			  "Listredirects",
+			  "PagesWithProp",
+			  "TrackingCategories",
+			  "CreateAccount",
+			  "DeletedContributions",
+			  "Contributions",
+			  "Newimages",
+			  "Log",
+	       		  "Watchlist",
+			  "Newpages",
+			  "Recentchanges",
+			  "Recentchangeslinked",
+			  "Tags","Listfiles",
+			  "MIMEsearch",
+			  "FileDuplicateSearch",
+		    	  "ListDuplicatedFiles",
+	  		  "Statistics",
+			  "Allmessages",
+			  "Version",
+	  		  "Lockdb",
+			  "Unlockdb",
+			  "LinkSearch",
+			  "Randompage",
+			  "RandomInCategory",
+			  "Randomredirect",
+			  "Mostlinkedcategories",
+			  "Mostimages",
+			  "Mostinterwikis",
+			  "Mostlinked",
+			  "Mostlinkedtemplates",
+	  		  "Mostcategories",
+			  "Mostrevisions",
+			  "ComparePages",
+			  "Export",
+			  "Import",
+			  "Whatlinkshere",
+			  "ExpandTemplates",
+			  "Booksources",
+			  "Redirect",
+			  "Search");
 	if(!$me->isLoggedIn() && 
-	  ($key != "Userlogin" && $key != "PasswordReset")){
+	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister")){
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}
-	elseif($me->isLoggedIn() && 
-	      ($group == "maintenance" || $group == "pages" ||
-	       $group == "changes" || $group == "redirects" ||
-	       $group == "highuse" || $group == "wiki" || 
-	       $page == "SpecialComparePages" || $page == "SpecialExport" ||
-	       $page == "SpecialWhatLinksHere" || $page == "SpecialImport" ||
-	       $page == "SpecialListFiles" || $page == "FileDuplicateSearchPage" ||
-	       $page == "ListDuplicatedFilesPage" || $page == "MIMEsearchPage" ||
-	       $page == "SpecialCreateAccount" || $page == "SpecialContributions" ||
-	       $page == "DeletedContributionsPage")){
+	elseif($me->isLoggedIn() && in_array($key, $unwanted)){  
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}

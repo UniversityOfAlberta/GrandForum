@@ -1,102 +1,94 @@
 PharmacyAddView = Backbone.View.extend({
     template: _.template($('#pharmacy_add_template').html()),
     map: null,
-    lat:0,
-    lng:0,
+    lat:null,
     initialize: function(){
-        //this.model.bind('sync', this.render);//change to on
-        this.render();
+        this.model.bind('sync', this.render);//change to on
     },
 
-    events:{
-        "click #addPharmacy": "addPharmacy",
-
+    events: {
+        "click #addMarker": "Location",
     },
 
-    addPharmacy: function(){
-	var university = new University({name: $('#name').val(),
-					 latitude: lat.toString(),
-					 longitude: lng.toString(),
-					 province_string: $('#prov').val(),
-					 address: $('#lat').val()
-					 });
-	university.save();
-   },
+    Location: function(){
+	console.log(lat);
+    },
 
     initMap: function(){
-        var mapDiv = document.getElementById('map');
-        map = new google.maps.Map(mapDiv, {
-            center:{lat:43.6560817, lng:-79.390945},
-            zoom:8,
-            width:'100%'
-        });
+	var mapDiv = document.getElementById('map');
+	map = new google.maps.Map(mapDiv, {
+	    center:{lat:43.6560817, lng:-79.390945},
+	    zoom:8
+	});
 
-        var input = document.getElementById('lat');
-        var searchBox = new google.maps.places.SearchBox(input);
-        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);       
+	var input = document.getElementById('lat');
+	var searchBox = new google.maps.places.SearchBox(input);
+	//map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);	
 
-        map.addListener('bounds_changed', function (){
-            searchBox.setBounds(map.getBounds());
-        });
+	map.addListener('bounds_changed', function (){
+	    searchBox.setBounds(map.getBounds());
+	});
 
-        var markers = [];
-        searchBox.addListener('places_changed', function(){
-            var places = searchBox.getPlaces();
-            if(places.length == 0){
-                return;
-            }
+	var markers = [];	
+	searchBox.addListener('places_changed', function(){
+	    var places = searchBox.getPlaces();
+	    if(places.length == 0){
+		return;
+	    }
+	    markers.forEach(function(marker){
+		marker.setMap(null);
+	    });
+	    markers =[];
 
-            var bounds = new google.maps.LatLngBounds();
-            places.forEach(function(place){
-                lat = place.geometry.location.lat();//use this to save  .lng() for longittude
-                lng = place.geometry.location.lng();//use this to save  .lng() for longittude
-                if (place.geometry.viewport){
-                    bounds.union(place.geometry.viewport);
-                } else {
-                    bounds.extend(place.geometry.location);
-                }
-             });
-             if(places.length >1){
-                 map.fitBounds(bounds);
-             }
-             else if(places.length==1){
-                 map.setCenter(bounds.getCenter());
-                 map.setZoom(17);
-             }
+	    var bounds = new google.maps.LatLngBounds();
+	    places.forEach(function(place){
+	        var icon = {
+		    url: place.icon,
+		    size: new google.maps.Size(71,71),
+		    origin: new google.maps.Point(0,0),
+		    anchor: new google.maps.Point(17,34),
+		    scaledSize: new google.maps.Size(25,25)
+	    	};
+	        markers.push(new google.maps.Marker({
+		    map:map,
+		    icon:icon,
+		    title:place.name,
+		    position:place.geometry.location
+	        }));
+	        this.lat = place.geometry.location.lat();//use this to save  .lng() for longittude
+		console.log(place);
+		if (place.geometry.viewport){
+		    bounds.union(place.geometry.viewport);
+		} else {
+		    bounds.extend(place.geometry.location);
+		}
+		});
+	        map.setCenter(bounds.getCenter());
+		map.setZoom(17);
         });
     },
 
-    AddMarkers: function(group){
-        _.each(group, function(val){
-            if(val.latitude != null){
-                var pharmLoc = new google.maps.LatLng(val.latitude, val.longitude);
-                var marker = new google.maps.Marker({
-                    position: pharmLoc,
-                    map: map,
-                    data:"pharm",
-                    title:val.name
-                });
+    AddMarker: function(location){
+	var marker = new google.maps.Marker({
+	    position: location,
+	    map: map,
+	    data:"pharm"
+	});
+    },
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: val.name
-                });
-
-                marker.addListener('click', function(){
-                    infowindow.open(map, marker);
-                });
-            }
-        });
+    TestMarker: function(){
+	var centralPark = new google.maps.LatLng(44.500, -80.450);
+	this.AddMarker(centralPark);
     },
 
     render: function(){
-        main.set('title', 'Add a Pharmacy (In development)');
+        main.set('title', 'Locate a Pharmacy (In development)');
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
-        this.initMap();
-        this.AddMarkers(data);
+	this.initMap(); 
+	this.TestMarker();
         return this.$el;
     }
 
 });
-

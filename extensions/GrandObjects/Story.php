@@ -110,6 +110,18 @@ class Story extends BackboneModel{
             return $this->approved;
         }
 
+        function getComments(){
+            $posts = array();
+            $data = DBFunctions::select(array('grand_story_comments'),
+                                            array('*'),
+                                            array('story_id'=>$this->getId()));
+            foreach($data as $row){
+                $posts[] = StoryComment::newFromId($row['id']);
+            }
+            return $posts;
+
+        }
+
 //-----Setters----//
         function setId($id){
             return $this->id = $id;
@@ -217,7 +229,8 @@ class Story extends BackboneModel{
                           'story' => $this->getStory(),
 			  'url' => $this->getUrl(),
                           'date_submitted' => $this->getDateSubmitted(),
-                          'approved' => $this->getApproved());
+                          'approved' => $this->getApproved(),
+			  'comments' => $this->getComments());
             return $json;
         }
 
