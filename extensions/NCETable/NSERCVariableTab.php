@@ -406,7 +406,7 @@ EOF;
             if($m_nation == "Canadian" || $m_nation == "Landed Immigrant"){
                 $canadian[] = $m;
             }
-            else if($m_nation == "Foreign" || $m_nation == "Visa Holder"){
+            else if($m_nation == "Foreign" || $m_nation == "Visa Holder" || $m_nation == "American"){
                 $foreign[] = $m;
             }
             else{
