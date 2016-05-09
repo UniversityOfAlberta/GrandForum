@@ -113,6 +113,7 @@ $wgPasswordSender = $config->getValue('supportEmail');
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+$wgEnableParserLimitReporting=false;
 
 if(TESTING){
     $wgEnableEmail      = false;
@@ -132,7 +133,11 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_NONE;
+if(extension_loaded('apc') && ini_get('apc.enabled')){
+    $wgMainCacheType = CACHE_ACCEL;
+    $wgMessageCacheType = CACHE_ACCEL;
+    $wgParserCacheType = CACHE_ACCEL;
+}
 $wgMemCachedServers = array();
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;

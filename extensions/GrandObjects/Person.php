@@ -287,10 +287,10 @@ class Person extends BackboneModel {
                                               'first_name',
                                               'middle_name',
                                               'last_name',
-                                              'prev_first_name',
-                                              'prev_last_name',
-                                              'honorific',
-                                              'language',
+                                              //'prev_first_name',
+                                              //'prev_last_name',
+                                              //'honorific',
+                                              //'language',
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
@@ -740,10 +740,10 @@ class Person extends BackboneModel {
             $this->firstName = @$data[0]['first_name'];
             $this->lastName = @$data[0]['last_name'];
             $this->middleName = @$data[0]['middle_name'];
-            $this->prevFirstName = @$data[0]['prev_first_name'];
-            $this->prevLastName = @$data[0]['prev_last_name'];
-            $this->honorific = @$data[0]['honorific'];
-            $this->language = @$data[0]['language'];
+            //$this->prevFirstName = @$data[0]['prev_first_name'];
+            //$this->prevLastName = @$data[0]['prev_last_name'];
+            //$this->honorific = @$data[0]['honorific'];
+            //$this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
@@ -881,10 +881,10 @@ class Person extends BackboneModel {
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
-                                          'prev_first_name' => $this->getPrevFirstName(),
-                                          'prev_last_name' => $this->getPrevLastName(),
-                                          'honorific' => $this->getHonorific(),
-                                          'language' => $this->getCorrespondenceLanguage(),
+                                          //'prev_first_name' => $this->getPrevFirstName(),
+                                          //'prev_last_name' => $this->getPrevLastName(),
+                                          //'honorific' => $this->getHonorific(),
+                                          //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
