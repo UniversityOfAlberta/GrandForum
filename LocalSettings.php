@@ -133,12 +133,12 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
+define('CACHE_APC', 'apc_shared');
 if(extension_loaded('apc') && ini_get('apc.enabled')){
-    $wgMainCacheType = CACHE_ACCEL;
-    $wgMessageCacheType = CACHE_ACCEL;
-    $wgParserCacheType = CACHE_ACCEL;
+    $wgMainCacheType = CACHE_APC;
+    $wgMessageCacheType = CACHE_APC;
+    $wgParserCacheType = CACHE_APC;
 }
-$wgMemCachedServers = array();
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
