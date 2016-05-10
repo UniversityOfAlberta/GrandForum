@@ -37,7 +37,6 @@ class AnnokiNamespaces {
  */
 function registerExtraNamespaces(&$namespaces) {
 	global $wgContentNamespaces, $wgUserNamespaces;
-	echo "HELLO\n";
 	$wgUserNamespaces = array();
 	$extraNamespaces = $this->retrieveAllExtraNamespaces();
 	foreach ($extraNamespaces as $extraNamespace) {
