@@ -778,8 +778,9 @@ EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
                 $uni_id = str_replace("/", "_", str_replace(" ", "_", $uni));
-                $lnk_id = "lnk_" . $uni_id . "_" . $posi;
-                $div_id = "div_" . $uni_id . "_" . $posi;
+                $pos_id = str_replace("/", "_", str_replace(" ", "_", $posi));
+                $lnk_id = "lnk_" . $uni_id . "_" . $pos_id;
+                $div_id = "div_" . $uni_id . "_" . $pos_id;
 
                 $total_uni = array_merge($total_uni, $hqpa);
                 $num_students = count($hqpa);   
