@@ -142,6 +142,9 @@ if(extension_loaded('apc') && ini_get('apc.enabled')){
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
+if(TESTING){
+    $wgSessionsInObjectCache = false;
+}
 $wgEnableSidebarCache = true;
 if($config->getValue('localizationCache') != ""){
     if(!file_exists($config->getValue('localizationCache')) && 
