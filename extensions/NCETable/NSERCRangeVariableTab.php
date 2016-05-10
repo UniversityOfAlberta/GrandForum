@@ -340,8 +340,8 @@ EOF;
         $totalTotal = 0;
         $table .= "<tr><td><b>Total</b></td>";
         for($y=$this->startYear;$y<=$this->endYear-2;$y++){
-            $niTotal = $overallNITotals[$y];
-            $total = $overallNITotals[$y];
+            $niTotal = @$overallNITotals[$y];
+            $total = @$overallNITotals[$y];
             $table .= "<td align='right'>\$".number_format(intval($niTotal), 2)."</td>
                        <td align='right'>\$".number_format(intval($total), 2)."</td>";
             $niTotalTotal += $niTotal;
