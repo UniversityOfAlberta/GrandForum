@@ -37,6 +37,7 @@ class AnnokiNamespaces {
  */
 function registerExtraNamespaces(&$namespaces) {
 	global $wgContentNamespaces, $wgUserNamespaces;
+	echo "HELLO\n";
 	$wgUserNamespaces = array();
 	$extraNamespaces = $this->retrieveAllExtraNamespaces();
 	foreach ($extraNamespaces as $extraNamespace) {
@@ -46,9 +47,9 @@ function registerExtraNamespaces(&$namespaces) {
 		$namespaces[$nsId] = $nsName;
 		$wgContentNamespaces[] = $nsId;
 
-		if ($extraNamespace["nsUser"] != null) {
+		/*if ($extraNamespace["nsUser"] != null) {
 			$wgUserNamespaces[$nsId] = array("id" => $extraNamespace["nsUser"], "name" => $extraNamespace["user_name"]);
-		}
+		}*/
 		if (!MWNamespace::isTalk($nsId)) {
 			$talk = MWNamespace::getTalk($nsId);
 			$namespaces[$talk] = "{$nsName}_Talk";
@@ -158,16 +159,14 @@ function renameNamespace($nsName, $newNsName)  {
  */
 function retrieveAllExtraNamespaces() {
   global $egAnnokiTablePrefix;
-	$dbr =& wfGetDB( DB_READ );
-	$extraNSTable = $dbr->tableName("${egAnnokiTablePrefix}extranamespaces");
-	$userTable = $dbr->tableName("user");
-	$sql = "SELECT nsId, nsName, nsUser, user_name from $extraNSTable LEFT JOIN $userTable ON nsUser = user_id ORDER BY nsName";
+	$dbr =& wfGetDB(DB_READ);
+	$sql = "SELECT nsId, nsName, nsUser from `mw_an_extranamespaces`";
+
 	$result = $dbr->query($sql);
 	$extraNS = array();
 	while ($row = $dbr->fetchRow($result)) {
 		$extraNS[] = $row;
 	}
-	
 	return $extraNS;
 }
 
