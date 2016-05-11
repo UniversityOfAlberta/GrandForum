@@ -3880,7 +3880,7 @@ class Person extends BackboneModel {
      */
     function getAllocatedBudget($year){
         global $wgServer,$wgScriptPath;
-        return $this->getRequestedBudget($year, RES_ALLOC_BUDGET);
+        return $this->getRequestedBudget($year, 'RES_ALLOC_BUDGET');
     }
     
     /**
@@ -3889,9 +3889,9 @@ class Person extends BackboneModel {
      * @param int $type Can be either RES_BUDGET or RES_ALLOC_BUDGET
      * @return Budget The requested Budget for this Person for the given year
      */
-    function getRequestedBudget($year, $type=RES_BUDGET){
+    function getRequestedBudget($year, $type='RES_BUDGET'){
         global $wgServer,$wgScriptPath, $reporteeId;
-        if($type == RES_BUDGET){
+        if($type == 'RES_BUDGET'){
             $index = 'r'.$year;
         }
         else{
@@ -3900,7 +3900,7 @@ class Person extends BackboneModel {
         $uid = $this->id;
        
         $blob_type=BLOB_EXCEL;
-        $rptype = RP_RESEARCHER;
+        $rptype = 'RP_RESEARCHER';
         $section = $type;
         $item = 0;
         $subitem = 0;
@@ -3925,14 +3925,14 @@ class Person extends BackboneModel {
         }
         $data = $budget_blob->getData();
         if (! empty($data)) {
-            if($year != 2010 && $type == RES_BUDGET){
+            if($year != 2010 && $type == 'RES_BUDGET'){
                 $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
             }
-            else if($year == 2010 && $type == RES_BUDGET){
+            else if($year == 2010 && $type == 'RES_BUDGET'){
                 $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
             }
             else {
-                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
+                if($type == 'RES_ALLOC_BUDGET' && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
                 }
                 else{

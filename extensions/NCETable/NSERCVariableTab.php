@@ -981,25 +981,9 @@ EOF;
         $universities = array();
         $unknown = array(array(), 0);
 
-        //Getting Report BloBS
-        $rptype = RP_RESEARCHER;
-        $section = RES_MILESTONES;
-        $item = RES_MIL_CONTRIBUTIONS;
-        $subitem = 0;
-        $blob_type = BLOB_ARRAY;
-        $year = $this->year-1;
-
-        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-
         //Fill the table
         foreach ($nis as $hqp){
             $uid = $hqp->getId();
-            $grand_activity_blob = new ReportBlob($blob_type, $year, $uid, 0);
-            $grand_activity_blob->load($rep_addr);
-            $grand_activity_arr = $grand_activity_blob->getData();
-            $grand_percent = @$grand_activity_arr['grand_percent'];
-            $grand_percent = preg_replace('/%/', '', $grand_percent);
-            $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
@@ -1012,11 +996,9 @@ EOF;
 
             if($uni == "Unknown"){
                 $unknown[0][] = $hqp;
-                $unknown[1] += $grand_percent;
             }
             else{
                 $universities[$uni][0][] = $hqp;
-                $universities[$uni][1] += $grand_percent;
             }
         }
 

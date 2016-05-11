@@ -115,15 +115,6 @@ EOF;
         global $wgServer, $wgScriptPath, $config;
         $url_prefix = "$wgServer$wgScriptPath/index.php/";
         
-        //Getting Report BloBS
-        $rptype = RP_RESEARCHER;
-        $section = RES_MILESTONES;
-        $item = RES_MIL_CONTRIBUTIONS;
-        $subitem = 0;
-        $blob_type = BLOB_ARRAY;
-
-        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-
         usort($hqps, "compareLastNames");
         $html = "";    
         foreach($hqps as $h){

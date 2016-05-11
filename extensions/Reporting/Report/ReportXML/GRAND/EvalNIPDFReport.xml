@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Report name="NI Report" reportType="RP_EVAL_PDF" pdfType="RPTP_EVALUATOR_NI" pdfFiles="EvalNIPDFReport" pdfAllProjects="true" ajax="true" disabled="false">
-</Report>
