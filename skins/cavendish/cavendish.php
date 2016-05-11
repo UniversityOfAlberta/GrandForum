@@ -395,10 +395,12 @@ class CavendishTemplate extends QuickTemplate {
                 });*/
 
 		    if(wgLang == 'en'){
+			$('#en_button').css('font-weight','bold');
 			$('.en').show();
 			$('.fr').remove();
 		    }
 		    else{
+                        $('#fr_button').css('font-weight','bold');
 			$('.fr').show();
 			$('.en').remove();
 		    }
@@ -610,15 +612,56 @@ class CavendishTemplate extends QuickTemplate {
 	<div id="topheader">
         <?php
             global $wgSitename, $notifications, $notificationFunctions, $config;
+            function changeToFrench(){
+		global $wgUser,$wgLang;
+		$code = $wgLang->getCode();
+                $wgUser->setOption("language", "fr");
+                $wgUser->saveSettings();
+                if($code != "fr"){
+                    header("Refresh:0");
+                }
+            }       
+            function changeToEnglish(){
+                global $wgUser, $wgLang;
+		$code = $wgLang->getCode();
+                $wgUser->setOption("language", "en");
+                $wgUser->saveSettings();
+		if($code != "en"){
+		    header("Refresh:0");
+		}
+		
+            }
+            if($_GET['lang'] == 'en' && $wgUser->isLoggedIn()){
+                changeToEnglish();
+            }
+            if($_GET['lang'] == 'fr' && $wgUser->isLoggedIn()){
+                changeToFrench();
+            } 
             if(count($notifications) == 0){
                 foreach($notificationFunctions as $function){
                     call_user_func($function);
                 }
             }
+	    echo "<script language='javascript'>
+
+$(function(){
+    $('en_button').click(function(){
+        $.get('/skins/cavendish/cavendish.php', function(){
+	    });
+    });
+    $('fr_button').click(function(){
+        $.get('/skins/cavendish/cavendish.php', {linkText: $(this).text()}, function(resp){
+           // handle response here
+        }, 'json');
+    });
+
+});
+
+</script>";
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='settings'>";
-	    echo "English &nbsp &nbsp French &nbsp";
+	    echo "<a href='?lang=en' id='en_button'>English</a> &nbsp<a href='?lang=fr' id='fr_button'>French</a> &nbsp";
             echo "<div style='display:none;' id='share_template'>";
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";
@@ -886,7 +929,8 @@ class CavendishTemplate extends QuickTemplate {
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
-        
+
+ 
 		if($wgUser->isLoggedIn()){
 
 global $wgSiteName, $wgOut;
