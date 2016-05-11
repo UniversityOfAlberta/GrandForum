@@ -1356,9 +1356,9 @@ select span.noshow {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    -moz-border-radius: 0px 0 0 5px;
-	-webkit-border-radius: 0px 0 0 5px;
-	border-radius: 0px 0 0 5px;
+    -moz-border-radius: 0px 0 0 15px;
+	-webkit-border-radius: 0px 0 0 15px;
+	border-radius: 0px 0 0 15px;
 	border-width: 1px 0 1px 1px;
 	border-style: solid;
 	border-color: #99D6F2;
@@ -1398,12 +1398,9 @@ select span.noshow {
 	border-color: #99D6F2;
     font-size: 12px;
     padding: 4px;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    -moz-border-radius: 0 0px 5px 0;
-	-webkit-border-radius: 0 0px 5px 0;
-	border-radius: 0 0px 5px 0;
+    -moz-border-radius: 0 0 0 0;
+	-webkit-border-radius: 0 0 0 0;
+	border-radius: 0 0 0 0;
 	width: 20px;
 	height: 33px;
 	vertical-align:top;
@@ -1514,19 +1511,18 @@ select span.noshow {
 .thread-message {
     padding: 10px;
     margin-bottom: 10px;
-    background: #EEEEEE;
-    border: 1px solid #AAA;
+    background: #A2D29C;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    
-    -moz-box-shadow:    2px 2px 2px #ccc;
-    -webkit-box-shadow: 2px 2px 2px #ccc;
-    box-shadow:         2px 2px 2px #ccc;
+}
+
+.caps-thread{
+    background:#A2D29C !important;
+    color:#ffffff !important;
 }
 
 .inner-message {
-    border-top: 1px solid #aaaaaa;
     padding: 10px;
 }
 

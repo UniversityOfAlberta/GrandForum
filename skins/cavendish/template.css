@@ -14,11 +14,11 @@
 body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#topheader {
-	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #FFFFFF) ) !important;
+	/*    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #FFFFFF) ) !important;
         background:-moz-linear-gradient( center top, #f8f8f8 5%, #F0F0F0 100% ) !important;
         background: -o-linear-gradient(top, #f8f8f8, #F0F0F0) !important;
         filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#F0F0F0');
-        background: -ms-linear-gradient(top, #f8f8f8 0%, #F0F0F0 100%);
+        background: -ms-linear-gradient(top, #f8f8f8 0%, #F0F0F0 100%);*/
         background-color:#f8f8f8 !important;
 	    position: absolute;
 	    top:0;
@@ -28,9 +28,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    padding: 5px 25px 5px 25px;
 	    z-index: 1001;
 	    color: #333333;
-	    text-shadow: 1px 1px 0 #FFFFFF;
 	    font-size: 12px;
-	    font-weight: bold;
 	}
 	
 	#topheader .smallLogo {
@@ -50,23 +48,45 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    font-weight: normal;
 	}
 	
-	#topheader .login {
-    	    position: absolute;
-    	    right: 30px;
-    	    top: 0px;
-    	    height: 96%;
-    	    background: #99D6F2;
-    	    border-bottom-left-radius: 10px;
-    	    border-bottom-right-radius: 10px;
-	}
-	
+        #topheader .settings {
+	    padding-left:453px;
+	    padding-top:5px;
+            position: absolute;
+            right: 116px;
+            top: 0px;
+            height: 84%;
+            background: #99D6F2;
+        }
+
+        #topheader .settings a {
+            line-height: 35px;
+            height: 35px;
+        display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+        text-align: center;
+        }
+
+        #topheader .settings img.photo {
+            height: 100%;
+            vertical-align:top;
+        }
+
+        #topheader .login {
+            position: absolute;
+            right: 30px;
+            top: 0px;
+            height: 96%;
+            background: #99D6F2;
+            border-bottom-right-radius: 10px;
+        }	
 	#topheader .login a {
 	    line-height: 35px;
 	    height: 35px;
-        display: inline-block;
+            display: inline-block;
 	    padding-left: 10px;
 	    padding-right: 10px;
-        text-align: center;
+            text-align: center;
 	}
 	
 	#topheader .login img.photo {

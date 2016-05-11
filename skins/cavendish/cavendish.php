@@ -617,7 +617,8 @@ class CavendishTemplate extends QuickTemplate {
             }
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
-            echo "<div class='login'>";
+            echo "<div class='settings'>";
+	    echo "English &nbsp &nbsp French &nbsp";
             echo "<div style='display:none;' id='share_template'>";
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";
@@ -666,7 +667,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
 		        }
 		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
-		        echo "<a id='status_profile' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
+			echo "</div><div class='login'>";
 		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logout = $this->data['personal_urls']['logout'];
