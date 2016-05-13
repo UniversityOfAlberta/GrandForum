@@ -53,6 +53,9 @@ h2, h3, h4, h5, h6, h7 {
     border-style: solid;
     border-color: $hl;
     background:transparent;
+}
+
+.highlights-tab:hover {
     color: white !important;
 }
 
