@@ -55,6 +55,10 @@ h2, h3, h4, h5, h6, h7 {
     background:transparent;
 }
 
+.actions.selected .highlights-tab {
+    color: white !important;
+}
+
 .highlights-tab:hover {
     color: white !important;
 }

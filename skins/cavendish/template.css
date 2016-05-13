@@ -159,11 +159,11 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    background: #99D6F2;
 	}
 
-	.highlights-tab{
-            text-align:center;
-	    background:transparent;
-	    color:#30AEE2;
+	.highlights-tab {
+        text-align:center;
+        background:transparent;
 	}
+	
 
 	.highlights-tab a:hover *{
 	}
@@ -180,6 +180,10 @@ body.page-Main_Page h1.firstHeading { display:none; }
 		white-space: nowrap;
         border-top-left-radius:5px;
         border-top-right-radius:5px;
+	}
+	
+	#submenu .highlights-tab {
+	    color:#30AEE2;
 	}
 	
 	#submenu ul a:hover * {
