@@ -1259,7 +1259,7 @@ select span.noshow {
 
 .small_card {
     width: 311px;
-    padding: 3px;
+    padding: 4px 3px;
     background: transparent;
     color: #555 !important;
     cursor: pointer;
