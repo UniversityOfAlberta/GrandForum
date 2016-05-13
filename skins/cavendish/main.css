@@ -53,22 +53,7 @@ img.ui-datepicker-trigger{
     padding: 0 2px 0 2px;
     margin: 0 2px 0 2px;
     float: left;
-    
-    background: #FFFFFF;
 }
-
-#header ul li:hover {
-    background: #FFFFFF;
-}
-
-#header li.selected {
-    background: #FFFFFF;
-}
-
-#header ul li:hover.selected{
-    background: #FFFFFF;
-}
-
 
 /* SUB MENU */
 

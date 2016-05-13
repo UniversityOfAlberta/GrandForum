@@ -176,6 +176,14 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     color: $hl;
 }
 
+#sideToggle {
+    color: $hl;
+}
+
+#sideToggle:hover {
+    background: #99D6F2;
+}
+
 a {
     color: $hl;
 }

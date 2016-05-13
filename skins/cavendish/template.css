@@ -148,8 +148,15 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    font-weight:normal;
 	}
 	
-	#header li.selected a {
+	#header li a {
+	    border-bottom-left-radius: 5px;
+	    border-bottom-right-radius: 5px;
+	    height: 42px;
+	}
+	
+	#header li.selected a, #header li a:hover {
 	    font-weight:normal;
+	    background: #99D6F2;
 	}
 
 	.highlights-tab{
@@ -171,9 +178,8 @@ body.page-Main_Page h1.firstHeading { display:none; }
 		line-height:25px;
 		height: 25px;
 		white-space: nowrap;
-    border-top-left-radius:5px;
-    border-top-right-radius:5px;
-
+        border-top-left-radius:5px;
+        border-top-right-radius:5px;
 	}
 	
 	#submenu ul a:hover * {
