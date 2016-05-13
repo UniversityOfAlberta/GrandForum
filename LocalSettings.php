@@ -113,6 +113,7 @@ $wgPasswordSender = $config->getValue('supportEmail');
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+$wgEnableParserLimitReporting=false;
 
 if(TESTING){
     $wgEnableEmail      = false;
@@ -132,8 +133,14 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_NONE;
-$wgMemCachedServers = array();
+define('CACHE_APC', 'apc_shared');
+if(!TESTING){
+    if(extension_loaded('apc') && ini_get('apc.enabled')){
+        $wgMainCacheType = CACHE_APC;
+        $wgMessageCacheType = CACHE_APC;
+        $wgParserCacheType = CACHE_APC;
+    }
+}
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
@@ -440,4 +447,54 @@ function wfReportTimeOld() {
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
+}
+
+// http://stackoverflow.com/questions/4757061/which-ics-parser-written-in-php-is-good
+function icsToArray($icsFile) {
+    $icsFile = str_replace("\r", "", $icsFile);
+    $icsFile = str_replace("\n ", "", $icsFile);
+    $icsData = explode("BEGIN:", $icsFile);
+
+    foreach($icsData as $key => $value) {
+        $data = explode("\n", $value);
+        if($data[0] == "VEVENT"){
+            $icsDatesMeta[$key] = explode("\n", $value);
+        }
+    }
+
+    foreach($icsDatesMeta as $key => $value) {
+        foreach($value as $subKey => $subValue) {
+            if ($subValue != "") {
+                if ($key != 0 && $subKey == 0) {
+                    $icsDates[$key]["BEGIN"] = $subValue;
+                } else {
+                    $subValueArr = explode(":", $subValue, 2);
+                    $value = @$subValueArr[0];
+                    if(strstr($value, ";") !== false){
+                        $values = explode(";", $value);
+                        $array = array();
+                        foreach($values as $k => $val){
+                            if(strstr($val, "=") !== false){
+                                $val = explode("=", $val);
+                                $array[$val[0]] = str_replace('\n', "\n", 
+                                                  str_replace('\,', ',', 
+                                                  str_replace('\;', ';', $val[1])));
+                            }
+                        }
+                        $array['VALUE'] = str_replace('\n', "\n", 
+                                          str_replace('\,', ',', 
+                                          str_replace('\;', ';', $subValueArr[1])));
+                        $icsDates[$key][$values[0]][] = $array;
+                    }
+                    else{
+                        $icsDates[$key][$value] = str_replace('\n', "\n", 
+                                                  str_replace('\,', ',', 
+                                                  str_replace('\;', ';', $subValueArr[1])));
+                    }
+                }
+            }
+        }
+    }
+
+    return $icsDates;
 }

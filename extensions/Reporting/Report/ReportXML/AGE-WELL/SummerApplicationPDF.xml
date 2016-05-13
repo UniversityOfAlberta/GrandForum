@@ -124,10 +124,18 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItemSet id="cv_if" type="If" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)}">
+        <ReportItemSet id="cv_if" type="If" if="{!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)}">
             <ReportItem id="cv" type="StaticReportItem">
                 <![CDATA[
-                    <p><b>Current CV</b></p>
+                    {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)})}
+                    <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="cv_ifelse" type="If" if="{and({==({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0, 0)},)},
+                                                         {!=({getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)},)})}">
+            <ReportItem id="cv" type="StaticReportItem">
+                <![CDATA[
                     {set(md5, {getBlobMD5(RP_HQP_APPLICATION, HQP_APPLICATION_DOCS, HQP_APPLICATION_CV, 0, {$user_id}, 0)})}
                     <a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={get(md5)}&mime=application/pdf'>Download</a>
                 ]]>

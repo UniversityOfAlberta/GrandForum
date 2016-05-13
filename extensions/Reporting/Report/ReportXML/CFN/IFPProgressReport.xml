@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfFiles="IFPProgressReportPDF" ajax="true">
+<Report name="IFP Progress Report" reportType="RP_IFP_PROGRESS" pdfFiles="IFPProgressReportPDF" ajax="true" year="2016">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP" subType="IFP">
+        <Role role="HQP" subType="IFP">
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="mentorship" permissions="rw" />
             <SectionPermission id="collab" permissions="rw" />
@@ -12,11 +12,11 @@
             <SectionPermission id="planning" permissions="rw" />
             <SectionPermission id="comments" permissions="rw" />
             <SectionPermission id="supervisor1" permissions="r" />
-            <SectionPermission id="supervisor2" permissions="" />
+            <SectionPermission id="supervisor2" permissions="--" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="NI">
             <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="ktee" permissions="" />
             <SectionPermission id="external" permissions="" />
@@ -70,22 +70,22 @@
         <ReportItem id="delayed" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_DELAYED" labels="Delayed Milestone or Deliverable|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
             <![CDATA[
                 <h3>Delayed Milestones/Deliverables*</h3>
-                <p>If applicable, explain why a milestone/deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how TVN can assist.</p>
+                <p>If applicable, explain why a milestone/deliverable was delayed, indicate the length of the delay and the solution to get things back on track and describe if/how CFN can assist.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Other Challenges*</h3>
-                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during this reporting period and briefly describe identified solutions/ways forward and describe if/how TVN can assist.</p>
+                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during this reporting period and briefly describe identified solutions/ways forward and describe if/how CFN can assist.</p>
                 {$item}
-                <b style='color:red;'>* Please contact TVN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact TVN via <a href='mailto:training@tvn-nce.ca'>training@tvn-nce.ca</a>.</b>
+                <b style='color:red;'>* Please contact CFN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact CFN via <a href='mailto:training@cfn-nce.ca'>training@cfn-nce.ca</a>.</b>
             ]]>
         </ReportItem>
         <ReportItem id="placement" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MIL_PLACEMENT" rich="true">
             <![CDATA[
                 <h3>External Placement</h3>
-                <p>In the box below, please update TVN on whether an external placement has been secured and provide further details of start-date/end-date and planned/completed activities.</p>
+                <p>In the box below, please update CFN on whether an external placement has been secured and provide further details of start-date/end-date and planned/completed activities.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -98,13 +98,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="times" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_TIMES" size="50" min="0" max="10000">
+        <ReportItem id="times" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_TIMES" size="5" min="0" max="10000">
             <![CDATA[
                 <p><b>How many times have you met with your Interdisciplinary Mentor to-date?</b></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pfss" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_PFSS" size="50" min="0" max="10000">
+        <ReportItem id="pfss" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_MENTORSHIP_PFSS" size="5" min="0" max="10000">
             <![CDATA[
                 <p><b>How many times have you met with your PFSS Mentor to-date?</b></p>
                 {$item}
@@ -167,8 +167,8 @@
     <ReportSection id="capacity" name="Capacity Update" tooltip="5. Capacity Update" title="5. Capacity Update" blobSection="IFP_PROG_CAPACITY" type="EditableReportSection">
         <ReportItem id="activity" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_CAPACITY_ACTIVITY" labels="Type of Activity|Activity|Expected Time Commitment|Duration" types="Select(Non-Fellowship Research Commitments, Course Commitments (Instructor), Course Commitments (Student), Professional Practice, Other Commitments)|Text|Text|Text" sizes="175|175|125|125" multiple="true">
             <![CDATA[
-                <p>The TVN Interdisciplinary Fellowship Program is designed to be rigorous and challenging, and requires ongoing dedication. The program required a regular and substantial time commitment over a one-year or two-year period.</p>
-                <p>In your application package, you listed all known and anticipated activities that you expected over the course of the fellowship, and agreed to update TVN with any changes.  Please note any changes below.</p>
+                <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging, and requires ongoing dedication. The program required a regular and substantial time commitment over a one-year or two-year period.</p>
+                <p>In your application package, you listed all known and anticipated activities that you expected over the course of the fellowship, and agreed to update CFN with any changes.  Please note any changes below.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -198,22 +198,28 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partners" name="Partnerships" tooltip="6. Partnerships and other Funding" title="6. Partnerships and other Funding" blobSection="IFP_PROG_PARTNERS" type="EditableReportSection">
-        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
+        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_PROG_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your CFN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
             <![CDATA[
-                <p>The TVN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however TVN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
+                <p>The CFN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however CFN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
                 <p>Details on in-kind and financial partnership contributions must also be identified. Partnership contributions must be from NCE-eligible partners and cover NCE-eligible expenses. Please consult the <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a> regarding eligibility and valuation of in-kind contributions and then consult with your supervisor’s host institution’s research services unit for assistance if you still have questions.  Calculation of in-kind contribution amounts must adhere to <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a>.</p>
-                <p>If you are listing a partner with cash or in-kind contributions that was not included in your application, please provide a letter from the partner detailing the extent of collaboration and cash/in-kind contributions. The letter must specifically identify your project, reference TVN funding, and detail the type and amount of contributions. The letter should be on official letterhead from the partner, and must be signed by someone from the partner with the authority to make such a commitment.</p>
-                <p>Please note that where an applicant has a “financial interest” (as defined by <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Conflict of Interest Guidelines</a>) in a partner, the potential conflict of interest should be declared.  These partnerships are not precluded, but declaring this financial interest provides transparency to the administration and review process.  Applicants are also governed by <a href='http://www.tvn-nce.ca/1144.aspx' target='_blank'>TVN Conflict of Interest Policy and Guidelines</a>.</p>
+                <p>If you are listing a partner with cash or in-kind contributions that was not included in your application, please provide a letter from the partner detailing the extent of collaboration and cash/in-kind contributions. The letter must specifically identify your project, reference CFN funding, and detail the type and amount of contributions. The letter should be on official letterhead from the partner, and must be signed by someone from the partner with the authority to make such a commitment.</p>
+                <p>Please note that where an applicant has a “financial interest” (as defined by <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Conflict of Interest Guidelines</a>) in a partner, the potential conflict of interest should be declared.  These partnerships are not precluded, but declaring this financial interest provides transparency to the administration and review process.  Applicants are also governed by <a href='http://www.cfn-nce.ca/1144.aspx' target='_blank'>CFN Conflict of Interest Policy and Guidelines</a>.</p>
                 {$item}
                 <small>* Fiscal Year runs from Apr.1 to Mar.31.</small>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" name="Networking Activities" tooltip="7. Networking Activities" title="7. Networking Activities" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" name="Networking/Collaborations" tooltip="7. Networking/Collaborations" title="7. Networking/Collaborations" blobSection="IFP_PROG_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
                 <p>Describe, if any, networking activities you undertook during this reporting period.  These activities should include project team meetings with academic or industry collaborators, inside or outside of your institution.  These activities should also include meeting that have led to any additional partnerships described above or anticipated partnerships or collaborations that you anticipate might result in the future.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -224,14 +230,14 @@
                 <h3>Network Planning Information</h3>
                 <p>For Network metrics and planning purposes, we would appreciate your assessment of your project against various categories.</p>
                 <h3>Research Themes</h3>
-                <p><small>Which TVN research themes does your project most closely fall under?</small></p>
+                <p><small>Which CFN research themes does your project most closely fall under?</small></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" blobItem="IFP_PROG_PLAN_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <h3>Strategic Priorities</h3>
-                <p><small>Which TVN strategic priorities does your project most closely fall under?</small></p>
+                <p><small>Which CFN strategic priorities does your project most closely fall under?</small></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -270,7 +276,7 @@
     <ReportSection id="comments" name="Comments and Feedback" tooltip="9. Comments and Feedback" title="9. Comments and Feedback" blobSection="IFP_PROG_COMMENTS" type="EditableReportSection">
         <ReportItem id="feedback" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_COMMENTS_FEEDBACK" rich="true">
             <![CDATA[
-                <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist TVN in improving the program in the future.</p>
+                <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist CFN in improving the program in the future.</p>
                 <p>In addition, we are introducing the Fellowship Program to various stakeholders and would greatly appreciate any comments on any aspect of the program that we can use for our promotional materials.</p>
                 {$item}
             ]]>

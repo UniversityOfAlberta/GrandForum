@@ -16,8 +16,8 @@ class PersonBudgetTab extends AbstractEditableTab {
         $year= YEAR-1;
 	    $uid = $this->person->getId();
 		$blob_type=BLOB_EXCEL;
-		$rptype = RP_RESEARCHER;
-    	$section = RES_ALLOC_BUDGET;
+		$rptype = 'RP_RESEARCHER';
+    	$section = 'RES_ALLOC_BUDGET';
     	$item = 0;
     	$subitem = 0;
 		$rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);

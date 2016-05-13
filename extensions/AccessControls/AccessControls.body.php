@@ -14,7 +14,7 @@ function initializeAccessControls(){
   createRoleNamespaces();
   
   $egAnnokiNamespaces->registerExtraNamespaces($wgExtraNamespaces);
-
+  
   //addMenuJavascript();
 }
 

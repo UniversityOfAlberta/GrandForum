@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Products>
 
+    <!-- Activities -->
+    <Activities category="Activity">
+        <Activity type="Event Organization" status="Invited|Not Invited">
+            <data>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Workshop" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Seminar" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Panel" status="Invited|Not Invited">
+            <data>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Conference Attendance" status="Invited|Not Invited">
+            <data>
+                <field label="Conference" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Student Volunteering" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Reviewing" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Ethics Application">
+            <data>
+                <field label="Ethics Office" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Work on Committee" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Meeting">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+
+        <!--
+        There are a number of these in DB, but not supported in UI anymore
+        <Activity type="Panel" status="Not Invited">
+            <Data>
+            </Data>
+        </Activity>
+
+        <Activity type="Tutorial" status="Not Invited">
+            <Data>
+            </Data>
+        </Activity>
+        -->
+    </Activities>
+
     <!-- Publications -->
     <Publications category="Publication">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">

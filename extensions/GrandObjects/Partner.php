@@ -13,22 +13,34 @@ class Partner {
     var $prov;
     var $country;
     
+    static $cache = array();
+    
     // Creates a new Partner from the given id
     static function newFromId($id){
+        if(isset(self::$cache[$id])){
+            return self::$cache[$id];
+        }
         $data = DBFunctions::select(array('grand_partners'),
                                     array('*'),
                                     array('id' => EQ($id)));
         $partner = new Partner($data);
+        self::$cache[$id] = $partner;
+        self::$cache[$partner->getOrganization()] = $partner;
         return $partner;
     }
     
     // Creates a new Partner from the given name.
     // Since the organization column is not unique, this may return an unexpected result.
     static function newFromName($name){
+        if(isset(self::$cache[$name])){
+            return self::$cache[$name];
+        }
         $data = DBFunctions::select(array('grand_partners'),
                                     array('*'),
                                     array('organization' => EQ($name)));
         $partner = new Partner($data);
+        self::$cache[$partner->getId()] = $partner;
+        self::$cache[$name] = $partner;
         return $partner;
     }
     

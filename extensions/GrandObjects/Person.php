@@ -53,6 +53,7 @@ class Person extends BackboneModel {
     var $contributions;
     var $multimedia;
     var $aliases = false;
+    var $roleHistory;
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
@@ -286,10 +287,10 @@ class Person extends BackboneModel {
                                               'first_name',
                                               'middle_name',
                                               'last_name',
-                                              'prev_first_name',
-                                              'prev_last_name',
-                                              'honorific',
-                                              'language',
+                                              //'prev_first_name',
+                                              //'prev_last_name',
+                                              //'honorific',
+                                              //'language',
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
@@ -307,7 +308,7 @@ class Person extends BackboneModel {
                 
                 $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
                 $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
-                $middleName = unaccentChars($row['middle_name']);
+                $middleName = $row['middle_name'];
                 
                 self::$idsCache[$row['user_id']] = $row;
                 self::$namesCache[strtolower($row['user_name'])] = $row;
@@ -320,6 +321,7 @@ class Person extends BackboneModel {
                     self::$namesCache[unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])))] = $row;
                 }
                 if($middleName != ""){
+                    $middleName = unaccentChars($middleName);
                     self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
                     self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
                     self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
@@ -400,20 +402,18 @@ class Person extends BackboneModel {
             $sql = "SELECT user_id, university_name, department, position, end_date
                     FROM (SELECT * 
                           FROM grand_user_university 
-                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) 
-                         uu, grand_universities u, grand_positions p 
+                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) uu,
+                          grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
                     GROUP BY user_id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                if(!isset(self::$universityCache[$row['user_id']])){
-                    self::$universityCache[$row['user_id']] = 
-                        array("university" => $row['university_name'],
-                              "department" => $row['department'],
-                              "position"   => $row['position'],
-                              "date"       => $row['end_date']);
-                }
+                self::$universityCache[$row['user_id']] = 
+                    array("university" => $row['university_name'],
+                          "department" => $row['department'],
+                          "position"   => $row['position'],
+                          "date"       => $row['end_date']);
             }
         }
     }
@@ -458,6 +458,7 @@ class Person extends BackboneModel {
                                         array('deleted' => NEQ(1),
                                               'candidate' => NEQ(1)),
                                         array('user_name' => 'ASC'));
+            
             foreach($data as $row){
                 self::$allPeopleCache[] = $row['user_id'];
             }
@@ -590,7 +591,7 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllPeople($filter=null, $idOnly=false){
-	global $config;
+        global $config;
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -739,10 +740,10 @@ class Person extends BackboneModel {
             $this->firstName = @$data[0]['first_name'];
             $this->lastName = @$data[0]['last_name'];
             $this->middleName = @$data[0]['middle_name'];
-            $this->prevFirstName = @$data[0]['prev_first_name'];
-            $this->prevLastName = @$data[0]['prev_last_name'];
-            $this->honorific = @$data[0]['honorific'];
-            $this->language = @$data[0]['language'];
+            //$this->prevFirstName = @$data[0]['prev_first_name'];
+            //$this->prevLastName = @$data[0]['prev_last_name'];
+            //$this->honorific = @$data[0]['honorific'];
+            //$this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
@@ -880,10 +881,10 @@ class Person extends BackboneModel {
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
-                                          'prev_first_name' => $this->getPrevFirstName(),
-                                          'prev_last_name' => $this->getPrevLastName(),
-                                          'honorific' => $this->getHonorific(),
-                                          'language' => $this->getCorrespondenceLanguage(),
+                                          //'prev_first_name' => $this->getPrevFirstName(),
+                                          //'prev_last_name' => $this->getPrevLastName(),
+                                          //'honorific' => $this->getHonorific(),
+                                          //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
@@ -1150,7 +1151,7 @@ class Person extends BackboneModel {
      * @return int The id of this Person
      */
     function getId(){
-	global $config;
+        global $config;
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return 0;
@@ -1458,18 +1459,49 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
 
-    function getNameForProduct(){
-	global $config;
-	if($this->getId() == 0){
-	    return $this->getNameForForms();
-	}
-        $format = strtolower($config->getValue("nameFormat"));
-	$format = str_replace("%first", $this->getFirstName(), $format);
-        $format = str_replace("%last", $this->getLastName(), $format);
-        $format = str_replace("%f", substr($this->getFirstName(), 0,1), $format);
-        $format = str_replace("%l", substr($this->getLastName(),0,1), $format);
-	return $format;
+    private function formatName($matches){
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            $match1 = str_replace("%first", $this->getFirstName(), $match1);
+            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+            $match1 = str_replace("%last", $this->getLastName(), $match1);
+            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+
+            $match2 = str_replace("%first", "", $match2);
+            $match2 = str_replace("%middle", "", $match2);
+            $match2 = str_replace("%last", "", $match2);
+            $match2 = str_replace("%f", "", $match2);
+            $match2 = str_replace("%m", "", $match2);
+            $match2 = str_replace("%l", "", $match2);
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("",$matches);
     }
+
+    function getNameForProduct(){
+        global $config;
+        if($this->getId() == 0){
+            return $this->getNameForForms();
+        }
+        $firstname = $this->getFirstName();
+        $middlename = $this->getMiddleName();
+        $lastname = $this->getLastName();
+
+        $regex = "/\{.*?\}/";
+        $format = strtolower($config->getValue("nameFormat"));
+        $format = preg_replace_callback($regex,"self::formatName",$format);
+        return $format;
+    }
+
+
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
@@ -1984,10 +2016,14 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                $data = DBFunctions::select(array('grand_roles'),
-                                            array('*'),
-                                            array('user_id' => $this->id),
-                                            array('end_date' => 'DESC'));
+                if($this->roleHistory === null){
+                    $data = DBFunctions::select(array('grand_roles'),
+                                                array('*'),
+                                                array('user_id' => $this->id),
+                                                array('end_date' => 'DESC'));
+                    $this->roleHistory = $data;
+                }
+                $data = $this->roleHistory;
             }
             else{
                 $sql = "SELECT *
@@ -2033,6 +2069,8 @@ class Person extends BackboneModel {
      * @return string The name of the role
      */
     function getRoleOn($project, $year=null, $aliases=false){
+        global $config;
+        $committees = $config->getValue('committees');
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
@@ -2051,7 +2089,68 @@ class Person extends BackboneModel {
         else if($aliases && $this->isRoleOn("FAKENI", $year, $project)){
             return "FAKENI";
         }
+        else {
+            foreach($this->getRoles() as $role){
+                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
+                    return $role->getRole();
+                }
+            }
+        }
         return $this->getType();
+    }
+
+    /*
+     * Returns a list of roles (strings) which this Person is allowed to edit
+     * @return array A list of roles (string) which this Person is allowed to edit
+     */
+    function getAllowedRoles(){
+        global $wgRoleValues, $wgRoles;
+        $maxValue = 0;
+        $roles = array();
+        if(is_array($this->getRoles())){
+            foreach($this->getRoles() as $role){
+                $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
+            }
+            foreach($wgRoleValues as $role => $value){
+                if($value <= $maxValue && array_search($role, $wgRoles) !== false){
+                    $roles[$role] = $role;
+                }
+            }
+        }
+        sort($roles);
+        return $roles;
+    }
+    
+    /*
+     * Returns a list of projects (strings) which this Person is allowed to edit
+     * @returns array A list of projects (strings) which this Person is allowed to edit
+     */
+    function getAllowedProjects(){
+        $projects = array();
+        foreach($this->getProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->leadership() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        foreach($this->getThemeProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[$project->getId()] = $project->getName();
+            }
+        }
+        if($this->isRoleAtLeast(STAFF)){
+            foreach(Project::getAllProjects() as $project){
+                if(!$project->isSubProject()){
+                    $projects[$project->getId()] = $project->getName();
+                }
+            }
+        }
+        asort($projects);
+        return array_values($projects);
     }
     
     /**
@@ -2179,69 +2278,23 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        
-        $sql = "SELECT *
-                FROM grand_roles
-                WHERE user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
+        $cacheId = "personRolesDuring".$this->id."_".$date;
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
+            $sql = "SELECT *
+                    FROM grand_roles
+                    WHERE user_id = '{$this->id}'
+                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+            $data = DBFunctions::execSQL($sql);
+            Cache::store($cacheId, $data);
+        }
         $roles = array();
         foreach($data as $row){
             $roles[] = new Role(array(0 => $row));
         }
         return $roles;        
-    }
-    
-    /*
-     * Returns a list of roles (strings) which this Person is allowed to edit
-     * @return array A list of roles (string) which this Person is allowed to edit
-     */
-    function getAllowedRoles(){
-        global $wgRoleValues, $wgRoles;
-        $maxValue = 0;
-        $roles = array();
-        foreach($this->getRoles() as $role){
-            $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
-        }
-        foreach($wgRoleValues as $role => $value){
-            if($value <= $maxValue && array_search($role, $wgRoles) !== false){
-                $roles[$role] = $role;
-            }
-        }
-        sort($roles);
-        return $roles;
-    }
-    
-    /*
-     * Returns a list of projects (strings) which this Person is allowed to edit
-     * @returns array A list of projects (strings) which this Person is allowed to edit
-     */
-    function getAllowedProjects(){
-        $projects = array();
-        foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->getThemeProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjects() as $project){
-                if(!$project->isSubProject()){
-                    $projects[$project->getId()] = $project->getName();
-                }
-            }
-        }
-        asort($projects);
-        return array_values($projects);
     }
 
     /**
@@ -2268,6 +2321,7 @@ class Person extends BackboneModel {
         $roles = $this->getSubRoles();
         return (array_search($subRole, $roles) !== false);
     }
+
     
     /**
      * Returns all of the Projects that this Person has been a member of
@@ -3058,7 +3112,7 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                if($this->historyHqps != null){
+                if($this->historyHqps !== null){
                     return $this->historyHqps;
                 }
                 $sql = "SELECT *
@@ -3695,7 +3749,8 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a leader of a given Project
      */
     function leadershipOf($project, $type=null) {
-        if($project instanceof Project){
+        if($project instanceof Project ||
+           $project instanceof Theme){
             $p = $project;
         }
         else{
@@ -3720,7 +3775,7 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        if(!$p->clear){
+        if($p instanceof Project && !$p->clear){
             foreach($p->getPreds() as $pred){
                 if($this->leadershipOf($pred, $type)){
                     return true;
@@ -3907,7 +3962,7 @@ class Person extends BackboneModel {
      */
     function getAllocatedBudget($year){
         global $wgServer,$wgScriptPath;
-        return $this->getRequestedBudget($year, RES_ALLOC_BUDGET);
+        return $this->getRequestedBudget($year, 'RES_ALLOC_BUDGET');
     }
     
     /**
@@ -3916,9 +3971,9 @@ class Person extends BackboneModel {
      * @param int $type Can be either RES_BUDGET or RES_ALLOC_BUDGET
      * @return Budget The requested Budget for this Person for the given year
      */
-    function getRequestedBudget($year, $type=RES_BUDGET){
+    function getRequestedBudget($year, $type='RES_BUDGET'){
         global $wgServer,$wgScriptPath, $reporteeId;
-        if($type == RES_BUDGET){
+        if($type == 'RES_BUDGET'){
             $index = 'r'.$year;
         }
         else{
@@ -3927,7 +3982,7 @@ class Person extends BackboneModel {
         $uid = $this->id;
        
         $blob_type=BLOB_EXCEL;
-        $rptype = RP_RESEARCHER;
+        $rptype = 'RP_RESEARCHER';
         $section = $type;
         $item = 0;
         $subitem = 0;
@@ -3952,14 +4007,14 @@ class Person extends BackboneModel {
         }
         $data = $budget_blob->getData();
         if (! empty($data)) {
-            if($year != 2010 && $type == RES_BUDGET){
+            if($year != 2010 && $type == 'RES_BUDGET'){
                 $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
             }
-            else if($year == 2010 && $type == RES_BUDGET){
+            else if($year == 2010 && $type == 'RES_BUDGET'){
                 $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
             }
             else {
-                if($type == RES_ALLOC_BUDGET && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
+                if($type == 'RES_ALLOC_BUDGET' && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
                     $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
                 }
                 else{
@@ -4010,13 +4065,13 @@ class Person extends BackboneModel {
                     AND year = '{$year}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-	            $this->isEvaluator[$year] = true;
-	        }
-	        else {
-	            $this->isEvaluator[$year] = false;
-	        }
-	    }
-	    return $this->isEvaluator[$year];
+                $this->isEvaluator[$year] = true;
+            }
+            else {
+                $this->isEvaluator[$year] = false;
+            }
+        }
+        return $this->isEvaluator[$year];
     }
     
     /**
@@ -4101,6 +4156,16 @@ class Person extends BackboneModel {
         ksort($subs);
         $subs = array_values($subs);
         return $subs;
+    }
+    
+    function isEvaluatorOf($object, $type, $year = YEAR, $class = "Person"){
+        $evals = $this->getEvaluates($type, $year, $class);
+        foreach($evals as $eval){
+            if($eval == $object){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

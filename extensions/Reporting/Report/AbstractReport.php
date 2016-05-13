@@ -99,7 +99,7 @@ abstract class AbstractReport extends SpecialPage {
         $this->name = "";
         $this->extends = "";
         $this->year = $year;
-        $this->reportType = RP_RESEARCHER;
+        $this->reportType = '';
         $this->disabled = false;
         $this->ajax = false;
         $this->generatePDF = false;
@@ -257,7 +257,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name)))] = $section->getPercentComplete();
+                        $prog[str_replace("/", str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name))))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
@@ -342,6 +342,7 @@ abstract class AbstractReport extends SpecialPage {
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
             $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
+            $report->year = $this->year;
             return $report->getLatestPDF();
         }
         $sto = new ReportStorage($this->person);
@@ -372,7 +373,8 @@ abstract class AbstractReport extends SpecialPage {
     function getPDF($submittedByOwner=false){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
-            $report = new DummyReport($file, $this->person, $this->project);
+            $report = new DummyReport($file, $this->person, $this->project, $this->year);
+            $report->year = $this->year;
             return $report->getPDF();
         }
         $sto = new ReportStorage($this->person);

@@ -180,7 +180,8 @@ EOF;
         <thead>
         <tr>
             <th width="27%">Name</th>
-            <th width="15%">Partners</th>
+            <th width="10%">Partners</th>
+            <th width="5%">Types</th>
             <th width="15%">Related Members</th>
             <th width="15%">Related Projects</th>
             <th width="10%">Updated</th>
@@ -195,7 +196,7 @@ EOF;
         $dialog_js =<<<EOF
             <script type="text/javascript">
 EOF;
-        $contributions = Contribution::getContributionsDuring(null, $this->year-1);
+        $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
         $totalCash = 0;
         $totalKind = 0;
         $totalTotal = 0;
@@ -212,12 +213,14 @@ EOF;
             $partners = $contr->getPartners();
 
             $partners_array = array();
+            $subType_array = array();
             $details = "";
             foreach($partners as $p){
                 $org = $p->getOrganization();
                 if(!empty($org)){
                     $partners_array[] = $org;
                 }
+                $subType_array[] = $contr->getHumanReadableSubTypeFor($p);
                 
                 $tmp_type = $contr->getTypeFor($p);
                 $hrType = $contr->getHumanReadableTypeFor($p);
@@ -265,6 +268,7 @@ EOF;
                 }
             }
             $people_names = implode(', ', $people_names);
+            $subType_names = implode(', ', $subType_array);
 
             $project_names = array();
             foreach ($projects as $p) {
@@ -289,6 +293,7 @@ EOF;
                     <tr>
                         <td><span class="contribution_descr" title="{$descr}">{$name}</span></td>
                         <td>{$partner_names}</td>
+                        <td>{$subType_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
                         
@@ -309,7 +314,7 @@ EOF;
         $html .= "</tbody>
         <tfoot>
             <tr>
-                <th colspan='5'></th>
+                <th colspan='6'></th>
                 <th>$".number_format($totalCash, 2)."</th>
                 <th>$".number_format($totalKind, 2)."</th>
                 <th>$".number_format($totalTotal, 2)."</th>
@@ -329,6 +334,7 @@ EOF;
                                 <th>Project Name</th>
                                 <th>Contribution</th>
                                 <th>Partner</th>
+                                <th>Type</th>
                                 <th>Cash</th>
                                 <th>In-Kind</th>
                                 <th>Sub-Total</th>
@@ -339,7 +345,7 @@ EOF;
                             <tbody>";
         foreach($projects as $project){
             //if($project->getPhase() == 1){
-                $contributions = $project->getContributions();
+                $contributions = $project->getContributionsDuring($this->from, $this->to);
                 foreach($contributions as $contribution){
                     $partners = $contribution->getPartners();
                     $nRows = max(1, count($partners));
@@ -349,6 +355,7 @@ EOF;
                     if(count($partners) > 0){
                         foreach($partners as $i => $partner){
                             $this->html .= "<td>{$partner->organization}</td>
+                                            <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
                                             <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
@@ -399,7 +406,7 @@ EOF;
             if($m_nation == "Canadian" || $m_nation == "Landed Immigrant"){
                 $canadian[] = $m;
             }
-            else if($m_nation == "Foreign" || $m_nation == "Visa Holder"){
+            else if($m_nation == "Foreign" || $m_nation == "Visa Holder" || $m_nation == "American"){
                 $foreign[] = $m;
             }
             else{
@@ -456,6 +463,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
@@ -709,7 +717,7 @@ EOF;
         //Setup the table structure
         $universities = array();
         $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Other"=>array());
+                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
 
         $positions = array( "Undergraduate Student"=>"Ugrad",
                             "Graduate Student - Master's"=>"Masters",
@@ -717,6 +725,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         //Fill the table
@@ -728,7 +737,7 @@ EOF;
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Other"=>array());
+                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
@@ -755,6 +764,7 @@ EOF;
          <th>PhD</th>
          <th>Post-Doctoral Fellows</th>
          <th>Technicians / Research Associates</th>
+         <th>Professional End Users</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
@@ -768,8 +778,9 @@ EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
                 $uni_id = str_replace("/", "_", str_replace(" ", "_", $uni));
-                $lnk_id = "lnk_" . $uni_id . "_" . $posi;
-                $div_id = "div_" . $uni_id . "_" . $posi;
+                $pos_id = str_replace("/", "_", str_replace(" ", "_", $posi));
+                $lnk_id = "lnk_" . $uni_id . "_" . $pos_id;
+                $div_id = "div_" . $uni_id . "_" . $pos_id;
 
                 $total_uni = array_merge($total_uni, $hqpa);
                 $num_students = count($hqpa);   
@@ -837,6 +848,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
         //Fill the table
@@ -855,7 +867,7 @@ EOF;
                 //if($project->getPhase() == 1){
                     if(!isset($projects[$project->getName()])){
                         $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                                             "Technicians / Research Associates"=>array(), "Other"=>array());
+                                                             "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
                     }
                     $projects[$project->getName()][$pos][] = $hqp;
                 //}
@@ -874,6 +886,7 @@ EOF;
          <th>PhD</th>
          <th>Post-Doctoral Fellows</th>
          <th>Technicians / Research Associates</th>
+         <th>Professional End Users</th>
          <th>Other</th>
          <th>Total</th>
          </tr>
@@ -968,25 +981,9 @@ EOF;
         $universities = array();
         $unknown = array(array(), 0);
 
-        //Getting Report BloBS
-        $rptype = RP_RESEARCHER;
-        $section = RES_MILESTONES;
-        $item = RES_MIL_CONTRIBUTIONS;
-        $subitem = 0;
-        $blob_type = BLOB_ARRAY;
-        $year = $this->year-1;
-
-        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-
         //Fill the table
         foreach ($nis as $hqp){
             $uid = $hqp->getId();
-            $grand_activity_blob = new ReportBlob($blob_type, $year, $uid, 0);
-            $grand_activity_blob->load($rep_addr);
-            $grand_activity_arr = $grand_activity_blob->getData();
-            $grand_percent = @$grand_activity_arr['grand_percent'];
-            $grand_percent = preg_replace('/%/', '', $grand_percent);
-            $grand_percent = (is_numeric($grand_percent))? $grand_percent / 100 : 0;
 
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
@@ -999,11 +996,9 @@ EOF;
 
             if($uni == "Unknown"){
                 $unknown[0][] = $hqp;
-                $unknown[1] += $grand_percent;
             }
             else{
                 $universities[$uni][0][] = $hqp;
-                $universities[$uni][1] += $grand_percent;
             }
         }
 
@@ -1074,6 +1069,7 @@ EOF;
                             "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
                             "Technician"=> "Technicians / Research Associates",
                             "Research Associate" => "Technicians / Research Associates",
+                            "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
         
         $intkeys = array(
@@ -1295,10 +1291,10 @@ EOF;
             $authors = $pub->getAuthors();
             $pub_projects = array();
             $status = $pub->getStatus();
-            //if($status != "Published"){
-            //    continue;
-            //}
-            //echo $pub->getId();
+            if($status == "Rejected"){
+                continue;
+            }
+            
             $groups = array();
             $author_ids = array();
             foreach($authors as $author){
@@ -1336,31 +1332,18 @@ EOF;
                 case 'Book Chapter':
                 case 'Collections Paper':
                 case 'Proceedings Paper':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $dissem["a2".$key][] = $pub;
                     break;
-
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    if($status != "Published" && $status != "Submitted"){
-                        continue 2;
-                    }
                     $dissem["a1".$key][] = $pub;
                     break;
-
                 case 'Masters Thesis':
                 case 'PhD Thesis':
                 case 'Tech Report':
-                    break;
-
                 case 'Misc':
                 case 'Poster':
                 default:
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $dissem["b".$key][] = $pub;
             }
             //break;
@@ -1394,7 +1377,7 @@ EOF;
                 <td align='center'>{$n_a1_r2} {$d_a1_r2}</td>
             </tr>
             <tr>
-                <th align='left' colspan='2'>Other published refereed contributions</th>
+                <th align='left' colspan='2'>Other refereed contributions</th>
             </tr>
             <tr>
                 <td valign='top'>&emsp;All authors from one research group</td>
@@ -1405,7 +1388,7 @@ EOF;
                 <td align='center'>{$n_a2_r2}  {$d_a2_r2}</td>
             </tr>
             <tr>
-                <th align='left' colspan='2'>Published non-refereed contributions</th>
+                <th align='left' colspan='2'>Non-refereed contributions</th>
             </tr>
             <tr>
                 <td valign='top'>&emsp;All authors from one research group</td>
@@ -1424,6 +1407,10 @@ EOF;
     function showArtDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", $this->from, $this->to);
+        
+        if(count($publications) == 0){
+            return;
+        }
 
         $types = Paper::getCategoryTypes("Artifact");
 
@@ -1514,6 +1501,11 @@ EOF;
     function showActDisseminations(){
         global $wgOut;
         $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", $this->from, $this->to);
+        
+        if(count($publications) == 0){
+            return;
+        }
+        
         //echo (sizeof($publications ));
         $types = Paper::getCategoryTypes("Activity");
 
@@ -1724,9 +1716,9 @@ EOF;
             }
             $alreadyDone[$pub->getId()] = true;
             $status = $pub->getStatus();
-            //if($status != "Published"){
-            //    continue;
-            //}
+            if($status == "Rejected"){
+                continue;
+            }
             switch ($pub->getType()) {
                 // A1: Articles in refereed publications
                 case 'Book':
@@ -1735,17 +1727,11 @@ EOF;
                 case 'Collections Paper':
                 case 'Conference Paper':
                 case 'Proceedings Paper':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["a2"][] = $pub;
                     break;
                 // A2: Other refereed contributions
                 case 'Journal Paper':
                 case 'Magazine/Newspaper Article':
-                    if($status != "Published" && $status != "Submitted"){
-                        continue 2;
-                    }
                     $pub_count["a1"][] = $pub;
                     break;
                 // C: Specialized Publications
@@ -1763,9 +1749,6 @@ EOF;
                 case 'Industrial Report':
                 case 'Internal Report':
                 case 'Manual':
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["c"][] = $pub;   
                     break;
                 // B: Non-refereed contributions
@@ -1774,9 +1757,6 @@ EOF;
                 case 'Book Review':
                 case 'Review Article':
                 default:
-                    if($status != "Published"){
-                        continue 2;
-                    }
                     $pub_count["b"][] = $pub;
             }
         }

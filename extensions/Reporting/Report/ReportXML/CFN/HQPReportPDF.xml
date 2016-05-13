@@ -109,7 +109,7 @@
                     <![CDATA[
                         <tr>
                             <td width="50%" valign='top'>
-                                <b>TVN Strategic Priorities</b>
+                                <b>CFN Strategic Priorities</b>
                                 <div style='margin-left:10px;'>{$item}</div>
                             </td>
                     ]]>
@@ -117,7 +117,7 @@
                 <ReportItem id="themes" type="RadioReportItem" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_THEMES" blobSubItem="{$user_id}">
                     <![CDATA[
                             <td width="50%" valign='top'>
-                                <b>TVN Research Themes</b>
+                                <b>CFN Research Themes</b>
                                 <div style='margin-left:10px;'>{$item}</div>
                             </td>
                         </tr>

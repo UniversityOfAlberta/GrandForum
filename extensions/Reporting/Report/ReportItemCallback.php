@@ -37,24 +37,13 @@ class ReportItemCallback {
             "milestone_assessment" => "getMilestoneAssessment",
             "milestone_oldassessment" => "getMilestoneOldAssessment",
             "milestone_last_edited_by" => "getMilestoneLastEditedBy",
-            "milestone_hqp_comments" => "getMilestoneHQPComments",
-            "milestone_ni_comments" => "getMilestoneNIComments",
-            "milestone_ni_summaries" => "getMilestoneNISummaries",
             // Reports
             "timestamp" => "getTimestamp",
             "post_id" => "getPostId",
             "report_name" => "getReportName",
             "report_xmlname" => "getReportXMLName",
             "section_name" => "getSectionName",
-            "report_excellence_ni_comments" => "getReportExcellenceNIComments",
-            "report_hqpdev_ni_comments" => "getReportHQPDevNIComments",
-            "report_networking_ni_comments" => "getReportNetworkingNIComments",
-            "report_ktee_ni_comments" => "getReportKTEENIComments",
-            "report_future_ni_comments" => "getReportFutureNIComments",
             "report_sab_comments" => "getReportSABComments",
-            "report_excellence_hqp_comments" => "getReportExcellenceHQPComments",
-            "report_networking_hqp_comments" => "getReportNetworkingHQPComments",
-            "report_ktee_hqp_comments" => "getReportKTEEHQPComments",
             "report_has_started" => "getReportHasStarted",
             // People
             "my_id" => "getMyId",
@@ -87,17 +76,10 @@ class ReportItemCallback {
             "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
             "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
-            "user_research_time" => "getUserResearchTime",
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
-            "user_project_comment" => "getUserProjectComment",
-            "user_project_future" => "getUserProjectFuture",
             "user_subproject_comments" => "getUserSubProjectComments",
             "user_subproject_champs" => "getUserSubProjectChamps",
-            "user_mtg_music" => "getUserMTGMusic",
-            "user_mtg_firstnations" => "getUserMTGFirstNations",
-            "user_mtg_socialproblems" => "getUserMTGSocialProblems",
-            "user_mtg_other" => "getUserMTGOther",
             // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
@@ -105,19 +87,8 @@ class ReportItemCallback {
             "champ_subprojects" => "getChampSubProjects",
             "champ_full_project" => "getChampFullProject",
             "champ_is_still_champion" => "getChampIsStillChampion",
-            "champ_has_started" => "getChampReportHasStarted",
-            "champ_has_submitted" => "getChampReportHasSubmitted",
-            "champ_represent" => "getChampRepresent",
-            "champ_q1" => "getChampQ1",
-            "champ_q2" => "getChampQ2",
-            "champ_q3" => "getChampQ3",
-            "champ_q4" => "getChampQ4",
-            "champ_q5" => "getChampQ5",
-            "champ_q6" => "getChampQ6",
             // Sub-PL (SPL)
             "spl_subprojects" => "getSPLSubProjects",
-            // ISAC
-            "isac_comment" => "getISACComment",
             // SAB
             "sab_strength" => "getSABStrength",
             "sab_weakness" => "getSABWeakness",
@@ -510,132 +481,6 @@ class ReportItemCallback {
         return $edited;
     }
     
-    function getMilestoneHQPComments(){
-        if($this->reportItem->milestoneId != 0 ){
-            $person = $this->reportItem->getReport()->person;
-            $project = Project::newFromId($this->reportItem->projectId);
-            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_MILESTONES, HQP_MIL_CONTRIBUTIONS, 0);
-            $m_id = $this->reportItem->milestoneId;
-        }
-        else{
-            return;
-        }
-        //First get All HQPs that I'm supervising, then we'll fetch their comment on the milestone.
-        $hqp_objs = $project->getAllPeopleDuring("HQP", REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        
-        $hqp_milestone_comments = "";
-        $alreadyDone = array();
-        foreach ($hqp_objs as $h){
-            if(isset($alreadyDone[$h->getId()])){
-                continue;
-            }
-            $alreadyDone[$h->getId()] = true;
-            $h_sups = $h->getSupervisors(true);
-            
-            $supervisor = false;
-            foreach ($h_sups as $s){
-                if ( $s->getId() == $person->getId() ){
-                    $supervisor =  true;
-                    //echo "HQP: ".$h->getName()."<br />";
-                    break;
-                }
-            }
-            
-            if($supervisor){
-                $hqp_milestone_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $h->getId(), $project->getId());
-                $hqp_milestone_blob->load($hqp_rep_addr);
-                $hqp_milestone_data = $hqp_milestone_blob->getData();
-                
-                if( isset($hqp_milestone_data[$m_id]) && isset($hqp_milestone_data[$m_id]['comment'])
-                    && !empty($hqp_milestone_data[$m_id]['comment']) ){
-                    $hqp_milestone_comments .= $h->getNameForForms() . ":<br /><i style='margin:10px;display:block;'>" . 
-                        $hqp_milestone_data[$m_id]['comment'] . "</i><br />";
-
-                }
-            }
-        }
-        return $hqp_milestone_comments;
-    }
-    
-    function getMilestoneNIComments(){
-        if($this->reportItem->milestoneId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
-            $m_id = $this->reportItem->milestoneId;
-        }
-        else{
-            return;
-        }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        $ni_milestone_comments = "";
-        $alreadyDone = array();
-        foreach($nis as $ni){
-            if(isset($alreadyDone[$ni->getId()])){
-                continue;
-            }
-            $alreadyDone[$ni->getId()] = true;
-            $ni_milestone_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $ni->getId(), $project->getId());
-            $ni_milestone_blob->load($ni_rep_addr);
-            $ni_milestone_data = $ni_milestone_blob->getData();
-            
-            if( isset($ni_milestone_data[$m_id]) && isset($ni_milestone_data[$m_id]['comment'])
-                && !empty($ni_milestone_data[$m_id]['comment']) ){
-                $ni_milestone_comments .= $ni->getNameForForms() . ":<br /><i style='margin:10px;display:block;'>" . 
-                    $ni_milestone_data[$m_id]['comment'] . "</i><br />";
-
-            }
-        }
-        return $ni_milestone_comments;
-    }
-    
-    function getMilestoneNISummaries(){
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_SUMMARY, 0);
-        }
-        else{
-            return;
-        }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        $ni_milestone_comments = "";
-        $alreadyDone = array();
-        foreach($nis as $ni){
-            if(isset($alreadyDone[$ni->getId()])){
-                continue;
-            }
-            $alreadyDone[$ni->getId()] = true;
-            $ni_milestone_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $ni->getId(), $project->getId());
-            $ni_milestone_blob->load($ni_rep_addr);
-            $ni_milestone_data = $ni_milestone_blob->getData();
-            if($ni_milestone_data != ""){
-                $ni_milestone_comments .= $ni->getNameForForms() . ":<br /><i style='margin:10px;display:block;'>".$ni_milestone_data. "</i><br />";
-            }
-        }
-        return $ni_milestone_comments;
-    }
-    
-    function getReportExcellenceNIComments(){
-        return $this->getReportNIComments(RES_RESACT_EXCELLENCE);
-    }
-    
-    function getReportHQPDevNIComments(){
-        return $this->getReportNIComments(RES_RESACT_HQPDEV);
-    }
-    
-    function getReportNetworkingNIComments(){
-        return $this->getReportNIComments(RES_RESACT_NETWORKING);
-    }
-    
-    function getReportKTEENIComments(){
-        return $this->getReportNIComments(RES_RESACT_KTEE);
-    }
-    
-    function getReportFutureNIComments(){
-        return $this->getReportNIComments(RES_RESACT_NEXTPLANS);
-    }
-    
     function getReportSABComments(){
         $ret = "";
         $sabs = Person::getAllPeopleDuring(ISAC, $this->reportItem->getReport()->year.'-04-01', ($this->reportItem->getReport()->year+1).'-03-31');
@@ -671,102 +516,12 @@ class ReportItemCallback {
         return $ret;
     }
     
-    function getReportExcellenceHQPComments(){
-        return $this->getReportHQPComments(HQP_RESACT_EXCELLENCE);
-    }
-    
-    function getReportNetworkingHQPComments(){
-        return $this->getReportHQPComments(HQP_RESACT_NETWORKING);
-    }
-    
-    function getReportKTEEHQPComments(){
-        return $this->getReportHQPComments(HQP_RESACT_KTEE);
-    }
-    
     function getReportHasStarted(){
         $report = $this->reportItem->getReport();
         if($report->hasStarted()){
             return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
         }
         return "<span>No</span>";
-    }
-    
-    function getChampReportHasStarted(){
-        $project = Project::newFromId($this->reportItem->projectId);
-        $person = Person::newFromId($this->reportItem->personId);
-        
-        $report = new DummyReport(RP_CHAMP, $person, $project, $this->reportItem->getReport()->year);
-        if($report->hasStarted()){
-            return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
-        }
-        return "<span>No</span>";
-    }
-    
-    function getChampReportHasSubmitted(){
-        $project = Project::newFromId($this->reportItem->projectId);
-        $person = Person::newFromId($this->reportItem->personId);
-        
-        $report = new DummyReport(RP_CHAMP, $person, $project, $this->reportItem->getReport()->year);
-        if($report->isSubmitted()){
-            return "<span style='font-weight:bold;color:#008800;'>Yes</span>";
-        }
-        return "<span>N/A</span>";
-    }
-    
-    private function getReportNIComments($item){
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $ni_rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, $item, 0);
-        }
-        else{
-            return;
-        }
-        $nis = $project->getAllPeopleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        $ni_comments = "";
-        $alreadyDone = array();
-        foreach($nis as $ni){
-            if(isset($alreadyDone[$ni->getId()])){
-                continue;
-            }
-            $alreadyDone[$ni->getId()] = true;
-            $ni_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $ni->getId(), $project->getId());
-            $ni_blob->load($ni_rep_addr);
-            $ni_data = $ni_blob->getData();
-            if($ni_data != null){
-                $ni_data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $ni_data);
-                $ni_comments .= $ni->getReversedName() . ":<br /><i style='margin:10px;display:block;'>" . 
-                        $ni_data . "</i><br />";
-            }
-        }
-        return $ni_comments;
-    }
-    
-    private function getReportHQPComments($item){
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, 0);
-        }
-        else{
-            $project = null;
-            $hqp_rep_addr = ReportBlob::create_address(RP_HQP, HQP_RESACTIVITY, $item, RES_RESACT_PHASE1);
-        }
-        $me = Person::newFromId($this->reportItem->personId);
-        
-        $hqps = $me->getHQPDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59");
-        $hqp_comments = "";
-        foreach($hqps as $hqp){
-            if($this->reportItem->projectId == 0 || $hqp->isMemberOfDuring($project, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59")){
-                $hqp_blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $hqp->getId(), $this->reportItem->projectId);
-                $hqp_blob->load($hqp_rep_addr);
-                $hqp_data = $hqp_blob->getData();
-                if($hqp_data != null){
-                    $hqp_comments = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $hqp_comments);
-                    $hqp_comments .= $hqp->getReversedName() . ":<br /><i style='margin:10px;display:block;'>" . 
-                            $hqp_data . "</i><br />";
-                }
-            }
-        }
-        return $hqp_comments;
     }
     
     function getMyId(){
@@ -977,6 +732,16 @@ class ReportItemCallback {
                 }
             }
         }
+        if(count($supervisors) == 0){
+            foreach(Person::getAllPeople('all') as $person){
+                foreach($person->getRelations(SUPERVISES, true) as $rel){
+                    if($rel->getUser2()->getId() == $me->getId()){
+                        $sup = $rel->getUser1();
+                        $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
+                    }
+                }
+            }
+        }
         return implode(", ", $supervisors);
     }
     
@@ -1070,19 +835,6 @@ class ReportItemCallback {
         return "";
     }
     
-    function getUserResearchTime(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $total = 0;
-        $rep_addr = ReportBlob::create_address(RP_RESEARCHER, RES_MILESTONES, RES_MIL_CONTRIBUTIONS, 0);
-        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
-            $blob = new ReportBlob(BLOB_ARRAY, substr(REPORTING_CYCLE_START, 0, 4), $person->getId(), $project->getId());
-            $blob->load($rep_addr);
-            $data = $blob->getData();
-            $total += (isset($data[0]) && $data[0]["time"])? $data[0]["time"] : 0;
-        }
-        return $total;
-    }
-    
     function getUserRequestedBudget(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
@@ -1111,31 +863,6 @@ class ReportItemCallback {
         return $budget->render();
     }
     
-    function getUserProjectComment(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $addr = ReportBlob::create_address(RP_LEADER, LDR_NICOMMENTS, LDR_NICOMMENTS_COMMENTS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-        if(isset($data[$person->id]['ni_comments'])){
-            return $data[$person->id]['ni_comments'];
-        }
-        return "";
-    }
-    
-    function getUserProjectFuture(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
-        
-        $addr = ReportBlob::create_address(RP_RESEARCHER, RES_RESACTIVITY, RES_RESACT_NEXTPLANS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), $project->getId());
-        $blob->load($addr);
-        $data = $blob->getData();
-        return $data;
-    }
-    
     function getUserSubProjectChamps(){
         $project = Project::newFromId($this->reportItem->projectId);
         
@@ -1152,42 +879,6 @@ class ReportItemCallback {
         $item = $report->getSectionById("report")->getReportItemById("sub_project_comments");
         
         return $item->getHTMLForPDF();
-    }
-    
-    function getUserMTGMusic(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $addr = ReportBlob::create_address(RP_MTG, MTG_MUSIC, MTG_MUSIC, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
-        $blob->load($addr);
-        $data = $blob->getData();
-        return $data;
-    }
-    
-    function getUserMTGFirstNations(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $addr = ReportBlob::create_address(RP_MTG, MTG_FIRST_NATIONS, MTG_FIRST_NATIONS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
-        $blob->load($addr);
-        $data = $blob->getData();
-        return $data;
-    }
-    
-    function getUserMTGSocialProblems(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $addr = ReportBlob::create_address(RP_MTG, MTG_SOCIAL_PROBLEMS, MTG_SOCIAL_PROBLEMS, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
-        $blob->load($addr);
-        $data = $blob->getData();
-        return $data;
-    }
-    
-    function getUserMTGOther(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $addr = ReportBlob::create_address(RP_MTG, MTG_OTHER, MTG_OTHER, 0);
-        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $person->getId(), 0);
-        $blob->load($addr);
-        $data = $blob->getData();
-        return $data;
     }
     
     function getChampOrg(){
@@ -1256,76 +947,6 @@ class ReportItemCallback {
         return (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
     }
     
-    function getChampRepresent(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_REPRESENT, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        return $data;
-    }
-    
-    function getChampQ1(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ACTIVITY, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
-    }
-    
-    function getChampQ2(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_ORG, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
-    }
-    
-    function getChampQ3(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_BENEFITS, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
-    }
-    
-    function getChampQ4(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_SHORTCOMINGS, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
-    }
-    
-    function getChampQ5(){
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_CASH, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        $data = preg_replace("/@\[[^-]+-([^\]]*)]/", "<b>$1</b>$2", $data);
-        return $data;
-    }
-    
-    function getChampQ6(){
-        $champion_html = "";
-        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $addr = ReportBlob::create_address(RP_CHAMP, CHAMP_REPORT, CHAMP_RESEARCHERS, 0);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        if(count($data) > 0){
-            foreach($data as $u_id => $message){
-                if($message['q6'] != ""){
-                    $user = Person::newFromId($u_id);
-                    $champion_html .= "<h3>{$user->getReversedName()}</h3>{$message['q6']}";
-                }
-            }
-        }
-        return $champion_html;
-    }
-    
     function getSPLSubProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
@@ -1337,17 +958,6 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $subs);
-    }
-    
-    function getISACComment(){
-        $addr = ReportBlob::create_address(RP_ISAC, ISAC_PHASE2, ISAC_PHASE2_COMMENT, 0);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $this->reportItem->personId, $this->reportItem->projectId);
-        $result = $blb->load($addr);
-        $data = $blb->getData();
-        if($data != null){
-           return $data;
-        }
-        return "";
     }
     
     function getSABStrength($personId=-1){
@@ -1570,9 +1180,12 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_PDF, $year, $personId, $projectId);
         $result = $blb->load($addr, true);
         return $blb->getMD5();
     }
@@ -1594,7 +1207,7 @@ class ReportItemCallback {
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
-        return nl2br($blb->getData());
+        return str_replace(")", "&#41;", str_replace("(", "&#40;", nl2br($blb->getData())));
     }
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){

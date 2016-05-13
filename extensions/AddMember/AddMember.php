@@ -278,7 +278,7 @@ class AddMember extends SpecialPage{
 
         $projects = Project::getAllProjects();
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Summer Student", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
@@ -328,6 +328,10 @@ class AddMember extends SpecialPage{
                   ->append($positionRow)
                   ->append($candRow)
                   ->append($submitRow);
+                  
+        if(!$me->isRoleAtLeast(STAFF)){
+            $formTable->getElementById("cand_row")->attr('style', 'display:none;');
+        }
         
         $formContainer->append($formTable);
         return $formContainer;

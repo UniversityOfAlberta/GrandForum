@@ -14,7 +14,7 @@ class SelectBox extends UIElement {
         $selectedFound = false;
         foreach($this->options as $key => $option){
             $selected = "";
-            if($this->value == str_replace("'", "&#39;", $key)){
+            if($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option)){
                 $selected = " selected";
                 $selectedFound = true;
             }
@@ -24,7 +24,7 @@ class SelectBox extends UIElement {
             }
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
-        if(!$selectedFound && $this->value != "" && !is_array($this->value)){
+        if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
             $html .= "<option value='".str_replace("'", "&#39;", $this->value)."' selected>{$this->value}</option>";
         }
         $html .= "</select>";

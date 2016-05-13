@@ -68,14 +68,14 @@
         <ReportItem id="themes" type="RadioReportItem" blobItem="IFP_FINAL_MIL_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
             <![CDATA[
                 <h3>Network Planning Information</h3>
-                <h4>Which TVN research themes does your project most closely fall under?</h4>
+                <h4>Which CFN research themes does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" blobItem="IFP_FINAL_MIL_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
             <![CDATA[
                 <h3>Strategic Priorities</h3>
-                <h4>Which TVN strategic priorities does your project most closely fall under?</h4>
+                <h4>Which CFN strategic priorities does your project most closely fall under?</h4>
                 {$item}
             ]]>
         </ReportItem>
@@ -181,10 +181,16 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="network" title="Networking Activities" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
+    <ReportSection id="network" title="Networking/Collaborations" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
         <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_MEETING" rich="true">
             <![CDATA[
                 <h3>Meeting and Exchange</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
                 {$item}
             ]]>
         </ReportItem>

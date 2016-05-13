@@ -12,7 +12,7 @@
                     <li>When scoring the candidate please consider the level of funding the candidate is applying for and provide scores appropriate to their stage of development.</li>
                     <li>Candidates should be scored on five main criteria:
                         <ol>
-                            <li>Relevant and alignment between proposed project and TVN’s strategic priorities (Application Form Section 2: Personal Research Project)</li>
+                            <li>Relevant and alignment between proposed project and CFN’s strategic priorities (Application Form Section 2: Personal Research Project)</li>
                             <li>Motivation to participate in Interdisciplinary Fellowship Program (Application Form Section 3: Interest and Benefit, CV)</li>
                             <li>Aptitude and capacity to: (Application Form Section 2.3: Scientific Excellence of Project, CV, Capacity Disclosure Form)</li>
                                 <ol>
@@ -30,7 +30,7 @@
         </Instructions>
         <ReportItem id="message" type="StaticReportItem">
             <![CDATA[
-                <p>Please note that you must separately log into TVN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into TVN’s secure website.  <a href='http://www.tvn-nce.ca/member-area/' target='_blank'>http://www.tvn-nce.ca/member-area/</a></p>
+                <p>Please note that you must separately log into CFN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into CFN’s secure website.  <a href='http://www.cfn-nce.ca/member-area/' target='_blank'>http://www.cfn-nce.ca/member-area/</a></p>
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
@@ -40,7 +40,7 @@
                         <div id="user{$user_id}">
                         <table class='wikitable'>
                             <tr><td><b>Candidate's Name:</b></td><td>{$user_name}</td></tr>
-                            <tr><td><b>TVN File#:</b></td><td>{$user_tvn_file_number}</td></tr>
+                            <tr><td><b>CFN File#:</b></td><td>{$user_tvn_file_number}</td></tr>
                             <tr><td><b>Candidate's Scientific Discipline:</b></td><td>{$user_dept}</td></tr>
                     ]]>
                 </ReportItem>
@@ -50,7 +50,7 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of TVN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project aligns with TVN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with TVN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
+                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of CFN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project aligns with CFN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
                     <![CDATA[
                         <h2>1. Relevance and alignment of applicant's personal research project </h2>
                         {$item}

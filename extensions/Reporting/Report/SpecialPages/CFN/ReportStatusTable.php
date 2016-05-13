@@ -56,24 +56,26 @@ class ReportStatusTable extends SpecialPage{
         }
         $wgOut->addHTML("<div id='tabs'>
                             <ul>
-                                <li><a href='#final'>Final Project Report</a></li>
-                                <li><a href='#progress'>Project Progress Report</a></li>
-                                <li><a href='#ifp_final'>IFP Final Report</a></li>
-                                <li><a href='#ifp_progress'>IFP Progress Report</a></li>
-                                <li><a href='#ssa'>SSA Report</a></li>
+                                <li><a href='#final'>Final Project 2015</a></li>
+                                <li><a href='#progress'>Project Progress 2015</a></li>
+                                <li><a href='#ifp_final_2015'>IFP Final 2015</a></li>
+                                <li><a href='#ifp_progress_2015'>IFP Progress 2015</a></li>
+                                <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
+                                <li><a href='#ssa'>SSA 2015</a></li>
                             </ul>");
-        $this->addProjectTable(RP_FINAL_PROJECT,    'final');
-        $this->addProjectTable(RP_PROGRESS,         'progress');
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final',    $ifpFinal);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress', $ifpProgress);
-        $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa);
+        $this->addProjectTable(RP_FINAL_PROJECT,    'final', 2015);
+        $this->addProjectTable(RP_PROGRESS,         'progress', 2015);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',    $ifpFinal, 2015);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015', $ifpProgress, 2015);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016', $ifpProgress, 2016);
+        $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa, 2015);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();
         </script>");
     }
     
-    function addTable($rp, $type, $people){
+    function addTable($rp, $type, $people, $year = REPORTING_YEAR){
         global $wgOut;
         $wgOut->addHTML("
             <div id='{$type}'>
@@ -90,7 +92,8 @@ class ReportStatusTable extends SpecialPage{
             </thead>
             <tbody>");
         foreach($people as $person){
-            $report = new DummyReport($rp, $person, null, REPORTING_YEAR, true);
+            $report = new DummyReport($rp, $person, null, $year, true);
+            $report->year = $year;
             $generated = "";
             $download = "";
             
@@ -118,7 +121,7 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</div>");
     }
     
-    function addProjectTable($rp, $type){
+    function addProjectTable($rp, $type, $year = REPORTING_YEAR){
         global $wgOut;
         $projects = Project::getAllProjects();
         $wgOut->addHTML("
@@ -141,7 +144,8 @@ class ReportStatusTable extends SpecialPage{
             if(isset($leaders[0])){
                 $leader = $leaders[0];
                 if(!$leader->isRole(HQP) && $leader->isActive()){
-                    $report = new DummyReport($rp, $leader, $project, REPORTING_YEAR, true);
+                    $report = new DummyReport($rp, $leader, $project, $year, true);
+                    $report->year = $year;
                     $generated = "";
                     $download = "";
                     

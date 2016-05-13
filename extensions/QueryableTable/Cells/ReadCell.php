@@ -17,6 +17,9 @@ class ReadCell extends Cell{
     function render(){
         if(is_numeric(str_replace(",", "", $this->value))){
             $this->style = "text-align:right;";
+            if($this->value < 1.00){
+                return number_format($this->value, 2);
+            }
             return number_format($this->value, 1);
         }
         return $this->value;

@@ -120,9 +120,6 @@ $egAnnokiExtensions['Survey'] = array('name' => 'Survey',
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
-$egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
-                                                'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
-
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
 
@@ -140,6 +137,9 @@ $egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");
+
+$egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
+                                         'path' => "$IP/extensions/MyThreads/MyThreads.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

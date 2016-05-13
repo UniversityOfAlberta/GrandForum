@@ -12,9 +12,9 @@
             <![CDATA[
                 <p>For final funding to be released, the following conditions must be met by October 30, 2015:</p>
                 <ul>
-                    <li>this report must be completed, signed and received by TVN</li>
+                    <li>this report must be completed, signed and received by CFN</li>
                     <li>The SSA Institution Template must be downloaded, filled out, and uploaded</li>
-                    <li>the “Learning Plan” document you submitted at the time of application must be completed, signed and received by TVN</li>
+                    <li>the “Learning Plan” document you submitted at the time of application must be completed, signed and received by CFN</li>
                 </ul>
             ]]>
         </ReportItem>
@@ -102,7 +102,7 @@
                     <![CDATA[
                         <tr>
                             <td width="50%" valign='top'>
-                                <b>TVN Strategic Priorities</b> - Which ONE TVN strategic priority does your student’s activities/project most closely align with: 
+                                <b>CFN Strategic Priorities</b> - Which ONE CFN strategic priority does your student’s activities/project most closely align with: 
                                 <div style='margin-left:10px;'>{$item}</div>
                             </td>
                     ]]>
@@ -110,7 +110,7 @@
                 <ReportItem id="themes" type="RadioReportItem" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_THEMES" blobSubItem="{$user_id}">
                     <![CDATA[
                             <td width="50%" valign='top'>
-                                <b>TVN Research Themes</b> - Which ONE research theme does your student’s activities/project most closely align with:
+                                <b>CFN Research Themes</b> - Which ONE research theme does your student’s activities/project most closely align with:
                                 <div style='margin-left:10px;'>{$item}</div>
                             </td>
                         </tr>
