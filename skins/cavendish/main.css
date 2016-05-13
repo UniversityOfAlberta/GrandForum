@@ -16,6 +16,7 @@
 body {
     margin-top: 0;
     padding-top: 0;
+    overflow: hidden;
 }
 
 img.ui-datepicker-trigger{
@@ -26,7 +27,7 @@ img.ui-datepicker-trigger{
 #header ul {
     position: absolute;
     bottom: 0;
-    right: 30px;
+    right: 4px;
     left: 30px;
     margin: auto;
     list-style: none;
@@ -112,7 +113,7 @@ img.ui-datepicker-trigger{
     list-style: none;
     z-index: 90; /* below the H1 */
     line-height: 0.8em;
-    opacity:0.925;
+    opacity:0.94;
     width: auto;
 }
 
@@ -159,7 +160,7 @@ div#submenu {
     position: absolute;
     top: 91px;
     left: 0;
-    right: 30px;
+    right: 4px;
     z-index: 998;
     border-color: #BDE8FA;
     border-bottom-left-radius: 15px;

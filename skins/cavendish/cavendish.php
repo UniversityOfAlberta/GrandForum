@@ -609,12 +609,12 @@ class CavendishTemplate extends QuickTemplate {
 
 <div id="internal"></div>
 <div id="container">
-	<div id="topheader">
+    <div id="topheader">
         <?php
             global $wgSitename, $notifications, $notificationFunctions, $config;
             function changeToFrench(){
-		global $wgUser,$wgLang;
-		$code = $wgLang->getCode();
+        global $wgUser,$wgLang;
+        $code = $wgLang->getCode();
                 $wgUser->setOption("language", "fr");
                 $wgUser->saveSettings();
                 if($code != "fr"){
@@ -623,13 +623,12 @@ class CavendishTemplate extends QuickTemplate {
             }       
             function changeToEnglish(){
                 global $wgUser, $wgLang;
-		$code = $wgLang->getCode();
+                $code = $wgLang->getCode();
                 $wgUser->setOption("language", "en");
                 $wgUser->saveSettings();
-		if($code != "en"){
-		    header("Refresh:0");
-		}
-		
+                if($code != "en"){
+                    header("Refresh:0");
+                }
             }
             if($_GET['lang'] == 'en' && $wgUser->isLoggedIn()){
                 changeToEnglish();
@@ -642,12 +641,12 @@ class CavendishTemplate extends QuickTemplate {
                     call_user_func($function);
                 }
             }
-	    echo "<script language='javascript'>
+        echo "<script language='javascript'>
 
 $(function(){
     $('en_button').click(function(){
         $.get('/skins/cavendish/cavendish.php', function(){
-	    });
+        });
     });
     $('fr_button').click(function(){
         $.get('/skins/cavendish/cavendish.php', {linkText: $(this).text()}, function(resp){
@@ -661,7 +660,7 @@ $(function(){
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='settings'>";
-	    echo "<a href='?lang=en' id='en_button'>English</a> &nbsp<a href='?lang=fr' id='fr_button'>French</a> &nbsp";
+            echo "<a href='?lang=en' id='en_button'>English</a> &nbsp<a href='?lang=fr' id='fr_button'>French</a> &nbsp";
             echo "<div style='display:none;' id='share_template'>";
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";
@@ -693,28 +692,28 @@ $(function(){
                         break;
                 }
                 echo "<a class='changeImg highlights-text-hover' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
-	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
-	                  </a>";
-	        }
-	        echo "</div>";
+                            <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
+                      </a>";
+            }
+            echo "</div>";
             echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' /></a>";
             if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
-	        }
-	        if($wgUser->isLoggedIn()){
-		        $p = Person::newFromId($wgUser->getId());
-		        
-		        $smallNotificationText = "";
-		        if(count($notifications) > 0){
-		            $notificationText = " (".count($notifications).")";
-		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
-		        }
-		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
-			echo "</div><div class='login'>";
-		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
-		        if(!$wgImpersonating && !$wgDelegating){
-		            $logout = $this->data['personal_urls']['logout'];
-	                $getStr = "";
+                echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
+            }
+            if($wgUser->isLoggedIn()){
+                $p = Person::newFromId($wgUser->getId());
+                
+                $smallNotificationText = "";
+                if(count($notifications) > 0){
+                    $notificationText = " (".count($notifications).")";
+                    $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
+                }
+                echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
+                echo "</div><div class='login'>";
+                echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+                if(!$wgImpersonating && !$wgDelegating){
+                    $logout = $this->data['personal_urls']['logout'];
+                    $getStr = "";
                     foreach($_GET as $key => $get){
                         if($key == "title" || $key == "returnto"){
                             continue;
@@ -726,11 +725,11 @@ $(function(){
                             $getStr .= "&$key=$get";
                         }
                     }
-	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
-	            }
-	        }
-	        echo "</div>";
+                    $logout['href'] .= urlencode($getStr);
+                    echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+                }
+            }
+            echo "</div>";
             if(!TESTING && $wgScriptPath != "" && !DEMO){
                 exec("git rev-parse HEAD", $output);
                 $revId = @substr($output[0], 0, 10);
@@ -933,194 +932,9 @@ $(function(){
  
 		if($wgUser->isLoggedIn()){
 
-global $wgSiteName, $wgOut;
-		    setcookie('sideToggled', 'out', time()-3600);
-		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
-		    if($loginFailed){
-		        if(isset($_POST['wpName'])){
-		            $_POST['wpUsername'] = $_POST['wpName'];
-		        }
-		        else{
-		            $_POST['wpName'] = $_POST['wpUsername'];
-		        }
-		        $person = Person::newFromName($_POST['wpName']);
-		        $user = User::newFromName($_POST['wpName']);
-		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>Your username or password is incorrect.<br /></p>";
-		            if(isset($_POST['wpMailmypassword'])){
-		                $failMessage = "<p>A new password has been attempted to be sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
-		            }
-		        }
-		        else if(isset($_POST['wpMailmypassword'])){
-		            $user = User::newFromName($_POST['wpUsername']);
-		            $user->load();
-		            $failMessage = "<p>A new password has been attempted to be sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
-		        }
-		        else{
-		            $failMessage = "<p class='inlineError'>Your username or password is incorrect.</p>";
-		        }
-		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
-		            $failMessage = "";
-		            return;
-		        }
-		        if(isset($_POST['wpMailmypassword'])){
-		            echo "<script type='text/javascript'>
-		                parent.showResetMessage(\"$failMessage\");
-		            </script>";
-		            exit;
-		        }
-		        $wgOut->clearHTML();
-		        $wgOut->addHTML("
-                <p>Typical problems with login:</p>
-                <ol>
-                    <li>You have no account setup for you yet
-                        <ul>
-                            <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
-                        </ul>
-                    </li>
-                    <li>There is an account but you do not remember your ID
-                        <ul>
-                            <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
-                            <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
-                            <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
-                        </ul>
-                    </li>
-                    <li>You know your ID but not your password
-                        <ul>
-                            <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
-                        </ul>
-                    </li>
-                </ol>");
-		        $message = "<tr><td colspan='2'><div style='display:inline-block;' id='failMessage'>$failMessage</span>
-<p>
-You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
-</p>
-<p>
-Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
-		        $emailPassword = "
-		        
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
-		        <table>
-		            <tr>
-		                <td>
-		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-		                    <input type='hidden' name='wpEmail' value='' />
-		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-		                </td>
-		            </tr>
-		        </table>
-		        </form>
-		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
-		        <script type='text/javascript'>
-		            function showResetMessage(message){
-		                $('#failMessage').html(message);
-		            }
-		            $('#wpUsername1').attr('value', $('#wpName1').val());
-		            $('#wpName1').change(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            }).keyup(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            });
-		        </script>";
-		    }
-		    if($_SESSION == null || 
-		       $wgRequest->getSessionData('wsLoginToken') == "" ||
-		       $wgRequest->getSessionData('wsLoginToken') == null){
-		        wfSetupSession();
-		        LoginForm::setLoginToken();
-		    }
-		    $getStr = "";
-	        foreach($_GET as $key => $get){
-	            if($key == "title" || 
-	               $key == "returnto" || 
-	               $key == "returntoquery" ||
-	               ($key == "action" && $get == "submitlogin") ||
-	               ($key == "type" && $get == "login")){
-	                continue;
-	            }
-	            if(strlen($getStr) == 0){
-	                $getStr .= "?$key=$get";
-	            }
-	            else{
-	                $getStr .= "&$key=$get";
-	            }
-	        }
-	        $returnTo = "";
-	        if(isset($_GET['returnto'])){
-	            $returnTo = $_GET['returnto'];
-	            if(isset($_GET['returntoquery'])){
-	                $returnTo .= "?".$_GET['returntoquery'];
-	            }
-	        }
-	        else if (isset($_GET['title'])){
-	            $returnTo .= str_replace(" ", "_", $_GET['title']);
-	        }
-	        else {
-	            $url = str_replace("$wgScriptPath/", "", 
-	                   str_replace("index.php/", "", $wgRequest->getRequestURL()));
-	            $returnTo .= str_replace(" ", "_", $url);
-	        }
-	        $returnTo .= $getStr;
-	        $returnTo = urlencode($returnTo);
-	        if(isset($_POST['returnto'])){
-	            $returnTo = $_POST['returnto'];
-	        }
-	        
-		    $wgUser->setCookies();
-		    
-		    if(isset($_POST['wpPassword']) &&
-		       isset($_POST['wpNewPassword']) &&
-		       isset($_POST['wpRetype']) &&
-		       isset($_POST['wpName']) &&
-		       $_POST['wpNewPassword'] == $_POST['wpRetype']){
-		        $user = User::newFromName($_POST['wpName']);
-		        $user->load();
-		        if($user->checkPassword($_POST['wpNewPassword'])){
-		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
-		        }
-		    }
-		    
-		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText('wpName');
-		    
 		    echo "
 			<ul class='pBodyLogin'>";
-		    echo <<< EOF
-<form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-	<table style='width:185px;'>
-	    $message
-		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td class="mw-input mw-input-string">
-				<input type='text' class='loginText' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Username"
-					tabindex="1" size='20' />
-			</td>
-		</tr>
-		<tr>
-			<td class="mw-input mw-input-string">
-				<input type='password' class='loginPassword' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Password"
-					tabindex="2" size='20' />
-			</td>
-		</tr>
-		<tr>
-			<!--td></td-->
-			<td colspan="2" class="mw-input mw-input-string">
-				<input type='checkbox' name="wpRemember"
-					tabindex="4"
-					value="1" id="wpRemember"
-										/> <label for="wpRemember">Remember my Login</label>
-			</td>
-		</tr>
-	    <tr>
-			<td colspan="2" class="mw-submit">
-				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
-			</td>
-		</tr>
-	</table>
-<input type="hidden" name="wpLoginToken" value="$token" /></form>
-$emailPassword
-</li>
-EOF;
+		    
 		    if(isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }

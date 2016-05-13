@@ -230,6 +230,7 @@ class PollView {
 	}
 	
 	function resultsHTML($wgOut, $poll){
+	    global $config;
 		$totalVotes = $poll->getTotalVotes();
 		$wgOut->addHTML("<h2>{$poll->name}</h2>
 				<table class='wikitable sortable' cellpadding='5' cellspacing='1' width='100%' style='background:#CCCCCC;'>
@@ -242,7 +243,7 @@ class PollView {
 			else{
 				$percentOfTotal = 0;
 			}
-			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='border: 1px solid #000000; background: #4c5b7b;' width='$percentOfTotal%'><tr><td></td></tr></table></td><td>$nVotes</td><td>".number_format($percentOfTotal, 2)."%</td></tr>");
+			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='background: {$config->getValue('highlightColor')};' width='$percentOfTotal%'><tr><td style='background:transparent;'></td></tr></table></td><td>$nVotes</td><td>".number_format($percentOfTotal, 2)."%</td></tr>");
 		}
 		$wgOut->addHTML("</table><br />");
 	}

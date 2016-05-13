@@ -14,12 +14,6 @@
 body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#topheader {
-	/*    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #FFFFFF) ) !important;
-        background:-moz-linear-gradient( center top, #f8f8f8 5%, #F0F0F0 100% ) !important;
-        background: -o-linear-gradient(top, #f8f8f8, #F0F0F0) !important;
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#F0F0F0');
-        background: -ms-linear-gradient(top, #f8f8f8 0%, #F0F0F0 100%);*/
-        background-color:#f8f8f8 !important;
 	    position: absolute;
 	    top:0;
 	    left:0;
@@ -48,38 +42,41 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    font-weight: normal;
 	}
 	
-        #topheader .settings {
-	    padding-left:428px;
-	    padding-top:5px;
-            position: absolute;
-            right: 116px;
-            top: 0px;
-            height: 84%;
-            background: #99D6F2;
-        }
+    #topheader .settings {
+        padding-top:5px;
+        position: absolute;
+        right: 100px;
+        left: 524px;
+        top: 0px;
+        height: 84%;
+        background: #99D6F2;
+        text-align: right;
+    }
 
-        #topheader .settings a {
-            line-height: 35px;
-            height: 35px;
+    #topheader .settings a {
+        line-height: 35px;
+        height: 35px;
         display: inline-block;
-            padding-left: 10px;
-            padding-right: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
         text-align: center;
-        }
+    }
 
-        #topheader .settings img.photo {
-            height: 100%;
-            vertical-align:top;
-        }
+    #topheader .settings img.photo {
+        height: 100%;
+        vertical-align:top;
+    }
 
-        #topheader .login {
-            position: absolute;
-            right: 30px;
-            top: 0px;
-            height: 96%;
-            background: #99D6F2;
-            border-bottom-right-radius: 10px;
-        }	
+    #topheader .login {
+        position: absolute;
+        right: 4px;
+        padding-right: 10px;
+        top: 0px;
+        height: 96%;
+        background: #99D6F2;
+        border-bottom-right-radius: 10px;
+    }
+        	
 	#topheader .login a {
 	    line-height: 35px;
 	    height: 35px;
@@ -289,11 +286,20 @@ body.page-Main_Page h1.firstHeading { display:none; }
 		border-top: 1px solid #fff;
 	}
 	*/
+	
 	#nav, #nav ul {
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
+	
+	
+	
+	#nav ul {
+	    padding-bottom: 5px;
+	    margin-bottom: 4px;
+	}
+	
 	#nav {
 		padding-bottom: 1em;
 		background: #FFFFFF;
@@ -306,8 +312,13 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#nav li span { /* used for un-linked menu items */
 		display: block;
-		padding: 6px 10px;
+		padding: 10px;
 		font-weight: bold;
+	}
+	
+	.pBodyLogin > ul, #nav li span {
+	    margin-left: 4px !important;
+		margin-right:4px !important;
 	}
 
 	#nav li span#configParent, #nav li span #configuration {
@@ -409,18 +420,21 @@ body.page-Main_Page h1.firstHeading { display:none; }
         }
 
         #nav .loginText{
+            border: none !important;
             background:#AADDD1;
             -webkit-box-shadow: 0 0 0px 1000px #AADDD1 inset;
+            width: 160px !important;
         }
 
         #nav .loginPassword{
+            border: none !important;
             background:#A2D29C;
             -webkit-box-shadow: 0 0 0px 1000px #A2D29C inset;
+            width: 160px !important;
         }
 
         #nav .mw-input-string{
             background:#FFFFFF;
-
         }
 
 /* Footer */

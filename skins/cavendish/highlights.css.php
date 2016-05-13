@@ -10,6 +10,7 @@ else{
 require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");
+$brighterhl = $config->getValue("brighterHighlightColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
@@ -55,9 +56,17 @@ h2, h3, h4, h5, h6, h7 {
     color: white !important;
 }
 
-input:focus, textarea:focus {
+select {
+    color: $hl !important;
+}
+
+select option {
+    color: $hl !important;
+}
+
+input:focus, textarea:focus, select:focus {
     outline: none;
-    border: 1px solid $hl !important;
+    border: 1px solid $brighterhl !important;
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
@@ -146,12 +155,12 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 .purpleInfo a, .purpleInfo a:visited, .inlinePurpleInfo a, .inlinePurpleInfo a:visited {
     color: $hl;
 }
-
+/*
 .small_card:hover, .small_card_hover {
     background: $hl !important;
     color: #ffffff !important;
 }
-
+*/
 .qtip-light .qtip-content a:hover {
     color: $hl;
     text-decoration: none;
