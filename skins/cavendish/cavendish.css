@@ -166,7 +166,7 @@ input[type="submit"] {
 
 /* General Structure */
 body,td,th,input { /* redundant rules for bad browsers  */
-	font-family: Verdana, sans-serif;
+	font-family: Helvetica, Verdana, sans-serif;
 	background:#FFFFFF;
 	color:#3C6576;
 }
@@ -175,7 +175,7 @@ h1,h2,h3,h4,h5,h6 {
 	margin-top: 0.5em;
 	margin-bottom: 0.3em;
 	border-bottom: 1px solid #ccc;
-	font-family: Verdana, sans-serif;
+	font-family: Helvetica, Verdana, sans-serif;
 }
 
 li h1,li h2,li h3,li h4,li h5,li h6 {
@@ -397,7 +397,7 @@ input {
 	-webkit-border-radius:4px;
 	border-radius:30px;
 	display:inline-block;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 10pt;
 	line-height: 15px;
 	padding:4px 8px;
@@ -465,7 +465,7 @@ input.dark {
 	-webkit-border-radius:4px;
 	border-radius:4px;
 	display:inline-block;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
 	padding:3px 3px;
 }
 
@@ -488,7 +488,7 @@ select {
 input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     background:#4AB4BD !important;
     display:inline-block;
-    font-family: Arial, Verdana, sans-serif !important;
+    font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px;
     line-height:15px;
     padding:5px 20px;
@@ -501,7 +501,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
 }
 
 button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
-    font-family: Arial, Verdana, sans-serif !important;
+    font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px !important;
     white-space:nowrap;
     -webkit-touch-callout: none;
@@ -514,7 +514,7 @@ button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
     background-color:#E8E8E8;
-    font-family: Arial, Verdana, sans-serif;
+    font-family: Helvetica, Verdana, sans-serif;
     font-size:13px;
     line-height:15px;
     display:inline-block;
@@ -532,7 +532,7 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
     top:1px;
     text-decoration:none;
     border-color:#888888;
-    font-family: Arial, Verdana, sans-serif;
+    font-family: Helvetica, Verdana, sans-serif;
     font-weight: bold;
     font-size:13px;
     cursor:pointer;
@@ -555,7 +555,7 @@ textarea {
 	border-radius:4px;
 	display:inline-block;
 	padding:6px 6px !important;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 10pt;
 	margin:2px;
 	-webkit-box-sizing: border-box;
@@ -586,7 +586,7 @@ select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.
     -webkit-border-radius:3px;
     border-radius:3px;
     display:inline-block;
-    font-family: Arial, Verdana, sans-serif !important;
+    font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px;
     line-height:15px;
     padding:5px 20px;
@@ -1196,6 +1196,10 @@ td.budgetError {
 	color: #FFFFFF;
 }
 
+.ui-widget {
+    font-family: Helvetica, Verdana;
+}
+
 /* jQuery tablesort plugin CSS */
 
 th.tablesorter-header { 
@@ -1557,7 +1561,7 @@ select span.noshow {
     color: #555555;
     font-style: normal;
     font-size: 1.0em;
-    font-family: 'Verdana', sans-serif;
+    font-family: Helvetica, Verdana, sans-serif;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 8px;
