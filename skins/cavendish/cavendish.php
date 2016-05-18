@@ -68,7 +68,6 @@ class CavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css" type="text/css" media="print" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/cavendish.css" type="text/css" />
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
@@ -484,15 +483,15 @@ class CavendishTemplate extends QuickTemplate {
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
-		                $("#sideToggle").html("&gt;");
+		                $("#sideToggle").html("&#12297;");
 		                $("#side").animate({
 		                    'left': '-200px'
 		                }, 200, 'swing');
 		                $("#outerHeader").animate({
-		                    'left': '0'
+		                    'left': '4'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '30px'
+		                    'left': '34px'
 		                }, 200, 'swing', function(){
 		                    jsPlumb.repaintEverything();
 		                });
@@ -500,7 +499,7 @@ class CavendishTemplate extends QuickTemplate {
                         $.cookie('sideToggled', 'in', {expires: 30});
                     }
                     else{
-                        $("#sideToggle").html("&lt;");
+                        $("#sideToggle").html("&#12296;");
                         $("#side").animate({
 		                    'left': '0px'
 		                }, 200, 'swing');
@@ -611,31 +610,7 @@ class CavendishTemplate extends QuickTemplate {
 <div id="container">
     <div id="topheader">
         <?php
-            global $wgSitename, $notifications, $notificationFunctions, $config;
-            function changeToFrench(){
-        global $wgUser,$wgLang;
-        $code = $wgLang->getCode();
-                $wgUser->setOption("language", "fr");
-                $wgUser->saveSettings();
-                if($code != "fr"){
-                    header("Refresh:0");
-                }
-            }       
-            function changeToEnglish(){
-                global $wgUser, $wgLang;
-                $code = $wgLang->getCode();
-                $wgUser->setOption("language", "en");
-                $wgUser->saveSettings();
-                if($code != "en"){
-                    header("Refresh:0");
-                }
-            }
-            if($_GET['lang'] == 'en' && $wgUser->isLoggedIn()){
-                changeToEnglish();
-            }
-            if($_GET['lang'] == 'fr' && $wgUser->isLoggedIn()){
-                changeToFrench();
-            } 
+            global $wgSitename, $notifications, $notificationFunctions, $config, $wgUser, $wgLang;
             if(count($notifications) == 0){
                 foreach($notificationFunctions as $function){
                     call_user_func($function);
@@ -659,8 +634,13 @@ $(function(){
 </script>";
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
-            echo "<div class='settings'>";
-            echo "<a href='?lang=en' id='en_button'>English</a> &nbsp<a href='?lang=fr' id='fr_button'>French</a> &nbsp";
+            if($wgUser->isLoggedIn()){
+                echo "<div class='settings'>";
+            }
+            else{
+                echo "<div class='settings' style='right:4px;border-bottom-right-radius:10px'>";
+            }
+            echo "<a href='?lang=en' id='en_button'>English</a> &nbsp<a href='?lang=fr' id='fr_button'>Français</a> &nbsp";
             echo "<div style='display:none;' id='share_template'>";
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";
@@ -696,9 +676,9 @@ $(function(){
                       </a>";
             }
             echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' /></a>";
+            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' /></a>";
             if(count($config->getValue("socialLinks")) > 0){
-                echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
+                echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
             }
             if($wgUser->isLoggedIn()){
                 $p = Person::newFromId($wgUser->getId());
@@ -706,11 +686,14 @@ $(function(){
                 $smallNotificationText = "";
                 if(count($notifications) > 0){
                     $notificationText = " (".count($notifications).")";
-                    $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
+                    $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />";
                 }
-                echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
-                echo "</div><div class='login'>";
-                echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+                echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
+            }
+            echo "</div>";
+            if($wgUser->isLoggedIn()){
+                echo "<div class='login'>";
+                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
                 if(!$wgImpersonating && !$wgDelegating){
                     $logout = $this->data['personal_urls']['logout'];
                     $getStr = "";
@@ -726,10 +709,10 @@ $(function(){
                         }
                     }
                     $logout['href'] .= urlencode($getStr);
-                    echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+                    echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 14px;line-height:14px;display:inline-block;width:74px;' title='Logout' href='{$logout['href']}'>Logout&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
                 }
+                echo "</div>";
             }
-            echo "</div>";
             if(!TESTING && $wgScriptPath != "" && !DEMO){
                 exec("git rev-parse HEAD", $output);
                 $revId = @substr($output[0], 0, 10);
@@ -755,7 +738,7 @@ $(function(){
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
         <div id="sideToggle">
-            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
+            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&#12297;"; } else { echo "&#12296;";}?>
         </div>
 	    <div id="header">
 		    <a name="top" id="contentTop"></a>
@@ -869,7 +852,7 @@ $(function(){
 	<div id="mBody">
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
-			<h1><?php $this->text('title') ?></h1>
+			<?php if($this->data['thispage'] != 'Main_Page'){ ?><h1><?php $this->text('title') ?></h1><?php } ?>
 			<div id='wgMessages'><?php $wgMessage->showMessages(); ?></div>
 			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
 			<div id="contentSub"><?php $this->html('subtitle') ?></div>
@@ -903,9 +886,7 @@ $(function(){
     <?php 			}
 			    }
 		    }
-		/*echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
-	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";*/
-    ?>
+    ?></ul></td></tr></table>
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
@@ -928,10 +909,8 @@ $(function(){
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
-
  
 		if($wgUser->isLoggedIn()){
-
 		    echo "
 			<ul class='pBodyLogin'>";
 		    
@@ -1019,7 +998,6 @@ $(function(){
 		            </script>";
 		            exit;
 		        }
-		        $wgOut->clearHTML();
 		        $wgOut->addHTML("
                 <p>Typical problems with login:</p>
                 <ol>
@@ -1170,6 +1148,11 @@ If you have forgotten your password please enter your login and ID and request a
 <input type="hidden" name="wpLoginToken" value="$token" /></form>
 $emailPassword
 </li>
+EOF;
+            echo <<< EOF
+        <br />
+        <span class='pBodyTitle0'>Member Registration</span>
+        <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
 EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );

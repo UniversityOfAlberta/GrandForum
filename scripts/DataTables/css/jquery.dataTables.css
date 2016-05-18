@@ -7,7 +7,8 @@ table.dataTable {
 	clear: both;
 	width: 100%;
 	border-color: #ffffff;
-	border-width: 2px 0 0 0;
+	border-width: 2px 0 2px 0;
+	border-style: solid;
 	color: #222;
 }
 
@@ -20,6 +21,7 @@ table.dataTable thead th {
 	cursor: pointer;
 	*cursor: hand;
 	color: #555;
+	border-width: 0 1px; border-style: solid; border-color: #D8D8D8;
 }
 
 table.dataTable thead tr {
@@ -45,8 +47,8 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd td{ background-color: #F7F7F7; }
-table.dataTable tr.even td{ background-color: #E8E8E8; }
+table.dataTable tr.odd td{ background-color: #F7F7F7; border-width: 0 1px; border-style: solid; border-color: #D8D8D8; }
+table.dataTable tr.even td{ background-color: #E8E8E8; border-width: 0 1px; border-style: solid; border-color: #D8D8D8; }
 
 table.dataTable tr.odd td.sorting_1 { background-color: #F7F7F7; }
 table.dataTable tr.odd td.sorting_2 { background-color: #F7F7F7; }

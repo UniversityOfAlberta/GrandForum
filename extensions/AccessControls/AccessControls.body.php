@@ -616,19 +616,35 @@ AND `page_is_redirect` =0";
 }
 
 function pageContentSaveComplete($article){
+    global $wgUser;
+    $me = Person::newFromWgUser();
     $id = $article->getId();
     $data = DBFunctions::select(array('grand_page_approved'),
                                 array('*'),
                                 array('page_id'=>$id));
    if(count($data)===0){
-    DBFunctions::insert('grand_page_approved',
+       if($me->isRoleAtLeast(MANAGER)){
+            DBFunctions::insert('grand_page_approved',
+                         array("page_id" => $id,
+                               "approved" => 1));
+       }
+       else{
+            DBFunctions::insert('grand_page_approved',
                          array("page_id" => $id,
                                "approved" => 0));
+       }
     }
     else{
-        DBFunctions::update('grand_page_approved',
+        if($me->isRoleAtLeast(MANAGER)){
+            DBFunctions::update('grand_page_approved',
+                            array("approved"=>1),
+                            array("page_id"=>$id));
+        }
+        else{
+            DBFunctions::update('grand_page_approved',
                             array("approved"=>0),
                             array("page_id"=>$id));
+        }
     }
 }
 

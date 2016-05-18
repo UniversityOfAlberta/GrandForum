@@ -47,8 +47,8 @@ ManageStoriesView = Backbone.View.extend({
         var view = new StoryEditView({el: this.editDialog, model: model, isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
-            height: $(window).height()*0.75,
-            width: 610
+            height: $(window).height()*0.60,
+            width: 650
         });
         this.editDialog.dialog('open');
     },
@@ -68,10 +68,6 @@ ManageStoriesView = Backbone.View.extend({
 	        resizable: false,
 	        draggable: false,
 	        width: "550px",
-	        position: {
-                my: "center bottom",
-                at: "center center"
-            },
 	        open: function(){
 	            $("html").css("overflow", "hidden");
 	        },

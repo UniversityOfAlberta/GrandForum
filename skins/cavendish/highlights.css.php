@@ -150,11 +150,11 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
 }
 
 .ui-dialog .ui-dialog-titlebar {
-	background: $hl;
+	background: #018183;
 }
 
 li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
-    background: $hl !important;
+    background: #4AB4BD !important;
 }
 
 /* Other */

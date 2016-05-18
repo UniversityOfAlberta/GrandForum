@@ -87,7 +87,7 @@ body {
 #sideToggle {
     width: 30px;
     height: 70px;
-    line-height: 65px;
+    line-height: 70px;
     top: 46px;
     bottom: 0;
     left: 0;
@@ -121,12 +121,13 @@ body {
 #bodyContent {
     left: 230px;
     right: 0;
-    top: 145px;
+    top: 116px;
     bottom: 0;
     overflow-y: auto;
     position:absolute;
     padding: 0;
     padding-right: 30px;
+    padding-top: 15px;
 }
 
 #bodyContent.menu-in {
@@ -479,6 +480,15 @@ select {
 	margin: 2px;
 	font-weight: bold;
 	outline: none;
+	
+	-webkit-appearance: button;
+    -moz-appearance: button;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -webkit-padding-end: 20px;
+    -moz-padding-end: 20px;
+    -webkit-padding-start: 2px;
+    -moz-padding-start: 2px;
 }
 
 .subtab_2_1{
@@ -550,11 +560,9 @@ textarea {
     height: 400px;
     border: 1px solid #AAA !important;
 	background: #ffffff;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
+	border-radius:10px;
 	display:inline-block;
-	padding:6px 6px !important;
+	padding:10px 10px !important;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 10pt;
 	margin:2px;
@@ -919,6 +927,17 @@ div#person .ui-tabs-panel {
     background: #aaa;
 }
 
+.ui-widget-overlay {
+    background: #000000;
+    opacity: 0.3;
+}
+
+.ui-dialog {
+    border-radius: 10px;
+    padding: 0;
+    box-shadow: none;
+}
+
 .tick {
     border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
     position: absolute;
@@ -973,10 +992,6 @@ ul.ui-autocomplete {
     -moz-border-radius: 5px !important;
     -webkit-border-radius: 5px !important;
     border-radius: 5px !important;
-    
-    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
 }
 
 li.ui-menu-item {
@@ -1197,6 +1212,10 @@ td.budgetError {
 }
 
 .ui-widget {
+    font-family: Helvetica, Verdana;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
     font-family: Helvetica, Verdana;
 }
 
@@ -1513,11 +1532,11 @@ select span.noshow {
 }
 
 .threadIcon {
-    background: url('../thread.gif');
+    background: url('../thread.png');
 }
 
 .storyIcon {
-    background: url('../story.gif');
+    background: url('../story.png');
 }
 
 .throbber {
@@ -1541,7 +1560,6 @@ select span.noshow {
 
 .caps-thread{
     background:#A2D29C !important;
-    color:#ffffff !important;
 }
 
 .inner-message {

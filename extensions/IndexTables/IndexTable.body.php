@@ -444,33 +444,30 @@ EOF;
 	    return true;
 	}
 
-       private function generateUserStoriesTable(){
-	   global $wgUser,$wgOut, $config;
-	   if(!$wgUser->isLoggedIn()){
-		permissionError();
-	   }
-	   $this->text .= "Below are all the current stories in {$config->getValue('networkName')}.  To search for a story in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
+    private function generateUserStoriesTable(){
+	    global $wgUser,$wgOut, $config;
+	    if(!$wgUser->isLoggedIn()){
+		    permissionError();
+	    }
+	    $this->text .= "Below are all the current stories in {$config->getValue('networkName')}.  To search for a story in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
 
-           $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+        $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
                         <th style='white-space:nowrap;'>Submitted By</th>
                         <th style='white-space:nowrap;'>Date Submitted</th>
                         </tr></thead><tbody>";
 
-           $stories = Story::getAllUserStories();
-           foreach($stories as $story){
-		if($story->getApproved()){
-                    $this->text .= "<tr><td align='right'><a href='".$story->getUrl()."'>".$story->getTitle()."</a></td>
-                                <td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>
-                                <td>".$story->getDateSubmitted()."</td></tr>";
-		}
-
-
-           }
-           $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
-
-        return true;
+        $stories = Story::getAllUserStories();
+        foreach($stories as $story){
+		    if($story->getApproved()){
+                    $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".$story->getTitle()."</a></td>
+                                    <td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>
+                                    <td style='white-space: nowrap;'>".$story->getDateSubmitted()."</td></tr>";
+		    }
         }
+        $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";
+        return true;
+    }
 
 }
 

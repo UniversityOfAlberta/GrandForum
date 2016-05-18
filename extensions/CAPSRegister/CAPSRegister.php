@@ -5,28 +5,11 @@ $wgSpecialPages['CAPSRegister'] = 'CAPSRegister'; # Let MediaWiki know about the
 $wgExtensionMessagesFiles['CAPSRegister'] = $dir . 'CAPSRegister.i18n.php';
 $wgSpecialPageGroups['CAPSRegister'] = 'network-tools';
 
-$wgHooks['OutputPageParserOutput'][] = 'CAPSRegister::onOutputPageParserOutput';
-
 function runCAPSRegister($par) {
     CAPSRegister::execute($par);
 }
 
 class CAPSRegister extends SpecialPage{
-
-    static function onOutputPageParserOutput(&$out, $parseroutput){
-        global $wgServer, $wgScriptPath, $config, $wgTitle;
-        
-        $me = Person::newFromWgUser();
-        if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
-            if(!$me->isLoggedIn()){
-                $parseroutput->mText .= "<h2>Membership Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</p>";
-            }
-            /*else if($me->isRole(HQP.'-Candidate')){
-                $parseroutput->mText .= "<h2>HQP Application</h2><p>To apply to become an Affiliate HQP in {$config->getValue('networkName')} then please fill out the <a href='{$me->getUrl()}?tab=hqp-profile'>HQP Application form</a>.</p>";
-            }*/
-        }
-        return true;
-    }
 
     function CAPSRegister() {
         SpecialPage::__construct("CAPSRegister", null, false, 'runCAPSRegister');
@@ -73,8 +56,8 @@ class CAPSRegister extends SpecialPage{
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField);
 
-        $otherRoleLabel = new Label("other_role_label", "Specify Role", "The role of the user", VALIDATE_NOT_NULL);
-        $otherRoleField = new TextField("other_role_field", "other_Role", "", VALIDATE_NOT_NULL);
+        $otherRoleLabel = new Label("other_role_label", "Specify Role", "The role of the user", VALIDATE_NOTHING);
+        $otherRoleField = new TextField("other_role_field", "other_Role", "", VALIDATE_NOTHING);
         $otherRoleRow = new FormTableRow("other_role_row");
 	$otherRoleRow->attr("style","display:none");
         $otherRoleRow->append($otherRoleLabel)->append($otherRoleField);
@@ -141,9 +124,9 @@ class CAPSRegister extends SpecialPage{
 											This community provides Mifepristone trained physicians with a way<br />
 											to locate the nearest trained pharmacist.<br /> 
 											Do you agree to disclose the name and location of your pharmacy for this map?</td>");
-	$disclosureField = new HorizontalRadioBox("disclosure", "disclosure",array("disclosure"), array("I agree", "I disagree"));
+	$disclosureField = new HorizontalRadioBox("disclosure_field", "disclosure_field",array("disclosure_fieldyes", "provision_fieldno"), array("I agree", "I disagree"));
 	$disclosureLabelRow->append($disclosureLabel);
-	$disclosureRow->append($emptyElement)->append($disclosureField)->attr("id","disclosure");
+	$disclosureRow->append($emptyElement)->append($disclosureField);
 
 	$pharmacyNameLabel = new Label("pharmacy_name_label", "Pharmacy Name", "Pharmacy Name", VALIDATE_NOTHING);
 	$pharmacyField = new TextField("pharmacy_name_field", "Pharmacy Name", "", VALIDATE_NOTHING);
@@ -162,8 +145,8 @@ class CAPSRegister extends SpecialPage{
 					      <a href='#!' onclick='$(\"#fileUploadInfo\").dialog({width:\"221px\",position:{my: \"center\", at:\"center\", of: window}})'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);*/
         $fileLabel = new Label("file_label", "Proof of Certification:</div>
                                               <div style='text-align:right; font-size:0.7em'>
-                                              <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);
-        $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOTHING);
+                                              <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOT_NULL, false);
+        $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOT_NULL);
         $fileRow = new FormTableRow("file_row");
 	$fileRow->attr('style','line-height: 10px;');
         $fileRow->append($fileLabel)->append($fileField);
@@ -186,23 +169,23 @@ class CAPSRegister extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
-		  ->append($languageRow)
-		  ->append($postalcodeRow)
+		          ->append($languageRow)
+		          ->append($postalcodeRow)
                   ->append($cityRow)
                   ->append($provinceRow)
                   ->append($roleRow)
-		  ->append($otherRoleRow)
-		  ->append($clinicRow)
-		  ->append($specialtyRow)
-		  ->append($otherSpecialtyRow)
-		  ->append($yearsRow)
-		  ->append($provisionRow)
+		          ->append($otherRoleRow)
+		          ->append($clinicRow)
+		          ->append($specialtyRow)
+		          ->append($otherSpecialtyRow)
+		          ->append($yearsRow)
+		          ->append($provisionRow)
                   ->append($disclosureLabelRow)
-		  ->append($disclosureRow)
-		  ->append($pharmacyRow)
-		  ->append($pharmacyAddressRow)
-		  ->append($fileRow)
-		  ->append($referenceRow)
+		          ->append($disclosureRow)
+		          ->append($pharmacyRow)
+		          ->append($pharmacyAddressRow)
+		          ->append($fileRow)
+		          ->append($referenceRow)
                   ->append($captchaRow)
                   ->append($submitRow);
         
@@ -224,11 +207,11 @@ class CAPSRegister extends SpecialPage{
     				    $('#role_field').change(function () {
         			        toggleFields();
     				    });
-				    $('#disclosure0').click(function (){
+				    $('#disclosure_field0').click(function (){
 					$('#pharmacy_address_label').parent().parent().show();
                                         $('#pharmacy_name_label').parent().parent().show();
 				    });
-                                    $('#disclosure1').click(function (){
+                                    $('#disclosure_field1').click(function (){
  					$('#pharmacy_address_label').parent().parent().hide();
                                         $('#pharmacy_name_label').parent().parent().hide();
 				    });
@@ -252,12 +235,12 @@ class CAPSRegister extends SpecialPage{
 				    }
 				    if ($('#role_field').val() == 'Pharmacist'){
 					$('#disclosure_div').parent().parent().show();
-                                        $('input[name=disclosure]').parent().parent().show();
+                                        $('input[name=disclosure_field]').parent().parent().show();
 
 				    }
 				    else{
                                         $('#disclosure_div').parent().parent().hide();
-                                        $('input[name=disclosure]').parent().parent().hide();
+                                        $('input[name=disclosure_field]').parent().parent().hide();
 
 				    }
                                     if ($('#role_field').val() == 'Other (Specify)'){
@@ -290,33 +273,70 @@ class CAPSRegister extends SpecialPage{
     
     function handleSubmit($wgOut){
         global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions;
+        $max_file_size = 20;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
-	    print_r($form->getElementById('email_field')->value);
-	
             $firstname = $form->getElementById('first_name_field')->setPOST('wpFirstName');
             $lastname = $form->getElementById('last_name_field')->setPOST('wpLastName');
-ST('wpEmail');
             $email = $form->getElementById('email_field')->setPOST('wpEmail');
-            $role = $form->getElementById('role_field')->setPOST('wpRole');;
-	    $language = $form->getElementById('language_field')->setPOST('wpLanguage');;
-	    $postalcode = $form->getElementById('postalcode_field')->setPOST('wpPostalCode');;
-	    $specialty = $form->getElementById('specialty_field')->setPOST('wpSpecialty');
-	    $years = $form->getElementById('years_field')->setPOST('wpYears');;
-	    $provision = $form->getElementById('provision_field')->setPOST('wpProvision');;
-	    $file = $_FILES['file_field']['tmp_name'];
-            $file_size= filesize($file);
-            $handle = fopen($file, "r");
-            $content = fread($handle, $file_size);
-            fclose($handle);
-            $content = chunk_split(base64_encode($content));
+            $role = $form->getElementById('role_field')->setPOST('wpRole');
+	    if(in_array($_POST['wpRole'], array("Physician", "Pharmacist"))){
+	        $_POST['wpUserType'] = $_POST['wpRole'];
+	    }
+	    else{
+		$_POST['wpUserType'] = "HQP";
+	    }
+        if($_POST['wpRole'] == "Other (Specify)"){
+	        $role = $form->getElementById('other_role_field')->setPOST('wpRole');
+        }
+	    $language = $form->getElementById('language_field')->setPOST('wpLanguage');
+	    $postalcode = $form->getElementById('postalcode_field')->setPOST('wpPostalCode');
+        $city = $form->getElementById('city_field')->setPOST('wpCity');
+	    $province = $form->getElementById('province_field')->setPOST('wpProvince');
+        $reference = $form->getElementById('reference_field')->setPOST('wpReference');
+        if($_POST['wpRole'] == "Physician"){
+	        $clinic = $form->getElementById('clinic_field')->setPOST('wpClinic');
+	        $provision = $form->getElementById('provision_field')->setPOST('wpProvision');
+	        $specialty = $form->getElementById('specialty_field')->setPOST('wpSpecialty');
+            if($_POST['wpSpecialty'] == "Other (Specify)"){
+                $specialty = $form->getElementById('other_specialty_field')->setPOST('wpSpecialty');
+            }
+	        $years = $form->getElementById('years_field')->setPOST('wpYears');
+        }
+        if($_POST['wpRole'] == "Pharmacist"){
+	        $provision = $form->getElementById('disclosure_field')->setPOST('wpDisclosure');
+	        $pharmacy_name = $form->getElementById('pharmacy_name_field')->setPOST('wpPharmacyName');
+	        $pharmacy_address = $form->getElementById('pharmacy_address_field')->setPOST('wpPharmacyAddress');
+        }
+        if($_FILES['file_field']['size'] < $max_file_size*1024*1024){
+	        $file = $_FILES['file_field']['tmp_name'];           
+            $content = chunk_split(base64_encode(file_get_contents($file)));
             $uid = md5(uniqid(time()));
             $name = basename($file);
-
+            $msg = "First name: ".$_POST['wpFirstName']."\n";
+            $msg .= "Last name: ".$_POST['wpLastName']."\n";
+            $msg .= "Email: ".$_POST['wpEmail']."\n";
+            $msg .= "Role: ".$_POST['wpRole']."\n";
+            $msg .= "Postal Code: ".$_POST['wpPostalCode']."\n";
+            $msg .= "City: ".$_POST['wpCity']."\n";
+            $msg .= "Province: ".$_POST['wpProvince']."\n";
+            if($_POST['wpRole'] == "Physician"){
+                $msg .= "Specialty: ".$_POST['wpSpecialty']."\n";
+                $msg .= "Clinic Name: ".$_POST['wpClinic']."\n";
+                $msg .= "Provision: ".$_POST['wpProvision']."\n";
+            }
+            if($_POST['wpRole'] == "Pharmacist"){
+                $msg .= "Share Pharmacy Agreement?: ".$_POST['wpDisclosure']."\n";
+                if($_POST['wpDisclosure'] == "I agree"){
+                    $msg .= "Pharmacy Name: ".$_POST['wpPharmacyName']."\n";
+                    $msg .= "Pharmacy Address: ".$_POST['wpPharmacyAddress']."\n";
+                }
+            }
+            $msg .= "Reference: ".$_POST['wpReference']."\n";
             // header
-            $header = "From: ".$firstname." ".$lastname." <".$email.">\r\n";
-            $header .= "Reply-To: ".$email."\r\n";
+            $header = "From: ".$_POST['wpFirstName']." ".$_POST['wpLastName']." <".$_POST['wpEmail'].">\r\n";
+            $header .= "Reply-To: ".$_POST['wpEmail']."\r\n";
             $header .= "MIME-Version: 1.0\r\n";
             $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
 
@@ -324,47 +344,40 @@ ST('wpEmail');
             $nmessage = "--".$uid."\r\n";
             $nmessage .= "Content-type:text/plain; charset=iso-8859-1\r\n";
             $nmessage .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-            $nmessage .= $_POST['wpSpecialty']."\r\n\r\n";
+            $nmessage .= $msg."\r\n\r\n";
             $nmessage .= "--".$uid."\r\n";
-            $nmessage .= "Content-Type: application/octet-stream; name=\""."credentials"."\"\r\n";
+            $nmessage .= "Content-Type: ".$_FILES['file_field']['type']."; name=\""."credentials"."\"\r\n";
             $nmessage .= "Content-Transfer-Encoding: base64\r\n";
             $nmessage .= "Content-Disposition: attachment; filename=\""."credentials"."\"\r\n\r\n";
             $nmessage .= $content."\r\n\r\n";
             $nmessage .= "--".$uid."--";
 
-            if (mail("rdejesus@ualberta.ca", "hi", $nmessage, $header)) {
-		print_r("true");
-                return true; // Or do something here
-            } else {
-		print_r("false");
+           if (mail("rdejesus@ualberta.ca", "New CAPS registration", $nmessage, $header)) {
+
+                $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
+                $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+                $_POST['wpSendMail'] = "true";
+                $_POST['candidate'] = "1";
+                
+                if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
+                    $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+                }
+                else{
+                    $result = APIRequest::doAction('RequestUser', false);
+                    if($result){
+                        $form->reset();
+                        $wgMessage->addSuccess("A request has been sent.");
+                        redirect("$wgServer$wgScriptPath");
+                    }
+                }             
+            } 
+            else {
               return false;
             }
-
-/*
-            $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
-            $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
-            $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-            $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
-            $_POST['wpUserType'] = HQP;
-            $_POST['wpSendMail'] = "true";
-            $_POST['candidate'] = "1";
-            
-            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
-                $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
-                
-            }
-            else{
-                $wgGroupPermissions['*']['createaccount'] = true;
-                GrandAccess::$alreadyDone = array();
-                $result = APIRequest::doAction('CreateUser', false);
-                $wgGroupPermissions['*']['createaccount'] = false;
-                GrandAccess::$alreadyDone = array();
-                if($result){
-                    $form->reset();
-                    $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
-                    redirect("$wgServer$wgScriptPath");
-                }
-            }*/
+        }
+        else{
+            $wgMessage->addError("The file cannot be larger than {$max_file_size}MB");
+        }
         }
         CAPSRegister::generateFormHTML($wgOut);
     }

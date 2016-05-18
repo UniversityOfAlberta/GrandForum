@@ -43,9 +43,10 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	}
 	
     #topheader .settings {
-        padding-top:5px;
+        padding-top: 5px;
+        padding-right: 10px;
         position: absolute;
-        right: 100px;
+        right: 138px;
         left: 524px;
         top: 0px;
         height: 84%;
@@ -59,7 +60,13 @@ body.page-Main_Page h1.firstHeading { display:none; }
         display: inline-block;
         padding-left: 10px;
         padding-right: 10px;
+        margin-top:-1px;
         text-align: center;
+        color: #234b6d;
+    }
+    
+    #topheader .settings a:hover {
+        color: #333333;
     }
 
     #topheader .settings img.photo {
@@ -71,8 +78,9 @@ body.page-Main_Page h1.firstHeading { display:none; }
         position: absolute;
         right: 4px;
         padding-right: 10px;
+        padding-top: 5px;
         top: 0px;
-        height: 96%;
+        height: 84%;
         background: #99D6F2;
         border-bottom-right-radius: 10px;
     }
@@ -80,15 +88,22 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	#topheader .login a {
 	    line-height: 35px;
 	    height: 35px;
-            display: inline-block;
+        display: inline-block;
 	    padding-left: 10px;
-	    padding-right: 10px;
-            text-align: center;
+	    padding-right: 0;
+	    margin-top: -1px;
+        text-align: center;
+        color: #234b6d;
+	}
+	
+	#topheader .login a:hover {
+	    color: #333333;
 	}
 	
 	#topheader .login img.photo {
 	    height: 100%;
 	    vertical-align:top;
+	    border-radius: 3px;
 	}
 	
 	#topheader a {
@@ -197,7 +212,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	
 	#submenu ul li.selected a {
 	    background:#327b7a;
-	    color:#BDE8FA;
+	    color:#FFFFFF;
 	    opacity:0.94;
 	}
 	
@@ -393,9 +408,10 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	#nav .pBody0 {
 		border: none;
 		background: #BDE8FA;
-                border-bottom-right-radius: 10px;
-                border-bottom-left-radius: 10px;
-
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        margin-right:4px;
+        margin-left:4px;
 	}
 
 	#nav .pBody1{
@@ -418,15 +434,16 @@ body.page-Main_Page h1.firstHeading { display:none; }
                 background: #BDE8FA;
                 border-top-right-radius: 10px;
                 border-top-left-radius: 10px;
-
+                font-size: larger;
         }
 
         #nav .pBodyTitle1 {
                 border: none;
-		color: #426C7E;
+		        color: #426C7E;
                 background: #99D6F2;
                 border-top-right-radius: 10px;
-		border-top-left-radius: 10px;
+		        border-top-left-radius: 10px;
+		        font-size: larger;
         }
 
         #nav .loginText{

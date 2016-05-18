@@ -1,7 +1,10 @@
-Title:<br \>
-<%= HTML.TextArea(this, 'title', {style: 'max-height: 30px; max-width:600px; resize: none;'}) %><br \>
-<br \>
-Story:<br \>
+<table>
+<tr>
+    <td><b>Title:</b></td>
+    <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
+</tr>
+</table>
+<h2>Story</h2>
 <%= HTML.TextArea(this, 'story', {style: 'max-height: 300px; max-width:600px; resize: none;'}) %>
 <% if(!this.isDialog){ %>
     <br />

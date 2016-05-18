@@ -1,18 +1,20 @@
-Title:<br \>
-<%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %><br \>
-<br \><div id="threadPeople">
-
-</div>
+<table>
+<tr>
+    <td><b>Title:</b></td>
+    <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
+</tr>
+</table>
+<br />
+<div id="threadPeople"></div>
 <% if(this.isDialog){ %>
-Question Details:
+<h2>Question Details</h2>
 <% } %>
 <% if(!this.isDialog){ %>
     <div style="width:180px;display:inline-block;">
-        <button id='saveThread'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Thread </button>
-	<span class="throbber" style="display:none;"></span>
+        <button id="saveThread"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Thread </button>
+        <span class="throbber" style="display:none;"></span>
     </div>
     <div style="width:180px;display:inline-block;">
-        <button id='cancel'>Cancel</button>
+        <button id="cancel">Cancel</button>
     </div>
 <% } %>
-
