@@ -6,7 +6,7 @@ class ThreadAPI extends RESTAPI {
             $me = Person::newFromWgUser();
             $thread = Thread::newFromId($this->getParam('id'));
             if(!$thread->canView()){
-                permissionError();
+                $this->throwError("You must be logged in to view this thread");
             }
             return $thread->toJSON();
         }
@@ -34,12 +34,15 @@ class ThreadAPI extends RESTAPI {
     function doPUT(){
         $me = Person::newFromWgUser();
         $thread = Thread::newFromId($this->getParam('id'));
+        if(!in_array($this->POST('roles'),$me->getAllowedRoles()) && $this->POST('roles') != ""){
+            $this->throwError("You cannot use select that role");
+        }
         if($thread == null || $thread->getTitle() == ""){
             $this->throwError("This thread does not exist");
         }
-	elseif(!$thread->canEdit()){
-            permissionError();
-	}
+        elseif(!$thread->canEdit()){
+            $this->throwError("You are not allowed to edit this thread");
+        }
         if(count($this->POST('authors')) == 0){
             $thread->setUsers(array($me));
         }
@@ -53,7 +56,6 @@ class ThreadAPI extends RESTAPI {
         return $thread->toJSON();
     }
 
-
     function doDELETE(){
         return false;
     }
@@ -63,7 +65,25 @@ class ThreadsAPI extends RESTAPI {
 
     function doGET(){
         $me = Person::newFromWgUser();
-        $threads = new Collection(Thread::getAllThreads());
+        if($this->getParam('search') == ""){
+            $threads = new Collection(Thread::getAllThreads());
+        }
+        else{
+            $threads = array();
+            $search = DBFunctions::escape(str_replace('%', '\%', strtolower($this->getParam('search'))));
+            $data = DBFunctions::execSQL("SELECT DISTINCT t.id
+                                          FROM grand_posts p, grand_threads t
+                                          WHERE p.thread_id = t.id
+                                          AND (MATCH(p.message) AGAINST ('{$search}') OR 
+                                               LOWER(t.title)   LIKE '%{$search}%')");
+            foreach($data as $row){
+                $thread = Thread::newFromId($row['id']);
+                if($thread->canView()){
+                    $threads[] = $thread;
+                }
+            }
+            $threads = new Collection($threads);
+        }
         return $threads->toJSON();
     }
 

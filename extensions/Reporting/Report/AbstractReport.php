@@ -99,7 +99,7 @@ abstract class AbstractReport extends SpecialPage {
         $this->name = "";
         $this->extends = "";
         $this->year = $year;
-        $this->reportType = RP_RESEARCHER;
+        $this->reportType = '';
         $this->disabled = false;
         $this->ajax = false;
         $this->generatePDF = false;

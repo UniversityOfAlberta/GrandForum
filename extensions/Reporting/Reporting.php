@@ -13,9 +13,6 @@ if($extras['ReportStats']){
 if($extras['CreatePDF']){
     require_once("CreatePDF/CreatePDF.php");
 }
-if($extras['ReviewResults']){
-    require_once("ReviewResults/ReviewResults.php");
-}
 if($extras['AdminVisualizations']){
     require_once("AdminVisualizations/AdminVisualizations.php");
 }

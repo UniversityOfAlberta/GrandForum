@@ -22,9 +22,14 @@ Thread = Backbone.Model.extend({
 
 Threads = Backbone.Collection.extend({
 
-   model: Thread,
+    model: Thread,
+   
+    search: '',
 
-   url: function(){
+    url: function(){
+        if(this.search != ''){
+            return 'index.php?action=api.threads/' + encodeURIComponent(this.search);
+        }
         if(this.roles == undefined){
             return 'index.php?action=api.threads';
         }

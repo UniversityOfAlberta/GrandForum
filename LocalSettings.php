@@ -113,6 +113,7 @@ $wgPasswordSender = $config->getValue('supportEmail');
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+$wgEnableParserLimitReporting=false;
 
 if(TESTING){
     $wgEnableEmail      = false;

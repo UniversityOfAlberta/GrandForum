@@ -60,6 +60,7 @@ $apiRequest->addAction('Hidden','storycomment/:id', new StoryCommentAPI());
 $apiRequest->addAction('Hidden','thread', new ThreadAPI());
 $apiRequest->addAction('Hidden','thread/:id', new ThreadAPI());
 $apiRequest->addAction('Hidden','threads', new ThreadsAPI());
+$apiRequest->addAction('Hidden','threads/:search', new ThreadsAPI());
 //Post
 $apiRequest->addAction('Hidden','post', new PostAPI());
 $apiRequest->addAction('Hidden','post/:id', new PostAPI());

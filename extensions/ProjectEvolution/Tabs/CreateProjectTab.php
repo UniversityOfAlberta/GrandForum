@@ -171,7 +171,7 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        $table->append($champRow);
+        //$table->append($champRow);
         $table->append($descRow);
         $table->append($longDescRow);
         

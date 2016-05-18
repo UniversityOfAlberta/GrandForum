@@ -46,10 +46,6 @@ class CavendishTemplate extends QuickTemplate {
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
-        if(FROZEN){
-            $wgMessage->addInfo("The Forum is currently not available for edits during the RMC review-and-deliberation period.");
-        }
-
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
 		

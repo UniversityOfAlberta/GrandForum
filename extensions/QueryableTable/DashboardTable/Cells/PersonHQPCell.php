@@ -165,23 +165,7 @@ class PersonHQPCell extends DashboardCell {
             $style = "background:#FEB8B8;color:#D50013;";
             $inactive = " (Inactive)";
         }
-        
-        $blob = new ReportBlob(BLOB_ARRAY, YEAR, $hqp->getId(), 0);
-	    $blob_address = ReportBlob::create_address(RP_HQP, HQP_MILESTONES, HQP_MIL_CONTRIBUTIONS, 0);
-	    $blob->load($blob_address);
-	    $blob_data = $blob->getData();
-	    $since = "";
-	    $until = "";
-	    if(isset($blob_data['involved_since'])){
-	        $since = $blob_data['involved_since'];
-	    }
-	    if(isset($blob_data['involved_until'])){
-	        $until = $blob_data['involved_until'];
-	    }
-	    $range = "";
-	    if($since != "" && $until != ""){
-	        $range = "$since - $until";
-	    }
+
 	    $posString = "";
 	    if($uni['position'] != ""){
 	        $posString = "{$uni['position']}";

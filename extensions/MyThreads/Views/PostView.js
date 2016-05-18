@@ -4,6 +4,7 @@ PostView = Backbone.View.extend({
     row: null,
     template: _.template($('#post_template').html()),
     isDialog: false,
+    oldMessage: "",
     
     initialize: function(options){
         this.parent = options.parent;
@@ -13,20 +14,36 @@ PostView = Backbone.View.extend({
         if(this.model.isNew()){
             this.render();
         }
-        if(this.isDialog){
-            //this.$('#submitPost').remove();
-        }
         this.listenTo(this.model, "sync", this.render);
     },
 
     events: {
+        "click .edit-icon": "editPost",
         "click #submitPost": "submitPost",
+        "click #cancel": "cancel",
+        "click #save": "save",
+    },
+    
+    editPost: function(){
+        this.oldMessage = this.model.get('message');
+        this.editing = true;
+        this.render();
     },
 
     submitPost: function(){
         this.model.save();
-        // this.parent.$("#personRows").append(this.$el);
         this.parent.addNewRow();
+    },
+    
+    cancel: function(){
+        this.editing = false;
+        this.model.set('message', this.oldMessage);
+        this.render();
+    },
+    
+    save: function(){
+        this.editing = false;
+        this.model.save();
     },
 
     render: function(){
@@ -36,7 +53,7 @@ PostView = Backbone.View.extend({
              isMine.isMine = true;
         }
         var mod = _.extend(this.model.toJSON(), isMine);
-        this.el.innerHTML = this.template(mod);
+        this.$el.html(this.template(mod));
         return this.$el;
     }
 });

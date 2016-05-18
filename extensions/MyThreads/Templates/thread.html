@@ -1,12 +1,17 @@
 <div>
-    <button id="EditThreadButton">Edit Thread</button> &nbsp; <button id="BackButton">Back</button>
-
+    <% if(me.get('id') == author.id || 
+       _.where(me.toJSON().roles, {role: 'Manager'}).length > 0 || 
+       _.where(me.toJSON().roles, {role: 'Admin'}).length > 0){ %>
+        <button id="EditThreadButton">Edit Thread</button> &nbsp; 
+    <% } %>
+    <button id="BackButton">Back</button>
 </div>
 <br />
 <div id="posts">
-    <table id="Posts" style="border:none; width:100%">
-        <tbody id="personRows">
-
-        </tbody>
-    </table>
+    <div id="loading" style="text-align: center">
+        
+    </div>
+    <div id="postRows">
+        
+    </div>
 </div>
