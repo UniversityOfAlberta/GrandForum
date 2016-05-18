@@ -196,7 +196,7 @@ class CAPSRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromId($wgUser->getId());
-	$wgOut->addHTML("<div id='fileUploadInfo' style='display:none'>Please upload a copy of your proof of certification from the Mifepristone training program.</div>");
+	$wgOut->addHTML("<div id='fileUploadInfo' title='Proof of Certification' style='display:none'>Please upload a copy of your proof of certification from the Mifepristone training program.</div>");
         $wgOut->addHTML("Each submitted form is reviewed by an administrator. You will be contacted by email with your login details when your submission has been approved. You may need to check your spam/junk mail for the registration email.  If you do not get an email after a few business days, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:CAPSRegister' method='post' enctype='multipart/form-data'>\n");
         $form = self::createForm();
@@ -259,12 +259,11 @@ class CAPSRegister extends SpecialPage{
                                     }
 				}
 				function openDialog(){
-					$('#fileUploadInfo').dialog({width:'200px',position:{my: 'center', at:'center', of: window},     buttons: {
+					$('#fileUploadInfo').dialog({width:'200px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
         'OK': function () {
             $(this).dialog('close')
         }
     }});
-					$('.ui-dialog-titlebar').hide();
 
 				}
 		</script>");	
