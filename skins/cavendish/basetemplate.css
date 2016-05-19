@@ -30,7 +30,7 @@ body {
 }
 
 #bodyContent {
-	margin-bottom: 1em;
+	margin-bottom: 0;
 }
 
 .nomenu #bodyContent {

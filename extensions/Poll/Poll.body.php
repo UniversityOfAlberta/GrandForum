@@ -106,6 +106,19 @@ class PollView {
 						}
 					}
 				}
+				$wgOut->addHTML("<script type='text/javascript'>
+		                            $('table.poll').DataTable({
+		                                bFilter: false,
+		                                bPaginate: false,
+		                                sDom: 'rt',
+		                                aaSorting: [],
+		                                columns: [
+                                            {orderable: true},
+                                            {orderable: false},
+                                            {orderable: true}
+                                        ]
+		                            });
+		                        </script>");
 				return false;
 			}
 			else{
@@ -233,8 +246,11 @@ class PollView {
 	    global $config;
 		$totalVotes = $poll->getTotalVotes();
 		$wgOut->addHTML("<h2>{$poll->name}</h2>
-				<table class='wikitable sortable' cellpadding='5' cellspacing='1' width='100%' style='background:#CCCCCC;'>
-					<tr style='background:#EEEEEE;'><th width='20%'>Option</th><th width='60%'>Bar Graph</th><th width='10%'>Total Votes</th><th width='10%'>Percent of Total</th></tr>");
+				<table class='poll wikitable sortable' cellpadding='5' cellspacing='1' width='100%' style='background:#CCCCCC;'>
+				    <thead>
+					<tr style='background:#EEEEEE;'><th>Option</th><th>Bar Graph</th><th>Total Votes</th></tr>
+					</thead>
+					<tbody>");
 		foreach($poll->options as $option){
 			$nVotes = $option->getTotalVotes();
 			if($totalVotes != 0){
@@ -243,9 +259,9 @@ class PollView {
 			else{
 				$percentOfTotal = 0;
 			}
-			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='background: {$config->getValue('highlightColor')};' width='$percentOfTotal%'><tr><td style='background:transparent;'></td></tr></table></td><td>$nVotes</td><td>".number_format($percentOfTotal, 2)."%</td></tr>");
+			$wgOut->addHTML("<tr style='background:#FFFFFF;'><td>{$option->name}</td><td><table style='background: {$config->getValue('highlightColor')};' width='$percentOfTotal%'><tr><td style='background:transparent;border-width:0;padding:1px;'></td></tr></table></td><td>$nVotes&nbsp;<span style='float:right;'>(".number_format($percentOfTotal, 2)."%)</span></td></tr>");
 		}
-		$wgOut->addHTML("</table><br />");
+		$wgOut->addHTML("</tbody></table><br />");
 	}
 
 }
