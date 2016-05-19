@@ -6,9 +6,11 @@ table.dataTable {
 	margin: 0;
 	clear: both;
 	width: 100%;
-	border-color: #ffffff;
-	border-width: 2px 0 1px 0;
+	border-color: #D8D8D8;
+	border-width: 1px 0;
 	border-style: solid;
+	margin-top: 2px;
+	margin-bottom: 0;
 	color: #222;
 }
 
