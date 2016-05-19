@@ -37,6 +37,10 @@ echo <<<EOF
     font-color: #FFFFFF !important;
 }
 
+.underlined:hover {
+    text-decoration: underline !important;
+}
+
 h1 {
     color:#37B0E1;
 }

@@ -41,7 +41,6 @@ pageRouter.on('route:viewStory', function (id) {
     this.closeCurrentView();
     var story = new Story({'id':id});
     this.closeCurrentView();
-    story.fetch();
     this.currentView = new StoryView({el: $("#currentView"), model: story});
 });
 
@@ -52,7 +51,6 @@ pageRouter.on('route:editStory', function (id) {
     }
     else{
         var story = new Story({'id': id});
-	story.fetch();
         this.closeCurrentView();
         this.currentView = new StoryEditView({el: $("#currentView"), model: story});
     }

@@ -1148,7 +1148,7 @@ EOF;
             echo <<< EOF
         <br />
         <span class='pBodyTitle0'>Member Registration</span>
-        <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
+        <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
 EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );

@@ -7,16 +7,16 @@ ThreadView = Backbone.View.extend({
                 this.$el.html("This Thread does not exist.");
             }, this)
         });
-	this.model.bind('sync', this.render);//change to on
+        this.model.bind('sync', this.render);//change to on
     },
 
     events: {
         "click #EditThreadButton": "editThread",
-	"click #BackButton": "back",
+        "click #BackButton": "back",
     },
 
     back: function(){
-	document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:MyThreads";
+        document.location = wgServer+wgScriptPath+"/index.php/Special:MyThreads#";
     },
 
     editThread: function(){
@@ -29,27 +29,30 @@ ThreadView = Backbone.View.extend({
     },
 
     addRows: function(){
-        if(this.table != undefined){
-            order = this.table.order();
-            searchStr = this.table.search();
-            this.table.destroy();
-            this.table = null;
-        }
-	var models = _.pluck(this.model.get('posts'), 'id');
-	_.each(models, function(p){
-	    var mod = new Post({'id':p});
-	    mod.fetch();
-  	    var row = new PostView({model: mod, parent: this});
+        this.$("#personRows").empty();
+        this.$("#loading").html("<div id='loading'></div>");
+        var spin = spinner("loading", 40, 75, 12, 10, '#888');
+        this.$("#personRows").hide();
+        var models = _.pluck(this.model.get('posts'), 'id');
+        var ajax = new Array();
+        _.each(models, function(p){
+            var mod = new Post({'id':p});
+            ajax.push(mod.fetch());
+            var row = new PostView({model: mod, parent: this});
             this.$("#personRows").append(row.$el);
-	});
-	this.addNewRow();
+        });
+        this.addNewRow();
+        $.when.apply(undefined, ajax).then($.proxy(function(){
+            this.$("#loading").empty();
+            this.$("#personRows").show();
+        }, this));
     },
 
     addNewRow: function(){
         var newPost = new Post({'thread_id':this.model.id, 'user_id':me.id});
         var row = new PostView({model: newPost, parent: this});
         this.$("#personRows").append(row.$el);
-   },
+    },
 
     render: function(){
         main.set('title', this.model.get('title'));

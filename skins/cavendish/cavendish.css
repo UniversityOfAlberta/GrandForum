@@ -82,6 +82,7 @@ body {
 #side > ul {
     margin-top: 46px;
     position: relative;
+    z-index: 1;
 }
 
 #sideToggle {
@@ -128,6 +129,8 @@ body {
     padding: 0;
     padding-right: 30px;
     padding-top: 15px;
+    z-index: 0;
+    background: transparent;
 }
 
 #bodyContent.menu-in {

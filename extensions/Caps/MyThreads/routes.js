@@ -29,7 +29,7 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'My Threads');
+    main.set('title', 'Ask an Expert');
     this.closeCurrentView();
     var threads = new Threads();
     threads.fetch();
@@ -39,14 +39,12 @@ pageRouter.on('route:defaultRoute', function (actions) {
 pageRouter.on('route:viewThread', function (id) {
     this.closeCurrentView();
     var thread = new Thread({'id':id});
-    thread.fetch();
     this.currentView = new ThreadView({el: $("#currentView"), model: thread});
 });
 
 pageRouter.on('route:editThread', function (id) {
     this.closeCurrentView();
     var thread = new Thread({'id':id});
-    thread.fetch();
     this.currentView = new ThreadEditView({el: $("#currentView"), model: thread});
 });
 
