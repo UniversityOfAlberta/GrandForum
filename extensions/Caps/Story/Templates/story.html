@@ -2,7 +2,7 @@
 <div id="storyAuthor">
 </div>
 <h2>Description</h2>
-<%= story.replace(/\n/g, "<br />") %>
+<%= nl2br(striphtml(story)) %>
 <h2>Information</h2>
 <b>Date Submitted:</b> <%= date_submitted  %><br>
 <b>Approved:</b> <% if(approved==1){ %>Yes<%} else{ %> No <% } %>
