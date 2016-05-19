@@ -122,7 +122,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	}
 	
 	#outerHeader.menu-in {
-	    left: 0;
+	    left: 4px;
 	}
 	
 	#header {

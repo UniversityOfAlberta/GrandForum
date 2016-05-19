@@ -120,7 +120,7 @@ body {
 }
 
 #bodyContent {
-    left: 230px;
+    left: 0;
     right: 0;
     top: 116px;
     bottom: 0;
@@ -128,13 +128,15 @@ body {
     position:absolute;
     padding: 0;
     padding-right: 30px;
+    padding-left: 230px;
     padding-top: 15px;
     z-index: 0;
     background: transparent;
 }
 
 #bodyContent.menu-in {
-    left: 30px;
+    left: 0;
+    padding-left: 34px;
 }
 
 .deepLevel #bodyContent {

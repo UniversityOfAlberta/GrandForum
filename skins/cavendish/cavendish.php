@@ -487,7 +487,7 @@ class CavendishTemplate extends QuickTemplate {
 		                    'left': '4'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '34px'
+		                    'padding-left': '34px'
 		                }, 200, 'swing', function(){
 		                    jsPlumb.repaintEverything();
 		                });
@@ -503,7 +503,7 @@ class CavendishTemplate extends QuickTemplate {
 		                    'left': '200px'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '230px'
+		                    'padding-left': '230px'
 		                }, 200, 'swing', function(){
 		                    jsPlumb.repaintEverything();
 		                });
