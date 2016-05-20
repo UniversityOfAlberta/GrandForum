@@ -16,6 +16,9 @@ Person = Backbone.Model.extend({
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
         
+        this.adminProducts = new PersonProducts();
+        this.adminProducts.url = this.urlRoot + '/' + this.get('id') + '/products/all';
+        
         this.roleString = new PersonRoleString({id: this.get('id')});
         /*
         this.bind("sync", function(model, response, options){
@@ -69,6 +72,11 @@ Person = Backbone.Model.extend({
     getPrivateProducts: function(){
         this.privateProducts.fetch();
         return this.privateProducts;
+    },
+    
+    getAdminProducts: function(){
+        this.adminProducts.fetch();
+        return this.adminProducts;
     },
     
     isLoggedIn: function(){
