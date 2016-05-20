@@ -188,12 +188,12 @@ class PersonProductAPI extends RESTAPI {
             if($this->getParam(3) == "private"){
                 $onlyPublic = false;
             }
-            if($me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
+            /*if($me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
                 $products = Product::getAllPapers("all", true, 'both', $onlyPublic, 'Public');
             }
-            else{
+            else{*/
                 $products = $person->getPapers("all", true, 'both', $onlyPublic, 'Public');
-            }
+            //}
             foreach($products as $product){
                 $array = array('productId' => $product->getId(), 
                                'personId'=> $this->getParam('id'),

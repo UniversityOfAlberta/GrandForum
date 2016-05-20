@@ -419,6 +419,10 @@ function time2date($time, $format='F j, Y'){
     return date($format, $strtime);
 }
 
+function currentTimeStamp(){
+    return date('Y-m-d H:i:s', time());
+}
+
 /**
  * Returns a HTML comment with the elapsed time since request.
  * This method has no side effects.
