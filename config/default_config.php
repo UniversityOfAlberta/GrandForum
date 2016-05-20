@@ -88,7 +88,7 @@
     $config->setValue("hqpIsPublic", false);
     
     // Whether or not to include HQP Products for supervisors
-    $config->setValue("inlcudeHQPProducts", false);
+    $config->setValue("includeHQPProducts", true);
     
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);
