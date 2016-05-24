@@ -96,6 +96,16 @@ class DashboardReportItem extends StaticReportItem {
         return $dashboard;
 	}
 	
+	function filterCols($dashboard){
+	    if($this->getAttr("structure") == "PROJECT_REPORT_TIME_STRUCTURE" && $this->getReport()->project != null){
+	        $created = $this->getReport()->project->getCreated();
+	        if($created > ($this->getReport()->year+1).REPORTING_CYCLE_END_MONTH){
+	            $dashboard = $dashboard->copy()->filterCols(HEAD, array("Hours%", "Allocated%"));
+	        }
+	    }
+	    return $dashboard;
+	}
+	
 	function splitCompleted($dashboard){
 	    $completed = $dashboard->copy()->where(PERSON_PROJECTS, array("%Completed%"));
 	    $rest = $dashboard->copy()->filter(PERSON_PROJECTS, array("%Completed%"));
