@@ -78,11 +78,6 @@ class DashboardReportItem extends StaticReportItem {
         else {
             $dashboard = new DashboardTable($struct, $person);
         }
-        if($project != null && $project->getName() != null && 
-           substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR &&
-           $struct == PROJECT_REPORT_TIME_STRUCTURE){
-            $dashboard->filterCols(HEAD, array("Requested.*"));
-        }
         return $dashboard;
 	}
 	
@@ -99,16 +94,6 @@ class DashboardReportItem extends StaticReportItem {
             }
         }
         return $dashboard;
-	}
-	
-	function filterCols($dashboard){
-	    if($this->getAttr("structure") == "PROJECT_REPORT_TIME_STRUCTURE" && $this->getReport()->project != null){
-	        $created = $this->getReport()->project->getCreated();
-	        if($created > ($this->getReport()->year+1).REPORTING_CYCLE_END_MONTH){
-	            $dashboard = $dashboard->copy()->filterCols(HEAD, array("Hours%", "Allocated%"));
-	        }
-	    }
-	    return $dashboard;
 	}
 	
 	function splitCompleted($dashboard){
