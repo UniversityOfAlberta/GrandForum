@@ -33,6 +33,11 @@ class ReportStatusTable extends SpecialPage{
         $nis = Person::getAllPeople(NI);
         $ifpFinal = array();
         $ifpProgress = array();
+        $ifp2016Final = array(
+            Person::newFromId(235),
+            Person::newFromId(308),
+            Person::newFromId(325),
+            Person::newFromId(347));
         $ssa = array();
         foreach($hqps as $hqp){
             if($hqp->isSubRole('IFP')){
@@ -43,7 +48,9 @@ class ReportStatusTable extends SpecialPage{
                 if(!$ifpDeleted){
                     $ifpProgress[] = $hqp;
                 }
-                $ifpFinal[] = $hqp;
+                if(!in_array($hqp, $ifp2016Final)){
+                    $ifpFinal[] = $hqp;
+                }
             }
         }
         foreach($nis as $ni){
@@ -60,6 +67,7 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#progress'>Project Progress 2015</a></li>
                                 <li><a href='#ifp_final_2015'>IFP Final 2015</a></li>
                                 <li><a href='#ifp_progress_2015'>IFP Progress 2015</a></li>
+                                <li><a href='#ifp_final_2016'>IFP Final 2016</a></li>
                                 <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
                                 <li><a href='#ssa'>SSA 2015</a></li>
                             </ul>");
@@ -67,6 +75,7 @@ class ReportStatusTable extends SpecialPage{
         $this->addProjectTable(RP_PROGRESS,         'progress', 2015);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',    $ifpFinal, 2015);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015', $ifpProgress, 2015);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',    $ifp2016Final, 2016);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016', $ifpProgress, 2016);
         $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa, 2015);
         $wgOut->addHTML("</div>");

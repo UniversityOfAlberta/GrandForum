@@ -76,7 +76,7 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
 
-    $config->setValue("nameFormat", "{%F.} {%M.} {%Last}");
+    $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
