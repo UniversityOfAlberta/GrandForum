@@ -4,7 +4,7 @@ require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 
 exec(sprintf("%s > %s 2>&1 & echo $! >> %s", 
-             "phantomjs --webdriver=8643", 
+             "phantomjs --webdriver=8644", 
              "phantomjs.log", 
              "phantomjs.pid"));
 
@@ -83,7 +83,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $currentSession->getSession()->stop();
         system("php ../maintenance/cleanAllLists.php &> /dev/null");
         unlink("../test.tmp");
-        system("killall phantomjs");
     }
     
     /**
