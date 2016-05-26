@@ -20,7 +20,7 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                    <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
             ]]>
         </ReportItem>
     </ReportSection>
