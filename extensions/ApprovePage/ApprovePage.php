@@ -39,13 +39,15 @@ class ApprovePage extends SpecialPage{
    //for loop adding here 
         $requests = Wiki::getAllUnapprovedPages();
         foreach($requests as $request){
+            $date = wfTimestamp(TS_DB, $request->getArticle()->getTimestamp());
+            $title = str_replace("<", "&lt;", str_replace(">", "&gt;", $request->getTitle()));
             $req_user = $request->getNewestAuthor();
             $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:ApprovePage?action=view' method='post'>
                         <td align='left'>
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a>
                         </td>");
-            $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getArticle()->getTimestamp())."</td>");
-            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$request->getTitle()}</a></td>
+            $wgOut->addHTML("<td>{$date}</td>");
+            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$title}</a></td>
 			        <input type='hidden' name='id' value='{$request->getId()}' />");
             $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td>");
             $wgOut->addHTML("</form>

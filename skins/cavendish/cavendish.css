@@ -576,19 +576,16 @@ input[disabled] {
     background: #cccccc !important;
     color: #777777 !important;
     margin: 2px;
-    padding: 3px;
 }
 
 input[type=button][disabled], input[type=button][disabled]:hover, input[type=button][disabled]:active,
 input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active,
 select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
-    background: #cccccc !important;
-    color: #777777 !important;
+    background: #bdbdbd !important;
+    color: #FFFFFF !important;
     top:0;
-    border:1px solid #AAAAAA !important;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    border-radius:3px;
+    border: none !important;
+    border-radius:30px;
     display:inline-block;
     font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px;
@@ -596,8 +593,6 @@ select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.
     padding:5px 20px;
     text-decoration:none;
     font-weight: bold !important;
-    text-shadow:1px 1px 0px #FFFFFF;
-    box-shadow:inset 0 0 1px 0 #f8f8f8;
     white-space:nowrap;
 	margin:2px;
 	text-align:center;

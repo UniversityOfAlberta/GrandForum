@@ -66,6 +66,10 @@ MyThreadsView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        var text = "Save";
+        if(wgLang == "fr"){
+            text = "Enregistrer";
+        }
         this.editDialog = this.$("#editDialog").dialog({
                 autoOpen: false,
                 modal: true,
@@ -83,7 +87,7 @@ MyThreadsView = Backbone.View.extend({
                 }, this),
                 buttons: [
                     {
-                        text: "Save Thread",
+                        text: text,
                         click: $.proxy(function(){
                         var m = this.editDialog.view.model.save(null, {
                             success: $.proxy(function(){

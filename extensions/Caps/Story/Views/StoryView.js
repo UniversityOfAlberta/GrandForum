@@ -32,18 +32,18 @@ StoryView = Backbone.View.extend({
     },
 
     addRows: function(){
-	var models = _.pluck(this.model.get('comments'), 'id');
-	_.each(models, function(p){
-	    var mod = new StoryComment({'id':p});
-	    mod.fetch();
-	    var row = new CommentView({model:mod, parent:this});
-	    this.$("#commentRows").append(row.$el);
-	});
-	this.addNewRow();
+	    var models = _.pluck(this.model.get('comments'), 'id');
+	    _.each(models, function(p){
+	        var mod = new StoryComment({'id':p});
+	        mod.fetch();
+	        var row = new CommentView({model:mod, parent:this});
+	        this.$("#commentRows").append(row.$el);
+	    });
+	    this.addNewRow();
    },
 
     addNewRow: function(){
-        var newComment = new Comment({'story_id':this.model.id, 'user_id':me.id});
+        var newComment = new StoryComment({'story_id':this.model.id, 'user_id':me.id});
         var row = new CommentView({model: newComment, parent: this});
         this.$("#commentRows").append(row.$el);
    },

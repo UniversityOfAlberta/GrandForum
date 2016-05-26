@@ -6,4 +6,9 @@ $messages['en'] = array(
 			   'Editmember' => 'Edit Roles',
 			   'editmember' => 'Edit Roles',
 			   );
+$messages['fr'] = array(
+                           'EditMember' => 'Modifier Rôle',
+                           'Editmember' => 'Modifier Rôle',
+                           'editmember' => 'Modifier Rôle',
+                           );
 ?>

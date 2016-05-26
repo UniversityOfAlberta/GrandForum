@@ -62,7 +62,8 @@ class EditRelations extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
-        $wgOut->addHTML("Here you can edit all the relations relevant to your role.");
+        $wgOut->addHTML("<span class='en' style='display:none'>Here you can edit all the relations relevant to your role.</span><span class='fr' style='display:none'>Ici, vous pouvez modifier toutes les relations pertinentes à votre rôle .
+</span>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
         $wgOut->addScript("<script type='text/javascript'>
                             $(document).ready(function(){
@@ -195,10 +196,14 @@ class EditRelations extends SpecialPage{
     }
     
     static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
+	$title = "Edit Coworkers";
+	if($wgLang->getCode() == "fr"){
+	    $title="Modifier Collègues";
+	}
         if($me->isRoleAtLeast(NI)){
-            $toolbox['People']['links'][2] = TabUtils::createToolboxLink("Edit Relations", "$wgServer$wgScriptPath/index.php/Special:EditRelations");
+            $toolbox['People']['links'][2] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:EditRelations");
         }
         return true;
     }

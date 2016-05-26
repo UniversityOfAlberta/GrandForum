@@ -30,6 +30,9 @@ var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', 'Ask an Expert');
+    if(wgLang == 'fr'){
+        main.set('title', 'Demandez à un Expert');
+    }
     this.closeCurrentView();
     var threads = new Threads();
     threads.fetch();

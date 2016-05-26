@@ -42,13 +42,14 @@ class ApproveStory extends SpecialPage{
    //for loop adding here 
         $requests = Story::getAllUnapprovedStories();
         foreach($requests as $request){
+            $title = str_replace("<", "&lt;", str_replace(">", "&gt;", $request->getTitle()));
             $req_user = $request->getUser();
             $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:ApproveStory?action=view' method='post'>
                         <td align='left'>
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a>
                         </td>");
-            $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getDateSubmitted())."</td>");
-            $wgOut->addHTML("<td align='right'><a target='_blank' href='{$request->getUrl()}'>{$request->getTitle()}</a></td>
+            $wgOut->addHTML("<td>{$request->getDateSubmitted()}</td>");
+            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$title}</a></td>
 			        <input type='hidden' name='id' value='{$request->getId()}' />");
             $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td>");
             $wgOut->addHTML("</form>

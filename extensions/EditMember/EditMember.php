@@ -696,13 +696,15 @@ class EditMember extends SpecialPage{
         });
         </script>');
         if($me->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'>View Requests</a></b><br /><br />");
+            $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'><span class='en' style='display:none'>View Requests</span><span class='fr' style='display:none'>Voir Demande</span></a></b><br /><br />");
             foreach(Person::getAllStaff() as $person){
                 $allPeople[] = $person;
             }
         }
-        $wgOut->addHTML("This page can be used to edit the roles and projects of members on the forum.<br />
-                         Select a user from the list below, and then click the 'Next' button.  You can filter out the selection box by searching a name or project below.<table>
+        $wgOut->addHTML("<div class='en' style='display:none'>This page can be used to edit the roles and projects of members on the forum.<br />
+                         Select a user from the list below, and then click the 'Next' button.  You can filter out the selection box by searching a name or project below.</div><div class='fr' style='display:none'>
+Cette page peut être utilisée pour modifier les rôles et les projets des membres sur le forum . <br />
+                         Sélectionnez un utilisateur dans la liste ci-dessous , puis cliquez sur le bouton «Suivant». Vous pouvez filtrer la boîte de sélection en recherchant un nom ou d'un projet ci-dessous.</div><table>
                             <tr><td>
                                 <a href='javascript:sortBy(\"first\");'>Sort by First Name</a> | <a href='javascript:sortBy(\"last\");'>Sort by Last Name</a><br />
                                 <b>Search:</b> <input style='width:100%;' id='search' type='text' />
@@ -1384,10 +1386,14 @@ class EditMember extends SpecialPage{
     }
     
     static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
+	$title = "Edit Role";
+	if($wgLang->getCode() == "fr"){
+	    $title = "Modifier Rôle";
+	}
         if($me->isRoleAtLeast(MANAGER)){
-            $toolbox['People']['links'][1] = TabUtils::createToolboxLink("Edit Roles", "$wgServer$wgScriptPath/index.php/Special:EditMember");
+            $toolbox['People']['links'][1] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:EditMember");
         }
         return true;
     }

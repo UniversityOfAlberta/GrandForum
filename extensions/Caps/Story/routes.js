@@ -29,7 +29,10 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'User Stories');
+    main.set('title', 'Share a Case or Experience');
+   if(wgLang == "fr"){
+	main.set('title', "Partager un Cas ou de L'expérience");
+   }
     this.closeCurrentView();
     var stories = new Stories();
     stories.fetch();
@@ -37,7 +40,7 @@ pageRouter.on('route:defaultRoute', function (actions) {
 });
 
 pageRouter.on('route:viewStory', function (id) {
-    main.set('title', 'Story');
+    main.set('title', 'Case or Experience');
     this.closeCurrentView();
     var story = new Story({'id':id});
     this.closeCurrentView();

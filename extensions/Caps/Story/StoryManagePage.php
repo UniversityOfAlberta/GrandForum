@@ -37,9 +37,13 @@ class StoryManagePage extends BackbonePage {
     }
     
     static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $wgUser;
+        global $wgServer, $wgScriptPath, $wgUser,$wgLang;
+        $title_add = "Share a Case or Experience";
+        if($wgLang->getCode() == "fr"){
+             $title_add = "Partager un Cas ou de L'expérience";
+        }
         if(self::userCanExecute($wgUser)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("My Cases", "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
         }
         return true;
     }

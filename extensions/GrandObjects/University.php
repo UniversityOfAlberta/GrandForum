@@ -60,12 +60,17 @@ class University extends BackboneModel {
         return $unis;
     }
 
-    static function getNearestUniversity(){
-	$sql = "SELECT * , SQRT( POW( ABS( latitude -53 ) , 2 ) + POW( ABS( longitude +113 ) , 2 ) ) AS dist
-FROM `grand_universities` WHERE `university_name` <> 'Unknown'
-ORDER BY `dist` ASC";
+    static function getNearestUniversity($lat, $long){
+	$sql = "SELECT * , SQRT( POW( ABS( latitude - ($lat)) , 2 ) + POW( ABS( longitude -($long)) , 2 ) ) AS dist
+FROM `grand_universities` WHERE `university_name` <> 'Unknown' AND `longitude` <> 'NULL' AND `latitude` <> 'NULL'
+ORDER BY `dist` ASC LIMIT 10";
 	$data = DBFunctions::execSQL($sql);
-	return $data;
+	$unis = array();
+	foreach($data as $row){
+	    $unis[] = University::newFromId($row['university_id']);
+	}
+        return $unis;
+
     }
     
     function University($data){
@@ -91,7 +96,8 @@ ORDER BY `dist` ASC";
                       'longitude' => $this->getLongitude(),
                       'color' => $this->getColor(),
                       'order' => $this->getOrder(),
-                      'default' => $this->isDefault());
+                      'default' => $this->isDefault(),
+		      'shortName' => $this->getShortName());
         return $json;
     }
     
@@ -100,20 +106,18 @@ ORDER BY `dist` ASC";
             if($me->isRoleAtLeast(AR)){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_universities',
-                                              array('`university_name`' => $this->getName(),
-						    '`short_name`' => $this->getShortName(),
-                                                    '`province_id`' => $this->getProvince(),
-                                                    '`latitude`' => $this->getLatitude(),
-						    '`longitude`' => $this->getLongitude(),
-						    '`order`' => $this->getOrder(),
-						    '`default`' => $this->isDefault()
-						   ),true);
+                                              array('university_name' => $this->getName(),
+						                            'short_name' => $this->getShortName(),
+                                                    'province_id' => $this->getProvince(),
+                                                    'latitude' => $this->getLatitude(),
+						                            'longitude' => $this->getLongitude(),
+						                            '`order`' => $this->getOrder()),true);
                 if($status){
                     DBFunctions::commit();
                     return true;
                 }
             }
-            return false; 
+            return true; 
    }
     
     
@@ -158,7 +162,7 @@ ORDER BY `dist` ASC";
     
     function getProvince(){
         if($this->province == ""){
-            $this->province = $this->findProvince($this->province_string);
+            $this->province = $this->findProvince($this->provinceString);
         }
         return $this->province;
     }
@@ -223,6 +227,17 @@ ORDER BY `dist` ASC";
         $data = DBFunctions::execSQL($sql);
 	if(count($data)>0){
 	    return $data[0]['id'];
+	}
+	$status = DBFunctions::insert('grand_provinces',
+                                     array('province' => $prov),true);
+	if($status){
+            $sql = "SELECT *
+                    FROM grand_provinces
+                    WHERE province LIKE '$prov'";
+            $data = DBFunctions::execSQL($sql);
+            if(count($data)>0){
+                return $data[0]['id'];
+            }
 	}
 	return 1;
     }

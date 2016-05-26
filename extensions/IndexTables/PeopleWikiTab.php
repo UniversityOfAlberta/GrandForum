@@ -6,7 +6,7 @@ class PeopleWikiTab extends AbstractTab {
     var $visibility;
 
     function PeopleWikiTab($table, $visibility){
-        parent::AbstractTab("Wiki");
+        parent::AbstractTab("Resources");
         $this->table = $table;
         $this->visibility = $visibility;
     }
@@ -63,7 +63,8 @@ class PeopleWikiTab extends AbstractTab {
         if(!$this->visibility['isMember'] && false){
             return $this->html;
         }
-        $this->html .= "Below are all the $this->table Wikipages and Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.<br /><br />"; 
+        $this->html .= "<span class='en' style='display:none'>Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.</span><span class='fr' style='display:none'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
+</span><br /><br />"; 
         $this->html .= "<script type='text/javascript'>
             function clickButton(){
                 clearWarning();
@@ -90,7 +91,7 @@ class PeopleWikiTab extends AbstractTab {
                 return false;
             }
         </script>
-        <a class='button' id='newWikiPage'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>Upload File</a>
+        <a class='button' id='newWikiPage' style='display:none;'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>Upload File</a>
         <div id='newWikiPageDiv' style='display:none;'>
             <h2>Create New Wiki Page</h2>
             <form action='' onSubmit='clickButton'>
@@ -124,7 +125,7 @@ class PeopleWikiTab extends AbstractTab {
                 $('#newFileDiv').show('fast');
             });
         </script>";
-        
+       /* 
 	$pages = Wiki::getWikiPages($this->table);
         $this->html .= "<h2>Wiki Pages</h2><table id='projectWikiPages' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";
@@ -148,7 +149,7 @@ class PeopleWikiTab extends AbstractTab {
             }
         }
         $this->html .= "</tbody></table>";
-        
+        */
         $pages = Wiki::getFiles($this->table);
         $this->html .= "<h2>Uploaded Files</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";

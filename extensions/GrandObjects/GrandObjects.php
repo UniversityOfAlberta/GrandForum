@@ -45,6 +45,8 @@ $apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', new Pr
 // University
 $apiRequest->addAction('Hidden','university', new UniversityAPI());
 $apiRequest->addAction('Hidden','university/:id', new UniversityAPI());
+$apiRequest->addAction('Hidden','university/:lat/:long', new UniversityNearestAPI());
+
 // Wiki
 $apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
 $apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
@@ -54,6 +56,7 @@ $apiRequest->addAction('Hidden','story/:id', new StoryAPI());
 $apiRequest->addAction('Hidden', 'story/:id/author', new PersonStoryAPI());
 $apiRequest->addAction('Hidden','stories', new StoriesAPI());
 $apiRequest->addAction('Hidden','storycomments', new StoryCommentAPI());
+$apiRequest->addAction('Hidden','storycomment', new StoryCommentAPI());
 $apiRequest->addAction('Hidden','storycomment/:id', new StoryCommentAPI());
 
 //Thread

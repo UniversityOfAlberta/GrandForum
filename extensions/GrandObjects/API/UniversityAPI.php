@@ -21,13 +21,14 @@ class UniversityAPI extends RESTAPI {
         $uni->setName($this->POST('name'));
         $uni->setShortName($this->POST('address'));
         $uni->setLatitude($this->POST('latitude'));
-	$uni->setLongitude($this->POST('longitude'));
-	$uni->setProvinceString($this->POST('province_string'));
+	    $uni->setLongitude($this->POST('longitude'));
+	    $uni->setProvinceString($this->POST('province_string'));
         $status = $uni->create();
         if(!$status){
             $this->throwError("There was an error");
         }
-        return true;
+        $uni = University::newFromName($this->POST('name'));
+        return $uni->toJSON();
     }
     
     function doPUT(){
@@ -38,6 +39,34 @@ class UniversityAPI extends RESTAPI {
         return $this->doGet();
     }
 	
+}
+
+class UniversityNearestAPI extends RESTAPI {
+
+    function doGET(){
+        $lat = $this->getParam('lat');
+	$long = $this->getParam('long');
+        if(strpos($lat,"-") === false){
+            $lat = "+".$lat;
+        }
+        if(strpos($long,"-") === false){
+            $long = "+".$long;
+        }
+        $unis = new Collection(University::getNearestUniversity($lat,$long));
+        return $unis->toJSON();
+    }
+
+    function doPOST(){
+        return doGET();
+    }
+
+    function doPUT(){
+        return doGET();
+    }
+
+    function doDELETE(){
+        return doGET();
+    }
 }
 
 ?>

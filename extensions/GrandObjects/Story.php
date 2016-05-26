@@ -165,8 +165,8 @@ class Story extends BackboneModel{
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_user_stories',
                                               array('id' => $id,
-						    'user_id' => $this->user,
-						    'title' => $this->getTitle(),
+						                            'user_id' => $this->user,
+						                            'title' => $this->getTitle(),
                                                     'story' => $this->getStory(),
                                                     'approved' => 0),true);
                 if($status){

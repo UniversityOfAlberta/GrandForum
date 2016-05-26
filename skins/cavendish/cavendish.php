@@ -388,17 +388,27 @@ class CavendishTemplate extends QuickTemplate {
 		                });
 		            }
                 });*/
-
-		    if(wgLang == 'en'){
-			$('#en_button').css('font-weight','bold');
-			$('.en').show();
-			$('.fr').remove();
-		    }
-		    else{
+            setInterval(function(){
+                    if(wgLang == 'en'){
+                        $('#en_button').css('font-weight','bold');
+                        $('.en').show();
+                        $('.fr').remove();
+                    }
+                    else{
                         $('#fr_button').css('font-weight','bold');
-			$('.fr').show();
-			$('.en').remove();
-		    }
+                        $('.fr').show();
+                        $('.en').remove();
+                    }
+
+                    if(me.isLoggedIn()){
+                        $('.welcome').show();
+                        $('.intro').remove();
+                    }
+                    if(!me.isLoggedIn()){
+                        $('.welcome').remove();
+                        $('.intro').show();
+                    }
+                }, 100);
                 
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
@@ -689,7 +699,7 @@ $(function(){
             echo "</div>";
             if($wgUser->isLoggedIn()){
                 echo "<div class='login'>";
-                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; width:26px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
                 if(!$wgImpersonating && !$wgDelegating){
                     $logout = $this->data['personal_urls']['logout'];
                     $getStr = "";
@@ -705,7 +715,7 @@ $(function(){
                         }
                     }
                     $logout['href'] .= urlencode($getStr);
-                    echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 14px;line-height:14px;display:inline-block;width:74px;' title='Logout' href='{$logout['href']}'>Logout&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
+                    echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 13px;line-height:12px;display:inline-block;width:74px;' title='Logout' href='{$logout['href']}'>Logout&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
                 }
                 echo "</div>";
             }
@@ -740,12 +750,20 @@ $(function(){
 		    <a name="top" id="contentTop"></a>
             <ul class="top-nav">
             <?php 
-		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
+		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config, $wgLang;
                 $GLOBALS['tabs'] = array();
                 
                 $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
-                $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+                $title = "CAPS";
+                if($wgLang->getCode() == "fr"){
+                    $title ="CPCA";
+                }
+                $GLOBALS['tabs']['Main'] = TabUtils::createTab($title, "$wgServer$wgScriptPath/index.php/Main_Page");
+		$title = "My Profile";
+		if($wgLang->getCode() == "fr"){
+		    $title ="Mon Profil";
+		}
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab($title);
                 $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                 
 	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
@@ -899,12 +917,19 @@ $(function(){
 ?>
 	<li class="portlet" id="p-tb">
 <?php
-	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
+	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config, $wgLang;
 	    $GLOBALS['toolbox'] = array();
-        
-        $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
+        $title = "People";
+	if($wgLang->getCode() == "fr"){
+	    $title = "Gens";
+	} 
+        $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader($title);
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
-        $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
+        $title = "Actions";
+        if($wgLang->getCode() == "fr"){
+            $title = "Actes";
+        } 
+        $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader($title);
  
 		if($wgUser->isLoggedIn()){
 		    echo "
@@ -941,9 +966,36 @@ $(function(){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-	        global $toolbox;
+        $title = "Frequently Asked Questions";
+        if($wgLang->getCode() == "fr"){
+            $title = "Questions Fréquemment Posées";
+        }
+                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Help:Contents");
+		$person = Person::newFromId($wgUser->getId());
+		if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
+        $title = "Other Tools";
+        if($wgLang->getCode() == "fr"){
+            $title = "Autres Outils";
+        }
+	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        }
+		global $toolbox;
 	        $i = 0;
+        $title = "Take a Poll";
+        if($wgLang->getCode() == "fr"){
+            $title = "Prendre un Sondage";
+        }
+
+                $poll_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyPolls"));
+        $title = "Helpful Resources";
+        if($wgLang->getCode() == "fr"){
+            $title = "Ressources utiles";
+        }
+
+                $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/CAPS:ALL_Resources"));
+
+                array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
+                array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
@@ -1146,7 +1198,7 @@ $emailPassword
 </li>
 EOF;
             echo <<< EOF
-        <br />
+        <br />f
         <span class='pBodyTitle0'>Member Registration</span>
         <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
 EOF;

@@ -62,7 +62,7 @@ StoryEditView = Backbone.View.extend({
                 this.$(".throbber").hide();
                 this.$("#saveStory").prop('disabled', false);
                 clearAllMessages();
-                addError("There was a problem saving the Story", true);
+                addError("There was a problem saving the case", true);
             }, this)
         });
     },

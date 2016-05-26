@@ -1,19 +1,40 @@
-<div>
+<div class='en'>
     <p>
     This page is used to search through a list of pharmacies that provide Mifepristone. To search for a pharmacy in your location, enter your address in the address box and hit "Enter". The closest 10 searches will be plotted on the map. Click on the plots to read more information about the Pharmacy.
     </p>
     <p>
     </p>
 </div>
+<div class='fr'>
+    <p>
+Cette page est utilisée pour rechercher dans une liste de pharmacies qui fournissent mifépristone . Pour rechercher une pharmacie dans votre région , entrez votre adresse dans le champ d'adresse et appuyez sur " Entrée" . Les plus proches de 10 recherches seront tracées sur la carte . Cliquez sur les parcelles pour lire plus d'informations sur la pharmacie .
+    </p>
+</div>
 <br />
 <table>
      <tbody>
-	<tr><td align=right>Name of Pharmacy:</td><td> <input type="text" id="name" style="width:399px" /></td></tr>
-	<tr><td align=right>Address: </td><td> <input type="text" id="lat" style="width:399px" /></td></tr>
-	<tr><td align=right>Province: </td><td> <input type="text" id="prov" style="width:399px" /></td></tr>
-	<tr><div>
-    	    <button id="addPharmacy">Add Pharmacy</button>
-	</div></tr>
+	<tr><td align=right><span class='en' style='display:none'>Name of Pharmacy</span><span class='fr' style='display:none'>Nom de la Pharmacie:</span></td><td> <input type="text" id="name" style="width:399px" /></td></tr>
+	<tr><td align=right><span class='en' style='display:none'>Address</span><span class='fr' style='display:none'>Adresse</span></td><td> <input type="text" id="lat" style="width:399px" /></td></tr>
+	<tr><td align=right>Province:</td><td><select style="width:415px;" id='prov' class='chzn-select'>
+                  <option value="Alberta">Alberta</option>
+                  <option value="British Columbia">British Columbia</option>
+                  <option value="Manitoba">Manitoba</option>
+                  <option value="New Brunswick">New Brunswick</option>
+                  <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                  <option value="Northwest Territories">Northwest Territories</option>
+                  <option value="Nova Scotia">Nova Scotia</option>
+                  <option value="Nunavut">Nunavut</option>
+                  <option value="Ontario">Ontario</option>
+                  <option value="Prince Edward Island">Prince Edward Island</option>
+                  <option value="Quebec">Quebec</option>
+                  <option value="Saskatchewan">Saskatchewan</option>
+                  <option value="Yukon">Yukon</option>
+</select></td></tr>
      </tbody>
 </table>
-<div id="map"></div>
+<div align=right style="width:52.5%; margin-bottom:3em">
+            <button id="addPharmacy"><span class='en' style='display:none'>Add Pharmacy</span><span class='fr' style='display:none'>Ajouter une Pharmacie</span></button>
+</div>
+<div id="map-container">
+    <div id="map"></div>
+</div>

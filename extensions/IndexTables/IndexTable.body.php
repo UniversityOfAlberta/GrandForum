@@ -161,45 +161,63 @@ class IndexTable {
 				case 'Multimedia':
 				    $wgOut->setPageTitle("Multimedia");
 				    $this->generateMaterialsTable();
+                                TabUtils::clearActions();
+
 				    break;
 				case 'Forms':
 				    if($me->isRoleAtLeast(MANAGER)){
 				        $wgOut->setPageTitle("Forms");
 				        $this->generateFormsTable();
+                                TabUtils::clearActions();
+
 				    }
 				    break;
 			    case 'Projects':
 			        $wgOut->setPageTitle("Current Projects");
 				    $this->generateProjectsTable('Active', 'Research');
+                                TabUtils::clearActions();
+
 				    break;
 				case 'CompletedProjects':
 			        $wgOut->setPageTitle("Completed Projects");
 				    $this->generateProjectsTable('Ended', 'Research');
+                                TabUtils::clearActions();
+
 				    break;
 				case 'AdminProjects':
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
 				    $this->generateAdminTable();
+                                TabUtils::clearActions();
+
 				    break;
 			    case Inflect::pluralize($config->getValue('projectThemes')):
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
 				    $this->generateThemesTable();
+                                TabUtils::clearActions();
+
 				    break;
                            case 'ALL Stories':
-                                $wgOut->setPageTitle("User Stories");
+                                $wgOut->setPageTitle("User Cases");
                                 $this->generateUserStoriesTable();
+                                TabUtils::clearActions();
                                 break;
+			   case 'ALL Resources':
+				$wgOut->setPageTitle("All Resources");
+				$this->generatePersonTable("Resources");	
+			        break;
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
 			    if($role != "Expert" || $me->isRoleAtLeast(STAFF)){
 			    $wgOut->setPageTitle($config->getValue('roleDefs', $role));
 				            $this->generatePersonTable($role);
+                                TabUtils::clearActions();
+
 			    }
                         }
                     }
 				    break;
 			}
-			TabUtils::clearActions();
 			$wgOut->addHTML($this->text);
 			$wgOut->output();
 			$wgOut->disable();
@@ -366,12 +384,18 @@ EOF;
 	 * User Page | Projects | Twitter
 	 */
 	private function generatePersonTable($table){
+	    global $wgAllRoles;
 	    $me = Person::newFromWgUser();
 	    $tabbedPage = new TabbedPage("people");
 	    $visibility = true;
-	    $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
-	    if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
-            	$tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+	    if(in_array($table,$wgAllRoles)){
+	        $tabbedPage->addTab(new PeopleTableTab($table, $visibility));
+	        if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
+            	    $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+	        }
+	    }
+	    else{
+                $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
 	    }
             $tabbedPage->showPage();
 		return true;
@@ -449,7 +473,7 @@ EOF;
 	    if(!$wgUser->isLoggedIn()){
 		    permissionError();
 	    }
-	    $this->text .= "Below are all the current stories in {$config->getValue('networkName')}.  To search for a story in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
+	    $this->text .= "Below are all the current cases in {$config->getValue('networkName')}.  To search for a case in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
 
         $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
@@ -460,7 +484,7 @@ EOF;
         $stories = Story::getAllUserStories();
         foreach($stories as $story){
 		    if($story->getApproved()){
-                    $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".$story->getTitle()."</a></td>
+                    $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".str_replace(">","&gt",str_replace("<","&lt;",$story->getTitle()))."</a></td>
                                     <td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>
                                     <td style='white-space: nowrap;'>".$story->getDateSubmitted()."</td></tr>";
 		    }

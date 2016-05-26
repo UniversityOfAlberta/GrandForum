@@ -1,14 +1,40 @@
 PharmacyMapView = Backbone.View.extend({
     template: _.template($('#pharmacy_map_template').html()),
     map: null,
-    lat:null,
+    lat:53.7608608,
+    long:-98.8138763,
+    zoom:4,
+
     initialize: function(){
         this.model.bind('sync', this.render);//change to on
     },
 
     events:{
         "click #addPharmacy": "addPharmacy",
+        "click #findLocation": "findLocation"
 
+    },
+
+    findLocation: function(){
+        if (navigator.geolocation) {
+        	navigator.geolocation.getCurrentPosition($.proxy(function(position) {
+          	    var pos = {
+                	lat: position.coords.latitude,
+                	lng: position.coords.longitude
+          	    };
+	            this.lat = position.coords.latitude;
+	            this.long = position.coords.longitude;
+                this.model.lat = this.lat;
+                this.model.long = this.long;
+                this.model.fetch();
+                this.map.setCenter(pos);
+                this.zoom = 10;
+            },this), function() {
+        	});
+         }
+         else{
+            map.setCenter(map.getCenter());
+         }
     },
 
     addPharmacy: function(){
@@ -18,44 +44,49 @@ PharmacyMapView = Backbone.View.extend({
     initMap: function(){
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
-	    center:{lat:43.6560817, lng:-79.390945},
-	    zoom:8,
+	    center:{lat:this.lat, lng:this.long},
+	    zoom:this.zoom,
 	    width:'100%'
 	});
+	this.map = map;
 
 	var input = document.getElementById('lat');
 	var searchBox = new google.maps.places.SearchBox(input);
-	//map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);	
 
 	map.addListener('bounds_changed', function (){
 	    searchBox.setBounds(map.getBounds());
 	});
 
 	var markers = [];	
-	searchBox.addListener('places_changed', function(){
+	searchBox.addListener('places_changed',$.proxy(function(){
 	    var places = searchBox.getPlaces();
 	    if(places.length == 0){
 		return;
 	    }
 	    
 	    var bounds = new google.maps.LatLngBounds();
-	    places.forEach(function(place){
-	        this.lat = place.geometry.location.lat();//use this to save  .lng() for longittude
-//		console.log(place);
+	    places.forEach($.proxy(function(place){
+	        this.lat = place.geometry.location.lat();
+	        this.long = place.geometry.location.lng();
+            console.log(this.lat, this.long);
+            this.model.lat = this.lat;
+            this.model.long = this.long;
+            this.model.fetch();
+
 		if (place.geometry.viewport){
 		    bounds.union(place.geometry.viewport);
 		} else {
 		    bounds.extend(place.geometry.location);
 		}
-	     });
+	     }, this));
 	     if(places.length >1){
 		 map.fitBounds(bounds);
 	     }
 	     else if(places.length==1){
 	         map.setCenter(bounds.getCenter());
-	         map.setZoom(17);
+	         this.zoom = 10;
 	     }
-        });
+        }, this));
     },
 
     AddMarkers: function(group){
@@ -70,7 +101,7 @@ PharmacyMapView = Backbone.View.extend({
 		});
 
 		var infowindow = new google.maps.InfoWindow({
-    		    content: val.name
+    		    content: val.name + "<br>" + val.shortName
   		});
 
   		marker.addListener('click', function(){
@@ -81,12 +112,16 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', 'Locate a Pharmacy (In development)');
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
 	this.initMap();
-	this.AddMarkers(data); 
+        var empty = [];
+        this.AddMarkers(empty);
+	this.AddMarkers(data);
+	var title = $("#pageTitle").clone();
+	$(title).attr('id', 'copiedTitle');
+	this.$el.prepend(title);
         return this.$el;
     }
 

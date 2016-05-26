@@ -15,11 +15,7 @@ class StoryCommentAPI extends RESTAPI {
     function doPOST(){
         $me = Person::newFromWgUser();
         $post = new StoryComment(array());
-	$thread = Thread::newFromId($this->POST('thread_id'));
-        if(!$thread->canView()){
-            permissionError();
-        }
-        $post->setThreadId($this->POST('thread_id'));
+        $post->setStoryId($this->POST('story_id'));
         $post->setUserId($me->getId());
         $post->setMessage($this->POST('message'));
         $post = $post->create();

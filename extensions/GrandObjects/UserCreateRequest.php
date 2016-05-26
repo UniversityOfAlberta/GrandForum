@@ -21,7 +21,7 @@ class UserCreateRequest {
     var $created;
     var $ignored;
     var $lastModified;
-    
+    var $extras;    
     static function getAllRequests($history=false){
         if($history){
             $data = DBFunctions::select(array('grand_user_request'),
@@ -69,6 +69,7 @@ class UserCreateRequest {
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
+	    $this->extras = $data[0]['extras'];
         }
     }
     
@@ -122,6 +123,10 @@ class UserCreateRequest {
             return "No";
         }
         return $this->candidate;
+    }
+
+    function getExtras(){
+	return unserialize($this->extras);
     }
     
     function isCreated(){

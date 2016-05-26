@@ -6,9 +6,9 @@
 <h2>Information</h2>
 <b>Date Submitted:</b> <%= date_submitted  %><br>
 <b>Approved:</b> <% if(approved==1){ %>Yes<%} else{ %> No <% } %>
-<% if(parseInt(me.get('id')) > 0) { %>
+<% if(parseInt(me.get('id')) > 0 && approved ==0) { %>
     <br /><br />
-    <button id='editStory'>Edit Story</button>
+    <button id='editStory'>Edit Case or Experience</button>
 <% } %>
 <br />
 <b>Comments:</b>

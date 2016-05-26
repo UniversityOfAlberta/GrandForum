@@ -255,10 +255,6 @@ EOF;
     function showEditProfile($person, $visibility){
         global $config;
         $this->html .= "
-                           
-                                <h3>Live on Website:</h3>
-                                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
-			  
                             
                                 <h3>Live on Forum:</h3>
                                 <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>

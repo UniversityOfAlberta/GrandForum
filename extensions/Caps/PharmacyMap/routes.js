@@ -28,6 +28,10 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
+    main.set('title', 'Locate a Pharmacy');
+    if(wgLang == 'fr'){
+        main.set('title', 'Localiser une Pharmacie');
+    }
     this.closeCurrentView();
     var pharms = new Universities();
     pharms.fetch();
@@ -35,14 +39,14 @@ pageRouter.on('route:defaultRoute', function (actions) {
 });
 
 pageRouter.on('route:addPharm', function (actions) {
+    main.set('title', 'Add a Pharmacy');
+    if(wgLang == 'fr'){
+        main.set('title', 'Ajouter une Pharmacie');
+    }
     this.closeCurrentView();
     var pharms = new University();
     pharms.fetch();
     this.currentView = new PharmacyAddView({el: $("#currentView"), model: pharms});
-   /*this.closeCurrentView();
-    var pharms = new Universities();
-    pharms.fetch();
-    this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});*/
 });
 
 

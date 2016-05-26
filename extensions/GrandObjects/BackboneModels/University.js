@@ -18,9 +18,13 @@ University = Backbone.Model.extend({
 });
 
 Universities = Backbone.Collection.extend({
-    
     model: University,
     
-    url: 'index.php?action=api.university' 
-    
+    url: function(){
+	var url = 'index.php?action=api.university/';
+	if(this.lat != null && this.long != null){
+	    url = 'index.php?action=api.university/'+this.lat+'/'+this.long;
+	}
+	return url;
+    }
 });

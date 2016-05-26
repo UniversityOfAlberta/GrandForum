@@ -56,7 +56,7 @@ class MyMailingLists extends SpecialPage{
     }
     
     static function createTab(&$tabs){
-        global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
+        global $wgUser, $wgTitle, $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
             $selected = "";
@@ -64,7 +64,11 @@ class MyMailingLists extends SpecialPage{
                ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){
                 $selected = "selected";
             }
-            $tabs["MailingLists"] = TabUtils::createTab("My Mailing Lists", "$wgServer$wgScriptPath/index.php/Special:MyMailingLists", $selected);
+                $title = "My Mailing Lists";
+                if($wgLang->getCode() == "fr"){
+                    $title ="Mes Listes de Diffusion";
+                }
+            $tabs["MailingLists"] = TabUtils::createTab($title, "$wgServer$wgScriptPath/index.php/Special:MyMailingLists", $selected);
         }
         return true;
     }

@@ -25,7 +25,7 @@ class MyPolls extends SpecialPage{
 		foreach($rows as $row){
 			$collection = PollCollection::newFromId($row['collection_id']);
 			$canUserViewPoll = $collection->canUserViewPoll($wgUser);
-			if($canUserViewPoll && $wgUser->getId() == $collection->author->getId()){
+			if($canUserViewPoll){
 				$collections[] = $collection;
 			}
 		}

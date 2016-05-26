@@ -1,17 +1,17 @@
 <table>
 <tr>
-    <td><b>Title:</b></td>
+    <td><b><span class='en' style='display:none'>Title:</span><span class='fr' style='display:none'>Titre:</span></b></td>
     <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
 </tr>
 </table>
-<h2>Story</h2>
+<h2><span class='en' style='display:none'>Case</span><span class='fr' style='display:none'>Cas</span></h2>
 <%= HTML.TextArea(this, 'story', {style: 'max-height: 300px; max-width:600px; resize: none;'}) %>
 <% if(!this.isDialog){ %>
     <br />
 <% } %>
 <% if(!this.isDialog){ %>
     <div style="width:180px;display:inline-block;">
-        <button id='saveStory'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Story </button><span class="throbber" style="display:none;"></span>
+        <button id='saveStory'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Case </button><span class="throbber" style="display:none;"></span>
     </div>
     <div style="width:180px;display:inline-block;">
         <button id='cancel'>Cancel</button>

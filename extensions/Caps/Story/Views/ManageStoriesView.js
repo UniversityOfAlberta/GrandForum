@@ -47,7 +47,7 @@ ManageStoriesView = Backbone.View.extend({
         var view = new StoryEditView({el: this.editDialog, model: model, isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
-            height: $(window).height()*0.60,
+            height: $(window).height()*0.80,
             width: 650
         });
         this.editDialog.dialog('open');
@@ -61,6 +61,10 @@ ManageStoriesView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+	var text = "Share Case or Experience";
+	if(wgLang == 'fr'){
+	    text = "Partager le Cas ou de L'experience";
+	}
         this.editDialog = this.$("#editDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
@@ -76,7 +80,7 @@ ManageStoriesView = Backbone.View.extend({
 	        },
 	        buttons: [
 		     {
-			   text: "Save Story",
+			   text: text,
                            click: $.proxy(function(){
                            this.editDialog.view.model.save(null, {
                                 success: $.proxy(function(){

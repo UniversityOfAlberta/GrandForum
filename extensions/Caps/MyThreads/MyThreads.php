@@ -38,9 +38,14 @@ class MyThreads extends BackbonePage {
     }
     
     static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $wgUser;
+        global $wgServer, $wgScriptPath, $wgUser, $wgLang;
+	$title = "Ask an Expert";
+	if($wgLang->getCode() == "fr"){
+	     $title = "Demandez à un Expert";
+	}
+
         if(self::userCanExecute($wgUser)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Ask an Expert", "$wgServer$wgScriptPath/index.php/Special:MyThreads");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyThreads");
         }
         return true;
     }
