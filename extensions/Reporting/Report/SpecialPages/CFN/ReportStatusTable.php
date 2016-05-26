@@ -75,7 +75,7 @@ class ReportStatusTable extends SpecialPage{
         $this->addProjectTable(RP_PROGRESS,         'progress', 2015);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',    $ifpFinal, 2015);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015', $ifpProgress, 2015);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',    $ifp2016Final, 2016);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',    $ifp2016Final, 2015);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016', $ifpProgress, 2016);
         $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa, 2015);
         $wgOut->addHTML("</div>");
