@@ -768,13 +768,39 @@ class Paper extends BackboneModel{
                    isset(self::$illegalAuthorsCache[$person->getNameForForms()]) ||
                    isset(self::$illegalAuthorsCache[$person->getId()])){
                     // Ok this person is not in the db, make a fake Person object
+                    $author = preg_replace('/\s+/', ' ', $author);
+                    $names = explode(" ", $author);
+                    $first = @str_replace(".", "", str_replace('"', "", $names[0]));
+                    $last = "";
+                    $mNames = "";
+                    if(count($names) > 1){
+                        $last = @str_replace(".", "",  str_replace('"', "", $names[count($names)-1]));
+                        if(count($names) > 2){
+                            $mNames = array_slice($names, 1);
+                            $mNames = array_slice($mNames, 0, count($mNames)-1);
+                            $mNames = str_replace(".", "", implode(" ", $mNames));
+                        }
+                    }
+                    if((strlen($last) == 1 || strtoupper($last) == $last) && strlen($first) > 1){
+                        // Simple check to see if last/first name format is reversed
+                        $tmpLast = $last;
+                        $last = $first;
+                        $first = $tmpLast;
+                    }
+                    if(strlen($first) > 1 && strtoupper($first) == $first){
+                        // The first name is probably just initials
+                        $firstTmp = $first;
+                        $first = $firstTmp[0];
+                        $mNames = $firstTmp[1];
+                    }
+                    
                     $pdata = array();
                     $pdata[0]['user_id'] = "";
                     $pdata[0]['user_name'] = $author;
                     $pdata[0]['user_real_name'] = $author;
-                    $pdata[0]['first_name'] = "";
-                    $pdata[0]['middle_name'] = "";
-                    $pdata[0]['last_name'] = "";
+                    $pdata[0]['first_name'] = $first;
+                    $pdata[0]['middle_name'] = $mNames;
+                    $pdata[0]['last_name'] = $last;
                     $pdata[0]['prev_first_name'] = "";
                     $pdata[0]['prev_last_name'] = "";
                     $pdata[0]['honorific'] = "";
@@ -1560,19 +1586,19 @@ class Paper extends BackboneModel{
 
     function toArray(){
         $me = Person::newFromWgUser();
-        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+        /*if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             return $json;
         }
-        else{
+        else{*/
             $authors = array();
             $projects = array();
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
-				   'fullname' => $author->getNameForForms(),
+                                   'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){
@@ -1606,7 +1632,7 @@ class Paper extends BackboneModel{
                 Cache::store($this->getCacheId(), $json, 60*60);
             }
             return $json;
-        }
+        //}
     }
     
     function exists(){

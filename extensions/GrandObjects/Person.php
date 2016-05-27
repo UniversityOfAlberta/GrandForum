@@ -1488,9 +1488,9 @@ class Person extends BackboneModel {
 
     function getNameForProduct(){
         global $config;
-        if($this->getId() == 0){
+        /*if($this->getId() == 0){
             return $this->getNameForForms();
-        }
+        }*/
         $firstname = $this->getFirstName();
         $middlename = $this->getMiddleName();
         $lastname = $this->getLastName();
@@ -1498,6 +1498,7 @@ class Person extends BackboneModel {
         $regex = "/\{.*?\}/";
         $format = strtolower($config->getValue("nameFormat"));
         $format = preg_replace_callback($regex,"self::formatName",$format);
+        $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
         return $format;
     }
 
