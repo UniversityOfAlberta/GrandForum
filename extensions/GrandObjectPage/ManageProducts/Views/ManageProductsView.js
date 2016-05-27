@@ -16,6 +16,7 @@ ManageProductsView = Backbone.View.extend({
     duplicatesDialog: null,
 
     initialize: function(){
+        this.subViews = new Array();
         this.allProjects = new Projects();
         this.allProjects.fetch();
         this.template = _.template($('#manage_products_template').html());

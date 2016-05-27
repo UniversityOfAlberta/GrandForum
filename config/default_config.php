@@ -76,7 +76,7 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
 
-    $config->setValue("nameFormat", "{%First} {%Last}");
+    $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
@@ -86,6 +86,9 @@
 
     // Whether or not HQPs are public
     $config->setValue("hqpIsPublic", false);
+    
+    // Whether or not to include HQP Products for supervisors
+    $config->setValue("includeHQPProducts", true);
     
     // Whether or not to allow bigBetProjects
     $config->setValue("bigBetProjects", false);

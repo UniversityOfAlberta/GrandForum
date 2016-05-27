@@ -18,16 +18,28 @@ foreach($categories as $category){
     $persRow[] = STRUCT(PERSON_PRODUCTS, $category, REPORTING_CYCLE_START, REPORTING_NCE_END);
     $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, REPORTING_CYCLE_START, REPORTING_NCE_END);
 }
+    
+$dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_START, $end=REPORTING_NCE_END){
+    $productStructure = Product::structure();
+    $categories = array_keys($productStructure['categories']);
 
-$dashboardStructures[HQP_REPORT_STRUCTURE] =
-    array(array_merge(array(HEAD."(Projects)"), $head, array(HEAD."(Multimedia)")),
-          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array_merge(
+    $head = array();
+    $persRow = array();
+    $projRow = array();
+    foreach($categories as $category){
+        $head[] = HEAD."(".Inflect::pluralize($category).")";
+        $persRow[] = STRUCT(PERSON_PRODUCTS, $category, $start, $end);
+        $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, $start, $end);
+    }
+    return array(array_merge(array(HEAD."(Projects)"), $head, array(HEAD."(Multimedia)")),
+          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, $start, $end))),
+          STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, $start, $end) => array_merge(
                                                             array(PERSON_PROJECTS),
                                                             $persRow,
-                                                            array(STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END)))
-    );
+                                                            array(STRUCT(PERSON_MULTIMEDIA, $start, $end))),
+          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, $start, $end)))
+    );  
+};
 
 $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
     array(array_merge(array(HEAD."(People)"), $head, array(HEAD."(Multimedia)")),

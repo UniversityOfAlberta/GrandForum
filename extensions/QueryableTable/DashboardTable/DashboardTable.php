@@ -34,25 +34,35 @@ class DashboardTable extends QueryableTable{
         global $dashboardStructures;
         $this->QueryableTable();
         $this->obj = $obj;
-        $this->structure = $dashboardStructures[$structure];
-        if($start != null && $end != null){
-            foreach($this->structure as $rowN => $row){
-                foreach($row as $colN => $cell){
-                     if(!is_numeric($cell)){
-                        $splitRow = explode('(', $cell);
-                        $type = $splitRow[0];
-                    }
-                    else{
-                        $type = $cell;
-                    }
-                    if($type >= 0){
-                        if(strstr($cell, ")") !== false){
-                            $cell = str_replace_first(")", ",$start,$end)", $cell);
+        if(is_callable($dashboardStructures[$structure])){
+            if($start != null && $end != null){
+                $this->structure = $dashboardStructures[$structure]($start, $end);
+            }
+            else{
+                $this->structure = $dashboardStructures[$structure]();
+            }
+        }
+        else{
+            $this->structure = $dashboardStructures[$structure];
+            if($start != null && $end != null){
+                foreach($this->structure as $rowN => $row){
+                    foreach($row as $colN => $cell){
+                         if(!is_numeric($cell)){
+                            $splitRow = explode('(', $cell);
+                            $type = $splitRow[0];
                         }
                         else{
-                            $cell = $cell."($start,$end)";
+                            $type = $cell;
                         }
-                        $this->structure[$rowN][$colN] = $cell;
+                        if($type >= 0){
+                            if(strstr($cell, ")") !== false){
+                                $cell = str_replace_first(")", ",$start,$end)", $cell);
+                            }
+                            else{
+                                $cell = $cell."($start,$end)";
+                            }
+                            $this->structure[$rowN][$colN] = $cell;
+                        }
                     }
                 }
             }

@@ -1488,9 +1488,9 @@ class Person extends BackboneModel {
 
     function getNameForProduct(){
         global $config;
-        if($this->getId() == 0){
+        /*if($this->getId() == 0){
             return $this->getNameForForms();
-        }
+        }*/
         $firstname = $this->getFirstName();
         $middlename = $this->getMiddleName();
         $lastname = $this->getLastName();
@@ -1498,6 +1498,7 @@ class Person extends BackboneModel {
         $regex = "/\{.*?\}/";
         $format = strtolower($config->getValue("nameFormat"));
         $format = preg_replace_callback($regex,"self::formatName",$format);
+        $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
         return $format;
     }
 
@@ -3368,6 +3369,23 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of start/end dates for when the given supervisor supervised this Person
+     * @param Person $supervisor The Person that supervised this Person
+     * @return array The start/end dates of the relation(s)
+     */
+    function getSupervisorDates($supervisor){
+        $dates = array();
+        $relations = $supervisor->getRelations(SUPERVISES, true);
+        foreach($relations as $relation){
+            if($relation->getUser2()->getId() == $this->getId()){
+                $dates[] = array('start'  => $relation->getStartDate(), 
+                                 'end'    => $relation->getEndDate());
+            }
+        }
+        return $dates;
+    }
+    
+    /**
      * Returns and array of Person objects who this Person can delegate
      * @return array The list of People who this Person can delegate
      */
@@ -3406,21 +3424,36 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
+        global $config;
         $me = Person::newFromWgUser();
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
         $papers = array();
-        foreach($this->getHQP($history) as $hqp){
-            $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access);
-            foreach($ps as $p){
-                if(!isset($processed[$p->getId()])){
-                    $processed[$p->getId()] = true;
-                    $papersArray[] = $p;
+        if($config->getValue("includeHQPProducts")){
+            foreach($this->getHQP($history) as $hqp){
+                $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access);
+                foreach($ps as $p){
+                    if(!isset($processed[$p->getId()])){
+                        $processed[$p->getId()] = true;
+                        $papersArray[] = $p;
+                    }
                 }
+                /*$dates = $hqp->getSupervisorDates($this);
+                foreach($dates as $date){
+                    if($date['end'] == '0000-00-00 00:00:00'){
+                        $date['end'] = '2100-01-01 00:00:00';
+                    }
+                    $ps = $hqp->getPapersAuthored($category, $date['start'], $date['end'], false, ($grand=='grand'));
+                    foreach($ps as $p){
+                        if(!isset($processed[$p->getId()])){
+                            $processed[$p->getId()] = true;
+                            $papersArray[] = $p;
+                        }
+                    }
+                }*/
             }
         }
-        
         if(isset(self::$authorshipCache[$this->id])){
             foreach(self::$authorshipCache[$this->id] as $id){
                 if(!isset($processed[$id])){
@@ -3470,12 +3503,14 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
     function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
+        global $config;
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
         $papers = array();
-        if($includeHQP){
+        if($includeHQP && $config->getValue("includeHQPProducts")){
             foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
+                // Probably need to add $dates = $hqp->getSupervisorDates($this); like in the previous function
                 $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){

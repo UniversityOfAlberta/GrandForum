@@ -52,6 +52,7 @@ class PersonProfileTab extends AbstractEditableTab {
                     
                     table.column(1).visible(false);
                     table.column(2).visible(false);
+                    table.column(3).visible(false);
                 }
                 else{
                     $('td#firstRight').show();
@@ -59,6 +60,7 @@ class PersonProfileTab extends AbstractEditableTab {
                     
                     table.column(1).visible(true);
                     table.column(2).visible(true);
+                    table.column(3).visible(true);
                 }
             }, 33);
         </script>";
@@ -398,7 +400,7 @@ EOF;
             $string .= "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Date</th><th>Authors</th>
+                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -420,6 +422,7 @@ EOF;
                 
                 $string .= "<tr>";
                 $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
+                $string .= "<td>{$paper->getCategory()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
                 
@@ -429,7 +432,7 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     var personProducts = $('#personProducts').dataTable({
-                        'order': [[ 1, 'desc' ]],
+                        'order': [[ 2, 'desc' ]],
                         'autoWidth': false
                     });
                 </script>";

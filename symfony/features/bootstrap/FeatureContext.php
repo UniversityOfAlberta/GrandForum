@@ -83,7 +83,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $currentSession->getSession()->stop();
         system("php ../maintenance/cleanAllLists.php &> /dev/null");
         unlink("../test.tmp");
-        system("killall phantomjs");
     }
     
     /**

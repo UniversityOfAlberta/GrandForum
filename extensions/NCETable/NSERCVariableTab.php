@@ -1367,7 +1367,7 @@ EOF;
             <a id='Table6'></a><h3>Table 6: Dissemination of Network Research Results and Collaborations</h3>
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
             <tr>
-                <th align='left'>Articles in referred publications</th><th>Number of publications</th>
+                <th align='left'>Articles in refereed publications</th><th>Number of publications</th>
             </tr>
             <tr>
                 <td valign='top'>&emsp;All authors from one research group</td>
@@ -1798,7 +1798,7 @@ EOF;
                 $a1
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
-                    <p><span class="label">A) Referred Contributions / 1. Articles in referred publications:</span> 
+                    <p><span class="label">A) Refereed Contributions / 1. Articles in refereed publications:</span> 
                     <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
                     {$a1_details}
                 </div>
@@ -1837,7 +1837,7 @@ EOF;
                 $a2
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
-                    <p><span class="label">A) Referred Contributions / 2. Other referred contributions:</span> 
+                    <p><span class="label">A) Refereed Contributions / 2. Other refereed contributions:</span> 
                     <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
                     {$a2_details}
                 </div>
@@ -1851,9 +1851,9 @@ EOF;
         //A1+2 details
         $list_sub = '';
         $list_pub = '';
-        $a12_details =  "<br /><span class='label'>A) Referred Contributions / 1. Articles in referred publications:</span><br />".
+        $a12_details =  "<br /><span class='label'>A) Refereed Contributions / 1. Articles in refereed publications:</span><br />".
                         $a1_details .
-                        "<br /><span class='label'>A) Referred Contributions / 2. Other referred contributions:</span><br />".
+                        "<br /><span class='label'>A) Refereed Contributions / 2. Other refereed contributions:</span><br />".
                         $a2_details;
         
 
@@ -1865,7 +1865,7 @@ EOF;
                 $a12
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
-                    <p><span class="label">Total Referred:</span> 
+                    <p><span class="label">Total Refereed:</span> 
                     <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
                     {$a12_details}
                 </div>
@@ -1904,7 +1904,7 @@ EOF;
                 $b
                 </a>
                 <div style="display: none;" id="$div_id" class="cell_details_div">
-                    <p><span class="label">B) Non-referred contributions:</span> 
+                    <p><span class="label">B) Non-refereed contributions:</span> 
                     <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
                     {$b_details}
                 </div>
@@ -1958,7 +1958,7 @@ EOF;
         $list_sub = '';
         $list_pub = '';
         $total_details= $a12_details . 
-                        "<br /><span class='label'>B) Non-referred contributions:</span><br />". 
+                        "<br /><span class='label'>B) Non-refereed contributions:</span><br />". 
                         $b_details . 
                         "<br /><span class='label'>C) Specialized publications:</span><br />".
                         $c_details;
@@ -1985,11 +1985,11 @@ EOF;
         $html =<<<EOF
             <a id='Table7'></a><h3>Table 7: Publications List</h3>
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr><th align='left'>A) Referred Contributions</th><th>Number of publications</th></tr>
-            <tr><td>&emsp;1. Articles in referred publications</td><td align='center'>{$a1}</td></tr>
-            <tr><td>&emsp;2. Other referred contributions</td><td align='center'>{$a2}</td></tr>
-            <tr><td align='right'>Total referred</td><td align='center'>{$a12}</td></tr>
-            <tr><th align='left'>B) Non-referred contributions<td align='center'>{$b}</td></tr>
+            <tr><th align='left'>A) Refereed Contributions</th><th>Number of publications</th></tr>
+            <tr><td>&emsp;1. Articles in refereed publications</td><td align='center'>{$a1}</td></tr>
+            <tr><td>&emsp;2. Other refereed contributions</td><td align='center'>{$a2}</td></tr>
+            <tr><td align='right'>Total refereed</td><td align='center'>{$a12}</td></tr>
+            <tr><th align='left'>B) Non-refereed contributions<td align='center'>{$b}</td></tr>
             <tr><th align='left'>C) Specialized publications</th><td align='center'>{$c}</td></tr>
             <tr><th align='left'>Total publications</th><th>{$total}</th></tr>
             </table>

@@ -127,7 +127,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             </tr>".
             $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateRow("Annual Report w/ evidence of completed activities submitted to Forum by 15 August",
+            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -208,7 +208,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             </tr>".
             $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateRow("Annual Report w/ evidence of completed activities submitted to Forum by 15 August",
+            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -279,7 +279,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             </tr>".
             $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateRow("Annual Report w/ evidence of completed activities submitted to Forum by 15 August",
+            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -350,7 +350,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             </tr>".
             $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateRow("Annual Report w/ evidence of completed activities submitted to Forum by 15 August",
+            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -422,11 +422,53 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             </tr>".
             $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateRow("Annual Report w/ evidence of completed activities submitted to Forum by 15 August",
+            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
         <p><small><b>* HQP Defined Activities:</b> Are you already involved in an activity related to the core competencies? Let us know - it can be credited toward your Innovators of Tomorrow Certificate! A maximum of 3 HQP Defined, non AGE-WELL activities can be credited towards the Innovators of Tomorrow Certificate.</small></p>";
+    }
+    
+    function generateSpecialRow($description, $cells=array()){
+        $me = Person::newFromWgUser();
+        $str = "<tr>";
+        $str .= "<td><small>{$description}";
+        $value = $this->getBlobValue('HQP_EPIC_REP_DATE');
+        if($value == ""){
+            $value = "15 August";
+        }
+        $value = str_replace("'", "&#39;", $value);
+        if($me->isRoleAtLeast(STAFF) && $this->visibility['edit']){
+            $str .= "<input type='text' value='{$value}' name='epic_HQP_EPIC_REP_DATE' />";
+        }
+        else{
+            $str .= $value;
+        }
+        $str .= "</small></td>";
+        foreach($cells as $key => $cell){
+            $value = $this->getBlobValue($cell);
+            if($key == 0){
+                // Description
+                if($this->visibility['edit']){
+                    $str .= "<td align='center'><textarea style='width:100%;height:100px;box-sizing:border-box;margin:0;' name='epic_{$cell}'>{$value}</textarea></td>";
+                }
+                else{
+                    $str .= "<td><div style='max-height:100px;overflow-y:auto;'>".nl2br($value)."</td>";
+                }
+            }
+            else{
+                // Checkboxes
+                if($this->visibility['edit']){
+                    $checked = ($value != "") ? "checked='checked'" : "";
+                    $str .= "<td align='center'><input type='hidden' name='epic_{$cell}' value='' /><input type='checkbox' name='epic_{$cell}' value='&#10003;' {$checked} /></td>";
+                }
+                else{
+                    $str .= "<td align='center'><span style='font-size:2em;'>{$value}</span></td>";
+                }
+            }
+        }
+        $str .= "</tr>";
+        return $str;
     }
     
     function generateRow($description, $cells=array()){
