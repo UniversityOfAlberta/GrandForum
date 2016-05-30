@@ -1480,6 +1480,7 @@ class Paper extends BackboneModel{
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
+                                                'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
                                                 'access' => $this->access),
                                           array('id' => EQ($this->id)),
@@ -1585,12 +1586,12 @@ class Paper extends BackboneModel{
 
     function toArray(){
         $me = Person::newFromWgUser();
-        /*if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
+        if(Cache::exists($this->getCacheId()) && $me->isLoggedIn()){
             // Only access the cache if the user is logged in
             $json = Cache::fetch($this->getCacheId());
             return $json;
         }
-        else{*/
+        else{
             $authors = array();
             $projects = array();
             
@@ -1631,11 +1632,11 @@ class Paper extends BackboneModel{
                 Cache::store($this->getCacheId(), $json, 60*60);
             }
             return $json;
-        //}
+        }
     }
     
     function exists(){
-        return ($this->id != "");
+        return ($this->id != "" && $this->id != 0);
     }
     
     function getCacheId(){

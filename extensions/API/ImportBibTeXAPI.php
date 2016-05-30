@@ -52,13 +52,16 @@ class ImportBibTeXAPI extends API{
         return $month;
     }
     
-    function createProduct($paper, $category, $type, $bibtex_id){
+    function createProduct($paper, $category, $type, $bibtex_id, $overwrite=false){
         if(!isset($paper['title']) ||
            !isset($paper['author'])){
             return null;  
         }
         $checkBibProduct = Product::newFromBibTeXId($bibtex_id, $paper['title']);
         $checkProduct = Product::newFromTitle($paper['title']);
+        if(!$overwrite && ($checkBibProduct->exists() || $checkProduct->exists())){
+            return null;
+        }
         if($checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
             $product = $checkBibProduct;
@@ -99,57 +102,57 @@ class ImportBibTeXAPI extends API{
         }
         $me = Person::newFromWgUser();
 
-        if($product->description == ""){ $product->description = @$paper['abstract']; }
+        if(isset($paper['abstract'])){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
-        if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01"; }
-        if(!is_array($product->data)){ $product->data = array(); }
+        $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01";
+        $product->data = array();
         if(!is_array($product->projects)){ $product->projects = array(); }
-        if(!is_array($product->authors)){ $product->authors = array(); }
+        $product->authors = array();
         if(!$product->exists()){
             $product->access_id = $me->getId();
             $product->bibtex_id = $bibtex_id;
         }
-        if(count($product->authors) == 0){
-            if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
-                // Must be using ',' as a delimiter...
-                $count = null;
-                $paper['author'] = str_replace_every_other(",", " and ", $paper['author'], $count, false);
-            }
-            
-            $authors = explode(" and ", $paper['author']);
-            foreach($authors as $author){
-                $obj = new stdClass;
-                $names = explode(",", $author);
-                if(count($names) >= 2){
-                    $firstName = trim($names[1]);
-                    $lastName = trim($names[0]);
-                    $obj->name = trim("$firstName $lastName");
-                    $obj->fullname = trim("$firstName $lastName");
-                }
-                else{
-                    $obj->name = trim($author);
-                    $obj->fullname = trim($author);
-                }
-                $product->authors[] = $obj;
-            }
+        $product->authors = array();
+        if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
+            // Must be using ',' as a delimiter...
+            $count = null;
+            $paper['author'] = str_replace_every_other(",", " and ", $paper['author'], $count, false);
         }
         
+        $authors = explode(" and ", $paper['author']);
+        foreach($authors as $author){
+            $obj = new stdClass;
+            $names = explode(",", $author);
+            if(count($names) >= 2){
+                $firstName = trim($names[1]);
+                $lastName = trim($names[0]);
+                $obj->name = trim("$firstName $lastName");
+                $obj->fullname = trim("$firstName $lastName");
+            }
+            else{
+                $obj->name = trim($author);
+                $obj->fullname = trim($author);
+            }
+            $product->authors[] = $obj;
+        }
+        
+        $product->data = array();
         foreach($paper as $key => $field){
             if($field != ""){
                 foreach($structure['data'] as $dkey => $dfield){
                     if($dfield['bibtex'] == $key){
-                        if(!isset($product->data[$dkey]) || $product->data[$dkey] == ""){
-                            $product->data[$dkey] = $field;
-                        }
+                        $product->data[$dkey] = $field;
                         break;
                     }
                 }
             }
         }
+        
         if(!$product->exists()){
             $status = $product->create();
         }
         else{
+            $product->deleted = 0;
             $status = $product->update();
         }
         if($status){
@@ -177,10 +180,11 @@ class ImportBibTeXAPI extends API{
             unlink($fileName);
             $createdProducts = array();
             $errorProducts = array();
+            $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id);
+                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id, $overwrite);
                     if($product != null){
                         $createdProducts[] = $product;
                     }
