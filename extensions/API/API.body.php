@@ -123,6 +123,7 @@ class APIRequest{
 		$this->addAction('User Accounts', 'addHQPMovedOn', new AddHQPMovedOnAPI());
 		$this->addAction('User Accounts', 'addRelation', new AddRelationAPI());
 		$this->addAction('User Accounts', 'updateUserTwitterAccount', new UserTwitterAccountAPI());
+                $this->addAction('User Accounts', 'updateFullname', new UserFullnameAPI());
 		$this->addAction('User Accounts', 'updateUserPhone', new UserPhoneAPI());
 		$this->addAction('User Accounts', 'updateUserWebsite', new UserWebsiteAPI());
 		$this->addAction('User Accounts', 'updateUserNationality', new UserNationalityAPI());

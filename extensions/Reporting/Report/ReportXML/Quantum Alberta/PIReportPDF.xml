@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FEC" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

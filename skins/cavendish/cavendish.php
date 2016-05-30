@@ -551,6 +551,10 @@ class CavendishTemplate extends QuickTemplate {
 		        #person .ui-tabs-nav {
 		            display: none;
 		        }
+		
+			#project .ui-tabs-nav {
+			    display:none;
+			}
 		        
 		        #bodyContent .ui-tabs-panel {
 		            padding: 0;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="PIReport" reportType="RP_PI_REPORT" pdfFiles="PIReport" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id='pi_report' type='EditableReportSection' title='Quantum Report' name='Quantum Report' blobSection="QUANTUM_REVIEW">
+	<ReportItem id="start_date" type="CalendarReportItem" blobItem="PI_REPORT_START" blobType="BLOB_TEXT">
+	    <![CDATA[
+		Start Date: {$item}
+	    ]]>
+	</ReportItem>
+        <ReportItem id="end_date" type="CalendarReportItem" blobItem="PI_REPORT_END" blobType="BLOB_TEXT">
+            <![CDATA[
+		<br>
+                End Date: {$item}
+		{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}	
+
+		<script type='text/javascript'>
+				$(document).ready(function () {
+    				    $('input[name=QuantumReport_start_date]').change(function () {
+        			        refreshIframe();
+    				    });
+				});
+
+				function refreshIframe() {
+				    $('[name=submit]').click();
+				    $('#previewFrame').attr("src", $('#previewFrame').attr("src"));
+
+				}
+		</script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

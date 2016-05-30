@@ -285,6 +285,19 @@
         $config->getConst('ADMIN')          => "Admin"));
         
     $config->setValue("subRoles", array());
+
+    $config->setValue("roleTitles",
+             array($config->getConst('HQP')=>array("Other",
+                               			   "Graduate Student - Master's",
+                               			   "Graduate Student - Doctoral",
+                               			   "Post-Doctoral Fellow",
+                               			   "Research Associate",
+                               			   "Research Assistant",
+                               			   "Technician",
+                               			   "Professional End User",
+                               			   "Summer Student",
+                               			   "Undergraduate Student")));
+
     
     $config->setValue("roleAliases", array());
         

@@ -5,8 +5,8 @@ $wgSpecialPages['ReportArchive'] = 'ReportArchive';
 $wgExtensionMessagesFiles['ReportArchive'] = $dir . 'ReportArchive.i18n.php';
 $wgSpecialPageGroups['ReportArchive'] = 'reporting-tools';
 
-$wgHooks['TopLevelTabs'][] = 'ReportArchive::createTab';
-$wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
+//$wgHooks['TopLevelTabs'][] = 'ReportArchive::createTab';
+//$wgHooks['SubLevelTabs'][] = 'ReportArchive::createSubTabs';
 
 #require_once($dir . '../Report/ReportStorage.php');
 
@@ -610,7 +610,6 @@ class ReportArchive extends SpecialPage {
         $registration = $wgUser->getRegistration();
         $year = substr($registration, 0, 4);
         $month = substr($registration, 4, 2);
-        
         for($i = date('Y'); $i >= $year; $i--){
             if($i == date('Y')){
                 if(date('m') >= 3){

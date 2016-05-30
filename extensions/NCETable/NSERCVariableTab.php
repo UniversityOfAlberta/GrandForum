@@ -91,64 +91,64 @@ function showDiv(div_id, details_div_id){
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
-
+	$year = $this->year-1;
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
+            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
                 <ul>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'>
                         <span class='tocnumber'>Table 2.1: </span>
                         <span class='toctext'>Contributions</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'>
                         <span class='tocnumber'>Table 2.2: </span>
                         <span class='toctext'>Contributions by Project</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'>
                         <span class='tocnumber'></span>
                         <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'>
                         <span class='tocnumber'>Table 4.2a: </span>
                         <span class='toctext'>HQP Breakdown by University</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'>
                         <span class='tocnumber'>Table 4.2b: </span>
                         <span class='toctext'>HQP Breakdown by Project</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'>
                         <span class='tocnumber'>Table 4.3: </span>
-                        <span class='toctext'>NI Breakdown by University</span>
+                        <span class='toctext'>PI Breakdown by University</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'>
                         <span class='tocnumber'>Table 5: </span>
                         <span class='toctext'>Post Network employment of graduate students</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'>
                         <span class='tocnumber'>Table 6: </span>
                         <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'>
+                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'>
                         <span class='tocnumber'>Table 7: </span>
                         <span class='toctext'>Publications list</span>
                     </a>
@@ -446,7 +446,7 @@ EOF;
 
         $this->html .= "<a id='Table4.2a'></a><h3>Table 4.2a: HQP Breakdown by University</h3>" .self::getHQPUniStats();
         $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by Project</h3>" .self::getHQPProjStats();
-        $this->html .= "<a id='Table4.3'></a><h3>Table 4.3: NI Breakdown by University</h3>" .self::getNiUniStats();
+        $this->html .= "<a id='Table4.3'></a><h3>Table 4.3: PI Breakdown by University</h3>" .self::getNiUniStats();
         $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
         $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
@@ -457,12 +457,12 @@ EOF;
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
 
         //Setup the table structure
-        $positions = array( "Undergraduate Student"=>"Ugrad",
-                            "Graduate Student - Master's"=>"Masters",
-                            "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
-                            "Technician"=> "Technicians / Research Associates",
-                            "Research Associate" => "Technicians / Research Associates",
+        $positions = array( "BSc Student"=>"Ugrad",
+                            "MSc Student"=>"MSc Students",
+                            "PhD Student"=>"PhD Students",
+                            "Postdoctoral Fellow"=>"Postdoctoral Fellows",
+                            "Research Assistant"=> "Technicians / Research Assistants",
+                            "Research Scientist" => "Technicians / Research Scientists",
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
@@ -717,14 +717,14 @@ EOF;
         //Setup the table structure
         $universities = array();
         $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+                                            "Technicians / Research Assistants"=>array(), "Professional End Users" => array(), "Other"=>array());
 
-        $positions = array( "Undergraduate Student"=>"Ugrad",
-                            "Graduate Student - Master's"=>"Masters",
-                            "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
-                            "Technician"=> "Technicians / Research Associates",
-                            "Research Associate" => "Technicians / Research Associates",
+
+        $positions = array( "BSc Student"=>"Ugrad",
+                            "MSc Student"=>"Masters",
+                            "PhD Student"=>"PhD",
+                            "Postdoctoral Fellow"=>"Post-Doctoral Fellows",
+                            "Research Assistant"=> "Technicians / Research Assistants",
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
@@ -737,7 +737,7 @@ EOF;
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
                 $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+                                            "Technicians / Research Assistants"=>array(), "Professional End Users" => array(), "Other"=>array());
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
@@ -763,7 +763,7 @@ EOF;
          <th>Masters</th>
          <th>PhD</th>
          <th>Post-Doctoral Fellows</th>
-         <th>Technicians / Research Associates</th>
+         <th>Technicians / Research Assistants</th>
          <th>Professional End Users</th>
          <th>Other</th>
          <th>Total</th>
@@ -778,7 +778,7 @@ EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
                 $uni_id = str_replace("/", "_", str_replace(" ", "_", $uni));
-                $pos_id = str_replace("/", "_", str_replace(" ", "_", $posi));
+		$pos_id = str_replace("/", "_", str_replace(" ", "_", $posi));
                 $lnk_id = "lnk_" . $uni_id . "_" . $pos_id;
                 $div_id = "div_" . $uni_id . "_" . $pos_id;
 

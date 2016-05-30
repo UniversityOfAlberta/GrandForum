@@ -27,7 +27,7 @@
             <% if(website != "" && website != "http://"){ %>
                 <tr>
                     <td width="100">Website&nbsp;</td>
-                    <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
+                    <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= website %></a></td>
                 </tr>
             <% } %>
             <% if(phone != "" && phone != "http://"){ %>

@@ -175,6 +175,9 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
+	    $_POST['fname'] = @$_POST['fname'];
+	    $_POST['mname'] = @$_POST['mname'];
+	    $_POST['lname'] = @$_POST['lname'];
             $_POST['twitter'] = @$_POST['twitter'];
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
@@ -190,6 +193,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $api->doAction(true);
 
             $api = new UserPhoneAPI();
+            $api->doAction(true);
+            $api = new UserFullnameAPI();
             $api->doAction(true);
             $api = new UserTwitterAccountAPI();
             $api->doAction(true);
@@ -217,7 +222,11 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile($wgUser->isLoggedIn()))."</p>";
+	$profile = $person->getProfile($wgUser->isLoggedIn());
+	if(trim($profile) == ""){
+	    $profile = $person->getProfile(false);
+	}
+        $this->html .= "<p style='text-align:justify;'>".nl2br($profile)."</p>";
     }
     
     /**
@@ -377,7 +386,7 @@ EOF;
         $html = "";
         $projects = $person->getProjects();
         if(count($projects) > 0){
-            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            $html .= "<h2>{$config->getValue('networkName')} Themes</h2><ul>";
             foreach($projects as $project){
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a></li>";
             }
@@ -463,10 +472,13 @@ EOF;
         }
         $this->html .= "<div id=\"special_links\"></div>";
     }
-    
+
     function showEditPhoto($person, $visibility){
-        $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
-        $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
+        $this->html .= "<tr>";
+        $this->html .= "<td><div style='display:inline-block'><img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
+	$this->html .= "</div><div style='display:inline-block;vertical-align:middle'><table><tbody><tr><td align=right><b>First name:</b></td><td><input type='text' name='fname' value='{$person->getFirstName()}'></td></tr>";
+        $this->html .= "<tr><td align=right><b>Middle name:</b></td><td><input type='text' name='mname' value='{$person->getMiddleName()}'></td></tr>";
+        $this->html .= "<tr><td align=right><b>Last name:</b></td><td><input type='text' name='lname' value='{$person->getLastName()}'></td></tr></tbody></table></div>";
         $this->html .= "<div id=\"special_links\"></div>";
         $this->html .= "</td></tr>";
         $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>
@@ -515,7 +527,8 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $config;
+	$position_bool = false;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
@@ -540,6 +553,8 @@ EOF;
             $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
             $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
             $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
+            $otherSelected = ($person->getGender() == "Other") ? "selected='selected'" : "";
+
             $gender = "<tr>
                 <td align='right'><b>Gender:</b></td>
                 <td>
@@ -547,6 +562,7 @@ EOF;
                         <option value='' $blankSelected>---</option>
                         <option value='Male' $maleSelected>Male</option>
                         <option value='Female' $femaleSelected>Female</option>
+			<option value='Other' $otherSelected>Other</option>
                     </select>
                 </td>
             </tr>";
@@ -560,44 +576,67 @@ EOF;
                             {$gender}";
         
         $roles = $person->getRoles();
-        $universities = new Collection(University::getAllUniversities());
-        $uniNames = $universities->pluck('name');
-        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
-            $positions = array("Other", 
-                               "Graduate Student - Master's", 
-                               "Graduate Student - Doctoral", 
-                               "Post-Doctoral Fellow", 
-                               "Research Associate", 
-                               "Research Assistant", 
-                               "Technician",
-                               "Professional End User",
-                               "Summer Student", 
-                               "Undergraduate Student");
-        }
-        else{
+	$universities = array();
+	if(null != $config->getValue('Institutions')){
+	    foreach($config->getValue('Institutions') as $key=>$values){
+	    	if($person->isRole($key)){
+	     	    $universities = array_merge($universities, $values);
+		    $uniNames = $universities;
+	    	}
+	    }
+	}
+	if(count($universities) == 0){
+            $universities = new Collection(University::getAllUniversities());
+	    $uniNames = $universities->pluck('name');
+
+	}
+	$positions = array();
+	foreach($config->getValue('roleTitles') as $key=>$values){
+	    if($person->isRole($key)){
+		$positions = array_merge($positions, $values);
+		$position_bool=true;
+	    }
+	}
+        if(count($positions) == 0){
             $positions = Person::getAllPositions();
         }
+	sort($positions);
         $myPosition = "";
         foreach($positions as $key => $position){
             if($university['position'] == $position){
-                $myPosition = $key;
+                $myPosition = $position;
             }
         }
         if($myPosition == ""){
             $positions[] = $university['position'];
             $myPosition = count($positions) - 1;
         }
-        $departments = Person::getAllDepartments();
+	$departments = array();
+        if(null != $config->getValue('Departments')){
+            foreach($config->getValue('Departments') as $key=>$values){
+                if($person->isRole($key)){
+                    $departments = array_merge($departments, $values);
+                }
+            }
+        }
+        if(count($universities) == 0){
+            $departments = Person::getAllDepartments();
+        }
+
         $organizations = $uniNames;
         sort($organizations);
-        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
+        if($position_bool){
             $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
+            $orgCombo = new SelectBox('university', "Institution", $university['university'], $organizations);
+            $deptCombo = new SelectBox('department', "Department", $university['department'], $departments);
+
         }
         else{
             $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
+            $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
+            $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+
         }
-        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
         $titleCombo->attr('style', 'max-width: 250px;');
         $orgCombo->attr('style', 'max-width: 250px;');
         $deptCombo->attr('style', 'max-width: 250px;');

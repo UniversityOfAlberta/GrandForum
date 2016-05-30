@@ -52,6 +52,7 @@ class AddMember extends SpecialPage{
             if($status){
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
+	        $form->getElementById('middle_name_field')->setPOST('wpMiddleName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
@@ -74,8 +75,9 @@ class AddMember extends SpecialPage{
                 }
                 
                 $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
+                $_POST['wpMiddleName'] = ucfirst($_POST['wpMiddleName']);
                 $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
-                $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
+                $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpMiddleName']} {$_POST['wpLastName']}";
                 $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = $types;
@@ -194,6 +196,9 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
                             <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
+                            <input type='hidden' name='wpFirstName' value='{$request->getFirstName()}' />
+                            <input type='hidden' name='wpMiddleName' value='{$request->getMiddleName()}' />
+                            <input type='hidden' name='wpLastName' value='{$request->getLastName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
@@ -234,6 +239,11 @@ class AddMember extends SpecialPage{
         $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
+
+        $middleNameLabel = new Label("middle_name_label", "Middle Name", "The middle name of the user (cannot contain spaces)", VALIDATE_NOTHING);
+        $middleNameField = new TextField("middle_name_field", "Middle Name", "", VALIDATE_NOTHING);
+        $middleNameRow = new FormTableRow("middle_name_row");
+        $middleNameRow->append($middleNameLabel)->append($middleNameField->attr('size', 20));
         
         $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
@@ -314,6 +324,7 @@ class AddMember extends SpecialPage{
         $submitRow->append($submitCell)->append($submitField);
         
         $formTable->append($firstNameRow)
+		  ->append($middleNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($rolesRow)

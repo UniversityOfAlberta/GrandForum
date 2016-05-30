@@ -810,6 +810,7 @@ class Person extends BackboneModel {
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
                       'roles' => $roles,
+		      'lastRole' => $this->getLastRole(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl());
@@ -838,13 +839,19 @@ class Person extends BackboneModel {
             $_POST['wpName'] = $this->name;
             $_POST['wpEmail'] = $this->email;
             $_POST['wpRealName'] = $this->realname;
+            $_POST['wpFirstName'] = $this->firstName;
+            $_POST['wpMiddleName'] = $this->middleName;
+            $_POST['wpLastName'] = $this->lastName;
             $_POST['wpUserType'] = array();
             $_POST['wpNS'] = array();
             $_POST['wpSendMail'] = true;
             $specialUserLogin = new LoginForm($wgRequest, 'signup');
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
-                                    array('user_twitter' => $this->getTwitter(),
+                                    array('first_name' => $this->firstName,
+					  'middle_name' => $this->middleName,
+					  'last_name' => $this->lastName,
+					  'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),

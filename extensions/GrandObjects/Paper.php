@@ -793,8 +793,7 @@ class Paper extends BackboneModel{
                         $first = $firstTmp[0];
                         $mNames = $firstTmp[1];
                     }
-                    
-                    $pdata = array();
+		    $pdata = array();
                     $pdata[0]['user_id'] = "";
                     $pdata[0]['user_name'] = $author;
                     $pdata[0]['user_real_name'] = $author;

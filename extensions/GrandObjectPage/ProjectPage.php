@@ -107,7 +107,9 @@ class ProjectPage {
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 $tabbedPage->showPage();
-                
+		if(isset($_GET['embed'])){
+            	    $wgOut->addHTML("<script type=text/javascript>$('.custom-title').hide();</script>");
+		}    
                 $wgOut->output();
                 $wgOut->disable();
             }

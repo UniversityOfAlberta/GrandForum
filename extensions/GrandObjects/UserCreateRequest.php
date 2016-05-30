@@ -11,6 +11,9 @@ class UserCreateRequest {
     var $acceptedBy;
     var $name;
     var $realName;
+    var $firstName;
+    var $middleName;
+    var $lastName;
     var $email;
     var $roles;
     var $projects;
@@ -59,6 +62,9 @@ class UserCreateRequest {
             $this->acceptedBy = Person::newFromId($data[0]['staff']);
             $this->name = $data[0]['wpName'];
             $this->realName = $data[0]['wpRealName'];
+            $this->firstName = $data[0]['wpFirstName'];
+            $this->middleName = $data[0]['wpMiddleName'];
+            $this->lastName = $data[0]['wpLastName'];
             $this->email = $data[0]['wpEmail'];
             $this->roles = $data[0]['wpUserType'];
             $this->projects = $data[0]['wpNS'];
@@ -90,6 +96,15 @@ class UserCreateRequest {
     
     function getRealName(){
         return $this->realName;
+    }
+    function getFirstName(){
+        return $this->firstName;
+    }
+    function getMiddleName(){
+        return $this->middleName;
+    }
+    function getLastName(){
+        return $this->lastName;
     }
     
     function getEmail(){

@@ -58,6 +58,11 @@ define('RP_IFP_REVIEW',         305);
 define('RP_TRANS_REVIEW',       306);
 
 /*
+ * Quantum Alberta
+ */
+define('RP_PI_REPORT', 400);
+
+/*
  * Second-level identifiers: report section.
  *
  * These comprise high-level parts within a report, such as personal information,
