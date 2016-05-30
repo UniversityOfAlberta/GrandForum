@@ -102,7 +102,7 @@ Feature: Products
         And I wait "500"
         Then I should see "1 products were created/updated"
         
-    Scenario: Uploading a duplicate BibTeX
+    Scenario: Uploading a duplicate BibTeX (with overwrite not checked)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
         And I press "Import BibTeX"
@@ -127,6 +127,36 @@ Feature: Products
          keywords = {design differencing, design mentoring, design understanding, structural evolution},
         }
         """
+        And I click "Import"
+        And I wait "500"
+        Then I should see "1 products were ignored (probably duplicates)"
+        
+    Scenario: Uploading a duplicate BibTeX (with overwrite checked)
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage Products"
+        And I press "Import BibTeX"
+        And I fill in "bibtex" with:
+        """
+        @inproceedings{Xing:2005:UAO:1101908.1101919,
+         author = {Xing, Zhenchang and Stroulia, Eleni and User1, NI},
+         title = {UMLDiff: An Algorithm for Object-oriented Design Differencing},
+         booktitle = {Proceedings of the 20th IEEE/ACM International Conference on Automated Software Engineering},
+         abstract = {Hello World},
+         series = {ASE '05},
+         year = {2005},
+         isbn = {1-58113-993-4},
+         location = {Long Beach, CA, USA},
+         pages = {54--65},
+         numpages = {12},
+         url = {http://doi.acm.org/10.1145/1101908.1101919},
+         doi = {10.1145/1101908.1101919},
+         acmid = {1101919},
+         publisher = {ACM},
+         address = {New York, NY, USA},
+         keywords = {design differencing, design mentoring, design understanding, structural evolution},
+        }
+        """
+        And I check "bibtex_overwrite"
         And I click "Import"
         And I wait "500"
         Then I should see "1 products were created/updated"

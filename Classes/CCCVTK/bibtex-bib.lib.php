@@ -224,7 +224,7 @@ class Bibliography // {{{
       "{\\'O}", "{\\`O}", "{\\^O}", "{\\\"O}", "{\\~O}", "{\\OE}", "{\\O}",
       "{\\'u}", "{\\`u}", "{\\^u}", "{\\\"u}",
       "{\\'U}", "{\\`U}", "{\\^U}", "{\\\"U}",
-      "{\\\"s}", "{!`}", "{?`}", "{\\&}"
+      "{\\\"s}", "{!`}", "{?`}", "{\\&}", "{\\textquotesingle}"
       );
     $patterns_innerbraces = array(
       "\\'{a}", "\\`{a}", "\\^{a}", "\\\"{a}", "\\~{a}", "\\a{a}", "\\a{e}",
@@ -241,7 +241,7 @@ class Bibliography // {{{
       "\\'{O}", "\\`{O}", "\\^{O}", "\\\"{O}", "\\~{O}", "\\O{E}", "\\{O}",
       "\\'{u}", "\\`{u}", "\\^{u}", "\\\"{u}",
       "\\'{U}", "\\`{U}", "\\^{U}", "\\\"{U}",
-      "\\\"s", "!`", "?`", "\\&"
+      "\\\"s", "!`", "?`", "\\&", "\\{textquotesingle}"
       );
     // Same thing without enclosing braces
     $patterns_nobraces = array(
@@ -259,7 +259,7 @@ class Bibliography // {{{
       "\\'O", "\\`O", "\\^O", "\\\"O", "\\~O", "\\OE", "\\O",
       "\\'u", "\\`u", "\\^u", "\\\"u",
       "\\'U", "\\`U", "\\^U", "\\\"U",
-      "\\\"s", "!`", "?`", "\\&"
+      "\\\"s", "!`", "?`", "\\&", "\\textquotesingle"
       );
     $replacements = array(
       "á", "à", "â", "ä", "ã", "å", "æ",
@@ -276,7 +276,7 @@ class Bibliography // {{{
       "Ó", "Ò", "Ô", "Ö", "Õ", "Œ", "Ø",
       "ú", "ù", "û", "ü",
       "Ú", "Ù", "Û", "Ü",
-      "ß", "¡", "¿", "&");
+      "ß", "¡", "¿", "&", "'");
     $out = str_replace($patterns_braces, $replacements, $out);
     $out = str_replace($patterns_innerbraces, $replacements, $out);
     $out = str_replace($patterns_nobraces, $replacements, $out);
