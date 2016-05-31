@@ -49,6 +49,6 @@
             <![CDATA[
             ]]>
         </Instructions>
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

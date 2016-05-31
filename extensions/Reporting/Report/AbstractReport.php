@@ -69,7 +69,6 @@ abstract class AbstractReport extends SpecialPage {
         $pers->id = $sto->metadata('user_id');
         $type = $sto->metadata('type');
         $year = $sto->metadata('year');
-        
         $type = ReportXMLParser::findPDFReport($type, true);
         
         $proj = null;
