@@ -649,7 +649,7 @@ EOF;
             }
             
             #pdfBody br {
-                font-size: 0.5em;
+                font-size: 1em;
             }
             
             #pdfBody .tinymce p {

@@ -105,6 +105,8 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
+	        "product_citation" => "getProductCitation",
+            "product_count" => "getProductCount",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1088,6 +1090,15 @@ class ReportItemCallback {
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
+    }
+
+    function getProductCitation(){
+        $product = Paper::newFromId($this->reportItem->personId);
+        return $product->getProperCitation(true,true,true,true);
+    }
+
+    function getProductCount(){
+        return $this->reportItem->personId;
     }
     
     function getWgUserId(){

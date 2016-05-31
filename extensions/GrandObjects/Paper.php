@@ -342,7 +342,7 @@ class Paper extends BackboneModel{
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
      * @return array All of the Papers
      */
-    static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
+    static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true, $order=""){
         global $config;
         if(!$config->getValue('projectsEnabled')){
             $grand = 'both';
@@ -414,8 +414,15 @@ class Paper extends BackboneModel{
             else{
                 $sql .= "\nAND access_id = '0'";
             }
-            $sql .= "\nORDER BY p.`type`, p.`title`";
-            
+	    if($order == "date"){
+		$sql.= "\nORDER BY p.`date`";
+	    }
+	    elseif($order=="date_reversed"){
+                $sql.= "\nORDER BY p.`date` DESC";
+            }
+	    else{
+                $sql .= "\nORDER BY p.`type`, p.`title`";
+	    }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 if(!isset(self::$cache[$row['id']])){
@@ -1166,7 +1173,7 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getProperCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+    function getProperCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $reporting=false){
         global $wgServer, $wgScriptPath;
 
         $data = $this->getData();
@@ -1197,9 +1204,16 @@ class Paper extends BackboneModel{
         }
         $au = implode(',&nbsp;', $au);
         $vn = $this->getVenue();
+        $vn2 = $this->getData();
 
         if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
-            $vn = "(no venue)";
+            if(count($vn2)==0){
+                $vn = "(no venue)";
+            }
+            else{
+                $vn = ArrayUtil::get_string($vn2, 'event_title');
+                if($vn == "") $vn .= ArrayUtil::get_string($data, 'event_location');
+            }
         }
 
         //This is not really a venue, but this is how we want to put this into the proper citation
@@ -1219,6 +1233,7 @@ class Paper extends BackboneModel{
         }
         else {
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'event_title');
+            if($vn == "") $vn .= ArrayUtil::get_string($data, 'event_location');
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'journal_title');
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'book_title');
             if($vn == "") $vn .= ArrayUtil::get_string($data, 'owner');
@@ -1250,7 +1265,7 @@ class Paper extends BackboneModel{
         else{
             $text = $title;
         }
-        $date = date("Y M", strtotime($this->getDate()));
+        $date = date("j M Y", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
         if($vn != "" && ($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
             $vn = "$vn,";
@@ -1264,8 +1279,14 @@ class Paper extends BackboneModel{
         if($pb != ""){
             $pb = "&nbsp;{$pb}";
         }
-        $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
-       		         <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+        if($category == "Presentation" && $reporting=true){
+            $citation = "{$date},&nbsp;{$au},&nbsp;\"{$text}\" ({$type}),{$vn}{$pg}{$pb}
+       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+        }
+        else{
+             $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
+       		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+        }
         return trim($citation);
     }
 

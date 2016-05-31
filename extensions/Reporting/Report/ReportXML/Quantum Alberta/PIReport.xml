@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="PIReport" reportType="RP_PI_REPORT" pdfFiles="PIReport" ajax="true">
+<Report name="PIReport" reportType="RP_PI_REPORT" pdfFiles="PIReportPDF" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="information" permissions="rw" />
@@ -10,26 +10,32 @@
     <ReportSection id='pi_report' type='EditableReportSection' title='Quantum Report' name='Quantum Report' blobSection="QUANTUM_REVIEW">
 	<ReportItem id="start_date" type="CalendarReportItem" blobItem="PI_REPORT_START" blobType="BLOB_TEXT">
 	    <![CDATA[
-		Start Date: {$item}
+        <table><tr>
+            <td align='right'>Start Date:</td><td> {$item}</td>
 	    ]]>
 	</ReportItem>
         <ReportItem id="end_date" type="CalendarReportItem" blobItem="PI_REPORT_END" blobType="BLOB_TEXT">
             <![CDATA[
-		<br>
-                End Date: {$item}
-		{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}	
-
+		</tr><tr><td align='right'>
+                End Date:</td><td> {$item}</td></tr></table>
+        <br />
 		<script type='text/javascript'>
 				$(document).ready(function () {
     				    $('input[name=QuantumReport_start_date]').change(function () {
         			        refreshIframe();
     				    });
 				});
+				$(document).ready(function () {
+    				    $('input[name=QuantumReport_end_date]').change(function () {
+        			        refreshIframe();
+    				    });
+				});
 
 				function refreshIframe() {
 				    $('[name=submit]').click();
-				    $('#previewFrame').attr("src", $('#previewFrame').attr("src"));
-
+                    setTimeout(function () {
+                        $('#previewFrame').attr("src", $('#previewFrame').attr("src"));
+                    }, 2000);
 				}
 		</script>
             ]]>
@@ -43,6 +49,6 @@
             <![CDATA[
             ]]>
         </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

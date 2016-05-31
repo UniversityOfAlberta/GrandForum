@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfFiles="FEC" ajax="true">
+<Report name="PIReport" reportType="RP_PI_REPORT" ajax="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="information" permissions="rw" />
@@ -7,12 +7,67 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-
-        <Instructions>
+    <ReportSection id='pi_report' type='EditableReportSection' title='Quantum Report' name='Quantum Report' blobSection="QUANTUM_REVIEW">
+        <ReportItem id="end_date" type="CalendarReportItem" blobItem="PI_REPORT_END" blobType="BLOB_TEXT">
             <![CDATA[
+		<br>
+		<script type='text/javascript'>
+				$(document).ready(function () {
+    				    $('input[name=QuantumReport_start_date]').change(function () {
+        			        refreshIframe();
+    				    });
+				});
+				$(document).ready(function () {
+    				    $('input[name=QuantumReport_end_date]').change(function () {
+        			        refreshIframe();
+    				    });
+				});
+				function refreshIframe() {
+				    $('[name=submit]').click();
+				    $('#previewFrame').attr("src", $('#previewFrame').attr("src"));
 
+				}
+		</script>
             ]]>
-        </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        </ReportItem>
+       <ReportItemSet id="publications" type="AllProductCountReportItemSet" category="Publication" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}">
+            <ReportItem id="coursesheader" type="StaticReportItem">
+	            <![CDATA[
+                    <b>Quantum Publications during this period: {$product_count}</b><br /><br />
+	            ]]>
+	        </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="publications" type="AllProductReportItemSet" category="Publication" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+            <ReportItem id="presentationheader" type="StaticReportItem">
+                <![CDATA[<br /><br />
+                <b>Presentations (excluding external colloquia) (reverse chronological)</b><br /><br />
+                ]]>
+            </ReportItem>
+        <ReportItemSet id="presentations" type="AllProductReportItemSet" category="Presentation" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" order="date_reversed">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[                    
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+
+	    <ReportItem id="presentationheader" type="StaticReportItem">
+	        <![CDATA[<br /><br />
+                <b>Presentations (excluding external colloquia) (forward chronological)</b><br /><br />
+	        ]]>
+	    </ReportItem>
+        <ReportItemSet id="presentations" type="AllProductReportItemSet" category="Presentation" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" order="date">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[                    
+                    <p>{$product_citation}</p><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 </Report>
