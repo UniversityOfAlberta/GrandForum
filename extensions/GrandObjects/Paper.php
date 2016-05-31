@@ -357,8 +357,8 @@ class Paper extends BackboneModel{
         if($project instanceof Project){
             $proj = $project->getName();
         }
-        if(isset(self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str])){
-            return self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str];
+        if(isset(self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str.$order.$coll])){
+            return self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str.$order.$coll];
         }
         else{
             $papers = array();
@@ -414,15 +414,16 @@ class Paper extends BackboneModel{
             else{
                 $sql .= "\nAND access_id = '0'";
             }
-	    if($order == "date"){
-		$sql.= "\nORDER BY p.`date`";
-	    }
-	    elseif($order=="date_reversed"){
-                $sql.= "\nORDER BY p.`date` DESC";
+
+	        if($order == "date"){
+		        $sql.= "\nORDER BY p.`date` ASC";
+	        }
+	        else if($order == "date_reversed"){
+                    $sql.= "\nORDER BY p.`date` DESC";
             }
-	    else{
-                $sql .= "\nORDER BY p.`type`, p.`title`";
-	    }
+	        else{
+                    $sql .= "\nORDER BY p.`type`, p.`title`";
+	        }
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 if(!isset(self::$cache[$row['id']])){

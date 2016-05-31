@@ -7,8 +7,8 @@ class AllProductReportItemSet extends ReportItemSet {
         $category = $this->getAttr("category", "all");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
-	$order = $this->getAttr("order", "");
-	$coll = $this->getAttr("coll", true);
+	    $order = $this->getAttr("order", "date");
+	    $coll = $this->getAttr("coll", true);
 	if($coll == "false"){
 	    $coll = false;
 	}

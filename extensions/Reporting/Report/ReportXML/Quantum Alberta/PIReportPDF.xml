@@ -62,7 +62,7 @@
                 <b>Presentations (excluding external colloquia) (forward chronological)</b><br /><br />
 	        ]]>
 	    </ReportItem>
-        <ReportItemSet id="presentations" type="AllProductReportItemSet" category="Presentation" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" order="date" coll="false">
+        <ReportItemSet id="presentations" type="AllProductReportItemSet" category="Presentation" start="{getText(400,QUANTUM_REVIEW,PI_REPORT_START,0,{$user_id},0)}" end="{getText(400,QUANTUM_REVIEW,PI_REPORT_END,0,{$user_id},0)}" coll="false">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[                    
                     <p>{$product_citation}</p><br />
