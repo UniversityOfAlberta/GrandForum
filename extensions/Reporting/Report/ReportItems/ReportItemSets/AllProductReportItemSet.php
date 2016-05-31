@@ -8,7 +8,11 @@ class AllProductReportItemSet extends ReportItemSet {
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
 	$order = $this->getAttr("order", "");
-        $allPaper = Paper::getAllPapersDuring('all',$category,'all',$start,$end, false, true, $order);
+	$coll = $this->getAttr("coll", true);
+	if($coll == "false"){
+	    $coll = false;
+	}
+        $allPaper = Paper::getAllPapersDuring('all',$category,'all',$start,$end, false, true, $order, $coll);
         foreach($allPaper as $paper){
             $tuple = self::createTuple();
             $tuple['person_id'] = $paper->getId();

@@ -342,7 +342,7 @@ class Paper extends BackboneModel{
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
      * @return array All of the Papers
      */
-    static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true, $order=""){
+    static function getAllPapersDuring($project='all', $category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true, $order="", $coll=true){
         global $config;
         if(!$config->getValue('projectsEnabled')){
             $grand = 'both';
@@ -431,6 +431,11 @@ class Paper extends BackboneModel{
                 }
                 else{
                     $paper = self::$cache[$row['id']];
+                }
+                if($coll == false){
+                    if($paper->getType() == "Colloquium"){
+                        continue;
+                    }
                 }
                 if($project != "all"){
                     $papers[] = $paper;
