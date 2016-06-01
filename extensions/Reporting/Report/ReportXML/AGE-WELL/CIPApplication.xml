@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Collaborative Impact Program Application" reportType="RP_CIP" pdfType="RPTP_CIP" pdfFiles="CIPApplicationPDF" ajax="true" disabled="false">
+<Report name="AGE-WELL Collaborative Impact Program Application" reportType="RP_CIP" pdfType="RPTP_CIP" pdfFiles="CIPApplicationPDF" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />

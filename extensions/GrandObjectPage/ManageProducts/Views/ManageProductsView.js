@@ -673,8 +673,15 @@ ManageProductsView = Backbone.View.extend({
 	                ccvUploaded = $.proxy(function(response, error){
 	                    // Purposefully global so that iframe can access
 	                    if(error == undefined || error == ""){
-	                        this.products.add(response.created, {silent: true});
-	                        this.addRows();
+	                        if(!_.isUndefined(response.created)){
+	                            var ids = _.pluck(response.created, 'id');
+	                            this.products.remove(ids, {silent: true});
+	                            this.products.trigger("remove");
+                                this.products.add(response.created, {silent: true});
+                                this.products.trigger("add");
+                            }
+	                        //this.products.add(response.created, {silent: true});
+	                        //this.addRows();
 	                        clearAllMessages();
                             var nCreated = response.created.length;
                             var nError = response.error.length;

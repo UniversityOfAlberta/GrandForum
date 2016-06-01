@@ -47,6 +47,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $tabbedPage->addTab(new ApplicationTab('RP_SIP', $nis, 2015, "SIP 01-2016"));
             $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', $nis, 2015, "SIP 04-2016"));
+            $tabbedPage->addTab(new ApplicationTab('RP_SIP_07_2016', $nis, 2015, "SIP 07-2016"));
             $tabbedPage->addTab(new ApplicationTab('RP_CAT', $nis, 2015, "Catalyst"));
             $tabbedPage->addTab(new ApplicationTab('RP_CIP', $nis, 2015, "CIP"));
         }
