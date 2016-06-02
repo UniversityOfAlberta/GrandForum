@@ -29,6 +29,7 @@ class UserEmailAPI extends API{
         $person->email = $_POST['email'];
         // Re-Add the person to the mailing lists using their new email
         MailingList::subscribeAll($person);
+        $person->getUser()->invalidateCache();
         if(!$noEcho){
             echo "Account email updated\n";
         }

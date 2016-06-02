@@ -892,6 +892,7 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+            $this->getUser()->invalidateCache();
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
