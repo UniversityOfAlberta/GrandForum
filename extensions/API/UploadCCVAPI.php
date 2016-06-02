@@ -72,6 +72,11 @@ class UploadCCVAPI extends API{
         $product->category = $category;
         $product->type = $type;
         $product->status = (isset($structure['ccv_status'][$paper['status']])) ? $structure['ccv_status'][$paper['status']] : "Published";
+        if($paper['date_month'] == "" || $paper['date_month'] == null){
+            $paper['date_month'] = "01";
+        }
+        echo "{$paper['title']}: {$paper['date_year']}-{$paper['date_month']}-01<br />\n";
+        var_dump($paper['date_month']);
         $product->date = "{$paper['date_year']}-{$paper['date_month']}-01";
         $product->data = array();
         $product->projects = array();
