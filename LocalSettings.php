@@ -136,7 +136,7 @@ $wgDBmysql5 = true;
 define('CACHE_APC', 'apc_shared');
 if(!TESTING){
     if(extension_loaded('apc') && ini_get('apc.enabled')){
-        $wgMainCacheType = CACHE_APC;
+        //$wgMainCacheType = CACHE_APC;
         $wgMessageCacheType = CACHE_APC;
         $wgParserCacheType = CACHE_APC;
     }
