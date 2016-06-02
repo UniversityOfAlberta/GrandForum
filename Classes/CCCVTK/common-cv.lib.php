@@ -100,6 +100,17 @@ class CommonCV // {{{
       @list($date_year, $date_month) = explode("/", $date);
       $record["date_year"] = $date_year;
       $record["date_month"] = $date_month;
+      if($date_year == "" || $date_month == ""){
+          // Check Conference Date field instead
+          $confDate = $this->get_xpath("field[@id='99b57db653a841ccbd5f8e52079745c0']/value", $elements->item($i));
+          @list($date_year, $date_month) = explode("/", $confDate);
+          if($date_year != ""){
+            $record["date_year"] = $date_year;
+          }
+          if($date_month != ""){
+            $record["date_month"] = str_pad($date_month, 2, "0", STR_PAD_LEFT);
+          }
+      }
       $records[$id] = $record;
     }
     return $records;
