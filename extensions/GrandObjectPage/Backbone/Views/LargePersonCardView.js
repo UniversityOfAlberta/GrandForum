@@ -1,5 +1,7 @@
 LargePersonCardView = Backbone.View.extend({
 
+    lastWidth: 0,
+
     initialize: function(){
         this.model.bind('change', this.render, this);
         this.model.getRoleString().bind('sync', this.renderRoles, this);
@@ -15,14 +17,17 @@ LargePersonCardView = Backbone.View.extend({
     },
     
     responsive: function(){
-        if(this.$el.parent().width() <= 400){
-            var contact = this.$("div.card_description > #contact").detach();
-            this.$el.append(contact);
+        if(this.$el.parent().width() != this.lastWidth){
+            if(this.$el.parent().width() <= 400){
+                var contact = this.$("div.card_description > #contact").detach();
+                this.$el.append(contact);
+            }
+            else{
+                var contact = this.$("#contact").detach();
+                this.$("div.card_description").append(contact);
+            }
         }
-        else{
-            var contact = this.$("#contact").detach();
-            this.$("div.card_description").append(contact);
-        }
+        this.lastWidth = this.$el.parent().width();
     },
 
     render: function(options){

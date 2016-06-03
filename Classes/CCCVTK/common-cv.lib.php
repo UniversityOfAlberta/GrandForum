@@ -147,7 +147,7 @@ class CommonCV // {{{
       $date = $this->get_xpath("field[@id='6fafe258e19e49a7884428cb49d75424']/value", $elements->item($i));
       @list($date_year, $date_month) = explode("/", $date);
       $record["date_year"] = $date_year;
-      $record["date_month"] = $date_month;
+      $record["date_month"] = ($date_month != "") ? str_pad($date_month, 2, "0", STR_PAD_LEFT) : "01";
       $records[$id] = $record;
     }
     return $records;
@@ -183,7 +183,7 @@ class CommonCV // {{{
       $date = $this->get_xpath("field[@id='c114eabcd4674f3c9467b2bf6820cbd6']/value", $elements->item($i));
       @list($date_year, $date_month) = explode("/", $date);
       $record["date_year"] = $date_year;
-      $record["date_month"] = $date_month;
+      $record["date_month"] = ($date_month != "") ? str_pad($date_month, 2, "0", STR_PAD_LEFT) : "01";
       $records[$id] = $record;
     }
     return $records;
