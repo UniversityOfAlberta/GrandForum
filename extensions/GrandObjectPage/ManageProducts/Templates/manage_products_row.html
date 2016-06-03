@@ -39,11 +39,16 @@
 <td style="<% if(!isMine) { %>background: #FFCC00; <% } %>">
     <% var names = new Array();
     _.each(authors, function(author){
-        if(author.id == "" || author.id == null){
-            names.push(author.name);
+        if(author.name != undefined){
+            if(author.id == "" || author.id == null){
+                names.push(author.name);
+            }
+            else{
+                names.push("<b>" + author.name + "</b>");
+            }
         }
         else{
-            names.push("<b>" + author.name + "</b>");
+            names.push(author.fullname);
         }
     }) %>
     <%= names.join(',&nbsp;') %>

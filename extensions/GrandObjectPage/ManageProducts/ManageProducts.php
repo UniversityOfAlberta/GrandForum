@@ -40,10 +40,12 @@ class ManageProducts extends BackbonePage {
         foreach($person->getHQP(true) as $hqp){
             $students[] = $hqp->getId();
             $studentNames[] = $hqp->getName();
+            $studentFullNames[] = $hqp->getNameForForms();
         }
         $wgOut->addScript("<script type='text/javascript'>
             var students = ".json_encode($students).";
             var studentNames = ".json_encode($studentNames).";
+            var studentFullNames = ".json_encode($studentFullNames).";
         </script>");
         return array('Backbone/*');
     }
