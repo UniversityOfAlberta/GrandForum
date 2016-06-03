@@ -324,6 +324,7 @@ class Person extends BackboneModel {
                     $middleName = unaccentChars($middleName);
                     self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
                     self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
+                    self::$namesCache[strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName")] = $row;
                     self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
                 }
             }
