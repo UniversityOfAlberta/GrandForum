@@ -48,7 +48,7 @@
             }
         }
         else{
-            names.push(author.fullname);
+            names.push(author.fullname.replace(/"/g, ''));
         }
     }) %>
     <%= names.join(',&nbsp;') %>
