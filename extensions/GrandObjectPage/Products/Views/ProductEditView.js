@@ -215,9 +215,17 @@ ProductEditView = Backbone.View.extend({
     renderAuthorsWidget: function(){
         var left = _.pluck(this.model.get('authors'), 'fullname');
         var right = _.difference(this.allPeople.pluck('fullName'), left);
+        var objs = [];
+        console.log(this.allPeople);
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
+        });
         var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'author',
                                                           'left': left,
-                                                          'right': right
+                                                          'right': right,
+                                                          'objs': objs
                                                           });
         this.$("#productAuthors").html(html);
         createSwitcheroos();

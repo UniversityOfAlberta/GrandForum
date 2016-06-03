@@ -298,7 +298,12 @@ HTML.Switcheroo = function(view, attr, options){
             var c = current[cId];
             var tuple = {};
             tuple[subName] = c;
-            newItems.push(tuple);
+            if(options.objs != undefined && options.objs[c] != undefined){
+                newItems.push(options.objs[c]);
+            }
+            else{
+                newItems.push(tuple);
+            }
         }
         var field = attr.substr(0, index);
         eval("view.model.set({" + field + ": newItems}, {silent:true});");
