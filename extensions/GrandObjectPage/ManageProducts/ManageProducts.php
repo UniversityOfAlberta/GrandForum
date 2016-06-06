@@ -36,6 +36,7 @@ class ManageProducts extends BackbonePage {
         global $wgOut;
         $students = array();
         $studentNames = array();
+        $studentFullNames = array();
         $person = Person::newFromWgUser();
         foreach($person->getHQP(true) as $hqp){
             $students[] = $hqp->getId();
