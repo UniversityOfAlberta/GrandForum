@@ -1,4 +1,8 @@
 <div id="editDialog" style="display:none;"></div>
+<div id="makePrivateDialog" style="display:none;" title="Make All <%= productsTerm.pluralize() Private%>">
+    <p>Are you sure you want to change all <%= productsTerm.pluralize().toLowerCase() %> to "private?"</p>
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
 <div id="deletePrivateDialog" style="display:none;" title="Delete <%= productsTerm.pluralize() %>">
     <p>Are you sure you want to delete all "private" <%= productsTerm.pluralize().toLowerCase() %>?</p>
     <div class="throbber" style="float:right;display:none;"></div>

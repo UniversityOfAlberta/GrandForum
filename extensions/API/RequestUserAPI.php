@@ -118,25 +118,27 @@ class RequestUserAPI extends API{
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
 		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
-        $wpCaps['language'] = $_POST['wpLanguage'];
-        $wpCaps['postal_code'] = $_POST['wpPostalCode'];
-        $wpCaps['city'] = $_POST['wpCity'];
-        $wpCaps['province'] = $_POST['wpProvince'];
-        $wpCaps['reference'] = $_POST['wpReference'];
+        $wpCaps['language'] = isset($_POST['wpLanguage']) ? $_POST['wpLanguage'] :"";
+        $wpCaps['postal_code'] = isset($_POST['wpPostalCode']) ? $_POST['wpPostalCode'] : "";
+        $wpCaps['city'] = isset($_POST['wpCity']) ? $_POST['wpCity'] : "";
+        $wpCaps['province'] = isset($_POST['wpProvince']) ? $_POST['wpProvince'] : "";
+        $wpCaps['reference'] = isset($_POST['wpReference']) ? $_POST['wpReference'] : "";
             $wpCaps['clinic'] = isset($_POST['wpClinic']) ? $_POST['wpClinic'] : "";
             $wpCaps['specialty'] = isset($_POST['wpSpecialty']) ? $_POST['wpSpecialty'] : "";
             $wpCaps['provision'] = isset($_POST['wpProvision']) ? $_POST['wpProvision'] : "";
             $wpCaps['pharmacy_name'] = isset($_POST['wpPharmacyName']) ? $_POST['wpPharmacyName'] : "";
             $wpCaps['pharmacy_address'] = isset($_POST['wpPharmacyAddress']) ? $_POST['wpPharmacyAddress'] : "";
-        $contents = base64_encode(file_get_contents($_FILES['file_field']['tmp_name']));
-        $filename = $_FILES['file_field']['name'];
-        $filesize = $_FILES['file_field']['size'];
-        $filetype = $_FILES['file_field']['type'];
-        $wpFile['file_data'] = array('name' => $filename,
-                          'size' => $filesize,
-                          'type' => $filetype,
-                          'file' => $contents
-                          );
+	if(isset($_FILES['file_filed'])){
+            $contents = base64_encode(file_get_contents($_FILES['file_field']['tmp_name']));
+            $filename = $_FILES['file_field']['name'];
+            $filesize = $_FILES['file_field']['size'];
+            $filetype = $_FILES['file_field']['type'];
+            $wpFile['file_data'] = array('name' => $filename,
+                              'size' => $filesize,
+                              'type' => $filetype,
+                              'file' => $contents
+                              );
+	}
 		if($candidate == "Yes" || $candidate == "1"){
 		    $candidate = 1;
 		}

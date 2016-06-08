@@ -49,10 +49,10 @@ class AddMember extends SpecialPage{
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $form->getElementById('role_field')->setPOST('wpUserType');
-                $form->getElementById('project_field')->setPOST('wpNS');
-                $form->getElementById('university_field')->setPOST('university');
-                $form->getElementById('dept_field')->setPOST('department');
-                $form->getElementById('position_field')->setPOST('position');
+                //$form->getElementById('project_field')->setPOST('wpNS');
+                //$form->getElementById('university_field')->setPOST('university');
+                //$form->getElementById('dept_field')->setPOST('department');
+               // $form->getElementById('position_field')->setPOST('position');
                 $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){

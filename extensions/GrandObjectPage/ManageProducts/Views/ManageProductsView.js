@@ -204,6 +204,8 @@ ManageProductsView = Backbone.View.extend({
 	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
 	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
         this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
+        this.$("#listTable_length").append('<button id="makePrivate">Make All Private</button>');
+
 	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
     },
     
