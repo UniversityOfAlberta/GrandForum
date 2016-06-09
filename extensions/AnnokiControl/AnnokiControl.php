@@ -264,7 +264,7 @@ function orderSpecialPages(&$aSpecialPages){
 			  "Redirect",
 			  "Search");
 	if(!$me->isLoggedIn() && 
-	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister")){
+	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister" && $key !="ChangePassword")){
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}
