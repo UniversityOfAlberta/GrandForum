@@ -1193,16 +1193,16 @@ class Paper extends BackboneModel{
                 if($hyperlink){
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $name = "<u>{$a->getNameForProduct()}</u>";
+                        $name = "{$a->getNameForProduct()}";
                     }
                     else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
                             (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                        $name = "<i>{$a->getNameForProduct()}</i>";
+                        $name = "{$a->getNameForProduct()}";
                     }
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
                 }
                 else{
-                    $au[] = "<b>". $a->getNameForProduct() ."</b>";
+                    $au[] = $a->getNameForProduct();
                 }
             }else{
                 $au[] = $a->getNameForProduct();
@@ -1228,13 +1228,14 @@ class Paper extends BackboneModel{
             if(empty($vn)){
                 $vn = ArrayUtil::get_string($data, 'published_in');
             }
+		$vn = "<i>{$vn}</i>";
             $volume = ArrayUtil::get_string($data, 'volume');
             $number = ArrayUtil::get_string($data, 'number');
             if(!empty($volume)){
-                $vn .= " $volume";
+                $vn .= " <b>$volume</b>";
             }
             if(!empty($number)){
-                $vn .= "($number)";
+                $vn .= "($number):";
             }
         }
         else {
@@ -1290,7 +1291,7 @@ class Paper extends BackboneModel{
        		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         else{
-             $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
+             $citation = "{$au}&nbsp;,&nbsp;\"{$text}\",{$vn}{$pg}{$pb}, {$date}
        		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         return trim($citation);
