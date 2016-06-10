@@ -1249,7 +1249,7 @@ class Paper extends BackboneModel{
 
         $pg = ArrayUtil::get_string($data, 'pages');
         if (strlen($pg) > 0){
-            $pg = "{$pg}pp.";
+            $pg = "{$pg}";
         }
         else{
             $pg = "";
@@ -1275,7 +1275,7 @@ class Paper extends BackboneModel{
         $date = date("j M Y", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
         if($vn != "" && ($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
-            $vn = "$vn,";
+            $vn = "$vn";
         }
         if($vn != ""){
             $vn = "&nbsp;{$vn}";
