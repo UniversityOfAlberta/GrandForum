@@ -60,6 +60,10 @@
     overflow: hidden;
 }
 
+.small textarea {
+    padding: 3px !important;
+}
+
 #contentSub {
     display:none !important;
 }

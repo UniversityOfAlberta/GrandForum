@@ -18,6 +18,18 @@
                 <p>{$user_name}</p><br />
             ]]>
         </ReportItem>
+        <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT">
+            <![CDATA[
+                <h4>Academic status and Department</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="supervisor" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_SUP">
+            <![CDATA[
+                <h4>Supervisor Name</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
         <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI">
             <![CDATA[
                 <h4>University</h4>
@@ -30,13 +42,7 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
-        <ReportItem id="supervisor" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_SUP">
-            <![CDATA[
-                <h4>Supervisor Name</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's (maximum $14,000, 1 year award)|PhD (maximum $18,000, 2 year award)|Post-doctoral Award (maximum $40,000, 1 year award)">
+        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($10,000)|PhD ($15,000, per year for 2 years)|Postdoctoral ($20,000)">
             <![CDATA[
                 <h4>Funding Category</h4>
                 <p>{$item}</p><br />

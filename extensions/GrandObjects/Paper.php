@@ -348,7 +348,6 @@ class Paper extends BackboneModel{
             $grand = 'both';
         }
         if($startRange === false || $endRange === false){
-            debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
         }
