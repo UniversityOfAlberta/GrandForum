@@ -1020,6 +1020,9 @@ $(function(){
 		        else{
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
+		        $_POST['wpName'] = str_replace('"', "", $_POST['wpName']);
+		        $_POST['wpUsername'] = $_POST['wpName'];
+		        $_POST['wpPassword'] = str_replace('"', "", $_POST['wpPassword']);
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
@@ -1159,7 +1162,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
-		    
+		    $name = str_replace('"', "", $name);
 		    echo "
 			<ul class='pBodyLogin'>";
 		    echo <<< EOF
