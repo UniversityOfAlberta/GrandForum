@@ -2,14 +2,45 @@
 <Report name="Workpackage Report" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
     <Permissions>
         <Role role="PL">
-            
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="ktee2" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="WPL">
-            
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="ktee2" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="WPC">
-            
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="ktee2" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Project deleted="false" />
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
         <ReportItem id="instructions" type="Static">
@@ -106,7 +137,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -269,7 +300,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -287,7 +318,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -450,7 +481,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -470,7 +501,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -509,7 +540,19 @@
             <![CDATA[
                 <td>
                     #of international collaborators involved in project outside of your discipline/academic field? {$item}
-                </td>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Text" width="70px">
+            <![CDATA[
+                    Leadership in policy & practice levels: {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Local and global communities of practices, funding organizations/government {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -535,10 +578,24 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5" blobItem="REV_2_5" type="Text">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Text" width="70px">
             <![CDATA[
-                <td></td>
-                </tr>
+                <td>
+                    Diversity of mediums (e.g. print, digital, media, across fields & context) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Text" width="70px">
+            <![CDATA[
+                    Non-academic dissemination activities (e.g. white papers, user workshop) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m3" blobItem="REV_2_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Clinical or practice dissemination (e.g. workshop, course, training session, rounds) {$item}
+                    </td>
+                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
@@ -563,9 +620,35 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5" blobItem="REV_3_5" type="Text">
+        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of international collaborators involved in a project outside your discipline which crosses diverse organizations & sectors (e.g.  grass-roots, advocacy groups, community, NGO) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of publications with diverse types of stakeholders involved (e.g. community organizations, industry, policy) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Stakeholders’ involvement across project (e.g. advisory, project management committee role) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m4" blobItem="REV_3_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults and/or formal/informal caregivers are included in publications &/or presentations {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m5" blobItem="REV_3_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults and/or formal/informal caregivers involvement across the  project (e.g. research subjects, advisory, project steering committee role) {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -591,13 +674,15 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_4_5" blobItem="REV_4_5" type="Text">
+        <ReportItem id="rev_4_5_m1" blobItem="REV_4_5_M1" type="Text" width="70px">
             <![CDATA[
-                <td></td>
+                <td>
+                    Diversity of roles accorded to HQPs (e.g. conceptualization, lead author vs. co-author writing presenting) {$item}
+                </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -615,7 +700,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -650,9 +735,23 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5" blobItem="PLAN_1_5" type="Text">
+        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of international collaborators involved in project outside of your discipline/academic field? {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Text" width="70px">
+            <![CDATA[
+                    Leadership in policy & practice levels: {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Local and global communities of practices, funding organizations/government {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -678,10 +777,24 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5" blobItem="PLAN_2_5" type="Text">
+        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Text" width="70px">
             <![CDATA[
-                <td></td>
-                </tr>
+                <td>
+                    Diversity of mediums (e.g. print, digital, media, across fields & context) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Text" width="70px">
+            <![CDATA[
+                    Non-academic dissemination activities (e.g. white papers, user workshop) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Clinical or practice dissemination (e.g. workshop, course, training session, rounds) {$item}
+                    </td>
+                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
@@ -706,9 +819,35 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5" blobItem="PLAN_3_5" type="Text">
+        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of international collaborators involved in a project outside your discipline which crosses diverse organizations & sectors (e.g.  grass-roots, advocacy groups, community, NGO) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of publications with diverse types of stakeholders involved (e.g. community organizations, industry, policy) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Text" width="70px">
+            <![CDATA[
+                    Stakeholders’ involvement across project (e.g. advisory, project management committee role) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m4" blobItem="PLAN_3_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults and/or formal/informal caregivers are included in publications &/or presentations {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m5" blobItem="PLAN_3_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults and/or formal/informal caregivers involvement across the  project (e.g. research subjects, advisory, project steering committee role) {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -734,13 +873,15 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_4_5" blobItem="PLAN_4_5" type="Text">
+        <ReportItem id="plan_4_5_m1" blobItem="PLAN_4_5_M1" type="Text" width="70px">
             <![CDATA[
-                <td></td>
+                <td>
+                    Diversity of roles accorded to HQPs (e.g. conceptualization, lead author vs. co-author writing presenting) {$item}
+                </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -770,7 +911,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -885,7 +1026,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -903,7 +1044,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1018,7 +1159,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1043,7 +1184,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1212,7 +1353,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1230,7 +1371,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1265,9 +1406,35 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5" blobItem="PLAN_1_5" type="Text">
+        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of presentations at non-academic events and conferences {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of policy briefs provided to government and non-governmental organisations {$item} <b>({project_n_white({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Text" width="80px">
+            <![CDATA[
+                    Project has a website or other online presence? (if yes) number of hits? {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m4" blobItem="PLAN_1_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of media activities (e.g. print, digital, media, TV & radio interviews,) {$item} <b>({project_n_media({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m5" blobItem="PLAN_1_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of knowledge products (newsletters, webcasts, blogs, etc) {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -1293,9 +1460,29 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5" blobItem="PLAN_2_5" type="Text">
+        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of significant and relevant policy changes that the project has contributed to (developing and encouraging) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>({project_n_products({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of service or knowledge products integrated into the publicly-funded health care system {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Text" width="30px">
+            <![CDATA[
+                    Demonstrated evidence of the impact of service or knowledge products on key health and QOL outcomes relevant to healthy aging {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -1321,13 +1508,39 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5" blobItem="PLAN_3_5" type="Text">
+        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of presentations at non-academic events and conferences {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of policy briefs provided to government and non-governmental organisations {$item} <b>({project_n_white({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Text" width="80px">
+            <![CDATA[
+                    Project has a website or other online presence? (if yes) number of hits? {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m4" blobItem="PLAN_3_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of media activities (e.g. print, digital, media, TV & radio interviews,) {$item} <b>({project_n_media({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m5" blobItem="PLAN_3_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of knowledge products (newsletters, webcasts, blogs, etc) {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1352,7 +1565,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1387,9 +1600,11 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5" blobItem="REV_1_5" type="Text">
+        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of IP policies in place {$item}
+                </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -1415,13 +1630,33 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5" blobItem="REV_2_5" type="Text">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of commercial products/services anticipated for project {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of start-ups created {$item} <b>({project_n_startups({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m3" blobItem="REV_2_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of licensing agreements {$item} <b>({project_n_licenses({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of patents {$item} <b>({project_n_patents({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1439,7 +1674,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1474,9 +1709,11 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5" blobItem="PLAN_1_5" type="Text">
+        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of IP policies in place {$item}
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -1502,13 +1739,33 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5" blobItem="PLAN_2_5" type="Text">
+        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of commercial products/services anticipated for project {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of start-ups created {$item} <b>({project_n_startups({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of licensing agreements {$item} <b>({project_n_licenses({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of patents {$item} <b>({project_n_patents({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1533,7 +1790,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1574,10 +1831,48 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_6" blobItem="REV_1_6" type="Text">
+        <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
-                </tr>
+                <td>
+                    #of HQP hired on project {$item} <b>({project_n_hqp({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m2" blobItem="REV_1_6_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of workshops made available {$item} <b>({project_n_workshops({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m3" blobItem="REV_1_6_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of internships HQP accomplished {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m4" blobItem="REV_1_6_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP that worked directly with partner organizations {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m5" blobItem="REV_1_6_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP successfully completing EPIC training program {$item} <b>({project_n_epic({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m6" blobItem="REV_1_6_M6" type="Integer" size="3">
+            <![CDATA[
+                    %of HQP time spent directly with partner organisations (e.g. as interns) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_6_m7" blobItem="REV_1_6_M7" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP attending annual conference {$item}
+                 </td>
+                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
@@ -1607,13 +1902,27 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_6" blobItem="REV_2_6" type="Text">
+        <ReportItem id="rev_2_6_m1" blobItem="REV_2_6_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of HQP that have continued into other academic posts in the aging and technology sector {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_6_m2" blobItem="REV_2_6_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP who have continued into non-academic jobs (industry, government, services, etc) in the aging and technology sector {$item} <b>({project_n_movedon({$this_year}-01-01, {$this_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_6_m3" blobItem="REV_2_6_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP who have progressed academically while employed in project (e.g. Masters to PhD) {$item} <b>({project_n_progressed({$this_year}-01-01, {$this_year}-12-31)})</b>
+                </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1631,7 +1940,7 @@
                 What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1672,10 +1981,48 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_6" blobItem="PLAN_1_6" type="Text">
+        <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
-                </tr>
+                <td>
+                    #of HQP hired on project {$item} <b>({project_n_hqp({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m2" blobItem="PLAN_1_6_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of workshops made available {$item} <b>({project_n_workshops({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m3" blobItem="PLAN_1_6_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of internships HQP accomplished {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m4" blobItem="PLAN_1_6_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP that worked directly with partner organizations {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m5" blobItem="PLAN_1_6_M5" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP successfully completing EPIC training program {$item} <b>({project_n_epic({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m6" blobItem="PLAN_1_6_M6" type="Integer" size="3">
+            <![CDATA[
+                    %of HQP time spent directly with partner organisations (e.g. as interns) {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_6_m7" blobItem="PLAN_1_6_M7" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP attending annual conference {$item}
+                 </td>
+                 </tr>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
@@ -1705,13 +2052,27 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_6" blobItem="PLAN_2_6" type="Text">
+        <ReportItem id="plan_2_6_m1" blobItem="PLAN_2_6_M1" type="Integer" size="3">
             <![CDATA[
-                <td></td>
+                <td>
+                    #of HQP that have continued into other academic posts in the aging and technology sector {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_6_m2" blobItem="PLAN_2_6_M2" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP who have continued into non-academic jobs (industry, government, services, etc) in the aging and technology sector {$item} <b>({project_n_movedon({$next_year}-01-01, {$next_year}-12-31)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_2_6_m3" blobItem="PLAN_2_6_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of HQP who have progressed academically while employed in project (e.g. Masters to PhD) {$item} <b>({project_n_progressed({$next_year}-01-01, {$next_year}-12-31)})</b>
+                </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem type="Static">
+        <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
@@ -1737,7 +2098,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <!--ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
@@ -1749,5 +2110,5 @@
             ]]>
         </ReportItem>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-    </ReportSection>
+    </ReportSection-->
 </Report>

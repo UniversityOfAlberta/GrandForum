@@ -14,12 +14,7 @@ class HQPEpicTab extends AbstractEditableTab {
     function userCanView(){
         $me = Person::newFromWgUser();
         // Only allow the user, supervisors, and STAFF+ to view the tab
-        $position = strtolower($this->person->getPosition());
-        if($position == "graduate student - doctoral" ||
-           $position == "graduate student - master's" ||
-           $position == "post-doctoral fellow" ||
-           $this->person->isSubRole("Affiliate HQP") || 
-           $this->person->isSubRole("WP/CC Funded HQP")){
+        if($this->person->isEPIC()){
             return ($this->visibility['isMe'] || 
                     $this->visibility['isSupervisor'] ||
                     $me->isRoleAtLeast(SD) ||

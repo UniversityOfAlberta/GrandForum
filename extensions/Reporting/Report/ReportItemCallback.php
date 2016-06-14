@@ -36,6 +36,14 @@ class ReportItemCallback {
             "project_n_white" => "getNWhite",
             "project_n_products" => "getNProducts",
             "project_n_media" => "getNMedia",
+            "project_n_startups" => "getNStartUps",
+            "project_n_licenses" => "getNLicenses",
+            "project_n_patents" => "getNPatents",
+            "project_n_workshops" => "getNWorkshops",
+            "project_n_hqp" => "getNHQP",
+            "project_n_epic" => "getNEpic",
+            "project_n_movedon" => "getNMovedOn",
+            "project_n_progressed" => "getNProgressed",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -519,12 +527,129 @@ class ReportItemCallback {
     }
     
     function getNMedia($startDate = false, $endDate = false){
-        $media = array();
+        $multimedia = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $multimedia = $project->getMultimediaDuring($startDate, $endDate);
         }
         return count($multimedia);
+    }
+    
+    function getNStartUps($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Start-Up"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNLicenses($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "License Agreement"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNPatents($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Patent"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNWorkshops($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("Activity", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Workshop"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNHQP($startDate = false, $endDate = false){
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            return count($project->getAllPeopleDuring(HQP, $startDate, $endDate));
+        }
+        return 0;
+    }
+    
+    function getNEpic($startDate = false, $endDate = false){
+        $epics = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
+            foreach($people as $person){
+                if($person->isEPIC()){
+                    $epics[] = $person;
+                }
+            }
+        }
+        return count($epics);
+    }
+    
+    function getNMovedOn($startDate = false, $endDate = false){
+        $movedOns = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
+            foreach($people as $person){
+                $movedOn = $person->getAllMovedOn($startDate, $endDate);
+                if(count($movedOn) > 0){
+                    $movedOns[] = $person;
+                }
+            }
+        }
+        return count($movedOns);
+    }
+    
+    function getNProgressed($startDate = false, $endDate = false){
+        $progressed = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
+            foreach($people as $person){
+                $positions = array();
+                foreach($person->getUniversitiesDuring($startDate, $endDate) as $uni){
+                    $position = strtolower($uni['position']);
+                    if($position == "graduate student - doctoral" ||
+                       $position == "graduate student - master's" ||
+                       $position == "post-doctoral fellow" ||
+                       $position == "undergraduate"){
+                        $positions[$position] = $position;
+                    }
+                }
+                if(count($positions) > 1){
+                    $progressed[] = $person;
+                }
+            }
+        }
+        return count($progressed);
     }
     
     function getMilestoneId(){
@@ -533,7 +658,7 @@ class ReportItemCallback {
     
     function getMilestoneTitle(){
         $milestone_title = "";
-        if($this->reportItem->milestoneId != 0 ){
+        if($this->reportItem->milestoneId != 0){
             $milestone = Milestone::newFromId($this->reportItem->milestoneId);
             $milestone_title = $milestone->getTitle();
         }

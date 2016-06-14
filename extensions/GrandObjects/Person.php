@@ -1584,7 +1584,7 @@ class Person extends BackboneModel {
     static function getAllMovedOnDuring($startRange, $endRange){
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
-                WHERE date_created BETWEEN '$startRange' AND '$endRange'";
+                WHERE effective_date BETWEEN '$startRange' AND '$endRange'";
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
@@ -2989,6 +2989,19 @@ class Person extends BackboneModel {
             }
         }
         return true;
+    }
+    
+    /**
+     * Returns whether or not this Person is an EPIC HQP (for AGE-WELL)
+     * @return boolean Whether or not this Person is an EPIC HQP
+     */
+    function isEpic(){
+        $position = strtolower($this->getPosition());
+        return ($position == "graduate student - doctoral" ||
+                $position == "graduate student - master's" ||
+                $position == "post-doctoral fellow" ||
+                $this->isSubRole("Affiliate HQP") || 
+                $this->isSubRole("WP/CC Funded HQP"));
     }
     
     /**
