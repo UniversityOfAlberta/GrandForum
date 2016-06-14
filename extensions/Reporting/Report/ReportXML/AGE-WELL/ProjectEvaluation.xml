@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Workpackage Report" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
     <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="ktee2" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
