@@ -955,7 +955,7 @@
         </ReportItem>
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of parters by sector ???
+                    #of partners by sector {$item}
                     <hr />
             ]]>
         </ReportItem>
@@ -1088,7 +1088,7 @@
         </ReportItem>
         <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of parters by sector ???
+                    #of partners by sector {$item}
                     <hr />
             ]]>
         </ReportItem>
