@@ -577,7 +577,7 @@ class CavendishTemplate extends QuickTemplate {
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
 		                height = $("#bodyContent").height();
-		                parent.postMessage(height+5, "*");
+		                parent.postMessage(height+10, "*");
 		            }, 100);
 		        });
 		    </script>
