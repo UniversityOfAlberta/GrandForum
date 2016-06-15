@@ -14,6 +14,19 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="SD">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="ktee2" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
@@ -117,16 +130,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="UploadReportItem" blobItem="PRL" blobType="BLOB_RAW" fileSize="2">
+        <ReportItem id="prl" type="Radio" blobItem="PRL" blobType="BLOB_TEXT" options="&lt;b&gt;INNOVATION RESEARCH&lt;/b&gt; (PRL 1) basic principles observed|&lt;b&gt;INCUBATOR&lt;/b&gt; (PRL 2-3) technology concept formulated; experimental proof of concept|&lt;b&gt;PROTOTYPE&lt;/b&gt; (PRL 4-5) technology validated in lab; technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies)|&lt;b&gt;EXPERIMENTAL IMPLEMENTATION&lt;/b&gt; (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment|&lt;b&gt;OUTCOMES&lt;/b&gt; (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)">
             <![CDATA[
                 <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product currently at:</h3>
-                <small><ul>
-                    <li><b>INNOVATION RESEARCH</b> (PRL 1) basic principles observed</li>
-                    <li><b>INCUBATOR</b> (PRL 2-3) technology concept formulated; experimental proof of concept</li>
-                    <li><b>PROTOTYPE</b> (PRL 4-5) technology validated in lab; technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies)</li>
-                    <li><b>EXPERIMENTAL IMPLEMENTATION</b> (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment</li>
-                    <li><b>OUTCOMES</b> (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)</li>
-                </ul></small>
                 {$item}
             ]]>
         </ReportItem>

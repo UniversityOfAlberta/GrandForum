@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2015 Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false">
+<Report name="2016 Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="instructions" permissions="rw" />
@@ -23,18 +23,43 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <p>A complete application consists of:</p>
-                <ol>
-                    <li>Project Description and References</li>
-                    <li>Figures/Schemes (a single PDF file)</li>
-                    <li>Budget (a single Excel file)</li>
-                    <li>Budget Justification</li>
-                    <li>Proposed Milestones (a single Excel File)</li>
-                    <li>Letters of Support from Partners (as separate PDF Files, not required)</li>
-                    <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
-                </ol>
-                <p><b>Deadline: Midnight PST Sunday, August 16, 2015</b></p>
-                <p><i>The involvement of partners, is not required, but is encouraged. Multidisciplinary projects involving two or more research groups will be given preference</i></p>
+                <h3>Background and Description of Opportunity</h3>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence (NCE) that focuses on the role of glycans (carbohydrates) in health. Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
+                <p>In this Request for Proposals we are seeking to fund exploratory projects the successful completion of which would provide preliminary data to support other funding applications either to GlycoNet, the Canadian Institutes of Health Research or a private disease-specific foundation.</p>
+                
+                <h3>Requirements</h3>
+                <p>Projects should:</p>
+                <ul>
+                    <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca) and be targeted to a specific disease.</li>
+                    <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to novel treatments for disease.</li>
+                    <li>Involve the training of Highly Qualified Personnel.</li>
+                    <li>Multidisciplinary projects involving two or more research groups will be given preference.</li>
+                </ul>
+                <p>Projects should not:</p>
+                <ul>
+                    <li>Concern development or performance of a high-throughput screen for ligands/inhibitors.</li>
+                    <li>Concern development of synthetic methodology.</li>
+                    <li>Concern basic biochemistry or biology with no tangible translational outcome.</li>
+                </ul>
+                <p>Although not required, partner funding would be an asset.</p>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside up to $500,000 for this competition. Proposals may request up to $75,000 in funding. All projects should be completed within 12 months.</p>
+                
+                <h3>Eligibility</h3>
+                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC). Furthermore, GlycoNet requires that all investigators receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council.</p>
+                <p>Individuals serving as a Project Leader on another GlycoNet-funded project, including the Catalyst grants awarded in 2015, or receiving more than $75,000 a year from GlycoNet are not eligible.</p>
+                <p>An individual may serve as the Project Leader on only one Catalyst Grant application and may not be involved in more than two Catalyst Grant applications.</p>
+                <p>Questions about project suitability can be directed to the GlycoNet Administrative Centre (glyconet@ualberta.ca).</p>
+                
+                <h3>Application Form and Submission</h3>
+                <p>Potential applicants must register by email to Karli Buckle (kbuckle@ualberta.ca) by Friday, July 15, 2016. Please provide the project title, anticipated budget request and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Funding is anticipated to begin on January 1, 2017.</p>
+                
+                <h3>Deadline</h3>
+                <p>Applications must be submitted by 11:59 pm PST Monday, August 15, 2016. Proposals received after this deadline will not be considered.</p>
+                
+                <h3>Additional Information</h3>
+                <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -116,6 +141,15 @@
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h2>Partners involved (Companies, agencies etc)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Suggested reviewers -->
+        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text|">
+            <![CDATA[
+                <h2>Suggested Reviewers</h2>
+                Please suggest at least 3 reviewers for the application.  Make sure that none of the listed reviewers are in <a href='http://www.science.gc.ca/default.asp?lang=En&n=90108244-1' target='_blank'>conflict of interest</a> with the application.
                 {$item}
             ]]>
         </ReportItem>
