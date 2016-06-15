@@ -17,20 +17,6 @@
         </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
-        <Instructions>
-            <![CDATA[
-                <ol>
-                    <li>The application is comprised of an online application form and supporting documents detailed below.</li>
-                    <li>Late or incomplete applications may not be reviewed. </li>
-                    <li>Submit the online application and supporting materials via the AGE-WELL Forum website by July 15, 2016.  Letters of support must be sent directly to the AGE-WELL Network Management Office (details in the Documents section).</li>
-                    <li>Notice of Admissions will be received by August 15, 2016.</li>
-                    <li>Expected start date of fellowship is September 2016.  Trainees from programs with January start dates may defer the award until January 2017.</li>
-                </ol><br />
-                
-                <p><b>Contact Information:</b><br />
-                AGE-WELL Education and <a href='mailto:training@agewell-nce.ca'>Training Administrator</a></p>
-            ]]>
-        </Instructions>
         <ReportItem id="background" type="StaticReportItem">
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -101,6 +87,11 @@ Funding Commences: September 2016<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="appType" type="SelectReportItem" blobItem="HQP_APP_TYPE" options="Affiliate|Award">
+            <![CDATA[
+                <b>Application Type:</b> <div style='display:inline-block;vertical-align:middle;'>{$item}</div>
+            ]]>
+        </ReportItem>
         <ReportItem id="tableHead" type="StaticReportItem">
             <![CDATA[
                 <table>
