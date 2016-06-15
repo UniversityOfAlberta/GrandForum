@@ -168,19 +168,19 @@ class ReportItemCallback {
     }
     
     function get2YearsAgo(){
-        return REPORTING_YEAR-2;
+        return $this->reportItem->getReport()->year-2;
     }
     
     function getLastYear(){
-        return REPORTING_YEAR-1;
+        return $this->reportItem->getReport()->year-1;
     }
     
     function getThisYear(){
-        return REPORTING_YEAR;
+        return $this->reportItem->getReport()->year;
     }
     
     function getNextYear(){
-        return REPORTING_YEAR+1;
+        return $this->reportItem->getReport()->year+1;
     }
     
     function getProjectId(){

@@ -38,11 +38,11 @@ class ApplicationTab extends AbstractTab {
         if(is_array($this->rp)){
             $report = array();
             foreach($this->rp as $rp){
-                $report[] = new DummyReport($rp, $me);
+                $report[] = new DummyReport($rp, $me, null, $this->year);
             }
         }
         else{
-            $report = new DummyReport($this->rp, $me);
+            $report = new DummyReport($this->rp, $me, null, $this->year);
         }
         
         $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";
