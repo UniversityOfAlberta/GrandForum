@@ -32,11 +32,16 @@ class ApplicationsTable extends SpecialPage{
         
         $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         $ni = Person::getAllPeople(NI);
+        $allNis = array_merge($ni, Person::getAllCandidates(NI));
         $projects = Project::getAllProjects();
         
         $tabbedPage = new TabbedPage("person");
 
         $tabbedPage->addTab(new CandidatesTab());
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $allNis, 2015, "Cat 2015"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $allNis, 2015, "Trans 2015"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $allNis, 2016, "Cat 2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $allNis, 2016, "Collab 2016"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp, 2015, "Research Exchange"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp, 2015, "Summer"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni, 2015, "Tech Workshop"));
