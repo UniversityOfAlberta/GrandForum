@@ -23,18 +23,35 @@
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <p>A complete application consists of:</p>
-                <ol>
-                    <li>Project Description and References</li>
-                    <li>Figures/Schemes (a single PDF file)</li>
-                    <li>Budget (a single Excel file)</li>
-                    <li>Budget Justification</li>
-                    <li>Proposed Milestones (a single Excel File)</li>
-                    <li>Letters of Support from Partners (as separate PDF Files, as separate PDF Files, Phase I, not required but encouraged; Phase II required)</li>
-                    <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
-                </ol>
-                <p><b>Deadline: Midnight PST Sunday, September 13, 2015</b></p>
-                <p><b>Note: Protected Intellectual Property related to the project is required for both Phase I and Phase II applications.</b></p>
+                <h3>Background and Description of Opportunity</h3>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health. Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
+                
+                <p>A key goal of GlycoNet is to support research projects that are multi-disciplinary, as defined by the NCE program. Accordingly, this Request for Proposals seeks to fund projects that are broad in scope and that involve at least two, and ideally more, research groups in different disciplines.</p>
+                
+                <h3>Requirements</h3>
+                <p>Projects should:</p>
+                <ul>
+                    <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca) and be targeted to a specific disease.</li>
+                    <li>Be of an applied nature so that the outcomes could lead to novel treatments for disease.</li>
+                    <li>Involve the training of Highly Qualified Personnel.</li>
+                    <li>Must involve at least two, and ideally more, research groups in different disciplines.</li>
+                    <li>Involve a 1:1 match with partner funding; at least 50% of the matching funds should be cash. Partner funding must be NCE eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
+                </ul>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside up to $2,000,000 for this competition. All projects must be completed within 24 months.  The Network expects that projects will be funded at ~$200,000/year in GlycoNet funding. The total project cost with matching contributions would be ~$400,000/year.</p>
+                
+                <h3>Eligibility</h3>
+                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC). Furthermore, GlycoNet requires that all investigators receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council. Questions about project suitability can be directed to the GlycoNet Administrative Centre (glyconet@ualberta.ca).</p>
+                
+                <h3>Application Form and Submission</h3>
+                <p>Potential applicants must register by email to Karli Buckle (kbuckle@ualberta.ca) by Friday, July 15, 2016. Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application. Funding is anticipated to begin on January 1, 2017.</p>
+                
+                <h3>Deadline</h3>
+                <p>Applications must be submitted by 11:59 pm PST Monday, August 15, 2016. Proposals received after this deadline will not be considered.</p>
+                
+                <h3>Additional Information</h3>
+                <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
             ]]>
         </ReportItem>
     </ReportSection>
