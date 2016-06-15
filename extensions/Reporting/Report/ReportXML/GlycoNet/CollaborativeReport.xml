@@ -32,7 +32,6 @@
                     <li>Proposed Milestones (a single Excel File)</li>
                     <li>Letters of Support from Partners (as separate PDF Files, as separate PDF Files, Phase I, not required but encouraged; Phase II required)</li>
                     <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
-                    <li>Commercialisation plan provided by the Technology Transfer Office of the Project Leader’s Institution (a single PDF file).</li>
                 </ol>
                 <p><b>Deadline: Midnight PST Sunday, September 13, 2015</b></p>
                 <p><b>Note: Protected Intellectual Property related to the project is required for both Phase I and Phase II applications.</b></p>
@@ -158,6 +157,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
+        <ReportItem id="info" type="Static">
+            <![CDATA[
+                <p><b>Note:</b> Only 2 years should be filled out for the Collaborative Team Grant.</p>
+            ]]>
+        </ReportItem>
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
             <![CDATA[
                 {$item}
