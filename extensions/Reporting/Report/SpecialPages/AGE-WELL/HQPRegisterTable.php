@@ -89,7 +89,7 @@ class HQPRegisterTable extends SpecialPage{
                             $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
                         }
                     }
-                    $star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
+                    //$star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
                     $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>{$text}</button>"; 
                     
                     $tab->generateBody($year);
