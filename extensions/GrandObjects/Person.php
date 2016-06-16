@@ -726,6 +726,36 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    /**
+     * Returns an array of People of the type $filter and are also candidates
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
+    static function getAllCandidatesDuring($filter=null, $startDate=false, $endDate=false){
+        if($filter == NI){
+            $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
+            $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
+            return array_merge($ars, $cis);
+        }
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1)),
+                                    array('user_name' => 'ASC'));
+        $people = array();
+        foreach($data as $row){
+            $rowA = array();
+            $rowA[0] = $row;
+            $person = Person::newFromId($rowA[0]['user_id']);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter.'-Candidate', $startDate, $endDate))){
+                if($me->isLoggedIn() || $person->isRoleAtLeastDuring(NI, $startDate, $endDate)){
+                    $people[] = $person;
+                }
+            }
+        }
+        return $people;
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
