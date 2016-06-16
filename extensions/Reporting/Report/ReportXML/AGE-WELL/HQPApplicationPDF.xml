@@ -12,12 +12,6 @@
     </ReportSection>
     <ReportSection type="BookmarkReportSection" name="Background Information" />
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="true">
-        <ReportItem id="appType" type="SelectReportItem" blobItem="HQP_APP_TYPE" options="Affiliate|Award">
-            <![CDATA[
-                <h4>Applicant Name</h4>
-                <p>{$item}</p><br />
-            ]]>
-        </ReportItem>
         <ReportItem id="name" type="StaticReportItem">
             <![CDATA[
                 <h4>Applicant Name</h4>

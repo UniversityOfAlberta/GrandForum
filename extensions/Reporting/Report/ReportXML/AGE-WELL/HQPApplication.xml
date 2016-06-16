@@ -87,11 +87,6 @@ Funding Commences: September 2016<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
-        <ReportItem id="appType" type="SelectReportItem" blobItem="HQP_APP_TYPE" options="Affiliate|Award">
-            <![CDATA[
-                <b>Application Type:</b> <div style='display:inline-block;vertical-align:middle;'>{$item}</div>
-            ]]>
-        </ReportItem>
         <ReportItem id="tableHead" type="StaticReportItem">
             <![CDATA[
                 <table>
