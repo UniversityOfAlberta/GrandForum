@@ -77,12 +77,15 @@ class HQPRegisterTable extends SpecialPage{
                    $cv != ""){
                     $report = new DummyReport(RP_HQP_APPLICATION, $hqp, null, $year);
                     $report->year = $year;
-                    $check = $report->getLatestPDF();
-                    if(isset($check[0])){
-                        $pdf = PDF::newFromToken($check[0]['token']);
-                        $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
-                    }
+                    
                     $text = ($report->hasStarted()) ? "Award" : "Affiliate";
+                    if($text == "Award"){
+                        $check = $report->getLatestPDF();
+                        if(isset($check[0])){
+                            $pdf = PDF::newFromToken($check[0]['token']);
+                            $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                        }
+                    }
                     $star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
                     $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>{$text}</button>"; 
                     
