@@ -239,7 +239,8 @@ class HQPProfileTab extends AbstractEditableTab {
                                             rp_item = ".HQP_APPLICATION_BIO." OR
                                             rp_item = ".HQP_APPLICATION_ALIGN." OR
                                             rp_item = ".HQP_APPLICATION_BOUNDARY."))
-                                      ORDER BY changed DESC");
+                                      ORDER BY changed DESC
+                                      LIMIT 1");
         return @$data[0]['changed'];
     }
     

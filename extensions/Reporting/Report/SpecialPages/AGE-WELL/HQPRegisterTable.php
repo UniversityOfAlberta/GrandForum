@@ -100,7 +100,7 @@ class HQPRegisterTable extends SpecialPage{
                 $wgOut->addHTML("<td>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
-                $wgOut->addHTML("<td>{$tab->lastUpdated($year)}</td>");
+                $wgOut->addHTML("<td align='center'>".substr($tab->lastUpdated($year), 0, 10)."</td>");
                 $wgOut->addHTML("<td align='center'>{$application}</td>");
                 $wgOut->addHTML("<td align='center'>{$button}</td>");
                 $wgOut->addHTML("</tr>");
