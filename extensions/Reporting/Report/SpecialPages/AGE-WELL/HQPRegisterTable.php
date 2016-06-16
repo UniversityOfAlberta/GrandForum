@@ -53,6 +53,7 @@ class HQPRegisterTable extends SpecialPage{
                         <th>University</th>
                         <th>Level</th>
                         <th>Application</th>
+                        <th>PDF</th>
                     </tr>
                 </thead>
                 <tbody>");
@@ -66,6 +67,7 @@ class HQPRegisterTable extends SpecialPage{
                 $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $cv       = $tab->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
                 $application = "";
+                $button = "";
                 if($research != "" ||
                    $train != "" ||
                    $bio != "" ||
@@ -74,9 +76,14 @@ class HQPRegisterTable extends SpecialPage{
                    $cv != ""){
                     $report = new DummyReport(RP_HQP_APPLICATION, $hqp, null, $year);
                     $report->year = $year;
+                    $check = $report->getLatestPDF();
+                    if(isset($check[0])){
+                        $pdf = PDF::newFromToken($check[0]['token']);
+                        $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                    }
                     $text = ($report->hasStarted()) ? "Award" : "Affiliate";
                     $star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
-                    $application .= "$star<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>{$text}</button>"; 
+                    $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>{$text}</button>"; 
                     
                     $tab->generateBody($year);
                     $application .= "<div title='{$hqp->getNameForForms()}' id='app{$year}_{$hqp->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";
@@ -93,6 +100,7 @@ class HQPRegisterTable extends SpecialPage{
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
                 $wgOut->addHTML("<td align='center'>{$application}</td>");
+                $wgOut->addHTML("<td align='center'>{$button}</td>");
                 $wgOut->addHTML("</tr>");
             }
             $wgOut->addHTML("</tbody></table>");
