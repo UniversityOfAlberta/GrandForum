@@ -473,20 +473,25 @@ EOF;
 	    if(!$wgUser->isLoggedIn()){
 		    permissionError();
 	    }
+        $me = Person::newFromWgUser();
 	    $this->text .= "Below are all the current cases in {$config->getValue('networkName')}.  To search for a case in particular, use the search box below.  You can search by title, author or date submitted.<br /><br />";
 
         $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-                        <thead><tr><th style='white-space:nowrap;'>Title</th>
-                        <th style='white-space:nowrap;'>Submitted By</th>
-                        <th style='white-space:nowrap;'>Date Submitted</th>
+                        <thead><tr><th style='white-space:nowrap;'>Title</th>";
+        if($me->isRoleAtLeast(MANAGER)){
+           $this->text .= "<th style='white-space:nowrap;'>Submitted By</th>";
+        }
+            $this->text .="<th style='white-space:nowrap;'>Date Submitted</th>
                         </tr></thead><tbody>";
 
         $stories = Story::getAllUserStories();
         foreach($stories as $story){
 		    if($story->getApproved()){
-                    $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".str_replace(">","&gt",str_replace("<","&lt;",$story->getTitle()))."</a></td>
-                                    <td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>
-                                    <td style='white-space: nowrap;'>".$story->getDateSubmitted()."</td></tr>";
+                $this->text .= "<tr><td align='left'><a href='".$story->getUrl()."'>".str_replace(">","&gt",str_replace("<","&lt;",$story->getTitle()))."</a></td>";
+                if($me->isRoleAtLeast(MANAGER)){
+                     $this->text .= "<td align='right'><a href='".$story->getUser()->getUrl()."'>".$story->getUser()->getNameForForms()."</a></td>";
+                }
+                $this->text .= "<td style='white-space: nowrap;'>".$story->getDateSubmitted()."</td></tr>";
 		    }
         }
         $this->text .= "</table></tbody><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength':100});</script>";

@@ -4,6 +4,9 @@
     This page is a place where you can share your experience with a difficult or frustrating case, or perhaps where the logistics to manage medical abortion care were challenging. Experiences should not include information that will identify specific patients. You can choose to add your name or contact information, or to post anonymously. For research purposes we may use your experience post, without any of your identifying information, to advocate with health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. You are welcome to start a new experience, or to comment on experiences others have posted.
 </p>
 <p>
+    Members who post a case or story may choose to add their name and/or contact info to comments, but may post anonymously.
+</p>
+<p>
 If you have a case to share click "Share a Case" and complete the fields. The cases will not show up in the member cases until they have been approved.
 </p>
 </div>
@@ -11,7 +14,12 @@ If you have a case to share click "Share a Case" and complete the fields. The ca
 <p>
 
 Cette page est un endroit où vous pouvez partager votre expérience avec un cas difficile ou frustrant, ou peut-être où la logistique pour gérer les soins de l'avortement médicamenteux ont été difficiles . Les expériences ne doivent pas inclure des informations permettant d'identifier les patients spécifiques . Vous pouvez choisir d'ajouter votre nom ou les coordonnées , ou pour poster anonymement . Pour des fins de recherche , nous pouvons utiliser votre expérience poste, sans aucune de vos informations d'identification , de plaider auprès du système et des politiques de la santé des dirigeants pour améliorer les politiques et les systèmes qui prennent en charge votre prestation de sécurité, l'accessibilité des services d'avortement médical. Vous êtes les bienvenus pour commencer une nouvelle expérience , ou de faire des commentaires sur les expériences d'autres ont posté.
-Si vous avez un cas à partager cliquez sur " Partager un cas " et remplissez les champs . Les cas ne seront pas visibles dans les cas de membres jusqu'à ce qu'ils aient été approuvés.
+</p>
+<p>
+    Les membres qui affichent un cas ou une histoire peut choisir d'ajouter leur nom et / ou contact info aux commentaires , mais peuvent poster anonymement .
+</p>
+<p>
+    Si vous avez un cas à partager cliquez sur " Partager un cas " et remplissez les champs . Les cas ne seront pas visibles dans les cas de membres jusqu'à ce qu'ils aient été approuvés.
 </p>
 </div>
 <div>
@@ -22,7 +30,9 @@ Si vous avez un cas à partager cliquez sur " Partager un cas " et remplissez le
     <thead>
         <tr>
             <th><span class='en' style='display:none'>Case Title</span><span class='fr' style='display:none'>Cas Titre</span></th>
+        <% if(me.getCapsRoleString().indexOf('Admin') > -1 || me.getCapsRoleString().indexOf('Manager') > -1){ %>
 	    <th width="5%" style="white-space: nowrap;"><span class='en' style='display:none'>Submitted by</span><span class='fr' style='display:none'>Proposé par</span></th>
+        <% } %>
             <th width="5%" style="white-space: nowrap;"><span class='en' style='display:none'>Date Submitted</span><span class='fr' style='display:none'>Date de soumission</span></th>
 	    <th width="5%"><span class='en' style='display:none'>Approved</span><span class='fr' style='display:none'>a Approuvé</span></th>
         </tr>

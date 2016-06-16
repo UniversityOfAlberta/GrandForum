@@ -24,7 +24,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile() != ""){
+        if($this->person->getProfile($wgUser->isLoggedIn()) != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
         }
@@ -91,10 +91,6 @@ class PersonProfileTab extends AbstractEditableTab {
     function handleEdit(){
         $this->handleContactEdit();
         $_POST['user_name'] = $this->person->getName();
-        $_POST['type'] = "public";
-        $_POST['profile'] = $_POST['public_profile'];
-        $_POST['profile'] = $_POST['profile'];
-        APIRequest::doAction('UserProfile', true);
         $_POST['type'] = "private";
         $_POST['profile'] = $_POST['private_profile'];
         APIRequest::doAction('UserProfile', true);

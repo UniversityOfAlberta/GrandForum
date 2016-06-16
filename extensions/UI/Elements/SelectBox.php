@@ -22,11 +22,11 @@ class SelectBox extends UIElement {
             if(is_string($key)){
                 $value = $key;
             }
-            $value = str_replace(">", "&gt;", str_replace("<", "&lt;", $value));
+            $value = sanitizeInput($value);
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
         if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
-            $value = str_replace(">", "&gt;", str_replace("<", "&lt;", $this->value));
+            $value = sanitizeInput($this->value);
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
         }
         $html .= "</select>";

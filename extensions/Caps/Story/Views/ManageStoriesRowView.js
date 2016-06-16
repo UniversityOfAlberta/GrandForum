@@ -36,7 +36,8 @@ ManageStoriesRowView = Backbone.View.extend({
              isMine.isMine = true;
 	}
         var mod = _.extend(this.model.toJSON(), isMine);
-        this.el.innerHTML = this.template(mod);
+        var mod2 = _.extend(mod, me);
+        this.el.innerHTML = this.template(mod2);
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });

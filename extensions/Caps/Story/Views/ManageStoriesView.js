@@ -59,7 +59,8 @@ ManageStoriesView = Backbone.View.extend({
 
     render: function(){
         this.$el.empty();
-        this.$el.html(this.template());
+        var mod = _.extend(this.model.toJSON(), me);
+        this.el.innerHTML = this.template(mod);
         this.addRows();
 	var text = "Share Case or Experience";
 	if(wgLang == 'fr'){

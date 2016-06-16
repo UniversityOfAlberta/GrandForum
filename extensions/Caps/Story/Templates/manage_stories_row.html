@@ -1,5 +1,7 @@
 <td align="left"><a href="<%= url %>"><%= striphtml(title) %></a>
 </td>
+<% if(me.getCapsRoleString().indexOf('Admin') > -1 || me.getCapsRoleString().indexOf('Manager') > -1){ %>
 <td  style="white-space: nowrap;"><a href="<%= author.url %>"><%= author.name %></a></td>
+<% } %>
 <td  style="white-space: nowrap;"><%= date_submitted %></td>
 <td><% if(approved==1){ %>Yes<%} else{ %> No <% } %></td>

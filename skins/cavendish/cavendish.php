@@ -53,7 +53,7 @@ class CavendishTemplate extends QuickTemplate {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
-		<?php $this->html('headlinks') ?>
+
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
@@ -196,7 +196,16 @@ class CavendishTemplate extends QuickTemplate {
             })(Backbone.View);
         </script>
         <?php echo $config->getValue("analyticsCode"); ?>
-		
+	<style>
+	<?php
+	if($wgLang->getCode() == 'en'){
+            echo ".fr{display:none;}";
+         }
+	elseif($wgLang->getCode() == 'fr'){
+   	    echo ".en{display:none;}";
+	}
+	?>
+	</style>	
 		<!-- Head Scripts -->
 		<script type="text/javascript">
 		    var wgServer = "<?php echo $wgServer; ?>";
@@ -1020,9 +1029,9 @@ $(function(){
 		        else{
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
-		        $_POST['wpName'] = str_replace('"', "", $_POST['wpName']);
+		        $_POST['wpName'] = sanitizeInput($_POST['wpName']);
 		        $_POST['wpUsername'] = $_POST['wpName'];
-		        $_POST['wpPassword'] = str_replace('"', "", $_POST['wpPassword']);
+		        $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
@@ -1162,7 +1171,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
-		    $name = str_replace('"', "", $name);
+		    $name = sanitizeInput($name);
 		    echo "
 			<ul class='pBodyLogin'>";
 		    echo <<< EOF
@@ -1178,7 +1187,7 @@ If you have forgotten your password please enter your login and ID and request a
 		<tr>
 			<td class="mw-input mw-input-string">
 				<input type='password' class='loginPassword' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Password"
-					tabindex="2" size='20' />
+					tabindex="2" size='20' autocomplete='off' />
 			</td>
 		</tr>
 		<tr>
@@ -1201,7 +1210,7 @@ $emailPassword
 </li>
 EOF;
             echo <<< EOF
-        <br />f
+        <br />
         <span class='pBodyTitle0'>Member Registration</span>
         <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
 EOF;

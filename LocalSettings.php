@@ -226,7 +226,7 @@ $wgVerifyMimeType = false;
 $wgAllowCopyUploads = true;
 $wgAllowTitlesInSVG = true;
 $wgMaxShellMemory = 402400;
-$wgPasswordReminderResendTime = 0.1666; // ~ 10 minutes
+$wgPasswordReminderResendTime = 0.0; // ~ 10 minutes
 $wgEditPageFrameOptions = 'SAMEORIGIN';
 $wgImpersonating = false;
 $wgDelegating = false;
@@ -491,4 +491,14 @@ function icsToArray($icsFile) {
     }
 
     return $icsDates;
+}
+
+function sanitizeInput($str){
+    $str = str_replace("&", "&amp;", $str);
+    $str = str_replace("<", "&lt;", $str);
+    $str = str_replace(">", "&gt;", $str);
+    $str = str_replace("\"", "&quot;", $str);
+    $str = str_replace("'", "&#x27;", $str);
+    $str = str_replace("/", "&#x2F;", $str);
+    return $str;
 }

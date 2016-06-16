@@ -52,7 +52,7 @@ if ( !$wgRequest->checkUrlExtension()) {
 
 // Verify that the API has not been disabled
 if ( !$wgEnableAPI || !$wgUser->isLoggedIn()) {
-	header( $_SERVER['SERVER_PROTOCOL'] . ' 500 MediaWiki configuration Error', true, 500 );
+	//header( $_SERVER['SERVER_PROTOCOL'] . ' 500 MediaWiki configuration Error', true, 500 );
 	echo 'MediaWiki API is not enabled for this site.';
 	die( 1 );
 }
