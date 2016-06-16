@@ -2,6 +2,8 @@
 
 class HQPProfileTab extends AbstractEditableTab {
 
+    static $cache = array();
+
     var $person;
     var $visibility;
 
@@ -135,42 +137,49 @@ class HQPProfileTab extends AbstractEditableTab {
     
     function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true, $checkYear=false){
         global $wgServer, $wgScriptPath;
+        
         $data = "";
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $year = 0; // Don't have a year so that it remains the same each year
+        if(!isset(self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear])){
         
-        $blb = new ReportBlob($type, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-        $result = $blb->load($addr, true);
-        $tmpdata = $blb->getData();
-        if(!$checkYear){
-            $data = $blb->getData();
-        }
-        
-        if($checkRegistration){
-            $year = (!$checkYear) ? date('Y') : $checkYear;
-            $endYear = (!$checkYear) ? substr($this->person->getRegistration(), 0, 4) : $checkYear;
-            while($data == "" && $year >= $endYear){
-                // If it is empty, check to see if there was an entry for one of the other years
-                $blb = new ReportBlob($type, $year, $personId, $projectId);
-                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-                $result = $blb->load($addr, true);
+            $year = 0; // Don't have a year so that it remains the same each year
+            
+            $blb = new ReportBlob($type, $year, $personId, $projectId);
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+            $result = $blb->load($addr, true);
+            $tmpdata = $blb->getData();
+            if(!$checkYear){
                 $data = $blb->getData();
-                $year--;
             }
+            
+            if($checkRegistration){
+                $year = (!$checkYear) ? date('Y') : $checkYear;
+                $endYear = (!$checkYear) ? substr($this->person->getRegistration(), 0, 4) : $checkYear;
+                while($data == "" && $year >= $endYear){
+                    // If it is empty, check to see if there was an entry for one of the other years
+                    $blb = new ReportBlob($type, $year, $personId, $projectId);
+                    $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+                    $result = $blb->load($addr, true);
+                    $data = $blb->getData();
+                    $year--;
+                }
+            }
+            
+            if($data == ""){
+                $data = $tmpdata;
+            }
+            if($type == BLOB_RAW && $data != null){
+                $data = json_decode($data);
+                $mime = $data->type;
+                $md5 = $blb->getMD5();
+                $data = "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+            }
+            self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear] = $data;
         }
-        
-        if($data == ""){
-            $data = $tmpdata;
-        }
-        
-        if($type == BLOB_RAW && $data != null){
-            $data = json_decode($data);
-            $mime = $data->type;
-            $md5 = $blb->getMD5();
-            return "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+        else {
+            $data = self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear];
         }
         
         return $data;
