@@ -39,10 +39,11 @@ class HQPRegisterTable extends SpecialPage{
             $wgOut->addHTML("<li><a href='#tabs-$year'>$year</a></li>");
         }
         $wgOut->addHTML("</ul>");
-        $report = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
-        $report->year = $year;
         
         for($year=date('Y'); $year >= $startYear; $year--){
+            $report = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
+            $report->year = $year;
+            
             $hqps = array_merge(Person::getAllPeopleDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'), 
                                 Person::getAllCandidatesDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'));
             $wgOut->addHTML("<div id='tabs-$year'>
