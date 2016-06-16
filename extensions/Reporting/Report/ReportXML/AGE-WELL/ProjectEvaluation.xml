@@ -14,19 +14,6 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="SD">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="narrative1" permissions="rw" />
-            <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="transdisciplinary" permissions="rw" />
-            <SectionPermission id="networking" permissions="rw" />
-            <SectionPermission id="ktee1" permissions="rw" />
-            <SectionPermission id="ktee2" permissions="rw" />
-            <SectionPermission id="hqp" permissions="rw" />
-            <SectionPermission id="narrative2" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
@@ -66,6 +53,8 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Person id="2" />
+        <Person id="3" />
         <Project deleted="false" />
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
