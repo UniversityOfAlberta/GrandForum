@@ -73,6 +73,7 @@ class HQPRegisterTable extends SpecialPage{
                 $cv       = $tab->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
                 $application = "";
                 $button = "";
+                $updated = "";
                 if($research != "" ||
                    $train != "" ||
                    $bio != "" ||
@@ -80,7 +81,7 @@ class HQPRegisterTable extends SpecialPage{
                    $boundary != "" ||
                    $cv != ""){
                     $report->person = $hqp;
-                    
+                    $updated = substr($tab->lastUpdated($year), 0, 10);
                     $text = ($report->hasStarted()) ? "Award" : "Affiliate";
                     if($text == "Award"){
                         $check = $report->getLatestPDF();
@@ -99,14 +100,13 @@ class HQPRegisterTable extends SpecialPage{
                 }
                 
                 $wgOut->addHTML("<tr>");
-                $hqp->getName();
                 $wgOut->addHTML("<td align='right'>{$hqp->getFirstName()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getLastName()}</td>");
                 $wgOut->addHTML("<td><a href='mailto:{$hqp->getEmail()}'>{$hqp->getEmail()}</a></td>");
                 $wgOut->addHTML("<td>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
-                $wgOut->addHTML("<td align='center'>".substr($tab->lastUpdated($year), 0, 10)."</td>");
+                $wgOut->addHTML("<td align='center'>{$updated}</td>");
                 $wgOut->addHTML("<td align='center'>{$application}</td>");
                 $wgOut->addHTML("<td align='center'>{$button}</td>");
                 $wgOut->addHTML("</tr>");
