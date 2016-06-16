@@ -39,6 +39,9 @@ class HQPRegisterTable extends SpecialPage{
             $wgOut->addHTML("<li><a href='#tabs-$year'>$year</a></li>");
         }
         $wgOut->addHTML("</ul>");
+        $report = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
+        $report->year = $year;
+        
         for($year=date('Y'); $year >= $startYear; $year--){
             $hqps = array_merge(Person::getAllPeopleDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'), 
                                 Person::getAllCandidatesDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'));
@@ -60,7 +63,7 @@ class HQPRegisterTable extends SpecialPage{
                 <tbody>");
             foreach($hqps as $hqp){
                 $tab = new HQPProfileTab($hqp, array('isMe' => true, 'isSupervisor' => true));
-                
+
                 $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
@@ -75,8 +78,7 @@ class HQPRegisterTable extends SpecialPage{
                    $align != "" ||
                    $boundary != "" ||
                    $cv != ""){
-                    $report = new DummyReport(RP_HQP_APPLICATION, $hqp, null, $year);
-                    $report->year = $year;
+                    $report->person = $hqp;
                     
                     $text = ($report->hasStarted()) ? "Award" : "Affiliate";
                     if($text == "Award"){
