@@ -219,6 +219,30 @@ class HQPProfileTab extends AbstractEditableTab {
                 $cv != null);
     }
     
+    /**
+     * Returns when the HQP Profile was last updated
+     * @param string $maxYear The max year that this can be
+     */
+    function lastUpdated($maxYear=false){
+        $personId = $this->person->getId();
+        $projectId = 0;
+    
+        if($maxYear == false){ $maxYear = date('Y'); }
+        $data = DBFunctions::execSQL("SELECT changed
+                                      FROM grand_report_blobs
+                                      WHERE user_id = '$personId'
+                                      AND year <= $maxYear
+                                      AND rp_type = ".RP_HQP_APPLICATION."
+                                      AND (rp_section = ".HQP_APPLICATION_FORM." AND 
+                                           (rp_item = ".HQP_APPLICATION_RESEARCH." OR
+                                            rp_item = ".HQP_APPLICATION_TRAIN." OR
+                                            rp_item = ".HQP_APPLICATION_BIO." OR
+                                            rp_item = ".HQP_APPLICATION_ALIGN." OR
+                                            rp_item = ".HQP_APPLICATION_BOUNDARY."))
+                                      ORDER BY changed DESC");
+        return @$data[0]['changed'];
+    }
+    
     function handleEdit(){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         

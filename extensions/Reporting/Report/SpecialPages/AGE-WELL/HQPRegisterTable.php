@@ -49,9 +49,10 @@ class HQPRegisterTable extends SpecialPage{
                         <th width='1%'>First&nbsp;Name</th>
                         <th width='1%'>Last&nbsp;Name</th>
                         <th width='1%'>Email</th>
-                        <th>Registration Date</th>
+                        <th>Registration</th>
                         <th>University</th>
                         <th>Level</th>
+                        <th>Profile Updated</th>
                         <th>Application</th>
                         <th>PDF</th>
                     </tr>
@@ -99,6 +100,7 @@ class HQPRegisterTable extends SpecialPage{
                 $wgOut->addHTML("<td>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
+                $wgOut->addHTML("<td>{$tab->lastUpdated($year)}</td>");
                 $wgOut->addHTML("<td align='center'>{$application}</td>");
                 $wgOut->addHTML("<td align='center'>{$button}</td>");
                 $wgOut->addHTML("</tr>");
