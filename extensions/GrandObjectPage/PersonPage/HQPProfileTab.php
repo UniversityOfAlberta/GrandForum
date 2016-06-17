@@ -159,11 +159,14 @@ class HQPProfileTab extends AbstractEditableTab {
                 $endYear = (!$checkYear) ? substr($this->person->getRegistration(), 0, 4) : $checkYear;
                 while($data == "" && $year >= $endYear){
                     // If it is empty, check to see if there was an entry for one of the other years
-                    $blb = new ReportBlob($type, $year, $personId, $projectId);
-                    $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-                    $result = $blb->load($addr, true);
-                    $data = $blb->getData();
-                    self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year] = $data;
+                    if(!isset(self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year])){
+                        $blb = new ReportBlob($type, $year, $personId, $projectId);
+                        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+                        $result = $blb->load($addr, true);
+                        $data = $blb->getData();
+                        self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year] = $data;
+                    }
+                    $data = self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year];
                     $year--;
                 }
             }
