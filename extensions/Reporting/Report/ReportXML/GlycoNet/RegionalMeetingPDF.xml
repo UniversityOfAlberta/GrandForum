@@ -17,7 +17,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="proposal" name="Meeting Proposal" tooltip="Workshop Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
+    <ReportSection id="proposal" name="Meeting Proposal" title="Regional Meeting Proposal" tooltip="Regional Meeting Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
         <ReportItem id="title" type="Text" blobItem="TITLE">
             <![CDATA[
                 <table width='100%'>
