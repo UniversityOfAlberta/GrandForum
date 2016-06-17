@@ -82,7 +82,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative1" type="EditableReportSection" blobSection="NARRATIVE1" tooltip="Narrative Project Assessment and Readiness Level" name="Narrative 1" title="Narrative Project Assessment and Readiness Level">
+    <ReportSection id="narrative1" type="EditableReportSection" blobSection="NARRATIVE1" tooltip="Project Assessment and Readiness Level" name="Assessment &amp; Readiness" title="Project Assessment and Readiness Level">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>Projects can be at different stages of product readiness, from concept to deployment and adoption.  Please refer to the guidelines in order to define which stage best characterises your project.</p>
@@ -119,7 +119,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="Radio" blobItem="PRL" blobType="BLOB_TEXT" options="&lt;b&gt;INNOVATION RESEARCH&lt;/b&gt; (PRL 1) basic principles observed|&lt;b&gt;INCUBATOR&lt;/b&gt; (PRL 2-3) technology concept formulated; experimental proof of concept|&lt;b&gt;PROTOTYPE&lt;/b&gt; (PRL 4-5) technology validated in lab; technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies)|&lt;b&gt;EXPERIMENTAL IMPLEMENTATION&lt;/b&gt; (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment|&lt;b&gt;OUTCOMES&lt;/b&gt; (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)">
+        <ReportItem id="prl" type="Radio" blobItem="PRL" blobType="BLOB_TEXT" options="&lt;b&gt;INNOVATION RESEARCH&lt;/b&gt; (PRL 1) basic principles observed through novel research|&lt;b&gt;INCUBATOR&lt;/b&gt; (PRL 2-3) product concept formulated; experimental proof of concept|&lt;b&gt;PROTOTYPE&lt;/b&gt; (PRL 4-5) product validated in lab; product validated in relevant environment|&lt;b&gt;EXPERIMENTAL IMPLEMENTATION&lt;/b&gt; (PRL 6-7) product demonstrated in relevant environment|&lt;b&gt;OUTCOMES&lt;/b&gt; (PRL 8-9) product complete and qualified; actual product proven in operational environment">
             <![CDATA[
                 <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product currently at:</h3>
                 {$item}
@@ -499,6 +499,7 @@
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
             <![CDATA[
+                <p>Essential to all NCE networks is the multi-disciplinarity of the approach to challenges. Projects are expected to transcend disciplinary boundaries by developing shared concepts and understanding, goals and working practices in order to work effectively as a single team to tackle the complexity of real-wold problem domains. Projects should involve collaboration where partnership working allows expertise, knowledge and joining working practices to transcend disciplinary boundaries.</p>
                 <h2>Review scorecard</h2>
                 <p>Describe what your project has done to create a transdisciplinary working environment?</p>
                 {$item}
@@ -2086,7 +2087,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="Narrative" name="Narrative 2">
+    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why</h3>
