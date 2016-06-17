@@ -930,6 +930,9 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
+		        $_POST['wpName'] = sanitizeInput($_POST['wpName']);
+		        $_POST['wpUsername'] = $_POST['wpName'];
+		        $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
@@ -1071,7 +1074,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
-		    
+		    $name = sanitizeInput($name);
 		    echo "<span class='highlights-text'>Login</span>
 			<ul class='pBody'>";
 		    echo <<< EOF
