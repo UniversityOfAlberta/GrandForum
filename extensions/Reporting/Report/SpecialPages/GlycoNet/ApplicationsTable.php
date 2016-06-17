@@ -45,6 +45,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp, 2015, "Research Exchange"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp, 2015, "Summer"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni, 2015, "Tech Workshop"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), $ni, 2015, "Regional Meeting"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $projects, 2015, "Project Report"));
         $tabbedPage->showPage();
     }
