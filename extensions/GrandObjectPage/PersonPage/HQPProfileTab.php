@@ -163,6 +163,7 @@ class HQPProfileTab extends AbstractEditableTab {
                     $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
                     $result = $blb->load($addr, true);
                     $data = $blb->getData();
+                    self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year] = $data;
                     $year--;
                 }
             }
