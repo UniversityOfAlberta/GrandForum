@@ -1529,7 +1529,6 @@ select span.noshow {
 }
 
 .thread-message img.photo {
-    width: 50px;
     height: 66px;
 }
 
