@@ -32,7 +32,10 @@ class ApplicationsTable extends SpecialPage{
         
         $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
         $ni = Person::getAllPeople(NI);
-        $allNis = array_merge($ni, Person::getAllCandidates(NI));
+        $allNis = array_merge($ni, 
+                              Person::getAllCandidates(NI), 
+                              Person::getAllPeople(EXTERNAL), 
+                              Person::getAllCandidates(EXTERNAL));
         $projects = Project::getAllProjects();
         
         $tabbedPage = new TabbedPage("person");
