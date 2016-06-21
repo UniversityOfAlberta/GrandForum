@@ -187,9 +187,9 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
             <![CDATA[
-                <h2>Project Summary (500 words maximum)</h2>
+                <h2>Project Summary</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -201,23 +201,23 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="2000">
             <![CDATA[
-                <h2>Project Proposal (2000 words maximum)</h2>
+                <h2>Project Proposal</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px">
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Knowledge and Technology Exchange and Exploitation</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
             <![CDATA[
-                <h2>Training Potential (500 words maximum)</h2>
+                <h2>Training Potential</h2>
                 {$item}
             ]]>
         </ReportItem>

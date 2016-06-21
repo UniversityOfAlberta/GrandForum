@@ -170,9 +170,9 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
             <![CDATA[
-                <h2>Project Summary (500 words maximum)</h2>
+                <h2>Project Summary</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -184,9 +184,9 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="7000">
             <![CDATA[
-                <h2>Project Proposal (7000 words maximum)</h2>
+                <h2>Project Proposal</h2>
                 {$item}
             ]]>
         </ReportItem>
