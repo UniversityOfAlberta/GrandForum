@@ -3,13 +3,23 @@
 class PersonAPI extends RESTAPI {
     
     function doGET(){
-        if($this->getParam('id') != ""){
-            $me = Person::newFromWgUser();
+        $me = Person::newFromWgUser();
+        if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) == 1){
             $person = Person::newFromId($this->getParam('id'));
             if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI))){
                 $this->throwError("This user does not exist");
             }
             return $person->toJSON();
+        }
+        else if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) > 1){
+            $json = array();
+            foreach(explode(",", $this->getParam('id')) as $id){
+                $person = Person::newFromId($id);
+                if(!($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI)))){
+                    $json[] = $person->toArray();
+                }
+            }
+            return large_json_encode($json);
         }
     }
     
