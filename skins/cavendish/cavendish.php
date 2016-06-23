@@ -53,7 +53,6 @@ class CavendishTemplate extends QuickTemplate {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
-		<?php $this->html('headlinks') ?>
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
@@ -581,7 +580,7 @@ class CavendishTemplate extends QuickTemplate {
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
 		                height = $("#bodyContent").height();
-		                parent.postMessage(height+5, "*");
+		                parent.postMessage(height+10, "*");
 		            }, 100);
 		        });
 		    </script>
@@ -934,6 +933,9 @@ class CavendishTemplate extends QuickTemplate {
 		        else{
 		            $_POST['wpName'] = $_POST['wpUsername'];
 		        }
+		        $_POST['wpName'] = sanitizeInput($_POST['wpName']);
+		        $_POST['wpUsername'] = $_POST['wpName'];
+		        $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
@@ -1075,7 +1077,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
-		    
+		    $name = sanitizeInput($name);
 		    echo "<span class='highlights-text'>Login</span>
 			<ul class='pBody'>";
 		    echo <<< EOF

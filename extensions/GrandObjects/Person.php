@@ -167,6 +167,7 @@ class Person extends BackboneModel {
     static function newFromNameLike($name){
         $name = Person::cleanName($name);
         $name = unaccentChars(strtolower($name));
+        $name = str_replace(" ", "", str_replace(".", "", $name));
         self::generateNamesCache();
         $data = array();
         if(isset(self::$namesCache[$name])){
@@ -312,20 +313,36 @@ class Person extends BackboneModel {
                 
                 self::$idsCache[$row['user_id']] = $row;
                 self::$namesCache[strtolower($row['user_name'])] = $row;
-                self::$namesCache[strtolower("$firstName $lastName")] = $row;
-                self::$namesCache[strtolower("$lastName $firstName")] = $row;
-                self::$namesCache[strtolower("$firstName ".substr($lastName, 0, 1))] = $row;
-                self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
-                self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
+                self::$namesCache[str_replace(" ", "", strtolower("$firstName $lastName"))] = $row;
+                self::$namesCache[str_replace(" ", "", strtolower("$lastName $firstName"))] = $row;
+                self::$namesCache[str_replace(" ", "", strtolower("$firstName ".substr($lastName, 0, 1)))] = $row;
+                self::$namesCache[str_replace(" ", "", strtolower("$lastName ".substr($firstName, 0, 1)))] = $row;
+                self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." $lastName"))] = $row;
                 if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
                     self::$namesCache[unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])))] = $row;
                 }
                 if($middleName != ""){
-                    $middleName = unaccentChars($middleName);
-                    self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
-                    self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
+                    $middleNameOrig = $middleName;
+                    $middleName = unaccentChars($middleNameOrig);
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName $middleName $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." $middleName $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)))] = $row;
+                    
+                    $middleName = str_replace(".", "", $middleNameOrig);
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName $middleName $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." $middleName $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)))] = $row;
+                    
+                    $middleName = str_replace(".", " ", $middleNameOrig);
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName $middleName$lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." $middleName$lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$firstName ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName"))] = $row;
+                    self::$namesCache[str_replace(" ", "", strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1)))] = $row;
                 }
             }
         }
@@ -726,6 +743,36 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    /**
+     * Returns an array of People of the type $filter and are also candidates
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
+    static function getAllCandidatesDuring($filter=null, $startDate=false, $endDate=false){
+        if($filter == NI){
+            $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
+            $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
+            return array_merge($ars, $cis);
+        }
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1)),
+                                    array('user_name' => 'ASC'));
+        $people = array();
+        foreach($data as $row){
+            $rowA = array();
+            $rowA[0] = $row;
+            $person = Person::newFromId($rowA[0]['user_id']);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter.'-Candidate', $startDate, $endDate))){
+                if($me->isLoggedIn() || $person->isRoleAtLeastDuring(NI, $startDate, $endDate)){
+                    $people[] = $person;
+                }
+            }
+        }
+        return $people;
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
@@ -798,6 +845,9 @@ class Person extends BackboneModel {
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms(),
+                      'firstName' => $this->getFirstName(),
+                      'middleName' => $this->getMiddleName(),
+                      'lastName' => $this->getLastName(),
                       'reversedName' => $this->getReversedName(),
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
@@ -811,7 +861,7 @@ class Person extends BackboneModel {
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
                       'roles' => $roles,
-		      'lastRole' => $this->getLastRole(),
+                      'lastRole' => $this->getLastRole(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl());
@@ -850,9 +900,9 @@ class Person extends BackboneModel {
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
                                     array('first_name' => $this->firstName,
-					  'middle_name' => $this->middleName,
-					  'last_name' => $this->lastName,
-					  'user_twitter' => $this->getTwitter(),
+                                          'middle_name' => $this->middleName,
+                                          'last_name' => $this->lastName,
+                                          'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1591,7 +1641,7 @@ class Person extends BackboneModel {
     static function getAllMovedOnDuring($startRange, $endRange){
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
-                WHERE date_created BETWEEN '$startRange' AND '$endRange'";
+                WHERE effective_date BETWEEN '$startRange' AND '$endRange'";
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
@@ -2996,6 +3046,19 @@ class Person extends BackboneModel {
             }
         }
         return true;
+    }
+    
+    /**
+     * Returns whether or not this Person is an EPIC HQP (for AGE-WELL)
+     * @return boolean Whether or not this Person is an EPIC HQP
+     */
+    function isEpic(){
+        $position = strtolower($this->getPosition());
+        return ($position == "graduate student - doctoral" ||
+                $position == "graduate student - master's" ||
+                $position == "post-doctoral fellow" ||
+                $this->isSubRole("Affiliate HQP") || 
+                $this->isSubRole("WP/CC Funded HQP"));
     }
     
     /**

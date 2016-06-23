@@ -60,6 +60,11 @@
     overflow: hidden;
 }
 
+table.small textarea {
+    padding: 3px !important;
+    font-size: 110%;
+}
+
 #contentSub {
     display:none !important;
 }

@@ -465,6 +465,7 @@
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field label="Presenter" type="String">presenter</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
@@ -483,6 +484,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -492,6 +494,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -501,6 +504,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -510,6 +514,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -519,6 +524,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -528,6 +534,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -537,6 +544,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
         
@@ -546,6 +554,7 @@
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field label="Presenter" type="String">presenter</field>
             </data>
         </Presentation>
 

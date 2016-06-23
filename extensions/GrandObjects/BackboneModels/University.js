@@ -9,6 +9,7 @@ University = Backbone.Model.extend({
     defaults: {
         id: null,
         name: "",
+        province: "Other",
         latitude: "",
         longitude: "",
         color: "",

@@ -2,6 +2,8 @@
 
 class HQPProfileTab extends AbstractEditableTab {
 
+    static $cache = array();
+
     var $person;
     var $visibility;
 
@@ -28,16 +30,16 @@ class HQPProfileTab extends AbstractEditableTab {
                 $me->isRoleAtLeast(STAFF));
     }
 
-    function generateBody(){
+    function generateBody($year=false){
         if(!$this->userCanView()){
             return "";
         }
-        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH));
-        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN));
-        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO));
-        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN));
-        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY));
-        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
+        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
         if($research    == "" &&
            $train       == "" &&
            $bio         == "" &&
@@ -133,34 +135,55 @@ class HQPProfileTab extends AbstractEditableTab {
         return $this->html;
     }
     
-    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true, $checkYear=false){
         global $wgServer, $wgScriptPath;
-        $year = 0; // Don't have a year so that it remains the same each year
+        
+        $data = "";
         $personId = $this->person->getId();
         $projectId = 0;
         
-        $blb = new ReportBlob($type, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-        $result = $blb->load($addr, true);
-        $data = $blb->getData();
+        if(!isset(self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear])){
         
-        if($checkRegistration){
-            $year = date('Y');
-            while($data == "" && $year >= substr($this->person->getRegistration(), 0, 4)){
-                // If it is empty, check to see if there was an entry for one of the other years
-                $blb = new ReportBlob($type, $year, $personId, $projectId);
-                $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
-                $result = $blb->load($addr, true);
+            $year = 0; // Don't have a year so that it remains the same each year
+            
+            $blb = new ReportBlob($type, $year, $personId, $projectId);
+            $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+            $result = $blb->load($addr, true);
+            $tmpdata = $blb->getData();
+            if(!$checkYear){
                 $data = $blb->getData();
-                $year--;
             }
+            
+            if($checkRegistration){
+                $year = (!$checkYear) ? date('Y') : $checkYear;
+                $endYear = (!$checkYear) ? substr($this->person->getRegistration(), 0, 4) : $checkYear;
+                while($data == "" && $year >= $endYear){
+                    // If it is empty, check to see if there was an entry for one of the other years
+                    if(!isset(self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year])){
+                        $blb = new ReportBlob($type, $year, $personId, $projectId);
+                        $addr = ReportBlob::create_address(RP_HQP_APPLICATION, $section, $blobItem, 0);
+                        $result = $blb->load($addr, true);
+                        $data = $blb->getData();
+                        self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year] = $data;
+                    }
+                    $data = self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year];
+                    $year--;
+                }
+            }
+            
+            if($data == ""){
+                $data = $tmpdata;
+            }
+            if($type == BLOB_RAW && $data != null){
+                $data = json_decode($data);
+                $mime = $data->type;
+                $md5 = $blb->getMD5();
+                $data = "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+            }
+            self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear] = $data;
         }
-        
-        if($type == BLOB_RAW && $data != null){
-            $data = json_decode($data);
-            $mime = $data->type;
-            $md5 = $blb->getMD5();
-            return "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime={$mime}'>Download</a>";
+        else {
+            $data = self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$checkYear];
         }
         
         return $data;
@@ -207,6 +230,31 @@ class HQPProfileTab extends AbstractEditableTab {
                 $align != null ||
                 $boundary != null ||
                 $cv != null);
+    }
+    
+    /**
+     * Returns when the HQP Profile was last updated
+     * @param string $maxYear The max year that this can be
+     */
+    function lastUpdated($maxYear=false){
+        $personId = $this->person->getId();
+        $projectId = 0;
+    
+        if($maxYear == false){ $maxYear = date('Y'); }
+        $data = DBFunctions::execSQL("SELECT changed
+                                      FROM grand_report_blobs
+                                      WHERE user_id = '$personId'
+                                      AND year <= $maxYear
+                                      AND rp_type = ".RP_HQP_APPLICATION."
+                                      AND (rp_section = ".HQP_APPLICATION_FORM." AND 
+                                           (rp_item = ".HQP_APPLICATION_RESEARCH." OR
+                                            rp_item = ".HQP_APPLICATION_TRAIN." OR
+                                            rp_item = ".HQP_APPLICATION_BIO." OR
+                                            rp_item = ".HQP_APPLICATION_ALIGN." OR
+                                            rp_item = ".HQP_APPLICATION_BOUNDARY."))
+                                      ORDER BY changed DESC
+                                      LIMIT 1");
+        return @$data[0]['changed'];
     }
     
     function handleEdit(){

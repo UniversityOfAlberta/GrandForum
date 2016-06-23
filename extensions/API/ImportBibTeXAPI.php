@@ -103,7 +103,12 @@ class ImportBibTeXAPI extends API{
         $me = Person::newFromWgUser();
 
         if(isset($paper['abstract'])){ $product->description = @$paper['abstract']; }
-        if($product->status == ""){ $product->status = "Published"; }
+        if($product->status == ""){ 
+            $product->status = "Published";
+        }
+        if($product->status == "Published"){
+            $product->access = "Public";
+        }
         $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01";
         $product->data = array();
         if(!is_array($product->projects)){ $product->projects = array(); }

@@ -453,6 +453,16 @@ abstract class AbstractReport extends SpecialPage {
     
     // Sets the name of this Report
     function setName($name){
+        $section = new ReportSection();
+        $item = new StaticReportItem();
+        $section->parent = $this;
+        $item->parent = $section;
+        if($this->person != null){
+            $item->setPersonId($this->person->getId());
+        }
+        if($this->project != null){
+            $item->setProjectId($this->project->getId());
+        }
         if($this->project != null){
             if($this->project instanceof Project){
                 $this->name = $name.": {$this->project->getName()}";
@@ -464,6 +474,7 @@ abstract class AbstractReport extends SpecialPage {
         else{
             $this->name = $name;
         }
+        $this->name = $item->varSubstitute($this->name);
     }
     
     function setHeaderName($name){

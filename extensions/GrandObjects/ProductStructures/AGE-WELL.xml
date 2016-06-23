@@ -663,13 +663,25 @@
             <data></data>
         </Product>
         
-        <Product type="Report of Copyright" status="">
+        <Product type="License Agreement" status="">
             <data></data>
         </Product>
         
         <Product type="Patent" status="">
             <data>
-                <field label="Number" type="String">number</field>
+                <field label="Patent Number" type="String">number</field>
+            </data>
+        </Product>
+        
+        <Product type="Trademark" status="">
+            <data>
+                <field label="Application Number" type="String">number</field>
+            </data>
+        </Product>
+        
+        <Product type="Copyright" status="">
+            <data>
+                <field label="Registration Number" type="String">number</field>
             </data>
         </Product>
 

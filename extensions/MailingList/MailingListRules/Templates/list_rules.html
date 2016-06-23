@@ -17,9 +17,23 @@
             </td>
             <td>
                 <select name="value">
-                    <% _.each(r.get('possibleValues').ids, function(v, i){ %>
-                        <option value="<%= v %>" <% if(r.get('value') == v){ %>selected<% } %>><%= r.get('possibleValues').names[i] %></option>
-                    <% }) %>
+                    <% if(r.get('possibleValues').groups != undefined){ %>
+                        <% _.each(_.uniq(r.get('possibleValues').groups), function(g){ %>
+                            <% if(g != null){ %>
+                                <optgroup label="<%= g %>">
+                                    <% _.each(r.get('possibleValues').ids, function(v, i){ %>
+                                        <% if(r.get('possibleValues').groups[i] == g && r.get('possibleValues').names[i] != ""){ %>
+                                            <option value="<%= v %>" <% if(r.get('value') == v){ %>selected<% } %>><%= r.get('possibleValues').names[i] %></option>
+                                        <% } %>
+                                    <% }) %>
+                                </optgroup>
+                            <% } %>
+                        <% }) %>
+                    <% } else { %>
+                        <% _.each(r.get('possibleValues').ids, function(v, i){ %>
+                            <option value="<%= v %>" <% if(r.get('value') == v){ %>selected<% } %>><%= r.get('possibleValues').names[i] %></option>
+                        <% }) %>
+                    <% } %>
                 </select>
             </td>
             <td>

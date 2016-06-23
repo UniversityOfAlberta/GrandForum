@@ -78,6 +78,7 @@ class University extends BackboneModel {
         global $wgUser;
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
+                      'province' => $this->getProvince(),
                       'latitude' => $this->getLatitude(),
                       'longitude' => $this->getLongitude(),
                       'color' => $this->getColor(),

@@ -247,10 +247,11 @@ class Paper extends BackboneModel{
      * @param boolean $onlyPublic Whether or not to only include Products with access_id = 0
      * @param string $access Whether to include 'Forum' or 'Public' access
      * @param integer $start The index to start at
-     * @param integer $count The max number of Products to return 
+     * @param integer $count The max number of Products to return
+     * @param array $institutions The institutions associated to the papers
      * @return array All of the Products
      */
-    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
+    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999, $institutions=array()){
         global $config;
         if(!$config->getValue('projectsEnabled')){
             $grand = 'both';
@@ -348,7 +349,6 @@ class Paper extends BackboneModel{
             $grand = 'both';
         }
         if($startRange === false || $endRange === false){
-            debug("Don't use default values for Project::getAllPapersDuring");
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
         }
@@ -1188,6 +1188,7 @@ class Paper extends BackboneModel{
         $status = ($showStatus) ? $this->getStatus() : "";
         $category = $this->getCategory();
         $au = array();
+        $data = $this->getData();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
                 if($hyperlink){
@@ -1204,9 +1205,16 @@ class Paper extends BackboneModel{
                 else{
                     $au[] = $a->getNameForProduct();
                 }
-            }else{
+            }
+            else{
                 $au[] = $a->getNameForProduct();
             }
+                if($category == "Presentation" && isset($data['presenter'])){
+                    $presenter = Person::newFromNameLike(@$data['presenter']);
+                    if($presenter->getId() == $a->getId() || $presenter->getName() == $a->getName()){
+                        $au[count($au)-1] = "<u>{$au[count($au)-1]}</u>";
+                    }
+                }
         }
         $au = implode(',&nbsp;', $au);
         $vn = $this->getVenue();
@@ -1287,7 +1295,7 @@ class Paper extends BackboneModel{
             $pb = "&nbsp;{$pb}";
         }
         if($category == "Presentation" && $reporting=true){
-            $citation = "{$date},&nbsp;{$au},&nbsp;\"{$text}\" ({$type}),{$vn}{$pg}{$pb}
+            $citation = "{$date},&nbsp;{$au},&nbsp;{$text} ({$type}),{$vn}{$pg}{$pb}
        		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         else{

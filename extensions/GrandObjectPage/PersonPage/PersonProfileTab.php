@@ -16,7 +16,7 @@ class PersonProfileTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser;
         $this->person->getLastRole();
-        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
+        $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         if($this->person->getProfile() != ""){
@@ -226,7 +226,7 @@ class PersonProfileTab extends AbstractEditableTab {
 	if(trim($profile) == ""){
 	    $profile = $person->getProfile(false);
 	}
-        $this->html .= "<p style='text-align:justify;'>".nl2br($profile)."</p>";
+        $this->html .= "<div style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
     }
     
     /**
@@ -425,7 +425,7 @@ EOF;
                         $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForProduct()}</a>";
                     }
                     else{
-                        $names[] = $author->getNameForForms();
+                        $names[] = $author->getNameForProduct();
                     }
                 }
                 
@@ -596,6 +596,9 @@ EOF;
 		$positions = array_merge($positions, $values);
 		$position_bool=true;
 	    }
+	}
+	if($person->isRole(CHAMP)){ //specific in case two roles 
+	    $position_bool = false;
 	}
         if(count($positions) == 0){
             $positions = Person::getAllPositions();

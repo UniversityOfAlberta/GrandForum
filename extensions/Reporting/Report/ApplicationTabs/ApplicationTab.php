@@ -4,10 +4,12 @@ class ApplicationTab extends AbstractTab {
 
     var $rp;
     var $people;
+    var $year;
 
     function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
+        $this->year = $year;
         $newPeople = array();
         foreach($people as $person){
             $newPeople[$person->getId()] = $person;
@@ -31,15 +33,16 @@ class ApplicationTab extends AbstractTab {
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $rpId = (is_array($this->rp)) ? $this->rp[0] : $this->rp;
+        $rpId .= $this->year;
         
         if(is_array($this->rp)){
             $report = array();
             foreach($this->rp as $rp){
-                $report[] = new DummyReport($rp, $me);
+                $report[] = new DummyReport($rp, $me, null, $this->year);
             }
         }
         else{
-            $report = new DummyReport($this->rp, $me);
+            $report = new DummyReport($this->rp, $me, null, $this->year);
         }
         
         $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";

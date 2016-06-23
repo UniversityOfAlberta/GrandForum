@@ -4,7 +4,11 @@
             <img src="<%= cachedPhoto %>" style="max-width:25px; max-height:33px;" alt="" />
         </div>
         <div class="card_description">
-            <b><%= fullName %></b> <span id="roles" style="display:none;"></span><br />
+            <b><%= firstName %>
+            <% if(middleName.length > 0){ %>
+                <%= middleName.substr(0, 1) %>.
+            <% } %>
+            <%= lastName %></b> <span id="roles" style="display:none;"></span><br />
             <span id="uni"><%= position %><br /><%= university %></span>
         </div>
     </div>
