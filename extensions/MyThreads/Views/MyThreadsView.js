@@ -3,6 +3,7 @@ MyThreadsView = Backbone.View.extend({
     table: null,
     threads: null,
     editDialog: null,
+    lastTimeout: null,
 
     initialize: function(){
         this.template = _.template($('#my_threads_template').html());
@@ -13,8 +14,14 @@ MyThreadsView = Backbone.View.extend({
     },
     
     checkEnter: function(e){
+        clearTimeout(this.lastTimeout);
         if(e.keyCode == 13){ // ENTER
             this.$("#advancedSearchButton").click();
+        }
+        else{
+            this.lastTimeout = setTimeout($.proxy(function(){
+                this.$("#advancedSearchButton").click();
+            }, this), 500);
         }
     },
     
@@ -54,12 +61,14 @@ MyThreadsView = Backbone.View.extend({
     
     createDataTable: function(){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
+                                                     'bFilter': false,
                                                      'autoWidth': false,
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
         this.table.order([4, 'desc']);
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
+        this.$('#listTable_length').html($("#advancedSearchButton").parent());
     },
 
     events: {
@@ -69,11 +78,15 @@ MyThreadsView = Backbone.View.extend({
     },
 
     render: function(){
+        var caret = {start: 0, end: 0, text: "", replace: function(){}};
+        if(this.$("#advancedSearch").length > 0){
+            caret = this.$("#advancedSearch").caret();
+        }
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
         this.$("#advancedSearch").focus();
-        this.$("#advancedSearch")[0].setSelectionRange(0, this.$("#advancedSearch").val().length);
+        this.$("#advancedSearch").caret(caret);
         this.editDialog = this.$("#editDialog").dialog({
                 autoOpen: false,
                 modal: true,
