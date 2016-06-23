@@ -626,13 +626,20 @@ ManageProductsView = Backbone.View.extend({
 	                ccvUploaded = $.proxy(function(response, error){
 	                    // Purposefully global so that iframe can access
 	                    if(error == undefined || error == ""){
-	                        this.products.add(response.created, {silent: true});
-	                        this.addRows();
+	                        if(!_.isUndefined(response.created)){
+	                            var ids = _.pluck(response.created, 'id');
+	                            this.products.remove(ids, {silent: true});
+	                            this.products.trigger("remove");
+                                this.products.add(response.created, {silent: true});
+                                this.products.trigger("add");
+                            }
+	                        //this.products.add(response.created, {silent: true});
+	                        //this.addRows();
 	                        clearAllMessages();
                             var nCreated = response.created.length;
                             var nError = response.error.length;
                             if(nCreated > 0){
-	                            addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created");
+	                            addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
 	                        }
 	                        if(nError > 0){
 	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
@@ -675,8 +682,9 @@ ManageProductsView = Backbone.View.extend({
 	                var button = $(e.currentTarget);
 	                button.prop("disabled", true);
 	                var value = $("textarea[name=bibtex]", this.bibtexDialog).val();
+	                var overwrite = $("input[name=overwrite]:checked", this.bibtexDialog).val();
 	                $("div.throbber", this.bibtexDialog).show();
-	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value}, $.proxy(function(response){
+	                $.post(wgServer + wgScriptPath + "/index.php?action=api.importBibTeX", {bibtex: value, overwrite: overwrite}, $.proxy(function(response){
 	                    var data = response.data;
 	                    if(!_.isUndefined(data.created)){
 	                        var ids = _.pluck(data.created, 'id');
@@ -736,8 +744,9 @@ ManageProductsView = Backbone.View.extend({
 	                    var button = $(e.currentTarget);
 	                    button.prop("disabled", true);
 	                    var value = $("input[name=doi]", this.doiDialog).val();
+	                    var overwrite = $("input[name=overwrite]:checked", this.doiDialog).val();
 	                    $("div.throbber", this.doiDialog).show();
-	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value}, $.proxy(function(response){
+	                    $.post(wgServer + wgScriptPath + "/index.php?action=api.importDOI", {doi: value, overwrite: overwrite}, $.proxy(function(response){
 	                        var data = response.data;
 	                        if(!_.isUndefined(data.created)){
 	                            var ids = _.pluck(data.created, 'id');
@@ -748,8 +757,15 @@ ManageProductsView = Backbone.View.extend({
                             if(response.errors.length > 0){
                                 addError(response.errors.join("<br />"));
                             }
-                            else{
-                                addSuccess("<b>1</b> " + productsTerm.toLowerCase() + " was created/updated");
+                            if(!_.isUndefined(data.created)){
+                                var nCreated = data.created.length;
+                                var nError = response.messages.length;
+                                if(nCreated > 0){
+                                    addSuccess("<b>" + nCreated + "</b> " + productsTerm.pluralize().toLowerCase() + " were created/updated");
+                                }
+                                if(nError > 0){
+                                    addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+                                }
                             }
                             button.prop("disabled", false);
                             $("div.throbber", this.doiDialog).hide();

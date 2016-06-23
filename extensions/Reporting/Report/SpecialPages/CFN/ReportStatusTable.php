@@ -67,8 +67,9 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#progress'>Project Progress 2015</a></li>
                                 <li><a href='#ifp_final_2015'>IFP Final 2015</a></li>
                                 <li><a href='#ifp_progress_2015'>IFP Progress 2015</a></li>
-                                <li><a href='#ifp_final_2016'>IFP Final 2016</a></li>
+                                <li><a href='#ifp_final_2016'>IFP Final 2016 (Special)</a></li>
                                 <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
+                                <li><a href='#ifp2016_final_2016'>IFP Final 2016</a></li>
                                 <li><a href='#ssa'>SSA 2015</a></li>
                             </ul>");
         $this->addProjectTable(RP_FINAL_PROJECT,    'final', 2015);
@@ -77,6 +78,7 @@ class ReportStatusTable extends SpecialPage{
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015', $ifpProgress, 2015);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',    $ifp2016Final, 2015);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016', $ifpProgress, 2016);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2016_final_2016', $ifpFinal, 2016);
         $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa, 2015);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>

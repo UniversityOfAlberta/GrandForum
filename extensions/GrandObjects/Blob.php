@@ -297,9 +297,9 @@ class ReportBlob {
 			$insert_keys = implode(',', array_keys($address));
 			$insert_data = "'".implode("','", array_values($address))."'";
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
-				"(edited_by, year, user_id, proj_id, {$insert_keys}, blob_type, data, md5) " .
+				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
-				"{$insert_data}, {$this->_type}, '{$this->_data_transformed}', '{$md5}');", true);
+				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}');", true);
 			if($wgImpersonating){
 			    $res = DBFunctions::execSQL("SELECT blob_id FROM grand_report_blobs WHERE " .
 			                                "user_id = {$this->_owner_id} AND " .

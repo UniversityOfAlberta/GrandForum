@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP" pdfType="RPTP_SIP" pdfFiles="SIPApplicationPDF" ajax="true" disabled="true">
+<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP_07_2016" pdfType="RPTP_SIP_07_2016" pdfFiles="SIPApplication072016PDF" ajax="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
@@ -86,7 +86,7 @@
                     <ul>
                         <li>January 15, 2016</li>
                         <li>April 15, 2016</li>
-                        <li>July 15, 2016</li>
+                        <li><b>July 15, 2016</b></li>
                         <li>October 15, 2016</li>
                     </ul>
                 </p>
@@ -183,7 +183,7 @@
                 <li><b>State the project goals and objectives</b>
                     <ul class='small'>
                         <li>What is the ultimate goal(s) of the proposed initiative?</li>
-                        <li>State the objectives that need to be achieved to realize the ultimate goal(s). (specific goals, objectives and milestones will be listed in an appendix)</li>
+                        <li>State the objectives that need to be achieved to realize the ultimate goal(s).</li>
                     </ul>
                     {$item}
                 </li>

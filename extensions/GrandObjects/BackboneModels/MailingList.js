@@ -62,7 +62,7 @@ MailingListRule = RelationModel.extend({
             case "LOC":
                 var unis = new Universities();
                 $.when(unis.fetch()).then($.proxy(function(){
-                    this.set('possibleValues', {ids: unis.pluck('id'), names: unis.pluck('name')});
+                    this.set('possibleValues', {ids: unis.pluck('id'), names: unis.pluck('name'), groups: unis.pluck('province')});
                 }, this));
                 break;
         }

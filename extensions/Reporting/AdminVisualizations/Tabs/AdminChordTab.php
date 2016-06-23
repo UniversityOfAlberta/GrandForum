@@ -27,7 +27,7 @@ class AdminChordTab extends AbstractTab {
             $sortedPeople = array();
             
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(NI), $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
+                if(!$person->isRoleDuring(NI, $year.REPORTING_CYCLE_START_MONTH, $year.REPORTING_CYCLE_END_MONTH)){
                     unset($people[$key]);
                     continue;
                 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" pdfFiles="TechnologyWorkshopPDF" ajax="true" disabled="false">
+<Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" pdfFiles="TechnologyWorkshopPDF" ajax="true" disabled="false" year="2015">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="background" permissions="rw" />
@@ -131,6 +131,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

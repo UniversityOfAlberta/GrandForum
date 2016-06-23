@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technology Workshop" reportType="RP_TECH_WORKSHOP" pdfType="TECH_WORKSHOP" ajax="true" disabled="false" year="2015">
+<Report name="Regional Meeting" reportType="RP_REGIONAL_MEETING" pdfType="REGIONAL_MEETING" ajax="true" disabled="false" year="2015">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <span style='font-size: 1.5em;font-weight:bold'>Technology Workshop Proposal</span>
+                <span style='font-size: 1.5em;font-weight:bold'>Regional Meeting Proposal</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -17,7 +17,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="proposal" name="Workshop Proposal" tooltip="Workshop Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
+    <ReportSection id="proposal" name="Meeting Proposal" title="Regional Meeting Proposal" tooltip="Regional Meeting Proposal" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
         <ReportItem id="title" type="Text" blobItem="TITLE">
             <![CDATA[
                 <table width='100%'>
@@ -50,30 +50,30 @@
         </ReportItem>
         <ReportItem id="location" type="MultiText" class="wikitable smaller" blobType="BLOB_ARRAY" blobItem="LOCATION" labels="Institution/Facility|City|Province|Proposed Date|Length (days)" types="Text|Text|Text|Date|Integer">
             <![CDATA[
-                <h3>Workshop Location</h3>
+                <h3>Meeting Location</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="participants" type="Integer" blobItem="PARTICIPANTS" min="0" max="10000" width="50px" align="left">
             <![CDATA[
-                <b>Maximum number of participants:</b> {$item}
+                <b>Estimated number of participants:</b> {$item}
             ]]>
         </ReportItem>
         <ReportItem id="offered" type="Radio" blobItem="OFFERED" options="Yes|No">
             <![CDATA[
-                <h3>Has this workshop been offered previously?</h3>
+                <h3>Has this meeting been held previously?</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="offered_desc" type="Textarea" blobItem="OFFERED_DESC" rich="true" optional="true">
             <![CDATA[
-                <p>If so, briefly describe the context of the previous workshop:</p>
+                <p>If so, briefly describe the context and outcomes of the previous meeting:</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true">
             <![CDATA[
-                <h3>Abstract<small> - approx 150 words</small></h3>
+                <h3>Abstract</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -83,9 +83,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
-                <h3>Description<small> - 750 words maximum including references</small></h3>
+                <h3>Description</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -111,7 +111,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="BUDGET" structure="TECH_WORKSHOP_STRUCTURE" template="TechWorkshop.xlsx">
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="BUDGET" structure="REGIONAL_MEETING_STRUCTURE" template="RegionalMeeting.xlsx">
             <![CDATA[
                 <h2>Budget</h2>
                 {$item}

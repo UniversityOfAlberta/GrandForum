@@ -28,6 +28,15 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="STAFF+">
+            <SectionPermission id="feedback" permissions="rw" />
+            <SectionPermission id="cc1" permissions="rw" />
+            <SectionPermission id="cc2" permissions="rw" />
+            <SectionPermission id="cc3" permissions="rw" />
+            <SectionPermission id="cc4" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
     </Permissions>
     <ReportSection id="feedback" name="RMC Review" tooltip="RMC Review" title="RMC Review" blobSection="PROJ_FEEDBACK_COMMENTS" type="EditableReportSection">

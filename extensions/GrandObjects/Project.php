@@ -900,6 +900,20 @@ EOF;
         return $this->multimedia;
     }
     
+    function getMultimediaDuring($start, $end){
+        $multimedia = array();
+        $sql = "SELECT m.id
+                FROM `grand_materials` m, `grand_materials_projects` p
+                WHERE p.project_id = '{$this->id}'
+                AND p.material_id = m.id
+                AND m.date BETWEEN '$start' AND '$end'";
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            $multimedia[$row['id']] = Material::newFromId($row['id']);
+        }
+        return $multimedia;
+    }
+    
     /**
      * Returns all the current Champions
      * @param array The current Champions array(user, org, title, dept)

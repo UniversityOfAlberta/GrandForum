@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Affiliate Program" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+        </Role>
+        <Role role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
+        <ReportItem id="background" type="StaticReportItem">
+            <![CDATA[
+                <p>Through our <a href='http://agewell-nce.ca/affiliates' target='_blank'>Affiliates Program</a>, AGE-WELL offers membership in a pan-Canadian knowledge community, access to our exclusive programming, and the opportunity to complete our <a href='http://agewell-nce.ca/epic-program' target='_blank'>EPIC</a> research and career development program to earn the <a href='http://agewell-nce.ca/epic-program#cert' target='_blank'>AGE-WELL Innovators of Tomorrow</a> certificate.</p>
+
+                <p>In order to be considered for the AGE-WELL Affiliates Program you must be engaged in academic study or research aligned with the mission and vision of AGE-WELL.</p>
+
+                <p>Your application consists of updating your “Bio” and “HQP Profile” tabs (information requested includes your institution, research or training focus, and uploading your CV).  Please click on the “Profile” tab on left side of this page to be taken to your profile page.</p>
+                
+                <p>Once your application is reviewed, you will be notified via email and asked to sign and return the AGE-WELL Conflict of Interest and Non-Disclosure statements.</p>
+                
+                <p>Applications are accepted on a rolling basis.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="profile" tooltip="Profile" name="Profile" type="ReportSection">
+        <ReportItem id="profile" type="StaticReportItem">
+            <![CDATA[
+                <span class='throbber'></span>&nbsp;Redirecting... 
+                <script type='text/javascript'>
+                    document.location = '{$user_url}';
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

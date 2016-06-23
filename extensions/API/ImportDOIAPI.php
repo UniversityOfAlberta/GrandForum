@@ -27,7 +27,9 @@ class ImportDOIAPI extends API{
             }
             else{
                 $_POST['bibtex'] = $_POST['bibtex']."\n";
-                $res = APIRequest::doAction('ImportBibTeX', true);
+                $api = new ImportBibTeXAPI();
+                $res = $api->doAction(true);
+                $this->messages = $api->messages;
                 if($res === false){
                     $this->addError("No BibTeX references were found from this DOI");
                 }

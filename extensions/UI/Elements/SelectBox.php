@@ -10,7 +10,7 @@ class SelectBox extends UIElement {
     }
     
     function renderSelect(){
-        $html = "<select {$this->renderAttr()} name='{$this->id}'>";
+        $html = "<select {$this->renderAttr()} name='{$this->id}' id='{$this->id}'>";
         $selectedFound = false;
         foreach($this->options as $key => $option){
             $selected = "";
@@ -22,10 +22,12 @@ class SelectBox extends UIElement {
             if(is_string($key)){
                 $value = $key;
             }
+            $value = sanitizeInput($value);
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
         if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
-            $html .= "<option value='".str_replace("'", "&#39;", $this->value)."' selected>{$this->value}</option>";
+            $value = sanitizeInput($this->value);
+            $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
         }
         $html .= "</select>";
         return $html;

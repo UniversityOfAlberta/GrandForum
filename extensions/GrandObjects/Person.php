@@ -324,6 +324,7 @@ class Person extends BackboneModel {
                     $middleName = unaccentChars($middleName);
                     self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
                     self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
+                    self::$namesCache[strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName")] = $row;
                     self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
                 }
             }
@@ -725,6 +726,36 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    /**
+     * Returns an array of People of the type $filter and are also candidates
+     * @param string $filter The role to filter by
+     * @return array The array of People of the type $filter
+     */
+    static function getAllCandidatesDuring($filter=null, $startDate=false, $endDate=false){
+        if($filter == NI){
+            $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
+            $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
+            return array_merge($ars, $cis);
+        }
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id', 'user_name'),
+                                    array('deleted' => NEQ(1)),
+                                    array('user_name' => 'ASC'));
+        $people = array();
+        foreach($data as $row){
+            $rowA = array();
+            $rowA[0] = $row;
+            $person = Person::newFromId($rowA[0]['user_id']);
+            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter.'-Candidate', $startDate, $endDate))){
+                if($me->isLoggedIn() || $person->isRoleAtLeastDuring(NI, $startDate, $endDate)){
+                    $people[] = $person;
+                }
+            }
+        }
+        return $people;
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
@@ -892,6 +923,7 @@ class Person extends BackboneModel {
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
+            $this->getUser()->invalidateCache();
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
@@ -1582,7 +1614,7 @@ class Person extends BackboneModel {
     static function getAllMovedOnDuring($startRange, $endRange){
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
-                WHERE date_created BETWEEN '$startRange' AND '$endRange'";
+                WHERE effective_date BETWEEN '$startRange' AND '$endRange'";
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
@@ -3069,6 +3101,19 @@ class Person extends BackboneModel {
             }
         }
         return true;
+    }
+    
+    /**
+     * Returns whether or not this Person is an EPIC HQP (for AGE-WELL)
+     * @return boolean Whether or not this Person is an EPIC HQP
+     */
+    function isEpic(){
+        $position = strtolower($this->getPosition());
+        return ($position == "graduate student - doctoral" ||
+                $position == "graduate student - master's" ||
+                $position == "post-doctoral fellow" ||
+                $this->isSubRole("Affiliate HQP") || 
+                $this->isSubRole("WP/CC Funded HQP"));
     }
     
     /**

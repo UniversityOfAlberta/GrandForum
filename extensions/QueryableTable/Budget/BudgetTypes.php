@@ -51,6 +51,7 @@ define('AGEWELL_BUDGET_STRUCTURE', 5);
 define('TVN_BUDGET_STRUCTURE', 6);
 define('AGEWELL_NI_BUDGET_STRUCTURE', 7);
 define('TECH_WORKSHOP_STRUCTURE', 8);
+define('REGIONAL_MEETING_STRUCTURE', 9);
 
 $budgetStructures = array();
 
@@ -136,6 +137,33 @@ $budgetStructures[TECH_WORKSHOP_STRUCTURE] =
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW."(&nbsp;)",   HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW),
           array(HEAD4,      COL_TOTAL,  BLANK,      NA,         NA));
+          
+$budgetStructures[REGIONAL_MEETING_STRUCTURE] = 
+    array(array(HEAD_ROW,   NA,         NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD4,      READ,       NA,         NA,         NA),
+          array(HEAD."(&nbsp;)",        NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  HEAD1_ROW,  NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      HEAD1_ROW,  NA),
+          array(HEAD1_ROW,  HEAD1_ROW,  NA,         NA,         NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      HEAD1_ROW,  NA),
+          array(HEAD1_ROW,  HEAD1_ROW,  NA,         NA,         NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      READ,       NA),
+          array(HEAD4,      MONEY,      MONEY,      HEAD1_ROW,  NA),
+          array(HEAD1_ROW."(&nbsp;)",   HEAD1_ROW,  NA,         NA,         NA),
+          array(HEAD4,      COL_TOTAL,  COL_TOTAL,  HEAD1_ROW,  NA));
     
 $budgetStructures[AGEWELL_BUDGET_STRUCTURE] =
     array(array(NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
