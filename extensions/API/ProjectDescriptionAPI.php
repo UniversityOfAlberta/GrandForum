@@ -60,7 +60,7 @@ class ProjectDescriptionAPI extends API{
                                   'evolution_id' => $project->evolutionId,
                                   'full_name' => $fullName,
                                   'description' => $_POST['description'],
-                                  'long_description' => $_POST['long_description'],
+                                  'long_description' => @$_POST['long_description'],
                                   'start_date' => 'CURRENT_TIMESTAMP'),
                             true);
         DBFunctions::commit();

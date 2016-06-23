@@ -126,6 +126,7 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-subviews.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-trackit.js"></script>
         <!--script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>-->
         <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script type='text/javascript'>
@@ -143,6 +144,7 @@ class CavendishTemplate extends QuickTemplate {
                 $.each(this.$el.find('input[type=datepicker]'), function(index, val){
                     $(val).datepicker({
                         'dateFormat': $(val).attr('format'),
+                        'defaultDate': $(val).attr('value'),
                         'changeMonth': true,
                         'changeYear': true,
                         'showOn': "both",
@@ -244,6 +246,7 @@ class CavendishTemplate extends QuickTemplate {
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
+		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);

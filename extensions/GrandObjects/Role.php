@@ -56,26 +56,133 @@ class Role extends BackboneModel {
 	}
 	
 	function toArray(){
+	    $projs = $this->getProjects();
+	    $projects = array();
+	    foreach($projs as $proj){
+	        $projects[] = array('id'   => $proj->getId(),
+	                            'name' => $proj->getName());
+	    }
 	    $json = array('id' => $this->getId(),
+	                  'userId' => $this->user,
 	                  'name' => $this->getRole(),
 	                  'fullName' => $this->getRoleFullName(),
 	                  'title' => $this->getTitle(),
 	                  'comment' => $this->getComment(),
+	                  'projects' => $projects,
 	                  'startDate' => $this->getStartDate(),
 	                  'endDate' => $this->getEndDate());
 	    return $json;
 	}
 	
 	function create(){
-	
+	    $me = Person::newFromWgUser();
+	    $person = $this->getPerson();
+	    MailingList::unsubscribeAll($this->getPerson());
+	    $status = DBFunctions::insert('grand_roles',
+	                                  array('user_id'    => $this->user,
+	                                        'role'       => $this->getRole(),
+	                                        'start_date' => $this->getStartDate(),
+	                                        'end_date'   => $this->getEndDate(),
+	                                        'comment'    => $this->getComment()),
+	                                  array('id' => EQ($this->getId())));
+	    Role::$cache = array();
+	    Person::$rolesCache = array();
+	    $this->getPerson()->roles = null;
+	    if($status){
+            $data = DBFunctions::select(array('grand_roles'),
+                                        array('id'),
+                                        array('user_id' => EQ($this->user),
+                                              'role' => EQ($this->getRole())),
+                                        array('id' => 'DESC'));
+            if(count($data) > 0){
+                $id = $data[0]['id'];
+                $this->id = $id;
+                if(is_array($this->projects)){
+                    foreach($this->projects as $project){
+	                    $p = Project::newFromName($project->name);
+	                    DBFunctions::insert('grand_role_projects',
+	                                        array('role_id' => $this->getId(),
+	                                              'project_id' => $p->getId()));
+	                    if(!$this->getPerson()->isMemberOf($p)){
+	                        DBFunctions::insert('grand_project_members',
+	                                            array('user_id' => $this->getPerson()->getId(),
+	                                                  'project_id' => $p->getId(),
+	                                                  'start_date' => $this->getStartDate()));
+	                    }
+	                }
+	            }
+	            Notification::addNotification($person, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+                Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+                $supervisors = $person->getSupervisors();
+                if(count($supervisors) > 0){
+                    foreach($supervisors as $supervisor){
+                        Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+                    }
+                }
+            }
+        }
+        $this->getPerson()->projectCache = array();
+        
+        MailingList::subscribeAll($this->getPerson());
+	    return $status;
 	}
 	
 	function update(){
-	
+	    MailingList::unsubscribeAll($this->getPerson());
+	    $status = DBFunctions::update('grand_roles',
+	                                  array('role'       => $this->getRole(),
+	                                        'start_date' => $this->getStartDate(),
+	                                        'end_date'   => $this->getEndDate(),
+	                                        'comment'    => $this->getComment()),
+	                                  array('id' => EQ($this->getId())));
+	    DBFunctions::delete('grand_role_projects',
+	                        array('role_id' => EQ($this->getId())));
+	    foreach($this->projects as $project){
+	        $p = Project::newFromName($project->name);
+	        DBFunctions::insert('grand_role_projects',
+	                            array('role_id' => $this->getId(),
+	                                  'project_id' => $p->getId()));
+	        if(!$this->getPerson()->isMemberOf($p)){
+                DBFunctions::insert('grand_project_members',
+	                                        array('user_id' => $this->getPerson()->getId(),
+	                                              'project_id' => $p->getId(),
+	                                              'start_date' => $this->getStartDate()));
+            }
+	    }
+	    Role::$cache = array();
+	    Person::$rolesCache = array();
+	    $this->getPerson()->projectCache = array();
+	    $this->getPerson()->roles = null;
+	    Notification::addNotification($this->getPerson(), Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
+        MailingList::subscribeAll($this->getPerson());
+	    return $status;
 	}
 	
 	function delete(){
-	
+	    $me = Person::newFromWgUser();
+	    $person = $this->getPerson();
+	    MailingList::unsubscribeAll($this->getPerson());
+	    $status = DBFunctions::delete('grand_roles',
+	                                  array('id' => EQ($this->getId())));
+	    if($status){
+	        $status = DBFunctions::delete('grand_role_projects',
+	                                      array('role_id' => EQ($this->getId())));
+	    }
+	    Role::$cache = array();
+	    Person::$rolesCache = array();
+	    $this->getPerson()->roles = null;
+	    if($status){
+	        Notification::addNotification($person, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+	        Notification::addNotification($me, $person, "Role Removed", "You are no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+	        $supervisors = $person->getSupervisors();
+            if(count($supervisors) > 0){
+                foreach($supervisors as $supervisor){
+                    Notification::addNotification($me, $supervisor, "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+                }
+            }
+	    }
+        MailingList::subscribeAll($this->getPerson());
+	    return false;
 	}
 	
 	function exists(){
@@ -100,6 +207,11 @@ class Role extends BackboneModel {
 	// Returns the Person who this Role belongs to
 	function getUser(){
 	    return Person::newFromId($this->user);
+	}
+	
+	// Alias for getUser()
+	function getPerson(){
+	    return $this->getUser();
 	}
 	
 	// Returns the name of this Role

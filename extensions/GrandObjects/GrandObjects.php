@@ -13,13 +13,19 @@ global $apiRequest;
 // Person
 $apiRequest->addAction('Hidden','person/:id', new PersonAPI());
 $apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
+$apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', new PersonProjectsAPI());
+$apiRequest->addAction('Hidden','person/:id/universities', new PersonUniversitiesAPI());
+$apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', new PersonUniversitiesAPI());
 $apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
+$apiRequest->addAction('Hidden','person/:id/relations', new PersonRelationsAPI());
+$apiRequest->addAction('Hidden','person/:id/relations/:relId', new PersonRelationsAPI());
 $apiRequest->addAction('Hidden','person/:id/products', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/private', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/all', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/:productId', new PersonProductAPI());
 $apiRequest->addAction('Hidden','personRoleString/:id', new PersonRoleStringAPI());
 $apiRequest->addAction('Hidden','people', new PeopleAPI());
+$apiRequest->addAction('Hidden','people/managed', new PeopleManagedAPI());
 $apiRequest->addAction('Hidden','people/:role', new PeopleAPI());
 $apiRequest->addAction('Hidden','people/:role/:university', new PeopleAPI());
 // Role

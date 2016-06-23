@@ -39,15 +39,12 @@ class AdminUniTreeTab extends AbstractTab {
             $unis = array();
             foreach($people as $person){
                 if($person->isRoleDuring(NI, $year."-01-01", $year."-12-31")){
-                    $uni = $person->getUniversityDuring($year."01-01", $year."12-31");
+                    $uni = $person->getUniversityDuring($year."-01-01", $year."-12-31");
                     if($uni['university'] == ""){
                         $uni['university'] = "Unknown";
                     }
-                    $budget = $person->getRequestedBudget($year-1);
-                    if($budget != null){
-                        $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
-                        @$unis[$uni['university']][$person->getReversedName()] = ($total == "") ? "0" : $total;
-                    }
+                    $total = $person->getAllocatedAmount($year);
+                    @$unis[$uni['university']][$person->getReversedName()] = ($total == "") ? "0" : $total;
                 }
             }
             $provinces = array();

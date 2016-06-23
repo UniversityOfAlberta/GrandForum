@@ -62,8 +62,10 @@ function HTML(){}
 HTML.Element = function(html, options){
     var el = $(html);
     for(oId in options){
-        var option = options[oId];
-        $(el).attr(oId, option);
+        if(oId != 'options'){
+            var option = options[oId];
+            $(el).attr(oId, option);
+        }
     }
     return el;
 }
@@ -180,6 +182,7 @@ HTML.Radio = function(view, attr, options){
 HTML.DatePicker = function(view, attr, options){
     var el = HTML.Element("<input type='datepicker' />", options);
     $(el).attr('name', HTML.Name(attr));
+
     $(el).attr('value', HTML.Value(view, attr));
     var events = function(e){
         view.model.set(attr, $(e.target).val());
@@ -198,10 +201,12 @@ HTML.Select = function(view, attr, options){
     var el = HTML.Element("<select />", options);
     $(el).attr('name', HTML.Name(attr));
     var val = HTML.Value(view, attr);
+    var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";
         if(val.split(":")[0] == opt){
             selected = "selected='selected'";
+            foundSelected = true;
         }
         if(typeof opt == 'object'){
             $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
@@ -210,6 +215,10 @@ HTML.Select = function(view, attr, options){
             $(el).append("<option " + selected + ">" + opt + "</option>");
         }
     });
+    if(!foundSelected){
+        $(el).append("<option selected>" + val.split(":")[0] + "</option>");
+    }
+
     var events = function(e){
         view.model.set(attr, $(e.target).val());
     };

@@ -10,8 +10,14 @@ Person = Backbone.Model.extend({
         this.roles = new PersonRoles();
         this.roles.url = this.urlRoot + '/' + this.get('id') + '/roles';
         
+        this.relations = new PersonRelations();
+        this.relations.url = this.urlRoot + '/' + this.get('id') + '/relations';
+        
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
+        
+        this.universities = new PersonUniversities();
+        this.universities.url = this.urlRoot + '/' + this.get('id') + '/universities';
         
         this.privateProducts = new PersonProducts();
         this.privateProducts.url = this.urlRoot + '/' + this.get('id') + '/products/private';
@@ -55,6 +61,16 @@ Person = Backbone.Model.extend({
     getRoles: function(){
         this.roles.fetch();
         return this.roles;
+    },
+    
+    getRelations: function(){
+        this.relations.fetch();
+        return this.relations;
+    },
+    
+    getUniversities: function(){
+        this.universities.fetch();
+        return this.universities;
     },
     
     // Returns a simple string containing all of the roles for this Person
@@ -156,15 +172,19 @@ PersonProject = RelationModel.extend({
     },
     
     getTarget: function(){
-        project = new Project({id: this.get('projectId')});
+        var project = new Project({id: this.get('projectId')});
         return project;
     },
     
     defaults: {
+        id: null,
         personId: "",
         projectId: "",
-        startDate: "",
-        endDate: ""
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        name: "",
+        comment: "",
+        deleted: false
     }
 });
 
@@ -176,6 +196,52 @@ PersonProjects = RangeCollection.extend({
     
     newModel: function(){
         return new Projects();
+    },
+});
+
+/**
+ * PersonRelation RelationModel
+ */
+PersonRelation = RelationModel.extend({
+    initialize: function(){
+        this.set('projects', []);
+    },
+
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('user1') + '/relations'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('user1')});
+        return person;
+    },
+    
+    getTarget: function(){
+        var person = new Person({id: this.get('user2')});
+        return person;
+    },
+    
+    defaults: {
+        id: null,
+        user1: "",
+        user2: "",
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: "",
+        projects: null,
+        name: "",
+        comment: "",
+        deleted: false
+    }
+});
+
+/**
+ * PersonRelations RangeCollection
+ */
+PersonRelations = RangeCollection.extend({
+    model: PersonRelation,
+    
+    newModel: function(){
+        return new People();
     },
 });
 
@@ -204,7 +270,7 @@ PersonRole = RelationModel.extend({
     defaults: {
         personId: "",
         roleId: "",
-        startDate: "",
+        startDate: new Date().toISOString().substr(0, 10),
         endDate: ""
     }
 });
@@ -217,6 +283,50 @@ PersonRoles = RangeCollection.extend({
     
     newModel: function(){
         return new Roles();
+    },
+});
+
+/**
+ * PersonUniversity RelationModel
+ */
+PersonUniversity = RelationModel.extend({
+    initialize: function(){
+    
+    },
+    
+    urlRoot: function(){
+        return 'index.php?action=api.person/' + this.get('personId') + '/universities'
+    },
+    
+    getOwner: function(){
+        var person = new Person({id: this.get('personId')});
+        return person;
+    },
+    
+    getTarget: function(){
+        var university = new University({id: parseInt(this.get('personUniversityId'))});
+        return university;
+    },
+    
+    defaults: {
+        personId: "",
+        univeristy: "",
+        department: "",
+        position: "",
+        personUniversityId: "",
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: ""
+    }
+});
+
+/**
+ * PersonUniversities RangeCollection
+ */
+PersonUniversities = RangeCollection.extend({
+    model: PersonUniversity,
+    
+    newModel: function(){
+        return new Universities();
     },
 });
 

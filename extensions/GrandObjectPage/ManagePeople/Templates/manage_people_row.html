@@ -1,0 +1,29 @@
+<div id="rolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Roles">
+    
+</div>
+<div id="projectsDialog" style="display:none; max-height: 500px; overflow-y: auto" style="display:none;" title="Edit Projects">
+    
+</div>
+<div id="relationsDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Relations">
+    
+</div>
+<div id="universitiesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Universities">
+    
+</div>
+<td align="center">
+    <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+</td>
+<td align="center">
+    <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+</td>
+<td align="center">
+    <% if(me.get('id') != id){ %>
+        <span id="editRelations" class="edit-icon" title="Edit Relations"></span>
+    <% } %>
+</td>
+<td align="center">
+    <span id="editUniversities" class="edit-icon" title="Edit Universities"></span>
+</td>
+<td style="border-left: 2px solid #AAAAAA;" align="left">
+    <a href="<%= url %>"><%= fullName %></a>
+</td>
