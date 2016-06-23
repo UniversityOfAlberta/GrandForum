@@ -9,9 +9,11 @@ class AdminDiscTreeTab extends AbstractTab {
     }
 
     function generateBody(){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    $this->html .= "The following tree map visualizations show the distribution of funding for Disciplines/People.  Clicking on a section will zoom in to that section.  If 'Funding' is selected, the area that the section takes up is based on how much funding each section gets.  If 'Count' is selected, the area is based on how many sub-sections each section has.";
-	    for($year=2011; $year <= REPORTING_YEAR+1; $year++){
+	    $phaseDates = $config->getValue('projectPhaseDates');
+	    $startYear = substr($phaseDates[1], 0, 4);
+	    for($year=$startYear; $year <= REPORTING_YEAR+1; $year++){
 	        $this->html .= "<h2>$year</h2>";
 	        $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getAdminDiscTreeData&date={$year}", "Funding", "Count", "$", "");
 	        $tree->height = 500;
@@ -40,11 +42,11 @@ class AdminDiscTreeTab extends AbstractTab {
             foreach($people as $person){
                 if($person->isRoleDuring(NI, $year."-01-01", $year."-12-31")){
                     $disc = $person->getDisciplineDuring($year."01-01", $year."12-31");
-                    $budget = $person->getRequestedBudget($year-1);
-                    if($budget != null){
-                        $total = str_replace('$', "", $budget->copy()->rasterize()->where(HEAD1, array("TOTALS%"))->limit(0, 1)->select(ROW_TOTAL)->toString());
-                        @$unis[$disc][$person->getReversedName()] = ($total == "") ? "0" : $total;
-                    }
+                    
+                    $total = $person->getAllocatedAmount($year);
+                    @$unis[$disc][$person->getReversedName()] = ($total == "") ? "0" : $total;
+                    
+
                 }
             }
             foreach($unis as $disc => $person){
