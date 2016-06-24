@@ -57,8 +57,8 @@ class HQPRegisterTable extends SpecialPage{
                         <th>University</th>
                         <th>Level</th>
                         <th>Profile Updated</th>
-                        <th>Application</th>
-                        <th>PDF</th>
+                        <th>Affiliate</th>
+                        <th>Award PDF</th>
                     </tr>
                 </thead>
                 <tbody>");
@@ -82,8 +82,7 @@ class HQPRegisterTable extends SpecialPage{
                    $cv != ""){
                     $report->person = $hqp;
                     $updated = substr($tab->lastUpdated($year), 0, 10);
-                    $text = ($report->hasStarted()) ? "Award" : "Affiliate";
-                    if($text == "Award"){
+                    if($report->hasStarted()){
                         $check = $report->getLatestPDF();
                         if(isset($check[0])){
                             $pdf = PDF::newFromToken($check[0]['token']);
@@ -91,7 +90,7 @@ class HQPRegisterTable extends SpecialPage{
                         }
                     }
                     //$star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
-                    $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>{$text}</button>"; 
+                    $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>HQP Profile</button>"; 
                     
                     $tab->generateBody($year);
                     $application .= "<div title='{$hqp->getNameForForms()}' id='app{$year}_{$hqp->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";
