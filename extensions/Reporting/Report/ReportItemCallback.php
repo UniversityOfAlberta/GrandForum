@@ -9,6 +9,7 @@ class ReportItemCallback {
             "last_year" => "getLastYear",
             "this_year" => "getThisYear",
             "next_year" => "getNextYear",
+            "next_year2" => "getNextYear2",
             // Projects
             "project_id" => "getProjectId",
             "project_name" => "getProjectName",
@@ -181,6 +182,10 @@ class ReportItemCallback {
     
     function getNextYear(){
         return $this->reportItem->getReport()->year+1;
+    }
+    
+    function getNextYear2(){
+        return $this->reportItem->getReport()->year+2;
     }
     
     function getProjectId(){
