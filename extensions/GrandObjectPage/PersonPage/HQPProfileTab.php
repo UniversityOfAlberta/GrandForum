@@ -135,7 +135,7 @@ class HQPProfileTab extends AbstractEditableTab {
         return $this->html;
     }
     
-    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true, $checkYear=false){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=false, $checkYear=false){
         global $wgServer, $wgScriptPath;
         
         $data = "";

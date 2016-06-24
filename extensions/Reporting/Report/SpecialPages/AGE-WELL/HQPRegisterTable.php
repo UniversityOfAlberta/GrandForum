@@ -67,11 +67,11 @@ class HQPRegisterTable extends SpecialPage{
                 $tab->person = $hqp;
                 $tab->html = "";
 
-                $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
-                $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
-                $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
-                $align    = nl2br($tab->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
-                $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+                $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+                $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+                $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+                $align    = nl2br($tab->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
+                $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, false));
                 $application = "";
                 $button = "";
                 $updated = "";
@@ -80,15 +80,9 @@ class HQPRegisterTable extends SpecialPage{
                    $bio != "" ||
                    $align != "" ||
                    $boundary != ""){
-                    $report->person = $hqp;
+                    
                     $updated = substr($tab->lastUpdated($year), 0, 10);
-                    if($report->hasStarted()){
-                        $check = $report->getLatestPDF();
-                        if(isset($check[0])){
-                            $pdf = PDF::newFromToken($check[0]['token']);
-                            $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
-                        }
-                    }
+                    
                     //$star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
                     $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>HQP Profile</button>"; 
                     
@@ -96,6 +90,15 @@ class HQPRegisterTable extends SpecialPage{
                     $application .= "<div title='{$hqp->getNameForForms()}' id='app{$year}_{$hqp->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";
                     $application .= $tab->html;
                     $application .= "</small></div>";
+                }
+                
+                $report->person = $hqp;
+                if($report->hasStarted()){
+                    $check = $report->getLatestPDF();
+                    if(isset($check[0])){
+                        $pdf = PDF::newFromToken($check[0]['token']);
+                        $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                    }
                 }
                 
                 $wgOut->addHTML("<tr>");
