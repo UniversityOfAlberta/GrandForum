@@ -40,6 +40,7 @@ class HQPRegisterTable extends SpecialPage{
         }
         $wgOut->addHTML("</ul>");
         
+        $tab = new HQPProfileTab(null, array('isMe' => true, 'isSupervisor' => true));
         for($year=date('Y'); $year >= $startYear; $year--){
             $report = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
             $report->year = $year;
@@ -63,7 +64,8 @@ class HQPRegisterTable extends SpecialPage{
                 </thead>
                 <tbody>");
             foreach($hqps as $hqp){
-                $tab = new HQPProfileTab($hqp, array('isMe' => true, 'isSupervisor' => true));
+                $tab->person = $hqp;
+                $tab->html = "";
 
                 $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
