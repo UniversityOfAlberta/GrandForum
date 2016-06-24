@@ -81,7 +81,7 @@ class HQPRegisterTable extends SpecialPage{
                    $align != "" ||
                    $boundary != ""){
                     
-                    $updated = substr($tab->lastUpdated($year), 0, 10);
+                    $updated = substr($tab->lastUpdated(0), 0, 10);
                     
                     //$star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
                     $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>HQP Profile</button>"; 
