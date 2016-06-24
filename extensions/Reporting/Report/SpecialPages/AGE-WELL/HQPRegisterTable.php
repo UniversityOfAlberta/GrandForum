@@ -72,7 +72,6 @@ class HQPRegisterTable extends SpecialPage{
                 $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $align    = nl2br($tab->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
                 $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
-                $cv       = $tab->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
                 $application = "";
                 $button = "";
                 $updated = "";
@@ -80,8 +79,7 @@ class HQPRegisterTable extends SpecialPage{
                    $train != "" ||
                    $bio != "" ||
                    $align != "" ||
-                   $boundary != "" ||
-                   $cv != ""){
+                   $boundary != ""){
                     $report->person = $hqp;
                     $updated = substr($tab->lastUpdated($year), 0, 10);
                     if($report->hasStarted()){
