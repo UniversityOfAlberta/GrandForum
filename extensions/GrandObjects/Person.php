@@ -676,6 +676,29 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+
+    /**
+     * Returns an array of People of the type $filter
+     * @param string $startRange The start date of the role
+     * @param string $endRange The end date of the role
+     * @param string $institution The institution/university of the person
+     * @return $returnPeople The array of People of the type $filter
+     */
+    static function getAllPeopleByInstitutionDuring($startRange, $endRange, $institution=""){
+        $people = self::getAllPeople();
+        $returnPeople = array();
+        foreach($people as $person){
+            $universities = $person->getUniversitiesDuring($startRange, $endRange);
+            foreach($universities as $university){
+                $uniName = @$university['university'];
+                if($uniName != "" && $uniName == $institution){
+                    $returnPeople[] = $person;
+                    break;
+                }
+            }
+        }
+        return $returnPeople;
+    }
     
     /**
      * Returns an array of People of the type $filter between $startRange and $endRange
@@ -3605,7 +3628,7 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               (!$networkRelated || $paper->isGrandRelated()) &&
+               (!$networkRelated || $paper->isGrandRelated() || !$config->getValue('projectsEnabled')) &&
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;
             }

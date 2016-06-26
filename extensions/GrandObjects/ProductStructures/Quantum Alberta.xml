@@ -470,6 +470,8 @@
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field label="Peer Reviewed" type="String">peer_reviewed</field>
+              	<field label="Event Start Date" type="Date">start</field>
+              	<field label="Event End Date" type="Date">end</field>
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
@@ -485,6 +487,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -495,6 +499,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -505,6 +511,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -515,6 +523,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -525,6 +535,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -535,6 +547,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -545,6 +559,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
         
@@ -555,6 +571,8 @@
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Presenter" type="String">presenter</field>
+                <field label="Event Start Date" type="Date">start</field>
+                <field label="Event End Date" type="Date">end</field>
             </data>
         </Presentation>
 

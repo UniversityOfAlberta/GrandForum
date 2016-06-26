@@ -8,6 +8,12 @@
         </Role>
     </Permissions>
     <ReportSection id='pi_report' type='EditableReportSection' title='Quantum Report' name='Quantum Report' blobSection="QUANTUM_REVIEW">
+	<ReportItem id="institution" type="SelectReportItem" blobItem="PI_REPORT_UNI" blobType="BLOB_TEXT" options="University of Alberta|University of Calgary|University of Lethbridge |National Institute for Nanotechnology|National Research Council">
+	    <![CDATA[
+        <table><tr>
+            <td align='right'>Institution:</td><td> {$item}</td>
+	    ]]>
+	</ReportItem>
 	<ReportItem id="start_date" type="CalendarReportItem" blobItem="PI_REPORT_START" blobType="BLOB_TEXT">
 	    <![CDATA[
         <table><tr>
@@ -24,9 +30,14 @@
     				    $('input[name=QuantumReport_start_date]').change(function () {
         			        refreshIframe();
     				    });
-				});
+                });
 				$(document).ready(function () {
     				    $('input[name=QuantumReport_end_date]').change(function () {
+        			        refreshIframe();
+    				    });
+                });
+				$(document).ready(function () {
+    				    $('select[name=QuantumReport_institution]').change(function () {
         			        refreshIframe();
     				    });
 				});

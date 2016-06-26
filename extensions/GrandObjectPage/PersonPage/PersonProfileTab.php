@@ -625,7 +625,8 @@ EOF;
         if(count($universities) == 0){
             $departments = Person::getAllDepartments();
         }
-
+	$organizations[] = "";
+	$departments[] = "";
         $organizations = $uniNames;
         sort($organizations);
         if($position_bool){
@@ -647,7 +648,7 @@ EOF;
                             <td align='right'><b>Title:</b></td>
                             <td>{$titleCombo->render()}</td>
                         </tr>";
-        if($me->isRoleAtLeast(STAFF)){
+        if(false){
             $this->html .= "<tr>
                                 <td></td>
                                 <td><table>";

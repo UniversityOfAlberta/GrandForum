@@ -248,10 +248,9 @@ class Paper extends BackboneModel{
      * @param string $access Whether to include 'Forum' or 'Public' access
      * @param integer $start The index to start at
      * @param integer $count The max number of Products to return
-     * @param array $institutions The institutions associated to the papers
      * @return array All of the Products
      */
-    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999, $institutions=array()){
+    static function getAllPapers($project='all', $category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
         global $config;
         if(!$config->getValue('projectsEnabled')){
             $grand = 'both';
@@ -472,7 +471,63 @@ class Paper extends BackboneModel{
             }
         }
     }
-    
+
+//======================================================================
+    /**
+     * Returns all of the Papers in the database
+     * @param string $category Specifies which category the returned papers should be of('Publication', 'Artifact' etc.)
+     * @param string $startRange The start date
+     * @param string $endRange The end date
+     * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
+     * @return array All of the Papers
+     */
+    static function getAllPapersByInstitutionDuring($category='all', $startRange = false, $endRange = false, $onlyPublic = true, $institutions="", $order=""){
+        if($institutions == ""){
+            $intitutions = array();
+        }
+        $peopleId = array();
+        $paperId = array();
+        if($startRange === false || $endRange === false){
+            $startRange = date(YEAR."-01-01 00:00:00");
+            $endRange = date(YEAR."-12-31 23:59:59");
+        }
+        foreach($institutions as $institution){
+            $people = Person::getAllPeopleByInstitutionDuring($startRange, $endRange, $institution);
+            foreach($people as $person){
+                if(!in_array($person->getId(), $peopleId)){
+                    $peopleId[] = $person->getId();
+                }
+            }
+        }
+        foreach($peopleId as $id){
+            $person = Person::newFromId($id);
+            $papers = $person->getPapersAuthored($category, $startRange, $endRange);
+            foreach($papers as $paper){
+                if(!in_array($paper->getId(), $paperId)){
+                    $paperId[] = $paper->getId();
+                }
+            }
+        }
+        $papers = array();
+	$ids = implode($paperId, ",");
+	$sql = "SELECT id FROM grand_products WHERE id in ({$ids})";
+        if($order == "date" || $order == ""){
+            $sql.= "\nORDER BY `date` ASC";
+        }
+        else if($order == "date_reversed"){
+            $sql.= "\nORDER BY `date` DESC";
+        }
+	$data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            $papers[] = Paper::newFromId($row['id']);
+        }
+        return $papers;
+    }
+
+
+//============================================
+
+  
     /**
      * Returns a php version of the Products.xml structure
      * @return array The array containing all the structure in Products.xml
