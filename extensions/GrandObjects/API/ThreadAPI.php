@@ -74,10 +74,13 @@ class ThreadsAPI extends RESTAPI {
             $threads = array();
             $search = DBFunctions::escape(str_replace('%', '\%', strtolower($this->getParam('search'))));
             $data = DBFunctions::execSQL("SELECT DISTINCT t.id
-                                          FROM grand_posts p, grand_threads t
+                                          FROM grand_posts p, grand_threads t, mw_user u
                                           WHERE p.thread_id = t.id
+                                          AND u.user_id = t.user_id
                                           AND (MATCH(p.message) AGAINST ('{$search}') OR 
-                                               LOWER(t.title)   LIKE '%{$search}%')");
+                                               LOWER(t.title)   LIKE '%{$search}%' OR
+                                               UPPER(CONVERT(u.user_real_name USING latin1))  LIKE '%{$search}%')
+                                          ");
             foreach($data as $row){
                 $thread = Thread::newFromId($row['id']);
                 if($thread->canView()){
