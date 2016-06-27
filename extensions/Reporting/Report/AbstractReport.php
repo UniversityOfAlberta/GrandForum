@@ -59,7 +59,7 @@ abstract class AbstractReport extends SpecialPage {
      * @param string $tok
      * @return DummyReport Returns the DummyReport associated with the given $tok
      */
-    static function newFromToken($tok){
+    static function newFromToken($tok, $type=""){
         global $wgUser;
         $person = Person::newFromId($wgUser->getId());
         $sto = new ReportStorage($person);
@@ -67,11 +67,11 @@ abstract class AbstractReport extends SpecialPage {
         
         $pers = Person::newFromId($sto->metadata('user_id'));
         $pers->id = $sto->metadata('user_id');
-        $type = $sto->metadata('type');
         $year = $sto->metadata('year');
-        
-        $type = ReportXMLParser::findPDFReport($type, true);
-        
+        if($type == ""){
+            $type = $sto->metadata('type');
+            $type = ReportXMLParser::findPDFReport($type, true);
+        }
         $proj = null;
         $rp_index = new ReportIndex($pers);
         $projects = $rp_index->list_projects();

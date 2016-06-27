@@ -40,10 +40,14 @@ class HQPRegisterTable extends SpecialPage{
         }
         $wgOut->addHTML("</ul>");
         
-        $tab = new HQPProfileTab(null, array('isMe' => true, 'isSupervisor' => true));
+        //$tab = new HQPProfileTab(null, array('isMe' => true, 'isSupervisor' => true));
+        $affilReport = new DummyReport("AffiliateApplication", Person::newFromWgUser(), null, 0);
+
+        $affilReport->year = 0;
         for($year=date('Y'); $year >= $startYear; $year--){
-            $report = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
-            $report->year = $year;
+            
+            $awardReport = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
+            $awardReport->year = $year;
             
             $hqps = array_merge(Person::getAllPeopleDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'), 
                                 Person::getAllCandidatesDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'));
@@ -57,47 +61,41 @@ class HQPRegisterTable extends SpecialPage{
                         <th>Registration</th>
                         <th>University</th>
                         <th>Level</th>
-                        <th>Profile Updated</th>
                         <th>Affiliate</th>
-                        <th>Award PDF</th>
+                        <th>Award</th>
                     </tr>
                 </thead>
                 <tbody>");
             foreach($hqps as $hqp){
-                $tab->person = $hqp;
-                $tab->html = "";
+                //$tab->person = $hqp;
+                //$tab->html = "";
 
-                $research = nl2br($tab->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, false));
-                $train    = nl2br($tab->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
-                $bio      = nl2br($tab->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, false));
-                $align    = nl2br($tab->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, false));
-                $boundary = nl2br($tab->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, false));
                 $application = "";
-                $button = "";
-                $updated = "";
-                if($research != "" ||
-                   $train != "" ||
-                   $bio != "" ||
-                   $align != "" ||
-                   $boundary != ""){
-                    
-                    $updated = substr($tab->lastUpdated(0), 0, 10);
-                    
-                    //$star = ($tab->hasEdited()) ? "<b style='color:red;'>*</b>" : "";
-                    $application .= "<button onClick='$(\"#app{$year}_{$hqp->getId()}\").dialog({width:800, maxHeight:600, height:600});'>HQP Profile</button>"; 
-                    
-                    $tab->generateBody($year);
-                    $application .= "<div title='{$hqp->getNameForForms()}' id='app{$year}_{$hqp->getId()}' style='display:none;'><small><input type='text' size='1' style='position:relative;top:-20px;height:1px;float:right;' />";
-                    $application .= $tab->html;
-                    $application .= "</small></div>";
-                }
+                $button1 = "";
+                $button2 = "";
+                //$updated = "";
                 
-                $report->person = $hqp;
-                if($report->hasStarted()){
-                    $check = $report->getLatestPDF();
+                $affilReport->person = $hqp;
+                $awardReport->person = $hqp;
+                
+                if($affilReport->hasStarted()){
+                    $check = $affilReport->getLatestPDF();
                     if(isset($check[0])){
                         $pdf = PDF::newFromToken($check[0]['token']);
-                        $button = "<a class='button' href='{$pdf->getUrl()}'>Download</a>";
+                        $button1 = "<a class='button' href='{$pdf->getUrl()}&type=AffiliateApplication'>Download</a><br />{$check[0]['timestamp']}";
+                    }
+                    else{
+                        $button1 = "Started";
+                    }
+                }
+                if($awardReport->hasStarted()){
+                    $check = $awardReport->getLatestPDF();
+                    if(isset($check[0])){
+                        $pdf = PDF::newFromToken($check[0]['token']);
+                        $button2 = "<a class='button' href='{$pdf->getUrl()}&type=HQPApplication'>Download</a><br />{$check[0]['timestamp']}";
+                    }
+                    else{
+                        $button2 = "Started";
                     }
                 }
                 
@@ -105,12 +103,12 @@ class HQPRegisterTable extends SpecialPage{
                 $wgOut->addHTML("<td align='right'>{$hqp->getFirstName()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getLastName()}</td>");
                 $wgOut->addHTML("<td><a href='mailto:{$hqp->getEmail()}'>{$hqp->getEmail()}</a></td>");
-                $wgOut->addHTML("<td>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
+                $wgOut->addHTML("<td align='center'>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
-                $wgOut->addHTML("<td align='center'>{$updated}</td>");
-                $wgOut->addHTML("<td align='center'>{$application}</td>");
-                $wgOut->addHTML("<td align='center'>{$button}</td>");
+                //$wgOut->addHTML("<td align='center'>{$updated}</td>");
+                $wgOut->addHTML("<td align='center'>{$button1}</td>");
+                $wgOut->addHTML("<td align='center'>{$button2}</td>");
                 $wgOut->addHTML("</tr>");
             }
             $wgOut->addHTML("</tbody></table>");

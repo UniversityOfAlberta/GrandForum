@@ -34,12 +34,12 @@ class HQPProfileTab extends AbstractEditableTab {
         if(!$this->userCanView()){
             return "";
         }
-        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM));
-        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM));
-        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM));
-        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM));
-        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM));
-        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
+        $research = nl2br($this->getBlobValue(HQP_APPLICATION_RESEARCH, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $train    = nl2br($this->getBlobValue(HQP_APPLICATION_TRAIN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $bio      = nl2br($this->getBlobValue(HQP_APPLICATION_BIO, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
+        $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
         if($research    == "" &&
            $train       == "" &&
            $bio         == "" &&
@@ -135,7 +135,7 @@ class HQPProfileTab extends AbstractEditableTab {
         return $this->html;
     }
     
-    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=false, $checkYear=false){
+    function getBlobValue($blobItem, $type=BLOB_TEXT, $section=HQP_APPLICATION_FORM, $checkRegistration=true, $checkYear=false){
         global $wgServer, $wgScriptPath;
         
         $data = "";
