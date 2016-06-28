@@ -40,13 +40,11 @@ class HQPRegisterTable extends SpecialPage{
         }
         $wgOut->addHTML("</ul>");
         
-        //$tab = new HQPProfileTab(null, array('isMe' => true, 'isSupervisor' => true));
         $affilReport = new DummyReport("AffiliateApplication", Person::newFromWgUser(), null, 0);
+        $awardReport = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
 
         $affilReport->year = 0;
         for($year=date('Y'); $year >= $startYear; $year--){
-            
-            $awardReport = new DummyReport(RP_HQP_APPLICATION, Person::newFromWgUser(), null, $year);
             $awardReport->year = $year;
             
             $hqps = array_merge(Person::getAllPeopleDuring(HQP, $year.'-01-01 00:00:00', $year.'-12-31 23:59:59'), 
@@ -67,35 +65,25 @@ class HQPRegisterTable extends SpecialPage{
                 </thead>
                 <tbody>");
             foreach($hqps as $hqp){
-                //$tab->person = $hqp;
-                //$tab->html = "";
-
                 $application = "";
                 $button1 = "";
                 $button2 = "";
-                //$updated = "";
                 
                 $affilReport->person = $hqp;
                 $awardReport->person = $hqp;
                 
                 if($affilReport->hasStarted()){
                     $check = $affilReport->getLatestPDF();
+                    $button1 = "Started";
                     if(isset($check[0])){
-                        $pdf = PDF::newFromToken($check[0]['token']);
-                        $button1 = "<a class='button' href='{$pdf->getUrl()}&type=AffiliateApplication'>Download</a><br />{$check[0]['timestamp']}";
-                    }
-                    else{
-                        $button1 = "Started";
+                        $button1 = "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$check[0]['token']}&type=AffiliateApplication'>Download</a><br />{$check[0]['timestamp']}";
                     }
                 }
                 if($awardReport->hasStarted()){
                     $check = $awardReport->getLatestPDF();
+                    $button2 = "Started";
                     if(isset($check[0])){
-                        $pdf = PDF::newFromToken($check[0]['token']);
-                        $button2 = "<a class='button' href='{$pdf->getUrl()}&type=HQPApplication'>Download</a><br />{$check[0]['timestamp']}";
-                    }
-                    else{
-                        $button2 = "Started";
+                        $button2 = "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$check[0]['token']}&type=HQPApplication'>Download</a><br />{$check[0]['timestamp']}";
                     }
                 }
                 
@@ -106,7 +94,6 @@ class HQPRegisterTable extends SpecialPage{
                 $wgOut->addHTML("<td align='center'>".time2date($hqp->getRegistration(), 'Y-m-d')."</td>");
                 $wgOut->addHTML("<td>{$hqp->getUni()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getPosition()}</td>");
-                //$wgOut->addHTML("<td align='center'>{$updated}</td>");
                 $wgOut->addHTML("<td align='center'>{$button1}</td>");
                 $wgOut->addHTML("<td align='center'>{$button2}</td>");
                 $wgOut->addHTML("</tr>");
