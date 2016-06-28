@@ -65,7 +65,12 @@ MyThreadsView = Backbone.View.extend({
                                                      'autoWidth': false,
                                                      'aLengthMenu': [[-1], ['All']]});
         this.table.draw();
-        this.table.order([4, 'desc']);
+        if(networkName == "GlycoNet"){
+            this.table.order([3, 'desc']);
+        }
+        else{
+            this.table.order([4, 'desc']);
+        }
         this.table.draw();
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         this.$('#listTable_length').html($("#advancedSearchButton").parent());

@@ -21,7 +21,9 @@
         <tr>
             <th>Title</th>
             <th>Posts</th>
-            <th width="5%" style="white-space: nowrap;">Group</th>
+            <% if(networkName != "GlycoNet"){ %>
+                <th width="5%" style="white-space: nowrap;">Group</th>
+            <% } %>
             <th width="5%" style="white-space: nowrap;">Created By</th>
             <th width="5%" style="white-space: nowrap;">Date Created</th>
         </tr>
