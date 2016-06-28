@@ -2,14 +2,20 @@
 <div id="editThreadView"></div>
 <div id="editPostView"></div>
 </div>
-<p>
-    This page is used to manage all your message threads.  Threads will show up in this list if one of the following conditions is true.
-    <ul>
-        <li>You are a member of the board/committee that is allowed to view the message board.</li>
-        <li>Your role is higher than the board/committee that is allowed to view the message board.</li>
-        <li>The thread is open for all roles</li>
-    </ul>
-</p>
+<% if(networkName == "GlycoNet"){ %>
+    <p>
+        This page is used for HQP to post questions to their peers and get answers.  Only HQP and Staff can view/reply to threads.
+    </p>
+<% } else { %>
+    <p>
+        This page is used to manage all your message threads.  Threads will show up in this list if one of the following conditions is true.
+        <ul>
+            <li>You are a member of the board/committee that is allowed to view the message board.</li>
+            <li>Your role is higher than the board/committee that is allowed to view the message board.</li>
+            <li>The thread is open for all roles</li>
+        </ul>
+    </p>
+<% } %>
 <div>
     <button id="addThreadButton">Add Thread</button>
 </div><br />
