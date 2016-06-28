@@ -3,13 +3,22 @@
     <td><b>Title:</b></td>
     <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
 </tr>
+<% if(networkName == "GlycoNet"){ %>
+    <div style="display:none;">
+    <% this.model.set('roles', HQP); %>
+    <%= HTML.Select(this, 'roles', {options: [HQP]}) %>
+    </div>
+<% } else { %>
 <tr>
     <td>
         <% var def = [{option: "Choose Group...", value: ""}]; %>
         <b>Group:</b>
     </td>
-    <td><%= HTML.Select(this, 'roles', {options: def.concat(allowedRoles)}) %></td>
+    <td>
+        <%= HTML.Select(this, 'roles', {options: def.concat(allowedRoles)}) %>
+    </td>
 </tr>
+<% } %>
 </table>
 <br />
 <div id="threadPeople"></div>

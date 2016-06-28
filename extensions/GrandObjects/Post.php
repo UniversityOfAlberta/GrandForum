@@ -44,6 +44,10 @@ class Post extends BackboneModel{
     function getThreadId(){
         return $this->thread_id;
     }
+    
+    function getThread(){
+        return Thread::newFromId($this->thread_id);
+    }
 
     function getUser(){
         $person = "";
@@ -99,6 +103,10 @@ class Post extends BackboneModel{
                                     array('id'=>'desc'));
         if($status && count($data)>0){
             DBFunctions::commit();
+            $thread = $this->getThread();
+            if($this->getUser() != $thread->getThreadOwner()){
+                Notification::addNotification($this->getUser(), $thread->getThreadOwner(), "Thread Reply", "{$this->getUser()->getNameForForms()} has replied to one of your threads", $thread->getUrl());
+            }
             return Post::newFromId($data[0]['id']);
         }
         return false;
