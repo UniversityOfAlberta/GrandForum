@@ -70,9 +70,8 @@
         <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
             <![CDATA[
                 <h2>Other Challenges</h2>
-                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during the fellowship and briefly describe identified solutions/ways forward and describe if/how CFN can assist.</p>
+                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during the fellowship and briefly describe identified solutions/ways forward.</p>
                 {$item}
-                <b style='color:red;'>* Please contact CFN immediately if you anticipate that the delays in the milestones and/or deliverables and/or other challenges are likely to delay the successful completion of your project within the originally approved proposal timeline.  Contact CFN via <a href='mailto:training@cfn-nce.ca'>training@cfn-nce.ca</a>.</b>
             ]]>
         </ReportItem>
         <ReportItem id="completion" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_COMPLETION" rich="true">
@@ -84,7 +83,7 @@
         <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
             <![CDATA[
                 <h3>Key Findings & Achievements</h3>
-                <p>Please provide the key findings and achievements of your personal fellowship project in one or two sentences.</p>
+                <p>Please provide the key findings and achievements of your research project in one or two sentences.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -227,10 +226,10 @@
     <ReportSection id="partners" name="Partnerships" tooltip="7. Partnerships and other Funding" title="7. Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
         <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
             <![CDATA[
-                <p>The CFN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however CFN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>, so Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
+                <p>The CFN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however CFN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>.  Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
                 <p>Details on in-kind and financial partnership contributions must also be identified. Partnership contributions must be from NCE-eligible partners and cover NCE-eligible expenses. Please consult the <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a> regarding eligibility and valuation of in-kind contributions and then consult with your supervisor’s host institution’s research services unit for assistance if you still have questions.  Calculation of in-kind contribution amounts must adhere to <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a>.</p>
                 <p>If you are listing a partner with cash or in-kind contributions that was not included in your application, please provide a letter from the partner detailing the extent of collaboration and cash/in-kind contributions. The letter must specifically identify your project, reference CFN funding, and detail the type and amount of contributions. The letter should be on official letterhead from the partner, and must be signed by someone from the partner with the authority to make such a commitment.</p>
-                <p>Please note that where an applicant has a “financial interest” (as defined by <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Conflict of Interest Guidelines</a>) in a partner, the potential conflict of interest should be declared.  These partnerships are not precluded, but declaring this financial interest provides transparency to the administration and review process.  Applicants are also governed by <a href='http://www.cfn-nce.ca/1144.aspx' target='_blank'>CFN Conflict of Interest Policy and Guidelines</a>.</p>
+                <p>Please note that where an applicant has a “financial interest” (as defined by <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Conflict of Interest Guidelines</a>) in a partner, the potential conflict of interest should be declared.  These partnerships are not precluded, but declaring this financial interest provides transparency to the administration and review process.  Applicants are also governed by CFN Conflict of Interest Policy and Guidelines.</p>
                 {$item}
                 <small>* Fiscal Year runs from Apr.1 to Mar.31.</small>
             ]]>
@@ -400,12 +399,18 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="IFP_SUBMIT" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="survey" type="CheckboxReportItem" blobItem="IFP_SURVEY" blobType="BLOB_ARRAY" options="Completed exit survey">
             <![CDATA[
-
+                <h3>Exit Survey</h3>
+                <div id="check">{$item}</div>
+                <script type='text/javascript'>
+                    $('div#check input').change(function(){
+                        $('input[name=submit]').click();
+                    });
+                </script>
             ]]>
-        </Instructions>
+        </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>

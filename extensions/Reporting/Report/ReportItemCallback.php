@@ -1502,7 +1502,11 @@ class ReportItemCallback {
         }
         else{
             $array = $blb->getData();
-            return @$array[$index];
+            $value = @$array[$index];
+            if(is_array($value)){
+                return implode(", ", $value);
+            }
+            return $value;
         }
     }
     
