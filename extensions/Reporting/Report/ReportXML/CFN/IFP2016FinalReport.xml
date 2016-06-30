@@ -97,7 +97,7 @@
         <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_REVIEW" rich="true">
             <![CDATA[
                 <h3>Scientific Summary</h3>
-                <p>Please provide a scientific summary of your personal fellowship project findings to date, description and justification of your research methodology, and discussion and conclusion(s) (if any).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
+                <p>Please provide a scientific summary of your research project findings to date, description and justification of your research methodology, and discussion and conclusion(s) (if any).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
                 {$item}
             ]]>
         </ReportItem>

@@ -170,6 +170,8 @@ abstract class PDFGenerator {
         $str = str_replace("&#64257;", "fi", $str);
         $str = str_replace("<sup>&#9702;</sup>", "&#176;", $str);
         $str = str_replace("‐", "-", $str);
+        $str = str_replace("—", "-", $str);
+        $str = str_replace("–", "-", $str);
         $str = str_replace("&lang;", "&#10216;", $str);
         $str = str_replace("&rang;", "&#10217;", $str);
         $str = str_replace("&hellip;", "...", $str);
