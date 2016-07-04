@@ -27,19 +27,21 @@ class ProjectWikiTab extends AbstractTab {
         $upload = new SpecialUpload($wgRequest);
 	    $upload->execute(null);
 	    if($upload->mLocalFile != null){
+	        $uploadName = preg_replace('/\s+/', ' ', str_replace("_", " ", ucfirst($name)));
+	        $nsName = preg_replace('/\s+/', ' ', str_replace(" ", "_", $this->project->getName()));
 	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
 	                                    array('*'),
-	                                    array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
+	                                    array("upload_name" => "File:".$uploadName));
 	        if(count($data) == 0){
 	            DBFunctions::insert("mw_an_upload_permissions",
-	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
-	                                      "nsName" => str_replace(" ", "_", $this->project->getName())));
+	                                array("upload_name" => "File:".$uploadName,
+	                                      "nsName" => $nsName));
 	        }
 	        else{
 	            DBFunctions::update("mw_an_upload_permissions",
-	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
-	                                      "nsName" => str_replace(" ", "_", $this->project->getName())),
-	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
+	                                array("upload_name" => "File:".$uploadName,
+	                                      "nsName" => $nsName),
+	                                array("upload_name" => "File:".$uploadName));
 	        }
 	        $wgMessage->addSuccess("The file <b>{$_FILES['wpUploadFile']['name']}</b> was uploaded successfully");
 	    }
