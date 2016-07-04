@@ -11,8 +11,13 @@ PharmacyMapView = Backbone.View.extend({
 
     events:{
         "click #addPharmacy": "addPharmacy",
-        "click #findLocation": "findLocation"
+        "click #findLocation": "findLocation",
+        "click #printMap": "printMap"
 
+    },
+
+    printMap: function(){
+        window.print();
     },
 
     findLocation: function(){

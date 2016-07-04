@@ -16,14 +16,15 @@ class ThreadAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         $thread = new Thread(array());
         $thread->setTitle($this->POST('title'));
+        $thread->setCategory($this->POST('category'));
         $thread->setUserId($this->POST('author')->id);
-	if($me->isRoleAtLeast(MANAGER)){
-            $thread->setUsers($this->POST('authors'));
-	}
-        $me = Person::newFromWgUser();
-	if(count($this->POST('authors')) == 0){
-	    $thread->setUsers(array($me));
-	}
+	    if($me->isRoleAtLeast(MANAGER)){
+                $thread->setUsers($this->POST('authors'));
+	    }
+            $me = Person::newFromWgUser();
+	    if(count($this->POST('authors')) == 0){
+	        $thread->setUsers(array($me));
+	    }
         $status = $thread->create();
         if($status === false){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be created");

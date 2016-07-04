@@ -8,6 +8,7 @@ class Thread extends BackboneModel{
 	var $user_id; //person who created thread
 	var $users = array();
 	var $title;
+    var $category;
 	var $posts = array();
 	var $date_created;
 
@@ -17,10 +18,11 @@ class Thread extends BackboneModel{
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
                 $this->user_id = $data[0]['user_id'];
-		$this->users = unserialize($data[0]['users']);
+		        $this->users = unserialize($data[0]['users']);
                 $this->title = $data[0]['title'];
+                $this->category = $data[0]['category'];
                 $this->date_created = $data[0]['date_created'];
-		$this->posts = $this->getPosts();
+		        $this->posts = $this->getPosts();
             }
         }
 
@@ -133,6 +135,10 @@ class Thread extends BackboneModel{
             $this->title = $title;
         }   
 
+        function setCategory($category){
+            $this->category = $category;
+        }
+
         function setDateCreated($date){
             $this->date_created = $date;
         }
@@ -160,8 +166,9 @@ class Thread extends BackboneModel{
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_threads',
                                               array('user_id' => $this->user_id,
-						    'users' => serialize($users),
-                                                    'title' => $this->title), true);
+						                            'users' => serialize($users),
+                                                    'title' => $this->title,
+                                                    'category' => $this->category), true);
                 $data = DBFunctions::select(array('grand_threads'),
                                        array('id'),
                                        array('user_id' =>$this->user_id,

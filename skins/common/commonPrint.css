@@ -48,6 +48,37 @@ div.center {
 	text-align: center;
 }
 
+.login {
+    display:none;
+}
+
+.pBodyLogin {
+    display:none;
+}
+#header{
+    display:none;
+}
+#sideToggle{
+   display:none;
+}
+.actions{
+    display:none;
+}
+.settings{
+    display:none;
+}
+.subtab_2_2{
+   display:none;
+}
+#globalSearch{
+   display:none;
+}
+#copiedTitle{
+   display:none;
+}
+.top-info{
+   display:none;
+}
 /* thumbnails */
 div.thumb {
 	border: none;

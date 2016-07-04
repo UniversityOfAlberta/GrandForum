@@ -27,6 +27,17 @@ ThreadEditView = Backbone.View.extend({
     events: {
         "click #saveThread": "saveThread",
         "click #cancel": "cancel",
+        "change #visibility": "checkVisibility",
+    },
+
+    checkVisibility: function(){
+        if($("#visibility").val() == "users"){
+            this.renderAuthors();
+            $("#threadPeople").show();
+        }
+        else{
+            $("#threadPeople").hide();
+        }
     },
     
     validate: function(){
@@ -82,6 +93,7 @@ ThreadEditView = Backbone.View.extend({
         }
         else{
             this.allPeople = new People();
+            this.allPeople.roles = ["Expert"];
             this.allPeople.fetch();
             this.allPeople.bind('sync', function(){
                 if(this.allPeople.length > 0){

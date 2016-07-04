@@ -1,20 +1,51 @@
-<table>
-<tr>
-    <td><b><span class='en' style='display:none'>Title</span><span class='fr' style='display:none'>Titre:</span></b></td>
-    <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
-</tr>
-</table>
-<br />
-<div id="threadPeople"></div>
-<% if(this.isDialog){ %>
-<h2><span class='en' style='display:none'>Question Details</span><span class='fr' style='display:none'>Les Détails d'Interrogation</span></h2>
-<% } %>
-<% if(!this.isDialog){ %>
-    <div style="width:180px;display:inline-block;">
-        <button id="saveThread"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> </button>
-        <span class="throbber" style="display:none;"></span>
-    </div>
-    <div style="width:180px;display:inline-block;">
-        <button id="cancel">Cancel</button>
-    </div>
-<% } %>
+
+    <table>
+        <tr>
+            <td><b><span class='en' style='display:none'>Title</span><span class='fr' style='display:none'>Titre:</span></b></td>
+            <td><%= HTML.TextBox(this, 'title', {style: 'width:547px;'}) %></td>
+        </tr>
+        <tr>
+            <td><b><span class='en' style='display:none'>Category</span><span class='fr' style='display:none'>Catégorie:</span></b></td>
+            <td>
+                <select style="width:415px;" id='category' name='category'>
+                    <% if(wgLang == 'en'){ %>
+                              <option value="Clinical">Clinical</option>
+                              <option value="Administrative">Administrative</option>
+                              <option value="Regulatory/Health Systems">Regulatory/Health Systems</option>
+                        <% } else if(wgLang == 'fr'){ %>
+                              <option value=Clinical">Clinique</option>
+                              <option value="Administrative">Administratif</option>
+                              <option value="Regulatory/Health Systems">Réglementation/Systèmes de Santé</option>                        
+                    <% } %>
+                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td><b><span class='en' style='display:none'>Visibility</span><span class='fr' style='display:none'>Visibilité:</span></b></td>
+            <td>
+                <select style="width:415px;" id='visibility' name='visibility' class='chzn-select'>
+                    <% if(wgLang == 'en'){ %>
+                              <option value="all">All Experts</option>
+                              <option value="users">Chosen Experts</option>
+                        <% } else if(wgLang == 'fr'){ %>
+                              <option value="all">Tous les experts</option>
+                              <option value="users">experts choisis</option>
+                    <% } %>
+                 </select>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div id="threadPeople"></div>
+    <% if(this.isDialog){ %>
+    <h2><span class='en' style='display:none'>Question Details</span><span class='fr' style='display:none'>Les Détails d'Interrogation</span></h2>
+    <% } %>
+    <% if(!this.isDialog){ %>
+        <div style="width:180px;display:inline-block;">
+            <button id="saveThread"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> </button>
+            <span class="throbber" style="display:none;"></span>
+        </div>
+        <div style="width:180px;display:inline-block;">
+            <button id="cancel">Cancel</button>
+        </div>
+    <% } %>

@@ -22,7 +22,7 @@ class UniversityAPI extends RESTAPI {
         $uni->setShortName($this->POST('address'));
         $uni->setLatitude($this->POST('latitude'));
 	    $uni->setLongitude($this->POST('longitude'));
-	    $uni->setProvinceString($this->POST('province_string'));
+	    $uni->setProvinceString($this->POST('prov'));
         $status = $uni->create();
         if(!$status){
             $this->throwError("There was an error");

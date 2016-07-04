@@ -13,25 +13,61 @@ Cette page est utilisée pour rechercher dans une liste de pharmacies qui fourni
 <br />
 <table>
      <tbody>
-	<tr><td align=right><span class='en' style='display:none'>Name of Pharmacy</span><span class='fr' style='display:none'>Nom de la Pharmacie:</span></td><td> <input type="text" id="name" style="width:399px" /></td></tr>
-	<tr><td align=right><span class='en' style='display:none'>Address</span><span class='fr' style='display:none'>Adresse</span></td><td> <input type="text" id="lat" style="width:399px" /></td></tr>
-	<tr><td align=right>Province:</td><td><select style="width:415px;" id='prov' class='chzn-select'>
-                  <option value="Alberta">Alberta</option>
-                  <option value="British Columbia">British Columbia</option>
-                  <option value="Manitoba">Manitoba</option>
-                  <option value="New Brunswick">New Brunswick</option>
-                  <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                  <option value="Northwest Territories">Northwest Territories</option>
-                  <option value="Nova Scotia">Nova Scotia</option>
-                  <option value="Nunavut">Nunavut</option>
-                  <option value="Ontario">Ontario</option>
-                  <option value="Prince Edward Island">Prince Edward Island</option>
-                  <option value="Quebec">Quebec</option>
-                  <option value="Saskatchewan">Saskatchewan</option>
-                  <option value="Yukon">Yukon</option>
-</select></td></tr>
-	<tr><td align=right><span class='en' style='display:none'>Phone Number:</span><span class='fr' style='display:none'>Numéro de Téléphone</span></td><td> <input type="text" id="phone" style="width:399px" /></td></tr>
-	<tr><td align=right><span class='en' style='display:none'>Hours of Operation:</span><span class='fr' style='display:none'>Heures</span></td><td> <input type="time" id="timeFrom" style="width:100px" /> To <input type="time" id="timeTo" style="width:100px" /></td></tr>
+	    <tr>
+            <td align=right>
+                <span class='en' style='display:none'>Name of Pharmacy</span>
+                <span class='fr' style='display:none'>Nom de la Pharmacie:</span>
+            </td>
+            <td>
+                <input type="text" id="name" style="width:399px" />
+            </td>
+        </tr>
+	    <tr>
+            <td align=right>
+                <span class='en' style='display:none'>Address</span>
+                <span class='fr' style='display:none'>Adresse</span>
+            </td>
+            <td>
+                <input type="text" id="lat" style="width:399px" />
+            </td>
+        </tr>
+	    <tr>
+            <td align=right>
+                Province:
+            </td>
+            <td>
+                <% if(wgLang == 'en'){ %>
+                <select style="width:415px;" id='prov' class='chzn-select'>
+                      <option value="Alberta">Alberta</option>
+                      <option value="British Columbia">British Columbia</option>
+                      <option value="Manitoba">Manitoba</option>
+                      <option value="New Brunswick">New Brunswick</option>
+                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                      <option value="Northwest Territories">Northwest Territories</option>
+                      <option value="Nova Scotia">Nova Scotia</option>
+                      <option value="Nunavut">Nunavut</option>
+                      <option value="Ontario">Ontario</option>
+                      <option value="Prince Edward Island">Prince Edward Island</option>
+                      <option value="Quebec">Quebec</option>
+                      <option value="Saskatchewan">Saskatchewan</option>
+                      <option value="Yukon">Yukon</option>
+                <% } else if(wgLang == 'fr'){ %>
+                <select style="width:415px;" id='prov' class='chzn-select'>
+                      <option value="Alberta">Alberta</option>
+                      <option value="British Columbia">Colombie-Britannique</option>
+                      <option value="Manitoba">Manitoba</option>
+                      <option value="New Brunswick">Nouveau-Brunswick</option>
+                      <option value="Newfoundland and Labrador">Terre-Neuve-et-Labrador</option>
+                      <option value="Northwest Territories">(territoires du) Nord-Ouest</option>
+                      <option value="Nova Scotia">Nouvelle-Écosse</option>
+                      <option value="Nunavut">Nunavut</option>
+                      <option value="Ontario">Ontario</option>
+                      <option value="Prince Edward Island">l'île du Prince-Édouard </option>
+                      <option value="Quebec">Québec</option>
+                      <option value="Saskatchewan">Saskatchewan</option>
+                      <option value="Yukon">Yukon</option>
+                <% } %>
+        </select></td></tr>
      </tbody>
 </table>
 <div align=right style="width:52.5%; margin-bottom:3em">
