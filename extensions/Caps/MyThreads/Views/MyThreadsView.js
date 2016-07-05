@@ -89,7 +89,6 @@ MyThreadsView = Backbone.View.extend({
                     {
                         text: text,
                         click: $.proxy(function(){
-                        this.model.set("category", $("#category").val());
                         var m = this.editDialog.view.model.save(null, {
                             success: $.proxy(function(){
 				this.$(".throbber").hide();

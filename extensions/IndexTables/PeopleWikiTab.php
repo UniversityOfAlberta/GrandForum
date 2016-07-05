@@ -160,6 +160,8 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
+		//var_dump(wfLocalFile("mimi")->exists());
+		//print_r($wgServer.wfLocalFile($page->getTitle())->getViewUrl() . "\n");
                 $this->html .= "<tr>\n";
                 $revId = $page->getRevIdFetched();
                 $revision = Revision::newFromId($revId);

@@ -15,6 +15,8 @@ Thread = Backbone.Model.extend({
             title: "",
             posts: new Array(),
             url: "",
+	    visibility: "",
+	    category: "",
             date_created: "0000-00-00 00:00:00",
         };
     },

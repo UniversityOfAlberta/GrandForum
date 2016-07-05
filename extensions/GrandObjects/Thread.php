@@ -53,12 +53,18 @@ class Thread extends BackboneModel{
                                             array('id'));
             }
             else{
-                /*$data = DBFunctions::select(array('grand_user_threads'),
-                                            array('id'),
-                                            array('user_id'=>$me->getId()));*/
-
 		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%'
 			      OR `user_id` LIKE $meId OR `users` LIKE '%\"$meName\"%'";
+                $data = DBFunctions::execSQL($statement);
+            }
+            if(count($data) >0){
+                foreach($data as $threadId){
+                    $thread = Thread::newFromId($threadId['id']);
+                    $threads[] = $thread;
+                }
+            }
+            if($me->isRoleAtLeast(Expert)){
+                $statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE 'a:0:{}'";
                 $data = DBFunctions::execSQL($statement);
             }
             if(count($data) >0){
@@ -117,6 +123,10 @@ class Thread extends BackboneModel{
         function getDateCreated(){
             return $this->date_created;
         }
+
+	function getCategory(){
+	    return $this->category;
+	}
 
 //-----Setters----//
         function setId($id){
@@ -277,6 +287,7 @@ class Thread extends BackboneModel{
 			  'title' => $this->getTitle(),
 			  'posts' => $this->getPosts(),
                           'url' => $this->getUrl(),
+			  'category' => $this->getCategory(),
                           'date_created' => $this->getDateCreated());
             return $json;
         }

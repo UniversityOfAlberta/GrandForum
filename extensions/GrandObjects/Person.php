@@ -936,6 +936,7 @@ class Person extends BackboneModel {
 					   'prior_abortion_service' => $this->getPriorAbortionService(),
 					   'accept_referrals' => $this->accept_referrals),
 				      array('user_id' =>EQ($this->getId())));
+	    $this->getUser()->invalidateCache();
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();

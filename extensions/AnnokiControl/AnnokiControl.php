@@ -151,6 +151,9 @@ $egAnnokiExtensions['ApproveStory'] = array('name' => 'ApproveStory',
 $egAnnokiExtensions['CAPSRegister'] = array('name' => 'CAPSRegister',
                                          'path' => "$IP/extensions/CAPSRegister/CAPSRegister.php");
 
+$egAnnokiExtensions['HelpfulResources'] = array('name' => 'HelpfulResources',
+                                         'path' => "$IP/extensions/HelpfulResources/HelpfulResources.php");
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
@@ -264,7 +267,7 @@ function orderSpecialPages(&$aSpecialPages){
 			  "Redirect",
 			  "Search");
 	if(!$me->isLoggedIn() && 
-	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister" && $key !="ChangePassword")){
+	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister" && $key !="ChangePassword" && $key != "HelpfulResources")){
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}

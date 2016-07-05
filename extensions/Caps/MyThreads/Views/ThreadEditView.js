@@ -27,11 +27,11 @@ ThreadEditView = Backbone.View.extend({
     events: {
         "click #saveThread": "saveThread",
         "click #cancel": "cancel",
-        "change #visibility": "checkVisibility",
+        "change [name='visibility']": "checkVisibility",
     },
 
     checkVisibility: function(){
-        if($("#visibility").val() == "users"){
+        if($("[name='visibility']").val() == "Chosen Experts"){
             this.renderAuthors();
             $("#threadPeople").show();
         }
@@ -105,9 +105,6 @@ ThreadEditView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        if(_.findWhere(me.get('roles'), {"role":"Admin"}) != undefined ||  _.findWhere(me.get('roles'), {"role":"Manager"}) != undefined){
-            this.renderAuthors();
-	}
         return this.$el;
     }
 
