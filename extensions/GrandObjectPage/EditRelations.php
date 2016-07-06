@@ -18,7 +18,7 @@ class EditRelations extends SpecialPage{
             SpecialPage::__construct("EditRelations", STAFF.'+', true, 'runEditRelations');
         }
         else{
-            SpecialPage::__construct("EditRelations", NI.'+', true, 'runEditRelations');
+            SpecialPage::__construct("EditRelations", HQP.'+', true, 'runEditRelations');
         }
     }
     
@@ -197,7 +197,7 @@ class EditRelations extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(HQP)){
             $toolbox['People']['links'][2] = TabUtils::createToolboxLink("Edit Relations", "$wgServer$wgScriptPath/index.php/Special:EditRelations");
         }
         return true;
