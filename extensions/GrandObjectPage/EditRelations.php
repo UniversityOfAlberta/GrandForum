@@ -62,7 +62,6 @@ class EditRelations extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
-        $wgOut->addHTML("Here you can edit all the relations relevant to your role.");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
         $wgOut->addScript("<script type='text/javascript'>
                             $(document).ready(function(){
@@ -109,17 +108,17 @@ class EditRelations extends SpecialPage{
         $wgOut->addHTML("</ul>");
         foreach($config->getValue('relationTypes') as $type){
             if($type == SUPERVISES){
-                $wgOut->addHTML("<div id='tabs-1'>");
+                $wgOut->addHTML("<div id='tabs-1'>Include anyone that you supervise in the left column.");
                 EditRelations::generateSupervisesHTML($person, $wgOut);
                 $wgOut->addHTML("</div>");
             }
             else if($type == MENTORS){
-                $wgOut->addHTML("<div id='tabs-2'>");
+                $wgOut->addHTML("<div id='tabs-2'>Include anyone that you mentor in the left column.");
                 EditRelations::generateMentorsHTML($person, $wgOut);
                 $wgOut->addHTML("</div>");
             }   
             else if ($type == WORKS_WITH){
-                $wgOut->addHTML("<div id='tabs-3'>");
+                $wgOut->addHTML("<div id='tabs-3'>Include anyone that you work with in the left column.");
                 EditRelations::generateWorksWithHTML($person, $wgOut);
                 $wgOut->addHTML("</div>");
             }
