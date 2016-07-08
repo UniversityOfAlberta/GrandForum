@@ -6,6 +6,7 @@ require_once('PeopleTableTab.php');
 
 $indexTable = new IndexTable();
 
+$wgHooks['OutputPageParserOutput'][] = 'IndexTable::externalRedirect';
 $wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
 $wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
@@ -14,6 +15,14 @@ $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 class IndexTable {
 
 	var $text = "";
+	
+    static function externalRedirect($out, $parseroutput){
+        global $wgTitle;
+        if($wgTitle->getNsText() == "File"){
+            redirect($wgServer.wfLocalFile($wgTitle->getText())->getUrl() );
+        }
+        return true;
+    }
 	
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
@@ -196,15 +205,34 @@ class IndexTable {
                                 TabUtils::clearActions();
 
 				    break;
-                           case 'ALL Stories':
+                case 'ALL Stories':
                                 $wgOut->setPageTitle("User Cases");
                                 $this->generateUserStoriesTable();
                                 TabUtils::clearActions();
                                 break;
-			   case 'ALL Resources':
-				$wgOut->setPageTitle("All Resources");
-				$this->generatePersonTable("Resources");	
+			   case 'ALL Clinical':
+				$wgOut->setPageTitle("Clinical Guidelines");
+				$this->generatePersonTable("Clinical");	
 			        break;
+
+			   case 'ALL Tools':
+				$wgOut->setPageTitle("Tools & Tips");
+				$this->generatePersonTable("Tools");	
+			        break;
+
+			   case 'ALL Organizations':
+				$wgOut->setPageTitle("Organizations");
+				$this->generatePersonTable("Organizations");	
+			        break;
+
+			   case 'ALL Articles':
+				$wgOut->setPageTitle("Articles");
+				$this->generatePersonTable("Articles");	
+			        break;
+                           case 'ALL Resources':
+                                $wgOut->setPageTitle("Resources");
+                                $this->generatePersonTable("Resources");
+                                break;
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){

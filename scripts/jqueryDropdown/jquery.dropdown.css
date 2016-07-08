@@ -49,6 +49,7 @@ li.action a {
     line-height:27px !important;
     margin:0 !important;
     padding:0 15px 0 15px !important;
+    border-radius: 0 !important;
 }
 
 li.action a, li.action a:hover {

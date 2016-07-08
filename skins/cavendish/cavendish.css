@@ -624,6 +624,10 @@ button::-moz-focus-inner{
     padding:0;
 }
 
+input[class=ui-widget-content]{
+    border-radius:0px !important;
+}
+
 input::-moz-focus-inner{
     border:0; 
     padding:0;
@@ -1423,11 +1427,6 @@ select span.noshow {
 	width: 20px;
 	height: 33px;
 	vertical-align:top;
-}
-
-#globalSearchButton:active {
-    border:none !important;
-    margin-top:-1px !important;
 }
 
 #globalSearchResults {

@@ -33,22 +33,52 @@ class PeopleWikiTab extends AbstractTab {
 	        if(count($data) == 0){
 	            DBFunctions::insert("mw_an_upload_permissions",
 	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
-	                                      "nsName" => str_replace(" ", "_", $this->table)));
+	                                      "nsName" => str_replace(" ", "_", $this->table),
+                                          "url" => $_POST['fileURL'],
+                                          "title" => $_POST['realTitle'],
+                                          "keywords" => $_POST['keywords']));
 	        }
 	        else{
 	            DBFunctions::update("mw_an_upload_permissions",
 	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
-	                                      "nsName" => str_replace(" ", "_", $this->table)),
+	                                      "nsName" => str_replace(" ", "_", $this->table),
+                                          "url" => $_POST['fileURL'],
+                                          "title" => $_POST['realTitle'],
+                                          "keywords" => $_POST['keywords']),
 	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
 	        }
 	        $wgMessage->addSuccess("The file <b>{$_FILES['wpUploadFile']['name']}</b> was uploaded successfully");
 	    }
+        elseif($_POST['fileURL'] != '' && $_POST['realTitle'] != ''){
+            $wikipage= WikiPage::factory(Title::makeTitle(NS_IMAGE,str_replace(" ", "_", ucfirst($_POST['realTitle']))));
+            $wikipage->doEdit('','',0,false,$wgUser);
+	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
+	                                    array('*'),
+	                                    array("upload_name" => str_replace(" ", "_", ucfirst($_POST['realTitle']))));
+	        if(count($data) == 0){
+	            DBFunctions::insert("mw_an_upload_permissions",
+	                                array("upload_name" => "File:".str_replace(" ", "_", ucfirst($_POST['realTitle'])),
+	                                      "nsName" => str_replace(" ", "_", $this->table),
+                                          "url" => $_POST['fileURL'],
+                                          "title" => $_POST['realTitle'],
+                                          "keywords" => $_POST['keywords']));
+	        }
+	        else{
+	            DBFunctions::update("mw_an_upload_permissions",
+	                                array("upload_name" => "File:".str_replace(" ", "_", ucfirst($_POST['realTitle'])),
+	                                      "nsName" => str_replace(" ", "_", $this->table),
+                                          "url" => $_POST['fileURL'],
+                                          "title" => $_POST['realTitle'],
+                                          "keywords" => $_POST['keywords']),
+	                                array("upload_name" => "File:".str_replace(" ", "_", ucfirst($_POST['realTitle']))));
+	        }
+	        $wgMessage->addSuccess("The file <b>{$_FILES['wpUploadFile']['name']}</b> was uploaded successfully");
+        }
 	    else{
 	        $wgMessage->addError("There was a problem uploading the file");
 	    }
 	    redirect("{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki");
     }
-    
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
         
@@ -112,9 +142,23 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
             <form action='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki' method='post' enctype='multipart/form-data' onSubmit='clickButton'>
             <table>
                 <tr>
-                    <td><b>File:</b></td>
+                    <td align='right'><b>File:</b></td>
                     <td><input id='newPageTitle' type='file' name='wpUploadFile' /></td>
-                    <td><input type='submit' id='createPageButton' value='Upload' /></td>
+                </tr>
+                <tr>
+                    <td align='right'><b>URL:</b></td>
+                    <td><input id='fileURL' type='text' name='fileURL' size='40'/></td>
+                </tr>
+                <tr>
+                    <td align='right'><b>Title:</b></td>
+                    <td><input id='realTitle' type='text' name='realTitle' size='40' /></td>
+                </tr>
+                <tr>
+                    <td align='right'><b>Keywords:</b></td>
+                    <td><input id='keywords' type='text' name='keywords'/></td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='right'><input type='submit' id='createPageButton' value='Upload' /></td>
                 </tr>
             </table>
             </form>
@@ -129,6 +173,7 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
                 $(this).css('display', 'none');
                 $('#newFileDiv').show('fast');
             });
+            $(\"input[name='keywords']\").tagit({});
         </script>";
        /* 
 	$pages = Wiki::getWikiPages($this->table);
@@ -156,12 +201,19 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
         $this->html .= "</tbody></table>";
         */
         $pages = Wiki::getFiles($this->table);
-        $this->html .= "<h2>Uploaded Files</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+        $this->html .= "<h2>Uploaded Files</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
-		//var_dump(wfLocalFile("mimi")->exists());
-		//print_r($wgServer.wfLocalFile($page->getTitle())->getViewUrl() . "\n");
+	            $data = DBFunctions::select(array('mw_an_upload_permissions'),
+	                                        array('*'),
+	                                        array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText())));
+                if(count($data)==0){
+	                $data = DBFunctions::select(array('mw_an_upload_permissions'),
+	                                            array('*'),
+	                                            array("upload_name" => "File:".$page->getTitle()->getText()));
+                }
+
                 $this->html .= "<tr>\n";
                 $revId = $page->getRevIdFetched();
                 $revision = Revision::newFromId($revId);
@@ -173,7 +225,15 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
 			    $editor = Person::newFromId($revision->getRawUser());
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
+                if($data[0]['title'] != ""){
+                    $title = ucfirst($data[0]['title']);
+                }
+                else{
+                    $title = $page->getTitle()->getText();
+                }
+                $keywords = $data[0]['keywords'];
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>$title</a></td>\n";
+                $this->html .= "<td>$keywords</td>";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
                 $this->html .= "</tr>\n";

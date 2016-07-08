@@ -35,6 +35,18 @@ $realUpload = realpath( $wgUploadDirectory );
 wfDebugLog( 'AnnokiUploadAuth', "\$path is {$path}" );
 wfDebugLog( 'AnnokiUploadAuth', "\$filename is {$filename}" );
 
+$exploded = explode("/", $path);
+$file = $exploded[count($exploded)-1];
+
+if(!wfLocalFile($file)->exists()){
+    $data = DBFunctions::select(array('mw_an_upload_permissions'),
+                                array('url'),
+                                array('upload_name' => EQ('File:'.$file)));
+    if(count($data) > 0 && $data[0]['url'] != ""){
+        redirect($data[0]['url']);
+    }
+}
+
 // Basic directory traversal check
 if( substr( $filename, 0, strlen( $realUpload ) ) != $realUpload ) {
 	wfDebugLog( 'AnnokiUploadAuth', 'Requested path not in upload directory' );

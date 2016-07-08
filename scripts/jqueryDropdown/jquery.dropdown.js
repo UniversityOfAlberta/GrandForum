@@ -90,7 +90,6 @@
             }
         }
         else{
-            
             divActions.css('opacity', 1);
             unHoverTimeout=setTimeout($.proxy(function(){
                 if($(this).hasClass('selected')){

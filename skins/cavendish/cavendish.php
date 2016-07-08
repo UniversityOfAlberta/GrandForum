@@ -1058,7 +1058,7 @@ $(function(){
             $title = "Ressources utiles";
         }
 
-                $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/CAPS:ALL_Resources"));
+                $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
 
                 array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
                 array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
