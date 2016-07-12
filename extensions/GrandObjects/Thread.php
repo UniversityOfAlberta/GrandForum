@@ -26,18 +26,18 @@ class Thread extends BackboneModel{
             }
         }
 
-    	/**
-     	* Returns a new Thread from the given id
-     	* @param id $id The id of the Thread
-     	* @return Thread The Thread with the given id
-     	*/	
-	static function newFromId($id){
-	    $data = DBFunctions::select(array('grand_threads'),
-	                                array('*'),
-	                                array('id' => $id));
-	    $thread = new Thread($data);
-	    return $thread;
-	}
+        	/**
+         	* Returns a new Thread from the given id
+         	* @param id $id The id of the Thread
+         	* @return Thread The Thread with the given id
+         	*/	
+	    static function newFromId($id){
+	        $data = DBFunctions::select(array('grand_threads'),
+	                                    array('*'),
+	                                    array('id' => $id));
+	        $thread = new Thread($data);
+	        return $thread;
+	    }
 
         /**
         * Returns all Threads available to a user
@@ -76,11 +76,11 @@ class Thread extends BackboneModel{
             return $threads;
         }
 
-//-----Getters----//	
-	// Returns the id of this Story
-	function getId(){
-	    return $this->id;
-	}
+    //-----Getters----//	
+	    // Returns the id of this Story
+	    function getId(){
+	        return $this->id;
+	    }
 
         function getThreadOwner(){
             $person = "";
@@ -108,25 +108,25 @@ class Thread extends BackboneModel{
             return $this->title;
         }
 
-	function getPosts(){
-	    $posts = array();
-	    $data = DBFunctions::select(array('grand_posts'),
-					    array('*'),
-					    array('thread_id'=>$this->getId()));
-	    foreach($data as $row){
-		$posts[] = Post::newFromId($row['id']);
-	    }
-	    return $posts;
+	    function getPosts(){
+	        $posts = array();
+	        $data = DBFunctions::select(array('grand_posts'),
+					        array('*'),
+					        array('thread_id'=>$this->getId()));
+	        foreach($data as $row){
+		    $posts[] = Post::newFromId($row['id']);
+	        }
+	        return $posts;
 	
-	}
+	    }
 
         function getDateCreated(){
             return $this->date_created;
         }
 
-	function getCategory(){
-	    return $this->category;
-	}
+	    function getCategory(){
+	        return $this->category;
+	    }
 
 //-----Setters----//
         function setId($id){
@@ -261,25 +261,25 @@ class Thread extends BackboneModel{
             return $bool;
         }
 
-	function addUser($person){
-	    $this->users[] = $person;
-	}
+	    function addUser($person){
+	        $this->users[] = $person;
+	    }
 	
         function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){
-		return array();
+		        return array();
             }
-	    $user = Person::newFromId($this->user_id);
-	    $author = array('id'=> $user->getId(),
-			    'name' => $user->getNameForForms(),
-			    'url' => $user->getUrl());
-	    $authors = array();
-	    foreach($this->getUsers() as $user){
-		$authors[] = array('id'=>$user->getId(),
-				   'name' => $user->getNameForForms(),
-				   'url' => $user->getUrl());
-	    }
+	        $user = Person::newFromId($this->user_id);
+	        $author = array('id'=> $user->getId(),
+			        'name' => $user->getNameForForms(),
+			        'url' => $user->getUrl());
+	        $authors = array();
+	        foreach($this->getUsers() as $user){
+		    $authors[] = array('id'=>$user->getId(),
+				       'name' => $user->getNameForForms(),
+				       'url' => $user->getUrl());
+	        }
             $json = array('id' => $this->getId(),
 			  'author' => $author,
 			  'users' => $authors,

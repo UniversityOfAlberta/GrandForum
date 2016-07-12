@@ -70,6 +70,7 @@ class Person extends BackboneModel {
     var $years_in_practice;
     var $prior_abortion_service;
     var $accept_referrals;
+    var $alias;
 
     
     /**
@@ -237,7 +238,22 @@ class Person extends BackboneModel {
             throw new DomainException("Alias is not unique.");
         }
     }
-    
+
+    /**
+     * Returns a new Person from the alias
+     * @return Person The Person with the alias
+     */
+    static function newFromAliasCaps($var){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('alias' => strtolower($var)));
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return null;
+        }
+    }
     /**
      * Removes certain characters from a person's name to help matching
      * @param string $name The name to clean
@@ -308,7 +324,8 @@ class Person extends BackboneModel {
                                               'user_private_profile',
                                               'user_nationality',
                                               'user_gender',
-                                              'candidate'),
+                                              'candidate',
+                                              'alias'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
                 if(isset($phoneNumbers[$row['user_id']])){
@@ -766,6 +783,7 @@ class Person extends BackboneModel {
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
+	    $this->alias = @$data[0]['alias'];
         }
 
 	$this->getCapsPersonalInformation();
@@ -920,6 +938,7 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
+                                          'alias' => $this->getAlias(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -1293,6 +1312,14 @@ class Person extends BackboneModel {
     }
    
     /**
+     * Returns the alias of this Person
+     * @return string The alias of this Person
+     */
+    function getAlias(){
+        return $this->alias;
+    }
+
+    /**
      * Returns the province ID of this Person
      * @return string The province ID of this Person
      */
@@ -1374,10 +1401,10 @@ class Person extends BackboneModel {
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') ||$this->isRoleAtLeast(NI)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
-            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
+            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getId()}";
         }
         else if($this->id > 0 && ($me->isLoggedIn() || $config->getValue('hqpIsPublic') || $this->isRoleAtLeast(NI)) && isset($_GET['embed'])){
-            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
+            return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getId()}?embed";
         }
         return "";
     }
@@ -1577,10 +1604,25 @@ class Person extends BackboneModel {
      * @return string A name usable in forms
      */
     function getNameForForms($sep = ' ') {
-        if (!empty($this->realname))
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
-        else
-            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+        $me = Person::newFromWgUser();
+	    if($me->isRoleAtLeast(MANAGER) || $this->getId() == $me->getId() || $this->isRole(MANAGER) || $this->isRole(Expert)){
+            $alias = "";        
+            if($this->getAlias() != ""){    
+                $alias .= " ({$this->getAlias()})";
+            }
+            if (!empty($this->realname))
+                return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname))).$alias;
+            else
+                return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName())).$alias;
+        }
+        else{
+            if($this->getAlias() == ""){
+                return "Anonymous";
+            }
+            else{
+                return $this->getAlias();
+            }
+        }
     }
 
     private function formatName($matches){

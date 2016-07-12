@@ -113,7 +113,6 @@ Person = Backbone.Model.extend({
 	    }
 	    university.push(city);
 	}
-	console.log(university);
         return university.join('<br />');
     },
 

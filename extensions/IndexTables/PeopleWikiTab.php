@@ -235,7 +235,13 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>$title</a></td>\n";
                 $this->html .= "<td>$keywords</td>";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
-                $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
+                $me = Person::newFromWgUser();
+                if($me->isRoleAtLeast(MANAGER)){
+                    $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getNameForForms()}</a></td>\n";
+                }
+                else{
+                    $this->html .= "<td>{$editor->getNameForForms()}</td>\n";
+                }
                 $this->html .= "</tr>\n";
             }
         }

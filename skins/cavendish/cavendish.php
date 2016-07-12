@@ -1041,7 +1041,7 @@ $(function(){
         if($wgLang->getCode() == "fr"){
             $title = "Questions Fréquemment Posées";
         }
-                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Help:Contents");
+                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
 		$person = Person::newFromId($wgUser->getId());
 		if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
         $title = "Other Tools";

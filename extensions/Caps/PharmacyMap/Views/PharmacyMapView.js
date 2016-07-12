@@ -106,7 +106,17 @@ PharmacyMapView = Backbone.View.extend({
 		});
 
 		var infowindow = new google.maps.InfoWindow({
-    		    content: val.name + "<br>" + val.shortName
+    		    content: "Name: " 
+                         + val.name 
+                         + "<br>"
+                         + "Address: "
+                         + val.shortName 
+                         + "<br>" 
+                         + "Phone: "
+                         + val.phone 
+                         + "<br>" 
+                         + "Hours: "
+                         + val.hours
   		});
 
   		marker.addListener('click', function(){

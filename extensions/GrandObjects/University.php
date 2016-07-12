@@ -16,6 +16,7 @@ class University extends BackboneModel {
     var $color;
     var $province;
     var $order = 1000;
+    var $extras;
     var $isDefault = 0;
     var $provinceString;
     
@@ -85,6 +86,7 @@ ORDER BY `dist` ASC LIMIT 10";
             $this->color = $row['col'];
             $this->order = $row['order'];
             $this->isDefault = $row['default'];
+            $this->extras = $row['extras'];
         }
     }
     
@@ -97,7 +99,9 @@ ORDER BY `dist` ASC LIMIT 10";
                       'color' => $this->getColor(),
                       'order' => $this->getOrder(),
                       'default' => $this->isDefault(),
-		      'shortName' => $this->getShortName());
+		              'shortName' => $this->getShortName(),
+                      'phone'=> $this->getPhone(),
+                     'hours'=> $this->getHours());
         return $json;
     }
     
@@ -111,7 +115,8 @@ ORDER BY `dist` ASC LIMIT 10";
                                                     'province_id' => $this->getProvince(),
                                                     'latitude' => $this->getLatitude(),
 						                            'longitude' => $this->getLongitude(),
-						                            '`order`' => $this->getOrder()),true);
+						                            '`order`' => $this->getOrder(),
+                                                    'extras' => $this->extras),true);
                 if($status){
                     DBFunctions::commit();
                     return true;
@@ -174,6 +179,31 @@ ORDER BY `dist` ASC LIMIT 10";
     function getOrder(){
         return $this->order;
     }
+
+    function getExtras(){
+        if(isset($this->extras)){
+            return unserialize($this->extras);
+        }
+        return "";
+    }
+
+    function getPhone(){
+        $extras = $this->getExtras();
+        if($extras != ""){
+            return $extras['phone'];
+        }
+        return "";
+        
+    }
+
+    function getHours(){
+        $extras = $this->getExtras();
+        $hours = "";
+        if($extras != "" && $extras['timeFrom'] != "" && $extras['timeTo'] != ""){
+            $hours = "{$extras['timeFrom']} - {$extras['timeTo']}";
+        }
+        return $hours;
+    }
     
     function isDefault(){
         return $this->isDefault;
@@ -217,6 +247,10 @@ ORDER BY `dist` ASC LIMIT 10";
 
     function setDefault($var){
         $this->isDefault = $var;
+    }
+
+    function setExtras($var){
+        $this->extras = serialize($var);
     }
 
 

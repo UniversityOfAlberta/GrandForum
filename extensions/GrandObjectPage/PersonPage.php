@@ -37,6 +37,7 @@ class PersonPage {
         if(!$wgOut->isDisabled()){
             $role = $nsText;
             $name = $article->getTitle()->getText();
+            
             if($role == ""){
                 $split = explode(":", $name);
                 if(count($split) > 1){
@@ -47,7 +48,16 @@ class PersonPage {
                 }
                 $role = $split[0];
             }
-            $person = Person::newFromName($name);
+	    if(is_numeric($name)){
+            	$person = Person::newFromId($name);
+	    }
+	    else{
+                $person = Person::newFromName($name);
+	    }	
+            if(!$person->isRole(MANAGER) && !$person->isRole(Expert) && !$me->isRoleAtLeast(MANAGER)){
+               // permissionError();
+            }
+
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
                                                            $role == PL || $role == 'PL') && 
                $person->getName() != null && 

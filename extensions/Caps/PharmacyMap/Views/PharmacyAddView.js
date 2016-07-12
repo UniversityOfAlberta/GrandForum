@@ -16,8 +16,11 @@ PharmacyAddView = Backbone.View.extend({
 	var university = new University({name: $('#name').val(),
 					 latitude: lat.toString(),
 					 longitude: lng.toString(),
-					 province_string: $('#prov').val(),
-					 address: $('#lat').val()
+					 province_string: $("select[name='province']").val(),
+					 address: $('#lat').val(),
+                     phone: $('#phone').val(),
+                     hour_from: $('#timefrom').val(),
+                     hour_to: $('#timeto').val()
 					 });
 	university.save(null, {
             success: $.proxy(function(){
@@ -105,7 +108,7 @@ PharmacyAddView = Backbone.View.extend({
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
-	$(".chzn-select").chosen();
+	    $("select[name='province']").chosen();
         this.initMap();
         var title = $("#pageTitle").clone();
 	    $(title).attr('id', 'copiedTitle');

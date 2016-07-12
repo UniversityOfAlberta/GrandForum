@@ -13,7 +13,10 @@ University = Backbone.Model.extend({
         longitude: "",
         color: "",
         order: 10000,
-        default: false
+        default: false,
+        province: "",
+        phone: "",
+        hours:""
     }
 });
 

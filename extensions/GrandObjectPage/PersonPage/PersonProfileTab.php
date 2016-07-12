@@ -176,7 +176,7 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
-            $_POST['twitter'] = @$_POST['twitter'];
+            $_POST['alias'] = @$_POST['alias'];
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
@@ -185,22 +185,18 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
-	    $_POST['city'] = @$_POST['city'];
-	    $_POST['province'] = @$_POST['province'];
-	    $_POST['specialty'] = @$_POST['specialty'];
-	    $_POST['referral'] = @$_POST['referral'];
+	        $_POST['city'] = @$_POST['city'];
+	        $_POST['province'] = @$_POST['province'];
+	        $_POST['specialty'] = @$_POST['specialty'];
+	        $_POST['referral'] = @$_POST['referral'];
 
 
             $api = new UserUniversityAPI();
             $api->processParams(array());
             $api->doAction(true);
-
-	    $api = new UserCapsAPI();
-	    $api->processParams(array());
-	    $api->doAction(true);
+	        $api = new UserCapsAPI();
+	        $api->doAction(true);
             $api = new UserPhoneAPI();
-            $api->doAction(true);
-            $api = new UserTwitterAccountAPI();
             $api->doAction(true);
             $api = new UserWebsiteAPI();
             $api->doAction(true);
@@ -488,8 +484,8 @@ EOF;
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Twitter Account:</b></td>
-                                <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                                <td align='right'><b>Alias:</b></td>
+                                <td><input type='text' name='alias' value='".str_replace("'", "&#39;", $person->getAlias())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Phone Number:</b></td>

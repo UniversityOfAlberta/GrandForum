@@ -61,7 +61,7 @@ class IndexTable {
             sort($roles);
             foreach($roles as $role){
             	if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
-		    if($role != "Expert" || $me->isRoleAtLeast(STAFF)){
+		    if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
                      $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                      $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
 		}
@@ -236,7 +236,7 @@ class IndexTable {
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){
-			    if($role != "Expert" || $me->isRoleAtLeast(STAFF)){
+			    if($role == "Manager" || $role == "Expert" || $me->isRoleAtLeast(STAFF)){
 			    $wgOut->setPageTitle($config->getValue('roleDefs', $role));
 				            $this->generatePersonTable($role);
                                 TabUtils::clearActions();
