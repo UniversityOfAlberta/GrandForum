@@ -157,8 +157,7 @@ class UploadReportItem extends AbstractReportItem {
             if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
                 $magic = MimeMagic::singleton();
                 $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
-                if(UploadBase::checkFileExtension($finalExt, $wgFileExtensions) &&
-                   UploadBase::verifyExtension($mime, $finalExt)){
+                if(UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
                     $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
                     $hash = md5($contents);
                     $data = array('name' => $name,
@@ -178,12 +177,12 @@ class UploadReportItem extends AbstractReportItem {
                     $this->fileUploadForm();
                     exit;
                 }
-                else if(!UploadBase::verifyExtension($mime, $finalExt)){
+                /*else if(!UploadBase::verifyExtension($mime, $finalExt)){
                     echo "<div class='error'>The uploaded file extension does not match its type, or it is corrupt.</div>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
                     exit;
-                }
+                }*/
             }
             else{
                 echo "<div class='error'>The uploaded file is larger than the allowed size of ".($this->getAttr('fileSize', 1))."MB.</div>";

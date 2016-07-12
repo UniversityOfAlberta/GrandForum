@@ -9,7 +9,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$projectGet = "";
 		if($this->getReport()->project != null){
 		    if($this->getReport()->project instanceof Project){
-                $projectGet = "&project={$this->getReport()->project->getName()}";
+		        if($this->getReport()->project->getName() == ""){
+		            $projectGet = "&project={$this->getReport()->project->getId()}";
+		        }
+                else{
+                    $projectGet = "&project={$this->getReport()->project->getName()}";
+                }
             }
             else if($this->getReport()->project instanceof Theme){
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
@@ -74,7 +79,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		}
 		$wgOut->addHTML("<script type='text/javascript'>
 		    function clickButton(button){
-                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
+                $('#pdf_download_frame').attr('src', '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
             }
 		</script>");
 		$disabled = "";
@@ -104,12 +109,17 @@ EOF;
             $sto = new ReportStorage($person);
             $project = null;
             if($this->getReport()->project instanceof Project){
-                $project = Project::newFromId($this->projectId);
+                $project = $this->getReport()->project;
             }
             else if($this->getReport()->project instanceof Theme){
-            $project = Theme::newFromId($this->projectId);
+                $project = Theme::newFromId($this->projectId);
             }
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getPDF();
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	
