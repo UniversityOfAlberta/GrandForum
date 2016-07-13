@@ -1,0 +1,5 @@
+div {
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    max-height: none !important;
+}
