@@ -5,7 +5,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="--" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
             <SectionPermission id="ktee2" permissions="rw" />
@@ -18,7 +18,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="--" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
             <SectionPermission id="ktee2" permissions="rw" />
@@ -31,7 +31,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="--" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
             <SectionPermission id="ktee2" permissions="rw" />
@@ -44,7 +44,7 @@
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
-            <SectionPermission id="transdisciplinary" permissions="rw" />
+            <SectionPermission id="transdisciplinary" permissions="--" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
             <SectionPermission id="ktee2" permissions="rw" />
@@ -64,7 +64,7 @@
  
                 <p>The aim of the form is to allow the RMC to assess the progress, performance against the key impact objectives of AGE-WELL and demonstrate that the network is effectively working to achieve our goals. Reporting is crucial to the ongoing success and future of AGE-WELL.</p>
 
-                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measure across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages. AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline table</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
+                <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across a 9 point scale. It is based on the Technology Readiness Levels (TRL), which is a well-established approach in engineering and other fields.  It has been adapted for use in AGE-WELL in order to be inclusive of the different types of products and research that our members conduct.  Part of this adaptation has been adopting a modified scale that maps the original 9 TRL levels into 5 stages. AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>Product Readiness Levels Guideline table</a> for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process, and we receive feedback from members of AGE-WELL.</p>
 
                 <p>Projects are required to justify the current PRL stage they are at, and which stage they will be at one year later. It is expected that projects will progress through theses stages at an appropriate pace, in order to receive ongoing investment however it should be noted that it is expected that some projects may remain at a specific PRL longer than others. Justification and a demonstration of progress is required.</p>
 
@@ -76,7 +76,7 @@
                     <ol>
                         <li>Narrative- a short written account of what the project has been doing to achieve impact;</li>
                         <li>Metrics- quantitative data (automatically collected via reporting on Forum); and </li>
-                        <li>Case study- a short vignette that describes an outstanding work or achievement by the project.</li>
+                        <li>Case study (optional)- a short vignette that describes an outstanding work or achievement by the project.</li>
                     </ol>
                 </p>
             ]]>
@@ -90,13 +90,13 @@
         </ReportItem>
         <ReportItem id="product" type="Checkbox" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product- a service or information product that will be used by another entity">
             <![CDATA[
-                <h3>What kind of product are you developing (check all that apply):</h3>
+                <h3>What kind of product(s) are you developing (check all that apply):</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="300">
             <![CDATA[
-                <h3>Describe what your product will be and the potential added value of what you are completing in your project.  Include the following:</h3>
+                <h3>Describe what your product(s) will be and the potential added value of what you are completing in your project.  Include the following:</h3>
                 <small><ul>
                     <li>WHAT does it look like?</li>
                     <li>WHO is going to use is?</li>
@@ -107,42 +107,45 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
+        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true">
             <![CDATA[
-                <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what the progress your project has made in achieving these outcomes?</h3>
+                <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true" limit="300">
+        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true">
             <![CDATA[
-                <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project benefit the Canadian society?</h3>
+                <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life of older adults and their caregivers, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project eventually benefit the Canadian society?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="Radio" blobItem="PRL" blobType="BLOB_TEXT" options="&lt;b&gt;INNOVATION RESEARCH&lt;/b&gt; (PRL 1) basic principles observed through novel research|&lt;b&gt;INCUBATOR&lt;/b&gt; (PRL 2-3) product concept formulated; experimental proof of concept|&lt;b&gt;PROTOTYPE&lt;/b&gt; (PRL 4-5) product validated in lab; product validated in relevant environment|&lt;b&gt;EXPERIMENTAL IMPLEMENTATION&lt;/b&gt; (PRL 6-7) product demonstrated in relevant environment|&lt;b&gt;OUTCOMES&lt;/b&gt; (PRL 8-9) product complete and qualified; actual product proven in operational environment">
+        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|PRL Level" types="Text|Select(INNOVATION RESEARCH (PRL 1),INCUBATOR (PRL 2-3),PROTOTYPE (PRL 4-5),EXPERIMENTAL IMPLEMENTATION (PRL 6-7),OUTCOMES (PRL 8-9))">
             <![CDATA[
-                <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product currently at:</h3>
+                <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product(s) currently at:</h3>
+                    <b>PRL Levels</b>
+                    <ul>
+                        <li><b>INNOVATION RESEARCH</b> (PRL 1) basic principles observed</li>
+                        <li><b>INCUBATOR</b> (PRL 2-3) technology concept formulated; experimental proof of concept</li>
+                        <li><b>PROTOTYPE</b> (PRL 4-5) technology validated in lab; technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies)</li>
+                        <li><b>EXPERIMENTAL IMPLEMENTATION</b> (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment</li>
+                        <li><b>OUTCOMES</b> (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)</li>
+                    </ul>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="research" type="EditableReportSection" blobSection="RESEARCH" tooltip="Research Program" name="Research Program">
+    <ReportSection id="research" type="EditableReportSection" blobSection="RESEARCH" tooltip="Scientific Excellence" name="Scientific Excellence">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>The AGE-WELL research program must be driven to address Canadian needs and problems and to demonstrate world-class scientific achievements.</p>
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>What were the key goals and what has been done in the project to achieve scientific excellence?</p>
+                <p>Please provide any additional details needed to support the information provided in table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -151,9 +154,9 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
@@ -161,7 +164,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>National & International leadership</b></td>
+                <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -197,7 +200,7 @@
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Advancing knowledge</b></td>
+                <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -233,7 +236,7 @@
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Stakeholder driven research (e.g. partner/organization driven research)</b></td>
+                <td><b>Stakeholder and end-user driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -266,64 +269,17 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_4_1" blobItem="REV_4_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Older adults and caregiver involvement</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_2" blobItem="REV_4_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_3" blobItem="REV_4_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_4" blobItem="REV_4_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_5_m1" blobItem="REV_4_5_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of publications with investigators from other projects {$item} <b>({project_n_products_other({$this_year}-10-01, {$next_year}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_5_m2" blobItem="REV_4_5_M2" type="Integer" size="3">
-            <![CDATA[
-                    #publications/presentations that include HQP {$item} <b>({project_n_products_hqp({$this_year}-10-01, {$next_year}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_4_5_m3" blobItem="REV_4_5_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of social and economic conditions considered in the older adults and/or formal/informal caregivers that were involved in the project.  {$item}
-                </td>
-                </tr>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>What are the key research goals for the upcoming year to achieve scientific excellence?</p>
+                <p>Please provide any additional details needed to support the information in the table below. </p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="plan_head" type="Static">
@@ -447,67 +403,20 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_4_1" blobItem="PLAN_4_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Older adults and caregiver involvement</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_2" blobItem="PLAN_4_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_3" blobItem="PLAN_4_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_4" blobItem="PLAN_4_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_5_m1" blobItem="PLAN_4_5_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of publications with investigators from other projects {$item} <b>({project_n_products_other({$next_year}-10-01, {$next_year2}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_5_m2" blobItem="PLAN_4_5_M2" type="Integer" size="3">
-            <![CDATA[
-                    #publications/presentations that include HQP {$item} <b>({project_n_products_hqp({$next_year}-10-01, {$next_year2}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_4_5_m3" blobItem="PLAN_4_5_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of social and economic conditions considered in the older adults and/or formal/informal caregivers that were involved in the project.  {$item}
-                </td>
-                </tr>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_foot" type="Static">
             <![CDATA[
                 </table>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="transdisciplinary" type="EditableReportSection" blobSection="TRANSDISCIPLINARY" tooltip="Transdisciplinary Working" name="Transdisciplinary" title="Transdisciplinary Working">
+    <ReportSection id="transdisciplinary" type="EditableReportSection" blobSection="TRANSDISCIPLINARY" tooltip="Transdisciplinary Working" name="Transdisciplinary" title="Transdisciplinary Working" disabled="true">
         <!-- Table 1 -->
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
             <![CDATA[
-                <p>Essential to all NCE networks is the multi-disciplinarity of the approach to challenges. Projects are expected to transcend disciplinary boundaries by developing shared concepts and understanding, goals and working practices in order to work effectively as a single team to tackle the complexity of real-wold problem domains. Projects should involve collaboration where partnership working allows expertise, knowledge and joining working practices to transcend disciplinary boundaries.</p>
+                <p>Essential to all NCE networks is the multi-disciplinarity of the approach to challenges. Projects are expected to transcend disciplinary boundaries by developing shared concepts and understanding, goals and working practices in order to work effectively as a single team to tackle the complexity of real-world problem domains. Projects should involve collaboration where partnership working allows expertise, knowledge and joining working practices to transcend disciplinary boundaries.</p>
                 <h2>Review scorecard</h2>
-                <p>Describe what your project has done to create a transdisciplinary working environment?</p>
+                <p>Describe what your project has done to create a transdisciplinary working environment</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -516,9 +425,9 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="17%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="17%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="17%">Project Activities - required to generate outputs</th>
-                        <th align="left" width="17%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="17%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="17%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="17%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="17%">Metrics</th>
                     </tr>
             ]]>
@@ -863,13 +772,8 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Describe what plans your project has in place to create a transdisciplinary working environment?</p>
+                <p>Describe what plans your project has in place to create a transdisciplinary working environment</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="plan_head" type="Static">
@@ -1222,7 +1126,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking" title="Networking and Partnerships">
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>The project must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It must be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project.</p>
@@ -1234,16 +1138,11 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Describe how your project has actively engaged with key partners in order to accelerate the research activities and outcomes and how partners have contributed to project activities</p>
+                <p>Please provide any additional details needed to support the information in the table below. </p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -1252,9 +1151,9 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
@@ -1304,7 +1203,7 @@
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Co-creation of product development</b></td>
+                <td><b>Co-creation of product development</b> (e.g. stakeholder and end-user involvement in product development)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1334,7 +1233,7 @@
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Networking within AGE-WELL</b></td>
+                <td><b>Networking within AGE-WELL</b> (e.g. collaboration and production across the Network)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1367,16 +1266,11 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>In the next year, how do you plan on engaging key partners in order to accelerate the research activities and outcomes and how partners contribute to project activities</p>
+                <p>Please provide any additional details needed to support the information in the tables below. </p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="plan_head" type="Static">
@@ -1507,16 +1401,11 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>How has the project engaged and actively communicated with stakeholders to build receptor capacity and to ensure that knowledge reaches and is used by them?</p>
+                <p>Please provide any additional details needed to support the information in the tables below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -1525,9 +1414,9 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
@@ -1535,7 +1424,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Stakeholder engagement</b></td>
+                <td><b>Stakeholder engagement</b> (e.g. involvement of older adults and stakeholder organizations in publications and presentations)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1637,7 +1526,7 @@
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Knowledge dissemination</b></td>
+                <td><b>Knowledge dissemination</b> (e.g. academic and non-academic dissemination activities)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1694,16 +1583,11 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>How does your project plan on engaging and actively communicating with stakeholders to build receptor capacity and to ensure that knowledge reaches and is used by them during the upcoming year?</p>
+                <p>Please provide any additional details needed to support the information in the table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -1891,13 +1775,8 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>How has your project progressed to ensure the rapid flow of intellectual property (IP) from research into the Canadian economy in terms of new products, services and business ventures?</p>
+                <p>Please provide any additional details needed to support the information in the table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -1906,9 +1785,9 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
@@ -1916,7 +1795,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>IP Management</b></td>
+                <td><b>IP Management</b> (e.g. policies in place and plans for licensing IP to a partner)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1946,7 +1825,7 @@
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Product development</b></td>
+                <td><b>Product development</b> (e.g. anticipated products and stage of development)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1997,16 +1876,11 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>What plans does your project have in place for the next year to ensure the rapid flow of intellectual property (IP) from research into the Canadian economy in terms of new products, services and business ventures?</p>
+                <p>Please provide any additional details to support the information in the table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="plan_head" type="Static">
@@ -2113,16 +1987,11 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Describe how the project has encouraged and supported the training and career progression of HQP beyond the disciplinary academic training they would normally receive</p>
+                <p>Please provide any additional details to support the information in the table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_percent" type="Integer" blobItem="REV_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="rev_head" type="Static">
@@ -2131,10 +2000,10 @@
                     <tr>
                         <th align="left" width="1%">Category</th>
                         <th align="left" width="15%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="15%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="15%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="15%">Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="15%">Project Activities - completed to generate outputs</th>
                         <th align="left" width="15%">Transdisciplinary Activities - required to generate outputs & collaborations</th>
-                        <th align="left" width="15%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="15%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="15%">Metrics</th>
                     </tr>
             ]]>
@@ -2213,7 +2082,7 @@
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>The future of our HQP</b></td>
+                <td><b>The future of our HQP</b> (e.g. where have AGE-WELL HQP ended up following their role in the Network)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -2263,16 +2132,11 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" limit="250">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>In the upcoming year, how does the project plan to support the training and career progression of HQP beyond the disciplinary academic training they would normally receive?</p>
+                <p>Please provide any additional details needed to support the information in the table below.</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_percent" type="Integer" blobItem="PLAN_PERCENT" size="3" max="100" min="0">
-            <![CDATA[
-                What approximate percent of this year’s project resources ($) are devoted to this area: {$item}%
             ]]>
         </ReportItem>
         <ReportItem id="plan_head" type="Static">
@@ -2414,19 +2278,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" limit="500">
+        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true">
             <![CDATA[
                 <h3>Which PRL level do you expect to be at in one year from now? Provide a brief justification and key steps you will be taking to move to the next level</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" limit="350">
+        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true">
             <![CDATA[
                 <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL.</h3>
                 {$item}
