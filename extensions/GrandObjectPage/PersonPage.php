@@ -55,7 +55,7 @@ class PersonPage {
                 $person = Person::newFromName($name);
 	    }	
             if(!$person->isRole(MANAGER) && !$person->isRole(Expert) && !$me->isRoleAtLeast(MANAGER)){
-               // permissionError();
+               permissionError();
             }
 
             if((array_search($role, $wgRoles) !== false || $role == INACTIVE || 
