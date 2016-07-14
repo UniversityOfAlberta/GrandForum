@@ -160,11 +160,37 @@ class CAPSRegister extends SpecialPage{
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
         $captchaRow = new FormTableRow("captcha_row");
         $captchaRow->append($captchaLabel)->append($captchaField);
-        
+        $termsLabel = new Label("terms_label", "Terms and Conditions", "Terms and conditions", VALIDATE_NOTHING);
+        $termsField = new CustomElement("terms", "terms", "terms", 
+                                        
+                                           " <div class='TermsOuterDiv'>
+                                            This agreement establishes the terms and conditions under which the Canadian Abortion Providers’ Support - Communauté de pratique canadienne sur l'avortement (CAPS-CPCA) can acquire and use data from the other party. Either party may be a provider of data to the other, or a recipient of data from the other.
+The confidentiality of data pertaining to individuals will be protected as follows:<br />
+The data recipient will not release the names of individuals, or information that could be linked to an individual, nor will the recipient present the results of data analysis (including maps) in any manner that would reveal the identity of individuals.<br />
+The data recipient will not release individual addresses, nor will the recipient present the results of data analysis (including maps) in any manner that would reveal individual addresses.<br />
+Both parties shall comply with all Federal and State laws and regulations governing the confidentiality of the information that is the subject of this Agreement.
+The data recipient will not release data to a third party without prior approval from the data provider.<br />
+The data recipient will not share, publish, or otherwise release any findings or conclusions derived from analysis of data obtained from the data provider without prior approval from the data provider.<br />
+Data transferred pursuant to the terms of this Agreement shall be utilized solely for the purposes set forth in the “Partnership Agreement”.
+All data transferred to TPP by RIDOH shall remain the property of RIDOH and shall be returned to RIDOH upon termination of the Agreements.
+Any third party granted access to data, as permitted under condition #2, above, shall be subject to the terms and conditions of this agreement. Acceptance of these terms must be provided in writing by the third party before data will be released.</div>
+                                         
+                                                                                        
+                                         ");
+        $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("I have read and agree to the terms and conditions"), VALIDATE_NOTHING);
+        $termsRow = new FormTableRow("terms_row");
+	$termsAgree->attr("disabled","disabled")->attr("style","opacity:0.3");
+        $termsRow->append($termsLabel)->append($termsField);
+        $agreeRow = new FormTableRow("agree_row");
+        $agreeCell = new EmptyElement();
+        $agreeRow->append($agreeCell)->append($termsAgree);
+        $agreeRow->attr("align","right")->attr("class","terms");
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
+	$submitField->attr("disabled","disabled");
         $submitRow = new FormTableRow("submit_row");
         $submitRow->append($submitCell)->append($submitField);
+	    $submitRow->attr("align","right");
         
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
@@ -187,6 +213,8 @@ class CAPSRegister extends SpecialPage{
 		          ->append($fileRow)
 		          ->append($referenceRow)
                   ->append($captchaRow)
+		          ->append($termsRow)
+		          ->append($agreeRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
@@ -204,6 +232,7 @@ class CAPSRegister extends SpecialPage{
 	$wgOut->addScript("<script type='text/javascript'>
 				$(document).ready(function () {
     				    toggleFields();
+                        disclaimerFunction();
     				    $('#role_field').change(function () {
         			        toggleFields();
     				    });
@@ -218,6 +247,9 @@ class CAPSRegister extends SpecialPage{
                                     $('#specialty_field').change(function () {
                                         specialtySpecify();
                                     });
+				     $(\"input[name='terms_agree[]']\").change(function(){
+					checkSubmit();
+				    });
 				});
 
 				function toggleFields() {
@@ -266,6 +298,28 @@ class CAPSRegister extends SpecialPage{
     }});
 
 				}
+
+function disclaimerFunction() {
+            $('.TermsOuterDiv').scroll(function() {
+		if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()-12) {
+        	    $(\"input[name='terms_agree[]']\").removeAttr('disabled');
+                    $(\"input[name='terms_agree[]']\").css('opacity','1');
+
+    		}
+		else{
+                    $(\"input[name='terms_agree[]']\").attr('disabled', 'disabled');
+                    $(\"input[name='terms_agree[]']\").css('opacity','0.3');
+		}
+            });
+       }
+function checkSubmit(){
+	if($(\"input[name='terms_agree[]']\").is(':checked')){
+            $(\"input[name='submit']\").removeAttr('disabled');
+	}
+	else{
+            $(\"input[name='submit']\").attr('disabled','disabled');
+	}
+}
 		</script>");	
         $wgOut->addHTML("</form>");
     }

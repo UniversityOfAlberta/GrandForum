@@ -1685,3 +1685,17 @@ input.popupBlockSearch {
 table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
     border-color: #555555;
 }
+
+div.TermsOuterDiv {
+	width:400px;
+	height:200px;
+	border:1px solid #ccc;
+	background:#f2f2f2;
+	padding:6px;
+	overflow:auto;
+}
+div.terms p,
+div.terms li {font:normal 11px/15px arial;color:#333;}
+div.terms h3 {font:bold 14px/19px arial;color:#000;}
+div.terms h4 {font:bold 12px/17px arial;color:#000;}
+div.terms strong {color:#000;}
