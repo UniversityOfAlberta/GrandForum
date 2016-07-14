@@ -848,10 +848,17 @@ abstract class AbstractReport extends SpecialPage {
         }
         $json = array();
         $preview = isset($_GET['preview']);
+        $pdfFiles = @$_GET['pdfFiles'];
+		if($pdfFiles != ''){
+		    $pdfFiles = explode(',', $pdfFiles);
+		}
+		else{
+		    $pdfFiles = $this->pdfFiles;
+		}
         if($this->pdfAllProjects && !$preview){
             foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
                 if(!$project->isSubProject()){
-                    foreach($this->pdfFiles as $pdfFile){
+                    foreach($pdfFiles as $pdfFile){
                         set_time_limit(120); // Renew the execution timer
                         $wgOut->clearHTML();
                         $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
@@ -872,7 +879,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
-        foreach($this->pdfFiles as $pdfFile){
+        foreach($pdfFiles as $pdfFile){
             set_time_limit(120); // Renew the execution timer
             $wgOut->clearHTML();
             $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);
