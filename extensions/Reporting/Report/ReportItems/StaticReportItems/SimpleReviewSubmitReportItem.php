@@ -9,7 +9,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		$projectGet = "";
 		if($this->getReport()->project != null){
 		    if($this->getReport()->project instanceof Project){
-                $projectGet = "&project={$this->getReport()->project->getName()}";
+		        if($this->getReport()->project->getName() == ""){
+		            $projectGet = "&project={$this->getReport()->project->getId()}";
+		        }
+                else{
+                    $projectGet = "&project={$this->getReport()->project->getName()}";
+                }
             }
             else if($this->getReport()->project instanceof Theme){
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
@@ -20,6 +25,10 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
+		    $pdfFiles = $this->getAttr('pdfFiles', '');
+		    if($pdfFiles != ''){
+		        $pdfFiles = "&pdfFiles=$pdfFiles";
+		    }
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
 		            $('#generateButton').click(function(){
@@ -30,7 +39,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
+		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}', 
 		                        success : function(data){
 		                                        //var data = jQuery.parseJSON(response);
 		                                        for(index in data){
@@ -74,14 +83,15 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		}
 		$wgOut->addHTML("<script type='text/javascript'>
 		    function clickButton(button){
-                $('#pdf_download_frame').attr('src',  '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
+                $('#pdf_download_frame').attr('src', '{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf=' + button.name);
             }
 		</script>");
 		$disabled = "";
 		if($wgImpersonating && !checkSupervisesImpersonee()){
 		    $disabled = "disabled='true'";
 		}
-		if(!$this->getReport()->isComplete()){
+		$showWarning = (strtolower($this->getAttr('showWarning', 'true')) == 'true');
+		if(!$this->getReport()->isComplete() && $showWarning){
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
@@ -98,18 +108,30 @@ EOF;
 		$wgOut->addHTML($temp_html);
 		$pdfcount = 1;
 		$wgOut->addHTML("<iframe id='pdf_download_frame' style='position:absolute;top:-1000px;left:-1000px;width:1px;height:1px;'></iframe>");
-        foreach($this->getReport()->pdfFiles as $file){
+		$pdfFiles = $this->getAttr('pdfFiles', '');
+		if($pdfFiles != ''){
+		    $pdfFiles = explode(',', $pdfFiles);
+		}
+		else{
+		    $pdfFiles = $this->getReport()->pdfFiles;
+		}
+        foreach($pdfFiles as $file){
             $tok = false;
             $tst = '';
             $sto = new ReportStorage($person);
             $project = null;
             if($this->getReport()->project instanceof Project){
-                $project = Project::newFromId($this->projectId);
+                $project = $this->getReport()->project;
             }
             else if($this->getReport()->project instanceof Theme){
-            $project = Theme::newFromId($this->projectId);
+                $project = Theme::newFromId($this->projectId);
             }
-            $report = new DummyReport($file, $person, $project);
+            if($file != $this->getReport()->xmlName){
+                $report = new DummyReport($file, $person, $project);
+            }
+            else{
+                $report = $this->getReport();
+            }
         	$check = $report->getPDF();
         	if (count($check) > 0) {
         		$tok = $check[0]['token']; 	

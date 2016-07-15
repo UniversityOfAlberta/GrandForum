@@ -53,6 +53,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfFiles;
     var $pdfAllProjects;
     var $showInstructions = true;
+    var $allowIdProjects = false;
     var $variables = array();
     
     /**
@@ -121,11 +122,17 @@ abstract class AbstractReport extends SpecialPage {
             $projectName = $_GET['project'];
         }
         if($projectName != null){
-            $this->project = Project::newFromName($projectName);
-            if($this->project == null ||
-               $this->project->getId() == 0){
-                // Try themes
-                $this->project = Theme::newFromName($projectName);
+            if(is_numeric($projectName)){
+                $this->project = new Project(array());
+                $this->project->id = $projectName;
+            }
+            else{
+                $this->project = Project::newFromName($projectName);
+                if($this->project == null ||
+                   $this->project->getId() == 0){
+                    // Try themes
+                    $this->project = Theme::newFromName($projectName);
+                }
             }
         }
         if(isset($_GET['generatePDF'])){
@@ -347,7 +354,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         $sto = new ReportStorage($this->person);
         if($this->project != null){
-            if($this->pdfAllProjects){
+            if($this->pdfAllProjects || $this->allowIdProjects){
                 $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
             }
             else{
@@ -381,7 +388,7 @@ abstract class AbstractReport extends SpecialPage {
         $foundSameUser = false;
         $foundSubmitted = false;
         if($this->project != null){
-            if($this->pdfAllProjects){
+            if($this->pdfAllProjects || $this->allowIdProjects){
                 $check = $sto->list_user_project_reports($this->project->getId(), $this->person->getId(), 0, 0, $this->pdfType);
             }
             else{
@@ -466,7 +473,12 @@ abstract class AbstractReport extends SpecialPage {
         }
         if($this->project != null){
             if($this->project instanceof Project){
-                $this->name = $name.": {$this->project->getName()}";
+                if($this->project->getName() == ""){
+                    $this->name = $name;
+                }
+                else{
+                    $this->name = $name.": {$this->project->getName()}";
+                }
             }
             else if($this->project instanceof Theme){
                 $this->name = $name.": {$this->project->getAcronym()}";
@@ -728,6 +740,9 @@ abstract class AbstractReport extends SpecialPage {
                                 if($this->project != null && $this->project->getId() != 0){
                                     $isMember = $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end'], $this->project);
                                 }
+                                if($this->project != null && $this->project->getName() == "" && $this->allowIdProjects){
+                                    $isMember = true;
+                                }
                                 $rResult = ($rResult || ($me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']) && $isMember));
                             }
                         }
@@ -833,10 +848,17 @@ abstract class AbstractReport extends SpecialPage {
         }
         $json = array();
         $preview = isset($_GET['preview']);
+        $pdfFiles = @$_GET['pdfFiles'];
+		if($pdfFiles != ''){
+		    $pdfFiles = explode(',', $pdfFiles);
+		}
+		else{
+		    $pdfFiles = $this->pdfFiles;
+		}
         if($this->pdfAllProjects && !$preview){
             foreach($this->person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
                 if(!$project->isSubProject()){
-                    foreach($this->pdfFiles as $pdfFile){
+                    foreach($pdfFiles as $pdfFile){
                         set_time_limit(120); // Renew the execution timer
                         $wgOut->clearHTML();
                         $report = new DummyReport($pdfFile, $this->person, $project, $this->year);
@@ -857,7 +879,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
-        foreach($this->pdfFiles as $pdfFile){
+        foreach($pdfFiles as $pdfFile){
             set_time_limit(120); // Renew the execution timer
             $wgOut->clearHTML();
             $report = new DummyReport($pdfFile, $this->person, $this->project, $this->year);

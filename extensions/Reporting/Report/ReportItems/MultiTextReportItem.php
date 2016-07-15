@@ -56,6 +56,8 @@ class MultiTextReportItem extends AbstractReportItem {
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $class = $this->getAttr('class', 'wikitable');
+        $orientation = $this->getAttr('orientation', 'horizontal');
+        $isVertical = (strtolower($orientation) == 'vertical');
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
@@ -70,9 +72,14 @@ class MultiTextReportItem extends AbstractReportItem {
             var max{$this->getPostId()} = {$max}+1;
             function addObj{$this->getPostId()}(i){
                 $("#table_{$this->getPostId()}").append(
-                    "<tr class='obj'>" +
+                    "<tr id='" + i + "' class='obj'>" +
 EOF;
                     foreach($indices as $j => $index){
+                        $align = "";
+                        if($isVertical){
+                            $item .= "\"<tr id='\" + i + \"'><td align='right'><b>{$labels[$j]}:</b></td>\" + \n";
+                            $align = "left";
+                        }
                         if(@$types[$j] == "NI"){
                             $names = array("");
                             $people = Person::getAllPeople(NI);
@@ -81,18 +88,21 @@ EOF;
                             }
                             asort($names);
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
-                            $item .= "\"<td><span>".$combobox->renderSelect()."</span></td>\" + \n";
+                            $item .= "\"<td align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
-                            $item .= @"\"<td><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
+                            $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
+                            if(!$isVertical){
+                                $align = "center";
+                            }
                             $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                            $item .= @"\"<td align='center'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $item .= @"\"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
                             $matches = array();
                             preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                             $matches = @explode(",", $matches[2]);
@@ -108,25 +118,40 @@ EOF;
                         else if(strstr(strtolower(@$types[$j]), "date") !== false){
                             preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                             $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                            $item .= @"\"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
-                            $item .= @"\"<td></td>\" + \n";
+                            $item .= @"\"<td align='$align'></td>\" + \n";
                         }
                         else{
-                            $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                            $item .= @"\"<td align='$align'><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
+                        }
+                        if($isVertical){
+                            $item .= "\"</tr>\" + \n";
                         }
                     }
-        $item .= <<<EOF
-                        "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
-                    "</tr>");
+                    $colspan = 1;
+                    if($isVertical){
+                        $item .= "\"<tr id='\" + i + \"'>\" + \n";
+                        $colspan = 2;
+                    }
+                    $item .= <<<EOF
+                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
+                    "</tr>" + 
+EOF;
+                    if($isVertical){
+                        $item .= "\"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
+                    }
+                    $item .= <<<EOF
+                    );
                 $("#table_{$this->getPostId()} tr.obj:last select:not(.raw)").combobox();
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
             
             function removeObj{$this->getPostId()}(obj){
-                $(obj).parent().parent().remove();
+                var id = $(obj).parent().parent().attr('id');
+                $('tr#' + id, $(obj).parent().parent().parent()).remove();
                 updateTable{$this->getPostId()}();
             }
             
@@ -157,13 +182,15 @@ EOF;
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
         $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
-        if(count($labels) > 0 && $labels[0] != ""){
-            $item .= "<tr>";
-            foreach($labels as $j => $label){
-                $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
-            }
-            if($multiple){
-                $item .= "<th style='width:51px;'></th></tr>";
+        if(!$isVertical){
+            if(count($labels) > 0 && $labels[0] != ""){
+                $item .= "<tr>";
+                foreach($labels as $j => $label){
+                    $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
+                }
+                if($multiple){
+                    $item .= "<th style='width:51px;'></th></tr>";
+                }
             }
         }
         if(!$multiple){
@@ -176,8 +203,13 @@ EOF;
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
-                $item .= "<tr class='obj'>";
+                $item .= "<tr id='$i' class='obj'>";
                 foreach($indices as $j => $index){
+                    $align = "";
+                    if($isVertical){
+                        $item .= "<tr id='$i' class='$i'><td align='right'><b>{$labels[$j]}:</b></td>";
+                        $align = "left";
+                    }
                     if(@$types[$j] == "NI"){
                         $names = array("");
                         $people = Person::getAllPeople(NI);
@@ -186,18 +218,21 @@ EOF;
                         }
                         asort($names);
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
-                        $item .= "<td>".$combobox->render()."</td>";
+                        $item .= "<td align='$align'>".$combobox->render()."</td>";
                     }
                     else if(strtolower(@$types[$j]) == "integer"){
-                        $item .= @"<td><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                        $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
-                        $item .= @"<td><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
+                        $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                             strstr(strtolower(@$types[$j]), "combobox") !== false){
+                        if(!$isVertical){
+                            $align = "center";
+                        }
                         $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                        $item .= @"<td align='center'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
+                        $item .= @"<td align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
                         $matches = array();
                         preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
                         $matches = @explode(",", $matches[2]);
@@ -216,26 +251,37 @@ EOF;
                         $item .= "</select></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "date") !== false){
-                        $val = str_replace("'", "&#39;", $value[$index]);
+                        $val = @str_replace("'", "&#39;", $value[$index]);
                         preg_match("/^(Date)\((.*)\)$/i", $types[$j], $matches);
                         $dateFormat = (isset($matches[2])) ? $matches[2] : "yy-mm-dd";
-                        $item .= @"<td><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
+                        $item .= @"<td align='$align'><input type='text' class='calendar' data-dateFormat='{$dateFormat}' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$val}' /></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "getarray") !== false){
                         $fn = "{".$types[$j]."}";
                         $val = unserialize($this->varSubstitute($fn));
                         $val = @$val[$i][$this->id];
-                        $item .= @"<td valign='top'>{$val}</td>";
+                        $item .= @"<td align='$align' valign='top'>{$val}</td>";
                     }
                     else{
-                        $val = str_replace("'", "&#39;", $value[$index]);
-                        $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
+                        $val = @str_replace("'", "&#39;", $value[$index]);
+                        $item .= @"<td align='$align'><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
+                    }
+                    if($isVertical){
+                        $item .= "</tr>";
                     }
                 }
+                $colspan = 1;
+                if($isVertical){
+                    $item .= "<tr id='$i'>";
+                    $colspan = 2;
+                }
                 if($multiple){
-                    $item .= "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                    $item .= "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
                 }
                 $item .= "</tr>";
+                if($isVertical){
+                    $item .= "<tr id='$i'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>";
+                }
             }
         }
         /*if(!$multiple && count($values) == 0){
@@ -275,6 +321,9 @@ EOF;
         $showHeader = $this->getAttr('showHeader', 'true');
         $showCount = $this->getAttr('showCount', 'false');
         $showBullets = $this->getAttr('showBullets', 'false');
+        $orientation = $this->getAttr('orientation', 'horizontal');
+        $isVertical = (strtolower($orientation) == 'vertical');
+        $pagebreak = (strtolower($this->getAttr('pagebreak', 'false')) == 'true'); 
         $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
         $rules = "";
         $frame = "";
@@ -293,26 +342,31 @@ EOF;
         }
         $item = "";
         if($max > -1){
-            if(count($labels) > 0 && $labels[0] != ""){
-                $item = "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
-                if(strtolower($showHeader) == 'true'){
-                    $item .= " <tr>";
-                    if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
-                        $item .= "<th style='width:1px;'>&nbsp;</th>";
+            if(!$isVertical){
+                if(count($labels) > 0 && $labels[0] != ""){
+                    $item = "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
+                    if(strtolower($showHeader) == 'true'){
+                        $item .= " <tr>";
+                        if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
+                            $item .= "<th style='width:1px;'>&nbsp;</th>";
+                        }
+                        foreach($labels as $label){
+                            $item .= "<th align='center'>{$label}</th>";
+                        }
+                        $item .= "</tr>";
                     }
-                    foreach($labels as $label){
-                        $item .= "<th align='center'>{$label}</th>";
-                    }
-                    $item .= "</tr>";
                 }
-            }
-            else{
-                $item = "<table>";
+                else{
+                    $item = "<table>";
+                }
             }
             $i = 0;
             $count = 0;
             foreach($values as $i => $value){
                 if($i > -1 && $count < $maxEntries){
+                    if($isVertical){
+                        $item .= "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
+                    }
                     $item .= "<tr class='obj'>";
                     if(strtolower($showCount) == 'true'){
                         $item .= "<td style='width:1px;' valign='top'><b>{$i}.</b></td>";
@@ -322,6 +376,9 @@ EOF;
                         $item .= "<td style='width:1px;' valign='top'><b style='display: block;margin:".($fontSize/2)."px 0 0 0;'>•</b></td>";
                     }
                     foreach($indices as $j => $index){
+                        if($isVertical){
+                            $item .= "<tr><td align='right'><b>{$labels[$j]}:</b></td>";
+                        }
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -336,12 +393,25 @@ EOF;
                         else{
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
+                        if($isVertical){
+                            $item .= "</tr>";
+                        }
                     }
-                    $item .= "</tr>";
+                    if(!$isVertical){
+                        $item .= "</tr>";
+                    }
                     $count++;
+                    if($isVertical){
+                        $item .= "</table><br />";
+                        if($pagebreak && $count < count($values)){
+                            $item .= "<div class='pagebreak'></div>";
+                        }
+                    }
                 }
             }
-            $item .= "</table><br />";
+            if(!$isVertical){
+                $item .= "</table><br />";
+            }
         }
         $item = $this->processCData($item);
         $wgOut->addHTML($item);

@@ -332,7 +332,12 @@ abstract class AbstractReportSection {
         $project = "";
         if($this->getParent()->project != null){
             if($this->getParent()->project instanceof Project){
-                $project = "&project=".urlencode($this->getParent()->project->getName());
+                if($this->getParent()->project->getName() == ""){
+                    $project = "&project=".urlencode($this->getParent()->project->getId());
+                }
+                else{
+                    $project = "&project=".urlencode($this->getParent()->project->getName());
+                }
             }
             else if($this->getParent()->project instanceof Theme){
                 $project = "&project=".urlencode($this->getParent()->project->getAcronym());

@@ -10,7 +10,12 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		$projectGet = "";
 		if($this->getReport()->project != null){
 		    if($this->getReport()->project instanceof Project){
-                $projectGet = "&project={$this->getReport()->project->getName()}";
+                if($this->getReport()->project->getName() == ""){
+		            $projectGet = "&project={$this->getReport()->project->getId()}";
+		        }
+                else{
+                    $projectGet = "&project={$this->getReport()->project->getName()}";
+                }
             }
             else if($this->getReport()->project instanceof Theme){
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
@@ -180,7 +185,13 @@ EOF;
             $tst = '';
             $sub = 0;
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
+            if($this->getReport()->project instanceof Project){
+                $project = $this->getReport()->project;
+            }
+            else if($this->getReport()->project instanceof Theme){
+                $project = Theme::newFromId($this->projectId);
+            }
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);
             }

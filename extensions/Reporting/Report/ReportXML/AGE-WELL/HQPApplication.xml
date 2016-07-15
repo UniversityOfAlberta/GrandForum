@@ -347,7 +347,8 @@ Funding Commences: September 2016<br />
                 <h2>Formal evidence of admission to a Master's or Doctoral program or Postdoctoral position</h2>
                 <p>Master’s and Doctoral students can submit their acceptance letters as formal evidence of admission to a graduate program. Applicants can also submit their transcripts as evidence of registration to a graduate program.</p>
 
-<p>Postdoctoral fellows can submit a copy of their engagement letters as formal evidence of admission to a post‐doctoral position. In the event that engagement letters are not available, a letter from the applicant’s supervisor is sufficient. Please ensure to include the Award period and funding amount in the letter.</p>
+                <p>Postdoctoral fellows can submit a copy of their engagement letters as formal evidence of admission to a post‐doctoral position. In the event that engagement letters are not available, a letter from the applicant’s supervisor is sufficient. Please ensure to include the Award period and funding amount in the letter.</p>
+                <b>The uploaded file must be a PDF Document</b>.
                 {$item}
             ]]>
         </ReportItem>
@@ -365,6 +366,7 @@ Funding Commences: September 2016<br />
                     <li>Postdoctoral Award Engagement Letters</li>
                     <li>Letter from Postdoctoral supervisor which outlines the Award period & funding amount</li>
                 </ul>
+                <b>The uploaded file must be a PDF Document</b>.
                 {$item}
             ]]>
         </ReportItem>

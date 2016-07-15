@@ -693,7 +693,12 @@ EOF;
 		$headerName = $report->headerName;
 		if($headerName == ""){
             if($project != null){
-                $headerName = "{$project->getName()}";
+                if($project->getName() == ""){
+                    $headerName = "{$person->getReversedName()}";
+                }
+                else {
+                    $headerName = "{$project->getName()}";
+                }
             }
             else {
                 $headerName = "{$person->getReversedName()}";

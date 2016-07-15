@@ -15,7 +15,12 @@ class DummyReport extends AbstractReport{
         $projectName = null;
         if($project != null){
             if($project instanceof Project){
-                $projectName = $project->getName();
+                if($project->getName() == ""){
+                    $projectName = $project->getId();
+                }
+                else{
+                    $projectName = $project->getName();
+                }
             }
             else if($project instanceof Theme){
                 $projectName = $project->getAcronym();
