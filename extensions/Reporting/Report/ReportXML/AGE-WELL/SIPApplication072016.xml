@@ -418,6 +418,7 @@
                     <li>match the details provided in the project application</li>
                     <li>be signed by a person at the organization with the appropriate authority to authorize the contribution and commit the organization to providing the resources noted</li>
                 </ul>
+                <b>The uploaded file must be a Zip Archive</b>.
                 {$item}
             ]]>
         </ReportItem>
