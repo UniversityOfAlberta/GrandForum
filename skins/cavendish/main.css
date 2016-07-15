@@ -41,8 +41,6 @@ img.ui-datepicker-trigger{
     font-size: 11px;
     padding: 0 2px 0 2px;
     margin: 0 2px 0 2px;
-    float: left;
-    
     background: #FFFFFF;
 }
 
@@ -155,11 +153,10 @@ div#header {
 }
 
 #header .top-nav-element {
-    display: block;
+    display: inline-block;
     margin: 0 0 0 6px;
     font-size: 12px;
     padding: 0;
-    float: left;
 }
 
 #header .top-nav-left {
@@ -196,6 +193,48 @@ div#header {
 
 #header .tab-right {
     float: right;
+}
+
+#allTabs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 30px;
+    text-align: center;
+    font-size: 19px;
+    line-height: 42px;
+    color: #555555;
+}
+
+#allTabs:hover {
+    background: #F0F0F0;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#allTabsDropdown {
+    color: #555555;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    position: fixed;
+    top: 91px;
+    right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#allTabsDropdown a {
+    border: none;
+    color: #555555;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#allTabsDropdown a:hover {
+    background: #F0F0F0;
 }
 
 a {
