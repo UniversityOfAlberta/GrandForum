@@ -136,11 +136,10 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
-                    "</tr>" + 
+                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
 EOF;
                     if($isVertical){
-                        $item .= "\"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
+                        $item .= "+ \"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
                     }
                     $item .= <<<EOF
                     );
