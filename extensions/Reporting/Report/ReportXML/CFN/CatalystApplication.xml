@@ -494,11 +494,12 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="team" type="EditableReportSection" blobSection="TEAM" name="Team List" title="Team List" tooltip="Team List">
-        <ReportItem id="team" type="MultiTextReportItem" blobItem="TEAM_LIST" blobType="BLOB_ARRAY" orientation="horizontal" 
-                    labels="First|Last|Institution" types="Text|Text|Text"
+        <ReportItem id="team" type="MultiTextReportItem" blobItem="TEAM_LIST" blobType="BLOB_ARRAY" orientation="vertical" class="wikitable" pagebreak="true"
+                    labels="Role|Form of Address|First Name|Surname|Designations|Email address|Daytime phone number|Institution/Organization|Title at Institution/Organization|Sector of Institution/Organization|Primary Role individual plays relative to improving care of the seriously ill elderly|Discipline which most closely reflects the role cited|Area of Health Care Specialization (if applicable)|City/Town|Province|Preferred Language|% Time Individual will allocate to Project during the life of the Project|# of weeks individual will participate in Project|FOR HQP ONLY: Student/Working professional category|FOR HQP ONLY: Academic program/year, or if working professional list position/department during grant activity|FOR HQP ONLY: Date expected to start working on grant|FOR HQP ONLY: Date expected to end work on grant|FOR HQP ONLY: Which member of the Project Team will supervise this HQP?|FOR HQP ONLY: Briefly describe the role this HQP will play/the activities this HQP will undertake on the project|FOR HQP ONLY: Will this HQP be paid from project funds" 
+                    types="Select(Project Leader,Principal Investigator,Co-Investigator,Collaborator,Knowledge User, HQP)|Select(Dr.,Mr.,Ms.)|Text|Text|Text|Text|Text|Text|Text|Select(Academic, Hospital/Care Facility/Provider, Federal Government, Provincial Government, Local Health Authority or Municipal Government, Industry)|Select(Researcher, Health Care Professional, Paid Caregiver, Decision Maker/Administrator, Patient/Family/Unpaid Caregiver, Educator)|Select(Biostatistics/Health Informatics, Education, Engineering, Epidemiology/Life Sciences, Ethics/Law, Gerontology/Aging/Social Sciences, Health Demography/Georgraphy, Health Economics, Health/Public Policy/Administration, Health Studies, Library &amp; Information Sciences, Medicine, Nursing, Nutrition, Pharmacy/Pharmacology, Rehabilitation, Respirology, Social Work/Counselling/Psychology/Theology)|Text|Text|Text|Select(French,English,Both)|Text|Text|Select(Postdoc/fellow, PhD student/candidate, Masters, Undergrad, Working Professional)|Text|Date|Date|Text|Textarea|Select(Yes,No)"
                     multiple="true">
             <![CDATA[
-                {$item}
+                <div style="width:635px;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
