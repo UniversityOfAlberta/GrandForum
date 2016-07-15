@@ -49,6 +49,9 @@
     // Network Website
     $config->setValue("networkSite", "");
     
+    // Skin
+    $config->setValue("skin", "cavendish");
+    
     // Logo path
     $config->setValue("logo", "skins/logos/logo.png");
     
@@ -60,6 +63,8 @@
     
     // Highlight color for skin
     $config->setValue("highlightColor", "#555555");
+    
+    $config->setValue("highlightFontColor", "#FFFFFF");
     
     // Highlight color for headers
     $config->setValue("headerColor", "#333333");

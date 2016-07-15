@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP_07_2016" pdfType="RPTP_SIP_07_2016" pdfFiles="SIPApplication072016PDF" ajax="true">
+<Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP_07_2016" pdfType="RPTP_SIP_07_2016" allowIdProjects="true" pdfFiles="SIPApplication072016PDF" ajax="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
