@@ -708,7 +708,7 @@ class CavendishTemplate extends QuickTemplate {
         </div>
         <div id="allTabsDropdown" style="display:none;"></div>
 	    <div id="header">
-	        <a id="allTabs">&#9776;</a>
+	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger.png" /></a>
 	        
 		    <a name="top" id="contentTop"></a>
             <ul class="top-nav">
