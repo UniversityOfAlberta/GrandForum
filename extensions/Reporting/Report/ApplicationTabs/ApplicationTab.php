@@ -47,7 +47,6 @@ class ApplicationTab extends AbstractTab {
                 $report = array();
                 $proj0 = new Project(array());
                 $proj1 = new Project(array());
-                $proj2 = new Project(array());
                 $proj0->id = 0;
                 $proj1->id = 1;
                 $report[] = new DummyReport($this->rp, $me, $proj0, $this->year);

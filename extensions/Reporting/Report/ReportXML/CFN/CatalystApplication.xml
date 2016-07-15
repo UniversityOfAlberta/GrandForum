@@ -493,4 +493,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="team" type="EditableReportSection" blobSection="TEAM" name="Team List" title="Team List" tooltip="Team List">
+        <ReportItem id="team" type="MultiTextReportItem" blobItem="TEAM_LIST" blobType="BLOB_ARRAY" orientation="horizontal" 
+                    labels="First|Last|Institution" types="Text|Text|Text"
+                    multiple="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>
