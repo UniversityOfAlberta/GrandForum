@@ -406,7 +406,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip">
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
             <![CDATA[
                 <h3>Partner Letter of Support</h3>
                 <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application.</p>
