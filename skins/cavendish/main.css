@@ -217,14 +217,16 @@ div#header {
     color: #555555;
     background: #FFFFFF;
     border: 1px solid #E0E0E0;
-    position: fixed;
+    position: absolute;
     top: 91px;
-    right: 0;
+    right: -1px;
     padding-top: 10px;
     padding-bottom: 10px;
+    z-index: 1000;
 }
 
 #allTabsDropdown a {
+    display: block;
     border: none;
     color: #555555;
     padding-top: 5px;
@@ -235,6 +237,7 @@ div#header {
 
 #allTabsDropdown a:hover {
     background: #F0F0F0;
+    text-decoration: none;
 }
 
 a {

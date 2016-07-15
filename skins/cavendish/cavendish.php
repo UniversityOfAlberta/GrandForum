@@ -706,9 +706,10 @@ class CavendishTemplate extends QuickTemplate {
         <div id="sideToggle">
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
         </div>
+        <div id="allTabsDropdown" style="display:none;"></div>
 	    <div id="header">
 	        <a id="allTabs">&#9776;</a>
-	        <div id="allTabsDropdown" style="display:none;"></div>
+	        
 		    <a name="top" id="contentTop"></a>
             <ul class="top-nav">
             <?php 
