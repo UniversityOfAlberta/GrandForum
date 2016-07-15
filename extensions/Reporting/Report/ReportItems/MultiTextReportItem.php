@@ -56,8 +56,6 @@ class MultiTextReportItem extends AbstractReportItem {
         $indices = $this->getIndices($labels);
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $class = $this->getAttr('class', 'wikitable');
-        $orientation = $this->getAttr('orientation', 'horizontal');
-        $isVertical = (strtolower($orientation) == 'vertical');
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
@@ -75,9 +73,6 @@ class MultiTextReportItem extends AbstractReportItem {
                     "<tr class='obj'>" +
 EOF;
                     foreach($indices as $j => $index){
-                        if($isVertical){
-                            $item .= "\"<tr id='\" + i + \"'><td align='right'><b>{$labels[$j]}:</b></td>\" + \n";
-                        }
                         if(@$types[$j] == "NI"){
                             $names = array("");
                             $people = Person::getAllPeople(NI);
@@ -121,17 +116,9 @@ EOF;
                         else{
                             $item .= @"\"<td><input type='text' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
-                        if($isVertical){
-                            $item .= "\"</tr>\" + \n";
-                        }
-                    }
-                    $colspan = 1;
-                    if($isVertical){
-                        $item .= "\"<tr class='\" + i + \"'>\" + \n";
-                        $colspan = 2;
                     }
         $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
+                        "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
                     "</tr>");
                 $("#table_{$this->getPostId()} tr.obj:last select:not(.raw)").combobox();
                 max{$this->getPostId()}++;
@@ -139,8 +126,7 @@ EOF;
             }
             
             function removeObj{$this->getPostId()}(obj){
-                var id = $(obj).parent().parent().attr('id');
-                $('tr#' + id, $(obj).parent().parent().parent()).remove();
+                $(obj).parent().parent().remove();
                 updateTable{$this->getPostId()}();
             }
             
@@ -171,15 +157,13 @@ EOF;
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
         $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
-        if(!$isVertical){
-            if(count($labels) > 0 && $labels[0] != ""){
-                $item .= "<tr>";
-                foreach($labels as $j => $label){
-                    $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
-                }
-                if($multiple){
-                    $item .= "<th style='width:51px;'></th></tr>";
-                }
+        if(count($labels) > 0 && $labels[0] != ""){
+            $item .= "<tr>";
+            foreach($labels as $j => $label){
+                $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
+            }
+            if($multiple){
+                $item .= "<th style='width:51px;'></th></tr>";
             }
         }
         if(!$multiple){
@@ -192,11 +176,8 @@ EOF;
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
-                $item .= "<tr id='$i' class='obj'>";
+                $item .= "<tr class='obj'>";
                 foreach($indices as $j => $index){
-                    if($isVertical){
-                        $item .= "<tr id='$i' class='$i'><td align='right'><b>{$labels[$j]}:</b></td>";
-                    }
                     if(@$types[$j] == "NI"){
                         $names = array("");
                         $people = Person::getAllPeople(NI);
@@ -250,22 +231,11 @@ EOF;
                         $val = str_replace("'", "&#39;", $value[$index]);
                         $item .= @"<td><input type='text' name='{$this->getPostId()}[$i][$index]' value='{$val}' style='width:{$sizes[$j]}px;' /></td>";
                     }
-                    if($isVertical){
-                        $item .= "</tr>";
-                    }
-                }
-                $colspan = 1;
-                if($isVertical){
-                    $item .= "<tr class='$i'>";
-                    $colspan = 2;
                 }
                 if($multiple){
-                    $item .= "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
+                    $item .= "<td><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>";
                 }
                 $item .= "</tr>";
-                if($isVertical){
-                    $item .= "<tr class='$i'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>";
-                }
             }
         }
         /*if(!$multiple && count($values) == 0){
