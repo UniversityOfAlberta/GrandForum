@@ -840,7 +840,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Generates the PDF for the report, and saves it to the Database
     function generatePDF($person=null, $submit=false){
-        global $wgOut, $wgUser, $config, $wgServer, ;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         session_write_close();
         $me = $person;
         if($person == null){
