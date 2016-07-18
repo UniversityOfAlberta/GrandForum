@@ -9,7 +9,7 @@
         <ReportItem id="information" type="Static">
             <![CDATA[
                 <p>Please read the Program Guidelines and Application Instructions before completing this application.</p>
-                <p>TVN funding competitions follow the Tri-Council Guidelines.  All questions related to partner eligibility, budget considerations (e.g. in-kind eligibility) and HQP follow the Tri-Council Guidelines (<a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp</a>).  Applicants should also direct these and similar questions to their host institution’s research services office/unit for further assistance.</p>
+                <p>CFN funding competitions follow the Tri-Council Guidelines.  All questions related to partner eligibility, budget considerations (e.g. in-kind eligibility) and HQP follow the Tri-Council Guidelines (<a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp</a>).  Applicants should also direct these and similar questions to their host institution’s research services office/unit for further assistance.</p>
                 <p>Full applications will only be considered if an Intent to Apply is received by 5 pm ET on October 5th, 2015.</p>
                 <p>Completed application packages are due by 5 pm ET on November 9th, 2015.</p>
                 <p style='font-size:1.5em;'>Please note that all information must be provided in English.</p>
@@ -21,8 +21,8 @@
             <![CDATA[
                 <ol>
                     <li>This document is necessary to assign reviewers for final proposals and determine conflicts of interest.  This document will not be adjudicated.</li>
-                    <li>The Project Leader and Principal Investigators and Co-Investigators cannot be changed after this document has been submitted to TVN.  Also, no additional PIs and Co-Is can be added.</li>
-                    <li>Visit TVN’s website for project team role definitions (<a href='http://www.tvn-nce.ca/media/66477/tvn-project-team-roles.pdf' target='_blank'>http://www.tvn-nce.ca/media/66477/tvn-project-team-roles.pdf</a>).</li>
+                    <li>The Project Leader and Principal Investigators and Co-Investigators cannot be changed after this document has been submitted to CFN.  Also, no additional PIs and Co-Is can be added.</li>
+                    <li>Visit CFN’s website for project team role definitions (<a href='http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf' target='_blank'>http://www.cfn-nce.ca/media/66477/cfn-project-team-roles-2016-07-07.pdf</a>).</li>
                     <li>All sections of this document must be completed.</li>
                     <li>This document must be submitted by 5 pm ET on October 5th, 2015.</li>
                     <li>Please note that all information must be provided in English.</li>
@@ -37,6 +37,14 @@
                         <td align="right"><b>LAY Title of Proposal (max 15 words):</b></td>
                         <td>{$item}</td>
                     </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="scientific_title" type="Text" blobItem="SCIENTIFIC_TITLE">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b><u>Scientific</u> Title of Proposal (max 15 words):</b></td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
         <ReportItem id="term_requested" type="Integer" blobItem="TERM_REQUESTED" min="0" max="12" size="3">
@@ -184,7 +192,8 @@
         <ReportItem id="nsr" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="NSR"
                     labels="Surnmame|First Name|Institution|Email Address|Phone Number"
                     sizes="120|120|160|160|125"
-                    multiple="true">
+                    multiple="true"
+                    min="3">
             <![CDATA[
                 <h3>National Scientific Reviewers</h3>
                 <small>(Minimum of 3 reviewers) Provide details for 3 suggested, non-conflicted, reviewers for your proposal</small>
@@ -194,7 +203,8 @@
         <ReportItem id="isr" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="ISR"
                     labels="Surnmame|First Name|Institution|Email Address|Phone Number"
                     sizes="120|120|160|160|125"
-                    multiple="true">
+                    multiple="true"
+                    min="3">
             <![CDATA[
                 <h3>International Scientific Reviewers</h3>
                 <small>(Minimum of 3 reviewers) Provide details for 3 suggested, non-conflicted, reviewers for your proposal</small>
@@ -203,7 +213,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="intentSubmit" type="ReportSection" name="Intent to Apply Submit">
-        <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false">
+        <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false" emails="perry@cfn-nce.ca,doug@cfn-nce.ca,kate@cfn-nce.ca">
             <![CDATA[
                 {$item}
             ]]>
