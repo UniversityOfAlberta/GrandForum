@@ -4,6 +4,8 @@ require_once('commandLine.inc');
 global $wgUser;
 $wgUser = User::newFromName("Admin");
 
+chdir(dirname(__FILE__));
+
 $newMembers = array();
 $oldMembers = @unserialize(file_get_contents("members.txt"));
 if($oldMembers == null){
