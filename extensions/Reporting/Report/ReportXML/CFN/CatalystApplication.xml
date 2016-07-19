@@ -422,7 +422,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="Research Proposal" title="Research Proposal">
-        <ReportItemSet id="limit" type="LimitReportItemSet" limit="20000">
+        <ReportItemSet id="limit" type="LimitReportItemSet" limit="21000" noun="Field">
             <ReportItem id="question" type="Textarea" blobItem="QUESTION">
                 <![CDATA[
                     <h3>Background and Research Question</h3>
@@ -462,7 +462,7 @@
                 <![CDATA[
                     <h3>Project Networking and Engagement</h3>
                     <p class='pdfnodisplay'>Describe the networking and engagement planned for this project across disciplines, research sites (universities, hospitals, institutes) and sectors. Projects must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
-                    <p>The CFN Network is committed to empowering and engaging frail elderly patients, their families and caregivers and other knowledge users.  Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
+                    <p class='pdfnodisplay'>The CFN Network is committed to empowering and engaging frail elderly patients, their families and caregivers and other knowledge users.  Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -539,4 +539,12 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
+    <!--ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection-->
 </Report>

@@ -1421,11 +1421,6 @@ select span.noshow {
 	vertical-align:top;
 }
 
-#globalSearchButton:active {
-    border:none !important;
-    margin-top:-1px !important;
-}
-
 #globalSearchResults {
     border: 1px solid #D8D8D8;
     border-bottom: 0;
