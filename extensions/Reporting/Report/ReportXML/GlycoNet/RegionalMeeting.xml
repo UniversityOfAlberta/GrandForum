@@ -7,8 +7,6 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-    </Permissions>
-    <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
