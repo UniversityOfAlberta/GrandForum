@@ -111,9 +111,9 @@ class Report extends AbstractReport {
                 }
             }
         }
-        if(count($person->getEvaluates("HQP-2015-07-10")) > 0){
+        if(count($person->getEvaluates("HQP-2016-07-15")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Competition 2015-07-10", "{$url}HQPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award 2016-07-15", "{$url}HQPReview", $selected);
         }
         return true;
     }
