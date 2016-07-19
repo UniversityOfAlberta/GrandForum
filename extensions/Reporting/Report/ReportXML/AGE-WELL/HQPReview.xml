@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="HQP Award 2016-07-15" reportType="RP_HQP_REVIEW" ajax="true" disabled="false" year="2016">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Evaluator">
+        <Role role="Evaluator">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
