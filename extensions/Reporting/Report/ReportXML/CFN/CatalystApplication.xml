@@ -213,9 +213,28 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="intentSubmit" type="ReportSection" name="Intent to Apply Submit">
+        <ReportItem id="warning" type="Static">
+            <![CDATA[
+                <div class="warning" id="incompleteWarning" style="display:none;"></div>
+            ]]>
+        </ReportItem>
         <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false" emails="perry@cfn-nce.ca,doug@cfn-nce.ca,kate@cfn-nce.ca">
             <![CDATA[
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="script" type="Static">
+            <![CDATA[
+                <div id="nsr" style="display:none;">{getArray(RP_CATALYST_APPLICATION, OVERVIEW, NSR, 0, {$user_id}, 0, nsr)}</div>
+                <div id="isr"  style="display:none;">{getArray(RP_CATALYST_APPLICATION, OVERVIEW, ISR, 0, {$user_id}, 0, isr)}</div>
+                <script type="text/javascript">
+                    if($("#nsr").text() != "Array, Array, Array" ||
+                       $("#isr").text() != "Array, Array, Array"){
+                        $("#incompleteWarning").show();
+                        $("#incompleteWarning").html("The <b>National Scientific Reviewers</b> and <b>International Scientific Reviewers</b> must contain at least 3 reviews each.");
+                        $("#generateButton").prop('disabled', true);
+                    }
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -403,46 +422,46 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="Research Proposal" title="Research Proposal">
-        <ReportItemSet id="limit" type="LimitReportItemSet" limit="24000">
+        <ReportItemSet id="limit" type="LimitReportItemSet" limit="20000">
             <ReportItem id="question" type="Textarea" blobItem="QUESTION">
                 <![CDATA[
                     <h3>Background and Research Question</h3>
-                    <p>State the proposed research question. Clearly articulate the following components (where relevant to the proposal): frail elderly population, intervention, comparison, and outcomes. Provide adequate background rationale including a systematic or comprehensive review of the literature that identifies the knowledge gap or rationale for the proposed project.  Clearly state the underlying hypothesis and why this proposal is considered to have the potential to change the care of frail elderly Canadians in a transformation way.</p>
+                    <p class='pdfnodisplay'>State the proposed research question. Clearly articulate the following components (where relevant to the proposal): frail elderly population, intervention, comparison, and outcomes. Provide adequate background rationale including a systematic or comprehensive review of the literature that identifies the knowledge gap or rationale for the proposed project.  Clearly state the underlying hypothesis and why this proposal is considered to have the potential to change the care of frail elderly Canadians in a transformation way.</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="approach" type="Textarea" blobItem="APPROACH">
                 <![CDATA[
                     <h3>Methodological Approach</h3>
-                    <p>Describe the methodological research approach including study design, frail elderly patient population, data analysis, statistics etc.</p>
+                    <p class='pdfnodisplay'>Describe the methodological research approach including study design, frail elderly patient population, data analysis, statistics etc.</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE">
                 <![CDATA[
                     <h3>Project Relevance and Impact</h3>
-                    <p>Describe the relevance and the importance of the proposed project to CFN`s mission and strategic research programme goals, priorities, and potential to assist CFN in achieving a positive impact on policy and practice.  Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of frail elderly Canadians.</p>
+                    <p class='pdfnodisplay'>Describe the relevance and the importance of the proposed project to CFN`s mission and strategic research programme goals, priorities, and potential to assist CFN in achieving a positive impact on policy and practice.  Identify how the proposed study meets the specific objectives of the Catalyst Grant Program to foster novel, innovative projects demonstrating potential for significant socio-economic benefits related to the care of frail elderly Canadians.</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="deliverables" type="Textarea" blobItem="DELIVERABLES">
                 <![CDATA[
                     <h3>Research Deliverables and Milestones</h3>
-                    <p>Describe the research milestones and deliverables over the course of the duration of the project by providing a Gantt chart. These milestones will be used to track progress with the grant and linked to ongoing payments. Identify all feasibility issues, challenges and limitations, and what the investigative team will do to overcome them. Include a summary of how this project will be managed and deliverables tracked.</p>
+                    <p class='pdfnodisplay'>Describe the research milestones and deliverables over the course of the duration of the project by providing a Gantt chart. These milestones will be used to track progress with the grant and linked to ongoing payments. Identify all feasibility issues, challenges and limitations, and what the investigative team will do to overcome them. Include a summary of how this project will be managed and deliverables tracked.</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="contribution" type="Textarea" blobItem="CONTRIBUTION">
                 <![CDATA[
                     <h3>Contribution to HQP</h3>
-                    <p>CFN funded proposals must contribute to the development of Highly Qualified Personnel (HQP) through their inclusion as fully involved team members. Briefly summarize the number and level of HQP required and the experience/expertise afforded by involvement in Network-funded research. Specify expected contributions to HQP studies.</p>
+                    <p class='pdfnodisplay'>CFN funded proposals must contribute to the development of Highly Qualified Personnel (HQP) through their inclusion as fully involved team members. Briefly summarize the number and level of HQP required and the experience/expertise afforded by involvement in Network-funded research. Specify expected contributions to HQP studies.</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="networking" type="Textarea" blobItem="NETWORKING">
                 <![CDATA[
                     <h3>Project Networking and Engagement</h3>
-                    <p>Describe the networking and engagement planned for this project across disciplines, research sites (universities, hospitals, institutes) and sectors. Projects must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
+                    <p class='pdfnodisplay'>Describe the networking and engagement planned for this project across disciplines, research sites (universities, hospitals, institutes) and sectors. Projects must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
                     <p>The CFN Network is committed to empowering and engaging frail elderly patients, their families and caregivers and other knowledge users.  Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
                     {$item}
                 ]]>
@@ -450,14 +469,14 @@
             <ReportItem id="kt" type="Textarea" blobItem="KT">
                 <![CDATA[
                     <h3>KT Framework/Platform</h3>
-                    <p>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
+                    <p class='pdfnodisplay'>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
                     {$item}
                 ]]>
             </ReportItem>
             <ReportItem id="potential" type="Textarea" blobItem="POTENTIAL">
                 <![CDATA[
                     <h3>Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h3>
-                    <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
+                    <p class='pdfnodisplay'>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -513,6 +532,11 @@
             <![CDATA[
                 <div style="width:635px;">{$item}</div>
             ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
 </Report>
