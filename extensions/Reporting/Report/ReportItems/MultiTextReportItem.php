@@ -50,6 +50,7 @@ class MultiTextReportItem extends AbstractReportItem {
     function render(){
         global $wgOut;
         $multiple = (strtolower($this->getAttr('multiple', 'false')) == 'true');
+        $minEntries = $this->getAttr('min', 0);
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
@@ -136,11 +137,10 @@ EOF;
                         $colspan = 2;
                     }
                     $item .= <<<EOF
-                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td>" +
-                    "</tr>" + 
+                        "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
 EOF;
                     if($isVertical){
-                        $item .= "\"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
+                        $item .= "+ \"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
                     }
                     $item .= <<<EOF
                     );
@@ -162,6 +162,13 @@ EOF;
                 else{
                     $("#add_{$this->getPostId()}").prop('disabled', false);
                 }
+                if($("#table_{$this->getPostId()} tr.obj").length < {$minEntries}){
+                    $(".table_{$this->getPostId()}").show();
+                    $(".table_{$this->getPostId()}").html('You must include at least {$minEntries} entries.');
+                }
+                else{
+                    $(".table_{$this->getPostId()}").hide();
+                }
                 if($("#table_{$this->getPostId()} tr.obj").length == 0 && "$class" != "wikitable"){
                     $("#table_{$this->getPostId()}").hide();
                 }
@@ -181,6 +188,7 @@ EOF;
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
 EOF;
+        $item .= "<div class='table_{$this->getPostId()} warning' style='display:none;'></div>";
         $item .= "<table id='table_{$this->getPostId()}' class='$class'>";
         if(!$isVertical){
             if(count($labels) > 0 && $labels[0] != ""){

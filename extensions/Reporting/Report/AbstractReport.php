@@ -840,7 +840,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Generates the PDF for the report, and saves it to the Database
     function generatePDF($person=null, $submit=false){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         session_write_close();
         $me = $person;
         if($person == null){
@@ -900,6 +900,14 @@ abstract class AbstractReport extends SpecialPage {
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
+            if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
+            	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
+            	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                           "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                           "X-Mailer: PHP/" . phpversion();
+                $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
+                mail($_GET['emails'], "Report Submitted", $message, $headers);
+            }
         }
         if($submit){
             $this->submitReport($person);

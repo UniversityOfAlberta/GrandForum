@@ -5,6 +5,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 	function render(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
+		$emails = $this->getAttr('emails', '');
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
@@ -39,7 +40,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}', 
+		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}', 
 		                        success : function(data){
 		                                        //var data = jQuery.parseJSON(response);
 		                                        for(index in data){

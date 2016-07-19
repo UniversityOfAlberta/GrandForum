@@ -24,6 +24,14 @@
                     </tr>
             ]]>
         </ReportItem>
+        <ReportItem id="scientific_title" type="Text" blobItem="SCIENTIFIC_TITLE">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Scientific Title of Proposal:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="term_requested" type="Integer" blobItem="TERM_REQUESTED" min="0" max="12" size="3">
             <![CDATA[
                 <tr>

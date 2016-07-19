@@ -707,10 +707,8 @@ class CavendishTemplate extends QuickTemplate {
         <div id="sideToggle">
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
         </div>
-        <div id="allTabsDropdown" style="display:none;"></div>
 	    <div id="header">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger.png" /></a>
-	        
 		    <a name="top" id="contentTop"></a>
             <ul class="top-nav">
             <?php 
@@ -819,6 +817,7 @@ class CavendishTemplate extends QuickTemplate {
 	        ?>
 		    </ul>  
 		</div><!-- end of SIDE div -->
+		<div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>

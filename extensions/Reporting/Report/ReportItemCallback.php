@@ -1504,7 +1504,7 @@ class ReportItemCallback {
             $array = $blb->getData();
             $value = @$array[$index];
             if(is_array($value)){
-                return implode(", ", $value);
+                return @implode(", ", $value);
             }
             return $value;
         }
