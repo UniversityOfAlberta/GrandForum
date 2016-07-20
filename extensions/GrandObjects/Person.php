@@ -2905,7 +2905,8 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($role == EVALUATOR && $this->isEvaluator()){
+        $year = substr($startRange, 0, 4);
+        if($role == EVALUATOR && $this->isEvaluator($year)){
             $roles[] = EVALUATOR;
         }
         if(count($roles) == 0){
