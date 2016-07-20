@@ -534,6 +534,34 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection is="budget" type="ReportSection" blobSection="BUDGET" name="Budget" titl="Budget" tooltip="Budget">
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <div class='pdfnodisplay'>
+                <p>CFN is supported by the Networks of Centres of Excellence (NCE).  NCE programs are administered jointly by the federal Tri-Council agencies (Natural Sciences and Engineering Research Council, Canadian Institutes of Health Research and Social Sciences and Humanities Research Council).  As a result, CFN funding competitions follow Tri-Council Guidelines and related  partner eligibility, budgetary (e.g in-kind eligibility) and HQP considerations follow Tri-Council Guidelines (<a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/policies-politiques/index_eng.asp</a>).  Applicants should also direct these and similar questions to their host institution’s research services office for further assistance.</p>
+                <p>General: The budget form contains three (2) tabs.</p>
+                <ol>
+                    <li>CFN Grant Program Budget Summary</li>
+                    <li>CFN Funding Request Details</li>
+                    <li>Partner Contribution Details</li>
+                </ol>
+                <p>"The shaded cells are locked to protect the budget templates and the formulas. Please enter your figures or justifications in the clear cells provided in each tab. 
+                <b>NOTE:</b> CFN's fiscal year runs from April 1 to March 31, therefore, your budget figures should match to the CFN fiscal year(s) (e.g. a project with 1-year budget may be covered by 2 CFN fiscal years). 
+If any modification on the template is required, please contact the CFN admin centre for further assistance."</p>
+                <p>Specific details of each field from Budget Summary should be provided on the second tab 'CFN Funding Details' and the third tab 'Partner Contributions' accordingly.</p>
+                <p>Partner Contribution Details:</p>
+                <p>Applications will not be considered if they do not include partnerships with committed cash or appropriately-valued in-kind contributions that are eligible and from NCE-eligible sources, and that total a <b>minimum of 50%</b> of the CFN funding request eligible expenses.<p>
+                <p>Tri-Agency Financial Administration Guide on the acceptable use of grant funds can be found at <a href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-guideAdminFinancier/FundsUse-UtilisationSubventions_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-guideAdminFinancier/FundsUse-UtilisationSubventions_eng.asp</a>.  To calculate in-kind contribution amounts, please consult tri-council guidelines: <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp</a>.<p>
+                <p>Please carefully review information on expense eligibility, partner eligibility, and contribution eligibility and valuation.</p>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="TVN_CATALYST_STRUCTURE" template="CFN_CAT_Budget_Template.xlsx">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
