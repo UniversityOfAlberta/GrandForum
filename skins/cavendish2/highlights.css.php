@@ -375,6 +375,22 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     background: $hl1;
 }
 
+#allTabs:hover {
+    background: $hl2;
+}
+
+#allTabsDropdown {
+    background: $hl2;
+}
+
+#allTabsDropdown a {
+    color: #FFFFFF;
+}
+
+#allTabsDropdown a:hover {
+    background: $hlDark;    
+}
+
 a {
     color: $hl1;
 }

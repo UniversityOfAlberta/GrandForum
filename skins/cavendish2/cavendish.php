@@ -110,6 +110,7 @@ class CavendishTemplate2 extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.forceNumeric.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.form.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tabs.js"></script>
         
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tinymce/tinymce.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tinymce/combobox.js"></script>
@@ -718,6 +719,7 @@ class CavendishTemplate2 extends QuickTemplate {
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&#12297;"; } else { echo "&#12296;";}?>
         </div>
 	    <div id="header">
+	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/icons/white_mix/hamburger.png" /></a>
 		    <a name="top" id="contentTop"></a>
             <ul class="top-nav highlightsBackground0">
             <?php 
@@ -826,6 +828,7 @@ class CavendishTemplate2 extends QuickTemplate {
 	        ?>
 		    </ul>  
 		</div><!-- end of SIDE div -->
+    <div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
