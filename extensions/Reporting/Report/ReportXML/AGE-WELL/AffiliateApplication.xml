@@ -118,11 +118,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review_header" type="StaticReportItem">
-            <![CDATA[ 
-                By generating a PDF your application is automatically submitted.<br />
-            ]]>
-        </ReportItem>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
 </Report>

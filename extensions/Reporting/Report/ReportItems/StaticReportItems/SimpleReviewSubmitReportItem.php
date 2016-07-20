@@ -57,7 +57,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_button_' + index).attr('value', tok);
                                                         $('#download_button_' + index).removeAttr('disabled');
                                                         
-                                                        $('#generate_success').html('PDF Generated Successfully.');
+                                                        $('#generate_success').html('PDF Generated/Submitted Successfully.');
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
@@ -96,7 +96,8 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
 		$wgOut->addHTML("<h3>1. Generate a new PDF</h3>");
-		$wgOut->addHTML("<p>Generate a PDF with the data submitted: <button id='generateButton' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<p><button id='generateButton' $disabled>Generate PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		                    By generating a PDF your application is automatically submitted.<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
 		$wgOut->addHTML("<h3>2. Download the PDF</h3>");

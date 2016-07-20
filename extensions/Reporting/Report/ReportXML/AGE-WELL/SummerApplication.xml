@@ -187,7 +187,7 @@ All complete applications will be reviewed by members of the Summer Institute St
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review_header" type="StaticReportItem">
             <![CDATA[
-                By generating a PDF your application is automatically submitted.<br />By submitting an application, you agree that if accepted, you will attend the entire summer institute and commit to work actively with your teammates for the duration.<br />
+                By submitting an application, you agree that if accepted, you will attend the entire summer institute and commit to work actively with your teammates for the duration.<br />
             ]]>
         </ReportItem>
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
