@@ -24,7 +24,7 @@ ProductListView = Backbone.View.extend({
             var projects = Array();
             _.each(model.authors, function(author, aId){
                 if(author.url != ''){
-                    authors.push("<a href='" + author.url + "' target='_blank'>" + author.name + "</a>");
+                    authors.push("<a href='" + author.url + "'>" + author.name + "</a>");
                 }
                 else{
                     authors.push(author.name);
@@ -32,7 +32,7 @@ ProductListView = Backbone.View.extend({
             });
             _.each(model.projects, function(project, aId){
                 if(project.url != ''){
-                    projects.push("<a href='" + project.url + "' target='_blank'>" + project.name + "</a>");
+                    projects.push("<a href='" + project.url + "'>" + project.name + "</a>");
                 }
                 else{
                     projects.push(project.name);
