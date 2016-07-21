@@ -928,9 +928,7 @@ class CavendishTemplate2 extends QuickTemplate {
 	        }
                 $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
 		$person = Person::newFromId($wgUser->getId());
-		if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
-            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-        }
+		$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 		global $toolbox;
 	    $i = 0;
                 array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
