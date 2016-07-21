@@ -195,6 +195,23 @@
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
             <![CDATA[
                     #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events {$item} <b>({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of leadership positions in policy & practice you hold (e.g. membership in communities of practice, funding organizations, grass-roots organizations, advocacy groups, NGOs) at the:<br />
+                    local level: {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    national level: {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    international level: {$item}
                 </td>
                 </tr>
             ]]>
@@ -267,6 +284,18 @@
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
             <![CDATA[
                     #of project partners/collaborators {$item} <b>({project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults involved in the development of the project {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_3_5_m4" blobItem="REV_3_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of caregivers involved in the development of the project {$item}
                 </td>
                 </tr>
             ]]>
@@ -328,7 +357,24 @@
         </ReportItem>
         <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events {$item} <b>({project_n_presentations({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events {$item} <b>({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of leadership positions in policy & practice you hold (e.g. membership in communities of practice, funding organizations, grass-roots organizations, advocacy groups, NGOs) at the:<br />
+                    local level: {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m4" blobItem="PLAN_1_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    national level: {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m5" blobItem="PLAN_1_5_M5" type="Integer" size="3">
+            <![CDATA[
+                    international level: {$item}
                 </td>
                 </tr>
             ]]>
@@ -394,13 +440,25 @@
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors {$item} <b>({project_n_products_with_partners({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #publications/presentations that include partners as authors {$item} <b>({project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)})</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of project partners/collaborators {$item} <b>({project_n_collaborators({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of project partners/collaborators {$item} <b>({project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of older adults involved in the development of the project {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_3_5_m4" blobItem="PLAN_3_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of caregivers involved in the development of the project {$item}
                 </td>
                 </tr>
             ]]>
