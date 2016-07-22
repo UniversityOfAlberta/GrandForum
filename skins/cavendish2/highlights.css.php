@@ -163,7 +163,7 @@ select {
     -moz-appearance: none;
     appearance: none;
     padding-left: 0;
-    border-image: url("../../skins/icons/kmti/border.png") 1 27 1 12 round stretch;
+    border-image: url("../../{$iconPathHighlighted}border.png") 1 27 1 12 round stretch;
     border-right-width: 27px;
     border-top-width:1px;
     border-bottom-width:1px;
@@ -178,7 +178,7 @@ select::-ms-expand {
 select:focus {
     outline: none;
     padding-left: 0;
-    border-image: url("../../skins/icons/kmti/border_focus.png") 1 27 1 12 round stretch;
+    border-image: url("../../{$iconPathHighlighted}border_focus.png") 1 27 1 12 round stretch;
     border-right-width: 27px;
     border-top-width:1px;
     border-bottom-width:1px;
