@@ -1,4 +1,4 @@
-<td align="left"><a href="<%= url %>"><%= striphtml(title) %></a>
+<td align="left"><a href="<%= story_url %>"><%= striphtml(title) %></a>
 </td>
 <% if(me.getCapsRoleString().indexOf('Admin') > -1 || me.getCapsRoleString().indexOf('Manager') > -1){ %>
 <td  style="white-space: nowrap;"><a href="<%= author.url %>"><%= author.name %></a></td>

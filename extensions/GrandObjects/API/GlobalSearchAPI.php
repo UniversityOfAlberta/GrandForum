@@ -60,7 +60,7 @@ class GlobalSearchAPI extends RESTAPI {
                         // Don't include Admin
                         $continue = true; 
                     }
-                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(NI)){
+                    if(!$me->isLoggedIn() || (!$person->isRole(MANAGER) && !$person->isRole(Expert) && !$me->isRoleAtLeast(MANAGER))){
                         $continue = true;
                     }
                     if($continue) continue;

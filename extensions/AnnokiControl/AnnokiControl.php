@@ -154,6 +154,9 @@ $egAnnokiExtensions['CAPSRegister'] = array('name' => 'CAPSRegister',
 $egAnnokiExtensions['HelpfulResources'] = array('name' => 'HelpfulResources',
                                          'path' => "$IP/extensions/HelpfulResources/HelpfulResources.php");
 
+$egAnnokiExtensions['Cite'] = array('name' => 'Cite',
+                                         'path' => "$IP/extensions/Cite/Cite.php");
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){

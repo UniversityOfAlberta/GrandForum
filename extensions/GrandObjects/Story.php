@@ -227,7 +227,7 @@ class Story extends BackboneModel{
 			  'author' => $author,
 			  'title' => $this->getTitle(),
                           'story' => $this->getStory(),
-			  'url' => $this->getUrl(),
+			  'story_url' => $this->getUrl(),
                           'date_submitted' => $this->getDateSubmitted(),
                           'approved' => $this->getApproved(),
 			  'comments' => $this->getComments());

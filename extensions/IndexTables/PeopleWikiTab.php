@@ -6,13 +6,19 @@ class PeopleWikiTab extends AbstractTab {
     var $visibility;
 
     function PeopleWikiTab($table, $visibility){
-        parent::AbstractTab("Resources");
+        global $wgLang;
+        if($wgLang->getCode() == 'en'){
+            parent::AbstractTab("Resources");
+        }
+        else if($wgLang->getCode() == 'fr'){
+            parent::AbstractTab("Ressources");
+        }
         $this->table = $table;
         $this->visibility = $visibility;
     }
     
     function uploadFile(){
-        global $wgRequest, $wgUser, $wgMessage, $wgServer, $wgScriptPath, $config;
+        global $wgRequest, $wgUser, $wgMessage, $wgServer, $wgScriptPath, $wgLang, $config;
         
         $name = $this->table." ".$_FILES['wpUploadFile']['name'];
 
@@ -80,7 +86,7 @@ class PeopleWikiTab extends AbstractTab {
 	    redirect("{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki");
     }
     function generateBody(){
-        global $wgUser, $wgServer, $wgScriptPath, $config;
+        global $wgUser, $wgServer, $wgScriptPath, $wgLang, $config;
         
         if(isset($_FILES['wpUploadFile'])){
             $this->uploadFile();
@@ -93,13 +99,30 @@ class PeopleWikiTab extends AbstractTab {
         if(!$this->visibility['isMember'] && false){
             return $this->html;
         }
-        $this->html .= "<span class='en' style='display:none'>Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.<br /><br />
-<a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span><span class='fr' style='display:none'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
-<br /><br />
-<a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
+	if($this->table == "Organizations"){
+        $this->html .= "
+                    <span class='en'>
+                            Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.<br /><br />
+    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+    Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+
+                <span class='fr' style='display:none'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
+    <br /><br />
+    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+    Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
+    </span><br /><br />"; 
+	}
+	else{
+        $this->html .= "
+                    <span class='en'>Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.</span></br>
+                    <span class='fr'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
 </span><br /><br />"; 
+	}
+
+        $button_val = "Upload";
+        if($wgLang->getCode() == 'fr'){
+            $button_val = "Télécharger";
+        }
         $this->html .= "<script type='text/javascript'>
             function clickButton(){
                 clearWarning();
@@ -126,7 +149,7 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
                 return false;
             }
         </script>
-        <a class='button' id='newWikiPage' style='display:none;'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>Upload File</a>
+        <a class='button' id='newWikiPage' style='display:none;'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>$button_val</a>
         <div id='newWikiPageDiv' style='display:none;'>
             <h2>Create New Wiki Page</h2>
             <form action='' onSubmit='clickButton'>
@@ -138,27 +161,32 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
             </form>
         </div>
         <div id='newFileDiv' style='display:none;'>
-            <h2>Upload File</h2>
+            <h2 class='en'>Upload File</h2>
+            <h2 class='fr'>Téléverser un fichier</h2>
             <form action='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?tab=wiki' method='post' enctype='multipart/form-data' onSubmit='clickButton'>
             <table>
                 <tr>
-                    <td align='right'><b>File:</b></td>
+                    <td align='right' class='en'><b>File:</b></td>
+                    <td align='right' class='fr'><b>Fichier:</b></td>
                     <td><input id='newPageTitle' type='file' name='wpUploadFile' /></td>
                 </tr>
                 <tr>
-                    <td align='right'><b>URL:</b></td>
+                    <td align='right' class='en'><b>URL:</b></td>
+                    <td align='right' class='fr'><b>URL:</b></td>
                     <td><input id='fileURL' type='text' name='fileURL' size='40'/></td>
                 </tr>
                 <tr>
-                    <td align='right'><b>Title:</b></td>
+                    <td align='right' class='en'><b>Title:</b></td>
+                    <td align='right' class='fr'><b>Titre:</b></td>
                     <td><input id='realTitle' type='text' name='realTitle' size='40' /></td>
                 </tr>
                 <tr>
-                    <td align='right'><b>Keywords:</b></td>
+                    <td align='right' class='en'><b>Keywords:</b></td>
+                    <td align='right' class='fr'><b>Mots clés:</b></td>
                     <td><input id='keywords' type='text' name='keywords'/></td>
                 </tr>
                 <tr>
-                    <td colspan='2' align='right'><input type='submit' id='createPageButton' value='Upload' /></td>
+                    <td colspan='2' align='right'><input type='submit' id='createPageButton' value='$button_val' /></td>
                 </tr>
             </table>
             </form>
@@ -201,7 +229,7 @@ Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/
         $this->html .= "</tbody></table>";
         */
         $pages = Wiki::getFiles($this->table);
-        $this->html .= "<h2>Uploaded Files</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+        $this->html .= "<h2 class='en'>Uploaded Files</h2><h2 class='fr'>Les fichiers téléchargés</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
         $this->html .= "<tbody>\n";
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){

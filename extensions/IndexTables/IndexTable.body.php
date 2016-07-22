@@ -25,7 +25,7 @@ class IndexTable {
     }
 	
 	static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
+        global $wgServer, $wgScriptPath, $wgUser, $wgLang, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         $aliases = $config->getValue('roleAliases');
         if($config->getValue('projectsEnabled')){
@@ -56,7 +56,12 @@ class IndexTable {
             }
         }
 	if($me->isLoggedIn()){
-            $peopleSubTab = TabUtils::createSubTab("People");
+	    if($wgLang->getCode() == 'en'){
+                $peopleSubTab = TabUtils::createSubTab("People");
+	    }
+            else if($wgLang->getCode() == 'fr'){
+                $peopleSubTab = TabUtils::createSubTab("Gens");
+            }
             $roles = array_values($wgAllRoles);
             sort($roles);
             foreach($roles as $role){
@@ -89,7 +94,12 @@ class IndexTable {
         }
 
       $selected = ($wgTitle->getText() == "ALL Stories" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
-        $storiesSubTab = TabUtils::createSubTab("All Cases", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
+	if($wgLang->getCode() == "en"){
+            $storiesSubTab = TabUtils::createSubTab("All Cases", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
+	}
+        else if($wgLang->getCode() == "fr"){
+            $storiesSubTab = TabUtils::createSubTab("Tous Les Cas", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
+        }
         if($wgUser->isLoggedIn()){
 	    $tabs['Main']['subtabs'][] = $storiesSubTab;
 	}
@@ -147,7 +157,7 @@ class IndexTable {
 	}
 
 	function generateTable($out, $parseroutput){
-		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles;
+		global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles, $wgLang;
 		$me = Person::newFromWgUser();
 		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
@@ -206,31 +216,49 @@ class IndexTable {
 
 				    break;
                 case 'ALL Stories':
-                                $wgOut->setPageTitle("User Cases");
+                                $wgOut->setPageTitle("All Cases or Experiences");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Tous Les Cas");
+                    }
                                 $this->generateUserStoriesTable();
                                 TabUtils::clearActions();
                                 break;
 			   case 'ALL Clinical':
 				$wgOut->setPageTitle("Clinical Guidelines");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Lignes directrices cliniques");
+                    }
 				$this->generatePersonTable("Clinical");	
 			        break;
 
 			   case 'ALL Tools':
 				$wgOut->setPageTitle("Tools & Tips");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Outils et conseils");
+                    }
 				$this->generatePersonTable("Tools");	
 			        break;
 
 			   case 'ALL Organizations':
 				$wgOut->setPageTitle("Organizations");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Organizations");
+                    }
 				$this->generatePersonTable("Organizations");	
 			        break;
 
 			   case 'ALL Articles':
 				$wgOut->setPageTitle("Articles");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Des Articles");
+                    }
 				$this->generatePersonTable("Articles");	
 			        break;
                            case 'ALL Resources':
                                 $wgOut->setPageTitle("Resources");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Ressources");
+                    }
                                 $this->generatePersonTable("Resources");
                                 break;
 			    default:

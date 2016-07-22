@@ -549,7 +549,7 @@ class EditMember extends SpecialPage{
     }
     
     function generateMain(){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgLang;
         $me = Person::newFromWgUser();
         $wgOut->addScript('<script type="text/javascript">
                             var sort = "first";
@@ -696,6 +696,10 @@ class EditMember extends SpecialPage{
         });
         </script>');
         if($me->isRoleAtLeast(STAFF)){
+	    $no_match_text = "Search did not match anyone";
+	    if($wgLang->getCode() == 'fr'){
+		$no_match_text = "Recherche Il n'y a pas tout le monde";
+	    }
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view'><span class='en' style='display:none'>View Requests</span><span class='fr' style='display:none'>Voir Demande</span></a></b><br /><br />");
             foreach(Person::getAllStaff() as $person){
                 $allPeople[] = $person;
@@ -706,13 +710,14 @@ class EditMember extends SpecialPage{
 Cette page peut être utilisée pour modifier les rôles et les projets des membres sur le forum . <br />
                          Sélectionnez un utilisateur dans la liste ci-dessous , puis cliquez sur le bouton «Suivant». Vous pouvez filtrer la boîte de sélection en recherchant un nom ou d'un projet ci-dessous.</div><table>
                             <tr><td>
-                                <a href='javascript:sortBy(\"first\");'>Sort by First Name</a> | <a href='javascript:sortBy(\"last\");'>Sort by Last Name</a><br />
-                                <b>Search:</b> <input style='width:100%;' id='search' type='text' />
+                                <a href='javascript:sortBy(\"first\");'><span class='en'>Sort by First Name</span><span class='fr'>
+Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span class='en'>Sort by Last Name</span><span class='fr'></span>Trier par Nom</a><br />
+                                <b><span class='en'>Search:</span><span class='fr'>Chercher:</span></b> <input style='width:100%;' id='search' type='text' />
                             </td></tr>
                             <tr><td>
                             <form action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
                                 <select id='names' name='name' size='10' style='width:100%'>
-                                    <option id='no' disabled>Search did not match anyone</option>\n");
+                                    <option id='no' disabled>$no_match_text</option>\n");
         foreach($allPeople as $person){
             $projects = $person->getProjects(false, true);
             $projs = array();
@@ -725,11 +730,20 @@ Cette page peut être utilisée pour modifier les rôles et les projets des memb
             }
             $wgOut->addHTML("<option class='".implode(" ", $projs)."' id='".str_replace(".", "", $person->getName())."'>".str_replace(".", " ", $person->getName())."</option>\n");
         }
+	if($wgLang->getCode()=='en'){
         $wgOut->addHTML("</select>
                 </td></tr>
                 <tr><td>
             <input id='next' type='submit' name='next' value='Next' />
         </form></td></tr></table>");
+	}
+        else if($wgLang->getCode()=='fr'){
+        $wgOut->addHTML("</select>
+                </td></tr>
+                <tr><td>
+            <input id='next' type='submit' name='next' value='Prochain' />
+        </form></td></tr></table>");
+        }
     }
     
     function generateViewHTML($wgOut){

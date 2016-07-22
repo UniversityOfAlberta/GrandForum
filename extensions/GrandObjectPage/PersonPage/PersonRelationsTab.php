@@ -6,7 +6,13 @@ class PersonRelationsTab extends AbstractTab {
     var $visibility;
 
     function PersonRelationsTab($person, $visibility){
-        parent::AbstractTab("Relations");
+	global $wgLang;
+	if($wgLang->getCode() == "en"){
+            parent::AbstractTab("Relations");
+	}
+	else if($wgLang->getCode() =="fr"){
+	    parent::AbstractTab("Rapports");
+	}
         $this->person = $person;
         $this->visibility = $visibility;
     }

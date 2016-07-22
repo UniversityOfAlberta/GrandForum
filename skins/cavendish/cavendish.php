@@ -394,26 +394,26 @@ if(wgLang == 'en'){
             $.extend( true, $.fn.dataTable.defaults, {
                             "language":{
                 "decimal":        "",
-                "emptyTable":     "No data available in table",
-                "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
-                "infoEmpty":      "Showing 0 to 0 of 0 entries",
-                "infoFiltered":   "(filtered from _MAX_ total entries)",
+                "emptyTable":     "Aucune Donnée Disponible",
+                "info":           "Affichage _START_ à _END_ des entrées de _TOTAL_",
+                "infoEmpty":      "Affichage 0 à 0 de 0 entrées",
+                "infoFiltered":   "(Filtré _Max_ Entrées Totales)",
                 "infoPostFix":    "",
                 "thousands":      ",",
-                "lengthMenu":     "Show _MENU_ entries",
-                "loadingRecords": "Loading...",
-                "processing":     "Processing...",
-                "search":         "chercher",
-                "zeroRecords":    "No matching records found",
+                "lengthMenu":     "Afficher les entrées de _MENU_",
+                "loadingRecords": "Chargement...",
+                "processing":     "En traitement...",
+                "search":         "Chercher:",
+                "zeroRecords":    "Aucun enregistrements correspondants trouvés",
                 "paginate": {
-                    "first":      "First",
-                    "last":       "Last",
-                    "next":       "Next",
-                    "previous":   "Previous"
+                    "first":      "Premier",
+                    "last":       "Dernier",
+                    "next":       "Prochain",
+                    "previous":   "Précédent"
                 },              
                 "aria": {           
-                    "sortAscending":  ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
+                    "sortAscending":  ": activer pour trier la colonne ascendante",
+                    "sortDescending": ": activer pour trier la colonne descendante"
                 }           
             }   
 	    } );
@@ -1258,7 +1258,7 @@ If you have forgotten your password please enter your login and ID and request a
 				<input type='checkbox' name="wpRemember"
 					tabindex="4"
 					value="1" id="wpRemember"
-										/> <label for="wpRemember">Remember my Login</label>
+										/> <label class="en" for="wpRemember">Remember my Login</label><label class="fr" for="wpRemember">Rester connecté</label>
 			</td>
 		</tr>
 	    <tr>
@@ -1273,8 +1273,10 @@ $emailPassword
 EOF;
             echo <<< EOF
         <br />
-        <span class='pBodyTitle0'>Member Registration</span>
-        <div class='pBody0' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
+        <span class='pBodyTitle0 en'>Member Registration</span>
+        <div class='pBody0 en' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
+        <span class='pBodyTitle0 fr'>Inscription Membre</span>
+        <div class='pBody0 fr' style='padding: 10px;'>Si vous souhaitez postuler pour devenir membre en MAJUSCULES alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
 EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );

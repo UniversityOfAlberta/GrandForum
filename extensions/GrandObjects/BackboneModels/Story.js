@@ -21,7 +21,7 @@ Story = Backbone.Model.extend({
 	    author: new Array(),
             title: "",
             story: "",
-	    url: "",
+	    story_url: "",
             date_submitted: "0000-00-00 00:00:00",
             approved: 0,
 	};

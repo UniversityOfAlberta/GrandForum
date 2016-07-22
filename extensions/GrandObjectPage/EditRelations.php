@@ -61,7 +61,7 @@ class EditRelations extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config, $wgLang;
         $wgOut->addHTML("<span class='en' style='display:none'>Here you can edit all the relations relevant to your role.</span><span class='fr' style='display:none'>Ici, vous pouvez modifier toutes les relations pertinentes à votre rôle .
 </span>");
         $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
@@ -98,13 +98,13 @@ class EditRelations extends SpecialPage{
                     <ul>");
         foreach($config->getValue('relationTypes') as $type){
             if($type == SUPERVISES){
-                $wgOut->addHTML("<li><a href='#tabs-1'>Supervises</a></li>");
+                $wgOut->addHTML("<li><a href='#tabs-1'><span class='en'>Supervises</span><span class='fr'>Supervise</span></a></li>");
             }
             else if($type == MENTORS){
                 $wgOut->addHTML("<li><a href='#tabs-2'>Mentors</a></li>");
             }   
             else if ($type == WORKS_WITH){
-                $wgOut->addHTML("<li><a href='#tabs-3'>Works With</a></li>");
+                $wgOut->addHTML("<li><a href='#tabs-3'><span class='en'>Works With</span><span class='fr'>Marche Avec</span></a></li>");
             }
         }            
         $wgOut->addHTML("</ul>");
@@ -125,8 +125,14 @@ class EditRelations extends SpecialPage{
                 $wgOut->addHTML("</div>");
             }
         }
-        $wgOut->addHTML("<br /><input id='submitRelationsButton' type='submit' name='submit' value='Save Relations' />
+        if($wgLang->getCode() == "en"){
+            $wgOut->addHTML("<br /><input id='submitRelationsButton' type='submit' name='submit' value='Save Relations' />
                          </form>");
+        }
+        else if($wgLang->getCode() == "fr"){
+            $wgOut->addHTML("<br /><input id='submitRelationsButton' type='submit' name='submit' value='Enregistrer Relations' />
+                         </form>");
+        }
     }
     
     function generateSupervisesHTML($person, $wgOut){
@@ -174,7 +180,7 @@ class EditRelations extends SpecialPage{
     }
     
     function generateWorksWithHTML($person, $wgOut){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgLang;
         $names = array();
         $list = array();
         $relations = $person->getRelations(WORKS_WITH);
@@ -189,10 +195,18 @@ class EditRelations extends SpecialPage{
                 }
             }
         }
+	if($wgLang->getCode() == 'en'){
         $wgOut->addHTML("<div class='switcheroo noCustom' name='CoWorker' id='coworkers'>
                             <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
                             <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
                         </div>");
+	}
+	else if($wgLang->getCode()=='fr'){
+        $wgOut->addHTML("<div class='switcheroo noCustom' name='Collaborateur' id='coworkers'>
+                            <div class='left'><span>".implode("</span>\n<span>", $names)."</span></div>
+                            <div class='right'><span>".implode("</span>\n<span>", $list)."</span></div>
+                        </div>");
+	}
     }
     
     static function createToolboxLinks(&$toolbox){

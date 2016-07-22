@@ -6,4 +6,9 @@ $messages['en'] = array(
 			   'CAPSregister' => 'CAPS Registration',
 			   'capsregister' => 'CAPS Registration',
 			   );
+$messages['fr'] = array(
+                           'CAPSRegister' => 'CPCA Inscription',
+                           'CAPSregister' => 'CPCA Inscription',
+                           'capsregister' => 'CPCA Inscription',
+                           );
 ?>

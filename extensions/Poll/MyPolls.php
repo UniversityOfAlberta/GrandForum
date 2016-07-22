@@ -32,7 +32,9 @@ class MyPolls extends SpecialPage{
 		if(count($collections) > 0){
 			$wgOut->addHTML("<table class='wikitable sortable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
 						<tr style='background:#EEEEEE;'>
-							<th>Name</th> <th>Number of Votes</th> <th>Creation Date</th> <th>Expiration Date</th>
+							<th class='en'>Name</th> <th class='en'>Number of Votes</th> <th class='en'>Creation Date</th> <th class='en'>Expiration Date</th>
+                                                        <th class='fr'>Nom</th> <th class='fr'>Nombre de Votes</th> <th class='fr'>Date de création</th> <th class='fr'>Date d'expiration</th>
+
 						</tr>");
 			foreach($collections as $collection){
 				$created = date("Y-m-d G:H:i", $collection->created);
@@ -44,7 +46,7 @@ class MyPolls extends SpecialPage{
 			$wgOut->addHTML("</table>");
 		}
 		else{
-			$wgOut->addHTML("You have not created any polls.  <a href='$wgServer$wgScriptPath/index.php/Special:CreatePoll'>Click Here</a> to create one.");
+			$wgOut->addHTML("Vous avez pas créé de sondages. <a href='$wgServer$wgScriptPath/index.php/Special:CreatePoll'>Cliquez Ici</a> pour créer un.");
 		}
 	}
 }
