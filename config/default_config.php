@@ -49,6 +49,9 @@
     // Network Website
     $config->setValue("networkSite", "");
     
+    // Shibboleth Logout URL
+    $config->setValue("shibLogoutUrl", "");
+    
     // Skin
     $config->setValue("skin", "cavendish");
     
@@ -106,6 +109,7 @@
     
     // Which extensions to enable
     $config->setValue("extensions", array(
+        //'Shibboleth',
         'AccessControl',
         'Cache',
         'Messages',

@@ -509,6 +509,20 @@ class CavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
+		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		    <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').click(function(){
+                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                        $("#logoutFrame").load(function(){
+                            document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                        });
+                    });
+                });
+	        </script>
+	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
+		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
 		    

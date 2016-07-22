@@ -194,15 +194,16 @@ class GlobalSearchAPI extends RESTAPI {
 
                 // get http header for cookies
                 curl_setopt($ch, CURLOPT_HEADER, 0);
-
-                // forward current cookies to curl
-                $cookies = array();
-                foreach($_COOKIE as $key => $value){
-                    if ($key != 'Array'){
-                        $cookies[] = $key . '=' . $value;
+                if(!isExtensionEnabled('Shibboleth')){
+                    // forward current cookies to curl
+                    $cookies = array();
+                    foreach($_COOKIE as $key => $value){
+                        if ($key != 'Array'){
+                            $cookies[] = $key . '=' . $value;
+                        }
                     }
+                    curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
                 }
-                curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $results = json_decode($response);
