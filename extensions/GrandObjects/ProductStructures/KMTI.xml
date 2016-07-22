@@ -77,6 +77,14 @@
             </data>
         </Activity>
         
+        <Activity type="Meeting">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Organizer" type="String">organizer</field>
+                <field label="Status" type="String">status</field>
+            </data>
+        </Activity>
+        
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
