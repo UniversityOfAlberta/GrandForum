@@ -95,7 +95,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="HQP,Collaborator,Knowledge">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" start="{$this_year}-04-01 00:00:00" end="{$this_year}-12-31 23:59:59" role="HQP,Collaborator,Knowledge,Partner">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
