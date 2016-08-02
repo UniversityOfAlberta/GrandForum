@@ -43,15 +43,15 @@ $dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_STA
 
 $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = 
     array(array_merge(array(HEAD."(People)"), $head, array(HEAD."(Multimedia)")),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
+          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, "2017-12-31 23:59:59"))),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE_ROLES),
                                                                  $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array_merge(
+                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, "2017-12-31 23:59:59"))),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, "2017-12-31 23:59:59") => array_merge(
                                                                  array(PROJECT_PEOPLE_ROLES),
                                                                  $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END))),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, REPORTING_NCE_END)))
+                                                                 array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, "2017-12-31 23:59:59"))),
+          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, REPORTING_CYCLE_START, "2017-12-31 23:59:59")))
     );
     
 $dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] = 
