@@ -16,7 +16,7 @@ $projRow = array();
 foreach($categories as $category){
     $head[] = HEAD."(".Inflect::pluralize($category).")";
     $persRow[] = STRUCT(PERSON_PRODUCTS, $category, REPORTING_CYCLE_START, REPORTING_NCE_END);
-    $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, REPORTING_CYCLE_START, REPORTING_NCE_END);
+    $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, REPORTING_CYCLE_START, "2017-12-31 23:59:59");
 }
     
 $dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_START, $end=REPORTING_NCE_END){
