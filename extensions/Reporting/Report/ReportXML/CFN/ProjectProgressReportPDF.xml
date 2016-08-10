@@ -35,7 +35,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId" startDate="2015-04-01" endDate="2017-12-31">
+        <ReportItemSet id="funded" type="ProjectPeopleReportItemSet" role="PI,PL" blobIndex="personId"
+                       startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <ReportItem id="funded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -65,7 +67,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI" startDate="2015-04-01" endDate="2017-12-31">
+        <ReportItemSet id="nonfunded" type="ProjectPeopleReportItemSet" blobIndex="personId" role="CI"
+                       startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <ReportItem id="nonfunded_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -95,7 +99,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge,Partner" startDate="2015-04-01" endDate="2017-12-31">
+        <ReportItemSet id="hqp" type="ProjectPeopleReportItemSet" blobIndex="personId" role="HQP,Collaborator,Knowledge,Partner"
+                       startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <ReportItem id="hqp_row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -197,7 +203,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true"
+                    start="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                    end="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <![CDATA[
                 <h2>Dissemination of Project Research Results</h2>
                 {$item}
@@ -393,7 +401,9 @@
                         <h2>Publications and Dissemination of Research</h2>
                     ]]>
                 </ReportItem>
-                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="Person">
+                <ReportItem id="dashboard" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true" tableType="Person"
+                            start="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                            end="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
                     <![CDATA[
                         {$item}
                     ]]>
