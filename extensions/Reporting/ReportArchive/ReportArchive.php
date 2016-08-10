@@ -89,7 +89,7 @@ class ReportArchive extends SpecialPage {
                             $name = "HQPReports_{$tst}.zip";
                         }
                         else{
-                            $report = AbstractReport::newFromToken($tok);
+                            $report = AbstractReport::newFromToken($tok, @$_GET['type']);
                             $year = substr($tst, 0, 4);
                             $month = substr($tst, 4, 2);
                             $day = substr($tst, 6, 2);

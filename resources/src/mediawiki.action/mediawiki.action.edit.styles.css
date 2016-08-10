@@ -11,7 +11,6 @@
 .editOptions {
 	background-color: #F0F0F0;
 	border: 1px solid silver;
-	border-top: none;
 	padding: 1em 1em 1.5em 1em;
 	margin-bottom: 2em;
 }
@@ -37,8 +36,4 @@
 	display: block;
 	margin-top: 0;
 	margin-bottom: 0.5em;
-}
-
-.editButtons input:first-child {
-	margin-left: .1em;
 }

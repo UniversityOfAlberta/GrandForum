@@ -285,10 +285,23 @@ static function getExtraNamespaces($type, $includeTalk = false) {
  static function getNamespacesForUser($user){
    global $wgExtraNamespaces;
    
-   $namespaces = array();
-
    $groups = $user->getGroups();
    
+   $person = Person::newFromUser($user);
+   foreach($person->getProjects() as $project){
+        $groups[] = $project->getName();
+   }
+   
+   foreach($person->getRoles() as $role){
+        $groups[] = $role->getRole();
+   }
+   
+   foreach($person->getThemeProjects() as $project){
+        $groups[] = $project->getName();
+   }
+   
+   $namespaces = array();
+  
    if (in_array('sysop', $groups))
      $groups = $wgExtraNamespaces;
 
@@ -297,6 +310,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    foreach ($groups as $index => $ns) {
      if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
        $namespaces[] = $ns;
+       $namespaces[] = str_replace(" ", "_", $ns);
      }
    }
 

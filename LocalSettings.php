@@ -187,8 +187,8 @@ $wgLanguageCode = "en";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook':
-require_once "$IP/skins/cavendish/cavendish.php";
-$wgDefaultSkin = 'cavendish';
+require_once "$IP/skins/{$config->getValue('skin')}/cavendish.php";
+$wgDefaultSkin = "{$config->getValue('skin')}";
 $wgAllowUserSkin = false;
 
 ## For attaching licensing metadata to pages, and displaying an

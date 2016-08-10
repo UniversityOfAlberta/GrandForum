@@ -325,6 +325,7 @@ class Person extends BackboneModel {
                     self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
                     self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
                     self::$namesCache[strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName")] = $row;
+                    self::$namesCache[strtolower(substr($firstName, 0, 1)."".substr($middleName, 0, 1)." $lastName")] = $row;
                     self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
                 }
             }
@@ -1093,6 +1094,9 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a theme leader of the given Project
      */
     function isThemeLeaderOf($project){
+        if($project == null){
+            return false;
+        }
         $themes = $this->getLeadThemes();
         if($project instanceof Theme){
             $challenge = $project;
@@ -1296,7 +1300,7 @@ class Person extends BackboneModel {
      * @return string The path to a photo of this Person
      */
     function getPhoto($cached=false){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $config;
         if($this->photo == null || !$cached){
             if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
                 $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
@@ -1305,7 +1309,12 @@ class Person extends BackboneModel {
                 }
             }
             else {
-                $this->photo = "$wgServer$wgScriptPath/skins/face.png";
+                if(file_exists("{$config->getValue('iconPathHighlighted')}face.png")){
+                    $this->photo = "$wgServer$wgScriptPath/{$config->getValue('iconPathHighlighted')}face.png";
+                }
+                else{
+                    $this->photo = "$wgServer$wgScriptPath/skins/face.png";
+                }
             }
         }
         return $this->photo;
@@ -2978,7 +2987,8 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($role == EVALUATOR && $this->isEvaluator()){
+        $year = substr($startRange, 0, 4);
+        if($role == EVALUATOR && $this->isEvaluator($year)){
             $roles[] = EVALUATOR;
         }
         if(count($roles) == 0){

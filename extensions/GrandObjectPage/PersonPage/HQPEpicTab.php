@@ -62,7 +62,7 @@ class HQPEpicTab extends AbstractEditableTab {
     <li><b>CREATE AND SUBMIT A TRAINING PLAN:</b> Where would you like to build capacity? Take a look at the minimum requirements checklist on this page and the opportunities listed on Forum, consider additional activities you know of or those in which you are already involved.
         <ul>
             <li>Use this checklist on your Forum EPIC tab as your training plan. To submit a list of activities you are interested in completing, please scroll to the bottom of the page and click on the “edit EPIC” button on the lower left corner.  Your EPIC table is now editable and all changes are submitted automatically to the Education and Training Administrator for review. </li>
-            <li>Once you have entered planned activities, please show your plan to your principal supervisor for approval.  You then may check the “Approved (Supervisor)” box.</li>
+            <li>For those with an “Approved (supervisor)” column: Once you have entered your planned activities, please show your plan to your principal supervisor for approval. At this point, your supervisor, if an AGE-WELL investigator, may check off the “Approved (Supervisor)” box.  If your supervisor is not an AGE-WELL investigator, please share your plans (screenshot, email etc.) and check off the box yourself once you have obtained their approval.</li>
             <li>Once your completed plan has been reviewed by the Education and Training Administrator, a check mark will appear in the “Completed (NMO)” box.</li>
             <li>Training plans should be completed and submitted within 2 months of accepting AGE-WELL funding.</li>
         </ul>
@@ -143,7 +143,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     <li><b>CREATE AND SUBMIT A TRAINING PLAN:</b> Where would you like to build capacity? Take a look at the minimum requirements checklist on this page and the opportunities listed on Forum, consider additional activities you know of or those in which you are already involved.
         <ul>
             <li>Use this checklist on your Forum EPIC tab as your training plan. To submit a list of activities you are interested in completing, please scroll to the bottom of the page and click on the “edit EPIC” button on the lower left corner.  Your EPIC table is now editable and all changes are submitted automatically to the Education and Training Administrator for review. </li>
-            <li>Once you have entered planned activities, please show your plan to your principal supervisor for approval.  You then may check the “Approved (Supervisor)” box.</li>
+            <li>For those with an “Approved (supervisor)” column: Once you have entered your planned activities, please show your plan to your principal supervisor for approval. At this point, your supervisor, if an AGE-WELL investigator, may check off the “Approved (Supervisor)” box.  If your supervisor is not an AGE-WELL investigator, please share your plans (screenshot, email etc.) and check off the box yourself once you have obtained their approval.</li>
             <li>Once your completed plan has been reviewed by the Education and Training Administrator, a check mark will appear in the “Completed (NMO)” box.</li>
             <li>Training plans should be completed and submitted within 2 months of accepting AGE-WELL funding.</li>
         </ul>
@@ -224,7 +224,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     <li><b>CREATE AND SUBMIT A TRAINING PLAN:</b> Where would you like to build capacity? Take a look at the minimum requirements checklist on this page and the opportunities listed on Forum, consider additional activities you know of or those in which you are already involved.
         <ul>
             <li>Use this checklist on your Forum EPIC tab as your training plan. To submit a list of activities you are interested in completing, please scroll to the bottom of the page and click on the “edit EPIC” button on the lower left corner.  Your EPIC table is now editable and all changes are submitted automatically to the Education and Training Administrator for review. </li>
-            <li>Once you have entered planned activities, please show your plan to your principal supervisor for approval.  You then may check the “Approved (Supervisor)” box.</li>
+            <li>For those with an “Approved (supervisor)” column: Once you have entered your planned activities, please show your plan to your principal supervisor for approval. At this point, your supervisor, if an AGE-WELL investigator, may check off the “Approved (Supervisor)” box.  If your supervisor is not an AGE-WELL investigator, please share your plans (screenshot, email etc.) and check off the box yourself once you have obtained their approval.</li>
             <li>Once your completed plan has been reviewed by the Education and Training Administrator, a check mark will appear in the “Completed (NMO)” box.</li>
             <li>Training plans should be completed and submitted within 2 months of accepting AGE-WELL funding.</li>
         </ul>
@@ -296,7 +296,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     <li><b>CREATE AND SUBMIT A TRAINING PLAN:</b> Where would you like to build capacity? Take a look at the minimum requirements checklist on this page and the opportunities listed on Forum, consider additional activities you know of or those in which you are already involved.
         <ul>
             <li>Use this checklist on your Forum EPIC tab as your training plan. To submit a list of activities you are interested in completing, please scroll to the bottom of the page and click on the “edit EPIC” button on the lower left corner.  Your EPIC table is now editable and all changes are submitted automatically to the Education and Training Administrator for review. </li>
-            <li>Once you have entered planned activities, please show your plan to your principal supervisor for approval.  You then may check the “Approved (Supervisor)” box.</li>
+            <li>For those with an “Approved (supervisor)” column: Once you have entered your planned activities, please show your plan to your principal supervisor for approval. At this point, your supervisor, if an AGE-WELL investigator, may check off the “Approved (Supervisor)” box.  If your supervisor is not an AGE-WELL investigator, please share your plans (screenshot, email etc.) and check off the box yourself once you have obtained their approval.</li>
             <li>Once your completed plan has been reviewed by the Education and Training Administrator, a check mark will appear in the “Completed (NMO)” box.</li>
             <li>Training plans should be completed and submitted within 2 months of accepting AGE-WELL funding.</li>
         </ul>
@@ -368,7 +368,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     <li><b>CREATE AND SUBMIT A TRAINING PLAN:</b> Where would you like to build capacity? Take a look at the minimum requirements checklist on this page and the opportunities listed on Forum, consider additional activities you know of or those in which you are already involved.
         <ul>
             <li>Use this checklist on your Forum EPIC tab as your training plan. To submit a list of activities you are interested in completing, please scroll to the bottom of the page and click on the “edit EPIC” button on the lower left corner.  Your EPIC table is now editable and all changes are submitted automatically to the Education and Training Administrator for review. </li>
-            <li>Once you have entered planned activities, please show your plan to your principal supervisor for approval.  You then may check the “Approved (Supervisor)” box.</li>
+            <li>For those with an “Approved (supervisor)” column: Once you have entered your planned activities, please show your plan to your principal supervisor for approval. At this point, your supervisor, if an AGE-WELL investigator, may check off the “Approved (Supervisor)” box.  If your supervisor is not an AGE-WELL investigator, please share your plans (screenshot, email etc.) and check off the box yourself once you have obtained their approval.</li>
             <li>Once your completed plan has been reviewed by the Education and Training Administrator, a check mark will appear in the “Completed (NMO)” box.</li>
             <li>Training plans should be completed and submitted within 2 months of accepting AGE-WELL funding.</li>
         </ul>

@@ -8,7 +8,12 @@ class ReviewReportItem extends StaticReportItem {
 		$projectGet = "";
 		if($project != null){
 		    if($project instanceof Project){
-                $projectGet = "&project={$project->getName()}";
+                if($project->getName() == ""){
+		            $projectGet = "&project={$project->getId()}";
+		        }
+                else{
+                    $projectGet = "&project={$project->getName()}";
+                }
             }
             else if($project instanceof Theme){
                 $projectGet = "&project={$project->getAcronym()}";

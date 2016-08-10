@@ -10,7 +10,12 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		$projectGet = "";
 		if($this->getReport()->project != null){
 		    if($this->getReport()->project instanceof Project){
-                $projectGet = "&project={$this->getReport()->project->getName()}";
+                if($this->getReport()->project->getName() == ""){
+		            $projectGet = "&project={$this->getReport()->project->getId()}";
+		        }
+                else{
+                    $projectGet = "&project={$this->getReport()->project->getName()}";
+                }
             }
             else if($this->getReport()->project instanceof Theme){
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
@@ -158,7 +163,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		    $disabled = "disabled='true'";
 		}
 		$wgOut->addHTML("<h3>1. Generate a new Report PDF for submission</h3>");
-		$wgOut->addHTML("<p>Generate a Report PDF with the data submitted: <button id='generateButton' $disabled>Generate Report PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<p>Generate a Report PDF with the data submitted: <button type='button' id='generateButton' $disabled>Generate Report PDF</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    <small>Depending on the size of the report, this could take several moments.</small>
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
@@ -180,7 +185,13 @@ EOF;
             $tst = '';
             $sub = 0;
             $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
+            $project = null;
+            if($this->getReport()->project instanceof Project){
+                $project = $this->getReport()->project;
+            }
+            else if($this->getReport()->project instanceof Theme){
+                $project = Theme::newFromId($this->projectId);
+            }
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);
             }
@@ -213,7 +224,7 @@ EOF;
 		    <td>
 		    	<span id='ex_time_{$file}'>{$show_pdf}</span></td>
             <td>
-            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button type='button' id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td></tr>
 EOF;
 
@@ -237,7 +248,7 @@ EOF;
             <input {$style1} id='submitCheck' type='checkbox' /> - I have reviewed my \"$reportname PDF\"
             </td></tr>
             <tr><td>
-            <button id='submitButton' value='{$tok}' disabled>Submit $reportname PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+            <button type='button' id='submitButton' value='{$tok}' disabled>Submit $reportname PDF</button><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
             </td></tr>
             </table></p>
          </div>");
@@ -292,7 +303,7 @@ EOF;
 		    <td>
 		    	<span id='ex_time_submitted'>{$show_pdf}</span></td>
             <td>
-            	<button id='download_submitted' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button type='button' id='download_submitted' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>
 EOF;
 			if($pdfcount == 1 ){
@@ -306,7 +317,7 @@ EOF;
         		$subm_table_row .= "<td></td>";
         	}
 
-            $subm_table_row .= "</tr>";
+            $subm_table_row .= "</tr></table>";
 
             $wgOut->addHTML($subm_table_row);
             $pdfcount++;

@@ -271,6 +271,9 @@ class ReportXMLParser {
             if(isset($attributes->ajax) && strtolower($attributes->ajax) == 'true'){
                 $this->report->ajax = true;
             }
+            if(isset($attributes->allowIdProjects) && strtolower($attributes->allowIdProjects) == 'true'){
+                $this->report->allowIdProjects = true;
+            }
             if(isset($attributes->disabled) && strtolower($attributes->disabled) == 'true'){
                 $this->report->setDisabled(true);
             }

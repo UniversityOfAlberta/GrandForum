@@ -23,6 +23,8 @@ $apiRequest->addAction('Hidden','person/:id/products', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/private', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/all', new PersonProductAPI());
 $apiRequest->addAction('Hidden','person/:id/products/:productId', new PersonProductAPI());
+$apiRequest->addAction('Hidden','person/:id/contributions', new PersonContributionsAPI());
+$apiRequest->addAction('Hidden','person/:id/allocations', new PersonAllocationsAPI());
 $apiRequest->addAction('Hidden','personRoleString/:id', new PersonRoleStringAPI());
 $apiRequest->addAction('Hidden','people', new PeopleAPI());
 $apiRequest->addAction('Hidden','people/managed', new PeopleManagedAPI());
@@ -36,6 +38,8 @@ $apiRequest->addAction('Hidden','project', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
 $apiRequest->addAction('Hidden','project/:id/members', new ProjectMembersAPI());
 $apiRequest->addAction('Hidden','project/:id/members/:role', new ProjectMembersAPI());
+$apiRequest->addAction('Hidden','project/:id/contributions', new ProjectContributionsAPI());
+$apiRequest->addAction('Hidden','project/:id/allocations', new ProjectAllocationsAPI());
 
 $apiRequest->addAction('Hidden','project/:id/products', new ProjectProductAPI());
 $apiRequest->addAction('Hidden','project/:id/products/:productId', new ProjectProductAPI());

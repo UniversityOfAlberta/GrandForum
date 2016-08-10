@@ -1,4 +1,4 @@
-<td><%= HTML.Select(this, 'type', {options: relationTypes}) %></td>
+<td align="center"><%= this.owner.get('fullName') %><%= HTML.Select(this, 'type', {options: relationTypes}) %><%= this.target.get('fullName') %></td>
 <td style="white-space:nowrap;">
     <table id="projects" style="width:100%;">
 

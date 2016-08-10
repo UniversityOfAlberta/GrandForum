@@ -19,7 +19,7 @@ class HQPReviewTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HQPAC));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HQPAC) || $person->isRole(SD));
     }
 
     function execute($par){
@@ -32,7 +32,8 @@ class HQPReviewTable extends SpecialPage{
         }
         $data = DBFunctions::select(array('grand_eval'),
                                     array('DISTINCT type', 'year'),
-                                    array('type' => LIKE('HQP-%')));
+                                    array('type' => LIKE('HQP-%')),
+                                    array('type' => 'DESC'));
         $wgOut->addHTML("<div id='tabs'>");
         $wgOut->addHTML("<ul>");
         foreach($data as $row){

@@ -173,18 +173,24 @@ class ProjectPage {
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         if($config->getValue('projectsEnabled')){
             $me = Person::newFromWgUser();
-            $projects = $me->getProjects();
-            
-            if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+            $myProjects = array();
+            foreach($me->getProjects() as $proj){
+                $myProjects[$proj->getName()] = $proj;
+            }
+            foreach($me->getThemeProjects() as $proj){
+                $myProjects[$proj->getName()] = $proj;
+            }
+            //$projects = array_merge($projects, $me->getThemeProjects());
+            if(!$wgUser->isLoggedIn() || count($myProjects) == 0 || $me->isRoleAtLeast(MANAGER)){
 		        return true;
 		    }
 
-            foreach($projects as $key => $project){
+            foreach($myProjects as $key => $project){
                 if($project->isSubProject()){
-                    unset($projects[$key]);
+                    unset($myProjects[$key]);
                 }
             }
-            $projects = array_values($projects);
+            $projects = array_values($myProjects);
             foreach($projects as $project){
                 $selected = (str_replace("_", " ", $wgTitle->getNSText()) == $project->getName()) ? "selected" : "";
                 $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);

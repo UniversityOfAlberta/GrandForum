@@ -99,7 +99,8 @@ class Notification{
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
             foreach($data as $row){
-                if(!$wgImpersonating && (str_replace(" ", "_", "http://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']) == str_replace(" ", "_", $row['url']) || 
+                $url = explode("#", str_replace(" ", "_", $row['url']));
+                if(!$wgImpersonating && (str_replace(" ", "_", "http://".$_SERVER["SERVER_NAME"].$_SERVER['REQUEST_URI']) == $url[0] || 
                    isset($_POST['markAllNotificationsAsRead']))){
                     Notification::deactivateNotification($row['id']);
                 }

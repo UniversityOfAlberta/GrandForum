@@ -52,6 +52,7 @@ define('TVN_BUDGET_STRUCTURE', 6);
 define('AGEWELL_NI_BUDGET_STRUCTURE', 7);
 define('TECH_WORKSHOP_STRUCTURE', 8);
 define('REGIONAL_MEETING_STRUCTURE', 9);
+define('TVN_CATALYST_STRUCTURE', 10);
 
 $budgetStructures = array();
 
@@ -131,7 +132,6 @@ $budgetStructures[TECH_WORKSHOP_STRUCTURE] =
           array(HEAD4,      MONEY,      READ,       NA,         NA),
           array(HEAD1_ROW,  HEAD1_ROW,  NA,         NA,         NA),
           array(HEAD4,      READ,       READ,       READ,       READ),
-          array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD4,      MONEY,      MONEY,      MONEY,      MONEY),
@@ -245,6 +245,32 @@ $budgetStructures[TVN_BUDGET_STRUCTURE] =
           array(HEAD1,      HEAD1_ROW,  MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY),
           array(HEAD1_ROW,  HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
           array(HEAD1_ROW,  HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY)
+    );
+    
+$budgetStructures[TVN_CATALYST_STRUCTURE] =
+    array(array(HEAD,       NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         READ,       NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         STRING,     NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         STRING,     NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         STRING,     NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD1_ROW,  NA,         STRING,     NA,         NA,         NA,         NA,         NA,         NA,         BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(BLANK,      BLANK,      HEAD,       NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(HEAD,       NA,         HEAD,       NA,         NA,         HEAD,       NA,         NA,         HEAD_ROW,   HEAD,       NA,         NA,         HEAD,       NA,         NA,         HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD1_ROW,  HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,   HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  READ,       MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, MONEY,      MONEY,      HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,   HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY)
     );
 
 $budgetStructures[SUPPLEMENTAL_STRUCTURE] =

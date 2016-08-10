@@ -10,6 +10,12 @@ class ProjectPeopleReportItemSet extends ReportItemSet {
         $roles = explode(",", $role);
         $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
         $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");
+        if($start == ""){
+            $start = REPORTING_YEAR."-04-01 00:00:00";
+        }
+        if($end == ""){
+            $end = (REPORTING_YEAR+1)."-03-31 23:59:59";
+        }
         if($proj != null){
             $members = array();
             foreach($roles as $role){

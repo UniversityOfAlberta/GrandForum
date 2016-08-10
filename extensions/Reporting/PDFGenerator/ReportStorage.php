@@ -311,7 +311,7 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        if($year != ""){
+        if($year !== ""){
             $year = "AND year = {$year}";
         }
         $sql = "SELECT user_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year

@@ -108,11 +108,22 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    owner: null,
+    target: null,
     
     initialize: function(){
         this.model.set('deleted', false);
+        this.owner = this.model.getOwner();
+        this.target = this.model.getTarget();
+        
         this.listenTo(this.model, "change", this.update);
         this.listenTo(this.model, "change:projects", this.renderProjects);
+        this.listenTo(this.owner, "sync", this.render);
+        this.listenTo(this.target, "sync", this.render);
+        
+        this.owner.fetch();
+        this.target.fetch();
+
         this.template = _.template($('#edit_relations_row_template').html());
     },
     

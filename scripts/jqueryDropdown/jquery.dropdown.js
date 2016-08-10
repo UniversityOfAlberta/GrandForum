@@ -33,19 +33,23 @@
     $(lis).css('display', 'block');
     $('a', $(lis)).removeClass('highlights-tab');
     $(lis).addClass('highlights-background-hover');
-    
-    $(this).append("<div class='actions' />");
+    $(this).append("<div class='actions highlightsBackground0' />");
     var divActions = $('div.actions' ,$(this));
-    $(divActions).css('min-width', width);
-    
-    $(divActions).css('right', '1px');
+    if(skin == 'cavendish'){
+        $(divActions).css('min-width', width);
+        $(divActions).css('right', '1px');
+    }
     $(lis).appendTo($(divActions));
     $(this).append("<li class='actions'><a>" + title + "<span class='dropdown down' style='margin-left:5px;'>&#x25BC;</span></a></li>");
     $(this).imgDown();
-    $(divActions).append("<img class='dropdowntop' src='" + wgServer + wgScriptPath + "/skins/dropdowntop.png' />");
+    if(skin == 'cavendish'){
+        $(divActions).append("<img class='dropdowntop' src='" + wgServer + wgScriptPath + "/skins/dropdowntop.png' />");
+    }
     var dropdownTop = $('.dropdowntop', $(this));
     var that = this;
-    
+    if(skin == 'cavendish2'){
+        $('li.actions > a', $(this)).width($(divActions).width()-10);
+    } 
     var unHoverTimeout = null;
     $('li.actions > a', $(this)).addClass('highlights-tab');
     $('li.actions', $(this)).mouseenter(function(e){
@@ -93,27 +97,36 @@
         $(dropdownTop).css('top', -5);
         if(divActions.is(":visible")){
             $(divActions).fadeOut(100);
+            if(skin == 'cavendish2'){
+                if(!$(this).hasClass('selected2')){
+                    $(this).removeClass('selected');
+                }
+            }
         }
         else{
             divActions.css('opacity', 1);
-            unHoverTimeout=setTimeout(function(){
+            unHoverTimeout=setTimeout($.proxy(function(){
+                if(skin == 'cavendish2'){
+                    if($(this).hasClass('selected')){
+                        $(this).addClass('selected2');
+                    }
+                    $(this).addClass('selected');
+                }
                 $(divActions).fadeIn(100);
                 unHoverTimeout=null;
                 $('div.actions').parent().css('z-index', 999);
                 divActions.parent().css('z-index', 1000);
                 $(divActions).css('right', tabWidth - $(divActions).width());
                 $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()));
-                if($(divActions).offset().left + divWidth + 5 >= $(window).width()){
-                    var shiftAmount = ($(window).width() - ($(divActions).offset().left + divWidth + 10));
-                    $(divActions).css('right', (tabWidth - $(divActions).width()) - shiftAmount);
-                    $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
+                if(skin == 'cavendish'){
+                    if($(divActions).offset().left + divWidth + 5 >= $(window).width()){
+                        var shiftAmount = ($(window).width() - ($(divActions).offset().left + divWidth + 10));
+                        $(divActions).css('right', (tabWidth - $(divActions).width()) - shiftAmount);
+                        $(dropdownTop).css('right', Math.ceil((tabWidth - 7)/2) - (tabWidth - $(divActions).width()) + shiftAmount);
+                    }
                 }
-            }, 75);   
-            
-            
+            }, this), 75);
         }
-        //$(that).imgToggle();
-        
         e.stopPropagation();
     });
   };

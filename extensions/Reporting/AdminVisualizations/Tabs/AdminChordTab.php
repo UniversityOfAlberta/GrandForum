@@ -17,7 +17,7 @@ class AdminChordTab extends AbstractTab {
 	}
 	
 	static function getAdminChordData($action, $article){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : REPORTING_YEAR;
 	    if($action == "getAdminChordData" && $me->isRoleAtLeast(MANAGER)){
@@ -214,7 +214,9 @@ class AdminChordTab extends AbstractTab {
             }
             
             $dates = array();
-            for($i=2010; $i <= REPORTING_YEAR; $i++){
+            $phaseDates = $config->getValue('projectPhaseDates');
+	        $startYear = substr($phaseDates[1], 0, 4);
+            for($i=$startYear; $i <= REPORTING_YEAR; $i++){
                 if($i == REPORTING_YEAR){
                     $dates[] = array('date' => $i, 'checked' => 'checked');
                 }

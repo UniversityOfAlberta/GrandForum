@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
 
-class Contribution {
+class Contribution extends BackboneModel {
 
     static $cache = array();
 
@@ -109,6 +109,45 @@ class Contribution {
             $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
         }
+    }
+    
+    function toArray(){
+        $partners = array();
+        foreach($this->getPartners() as $partner){
+            $partners[] = array("name" => $partner->getOrganization(),
+                                "type" => $this->getHumanReadableTypeFor($partner),
+                                "cash" => $this->getCashFor($partner),
+                                "inkind" => $this->getKindFor($partner),
+                                "total" => $this->getTotalFor($partner));
+        }
+        return array("id" => $this->getId(),
+                     "name" => $this->getName(),
+                     "start" => $this->getStartDate(),
+                     "end" => $this->getEndDate(),
+                     "partners" => $partners,
+                     "cash" => $this->getCash(),
+                     "inkind" => $this->getKind(),
+                     "total" => $this->getTotal());
+    }
+    
+    function create(){
+        return false;
+    }
+    
+    function update(){
+        return false;
+    }
+    
+    function delete(){
+        return false;
+    }
+    
+    function exists(){
+        return true;
+    }
+    
+    function getCacheId(){
+        
     }
     
     static function getAllContributions(){
