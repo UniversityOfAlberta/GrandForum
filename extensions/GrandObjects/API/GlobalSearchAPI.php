@@ -52,7 +52,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $people = Person::getByIds($dataCollection->pluck('user_id'));
                 foreach($people as $person){
                     $continue = false;
-                    if($person->isRole(ADMIN)){
+                    if($person->isRoleAtLeast(ADMIN)){
                         // Don't include Admin
                         $continue = true; 
                     }
