@@ -511,6 +511,20 @@ class CavendishTemplate2 extends QuickTemplate {
 		        });
 		    });
 		</script>
+		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		    <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').click(function(){
+                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                        $("#logoutFrame").load(function(){
+                            document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                        });
+                    });
+                });
+	        </script>
+	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
+		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
 		    
@@ -687,7 +701,7 @@ class CavendishTemplate2 extends QuickTemplate {
                         }
                     }
                     $logout['href'] .= urlencode($getStr);
-                    echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 13px;line-height:12px;display:inline-block;width:74px;' title='Logout' href='{$logout['href']}'>Logout&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
+                    echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 13px;line-height:32px;display:inline-block;width:74px;cursor: pointer;' title='Logout' href='{$logout['href']}'><span>Logout</span>&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
                 }
                 echo "</div>";
             }

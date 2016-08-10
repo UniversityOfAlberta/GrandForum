@@ -91,6 +91,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	    padding-right: 0;
 	    margin-top: -1px;
         text-align: center;
+        vertical-align: top;
 	}
 	
 	#topheader .login img.photo {
