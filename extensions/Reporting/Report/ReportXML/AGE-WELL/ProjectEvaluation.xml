@@ -329,7 +329,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>National & International leadership</b></td>
+                <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -382,7 +382,7 @@
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Advancing knowledge</b></td>
+                <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -418,7 +418,7 @@
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Stakeholder driven research (e.g. partner/organization driven research)</b></td>
+                <td><b>Stakeholder and end-user driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -504,7 +504,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>National/Global Partnerships</b></td>
+                <td><b>National/Global Partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -720,7 +720,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>National/Global Partnerships</b></td>
+                <td><b>National/Global Partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -778,7 +778,7 @@
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Co-creation of product development</b></td>
+                <td><b>Co-creation of product development</b> (e.g. stakeholder and end-user involvement in product development)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -874,7 +874,7 @@
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Networking within AGE-WELL</b></td>
+                <td><b>Networking within AGE-WELL</b> (e.g. collaboration and production across the Network)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1170,7 +1170,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Stakeholder engagement</b></td>
+                <td><b>Stakeholder engagement</b> (e.g. involvement of older adults and stakeholder organizations in publications and presentations)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1286,7 +1286,7 @@
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Knowledge dissemination</b></td>
+                <td><b>Knowledge dissemination</b> (e.g. academic and non-academic dissemination activities)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1476,7 +1476,7 @@
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Establishment of a start-up company</b></td>
+                <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1532,7 +1532,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>IP Management</b></td>
+                <td><b>IP Management</b> (e.g. policies in place and plans for licensing IP to a partner)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1568,7 +1568,7 @@
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Product development</b></td>
+                <td><b>Product development</b> (e.g. anticipated products and stage of development)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1604,7 +1604,7 @@
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Establishment of a start-up company</b></td>
+                <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1668,7 +1668,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b></td>
+                <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b> (e.g. involvement of HQP in the project and Network)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1759,53 +1759,6 @@
                  </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>The future of our HQP</b> (e.g. where have AGE-WELL HQP ended up following their role in the Network)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_5" blobItem="REV_2_5" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_6_m1" blobItem="REV_2_6_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of HQP that have continued into other academic posts in the aging and technology sector {$item}
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_6_m2" blobItem="REV_2_6_M2" type="Integer" size="3">
-            <![CDATA[
-                    #of HQP who have continued into non-academic jobs (industry, government, services, etc) in the aging and technology sector {$item} <b>({project_n_movedon({$this_year}-10-01, {$next_year}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_6_m3" blobItem="REV_2_6_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of HQP who have progressed academically while employed in project (e.g. Masters to PhD) {$item} <b>({project_n_progressed({$this_year}-10-01, {$next_year}-09-30)})</b>
-                </td>
-                </tr>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_foot" type="Static">
             <![CDATA[
                 </table>
@@ -1836,7 +1789,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b></td>
+                <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b> (e.g. involvement of HQP in the project and Network)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1925,53 +1878,6 @@
                     #of HQP attending annual conference {$item}
                  </td>
                  </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>The future of our HQP</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_5" blobItem="PLAN_2_5" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_6_m1" blobItem="PLAN_2_6_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of HQP that have continued into other academic posts in the aging and technology sector {$item}
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_6_m2" blobItem="PLAN_2_6_M2" type="Integer" size="3">
-            <![CDATA[
-                    #of HQP who have continued into non-academic jobs (industry, government, services, etc) in the aging and technology sector {$item} <b>({project_n_movedon({$next_year}-10-01, {$next_year2}-09-30)})</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_6_m3" blobItem="PLAN_2_6_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of HQP who have progressed academically while employed in project (e.g. Masters to PhD) {$item} <b>({project_n_progressed({$next_year}-10-01, {$next_year2}-09-30)})</b>
-                </td>
-                </tr>
             ]]>
         </ReportItem>
         <ReportItem id="plan_foot" type="Static">
