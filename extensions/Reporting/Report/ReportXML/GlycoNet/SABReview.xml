@@ -7,11 +7,6 @@
         </Role>
     </Permissions>
     <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-                You can download the Project Proposal PDFs for reference.
-            ]]>
-        </Instructions>
         <ReportItemSet type="DateReportItemSet" start="{$this_year}-01-01" end="{$this_year}-05-23">
             <ReportItem id="project_materials_head" type="StaticReportItem">
                 <![CDATA[
@@ -40,11 +35,6 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <Instructions>
-            <![CDATA[
-                
-            ]]>
-        </Instructions>
         <ReportItemSet type="DateReportItemSet" start="{$this_year}-01-01" end="{$this_year}-05-23">
             <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB">
                 <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$project_name}">
