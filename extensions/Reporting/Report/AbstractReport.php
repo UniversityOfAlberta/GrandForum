@@ -950,7 +950,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Renders the Report to the browser
     function render(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgArticle, $wgImpersonating, $wgMessage;
+        global $wgOut, $wgServer, $wgScriptPath, $wgArticle, $wgImpersonating, $wgMessage, $config;
         FootnoteReportItem::$nFootnotes = 0;
         if($this->disabled && !$wgImpersonating){
             $wgOut->addHTML("<div id='outerReport'>This report is currently disabled until futher notice.</div>");
@@ -960,7 +960,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css");
+        $wgOut->addStyle("../extensions/Reporting/Report/style/{$config->getValue("skin")}/report.css");
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");
@@ -1029,9 +1029,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<hr />
                             <h3>Options</h3>
                             <table>
-                                <tr id='fullScreenRow'>
+                                <!--tr id='fullScreenRow'>
                                     <td width='50%' align='right' valign='top' style='white-space:nowrap;'>Full-Window&nbsp;Mode:</td><td width='50%' valign='middle'><input type='checkbox' name='toggleFullscreen'></td>
-                                </tr>
+                                </tr-->
                                 <tr id='autosaveRow'>
                                     <td width='50%' align='right' valign='top'>Autosave:</td><td width='50%' valign='middle'><input name='autosave' autosave='on' type='radio' checked>On<br /><input name='autosave' value='off' type='radio'>Off</td>
                                 </tr>
