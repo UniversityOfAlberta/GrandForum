@@ -29,6 +29,9 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+
+        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "OTForm")) ? "selected" : false;
+        $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("OT Form", "{$url}OTForm", $selected);
         
         return true;
     }
