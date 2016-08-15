@@ -129,7 +129,7 @@ class TextareaReportItem extends AbstractReportItem {
                     }
                     else if(strlen > $limit){
                         $('#limit_{$this->getPostId()} > span').addClass('inlineError');
-                        $('#limit_{$this->getPostId()} > span').removeClass('warningError');
+                        $('#limit_{$this->getPostId()} > span').removeClass('inlineWarning');
                     }
                     else if(strlen == 0){
                         $('#limit_{$this->getPostId()} > span').addClass('inlineWarning');
