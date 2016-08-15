@@ -6,7 +6,8 @@
         <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
         <span style="display: inline-block; white-space: normal;"><%= this.model.getCapsString() %></span><br />
         <table cellpadding="0" cellspacing="0" style="margin-top: 8px;">
-            <% if(email != ""){ %>
+
+            <% if(email != "" && (me.getCapsRoleString().indexOf("Admin") != -1 || me.getCapsRoleString().indexOf("Manager") != -1) || me.id == this.model.id){ %>
                 <tr>
                     <td width="100">Email&nbsp;</td>
                     <td style="color:#333333;"><a href="mailto:<%= email %>"><%= email %></a></td>

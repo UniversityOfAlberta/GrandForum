@@ -23,7 +23,15 @@ class StoryAPI extends RESTAPI {
         if(!$status){
             $this->throwError("The user <i>{$story->getName()}</i> could not be created");
         }
-        $story = Story::newFromId($story->getId());
+        $story = Story::newFromTitle($this->POST('title'));
+	if($me->isRoleAtLeast(MANAGER)){
+	    $story->approve();
+	    $people = Person::getAllPeople();
+	    foreach($people as $person){
+	    	//Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}");
+                Notification::addNotification($me,$me,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}", true);
+	    }
+	}
         return $story->toJSON();
     }
 

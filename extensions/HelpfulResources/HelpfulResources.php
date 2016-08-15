@@ -43,6 +43,7 @@ Voici les différentes catégories de ressources disponibles dans {$config->getV
 			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Tools'><img width='100px'  src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/tools_tips_files.png'></a><br /><span class='en'>Tools & Tips</span><span class='fr'>Outils et conseils</span></div>
 			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Organizations'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/organizations_files.png'></a><br /><span class='en'>Organizations</span><span class='fr'>Organizations</span></div>
 			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
                     </div>
        </div>");
             $html = <<<EOF

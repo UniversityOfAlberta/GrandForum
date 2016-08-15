@@ -100,7 +100,7 @@ class IndexTable {
         else if($wgLang->getCode() == "fr"){
             $storiesSubTab = TabUtils::createSubTab("Tous Les Cas", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
         }
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(NI)){
 	    $tabs['Main']['subtabs'][] = $storiesSubTab;
 	}
         $themesColl = new Collection(Theme::getAllThemes());
@@ -220,8 +220,10 @@ class IndexTable {
                     if($wgLang->getCode() == 'fr'){
                         $wgOut->setPageTitle("Tous Les Cas");
                     }
+		    if($me->isRoleAtLeast(NI)){
                                 $this->generateUserStoriesTable();
                                 TabUtils::clearActions();
+			}
                                 break;
 			   case 'ALL Clinical':
 				$wgOut->setPageTitle("Clinical Guidelines");
@@ -254,6 +256,13 @@ class IndexTable {
                     }
 				$this->generatePersonTable("Articles");	
 			        break;
+			   case 'ALL Patients':
+				$wgOut->setPageTitle("Patient Resources");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Les Ressources des Patients");
+                    }
+				    $this->generatePersonTable("Patients");	
+			        break;                    
                            case 'ALL Resources':
                                 $wgOut->setPageTitle("Resources");
                     if($wgLang->getCode() == 'fr'){

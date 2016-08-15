@@ -54,7 +54,7 @@ class PersonPage {
 	    else{
                 $person = Person::newFromName($name);
 	    }	
-            if(!$person->isRole(MANAGER) && !$person->isRole(Expert) && !$me->isRoleAtLeast(MANAGER)){
+            if(!$person->isRole(MANAGER) && !$person->isRole(Expert) && !$me->isRoleAtLeast(MANAGER) && $person != $me){
                permissionError();
             }
 

@@ -39,6 +39,18 @@ class Thread extends BackboneModel{
 	        return $thread;
 	    }
 
+        static function newFromTitle($title){
+            $thread = new Thread(array());
+            $data = DBFunctions::select(array('grand_threads'),
+                                        array('*'),
+                                        array('title' => $title),
+                                        array('date_created' => 'DESC'));
+            if(count($data)>0){
+                $thread = new Thread($data);
+            }
+            return $thread;
+        }
+
         /**
         * Returns all Threads available to a user
         * @return threads An Array of Threads
@@ -91,17 +103,17 @@ class Thread extends BackboneModel{
         }
 
         function getUsers(){
-	    $people = array();
-	    foreach($this->users as $pId){
-		if(is_numeric($pId)){	
-	    	    $person = Person::newFromId($pId);
-		}
-		else{
-		    $person= Person::newFromName($pId);
-		}
-		$people[] = $person;
-	    }
-            return $people;
+	        $people = array();
+	        foreach($this->users as $pId){
+		        if(is_numeric($pId)){	
+	            	    $person = Person::newFromId($pId);
+		        }
+		    else{
+		        $person= Person::newFromName($pId);
+		    }
+		    $people[] = $person;
+	        }
+                return $people;
         }
 
         function getTitle(){
@@ -158,7 +170,7 @@ class Thread extends BackboneModel{
 	function create(){
             $me = Person::newFromWgUser();
 	    if($this->user_id == ""){
-		$this->user = $me->getId();
+		    $this->user = $me->getId();
 	    }
             $users = array();
             foreach($this->users as $user){
@@ -195,6 +207,7 @@ class Thread extends BackboneModel{
 
 	//this should be updated eventually when revisions of a story can be made
 	function update(){
+            $users = array();
             $me = Person::newFromWgUser();
             foreach($this->users as $user){
                 if(isset($user->id) && $user->id != 0){
@@ -212,6 +225,7 @@ class Thread extends BackboneModel{
                                               array('users'=>serialize($users),
                                                     'user_id' => $this->user_id,
 						    'title' => $this->getTitle(),
+                                                    'category' => $this->category,
                                                     'date_created' => $this->getDateCreated()),
                                               array('id' => EQ($this->id)));
                 if($status){

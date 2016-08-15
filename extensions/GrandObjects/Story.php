@@ -32,10 +32,25 @@ class Story extends BackboneModel{
      	* @return Story The Story with the given id
      	*/	
 	static function newFromId($id){
+	    $story = new Story(array());
 	    $data = DBFunctions::select(array('grand_user_stories'),
 	                                array('*'),
 	                                array('rev_id' => $id));
-	    $story = new Story($data);
+	    if(count($data)>0){
+	    	$story = new Story($data);
+	    }
+	    return $story;
+	}
+
+	static function newFromTitle($title){
+            $story = new Story(array());
+	    $data = DBFunctions::select(array('grand_user_stories'),
+					array('*'),
+					array('title' => $title),
+                                        array('rev_id' => 'DESC'));
+            if(count($data)>0){
+                $story = new Story($data);
+            }
 	    return $story;
 	}
 	
@@ -268,10 +283,10 @@ class Story extends BackboneModel{
 
 	function approve(){
             $me = Person::newFromWgUser();
-            if($me->isRoleAtLeast(ADMIN)){
+            if($me->isRoleAtLeast(MANAGER)){
                 $status = DBFunctions::update('grand_user_stories',
-                                              array('approved' => $true),
-                                              array('rev_id' => EQ($this->rev_id)));
+                                              array('approved' => 1),
+                                              array('id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
                     return true;

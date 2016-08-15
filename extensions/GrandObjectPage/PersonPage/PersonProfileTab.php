@@ -536,6 +536,7 @@ EOF;
                 </td>
             </tr>";
         }
+        
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>Email:</b></td>

@@ -28,16 +28,25 @@ ThreadEditView = Backbone.View.extend({
         "click #saveThread": "saveThread",
         "click #cancel": "cancel",
         "change [name='visibility']": "checkVisibility",
+        "change #prov": "checkProvince",
     },
 
     checkVisibility: function(){
         if($("[name='visibility']").val() == "Chosen Experts"){
             this.renderAuthors();
             $("#threadPeople").show();
+            $(".provinceSearch").show();
+           	$(".chzn-select").chosen();
+
         }
         else{
             $("#threadPeople").hide();
+            $("#provinceSearch").hide();
         }
+    },
+
+    checkProvince: function(){
+        this.renderAuthors();
     },
     
     validate: function(){
@@ -77,8 +86,21 @@ ThreadEditView = Backbone.View.extend({
     },
     
     renderAuthorsWidget: function(){
+        var checkProvPeople = this.allPeople.models.slice();
+        var province = $("#prov").val();
         var left = _.pluck(this.model.get('authors'), 'name');
+        for (i = 0; i < checkProvPeople.length; i++) {
+            if(province == "All"){
+                break;
+            }
+            if(checkProvPeople[i].get('province') != province && checkProvPeople[i].get('province') != ""){
+                checkProvPeople.splice(i,1);
+                i--;
+            }
+        }
+        checkProvPeople = _.pluck(_.pluck(checkProvPeople, 'attributes'),'name');
         var right = _.difference(this.allPeople.pluck('name'), left);
+        right = _.intersection(right,checkProvPeople);
         var html = HTML.Switcheroo(this, 'authors.name', {name: 'author',
                                                           'left': left,
                                                           'right': right
@@ -88,10 +110,6 @@ ThreadEditView = Backbone.View.extend({
     },
     
     renderAuthors: function(){
-        if(this.allPeople != null && this.allPeople.length > 0){
-            this.renderAuthorsWidget();
-        }
-        else{
             this.allPeople = new People();
             this.allPeople.roles = ["Expert"];
             this.allPeople.fetch();
@@ -100,7 +118,6 @@ ThreadEditView = Backbone.View.extend({
                     this.renderAuthorsWidget();
                 }
             }, this);
-        }
     },
     
     render: function(){

@@ -7,12 +7,12 @@ PostView = Backbone.View.extend({
     
     initialize: function(options){
         this.parent = options.parent;
-	if(options.isDialog != undefined){
-            this.isDialog = options.isDialog;
+	    if(options.isDialog != undefined){
+                this.isDialog = options.isDialog;
         }
-	if(this.model.isNew()){
-	    this.render();
-	}
+	    if(this.model.isNew()){
+	        this.render();
+	    }
         if(this.isDialog){
             $('#submitPost').remove();
         }
@@ -26,16 +26,16 @@ PostView = Backbone.View.extend({
     submitPost: function(){
         this.model.save();
     //    this.parent.$("#personRows").append(this.$el);
-	this.parent.addNewRow();
+	    this.parent.addNewRow();
 
     },
 
     render: function(){
         var classes = new Array();
         var isMine = {"isMine": false};
-	if(this.model.get('author').id == me.id){
-             isMine.isMine = true;
-	}
+	    if(this.model.get('author').id == me.id){
+                 isMine.isMine = true;
+	    }
         var mod = _.extend(this.model.toJSON(), isMine);
         this.el.innerHTML = this.template(mod);
         return this.$el;

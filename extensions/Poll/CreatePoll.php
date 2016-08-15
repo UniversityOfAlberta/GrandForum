@@ -313,7 +313,8 @@ class CreatePoll extends SpecialPage{
 							</td>
 							<td>");
 		$groups = $wgUser->getGroups();
-		if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
+		//print_r($groups);
+		/*if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
 		    $groups[] = "Student";
 		}
 		$nPerCol = ceil(count($groups)/3);
@@ -367,18 +368,18 @@ class CreatePoll extends SpecialPage{
 			}
 			$i++;
 		}
-		
+*/		
 		$wgOut->addHTML("<table border='0' cellspacing='2' width='500'>
 				<tr>
 					<td colspan='3'><input type='checkbox' name='groups[]' value='all' /> All Users</td>\n");
 			$i = 0;
-			foreach($groups as $group){
+			/*foreach($groups as $group){
 				if($i % 3 == 0){
 					$wgOut->addHTML("</tr><tr>\n");
 				}
 				$wgOut->addHTML("<td><input type='checkbox' name='groups[]' value='$group' /> $group</td>\n");
 				$i++;
-			}
+			}*/
 			$wgOut->addHTML("</tr></table>\n");
 		$wgOut->addHTML("				
 							</td>

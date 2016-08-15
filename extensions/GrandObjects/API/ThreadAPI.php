@@ -18,15 +18,25 @@ class ThreadAPI extends RESTAPI {
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));
         $thread->setUserId($this->POST('author')->id);
-	$visibility = $this->POST('visibility');
-	if($visibility == "Chosen Experts"){
-	    $authors = $this->POST('authors');
-	    $authors[] = $me;
-            $thread->setUsers($authors);
-	}
+	    $visibility = $this->POST('visibility');
+	    if($visibility == "Chosen Experts"){
+	        $authors = $this->POST('authors');
+	        $authors[] = $me;
+                $thread->setUsers($authors);
+	    }
         $status = $thread->create();
         if($status === false){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be created");
+        }
+	    $thread = Thread::newFromTitle($this->POST('title'));
+        if(!$me->isRoleAtLeast(MANAGER)){
+            $people = Person::getAllPeople();
+            foreach($people as $person){
+		        if($person->isRoleAtLeast(MANAGER)){
+                            //Notification::addNotification($me,$person,"New request for expert from {$me->getNameForForms()}", "{$me->getNameForForms()} has requested for an expert", "{$thread->getUrl()}");
+		            Notification::addNotification($me,$person,"New request for expert from {$me->getNameForForms()}", "{$me->getNameForForms()} has requested for an expert", "{$thread->getUrl()}");
+		        }
+            }
         }
         return $status->toJSON();
     }
@@ -34,20 +44,32 @@ class ThreadAPI extends RESTAPI {
     function doPUT(){
         $me = Person::newFromWgUser();
         $thread = Thread::newFromId($this->getParam('id'));
-        if(!in_array($this->POST('roles'),$me->getAllowedRoles()) && $this->POST('roles') != ""){
-            $this->throwError("You cannot use select that role");
-        }
+	    $visibility = $this->POST('visibility');
         if($thread == null || $thread->getTitle() == ""){
             $this->throwError("This thread does not exist");
         }
         elseif(!$thread->canEdit()){
             $this->throwError("You are not allowed to edit this thread");
         }
-        if(count($this->POST('authors')) == 0){
-            $thread->setUsers(array($me));
+        if($visibility == "All Experts"){
+            $thread->setUsers(array());
         }
+	    else{
+	        $authors = $this->POST('authors');
+            if(count($authors)>0){
+                $previous_authors = $thread->getUsers();
+                $ids = array();
+                foreach($previous_authors as $person){
+                    $ids[] = $person->getId();
+                }
+                if(!in_array($me->getId(), $ids)){
+	                $authors[] = $me;
+                }
+                $thread->setUsers($authors);
+            }
+	    }
         $thread->setTitle($this->POST('title'));
-        $thread->setUsers($this->POST('authors'));
+        $thread->setCategory($this->POST('category'));
         $status = $thread->update();
         if(!$status){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be updated");

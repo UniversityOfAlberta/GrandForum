@@ -33,6 +33,71 @@ class CAPSRegister extends SpecialPage{
     
     function createForm(){
         global $wgLang;
+        $englishTerms = "Consent Form for Website
+            <br /><br />
+            Mifepristone Implementation Research in Canada<br />
+            (The CART-Mife Study)<br /><br />
+
+            <b>What is the purpose of the study?</b><br />
+            The purpose of this study is to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone. We invite you to post information on the Canadian Abortion Providers Support (CAPS) website about your positive and negative experiences, challenges and helpful tips for providing medical abortion. We will aggregate site posts to advocate for policy, system and service improvements.<br /><br />
+	
+           <b> Who is conducting this study?</b><br />
+            This study is being conducted by researchers at UBC and Canadian universities in collaboration with national professional organizations, including the Society of Obstetricians and Gynaecologists of Canada, College of Family Physicians of Canada, the Canadian Pharmacists’ Association, and the National Abortion Federation.
+<br /><br />
+
+            <b>Principal Investigator:	</b>	Dr. Wendy Norman, Associate Professor, 
+                                                 		Dept. of Family Practice, Faculty of Medicine, UBC <br /><br />
+
+            <b>Co-investigators:     </b>    	Sheila Dunn, U. of Toronto; Edith Guilbert, INSPQ; Melissa Brooks, Dalhousie; Dustin Costescu, McMaster; Regina Renner, UBC; Ashley Waddington, Queen’s U.; Angel Foster, U. of Ottawa; Flora Teng, UBC; Judith Soon, UBC; Stirling Bryan, UBC; Janusz Kaczorowski, U. of Montreal; Rollin Brant, UBC; Eleni Stroulia, U. of Alberta; Sarah Munro, UBC. 
+<br /><br />
+            <b>Who is funding this study?</b><br />
+            This study is sponsored by the
+            Canadian Institutes of Health Research 
+            Michael Smith Foundation for Health Research 
+            BC Women’s Hospital and Health Centre 
+            The College of Family Physicians of Canada
+            The Society of Obstetricians and Gynaecologists of Canada
+            The Canadian Pharmacists’ Association
+            The National Abortion Federation<br /><br />
+
+           <b> What happens if you say, “Yes I want to join CAPS and participate in this study”?</b><br />
+            If you decide to become a member of the CAPS website, we will collect data including: your demographic information; reports of challenges, barriers and facilitators posted on the website [i.e. “Ask an Expert,” “Share a Case or Experience”]; responses to a weekly 1-question poll (based on the surveys); and participant usage statistics. We will also collect your contact information to inform you of future opportunities to participate in abortion related research.<br /><br />
+
+
+            <b>How will the study results be used?</b><br />
+            The main results of our study will be presented to health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. We will also report aggregate findings (with no personal identifiers) in academic journals and conferences.  <br /><br />
+
+            <b>What are the potential risks of participating?</b><br />
+            We do not believe that participating in this study represents any risk to you. <br /><br />
+
+            <b>What are the potential benefits of participating?</b><br />
+            Participants will contribute to knowledge of the barriers and challenges faced when providing medical abortion care in Canada. Findings of the study may be used to recommend policy or service delivery changes.<br /><br />
+
+            <b>How will your identity be protected?</b><br />
+            You will be assigned a unique study number. Only this number will be used on any research-related information collected about you during the course of this study, so that your identity [i.e. your name, email address, or any other information that could identify you] will be kept confidential. Information that contains your identity, such as your email address, will remain only with the Principal Investigator and/or designate.<br />
+
+            Documents will only be identified by code numbers and will be kept in a locked filing cabinet. Your name and identifying information will not be included anywhere in the analysis or report for this study. Computer files will be password-protected on a password-protected computer and stored securely. <br /><br />
+
+           <b> Who can you contact if you have questions about the study?</b><br />
+            If you have any concerns or complaints about your rights as a research participant and/or your experiences while participating in this study, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics by e-mail at <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> or by phone at 604-822-8598 (Toll Free: 1-877-822-8598).<br /><br />
+
+            <b>Consent:</b><br />
+            Taking part in this study is entirely up to you. You have the right to refuse to participate in this study. If you decide to take part, you may choose to withdraw from the study at any time without giving a reason and without any negative impact on your access to the Canadian Abortion Providers Support (CAPS) website.
+            ";
+        $frenchTerms = "Formulaire de consentement pour le site Web<br /><br />Mifépristone mise en œuvre de la recherche au Canada <br />
+        (L'étude CART-Mife) <br /> <br />
+<b> Quel est le but de l'étude? </b> <br />
+Le but de cette étude est d'identifier et de traiter les facilitateurs et les obstacles à l'initiation réussie et la prestation continue des services d'avortement médicamenteux utilisant la mifépristone. Nous vous invitons à publier des informations sur les fournisseurs d'avortement au Canada Support (CAPS) site sur vos expériences positives et négatives, des défis et des conseils utiles pour fournir un avortement médicamenteux. Nous allons regrouper les messages du site pour préconiser des améliorations politiques, systèmes et services. <br /> <br />
+<b> Qui mène cette étude? </b> <br />
+Cette étude est menée par des chercheurs de l'UBC et les universités canadiennes, en collaboration avec les organisations professionnelles nationales, y compris la Société des obstétriciens et gynécologues du Canada, Collège des médecins de famille du Canada, l'Association des pharmaciens du Canada, et la Fédération nationale de l'avortement.<br /> <br /><b> Chercheur principal: </b> Dr. Wendy Norman, professeur agrégé,Département de médecine familiale, Faculté de médecine, UBC <br /> <br /><b> Co-chercheurs: </b> Sheila Dunn, Université de Toronto; Edith Guilbert, INSPQ; Melissa Brooks, Dalhousie; Dustin Costescu, McMaster; Regina Renner, UBC; Ashley Waddington, U Queen .; Ange Foster, U. d'Ottawa; Flora Teng, UBC; Judith Bientôt, UBC; Stirling Bryan, UBC; Janusz Kaczorowski, U. de Montréal; Rollin Brant, UBC; Eleni Stroulia, U. de l'Alberta; Sarah Munro, UBC.<br /> <br /><b> Qui finance cette étude? </b> <br />Cette étude est parrainée par le Instituts de recherche en santé du Canada Fondation Michael Smith pour la recherche en santé Centre hospitalier et de la santé des femmes de la C.-B. Le Collège des médecins de famille du Canada La Société des obstétriciens et gynécologues du Canada L'Association des pharmaciens du Canada La Fédération nationale de l'avortement <br /> <br />
+<b> Que se passe si vous dites: «Oui, je veux rejoindre CAPS et de participer à cette étude»? </b> <br />
+Si vous décidez de devenir un membre du site CAPS, nous allons recueillir des données, y compris: vos renseignements démographiques; rapports des défis, les obstacles et les facilitateurs sur le site Web [à savoir «Demandez à un expert», «Partager un cas ou de l'expérience]; les réponses à une semaine 1 question sondage (basé sur les enquêtes); et les statistiques d'utilisation des participants. Nous allons également recueillir vos coordonnées pour vous informer de futures occasions de participer à l'avortement recherche liée. <br /> <br />
+<b> Comment les résultats de l'étude seront utilisés? </b> <br />Les principaux résultats de notre étude seront présentés au système et aux politiques de la santé des dirigeants pour améliorer les politiques et les systèmes qui prennent en charge votre prestation de sécurité, l'accessibilité des services d'avortement médical. Nous allons également rendre compte des résultats globaux (sans identificateurs personnels) dans des revues spécialisées et des conférences. <br /> <br /><b> Quels sont les risques potentiels de la participation? </b> <br />
+Nous ne croyons pas que la participation à cette étude représente un risque pour vous. <br /> <br /><b> Quels sont les avantages potentiels de la participation? </b> <br />
+Les participants contribueront à la connaissance des obstacles et des défis rencontrés lors de la prestation de soins de l'avortement médicamenteux au Canada. Les résultats de l'étude peuvent être utilisés pour recommander des changements de politique de livraison ou de service. <br /> <br />
+<b> Comment votre identité soit protégée? </b> <br />Vous recevrez un numéro d'étude unique. Seul ce numéro sera utilisé sur toute information liée à la recherche recueillis à votre sujet au cours de cette étude, de sorte que votre identité [à savoir votre nom, votre adresse e-mail, ou toute autre information qui pourrait vous identifier] seront gardées confidentielles. L'information qui contient votre identité, comme votre adresse e-mail, restera seulement avec le chercheur principal et / ou désigner. <br />Les documents ne seront identifiés par des numéros de code et seront conservés dans un classeur verrouillé. Votre nom et les informations d'identification ne sera pas incluse partout dans l'analyse ou un rapport pour cette étude. Les fichiers informatiques seront sur un ordinateur protégé par mot de passe et stockés en toute sécurité protégé par mot de passe. <br /> <br /><b> Qui peut vous contacter si vous avez des questions au sujet de l'étude? </b> <br />
+Si vous avez des préoccupations ou des plaintes au sujet de vos droits en tant que participant à la recherche et / ou vos expériences tout en participant à cette étude, veuillez communiquer avec la recherche Participant Plainte ligne à l'Université de la Colombie-Britannique Bureau de l'éthique de la recherche par e-mail à l'adresse <a href='mailto: RSIL@ors.ubc.ca'> RSIL@ors.ubc.ca </a> ou par téléphone au 604-822-8598 (sans frais: 1-877-822-8598). <br /><br /><b> Consentement: </b> <br />
+Prendre part à cette étude est entièrement à vous. Vous avez le droit de refuser de participer à cette étude. Si vous décidez de participer, vous pouvez choisir de se retirer de l'étude à tout moment sans donner de raison et sans aucun impact négatif sur votre accès aux services d'avortement de soutien du Canada (CAPS) site web.";
         if($wgLang->getCode() == "en"){
             $formContainer = new FormContainer("form_container");
             $formTable = new FormTable("form_table");
@@ -166,16 +231,7 @@ class CAPSRegister extends SpecialPage{
             $termsField = new CustomElement("terms", "terms", "terms", 
                                             
                                                " <div class='TermsOuterDiv'>
-                                                This agreement establishes the terms and conditions under which the Canadian Abortion Providers’ Support - Communauté de pratique canadienne sur l'avortement (CAPS-CPCA) can acquire and use data from the other party. Either party may be a provider of data to the other, or a recipient of data from the other.
-    The confidentiality of data pertaining to individuals will be protected as follows:<br />
-    The data recipient will not release the names of individuals, or information that could be linked to an individual, nor will the recipient present the results of data analysis (including maps) in any manner that would reveal the identity of individuals.<br />
-    The data recipient will not release individual addresses, nor will the recipient present the results of data analysis (including maps) in any manner that would reveal individual addresses.<br />
-    Both parties shall comply with all Federal and State laws and regulations governing the confidentiality of the information that is the subject of this Agreement.
-    The data recipient will not release data to a third party without prior approval from the data provider.<br />
-    The data recipient will not share, publish, or otherwise release any findings or conclusions derived from analysis of data obtained from the data provider without prior approval from the data provider.<br />
-    Data transferred pursuant to the terms of this Agreement shall be utilized solely for the purposes set forth in the “Partnership Agreement”.
-    All data transferred to CAPS shall remain the property of CAPS and shall be returned to CAPS upon termination of the Agreements.
-    Any third party granted access to data, as permitted under condition #2, above, shall be subject to the terms and conditions of this agreement. Acceptance of these terms must be provided in writing by the third party before data will be released.</div>
+                                                $englishTerms</div>
                                              
                                                                                             
                                              ");
@@ -327,16 +383,7 @@ class CAPSRegister extends SpecialPage{
             $termsField = new CustomElement("terms", "terms", "terms", 
                                             
                                                " <div class='TermsOuterDiv'>
-                                                Cet accord établit les modalités et les conditions dans lesquelles le soutien des fournisseurs d'avortement canadiens - Communauté de pratique canadienne sur l'avortement (CAPS-ACEP) peuvent acquérir et utiliser les données de l'autre partie. Chacune des parties peut être un fournisseur de données à l'autre, ou d'un destinataire des données de l'autre.
-    La confidentialité des données relatives aux individus seront protégés comme suit: <br />
-    Le destinataire des données ne sera pas communiqué les noms des personnes ou des informations qui pourraient être liés à un individu, ni ne le bénéficiaire présentera les résultats de l'analyse des données (y compris les cartes) de quelque manière qui révéleraient l'identité des personnes. <br />
-    Le destinataire des données ne sera pas communiqué des adresses individuelles, ni ne le bénéficiaire présentera les résultats de l'analyse des données (y compris les cartes) de quelque manière qui pourrait révéler des adresses individuelles. <br />
-    Les deux parties doivent se conformer à toutes les lois et règlements fédéraux et étatiques régissant la confidentialité de l'information qui fait l'objet du présent Accord.
-    Le destinataire des données ne sera pas communiqué de données à un tiers sans l'autorisation préalable du fournisseur de données. <br />
-    Le destinataire des données ne sera pas partager, publier, ou autrement libérer toutes les constatations ou conclusions tirées de l'analyse des données obtenues à partir du fournisseur de données sans l'approbation préalable du fournisseur de données. <br />
-    Les données transférées conformément aux dispositions du présent Accord seront utilisés uniquement aux fins énoncées dans le 'accord de partenariat'.
-    Toutes les données transférées à CAPS restent la propriété du CAPS et doivent être retournés à CAPS à la résiliation des accords.
-    Tout tiers accordé l'accès aux données, comme autorisé par la condition n ° 2, ci-dessus, sont soumis aux termes et conditions de cet accord. L'acceptation de ces conditions doit être fournie par écrit par le tiers avant que les données seront publiées.</div>
+                                                $frenchTerms</div>
                                              
                                                                                             
                                              ");

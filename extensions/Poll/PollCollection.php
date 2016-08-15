@@ -49,8 +49,28 @@ class PollCollection {
 		}
 		return null;
 	}
-	
-	function getPolls(){
+
+	static function getRandom(){
+            $weekNumber = date("W");
+            $seedNumber = srand($weekNumber);
+	        $randomNumber = rand();
+            $data = DBFunctions::select(array('grand_poll_collection'),
+                                            array('*'),
+                                            array()); 
+            $polls = array();
+            foreach($data as $row){
+                $poll = self::newFromId($row['collection_id']);
+                if(!$poll->isPollExpired()){
+                    $polls[] = $poll;
+                }
+            }
+            $pollCount = count($polls);
+            $position = $randomNumber % $pollCount;
+            return $polls[$position];
+            
+        }
+
+     	function getPolls(){
 	    if($this->polls == null){
 	        $rows = DBFunctions::select(array('grand_poll'),
 	                                    array('poll_id'),
