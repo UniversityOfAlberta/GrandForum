@@ -61,7 +61,7 @@ class Report extends AbstractReport{
         if($person->isRole(HQP) && $person->isSubRole("SSA")){
             foreach($person->getProjects() as $project){
                 if(strstr($project->getName(), "SSA2016") !== false){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSA Report" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSAReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} Final Report", "{$url}SSAReport&project={$project->getName()}", $selected);
                 }
             }
@@ -70,7 +70,7 @@ class Report extends AbstractReport{
             foreach($hqps as $hqp){
                 if($hqp->isSubRole("SSA")){
                     if(strstr($project->getName(), "SSA2016") !== false){
-                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSA Report" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSAReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} Final Report", "{$url}SSAReport&project={$project->getName()}", $selected);
                     }
                 }
