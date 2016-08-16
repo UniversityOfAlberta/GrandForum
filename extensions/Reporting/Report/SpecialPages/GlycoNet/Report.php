@@ -60,12 +60,12 @@ class Report extends AbstractReport{
                 }
             }
         }*/
-       /* if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
+        if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
             $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') || 
             $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Catalyst", "{$url}CatalystReport", $selected);
-        }
+        }/*
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') || 
            $person->isRoleAtLeast(MANAGER)){
