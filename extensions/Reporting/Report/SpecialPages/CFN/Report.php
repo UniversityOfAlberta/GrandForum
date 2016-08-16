@@ -49,17 +49,19 @@ class Report extends AbstractReport{
         }
         foreach($projects as $project){
             if($person->isRoleDuring(CI, REPORTING_CYCLE_START, REPORTING_CYCLE_END, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
-                
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
+                if(strstr($project->getName(), "SSA2016") === false){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
+                    
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
+                }
             }
         }
         if($person->isRole(HQP) && $person->isSubRole("SSA")){
             foreach($person->getProjects() as $project){
                 if(strstr($project->getName(), "SSA2016") !== false){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSA Report")) ? "selected" : false;
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSA Report" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} Final Report", "{$url}SSAReport?project={$project->getName()}", $selected);
                 }
             }
@@ -67,15 +69,10 @@ class Report extends AbstractReport{
         if(count($hqps) > 0){
             foreach($hqps as $hqp){
                 if($hqp->isSubRole("SSA")){
-                    $ssaActive = false;
-                    foreach($hqp->leadership() as $project){
-                        $ssaActive = ($ssaActive || (!$project->isDeleted() && strstr($project->getName(), "SSA") !== false));
+                    if(strstr($project->getName(), "SSA2016") !== false){
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSA Report" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} Final Report", "{$url}SSAReport?project={$project->getName()}", $selected);
                     }
-                    if($ssaActive){
-                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReport")) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SSA Report", "{$url}HQPReport", $selected);
-                    }
-                    break;
                 }
             }
             foreach($hqps as $hqp){
