@@ -60,7 +60,7 @@ class Report extends AbstractReport{
                 }
             }
         }*/
-        if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
+       /* if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
             $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') || 
             $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport")) ? "selected" : false;
@@ -71,7 +71,7 @@ class Report extends AbstractReport{
            $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport", $selected);
-        }
+        }*/
         /*if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || $person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
