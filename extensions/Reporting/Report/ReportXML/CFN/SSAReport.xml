@@ -26,7 +26,7 @@
         </ReportItem>
         <ReportItem id="identity_head" type="StaticReportItem">
             <![CDATA[
-                <h2>Section 1 - Project Information</h2>
+                <h1><b>Section 1 - Project Information</b></h1>
                 <table class='wikitable'>
                     <tr>
                         <td style='width:150px;'><b>Student Name</b></td>
@@ -103,7 +103,7 @@
         </ReportItem>
         <ReportItem id="assessment_head" type="StaticReportItem">
             <![CDATA[
-                <h2>Section 3 - Alignment with CFN</h2>
+                <h1><b>Section 3 - Alignment with CFN</b></h1>
                 <p>Please assess your student’s activities/project against the following</p>
                 <table class='wikitable' width="650px">
             ]]>
@@ -181,14 +181,14 @@
         </ReportItem>
         <ReportItem id="learning" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_LEARNING" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h2>Section 4 - Learning Plan</h2>
+                <h1><b>Section 4 - Learning Plan</b></h1>
                 <p>Please upload your completed Learning Plan that was submitted at the time of application.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="institution" type="UploadReportItem" blobType="BLOB_RAW" blobItem="SSA_INSTITUTION" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h2>Section 5 - Institution Template</h2>
+                <h1><b>Section 5 - Institution Template</b></h1>
                 <i style='font-size:1.5em;'>To be completed by Host Institution</i>
                 <p>Download <a href='{$wgServer}{$wgScriptPath}/data/SSA Institution.doc'>SSA Institution Template</a> and have the student's institution fill out the form, and then upload it as a pdf.</p>
                 {$item}
