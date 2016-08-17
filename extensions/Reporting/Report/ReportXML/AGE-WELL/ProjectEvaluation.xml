@@ -75,6 +75,7 @@
                         <li>Case study (optional)- a short vignette that describes an outstanding work or achievement by the project.</li>
                     </ol>
                 </p>
+                <p>For more information on the development of this evaluation or instructions please watch the Webinar posted on the Intranet. You can also find a Word version of the form here if you would like to work offline.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -121,7 +122,7 @@
                 <p>How many products is your project developing?</p> {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|PRL Level" types="Text|Select(INNOVATION RESEARCH (PRL 1),INCUBATOR (PRL 2-3),PROTOTYPE (PRL 4-5),EXPERIMENTAL IMPLEMENTATION (PRL 6-7),OUTCOMES (PRL 8-9))">
+        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Stage|PRL Level" types="Text|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)">
             <![CDATA[
                 <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product(s) currently at:</h3>
                     <b>PRL Levels</b>
@@ -132,6 +133,7 @@
                         <li><b>EXPERIMENTAL IMPLEMENTATION</b> (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment</li>
                         <li><b>OUTCOMES</b> (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)</li>
                     </ul>
+                    <p>
                 {$item}
             ]]>
         </ReportItem>
