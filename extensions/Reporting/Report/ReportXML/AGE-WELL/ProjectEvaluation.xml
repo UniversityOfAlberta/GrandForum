@@ -146,7 +146,7 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Please provide any additional details needed to support the information provided in table below.</p>
+                <p>Please provide any additional details needed to support the information provided in table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -155,9 +155,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -309,7 +309,7 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details needed to support the information in the table below. </p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -318,9 +318,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -484,7 +484,7 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Please provide any additional details needed to support the information in the table below. </p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -493,9 +493,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -700,7 +700,7 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details needed to support the information in the tables below. </p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -709,9 +709,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -923,7 +923,7 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Please provide any additional details needed to support the information in the tables below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -932,9 +932,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -998,12 +998,12 @@
         </ReportItem>
         <ReportItem id="rev_1_5_m2c" blobItem="REV_1_5_M2C" type="Integer" size="3">
             <![CDATA[
-                    Industry member: {$item}<br />
+                    industry member: {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2d" blobItem="REV_1_5_M2D" type="Integer" size="3">
             <![CDATA[
-                    Industry member: {$item}
+                    policymaker: {$item}
                     </td>
                 </tr>
             ]]>
@@ -1150,7 +1150,7 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details needed to support the information in the table below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -1159,9 +1159,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -1225,12 +1225,12 @@
         </ReportItem>
         <ReportItem id="plan_1_5_m2c" blobItem="PLAN_1_5_M2C" type="Integer" size="3">
             <![CDATA[
-                    Industry member: {$item}<br />
+                    industry member: {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m2d" blobItem="PLAN_1_5_M2D" type="Integer" size="3">
             <![CDATA[
-                    Industry member: {$item}
+                    policymaker: {$item}
                     </td>
                 </tr>
             ]]>
@@ -1384,7 +1384,7 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Please provide any additional details needed to support the information in the table below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -1393,9 +1393,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -1512,7 +1512,7 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details to support the information in the table below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -1521,9 +1521,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
                         <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
                         <th align="left" width="10%">Metrics</th>
                     </tr>
@@ -1647,7 +1647,7 @@
         <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
             <![CDATA[
                 <h2>Review scorecard</h2>
-                <p>Please provide any additional details to support the information in the table below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -1656,9 +1656,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="15%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="15%">Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="15%">Project Activities - completed to generate outputs</th>
+                        <th align="left" width="15%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="15%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="15%">Completed Activities - completed to generate outputs</th>
                         <th align="left" width="15%">Transdisciplinary Activities - required to generate outputs & collaborations</th>
                         <th align="left" width="15%">Inputs - resources utilized to carry out project activities</th>
                         <th align="left" width="15%">Metrics</th>
@@ -1768,7 +1768,7 @@
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details needed to support the information in the table below.</p>
+                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -1777,9 +1777,9 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="15%">Objectives - main objectives of project over last year</th>
-                        <th align="left" width="15%">Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="15%">Project Activities - required to generate outputs</th>
+                        <th align="left" width="15%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="15%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="15%">Planned Activities - required to generate outputs</th>
                         <th align="left" width="15%">Transdisciplinary Activities - required to generate outputs & collaborations</th>
                         <th align="left" width="15%">Inputs - resources required to carry out project activities</th>
                         <th align="left" width="15%">Metrics</th>
