@@ -135,6 +135,42 @@
                     </ul>
                     <p>
                 {$item}
+                <script type='text/javascript'>
+                    setInterval(function(){
+                        $('#table_AssessmentReadiness_prl tr.obj').each(function(i, el){
+                            var selects = $('select', $(el));
+                            var spans = $('span.recommended', $(el));
+                            var stage = $(selects[0]);
+                            var level = $(selects[1]);
+                            var val = stage.val();
+                            var recommended = "1";
+                            
+                            if(spans.length > 0){
+                                spans.remove();
+                            }
+                            
+                            switch(val){
+                                case "INNOVATION":
+                                    recommended = "1";
+                                    break;
+                                case "INCUBATOR":
+                                    recommended = "2-3"
+                                    break;
+                                case "PROTOTYPE":
+                                    recommended = "4-5";
+                                    break;
+                                case "EXPERIMENTAL IMPLEMENTATION":
+                                    recommended = "6-7"
+                                    break;
+                                case "OUTCOMES":
+                                    recommended = "8-9";
+                                    break;
+                            }
+                            
+                            level.after("<span class='recommended' style='width:50px;display:inline-block;font-weight:bold;vertical-align:middle;line-height:25px;'>(" + recommended + ")</span>");
+                        });
+                    }, 100);
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
