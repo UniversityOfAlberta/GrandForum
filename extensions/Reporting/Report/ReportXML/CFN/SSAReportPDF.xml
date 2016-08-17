@@ -83,15 +83,15 @@
         </ReportItem>
         <ReportItem id="assessment_head" type="StaticReportItem">
             <![CDATA[
-                <h3>Please assess your student’s activities/project against the following</h3>
-                <table class='wikitable'>
+                <h2>Alignment with CFN</h2>
+                <table class='wikitable' rules="all" box="all" width="100%">
             ]]>
         </ReportItem>
         <ReportItem id="priorities" type="RadioReportItem" options="Matching care to values|Empowering, engaging and supporting patients and their families/caregivers|Improving clinical outcomes|Improving care across the continuum" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_PRIORITIES">
             <![CDATA[
                 <tr>
                     <td width="50%" valign='top'>
-                        <b>CFN Strategic Priorities</b> - Which ONE CFN strategic priority does your student’s activities/project most closely align with: 
+                        <b>CFN Strategic Priorities</b>
                         <div style='margin-left:10px;'>{$item}</div>
                     </td>
             ]]>
@@ -99,7 +99,7 @@
         <ReportItem id="themes" type="RadioReportItem" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_THEMES">
             <![CDATA[
                     <td width="50%" valign='top'>
-                        <b>CFN Research Themes</b> - Which ONE research theme does your student’s activities/project most closely align with:
+                        <b>CFN Research Themes</b>
                         <div style='margin-left:10px;'>{$item}</div>
                     </td>
                 </tr>
@@ -109,7 +109,7 @@
             <![CDATA[
                 <tr>
                     <td valign='top'>
-                        <b>Setting of Care</b> - Which ONE setting of care does your student’s work that your project will most significantly impact:
+                        <b>Setting of Care</b>
                         <div style='margin-left:10px;'>{$item}</div>
                     </td>
             ]]>
@@ -117,7 +117,7 @@
         <ReportItem id="impact" type="RadioReportItem" options="Patients, their families and informal caregivers/support systems (volunteer)|Health care professionals and caregivers (paid)|Health care facilities|Health care system" orientation="vertical" blobType="BLOB_TEXT" blobItem="SSA_IMPACT">
             <![CDATA[
                     <td valign='top'>
-                        <b>Focus of Impact</b> - Highlight ONE primary focus of impact for your project:
+                        <b>Focus of Impact</b>
                         <div style='margin-left:10px;'>{$item}</div>
                     </td>
                 </tr>
