@@ -39,6 +39,7 @@ class CheckboxReportItem extends AbstractReportItem {
 	
 	function renderForPDF(){
 	    global $wgOut;
+	    $delimiter = $this->getAttr("delimiter", ", ");
 	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));
 	    $val = $this->getBlobValue();
         if(is_array($val)){
@@ -51,7 +52,7 @@ class CheckboxReportItem extends AbstractReportItem {
 	    	$val = array("N/A");
 	    }
 
-	    $item = $this->processCData("<i>".implode(", ", $val)."</i>");
+	    $item = $this->processCData("<i>".implode($delimiter, $val)."</i>");
 		$wgOut->addHTML($item);
 	}
 }

@@ -85,7 +85,7 @@
                 <p>Projects can be at different stages of product readiness, from concept to deployment and adoption.  Please refer to the guidelines in order to define which stage best characterises your project.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="product" type="Checkbox" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product- a service or information product that will be used by another entity">
+        <ReportItem id="product" type="Checkbox" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product - a service or information product that will be used by another entity">
             <![CDATA[
                 <h3>What kind of product(s) are you developing (check all that apply):</h3>
                 {$item}
@@ -1944,12 +1944,12 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <!--ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-    </ReportSection-->
+    </ReportSection>
 </Report>
