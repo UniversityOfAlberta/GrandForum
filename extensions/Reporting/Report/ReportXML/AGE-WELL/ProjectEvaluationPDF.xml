@@ -68,12 +68,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left">Completed Activities - completed to generate outputs</th>
-                        <th align="left">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Completed Objectives - main objectives of project over last year</th>
+                        <th>Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th>Completed Activities - completed to generate outputs</th>
+                        <th>Inputs - resources utilized to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -235,12 +235,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left">Planned Activities - required to generate outputs</th>
-                        <th align="left">Inputs - resources required to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Planned Objectives - main objectives of project over last year</th>
+                        <th>Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th>Planned Activities - required to generate outputs</th>
+                        <th>Inputs - resources required to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -399,12 +399,12 @@
             <![CDATA[
                  <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left">Completed Activities - completed to generate outputs</th>
-                        <th align="left">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Completed Objectives - main objectives of project over last year</th>
+                        <th>Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th>Completed Activities - completed to generate outputs</th>
+                        <th>Inputs - resources utilized to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -619,12 +619,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left">Planned Activities - required to generate outputs</th>
-                        <th align="left">Inputs - resources required to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Planned Objectives - main objectives of project over last year</th>
+                        <th>Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th>Planned Activities - required to generate outputs</th>
+                        <th>Inputs - resources required to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -836,12 +836,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left">Completed Activities - completed to generate outputs</th>
-                        <th align="left">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Completed Objectives - main objectives of project over last year</th>
+                        <th>Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th>Completed Activities - completed to generate outputs</th>
+                        <th>Inputs - resources utilized to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1067,12 +1067,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left">Planned Activities - required to generate outputs</th>
-                        <th align="left">Inputs - resources required to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Planned Objectives - main objectives of project over last year</th>
+                        <th>Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th>Planned Activities - required to generate outputs</th>
+                        <th>Inputs - resources required to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1295,12 +1295,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left">Completed Activities - completed to generate outputs</th>
-                        <th align="left">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Completed Objectives - main objectives of project over last year</th>
+                        <th>Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th>Completed Activities - completed to generate outputs</th>
+                        <th>Inputs - resources utilized to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1427,12 +1427,12 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left">Planned Activities - required to generate outputs</th>
-                        <th align="left">Inputs - resources required to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Planned Objectives - main objectives of project over last year</th>
+                        <th>Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th>Planned Activities - required to generate outputs</th>
+                        <th>Inputs - resources required to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1556,13 +1556,13 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left">Completed Activities - completed to generate outputs</th>
-                        <th align="left">Transdisciplinary Activities - required to generate outputs & collaborations</th>
-                        <th align="left">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Completed Objectives - main objectives of project over last year</th>
+                        <th>Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th>Completed Activities - completed to generate outputs</th>
+                        <th>Transdisciplinary Activities - required to generate outputs & collaborations</th>
+                        <th>Inputs - resources utilized to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1681,13 +1681,13 @@
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
-                        <th align="left">Category</th>
-                        <th align="left">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left">Planned Activities - required to generate outputs</th>
-                        <th align="left">Transdisciplinary Activities - required to generate outputs & collaborations</th>
-                        <th align="left">Inputs - resources required to carry out project activities</th>
-                        <th align="left">Metrics</th>
+                        <th>Category</th>
+                        <th>Planned Objectives - main objectives of project over last year</th>
+                        <th>Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th>Planned Activities - required to generate outputs</th>
+                        <th>Transdisciplinary Activities - required to generate outputs & collaborations</th>
+                        <th>Inputs - resources required to carry out project activities</th>
+                        <th>Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
