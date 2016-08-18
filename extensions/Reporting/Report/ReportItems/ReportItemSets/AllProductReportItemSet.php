@@ -14,7 +14,12 @@ class AllProductReportItemSet extends ReportItemSet {
 	if($coll == "false"){
 	    $coll = false;
 	}
-        $allPaper = Paper::getAllPapersByInstitutionDuring($category,$start,$end,true, $unis,$order);
+	if($uni == "All"){
+            $allPaper = Paper::getAllPapersDuring('all',$category,'all',$start,$end, false, true, $order, $coll);
+	}
+	else{
+            $allPaper = Paper::getAllPapersByInstitutionDuring($category,$start,$end,true, $unis,$order);
+	}
         foreach($allPaper as $paper){
             $tuple = self::createTuple();
             $tuple['person_id'] = $paper->getId();

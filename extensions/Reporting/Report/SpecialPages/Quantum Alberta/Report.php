@@ -28,6 +28,14 @@ class Report extends AbstractReport{
     }
     
     static function createSubTabs(&$tabs){
+	global $wgServer, $wgScriptPath, $wgTitle;
+	$person = Person::newFromWgUser();
+	$url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+	 if($person->isRoleAtLeast(MANAGER)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PIReport")) ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Publication Report", "{$url}PIReport", $selected);
+        }
+
         return true;
     }
     

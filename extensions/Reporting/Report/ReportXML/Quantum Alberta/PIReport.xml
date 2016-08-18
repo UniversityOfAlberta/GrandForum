@@ -8,7 +8,7 @@
         </Role>
     </Permissions>
     <ReportSection id='pi_report' type='EditableReportSection' title='Quantum Report' name='Quantum Report' blobSection="QUANTUM_REVIEW">
-	<ReportItem id="institution" type="SelectReportItem" blobItem="PI_REPORT_UNI" blobType="BLOB_TEXT" options="University of Alberta|University of Calgary|University of Lethbridge |National Institute for Nanotechnology|National Research Council">
+	<ReportItem id="institution" type="SelectReportItem" blobItem="PI_REPORT_UNI" blobType="BLOB_TEXT" options="All| University of Alberta|University of Calgary|University of Lethbridge |National Institute for Nanotechnology|National Research Council">
 	    <![CDATA[
         <table><tr>
             <td align='right'>Institution:</td><td> {$item}</td>

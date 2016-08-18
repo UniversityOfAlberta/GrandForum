@@ -509,15 +509,18 @@ class Paper extends BackboneModel{
             }
         }
         $papers = array();
-	$ids = implode($paperId, ",");
-	$sql = "SELECT id FROM grand_products WHERE id in ({$ids})";
-        if($order == "date" || $order == ""){
-            $sql.= "\nORDER BY `date` ASC";
-        }
-        else if($order == "date_reversed"){
-            $sql.= "\nORDER BY `date` DESC";
-        }
-	$data = DBFunctions::execSQL($sql);
+	$data = array();
+	if(count($paperId) > 0){
+	    $ids = implode($paperId, ",");
+	    $sql = "SELECT id FROM grand_products WHERE id in ({$ids})";
+            if($order == "date" || $order == ""){
+                $sql.= "\nORDER BY `date` ASC";
+            }
+            else if($order == "date_reversed"){
+                $sql.= "\nORDER BY `date` DESC";
+            }
+	    $data = DBFunctions::execSQL($sql);
+	}
         foreach($data as $row){
             $papers[] = Paper::newFromId($row['id']);
         }

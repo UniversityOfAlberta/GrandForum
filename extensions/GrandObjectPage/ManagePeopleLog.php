@@ -72,7 +72,7 @@ class ManagePeopleLog extends SpecialPage{
 
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ManagePeopleLog") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Manage People Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleLog", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Change Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleLog", $selected);
         }
         return true;
     }

@@ -78,7 +78,7 @@ class Duplicates extends SpecialPage{
 	    $person = Person::newFromWgUser($wgUser);
 	    if($person->isRoleAtLeast(MANAGER)){
 	        $selected = @($wgTitle->getText() == "Duplicates") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Duplicates", "$wgServer$wgScriptPath/index.php/Special:Duplicates", $selected);
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Data Quality Checks", "$wgServer$wgScriptPath/index.php/Special:Duplicates", $selected);
 	    }
 	    return true;
     }
