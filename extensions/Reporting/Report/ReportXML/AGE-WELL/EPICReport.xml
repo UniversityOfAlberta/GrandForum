@@ -39,6 +39,9 @@
                         <td align="right"><b>Name:</b></td><td>{$user_name}</td>
                     </tr>
                     <tr>
+                        <td align="right"><b>HQP Type:</b></td><td>{$user_sub_roles}</td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>Institution:</b></td><td>{$user_uni}</td>
                     </tr>
                     <tr>
