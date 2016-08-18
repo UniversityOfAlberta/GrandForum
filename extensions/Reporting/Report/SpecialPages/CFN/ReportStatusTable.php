@@ -39,6 +39,7 @@ class ReportStatusTable extends SpecialPage{
             Person::newFromId(325),
             Person::newFromId(347));
         $ssa = array();
+        $ssa2016 = array();
         foreach($hqps as $hqp){
             if($hqp->isSubRole('IFP')){
                 $ifpDeleted = false;
@@ -61,6 +62,11 @@ class ReportStatusTable extends SpecialPage{
                 }
             }
         }
+        foreach(Project::getAllProjects() as $project){
+            if(strstr($project->getName(), "Project") !== false){
+                $ssa2016[$project->getName()] = $project;
+            }
+        }
         $wgOut->addHTML("<div id='tabs'>
                             <ul>
                                 <li><a href='#final'>Final Project 2015</a></li>
@@ -71,15 +77,17 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
                                 <li><a href='#ifp2016_final_2016'>IFP Final 2016</a></li>
                                 <li><a href='#ssa'>SSA 2015</a></li>
+                                <li><a href='#ssa2016'>SSA 2016</a></li>
                             </ul>");
-        $this->addProjectTable(RP_FINAL_PROJECT,    'final', 2015);
-        $this->addProjectTable(RP_PROGRESS,         'progress', 2015);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',    $ifpFinal, 2015);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015', $ifpProgress, 2015);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',    $ifp2016Final, 2015);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016', $ifpProgress, 2016);
+        $this->addProjectTable(RP_FINAL_PROJECT,    'final',              2015);
+        $this->addProjectTable(RP_PROGRESS,         'progress',           2015);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',     $ifpFinal, 2015);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015',  $ifpProgress, 2015);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',     $ifp2016Final, 2015);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016',  $ifpProgress, 2016);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2016_final_2016', $ifpFinal, 2016);
-        $this->addTable(RP_SSA_FINAL_PROGRESS,      'ssa',          $ssa, 2015);
+        $this->addTable('HQPReport',                'ssa',                $ssa, 2015);
+        $this->addProjectTable('SSAReport',         'ssa2016',            2016, $ssa2016);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();
@@ -132,9 +140,13 @@ class ReportStatusTable extends SpecialPage{
         $wgOut->addHTML("</div>");
     }
     
-    function addProjectTable($rp, $type, $year = REPORTING_YEAR){
+    function addProjectTable($rp, $type, $year = REPORTING_YEAR, $projects=null){
         global $wgOut;
-        $projects = Project::getAllProjects();
+        $showAll = true;
+        if($projects == null){
+            $showAll = false;
+            $projects = Project::getAllProjects();
+        }
         $wgOut->addHTML("
             <div id='{$type}'>
             <table id='{$type}Table' frame='box' rules='all'>
@@ -154,7 +166,7 @@ class ReportStatusTable extends SpecialPage{
             $leaders = array_values($project->getLeaders());
             if(isset($leaders[0])){
                 $leader = $leaders[0];
-                if(!$leader->isRole(HQP) && $leader->isActive()){
+                if((!$leader->isRole(HQP) || $showAll) && $leader->isActive()){
                     $report = new DummyReport($rp, $leader, $project, $year, true);
                     $report->year = $year;
                     $generated = "";
