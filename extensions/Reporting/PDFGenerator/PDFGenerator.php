@@ -760,7 +760,7 @@ if ( isset($pdf) ) {
         $html = PDFGenerator::replaceSpecial($html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-".(PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.9))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
+        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-".(PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.5))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();
