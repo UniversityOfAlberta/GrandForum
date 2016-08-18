@@ -7,6 +7,7 @@ class RadioReportItem extends AbstractReportItem {
         $options = $this->parseOptions();
         $labels = explode("|", $this->getAttr('labels', ''));
         $showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
+        $orientation = $this->getAttr('orientation', 'vertical');
         $value = $this->getBlobValue();
         $items = array();
 		foreach($options as $i => $option){
@@ -24,7 +25,12 @@ class RadioReportItem extends AbstractReportItem {
 		            $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
 		        }
 		        else{
-		            $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		            if($orientation == 'horizontal'){
+		                $items[] = "<input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
+		            }
+		            else{
+		                $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		            }
 		        }
 		    }
 		    else{
@@ -43,7 +49,6 @@ class RadioReportItem extends AbstractReportItem {
 		}
 
         $output = "";
-        $orientation = $this->getAttr('orientation', 'vertical');
         $descriptions = explode("|", $this->getAttr('descriptions', ''));
         if($orientation == 'vertical' && count($descriptions) != count($items)){
             $output = implode("\n", $items);
