@@ -63,7 +63,7 @@ class ReportStatusTable extends SpecialPage{
             }
         }
         foreach(Project::getAllProjects() as $project){
-            if(strstr($project->getName(), "Project") !== false){
+            if(strstr($project->getName(), "SSA2016") !== false){
                 $ssa2016[$project->getName()] = $project;
             }
         }
@@ -143,7 +143,7 @@ class ReportStatusTable extends SpecialPage{
     function addProjectTable($rp, $type, $year = REPORTING_YEAR, $projects=null){
         global $wgOut;
         $showAll = true;
-        if($projects == null){
+        if($projects === null){
             $showAll = false;
             $projects = Project::getAllProjects();
         }
