@@ -32,16 +32,16 @@ class PeopleWikiTab extends AbstractTab {
 
         $upload = new SpecialUpload($wgRequest);
 	    $upload->execute(null);
-	    if($upload->mLocalFile != null){
             $_POST['fileURL'] = trim($_POST['fileURL']);
             $_POST['realTitle'] = trim($_POST['realTitle']);
             $_POST['keywords'] = trim($_POST['keywords']);
+	    if($upload->mLocalFile != null){
 	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
 	                                    array('*'),
-	                                    array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
+	                                    array("upload_name" => "File:".str_replace("_", " ", trim(ucfirst($name)))));
 	        if(count($data) == 0){
 	            DBFunctions::insert("mw_an_upload_permissions",
-	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
+	                                array("upload_name" => "File:".str_replace("_", " ", trim(ucfirst($name))),
 	                                      "nsName" => str_replace(" ", "_", $this->table),
                                           "url" => $_POST['fileURL'],
                                           "title" => $_POST['realTitle'],
@@ -49,7 +49,7 @@ class PeopleWikiTab extends AbstractTab {
 	        }
 	        else{
 	            DBFunctions::update("mw_an_upload_permissions",
-	                                array("upload_name" => "File:".str_replace("_", " ", ucfirst($name)),
+	                                array("upload_name" => "File:".str_replace("_", " ", trim(ucfirst($name))),
 	                                      "nsName" => str_replace(" ", "_", $this->table),
                                           "url" => $_POST['fileURL'],
                                           "title" => $_POST['realTitle'],
