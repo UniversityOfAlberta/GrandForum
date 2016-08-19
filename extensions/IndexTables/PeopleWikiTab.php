@@ -270,7 +270,7 @@ class PeopleWikiTab extends AbstractTab {
                     $title = $page->getTitle()->getText();
                 }
                 $keywords = $data[0]['keywords'];
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>$title</a></td>\n";
+                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."'>$title</a></td>\n";
                 $this->html .= "<td>$keywords</td>";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $me = Person::newFromWgUser();
