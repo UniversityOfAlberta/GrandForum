@@ -48,6 +48,10 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AffiliateApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Affiliate", "{$url}AffiliateApplication", $selected);
         }
+        if($person->isRole(HQP) && $person->isEpic()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICReport")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("EPIC Survey", "{$url}EPICReport", $selected);
+        }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SummerApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Application", "{$url}SummerApplication", $selected);
