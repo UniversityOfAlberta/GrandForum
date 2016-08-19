@@ -1352,8 +1352,28 @@ class Paper extends BackboneModel{
         if($pb != ""){
             $pb = "&nbsp;{$pb}";
         }
+	$start ="";
+	$end = "";
+        if($category == "Presentation" && isset($data['start'])){
+	    $startdate = new DateTime($data['start']);
+            $day = $startdate->format('d');
+            $month = $startdate->format('m');
+            $year = $startdate->format('Y');
+            $dateObj = DateTime::createFromFormat('!m', $month);
+            $monthName = $dateObj->format('M'); // March
+	    $start = ",$day $monthName $year - ";
+        }
+        if($category == "Presentation" && isset($data['end'])){
+            $enddate = new DateTime($data['end']);
+            $day = $enddate->format('d');
+            $month = $enddate->format('m');
+            $year = $enddate->format('Y');
+            $dateObj = DateTime::createFromFormat('!m', $month);
+            $monthName = $dateObj->format('M'); // March
+            $end = "$day $monthName $year";
+        } 
         if($category == "Presentation" && $reporting=true){
-            $citation = "{$date},&nbsp;{$au},&nbsp;{$text} ({$type}),{$vn}{$pg}{$pb}
+            $citation = "{$date},&nbsp;{$au},&nbsp;{$text} ({$type}){$vn}{$pg}{$pb}{$start}{$end}
        		             <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         }
         else{
