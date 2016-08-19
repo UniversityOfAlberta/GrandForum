@@ -43,7 +43,12 @@ if(!wfLocalFile($file)->exists()){
                                 array('url'),
                                 array('upload_name' => EQ('File:'.$file)));
     if(count($data) > 0 && $data[0]['url'] != ""){
-        redirect($data[0]['url']);
+        if(strstr($data[0]['url'], 'http://') === false && strstr($data[0]['url'], 'https://') === false){
+            redirect('http://'.$data[0]['url']);
+        }
+        else{
+            redirect($data[0]['url']);
+        }
     }
 }
 
