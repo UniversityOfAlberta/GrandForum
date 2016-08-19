@@ -20,7 +20,7 @@ class PeopleWikiTab extends AbstractTab {
     function uploadFile(){
         global $wgRequest, $wgUser, $wgMessage, $wgServer, $wgScriptPath, $wgLang, $config;
         
-        $name = $this->table." ".$_FILES['wpUploadFile']['name'];
+        $name = $this->table." ".trim($_FILES['wpUploadFile']['name']);
 
         $wgRequest->setVal("wpUpload", true);
         $wgRequest->setVal("wpSourceType", 'file');
@@ -33,6 +33,9 @@ class PeopleWikiTab extends AbstractTab {
         $upload = new SpecialUpload($wgRequest);
 	    $upload->execute(null);
 	    if($upload->mLocalFile != null){
+            $_POST['fileURL'] = trim($_POST['fileURL']);
+            $_POST['realTitle'] = trim($_POST['realTitle']);
+            $_POST['keywords'] = trim($_POST['keywords']);
 	        $data = DBFunctions::select(array('mw_an_upload_permissions'),
 	                                    array('*'),
 	                                    array("upload_name" => "File:".str_replace("_", " ", ucfirst($name))));
@@ -87,7 +90,7 @@ class PeopleWikiTab extends AbstractTab {
     }
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $wgLang, $config;
-        
+        $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources");
         if(isset($_FILES['wpUploadFile'])){
             $this->uploadFile();
         }
@@ -99,25 +102,32 @@ class PeopleWikiTab extends AbstractTab {
         if(!$this->visibility['isMember'] && false){
             return $this->html;
         }
-	if($this->table == "Organizations"){
-        $this->html .= "
-                    <span class='en'>
-                            Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.<br /><br />
-    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-    Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+	if(in_array($this->table, $resources)){
+            $this->html .= "<div class='helpful_resources' style='display:inline-block; font-size:1.1em'>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Clinical'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/clinical_guidelines_files.png'></a><br /><span class='en'>Clinical Guidelines</span><span class='fr'>Lignes directrices cliniques</span></div>
+                                     <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Tools'><img width='100px'  src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/tools_tips_files.png'></a><br /><span class='en'>Tools & Tips</span><span class='fr'>Outils et conseils</span></div>
+                                     <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Organizations'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/organizations_files.png'></a><br /><span class='en'>Organizations</span><span class='fr'>Organizations</span></div>
+                                     <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='http://grand.cs.ualberta.ca/caps/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
+                    </div>
+       </div>";
 
-                <span class='fr' style='display:none'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
-    <br /><br />
-    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-    Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
-    </span><br /><br />"; 
 	}
-	else{
         $this->html .= "
                     <span class='en'>Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.</span></br>
                     <span class='fr'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
-</span><br /><br />"; 
-	}
+</span><br /><br />";
+        if($this->table == "Organizations"){
+        $this->html .= "
+                    <span class='en'>
+    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+    Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+
+    <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+    Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
+    </span><br /><br />";
+        }
+ 
 
         $button_val = "Upload";
         if($wgLang->getCode() == 'fr'){
