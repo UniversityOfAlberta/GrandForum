@@ -285,7 +285,7 @@
         </ReportItem>
         <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #conference publications: {$item} <b>({project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #conference publications: {$item} <b>{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -315,7 +315,7 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors: {$item} <b>({project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #publications/presentations that include partners as authors: {$item} <b>{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
