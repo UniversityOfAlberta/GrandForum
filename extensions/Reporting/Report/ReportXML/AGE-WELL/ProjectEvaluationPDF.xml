@@ -102,13 +102,13 @@
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of international collaborators involved in the project <b>{$item}</b>
+                    #of international collaborators involved in the project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events <b>{$item}</b>
+                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -155,13 +155,13 @@
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #journal publications <b>{$item}</b>
+                    #journal publications: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #conference publications <b>{$item}</b>
+                    #conference publications: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -191,25 +191,25 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors <b>{$item}</b>
+                    #publications/presentations that include partners as authors: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of project partners/collaborators <b>{$item}</b>
+                    #of project partners/collaborators: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of older adults involved in the development of the project <b>{$item}</b>
+                    #of older adults involved in the development of the project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m4" blobItem="REV_3_5_M4" type="Integer" size="3">
             <![CDATA[
-                    #of caregivers involved in the development of the project <b>{$item}</b>
+                    #of caregivers involved in the development of the project: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -269,13 +269,13 @@
         <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of international collaborators involved in the project <b>{$item}</b>
+                    #of international collaborators involved in the project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events <b>{$item}</b>
+                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -322,13 +322,13 @@
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #journal publications <b>{$item}</b>
+                    #journal publications: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #conference publications <b>{$item}</b>
+                    #conference publications: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -358,25 +358,25 @@
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors <b>{$item}</b>
+                    #publications/presentations that include partners as authors: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of project partners/collaborators <b>{$item}</b>
+                    #of project partners/collaborators: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of older adults involved in the development of the project <b>{$item}</b>
+                    #of older adults involved in the development of the project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m4" blobItem="PLAN_3_5_M4" type="Integer" size="3">
             <![CDATA[
-                    #of caregivers involved in the development of the project <b>{$item}</b>
+                    #of caregivers involved in the development of the project: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -433,7 +433,7 @@
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of partners <b>{$item}</b>
+                    #of partners: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -461,7 +461,7 @@
         </ReportItem>
         <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Text" width="50px">
             <![CDATA[
-                    Total cash and in-kind contributions the project received <b>${$item}</b>
+                    Total cash and in-kind contributions the project received: <b>${$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -491,7 +491,7 @@
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of project meetings and events that included non-academic partners with partners <b>{$item}</b>
+                    #of project meetings and events that included non-academic partners with partners: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -593,7 +593,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of publications with investigators from other projects <b>{$item}</b>
+                    #of publications with investigators from other projects: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -653,7 +653,7 @@
         <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of partners <b>{$item}</b>
+                    #of partners: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -681,7 +681,7 @@
         </ReportItem>
         <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Text" width="50px">
             <![CDATA[
-                    Total cash and in-kind contributions the project received <b>${$item}</b>
+                    Total cash and in-kind contributions the project received: <b>${$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -711,7 +711,7 @@
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of project meetings and events that included non-academic partners with partners <b>{$item}</b>
+                    #of project meetings and events that included non-academic partners with partners: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -813,7 +813,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of publications with investigators from other projects <b>{$item}</b>
+                    #of publications with investigators from other projects: <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -938,25 +938,25 @@
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of significant and relevant policy changes that the project has contributed to <b>{$item}</b>
+                    #of significant and relevant policy changes that the project has contributed to: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the assistive technology marketplace. <b>{$item}</b>
+                    #of service or knowledge products integrated into the assistive technology marketplace: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m3" blobItem="REV_2_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the publicly-funded health care system <b>{$item}</b>
+                    #of service or knowledge products integrated into the publicly-funded health care system: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Text" width="30px">
             <![CDATA[
-                    Demonstrated evidence of the impact of service or knowledge products on key health and QOL outcomes relevant to healthy aging <b>{$item}</b>
+                    Demonstrated evidence of the impact of service or knowledge products on key health and QOL outcomes relevant to healthy aging: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1035,7 +1035,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations <b>{$item}</b>
+                    #of policy briefs provided to government and non-governmental organisations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1169,25 +1169,25 @@
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of significant and relevant policy changes that the project has contributed to <b>{$item}</b>
+                    #of significant and relevant policy changes that the project has contributed to: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the assistive technology marketplace. <b>{$item}</b>
+                    #of service or knowledge products integrated into the assistive technology marketplace: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the publicly-funded health care system <b>{$item}</b>
+                    #of service or knowledge products integrated into the publicly-funded health care system: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Text" width="30px">
             <![CDATA[
-                    Demonstrated evidence of the impact of service or knowledge products on key health and QOL outcomes relevant to healthy aging <b>{$item}</b>
+                    Demonstrated evidence of the impact of service or knowledge products on key health and QOL outcomes relevant to healthy aging: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1266,7 +1266,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations <b>{$item}</b>
+                    #of policy briefs provided to government and non-governmental organisations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1329,13 +1329,13 @@
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of IP policies in place <b>{$item}</b>
+                    #of IP policies in place: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of licensing agreements <b>{$item}</b>
+                    #of licensing agreements: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1365,13 +1365,13 @@
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of commercial products/services anticipated for project <b>{$item}</b>
+                    #of commercial products/services anticipated for project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Integer" size="3">
             <![CDATA[
-                    #of patents <b>{$item}</b>
+                    #of patents: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1401,7 +1401,7 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of start-ups created <b>{$item}</b>
+                    #of start-ups created: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1461,13 +1461,13 @@
         <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of IP policies in place <b>{$item}</b>
+                    #of IP policies in place: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #of licensing agreements <b>{$item}</b>
+                    #of licensing agreements: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1497,13 +1497,13 @@
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of commercial products/services anticipated for project <b>{$item}</b>
+                    #of commercial products/services anticipated for project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
             <![CDATA[
-                    #of patents <b>{$item}</b>
+                    #of patents: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1533,7 +1533,7 @@
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of start-ups created <b>{$item}</b>
+                    #of start-ups created: <b>{$item}</b>
                     </td>
                 </tr>
             ]]>
@@ -1596,7 +1596,7 @@
         <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of HQP hired on project <b>{$item}</b>
+                    #of HQP hired on project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1625,37 +1625,37 @@
         </ReportItem>
         <ReportItem id="rev_1_6_m2" blobItem="REV_1_6_M2" type="Integer" size="3">
             <![CDATA[
-                    #of workshops made available <b>{$item}</b>
+                    #of workshops made available: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m3" blobItem="REV_1_6_M3" type="Integer" size="3">
             <![CDATA[
-                    #of internships HQP accomplished <b>{$item}</b>
+                    #of internships HQP accomplished: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m4" blobItem="REV_1_6_M4" type="Integer" size="3">
             <![CDATA[
-                    #of HQP that worked directly with partner organizations <b>{$item}</b>
+                    #of HQP that worked directly with partner organizations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m5" blobItem="REV_1_6_M5" type="Integer" size="3">
             <![CDATA[
-                    #of HQP successfully completing EPIC training program <b>{$item}</b>
+                    #of HQP successfully completing EPIC training program: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m6" blobItem="REV_1_6_M6" type="Integer" size="3">
             <![CDATA[
-                    %of HQP time spent directly with partner organisations <b>{$item}</b>
+                    %of HQP time spent directly with partner organisations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m7" blobItem="REV_1_6_M7" type="Integer" size="3">
             <![CDATA[
-                    #of HQP attending annual conference <b>{$item}</b>
+                    #of HQP attending annual conference: <b>{$item}</b>
                  </td>
                  </tr>
             ]]>
@@ -1721,7 +1721,7 @@
         <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of HQP hired on project <b>{$item}</b>
+                    #of HQP hired on project: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1750,37 +1750,37 @@
         </ReportItem>
         <ReportItem id="plan_1_6_m2" blobItem="PLAN_1_6_M2" type="Integer" size="3">
             <![CDATA[
-                    #of workshops made available <b>{$item}</b>
+                    #of workshops made available: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m3" blobItem="PLAN_1_6_M3" type="Integer" size="3">
             <![CDATA[
-                    #of internships HQP accomplished {$item}
+                    #of internships HQP accomplished: {$item}
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m4" blobItem="PLAN_1_6_M4" type="Integer" size="3">
             <![CDATA[
-                    #of HQP that worked directly with partner organizations <b>{$item}</b>
+                    #of HQP that worked directly with partner organizations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m5" blobItem="PLAN_1_6_M5" type="Integer" size="3">
             <![CDATA[
-                    #of HQP successfully completing EPIC training program <b>{$item}</b>
+                    #of HQP successfully completing EPIC training program: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m6" blobItem="PLAN_1_6_M6" type="Integer" size="3">
             <![CDATA[
-                    %of HQP time spent directly with partner organisations <b>{$item}</b>
+                    %of HQP time spent directly with partner organisations: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m7" blobItem="PLAN_1_6_M7" type="Integer" size="3">
             <![CDATA[
-                    #of HQP attending annual conference <b>{$item}</b>
+                    #of HQP attending annual conference: <b>{$item}</b>
                  </td>
                  </tr>
             ]]>
