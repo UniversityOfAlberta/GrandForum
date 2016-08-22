@@ -230,9 +230,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events {$item} <b>({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: {$item} <b>{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -276,16 +276,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{project_n_journals({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #journal publications {$item} <b>({project_n_journals({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #journal publications: {$item} <b>{project_n_journals({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #conference publications {$item} <b>({project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #conference publications: {$item} <b>({project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})</b>
                 </td>
                 </tr>
             ]]>
@@ -312,16 +312,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors {$item} <b>({project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #publications/presentations that include partners as authors: {$item} <b>({project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)})</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of project partners/collaborators {$item} <b>({project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of project partners/collaborators: {$item} <b>{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -393,9 +393,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Hidden" size="3" default="{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events {$item} <b>({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: {$item} <b>{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -439,16 +439,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Hidden" size="3" default="{project_n_journals({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
                 <td>
-                    #journal publications {$item} <b>({project_n_journals({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #journal publications: {$item} <b>{project_n_journals({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Hidden" size="3" default="{project_n_conferences({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #conference publications {$item} <b>({project_n_conferences({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #conference publications: {$item} <b>{project_n_conferences({$next_year}-10-01, {$next_year2}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -475,16 +475,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Hidden" size="3" default="{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #publications/presentations that include partners as authors {$item} <b>({project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #publications/presentations that include partners as authors: {$item} <b>{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Hidden" size="3" default="{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of project partners/collaborators {$item} <b>({project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of project partners/collaborators: {$item} <b>{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -561,10 +561,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Hidden" size="3" default="{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of partners {$item} <b>({project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of partners: {$item} <b>{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -590,9 +590,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Text" width="50px">
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" width="50px" default="{project_contributions({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    Total cash and in-kind contributions the project received {$item} <b>(${project_contributions({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    Total cash and in-kind contributions the project received: {$item} <b>${project_contributions({$this_year}-10-01, {$next_year}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -715,16 +715,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of other Age-Well projects that the project is connected with? {$item} <b>({project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of other Age-Well projects that the project is connected with? {$item} <b>{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3" default="{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of publications with investigators from other projects {$item} <b>({project_n_products_other({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of publications with investigators from other projects: {$item} <b>{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -777,10 +777,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Hidden" size="3" default="{project_n_collaborators({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
                 <td>
-                    #of partners {$item} <b>({project_n_collaborators({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of partners: {$item} <b>{project_n_collaborators({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -806,9 +806,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Text" width="50px">
+        <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Hidden" width="50px" default="{project_contributions({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    Total cash and in-kind contributions the project received {$item} <b>(${project_contributions({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    Total cash and in-kind contributions the project received: {$item} <b>${project_contributions({$next_year}-10-01, {$next_year2}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -931,16 +931,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Hidden" size="3" default="{project_n_connected_projects({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
                 <td>
-                    #of other Age-Well projects that the project is connected with? {$item} <b>({project_n_connected_projects({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of other Age-Well projects that the project is connected with? {$item} <b>{project_n_connected_projects({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Hidden" size="3" default="{project_n_products_other({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of publications with investigators from other projects {$item} <b>({project_n_products_other({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of publications with investigators from other projects: {$item} <b>{project_n_products_other({$next_year}-10-01, {$next_year2}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
@@ -1075,9 +1075,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_products({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>({project_n_products({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>{project_n_products({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1166,9 +1166,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_white({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations {$item} <b>({project_n_white({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_white({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1302,9 +1302,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Hidden" size="3" default="{project_n_products({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>({project_n_products({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>{project_n_products({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1393,9 +1393,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m2" blobItem="PLAN_3_5_M2" type="Hidden" size="3" default="{project_n_white({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations {$item} <b>({project_n_white({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_white({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1468,9 +1468,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of licensing agreements {$item} <b>({project_n_licenses({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of licensing agreements: {$item} <b>{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1504,9 +1504,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Integer" size="3">
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of patents {$item} <b>({project_n_patents({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of patents: {$item} <b>{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1533,10 +1533,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of start-ups created {$item} <b>({project_n_startups({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of start-ups created: {$item} <b>{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1596,9 +1596,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Hidden" size="3" default="{project_n_licenses({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of licensing agreements {$item} <b>({project_n_licenses({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of licensing agreements: {$item} <b>{project_n_licenses({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1632,9 +1632,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of patents {$item} <b>({project_n_patents({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of patents: {$item} <b>{project_n_patents({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1661,10 +1661,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Hidden" size="3" default="{project_n_startups({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
                 <td>
-                    #of start-ups created {$item} <b>({project_n_startups({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of start-ups created: {$item} <b>{project_n_startups({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1730,10 +1730,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Integer" size="3">
+        <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Hidden" size="3" default="{project_n_hqp({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of HQP hired on project {$item} <b>({project_n_hqp({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of HQP hired on project: {$item} <b>{project_n_hqp({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1760,9 +1760,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_6_m2" blobItem="REV_1_6_M2" type="Integer" size="3">
+        <ReportItem id="rev_1_6_m2" blobItem="REV_1_6_M2" type="Hidden" size="3" default="{project_n_workshops({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of workshops made available {$item} <b>({project_n_workshops({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of workshops made available: {$item} <b>{project_n_workshops({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1778,9 +1778,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_6_m5" blobItem="REV_1_6_M5" type="Integer" size="3">
+        <ReportItem id="rev_1_6_m5" blobItem="REV_1_6_M5" type="Hidden" size="3" default="{project_n_epic({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of HQP successfully completing EPIC training program {$item} <b>({project_n_epic({$this_year}-10-01, {$next_year}-09-30)})</b>
+                    #of HQP successfully completing EPIC training program: {$item} <b>{project_n_epic({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1851,10 +1851,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Integer" size="3">
+        <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Hidden" size="3" default="{project_n_hqp({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
                 <td>
-                    #of HQP hired on project {$item} <b>({project_n_hqp({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of HQP hired on project: {$item} <b>{project_n_hqp({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1881,9 +1881,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_6_m2" blobItem="PLAN_1_6_M2" type="Integer" size="3">
+        <ReportItem id="plan_1_6_m2" blobItem="PLAN_1_6_M2" type="Hidden" size="3" default="{project_n_workshops({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of workshops made available {$item} <b>({project_n_workshops({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of workshops made available: {$item} <b>{project_n_workshops({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1899,9 +1899,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_6_m5" blobItem="PLAN_1_6_M5" type="Integer" size="3">
+        <ReportItem id="plan_1_6_m5" blobItem="PLAN_1_6_M5" type="Hidden" size="3" default="{project_n_epic({$next_year}-10-01, {$next_year2}-09-30)}">
             <![CDATA[
-                    #of HQP successfully completing EPIC training program {$item} <b>({project_n_epic({$next_year}-10-01, {$next_year2}-09-30)})</b>
+                    #of HQP successfully completing EPIC training program: {$item} <b>{project_n_epic({$next_year}-10-01, {$next_year2}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>

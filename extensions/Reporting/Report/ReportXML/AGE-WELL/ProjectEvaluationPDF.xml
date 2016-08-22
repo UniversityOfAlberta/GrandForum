@@ -461,7 +461,7 @@
         </ReportItem>
         <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Text" width="50px">
             <![CDATA[
-                    Total cash and in-kind contributions the project received <b>{$item}</b>
+                    Total cash and in-kind contributions the project received <b>${$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -681,7 +681,7 @@
         </ReportItem>
         <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Text" width="50px">
             <![CDATA[
-                    Total cash and in-kind contributions the project received <b>{$item}</b>
+                    Total cash and in-kind contributions the project received <b>${$item}</b>
                 </td>
                 </tr>
             ]]>
