@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Exit Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
+<Report name="Annual Report - EPIC Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="instructions" permissions="rw" />

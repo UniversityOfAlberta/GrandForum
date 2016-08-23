@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Exit Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
+<Report name="Annual Report - EPIC Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC Exit Survey</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>Annual Report - EPIC Survey</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
