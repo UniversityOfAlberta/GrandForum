@@ -1119,7 +1119,7 @@
         <ReportItem id="rev_3_5_m0a" blobItem="REV_3_5_M0A" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    # of academic dissemination activities in the following mediums:<br />
+                    #of academic dissemination activities in the following mediums:<br />
                     print (e.g. academic journals): {$item}<br />
             ]]>
         </ReportItem>
@@ -1141,7 +1141,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
             <![CDATA[
-                    # of non-academic dissemination activities in the  following mediums:<br />
+                    #of non-academic dissemination activities in the  following mediums:<br />
                     print (e.g. magazines, newspapers): {$item}<br />
             ]]>
         </ReportItem>
@@ -1346,7 +1346,7 @@
         <ReportItem id="plan_3_5_m0a" blobItem="PLAN_3_5_M0A" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    # of academic dissemination activities in the following mediums:<br />
+                    #of academic dissemination activities in the following mediums:<br />
                     print (e.g. academic journals): {$item}<br />
             ]]>
         </ReportItem>
@@ -1368,7 +1368,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
             <![CDATA[
-                    # of non-academic dissemination activities in the  following mediums:<br />
+                    #of non-academic dissemination activities in the  following mediums:<br />
                     print (e.g. magazines, newspapers): {$item}<br />
             ]]>
         </ReportItem>
