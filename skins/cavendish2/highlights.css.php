@@ -144,7 +144,7 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
     color: $hlFontColor !important;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover, :not(.mce-btn button) {
     background: $inputColorDark !important;
     color: $hlFontColor !important;
 }
@@ -433,6 +433,11 @@ a:active {
 
 :-ms-input-placeholder {  
    color: $hlFontColor;  
+}
+
+/* TinyMCE */
+.mce-btn button, .mce-btn button:hover {
+    background: transparent !important;
 }
 
 EOF;
