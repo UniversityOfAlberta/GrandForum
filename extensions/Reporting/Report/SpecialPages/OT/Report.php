@@ -9,6 +9,8 @@ $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
+require_once("ReportStatusTable.php");
+
 class Report extends AbstractReport{
     
     function Report(){
