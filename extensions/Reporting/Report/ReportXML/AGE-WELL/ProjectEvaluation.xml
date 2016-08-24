@@ -71,7 +71,7 @@
                 <p>The report requests three types of information:
                     <ol>
                         <li>Narrative- a short written account of what the project has been doing to achieve impact;</li>
-                        <li>Metrics- quantitative data (automatically collected via reporting on Forum); and </li>
+                        <li>Metrics- quantitative data (most values are auto populated via reporting on Forum) substantiating information must be provided for all entered values; and </li>
                         <li>Case study (optional)- a short vignette that describes an outstanding work or achievement by the project.</li>
                     </ol>
                 </p>
@@ -104,13 +104,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true">
+        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
             <![CDATA[
                 <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true">
+        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true" limit="300">
             <![CDATA[
                 <h3>AGE-WELL is expected to have significant benefits to Canadian society through improved quality of life of older adults and their caregivers, health and independence of seniors, improved policy, practice and services. How will the outcomes of your project eventually benefit the Canadian society?</h3>
                 {$item}
@@ -181,7 +181,7 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 <p>Please provide any additional details needed to support the information provided in table below, including justification for categories that have not been completed.</p>
@@ -344,7 +344,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -519,7 +519,7 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -735,7 +735,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -958,7 +958,7 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1185,7 +1185,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1419,7 +1419,7 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1547,7 +1547,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1682,7 +1682,7 @@
             ]]>
         </ReportItem>
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1803,7 +1803,7 @@
             ]]>
         </ReportItem>
         <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
@@ -1925,19 +1925,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.  If you have not progressed to another PRL provide justification for why</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true">
+        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" limit="500">
             <![CDATA[
                 <h3>Which PRL level do you expect to be at in one year from now? Provide a brief justification and key steps you will be taking to move to the next level</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true">
+        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
             <![CDATA[
                 <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL.</h3>
                 {$item}

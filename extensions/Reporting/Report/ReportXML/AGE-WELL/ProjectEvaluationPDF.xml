@@ -31,13 +31,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true">
+        <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
             <![CDATA[
                 <h3>How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true">
+        <ReportItem id="quality" type="Textarea" blobItem="QUALITY" rich="true" limit="300">
             <![CDATA[
                 <h3>How will the outcomes of your project eventually benefit the Canadian society?</h3>
                 {$item}
@@ -58,7 +58,7 @@
     </ReportSection>
     <ReportSection id="research" type="EditableReportSection" blobSection="RESEARCH" tooltip="Scientific Excellence" name="Scientific Excellence">
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 {$item}
@@ -225,7 +225,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true"  optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 {$item}
@@ -389,7 +389,7 @@
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 {$item}
@@ -609,7 +609,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 {$item}
@@ -826,7 +826,7 @@
     </ReportSection>
     <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge and Technology Exchange and Exploitation - Knowledge Mobilization" name="Knowledge Mobilization" title="Knowledge and Technology Exchange and Exploitation - Knowledge Mobilization">
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 {$item}
@@ -1057,7 +1057,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 {$item}
@@ -1285,7 +1285,7 @@
     </ReportSection>
     <ReportSection id="ktee2" type="EditableReportSection" blobSection="KTEE2" tooltip="Knowledge and Technology Exchange and Exploitation - Commercialization" name="Commercialization" title="Knowledge and Technology Exchange and Exploitation - Commercialization">
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" limit="250">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 {$item}
@@ -1417,7 +1417,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 {$item}
@@ -1546,7 +1546,7 @@
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" tooltip="HQP Training" name="HQP Training">
         <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true">
+        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Review scorecard</h2>
                 {$item}
@@ -1671,7 +1671,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true">
+        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h2>Planning scorecard for next year (2016/17)</h2>
                 {$item}
@@ -1792,19 +1792,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies" pagebreak="false">
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true">
+        <ReportItem id="level" type="Textarea" blobItem="LEVEL" rich="true" limit="500">
             <![CDATA[
                 <h3>Which PRL level do you expect to be at in one year from now?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true">
+        <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
             <![CDATA[
                 <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas.</h3>
                 {$item}
