@@ -42,6 +42,8 @@ class ApplicationsTable extends SpecialPage{
         
         $wps = Theme::getAllThemes();
         
+        $projects = Project::getAllProjects();
+        
         $tabbedPage = new TabbedPage("person");
 
         if($me->isRoleAtLeast(SD)){
@@ -68,6 +70,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $wps, 2015, "WP Report"));
         }
+        $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $projects, 2015, "Project Evaluation"));
         $tabbedPage->showPage();
     }
     
