@@ -87,6 +87,7 @@ class ReportItemCallback {
             "user_id" => "getUserId",
             "user_roles" => "getUserRoles",
             "user_full_roles" => "getUserFullRoles",
+            "user_sub_roles" => "getUserSubRoles",
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
@@ -289,8 +290,9 @@ class ReportItemCallback {
         $nis = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            foreach($project->getAllPeopleDuring(null, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59"))){
+            $year = $this->reportItem->getReport()->year;
+            foreach($project->getAllPeopleDuring(null, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59") as $ni){
+                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -990,6 +992,12 @@ class ReportItemCallback {
             }
         }
         return $roles;
+    }
+    
+    function getUserSubRoles(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $roles = $person->getSubRoles();
+        return implode(", ", $roles);
     }
     
     function getUserLevel(){

@@ -387,8 +387,8 @@ EOF;
             }
 		
 		    #pdfBody  {
-		        margin: 0.5cm 0cm;
-		        margin-bottom: 0.5cm;
+		        margin: ".PDFGenerator::cmToPixels(0.5)."px 0;
+		        margin-bottom: ".PDFGenerator::cmToPixels(0.5)."px;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		        text-align: justify;
@@ -498,7 +498,7 @@ EOF;
 		    }
 		    
 		    #pdfBody hr {
-		        border-width: ".max(1, (0.5*DPI_CONSTANT))."1px 0 0 0;
+		        border-width: ".max(1, (0.5*DPI_CONSTANT))."px 0 0 0;
 		        border-style: solid;
 		        border-color: #000000;
 		    }
@@ -760,7 +760,7 @@ if ( isset($pdf) ) {
         $html = PDFGenerator::replaceSpecial($html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='margin-top:-".(PDFGenerator::cmToPixels($margins['top'] - 0.5)+($fontSize*1.6))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
+        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-".(PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.5))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();
