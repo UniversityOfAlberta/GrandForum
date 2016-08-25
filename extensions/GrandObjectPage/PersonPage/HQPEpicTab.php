@@ -44,7 +44,7 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($position == "post-doctoral fellow"){
             $this->generatePDF();
         }
-        if($me->getId() == $person->getId()){
+        if($me->getId() == $this->person->getId()){
             $this->html .= "<p><b>When your training is complete, please fill out the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EPICReport'>Annual Report - EPIC Survey</a></b></p>";
         }
     }
