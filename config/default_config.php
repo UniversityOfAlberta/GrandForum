@@ -26,7 +26,7 @@
     $config->setValue("dbName", "");
     
     // DB Test Name
-    $config->setValue("dbTestName", "");
+    $config->setValue("dbTestName", "caps_test");
     
     // DB User
     $config->setValue("dbUser", "");
@@ -135,9 +135,9 @@
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
-	//ApprovePage,
-	//ApproveStory,
-	//'Caps'
+	'ApprovePage',
+	'ApproveStory',
+	'Caps',
         //'MyThreads'
     ));
     
@@ -238,9 +238,7 @@
      * TODO: These should probably be moved into the DB at some point
      */
     $config->setValue("committees",
-        array(
-            "RMC" => "Research Management Committee"
-        ));
+        array("Expert"=>"Expert"));
      
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");

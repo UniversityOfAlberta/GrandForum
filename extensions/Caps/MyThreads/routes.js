@@ -11,7 +11,6 @@ PageRouter = Backbone.Router.extend({
     
     closeCurrentView: function(){
         if(this.currentView != null){
-            clearAllMessages();
             this.currentView.unbind();
             this.currentView.remove();
             $("div#backbone_main").append("<div id='currentView' />");

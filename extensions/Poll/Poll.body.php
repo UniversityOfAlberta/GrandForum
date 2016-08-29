@@ -6,7 +6,7 @@ require_once("CreatePoll.php");
 $poll = new PollView();
 
 $wgHooks['UnknownAction'][] = array($poll, 'viewPoll');
-$notificationFunctions[] = 'PollView::createNotification';
+//$notificationFunctions[] = 'PollView::createNotification';
 
 class PollView {
 

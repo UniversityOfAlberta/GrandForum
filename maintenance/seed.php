@@ -209,6 +209,7 @@ createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No",
 createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Theme5", 0);
 
 addUserRole("Manager.User1", MANAGER);
+addUserRole("Manager.User1", Expert);
 addUserRole("Staff.User1", STAFF);
 addUserRole("PL.User1", CI);
 addUserRole("TL.User1", CI);

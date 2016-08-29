@@ -287,7 +287,7 @@ class AddMember extends SpecialPage{
 
         
         $candLabel = new Label("cand_label", "<span class='en'>Candidate?</span><span class='fr'>Candidat?</span>", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
-        $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
+        $candField = new VerticalRadioBox("cand_field", "Roles", "Yes", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
                
@@ -309,9 +309,7 @@ class AddMember extends SpecialPage{
                   ->append($candRow)
                   ->append($submitRow);
                   
-        if(!$me->isRoleAtLeast(STAFF)){
-            $formTable->getElementById("cand_row")->attr('style', 'display:none;');
-        }
+        $formTable->getElementById("cand_row")->attr('style', 'display:none;');
         
         $formContainer->append($formTable);
         return $formContainer;
