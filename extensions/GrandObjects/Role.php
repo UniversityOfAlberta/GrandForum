@@ -111,7 +111,7 @@ class Role extends BackboneModel {
 	                    }
 	                }
 	            }
-	            Notification::addNotification($person, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+	            Notification::addNotification($me, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
                 Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
                 $supervisors = $person->getSupervisors();
                 if(count($supervisors) > 0){
@@ -128,6 +128,7 @@ class Role extends BackboneModel {
 	}
 	
 	function update(){
+	    $me = Person::newFromWgUser();
 	    MailingList::unsubscribeAll($this->getPerson());
 	    $status = DBFunctions::update('grand_roles',
 	                                  array('role'       => $this->getRole(),
@@ -153,7 +154,7 @@ class Role extends BackboneModel {
 	    Person::$rolesCache = array();
 	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
-	    Notification::addNotification($this->getPerson(), Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
+	    Notification::addNotification($me, Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
@@ -172,7 +173,7 @@ class Role extends BackboneModel {
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
 	    if($status){
-	        Notification::addNotification($person, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+	        Notification::addNotification($me, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        Notification::addNotification($me, $person, "Role Removed", "You are no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        $supervisors = $person->getSupervisors();
             if(count($supervisors) > 0){

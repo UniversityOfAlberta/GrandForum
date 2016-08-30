@@ -42,10 +42,10 @@ class ManagePeopleLog extends SpecialPage{
 	    $wgOut->addHTML("<table id='manageMemberHistory' frame='box' rules='all'>
 	                        <thead>
 	                            <tr>
-	                                <th>Type</th>
-	                                <th>User Name</th>
-	                                <th>Description</th>
-	                                <th>Timestamp</th>
+	                                <th>Type<br /><small>The type of change</small></th>
+	                                <th>User Name<br /><small>Who made the change</small></th>
+	                                <th>Description<br /><small>The description of the change</small></th>
+	                                <th>Timestamp<br /><small>When the change occurred</small></th>
 	                            </tr>
 	                        </thead>
 	                        <tbody>");
