@@ -53,7 +53,7 @@ class University extends BackboneModel {
             $data = DBFunctions::select(array('grand_universities' => 'u', 
                                               'grand_provinces' => 'p'),
                                         array('u.*', 'p.province', 'p.color' => 'col'),
-                                        array('university_id' => EQ($id),
+                                        array('university_name' => EQ($name),
                                               'u.province_id' => EQ(0),
                                               'province' => EQ('Other')));
         }

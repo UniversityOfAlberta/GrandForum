@@ -1,5 +1,5 @@
-Feature: EditMember
-    In order to edit user's roles/projects
+Feature: Manage People
+    In order to edit user's roles/projects/relations/universities
     As a User I need to be able to request role/project changes
     As an Admin I need to be able to accept role/project changes
 
@@ -114,3 +114,26 @@ Feature: EditMember
         And I press "Save"
         And I wait "1000"
         Then I should see "Relations saved"
+        
+    Scenario: Adding University information
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage People"
+        And I fill in "Search:" with "HQP User4"
+        And I click by css "#editUniversities"
+        And I press "Add University"
+        And I fill in "combo_university" with "Test University"
+        And I fill in "combo_department" with "Test Department"
+        And I fill in "combo_position" with "Test Position"
+        And I press "Save"
+        And I wait "1000"
+        Then I should see "Universities saved"
+        
+    Scenario: Updating University information
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Manage People"
+        And I fill in "Search:" with "HQP User4"
+        And I click by css "#editUniversities"
+        And I fill in "combo_department" with "Test Department Updated"
+        And I press "Save"
+        And I wait "1000"
+        Then I should see "Universities saved"
