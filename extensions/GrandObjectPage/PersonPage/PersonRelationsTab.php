@@ -137,14 +137,6 @@ class PersonRelationsTab extends AbstractTab {
                     $this->html .= "</table>";
                     $this->html .= "</td>";
                 }
-            }
-        }
-        if($wgUser->isLoggedIn()){
-            if($this->person->isMe() && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
-                $this->html .= "Contact your supervisor in order be added as their student";
-            }
-            else if($this->person->isMe()){
-                $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage People</a>";
                 $this->html .= "<td style='width:50%;'></td>";
                 $this->html .= "</tr></table>";
             }
