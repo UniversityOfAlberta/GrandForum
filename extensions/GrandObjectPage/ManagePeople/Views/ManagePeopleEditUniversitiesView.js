@@ -140,7 +140,9 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
-        this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+        if(_.where(this.person.get('roles'), {role: HQP}).length == 0){
+            this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+        }
         
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
