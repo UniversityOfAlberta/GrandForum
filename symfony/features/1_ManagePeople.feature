@@ -123,7 +123,7 @@ Feature: Manage People
         And I press "Add University"
         And I fill in "combo_university" with "Test University"
         And I fill in "combo_department" with "Test Department"
-        And I fill in "combo_position" with "Test Position"
+        And I select "Graduate Student - Master's" from "position"
         And I press "Save"
         And I wait "1000"
         Then I should see "Universities saved"

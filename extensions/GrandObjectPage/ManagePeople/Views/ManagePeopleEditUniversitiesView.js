@@ -10,7 +10,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.model.fetch();
         this.template = _.template($('#edit_universities_template').html());
         this.universityViews = new Array();
-        
+    
         this.model.ready().then($.proxy(function(){
             this.universities = this.model;
             this.listenTo(this.universities, "add", this.addRows);
@@ -83,7 +83,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     addRows: function(){
         this.universities.each($.proxy(function(university, i){
             if(this.universityViews[i] == null){
-                var view = new ManagePeopleEditUniversitiesRowView({model: university});
+                var view = new ManagePeopleEditUniversitiesRowView({model: university, person: this.person});
                 this.$("#university_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -108,8 +108,10 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    person: null,
     
-    initialize: function(){
+    initialize: function(options){
+        this.person = options.person;
         this.model.set('deleted', false);
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
@@ -139,9 +141,13 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=university]").css('max-width', '200px').css('width', '200px');
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+        
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
-        this.$("[name=position]").combobox();
+        if(_.where(this.person.get('roles'), {role: HQP}).length == 0){
+            this.$("[name=position]").combobox();
+        }
+        
         this.update();
         return this.$el;
     }, 
