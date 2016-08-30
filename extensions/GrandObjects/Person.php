@@ -455,10 +455,12 @@ class Person extends BackboneModel {
      */
     static function generateAllPeopleCache(){
         if(count(self::$allPeopleCache) == 0){
+            $me = Person::newFromWgUser();
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id'),
                                         array('deleted' => NEQ(1),
-                                              'candidate' => NEQ(1)),
+                                              'candidate' => NEQ(1),
+                                              WHERE_OR('user_id') => EQ($me->getId())),
                                         array('user_name' => 'ASC'));
             
             foreach($data as $row){

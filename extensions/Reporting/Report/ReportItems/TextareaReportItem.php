@@ -19,7 +19,7 @@ class TextareaReportItem extends AbstractReportItem {
             $item .= "<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
                     $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
-                                     \"<form id='tinyMCEUploadForm' action='$wgServer$wgScriptPath/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden'>\" +
+                                     \"<form id='tinyMCEUploadForm' action='$wgServer$wgScriptPath/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden;position:absolute;left:-1000px;'>\" +
                                          \"<input name='image' type='file'>\" +
                                      \"</form>\");
                     $('#tinyMCEUploadForm input').change(function(){
@@ -129,7 +129,7 @@ class TextareaReportItem extends AbstractReportItem {
                     }
                     else if(strlen > $limit){
                         $('#limit_{$this->getPostId()} > span').addClass('inlineError');
-                        $('#limit_{$this->getPostId()} > span').removeClass('warningError');
+                        $('#limit_{$this->getPostId()} > span').removeClass('inlineWarning');
                     }
                     else if(strlen == 0){
                         $('#limit_{$this->getPostId()} > span').addClass('inlineWarning');

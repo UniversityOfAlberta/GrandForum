@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="{$this_year} Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="false">
+<Report name="{$this_year} Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" pdfFiles="CatalystReportPDF" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="instructions" permissions="rw" />
@@ -197,6 +197,7 @@
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h2>Graphical Abstract</h2>
+                <p>Upload a PDF document containing your application's graphical abstract</p>
                 {$item}
             ]]>
         </ReportItem>

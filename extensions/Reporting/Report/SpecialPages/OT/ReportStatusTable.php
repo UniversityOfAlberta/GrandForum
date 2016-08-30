@@ -29,65 +29,13 @@ class ReportStatusTable extends SpecialPage{
     
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $hqps = Person::getAllPeople(HQP);
-        $nis = Person::getAllPeople(NI);
-        $ifpFinal = array();
-        $ifpProgress = array();
-        $ifp2016Final = array(
-            Person::newFromId(235),
-            Person::newFromId(308),
-            Person::newFromId(325),
-            Person::newFromId(347));
-        $ssa = array();
-        $ssa2016 = array();
-        foreach($hqps as $hqp){
-            if($hqp->isSubRole('IFP')){
-                $ifpDeleted = false;
-                foreach($hqp->leadershipDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END) as $project){
-                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
-                }
-                if(!$ifpDeleted){
-                    $ifpProgress[] = $hqp;
-                }
-                if(!in_array($hqp, $ifp2016Final)){
-                    $ifpFinal[] = $hqp;
-                }
-            }
-        }
-        foreach($nis as $ni){
-            foreach($ni->getHQP() as $hqp){
-                if($hqp->isSubRole('SSA')){
-                    $ssa[$ni->getId()] = $ni;
-                    break;
-                }
-            }
-        }
-        foreach(Project::getAllProjects() as $project){
-            if(strstr($project->getName(), "SSA2016") !== false){
-                $ssa2016[$project->getName()] = $project;
-            }
-        }
+        $ots = Person::getAllPeople(CI);
+        
         $wgOut->addHTML("<div id='tabs'>
                             <ul>
-                                <li><a href='#final'>Final Project 2015</a></li>
-                                <li><a href='#progress'>Project Progress 2015</a></li>
-                                <li><a href='#ifp_final_2015'>IFP Final 2015</a></li>
-                                <li><a href='#ifp_progress_2015'>IFP Progress 2015</a></li>
-                                <li><a href='#ifp_final_2016'>IFP Final 2016 (Special)</a></li>
-                                <li><a href='#ifp_progress_2016'>IFP Progress 2016</a></li>
-                                <li><a href='#ifp2016_final_2016'>IFP Final 2016</a></li>
-                                <li><a href='#ssa'>SSA 2015</a></li>
-                                <li><a href='#ssa2016'>SSA 2016</a></li>
+                                <li><a href='#ot'>OT Questionnaire</a></li>
                             </ul>");
-        $this->addProjectTable(RP_FINAL_PROJECT,    'final',              2015);
-        $this->addProjectTable(RP_PROGRESS,         'progress',           2015);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2015',     $ifpFinal, 2015);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2015',  $ifpProgress, 2015);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp_final_2016',     $ifp2016Final, 2015);
-        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2016',  $ifpProgress, 2016);
-        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2016_final_2016', $ifpFinal, 2016);
-        $this->addTable('HQPReport',                'ssa',                $ssa, 2015);
-        $this->addProjectTable('SSAReport',         'ssa2016',            2016, $ssa2016);
+        $this->addTable('RP_OT',       'ot_questionnaire',     $ots);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();

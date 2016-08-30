@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Catalyst Review" reportType="RP_SAB_CAT_REVIEW" ajax="true" disabled="false">
+<Report name="SAB Catalyst Review" reportType="RP_SAB_COLLAB_REVIEW" ajax="true" disabled="false">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -25,9 +25,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CatalystReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -37,8 +37,8 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>

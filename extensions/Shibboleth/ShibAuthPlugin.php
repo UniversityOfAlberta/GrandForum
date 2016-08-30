@@ -348,6 +348,8 @@ function ShibUserLoadFromSession($user, &$result)
 	global $shib_map_info_existing;
 	global $shib_pretend;
 	global $shib_groups;
+	global $shib_email;
+	global $config;
 
 	ShibKillAA();
  
@@ -437,6 +439,15 @@ function ShibUserLoadFromSession($user, &$result)
         
 	$user->setCookies();
 	ShibAddGroups($user);
+	DBFunctions::update('mw_user',
+                        array('user_email' => $shib_email),
+                        array('user_id' => EQ($user->getId())));
+	if($config->getValue('shibDefaultRole') != ""){
+	    DBFunctions::insert('grand_roles',
+	                        array('user_id'    => $user->getId(),
+	                              'role'       => $config->getValue('shibDefaultRole'),
+	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+	}
 	return true;
 }
 function ShibAddGroups($user) {

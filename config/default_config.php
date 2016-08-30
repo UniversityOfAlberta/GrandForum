@@ -52,6 +52,9 @@
     // Shibboleth Logout URL
     $config->setValue("shibLogoutUrl", "");
     
+    // Shibboleth default role
+    $config->setValue("shibDefaultRole", "");
+    
     // Skin
     $config->setValue("skin", "cavendish");
     
