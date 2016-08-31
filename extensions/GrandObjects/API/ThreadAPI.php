@@ -34,7 +34,7 @@ class ThreadAPI extends RESTAPI {
             foreach($people as $person){
 		        if($person->isRoleAtLeast(MANAGER)){
                             //Notification::addNotification($me,$person,"New request for expert from {$me->getNameForForms()}", "{$me->getNameForForms()} has requested for an expert", "{$thread->getUrl()}");
-		            Notification::addNotification($me,$person,"New request for expert from {$me->getNameForForms()}", "{$me->getNameForForms()} has requested for an expert", "{$thread->getUrl()}");
+		            Notification::addNotification($me,$person,"New request for expert from {$me->getNameForForms()}", "{$me->getNameForForms()} has requested for an expert", "{$thread->getUrl()}", true);
 		        }
             }
         }

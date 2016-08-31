@@ -33,56 +33,18 @@ class CAPSRegister extends SpecialPage{
     
     function createForm(){
         global $wgLang;
-        $englishTerms = "Consent Form for Website
-            <br /><br />
-            Mifepristone Implementation Research in Canada<br />
-            (The CART-Mife Study)<br /><br />
-
-            <b>What is the purpose of the study?</b><br />
-            The purpose of this study is to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone. We invite you to post information on the Canadian Abortion Providers Support (CAPS) website about your positive and negative experiences, challenges and helpful tips for providing medical abortion. We will aggregate site posts to advocate for policy, system and service improvements.<br /><br />
-	
-           <b> Who is conducting this study?</b><br />
-            This study is being conducted by researchers at UBC and Canadian universities in collaboration with national professional organizations, including the Society of Obstetricians and Gynaecologists of Canada, College of Family Physicians of Canada, the Canadian Pharmacists’ Association, and the National Abortion Federation.
+        $englishTerms = "Consent Form for CAPS Website<br /><br />
+            <span style=‘text-align: center;’><b>How we protect and use your data</b>
 <br /><br />
-
-            <b>Principal Investigator:	</b>	Dr. Wendy Norman, Associate Professor, 
-                                                 		Dept. of Family Practice, Faculty of Medicine, UBC <br /><br />
-
-            <b>Co-investigators:     </b>    	Sheila Dunn, U. of Toronto; Edith Guilbert, INSPQ; Melissa Brooks, Dalhousie; Dustin Costescu, McMaster; Regina Renner, UBC; Ashley Waddington, Queen’s U.; Angel Foster, U. of Ottawa; Flora Teng, UBC; Judith Soon, UBC; Stirling Bryan, UBC; Janusz Kaczorowski, U. of Montreal; Rollin Brant, UBC; Eleni Stroulia, U. of Alberta; Sarah Munro, UBC. 
+This website is part of the Mifepristone Implementation Research in Canada study (The CART-Mife Study) which aims to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone.
 <br /><br />
-            <b>Who is funding this study?</b><br />
-            This study is sponsored by the
-            Canadian Institutes of Health Research 
-            Michael Smith Foundation for Health Research 
-            BC Women’s Hospital and Health Centre 
-            The College of Family Physicians of Canada
-            The Society of Obstetricians and Gynaecologists of Canada
-            The Canadian Pharmacists’ Association
-            The National Abortion Federation<br /><br />
-
-           <b> What happens if you say, “Yes I want to join CAPS and participate in this study”?</b><br />
-            If you decide to become a member of the CAPS website, we will collect data including: your demographic information; reports of challenges, barriers and facilitators posted on the website [i.e. “Ask an Expert,” “Share a Case or Experience”]; responses to a weekly 1-question poll (based on the surveys); and participant usage statistics. We will also collect your contact information to inform you of future opportunities to participate in abortion related research.<br /><br />
-
-
-            <b>How will the study results be used?</b><br />
-            The main results of our study will be presented to health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. We will also report aggregate findings (with no personal identifiers) in academic journals and conferences.  <br /><br />
-
-            <b>What are the potential risks of participating?</b><br />
-            We do not believe that participating in this study represents any risk to you. <br /><br />
-
-            <b>What are the potential benefits of participating?</b><br />
-            Participants will contribute to knowledge of the barriers and challenges faced when providing medical abortion care in Canada. Findings of the study may be used to recommend policy or service delivery changes.<br /><br />
-
-            <b>How will your identity be protected?</b><br />
-            You will be assigned a unique study number. Only this number will be used on any research-related information collected about you during the course of this study, so that your identity [i.e. your name, email address, or any other information that could identify you] will be kept confidential. Information that contains your identity, such as your email address, will remain only with the Principal Investigator and/or designate.<br />
-
-            Documents will only be identified by code numbers and will be kept in a locked filing cabinet. Your name and identifying information will not be included anywhere in the analysis or report for this study. Computer files will be password-protected on a password-protected computer and stored securely. <br /><br />
-
-           <b> Who can you contact if you have questions about the study?</b><br />
-            If you have any concerns or complaints about your rights as a research participant and/or your experiences while participating in this study, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics by e-mail at <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> or by phone at 604-822-8598 (Toll Free: 1-877-822-8598).<br /><br />
-
-            <b>Consent:</b><br />
-            Taking part in this study is entirely up to you. You have the right to refuse to participate in this study. If you decide to take part, you may choose to withdraw from the study at any time without giving a reason and without any negative impact on your access to the Canadian Abortion Providers Support (CAPS) website.
+We will collect data including: your demographic information; posts on challenges, barriers and facilitators; responses to a weekly 1-question poll; and participant usage statistics. We will also collect your contact information to inform you of future opportunities to participate in research. You will be assigned a unique study number and your personal information will be kept confidential. Your name and identifying information will not be included anywhere in the analysis or report for this study. Computer files will be password-protected on a password-protected computer and stored securely on a UBC server. 
+<br /><br />
+We do not believe that participating in this study represents any risk to you. Participants will contribute to knowledge of the barriers and challenges faced when providing medical abortion care in Canada. The main results of our study will be presented to health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. We will also report aggregate findings (with no personal identifiers) in academic journals and conferences.  
+<br /><br />
+Your participation is optional and you may choose to withdraw from the study at any time. For more information, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics (e) <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> (t) 604-822-8598 or 1-877-822-8598. Principal Investigator: Dr. Wendy Norman, Associate Professor, Dept. of Family Practice, Faculty of Medicine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'>wendy.norman@ubc.ca</a> (t) 604-875-2424 x4880
+<br /><br />
+By completing the registration, you are consenting to participate in this research.</span>
             ";
         $frenchTerms = "Formulaire de consentement pour le site Web<br /><br />Mifépristone mise en œuvre de la recherche au Canada <br />
         (L'étude CART-Mife) <br /> <br />
