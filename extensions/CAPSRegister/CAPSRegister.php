@@ -499,17 +499,13 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
 
 function disclaimerFunction() {
             $('.TermsOuterDiv').scroll(function() {
-        console.log($(this)[0].scrollHeight - $(this).height());
+        console.log($(this)[0].scrollHeight - $(this).innerHeight());
         console.log($(this).scrollTop());
-		if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()-13) {
+		if ($(this).scrollTop()+5 >= $(this)[0].scrollHeight - $(this).innerHeight()) {
         	    $(\"input[name='terms_agree[]']\").removeAttr('disabled');
                     $(\"input[name='terms_agree[]']\").css('opacity','1');
 
     		}
-		else{
-                    $(\"input[name='terms_agree[]']\").attr('disabled', 'disabled');
-                    $(\"input[name='terms_agree[]']\").css('opacity','0.3');
-		}
             });
        }
 function checkSubmit(){
