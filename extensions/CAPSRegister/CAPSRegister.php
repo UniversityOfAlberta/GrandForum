@@ -1,5 +1,4 @@
 <?php
-
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['CAPSRegister'] = 'CAPSRegister'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['CAPSRegister'] = $dir . 'CAPSRegister.i18n.php';
@@ -33,7 +32,18 @@ class CAPSRegister extends SpecialPage{
     
     function createForm(){
         global $wgLang;
-        $englishTerms = "Consent Form for CAPS Website<br /><br />
+        $englishTerms = "
+<img src='../skins/UBC_logo.png' width='50' />
+<img class='en' src='../skins/obgyn_transparent.png' width='120' />
+<img class='fr' src='../skins/french_obgyn.png' width='120' />
+<img src='../skins/CFPC.png' width='120' />
+<img src='../skins/cpa_transparent.png' width='120' />
+<img src='../skins/cart_transparent.png' width='120' />
+<img src='../skins/msfhr_transparent.png' width='120' />
+<img src='../skins/bc_women_logo.png' width='120' />
+<img src='../skins/cihr_logo_transparent.png' width='120' />
+<center><hr style='width:80%;' /></center>
+           Consent Form for CAPS Website<br /><br />
             <span style=‘text-align: center;’><b>How we protect and use your data</b>
 <br /><br />
 This website is part of the Mifepristone Implementation Research in Canada study (The CART-Mife Study) which aims to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone.
@@ -480,7 +490,9 @@ Prendre part à cette étude est entièrement à vous. Vous avez le droit de ref
 
 function disclaimerFunction() {
             $('.TermsOuterDiv').scroll(function() {
-		if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()-12) {
+        console.log($(this)[0].scrollHeight - $(this).height());
+        console.log($(this).scrollTop());
+		if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()-13) {
         	    $(\"input[name='terms_agree[]']\").removeAttr('disabled');
                     $(\"input[name='terms_agree[]']\").css('opacity','1');
 
@@ -546,7 +558,8 @@ function checkSubmit(){
             $content = chunk_split(base64_encode(file_get_contents($file)));
             $uid = md5(uniqid(time()));
             $name = basename($file);
-            $msg = "First name: ".$_POST['wpFirstName']."\n";
+            $msg = "The following person has asked to be registered for the CAPS website."."\n"."Please review and approve the member on https://www.caps-cpca.ubc.ca/index.php/Special:AddMember?action=view" . "\n"."\n";
+            $msg .= "First name: ".$_POST['wpFirstName']."\n";
             $msg .= "Last name: ".$_POST['wpLastName']."\n";
             $msg .= "Email: ".$_POST['wpEmail']."\n";
             $msg .= "Role: ".$_POST['wpRole']."\n";
@@ -583,8 +596,16 @@ function checkSubmit(){
             $nmessage .= "Content-Disposition: attachment; filename=\""."credentials"."\"\r\n\r\n";
             $nmessage .= $content."\r\n\r\n";
             $nmessage .= "--".$uid."--";
+        //Note: Change the address here to email to someone else. this will only notify them
 
-           if (mail("rdejesus@ualberta.ca", "New CAPS registration", $nmessage, $header)) {
+	$managers = Person::getAllPeople(MANAGER);
+    $email_managers = "";
+    foreach($managers as $manager){
+        $email_managers .= $manager->email .",";
+    }
+
+
+           if (mail($email_managers, "New CAPS registration", $nmessage, $header)) {
 
                 $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
                 $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
