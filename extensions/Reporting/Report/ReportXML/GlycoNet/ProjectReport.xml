@@ -165,7 +165,7 @@
         <ReportItem id="info" type="StaticReportItem">
             <![CDATA[
                 <p><b>Theme:</b>           {$project_theme}</p>
-                <p><b>Project Title:</b>   {$project_name}</p>
+                <p><b>Project Title:</b>   {$project_name} - {$project_full_name}</p>
                 <p><b>Project Leader:</b>  {$project_leaders}<br />
             ]]>
         </ReportItem>
