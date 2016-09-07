@@ -3,7 +3,7 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Strategic Investment Program Application</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Strategic Investment Program</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
