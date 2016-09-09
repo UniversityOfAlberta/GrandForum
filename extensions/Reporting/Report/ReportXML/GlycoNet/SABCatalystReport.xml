@@ -42,7 +42,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="table" name="Table" blobSection="SEC_NONE" tooltip="Review Table" type="ReportSection">
+    <ReportSection id="table" name="Summary Table" blobSection="SEC_NONE" tooltip="Summary Table" type="ReportSection">
         <ReportItem id="header" type="Static">
             <![CDATA[
                 <table width="100%" class="wikitable" rules="all" frame="box">
