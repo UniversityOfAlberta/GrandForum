@@ -1694,12 +1694,11 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="15%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="15%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="15%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="15%">Transdisciplinary Activities - required to generate outputs & collaborations</th>
-                        <th align="left" width="15%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="15%">Metrics</th>
+                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
+                        <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1716,11 +1715,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -1815,12 +1809,11 @@
                 <table rules="all" frame="box" class="small">
                     <tr>
                         <th align="left" width="1%">Category</th>
-                        <th align="left" width="15%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="15%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="15%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="15%">Transdisciplinary Activities - required to generate outputs & collaborations</th>
-                        <th align="left" width="15%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="15%">Metrics</th>
+                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
+                        <th align="left" width="10%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1837,11 +1830,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_1_4" blobItem="PLAN_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>

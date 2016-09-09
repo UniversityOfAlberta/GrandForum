@@ -1560,7 +1560,6 @@
                         <th>Completed Objectives - main objectives of project over last year</th>
                         <th>Completed Outputs - Deliverables meeting the project objectives</th>
                         <th>Completed Activities - completed to generate outputs</th>
-                        <th>Transdisciplinary Activities - required to generate outputs & collaborations</th>
                         <th>Inputs - resources utilized to carry out project activities</th>
                         <th>Metrics</th>
                     </tr>
@@ -1579,11 +1578,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td>{$item}</td>
             ]]>
@@ -1685,7 +1679,6 @@
                         <th>Planned Objectives - main objectives of project over last year</th>
                         <th>Planned Outputs - Deliverables required to meet project objectives</th>
                         <th>Planned Activities - required to generate outputs</th>
-                        <th>Transdisciplinary Activities - required to generate outputs & collaborations</th>
                         <th>Inputs - resources required to carry out project activities</th>
                         <th>Metrics</th>
                     </tr>
@@ -1704,11 +1697,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_1_4" blobItem="PLAN_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td>{$item}</td>
             ]]>
