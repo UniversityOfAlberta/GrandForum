@@ -3,16 +3,19 @@
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SD">
             <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <!--Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
             <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="table" permissions="" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Role-->
         <Person id="1911">
             <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="table" permissions="r" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
         </Person>
@@ -35,6 +38,70 @@
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
             <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="table" name="Table" blobSection="SEC_NONE" tooltip="Review Table" type="ReportSection">
+        <ReportItem id="header" type="Static">
+            <![CDATA[
+                <table width="100%" class="wikitable" rules="all" frame="box">
+                    <thead>
+                        <tr>
+                            <th style="white-space: nowrap;">Applicant</th>
+                            <th style="white-space: nowrap;">Reviewer 1</th>
+                            <th style="white-space: nowrap;">Reviewer 2</th>
+                            <th style="white-space: nowrap;">Reviewer 3</th>
+                            <th style="white-space: nowrap;">Reviewer 4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Catalyst">
+            <ReportItem id="row_header" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td title="{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">{$user_name}</td>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Catalyst">
+                <ReportItem id="default" type="Static">
+                    <![CDATA[
+                        {set(rank,{getText(RP_SAB_CAT_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
+                        {set(highlight,)}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="high_if" type="If" if="{==({get(rank)},High)}">
+                    <![CDATA[
+                        {set(highlight,background:#00CC00)}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="medium_if" type="If" if="{==({get(rank)},Medium)}">
+                    <![CDATA[
+                        {set(highlight,background:#FF8800)}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="low_if" type="If" if="{==({get(rank)},Low)}">
+                    <![CDATA[
+                        {set(highlight,background:#FF0000)}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="row_footer" type="Static">
+                    <![CDATA[
+                        <td style="{get(highlight)}">{$user_name}</td>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="row_footer" type="Static">
+                <![CDATA[
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="footer" type="Static">
+            <![CDATA[
+                    </tbody>
                 </table>
             ]]>
         </ReportItem>
