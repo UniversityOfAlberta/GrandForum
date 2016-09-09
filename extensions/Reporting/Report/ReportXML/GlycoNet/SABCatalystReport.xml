@@ -49,6 +49,7 @@
                     <thead>
                         <tr>
                             <th style="white-space: nowrap;">Applicant</th>
+                            <th style="white-space: nowrap;">Project</th>
                             <th style="white-space: nowrap;">Reviewer 1</th>
                             <th style="white-space: nowrap;">Reviewer 2</th>
                             <th style="white-space: nowrap;">Reviewer 3</th>
@@ -62,7 +63,10 @@
             <ReportItem id="row_header" type="Static">
                 <![CDATA[
                     <tr>
-                        <td title="{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">{$user_name}</td>
+                        <td title="{getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}"><b>{$user_name}</b></td>
+                        <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
+                            {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
+                        </td>
                 ]]>
             </ReportItem>
             <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Catalyst">
