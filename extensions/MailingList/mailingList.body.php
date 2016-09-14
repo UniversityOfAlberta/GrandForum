@@ -233,7 +233,7 @@ class MailList{
             else {
                 $wgOut->addHTML("There have been no messages sent");
             }
-            $wgOut->setPageTitle($wgTitle->getNSText()." Mailing List Archives");
+            $wgOut->setPageTitle("Mailing List Archives");
             $wgOut->output();
             $wgOut->disable();
             return false;
