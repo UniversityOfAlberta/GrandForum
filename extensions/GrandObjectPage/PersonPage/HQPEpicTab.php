@@ -435,7 +435,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
         $str .= "<td><small>{$description}";
         $value = $this->getBlobValue('HQP_EPIC_REP_DATE');
         if($value == ""){
-            $value = "15 August";
+            $value = "Date not set";
         }
         $value = str_replace("'", "&#39;", $value);
         if($me->isRoleAtLeast(STAFF) && $this->visibility['edit']){
