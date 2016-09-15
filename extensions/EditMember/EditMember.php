@@ -711,7 +711,7 @@ Cette page peut être utilisée pour modifier les rôles et les projets des memb
                          Sélectionnez un utilisateur dans la liste ci-dessous , puis cliquez sur le bouton «Suivant». Vous pouvez filtrer la boîte de sélection en recherchant un nom ou d'un projet ci-dessous.</div><table>
                             <tr><td>
                                 <a href='javascript:sortBy(\"first\");'><span class='en'>Sort by First Name</span><span class='fr'>
-Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span class='en'>Sort by Last Name</span><span class='fr'></span>Trier par Nom</a><br />
+Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span class='en'>Sort by Last Name</span><span class='fr'>Trier par Nom</span></a><br />
                                 <b><span class='en'>Search:</span><span class='fr'>Chercher:</span></b> <input style='width:100%;' id='search' type='text' />
                             </td></tr>
                             <tr><td>
