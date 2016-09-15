@@ -175,10 +175,17 @@ class MailingList extends BackboneModel {
             $locResult = false;
             $rules = $list->getRules();
             $phaseRules = array();
+            $projRules = array();
             foreach($rules as $rule){
                 // Phase rules are a little different than other types
                 if($rule->getType() == "PHASE"){
                     $phaseRules[] = $rule->getValue();
+                }
+            }
+            foreach($rules as $rule){
+                // Phase rules are a little different than other types
+                if($rule->getType() == "PROJ"){
+                    $projRules[] = $rule->getValue();
                 }
             }
             foreach($rules as $rule){
@@ -199,7 +206,10 @@ class MailingList extends BackboneModel {
                         else if($value == PL && $person->isProjectLeader()){
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
-                                if(count($phaseRules) > 0){
+                                if(count($projRules) > 0){
+                                    $roleResult = ($roleResult || (array_search($proj->getId(), $projRules)));
+                                }
+                                else if(count($phaseRules) > 0){
                                     $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
                                 }
                                 else{
