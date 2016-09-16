@@ -115,10 +115,10 @@ class ApplicationsTable extends SpecialPage{
     function generateSIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP', $this->nis, 2015, "01-2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', $this->nis, 2015, "04-2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_07_2016', $this->nis, 2015, "07-2016"));
         $tabbedPage->addTab(new ApplicationTab('RP_SIP_10_2016', $this->nis, 2015, "10-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_07_2016', $this->nis, 2015, "07-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', $this->nis, 2015, "04-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP', $this->nis, 2015, "01-2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -140,9 +140,6 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', $this->fullHQPs, 2015, "01-2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', $this->fullHQPs, 2015, "04-2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2017', $this->fullHQPs, 2015, "07-2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2017', $this->fullHQPs, 2015, "10-2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
