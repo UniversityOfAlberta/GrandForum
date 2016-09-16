@@ -23,6 +23,15 @@ a minimum you should set the following values:
 Once you have set those variables, and you have created a new empty
 database (dbName), then you are ready to start installing the forum.
 
+Before installing the forum, you will need to first install some symfony libraries.
+To do this, cd into the symfony/ directory and then run the install.sh script:
+
+.. code:: bash
+
+    $ cd symfony/
+    $ ./install.sh
+
+Once the symfony libraries are installed, you can begin to install the forum.
 To install the forum, you should first cd into maintenance/install, then
 run install.php. 
 
