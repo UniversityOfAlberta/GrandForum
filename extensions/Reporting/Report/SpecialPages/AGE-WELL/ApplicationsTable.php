@@ -58,6 +58,16 @@ class ApplicationsTable extends SpecialPage{
         
         $links = array();
         
+        $wgOut->addHTML("<style type='text/css'>
+            #bodyContent > h1:first-child {
+                display: none;
+            }
+            
+            #contentSub {
+                display: none;
+            }
+        </style>");
+        
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=sip'>SIP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cip'>CIP</a>";
