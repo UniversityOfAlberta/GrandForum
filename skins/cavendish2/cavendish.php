@@ -136,6 +136,7 @@ class CavendishTemplate2 extends QuickTemplate {
         <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/jquery.markitup.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/set.js"></script>
+        
         <script type='text/javascript'>
         
             $.ajaxSetup({ cache: false, 
@@ -511,14 +512,16 @@ class CavendishTemplate2 extends QuickTemplate {
 		        });
 		    });
 		</script>
-		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
 		    <script type="text/javascript">
                 $(document).ready(function(){
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
                         $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
                         $("#logoutFrame").load(function(){
-                            document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                            $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                                document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                            });
                         });
                     });
                 });
@@ -533,9 +536,9 @@ class CavendishTemplate2 extends QuickTemplate {
 		            background: #FFFFFF;
 		        }
 			
-			body {
-			    background:#FFFFFF;
-			}
+			    body {
+			        background:#FFFFFF;
+			    }
 		        
 		        #side {
 		            display: none;
@@ -940,13 +943,13 @@ class CavendishTemplate2 extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
-		$person = Person::newFromId($wgUser->getId());
-		$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-		global $toolbox;
-	    $i = 0;
-                array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
+            $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
+	        $person = Person::newFromId($wgUser->getId());
+	        $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+	        global $toolbox;
+            $i = 0;
+            array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
+            array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
@@ -986,7 +989,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
+		            $failMessage = "<p><div class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.</div>  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><b>NOTE: Only one password reset can be requested every 10 minutes.</b></p>";
 		        }
 		        else{
 		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
@@ -1045,8 +1048,11 @@ If you have forgotten your password please enter your login and ID and request a
 		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
 		        <script type='text/javascript'>
 		            function showResetMessage(message){
-		                $('#failMessage').html(message);
-		            }
+		                $('#failMessage').html(message);\n";
+		                if(isExtensionEnabled("Shibboleth")){
+		                    $emailPassword .= "updateLoginPopup();\n";
+		                }
+		            $emailPassword .= "}
 		            $('#wpUsername1').attr('value', $('#wpName1').val());
 		            $('#wpName1').change(function(){
 		                $('#wpUsername1').attr('value', $('#wpName1').val());
@@ -1099,6 +1105,10 @@ If you have forgotten your password please enter your login and ID and request a
 	        }
 	        
 		    $wgUser->setCookies();
+		    
+		    if(isExtensionEnabled("Shibboleth") && $config->getValue('shibLoginUrl') != ""){
+		        SetupShibPopup();
+            }
 		    
 		    if(isset($_POST['wpPassword']) &&
 		       isset($_POST['wpNewPassword']) &&

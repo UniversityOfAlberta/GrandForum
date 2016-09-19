@@ -837,6 +837,9 @@ button.mce-close {
 }
 
 /*JQUERY TABS CUSTOM STYLING*/
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
 .ui-widget{font-size:1em;}
 .ui-widget-content{border:none;}
 .ui-widget-header{
@@ -1091,7 +1094,7 @@ a.error_box_close {
     background-repeat: no-repeat !important;
     background-position: 5px center !important;
     margin: 10px 0;
-    padding:10px 5px 10px 40px;
+    padding:10px 30px 10px 40px;
     position: relative;
 }
 

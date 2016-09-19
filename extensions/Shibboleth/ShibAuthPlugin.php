@@ -21,6 +21,7 @@
  */
  
 require_once('includes/AuthPlugin.php');
+require_once('ShibCreateForm.php');
  
 class ShibAuthPlugin extends AuthPlugin {
 	var $existingUser = false;
@@ -268,6 +269,90 @@ function SetupShibAuth()
 	} else {
 		$wgHooks['PersonalUrls'][] = 'ShibLinkAdd';
 	}
+}
+
+function SetupShibPopup(){
+    global $config;
+    
+    echo "<div id='loginDialog' title='Login' style='position:relative;'>
+        <div id='loginMessages' style='font-size: 0.9em;'></div>
+        <div id='loginView1' style='display:inline-block;'>
+            <table>
+                <tr>
+                    <td width='225px' align='center'>
+                        <span style='font-size:1.3em;'>Sign in using <br /><br /><a class='button' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></span>
+                    </td>
+                    <td width='30px;' align='center'>
+                        <div style='width:1px;height:60px;background:#888888;'></div>
+                        <span style='font-size:1.3em;'>or</span>
+                        <div style='width:1px;height:60px;background:#888888;'></div>
+                    </td>
+                    <td width='225px' align='center'>
+                        Login using your Forum account
+                        <div id='loginDiv'></div>
+                        Don't have an account?<br />
+                        <a class='button' id='createAccount'>Create Account</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id='loginView2' style='display:none;'>";
+            if(!isset($_POST['submit'])){
+                generateFormHTML();
+            }
+            else{
+                handleSubmit();
+            }
+    echo"
+            <a class='button' id='back' style='float:right;'>Back</a>
+        </div>
+    </div>";
+    echo "<script type='text/javascript'>
+        var updateLoginPopup = function(){
+            $('#wpRemember').prop('checked', true);
+            $('#wpRemember').hide();
+            $('label[for=wpRemember]').hide();
+            
+            if($('#failMessage .inlineError').text() != ''){
+                addError($('#failMessage .inlineError').text());
+            }
+            if($('#failMessage .inlineSuccess').text() != ''){
+                addSuccess($('#failMessage .inlineSuccess').text());
+            }
+            $('#loginMessages').append($('#wgMessages').detach());
+            
+            $('#back').click(function(){
+                $('#loginView2').toggle('slide', { direction: 'right' }, 300, function(){
+                    $('#loginView1').toggle('slide', { direction: 'left' }, 300);
+                });
+            });
+            $('#createAccount').click(function(){
+                $('#loginView1').toggle('slide', { direction: 'left' }, 300, function(){
+                    $('#loginView2').toggle('slide', { direction: 'right' }, 300);
+                });
+            });
+            $('#failMessage').hide();
+        }
+        
+        $(document).ready(function(){
+            var position = { my: 'center center', at: 'center center'};
+            updateLoginPopup();
+            $('#loginDiv').html($('.pBodyLogin form').detach());
+            $('#loginDialog').dialog({
+                dialogClass: 'no-close',
+                closeOnEscape: false,
+                modal: true,
+                resizable: false,
+                draggable: false,
+                closeText: 'hide',
+                width: '525px',
+                'position': position
+            });
+            $(window).resize(function() {
+                $('#loginDialog').dialog('option', 'position', position);
+            });   
+        });
+    </script>";
 }
  
 /* Add login link */

@@ -402,17 +402,27 @@ body.page-Main_Page h1.firstHeading { display:none; }
         font-size: larger;
     }
 
-    #nav .loginText {
+    .loginText {
         border: none !important;
         width: 160px !important;
     }
 
-    #nav .loginPassword{
+    .loginPassword{
+        border: none !important;
+        width: 160px !important;
+    }
+    
+    .loginText:focus {
         border: none !important;
         width: 160px !important;
     }
 
-    #nav .mw-input-string{
+    .loginPassword:focus {
+        border: none !important;
+        width: 160px !important;
+    }
+
+    .mw-input-string{
         background:#FFFFFF;
     }
 
