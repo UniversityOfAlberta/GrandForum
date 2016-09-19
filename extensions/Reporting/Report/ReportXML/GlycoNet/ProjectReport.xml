@@ -205,7 +205,7 @@
                 </table>
                 </p>
                 <p><b>Trainees and role:</b><br />
-                    If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:EditRelations'>Edit Relations</a> (note you must be the HQPs supervisor in order to add them).
+                    If there is an HQP without a supervisor, then they can be added by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage People</a> (note you must be the HQPs supervisor in order to add them).
                 </p>
                 <table class='wikitable'>
                     <tr>
