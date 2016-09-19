@@ -686,6 +686,56 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="hqp_table" type="StaticReportItem">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <th rowspan='2'>Name</th>
+                        <th rowspan='2'>Citizenship</th>
+                        <th rowspan='2'>Gender</th>
+                        <th rowspan='2'>Title</th>
+                        <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
+                        <th colspan='2'>%Salary/time<br />devoted to project*</th>
+                    </tr>
+                    <tr>
+                        <th>Paid from<br />NCE funds</th>
+                        <th>Paid from<br />other funds</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+            <ReportItem id="hqp_info" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td align='center'>{$user_nationality}</td>
+                        <td align='center'>{$user_gender}</td>
+                        <td align='center'>{$user_level}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
+                <![CDATA[
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="hqp_table" type="StaticReportItem">
+            <![CDATA[
+                </table>
+                <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then each column would be 25%.</p>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="true" details="true" showButton="false" totalOnly="true">
