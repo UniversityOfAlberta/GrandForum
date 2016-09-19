@@ -86,6 +86,13 @@
                 </p>
             ]]>
         </ReportItem>
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true">
+            <![CDATA[
+                <br />
+                <p><b>Executive Summary</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p><b>Figures Upload</b></p>
@@ -109,25 +116,25 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS">
+        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="1000">
             <![CDATA[
                 <p><b>Describe significant achievements or advances made in this project over the funding period</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES">
+        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="300">
             <![CDATA[
                 <p><b>Cross-reference these achievements to deliverables and milestones set out in the original proposal.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT">
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="300">
             <![CDATA[
                 <p><b>Outline the impact of these achievements in terms of the goals of the Project, of the theme and of GlycoNet.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
+        <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" rich="true" limit="300">
             <![CDATA[
                 <p><b>What are the benefits to Canada of the work to date?</b></p>
                 {$item}<br />
@@ -137,21 +144,21 @@
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}">
+                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200">
                     <![CDATA[
-                        <p><b>Describe role of the trainee within the project</b></p>
+                        <p><b>Describe the role of the trainee within the project, highlighting progress made to date.</b></p>
                         {$item}<br />
                     ]]>
                 </ReportItem>
                 <ReportItem id="training" type="TextareaReportItem" blobItem="TRAINING" blobSubItem="{$user_id}">
                     <![CDATA[
-                        <p><b>Describe any training initiatives undertaken during the funding period</b></p>
+                        <p><b>Describe any training or professional development experiences undertaken during the funding period.</b></p>
                         {$item}<br />
                     ]]>
                 </ReportItem>
                 <ReportItem id="graduate" type="TextareaReportItem" blobItem="GRADUATE" blobSubItem="{$user_id}">
                     <![CDATA[
-                        <p><b>Did the trainee graduate or transition to the workforce? Describe.</b></p>
+                        <p><b>If the trainee graduated or transitioned to the workforce, describe his/her new position and location. If a thesis was produced, please give its title.</b></p>
                         {$item}<br />
                     ]]>
                 </ReportItem>
@@ -159,13 +166,6 @@
                     <![CDATA[
                         <p><b>How was cross-disciplinary training/experience achieved?</b></p>
                         {$item}<br />
-                    ]]>
-                </ReportItem>
-                <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$user_id}">
-                    <![CDATA[
-                        <p><b>Cross-reference training initiative progress to deliverables included in the original proposal.</b></p>
-                        {$item}<br />
-                        <br />
                     ]]>
                 </ReportItem>
             </ReportItemSet>
