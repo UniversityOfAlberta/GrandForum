@@ -688,6 +688,7 @@
         </ReportItem>
         <ReportItem id="hqp_table" type="StaticReportItem">
             <![CDATA[
+                <h3>HQP Budget</h3>
                 <table class='wikitable'>
                     <tr>
                         <th rowspan='2'>Name</th>
