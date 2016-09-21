@@ -1,8 +1,6 @@
 <?php
 
-$editPermissions = new EditPermissions();
-
-$wgHooks['EditPage::showEditForm:initial'][] = array($editPermissions, 'clearEditForm');
+$wgHooks['EditPage::showEditForm:initial'][] = 'EditPermissions::clearEditForm';
 
 class EditPermissions{
 

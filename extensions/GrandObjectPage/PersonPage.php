@@ -4,10 +4,8 @@ require_once('PersonPage/PersonProfileTab.php');
 require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
-$personPage = new PersonPage();
-$wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
-$wgHooks['userCan'][] = array($personPage, 'userCanExecute');
-
+$wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
+$wgHooks['userCan'][] = 'PersonPage::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
@@ -24,7 +22,7 @@ class PersonPage {
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $result = true;
-        $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+        self::userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
             permissionError();
         }
@@ -106,7 +104,7 @@ class PersonPage {
                 $visibility['isSupervisor'] = $isSupervisor;
                 $visibility['isChampion'] = $isChampion;
                 
-                $this->showTitle($person, $visibility);
+                self::showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
                 
@@ -131,7 +129,7 @@ class PersonPage {
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
-                $this->showTitle($person, $visibility);
+                self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();
             }

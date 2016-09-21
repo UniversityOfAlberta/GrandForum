@@ -1,7 +1,5 @@
 <?php
-$materialPage = new MaterialPage();
-
-$wgHooks['ArticleViewHeader'][] = array($materialPage, 'processPage');
+$wgHooks['ArticleViewHeader'][] = 'MaterialPage::processPage';
 
 class MaterialPage {
 

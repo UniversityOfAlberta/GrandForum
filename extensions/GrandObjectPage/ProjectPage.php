@@ -2,9 +2,7 @@
 require_once('ProjectPage/ProjectVisualizationsTab.php');
 autoload_register('GrandObjectPage/ProjectPage');
 
-$projectPage = new ProjectPage();
-$wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-
+$wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 

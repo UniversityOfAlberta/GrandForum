@@ -4,16 +4,11 @@ require_once("InactiveUsers.php");
 require_once('PeopleWikiTab.php');
 require_once('PeopleTableTab.php');
 
-$indexTable = new IndexTable();
-
-$wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
-$wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
-
+$wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
+$wgHooks['userCan'][] = 'IndexTable::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 
 class IndexTable {
-
-	var $text = "";
 	
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
@@ -133,7 +128,7 @@ class IndexTable {
 		$me = Person::newFromWgUser();
 		if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
 		    $result = true;
-		    $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+		    self::userCanExecute($wgTitle, $wgUser, "read", $result);
 		    if(!$result){
 	            $wgOut->loginToUse();
 		        $wgOut->output();
@@ -151,41 +146,40 @@ class IndexTable {
 			switch ($wgTitle->getText()) {
 				case 'Multimedia':
 				    $wgOut->setPageTitle("Multimedia");
-				    $this->generateMaterialsTable();
+				    self::generateMaterialsTable();
 				    break;
 				case 'Forms':
 				    if($me->isRoleAtLeast(MANAGER)){
 				        $wgOut->setPageTitle("Forms");
-				        $this->generateFormsTable();
+				        self::generateFormsTable();
 				    }
 				    break;
 			    case 'Projects':
 			        $wgOut->setPageTitle("Current Projects");
-				    $this->generateProjectsTable('Active', 'Research');
+				    self::generateProjectsTable('Active', 'Research');
 				    break;
 				case 'CompletedProjects':
 			        $wgOut->setPageTitle("Completed Projects");
-				    $this->generateProjectsTable('Ended', 'Research');
+				    self::generateProjectsTable('Ended', 'Research');
 				    break;
 				case 'AdminProjects':
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
-				    $this->generateAdminTable();
+				    self::generateAdminTable();
 				    break;
 			    case Inflect::pluralize($config->getValue('projectThemes')):
 			        $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
-				    $this->generateThemesTable();
+				    self::generateThemesTable();
 				    break;
 			    default:
 			        foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){//Here we can get role
                             $wgOut->setPageTitle($config->getValue('roleDefs', $role));
-				            $this->generatePersonTable($role);
+				            self::generatePersonTable($role);
                         }
                     }
 				    break;
 			}
 			TabUtils::clearActions();
-			$wgOut->addHTML($this->text);
 			$wgOut->output();
 			$wgOut->disable();
 		}
@@ -209,27 +203,27 @@ class IndexTable {
             $idHeader = "<th>Project Id</th>";
         }
         $data = Project::getAllProjectsEver();
-	    $this->text .= "
+	    $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>";
+            <tr><th>Acronym</th><th>Name</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
 	    foreach($data as $proj){
 	        if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
-	            $this->text .= "
+	            $wgOut->addHTML("
                     <tr>
                     <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
-                    <td align='left'>{$proj->getFullName()}</td>";
+                    <td align='left'>{$proj->getFullName()}</td>");
                 if($type != "Administrative"){
-                    $this->text .= "<td align='center'>{$proj->getChallenge()->getAcronym()}</td>";
+                    $wgOut->addHTML("<td align='center'>{$proj->getChallenge()->getAcronym()}</td>");
                 }
                 if($idHeader){
-                    $this->text .= "<td>{$proj->getId()}</td>\n";
+                    $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
                 }
-                $this->text .= "</tr>\n";
+                $wgOut->addHTML("</tr>\n");
             }
 	    }
-	    $this->text .= "</tbody></table>";
-		$this->text .= "<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+	    $wgOut->addHTML("</tbody></table>");
+		$wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
 
 		return true;
 	}
@@ -240,11 +234,11 @@ class IndexTable {
 	 * Theme | Name 
 	 */
 	private function generateThemesTable(){
-		global $wgScriptPath, $wgServer, $config;
-		$this->text .=
+		global $wgScriptPath, $wgServer, $config, $wgOut;
+		$wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>{$config->getValue('projectThemes')}</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
-";
+");
         $themes = Theme::getAllThemes(PROJECT_PHASE);
 		foreach($themes as $theme){
 		    $leaders = array();
@@ -259,16 +253,16 @@ class IndexTable {
             }
 		    $leadersString = implode(", ", $leaders);
 		    $coordsString = implode(", ", $coordinators);
-			$this->text .= <<<EOF
-<tr>
-<td align='left'>
-<a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
-</td><td align='left'>
-{$theme->getName()}
-</td><td>{$leadersString}</td><td>{$coordsString}</td></tr>
-EOF;
+			$wgOut->addHTML("<tr>
+                                <td align='left'>
+                                    <a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
+                                </td><td align='left'>
+                                    {$theme->getName()}
+                                </td><td>{$leadersString}</td>
+                                <td>{$coordsString}</td>
+                            </tr>");
 		}
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+		$wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
 
 		return true;
 	}
@@ -277,16 +271,16 @@ EOF;
 	 * Generates the Table of Admin Projects
 	 */
 	private function generateAdminTable(){
-	    global $wgScriptPath, $wgServer, $config;
+	    global $wgScriptPath, $wgServer, $config, $wgOut;
 	    $me = Person::newFromWgUser();
 	    $activityPlans = "";
 	    if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
 	        $activityPlans = "<th>Activity Plans</th>";
 	    }
-		$this->text .=
+		$wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>
-";
+");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
             if($project->getType() == 'Administrative'){
@@ -295,12 +289,12 @@ EOF;
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
                 }
                 $leaderString = implode(", ", $leaders);
-                $this->text .= "<tr>";
-                $this->text .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>";
-                $this->text .= "<td>{$project->getFullName()}</td>";
-                $this->text .= "<td>{$leaderString}</td>";
+                $wgOut->addHTML("<tr>
+                                    <td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>
+                                    <td>{$project->getFullName()}</td>
+                                    <td>{$leaderString}</td>");
                 if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
-                    $this->text .= "<td>";
+                    $wgOut->addHTML("<td>");
                     $projs = array();
                     $projects = array();
                     foreach($me->leadership() as $p){
@@ -332,13 +326,13 @@ EOF;
                         }
                         $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$report}&project={$project->getName()}'>Feedback</a>";
                     }
-                    $this->text .= implode(", ", $projs);
-                    $this->text .= "</td>";
+                    $wgOut->addHTML(implode(", ", $projs));
+                    $wgOut->addHTML("</td>");
                 }
-                $this->text .= "</tr>";
+                $wgOut->addHTML("</tr>");
             }
         }
-		$this->text .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>";
+		$wgOut->addHTML("</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});</script>");
 
 		return true;
 	}
@@ -363,12 +357,12 @@ EOF;
 	}
 	
 	function generateMaterialsTable(){
-	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>";
+	    global $wgServer, $wgScriptPath, $wgOut;
+	    $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>");
         $materials = Material::getAllMaterials();
         foreach($materials as $material){
-            $this->text .= "<tr><td>{$material->getDate()}</td><td><a href='{$material->getUrl()}'>{$material->getTitle()}</a></td><td>{$material->getHumanReadableType()}</td>";
+            $wgOut->addHTML("<tr><td>{$material->getDate()}</td><td><a href='{$material->getUrl()}'>{$material->getTitle()}</a></td><td>{$material->getHumanReadableType()}</td>");
             $projs = array();
             foreach($material->getProjects() as $project){
                 $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
@@ -382,24 +376,24 @@ EOF;
                     $personLinks[] = "{$person->getName()}";
                 }
             }
-            $this->text .= "<td>".implode(", ", $personLinks)."</td>";
-            $this->text .= "<td>".implode(", ", $projs)."</td>";
-            $this->text .= "</tr>";
+            $wgOut->addHTML("   <td>".implode(", ", $personLinks)."</td>
+                                <td>".implode(", ", $projs)."</td>
+                            </tr>");
         }
-        $this->text .= "</tbody></table>";
-        $this->text .= "<script type='text/javascript'>
+        $wgOut->addHTML("</tbody></table>");
+        $wgOut->addHTML("<script type='text/javascript'>
 	        $(document).ready(function(){
 	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
-	    </script>";
+	    </script>");
 	    return true;
 	}
 	
 	function generateFormsTable(){
-	    global $wgServer, $wgScriptPath;
-	    $this->text = "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>";
+	    global $wgServer, $wgScriptPath, $wgOut;
+	    $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
+<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>");
         $forms = Form::getAllForms();
         foreach($forms as $form){
             $personName = "";
@@ -415,17 +409,17 @@ EOF;
             if($project != null && $project->getName() != ""){
                 $projectName = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
-            $this->text .= "<tr><td>{$form->getDate()}</td><td><a href='$wgServer$wgScriptPath/index.php/Form:{$form->getId()}'>{$form->getTitle()}</a></td><td>{$personName}</td><td>{$university}</td><td>{$projectName}</td>";
+            $wgOut->addHTML("<tr><td>{$form->getDate()}</td><td><a href='$wgServer$wgScriptPath/index.php/Form:{$form->getId()}'>{$form->getTitle()}</a></td><td>{$personName}</td><td>{$university}</td><td>{$projectName}</td>");
             
-            $this->text .= "</tr>";
+            $wgOut->addHTML("</tr>");
         }
-        $this->text .= "</tbody></table>";
-        $this->text .= "<script type='text/javascript'>
+        $wgOut->addHTML("</tbody></table>");
+        $wgOut->addHTML("<script type='text/javascript'>
 	        $(document).ready(function(){
 	            $('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth': false});
 	            $('.indexTable').dataTable().fnSort([[0,'desc']]);
 	        });
-	    </script>";
+	    </script>");
 	    return true;
 	}
 }

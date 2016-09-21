@@ -1,7 +1,6 @@
 <?php
-$contributionPage = new ContributionPage();
 
-$wgHooks['ArticleViewHeader'][] = array($contributionPage, 'processPage');
+$wgHooks['ArticleViewHeader'][] = 'ContributionPage::processPage';
 
 class ContributionPage {
 

@@ -6,19 +6,7 @@ define('PROJECT_ROSTER_STRUCTURE', 105);
 define('PROJECT_CHAMP_ROSTER_STRUCTURE', 106);
 define('PROJECT_NI_ROSTER_STRUCTURE', 107);
 define('PROJECT_CONTRIBUTION_STRUCTURE', 108);
-
-$productStructure = Product::structure();
-$categories = array_keys($productStructure['categories']);
-
-$head = array();
-$persRow = array();
-$projRow = array();
-foreach($categories as $category){
-    $head[] = HEAD."(".Inflect::pluralize($category).")";
-    $persRow[] = STRUCT(PERSON_PRODUCTS, $category, REPORTING_CYCLE_START, REPORTING_NCE_END);
-    $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, REPORTING_CYCLE_START, "2017-12-31 23:59:59");
-}
-    
+   
 $dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_START, $end=REPORTING_NCE_END){
     $productStructure = Product::structure();
     $categories = array_keys($productStructure['categories']);
@@ -66,7 +54,8 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = function($start=RE
     );
 };
     
-$dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] = 
+$dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] = function(){
+    return
     array(array_merge(array(HEAD."(People)"), array(HEAD."(Contributions)")),
           array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE),
@@ -76,8 +65,10 @@ $dashboardStructures[PROJECT_CONTRIBUTION_STRUCTURE] =
                                                                  array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END))),
           array_merge(array(HEAD.'(Total:)'), array(STRUCT(PROJECT_CONTRIBUTIONS, REPORTING_CYCLE_START, REPORTING_NCE_END)))
     );
+};
     
-$dashboardStructures[PROJECT_ROSTER_STRUCTURE] =
+$dashboardStructures[PROJECT_ROSTER_STRUCTURE] = function(){
+    return
     array(array(HEAD."(People)", HEAD."(Roles, NI: Network Investigator, PL: Project Leader, PM: Project Manager, sPL: Sub-Project Leader)", HEAD."(Affiliation)"),
           array(PROJECT_HEAD),
           STRUCT(GROUP_BY, PROJECT_CHAMPIONS_ARRAY) => array(PROJECT_PEOPLE,
@@ -89,19 +80,24 @@ $dashboardStructures[PROJECT_ROSTER_STRUCTURE] =
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE,
                                                            STRUCT(PROJECT_ROLES, REPORTING_CYCLE_START, REPORTING_CYCLE_END),
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)));
+};
                                                            
-$dashboardStructures[PROJECT_CHAMP_ROSTER_STRUCTURE] = 
+$dashboardStructures[PROJECT_CHAMP_ROSTER_STRUCTURE] = function(){
+    return
     array(array(HEAD."(Champions)", HEAD."(Affiliation)"),
           array(PROJECT_HEAD),
           STRUCT(GROUP_BY, PROJECT_CHAMPIONS_ARRAY) => array(PROJECT_PEOPLE,
                                                              STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)));
+};
                                                              
-$dashboardStructures[PROJECT_NI_ROSTER_STRUCTURE] = 
+$dashboardStructures[PROJECT_NI_ROSTER_STRUCTURE] = function(){
+    return
     array(array(HEAD."(NIs)", HEAD."(Affiliation)"),
           //array(),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array(PROJECT_PEOPLE_ROLES,
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)),
           STRUCT(GROUP_BY, PROJECT_NI_NO_LEADERS_ARRAY, REPORTING_CYCLE_START, REPORTING_CYCLE_END) => array(PROJECT_PEOPLE_ROLES,
                                                            STRUCT(PROJECT_UNIVERSITY, REPORTING_CYCLE_START, REPORTING_CYCLE_END)));
+};
 
 ?>

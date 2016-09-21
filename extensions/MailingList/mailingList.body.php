@@ -3,10 +3,8 @@
 require_once("MyMailingLists.php");
 require_once("MailingListRules/MailingListRules.php");
 
-global $wgArticle;
-$mailList = new MailList();
-$wgHooks['ArticleViewHeader'][] = array($mailList, 'createMailListTable');
-$wgHooks['userCan'][] = array($mailList, 'userCanExecute');
+$wgHooks['ArticleViewHeader'][] = 'MailList::createMailListTable';
+$wgHooks['userCan'][] = 'MailList::userCanExecute';
 
 class MailList{
     
@@ -133,13 +131,13 @@ class MailList{
         global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser, $config;
         $result = true;
         if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){
-            $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+            self::userCanExecute($wgTitle, $wgUser, "read", $result);
             if(!$result){
                 permissionError();
             }
             $project_name = strtolower($wgTitle->getText());
             if(isset($_GET['thread'])){
-                $this->createMailListThread($project_name, $_GET['thread']);
+                self::createMailListThread($project_name, $_GET['thread']);
                 return false;
             }
             
@@ -268,7 +266,7 @@ class MailList{
                         <tr><td rowspan='2'>$img</td><td valign='top'><b>From:</b></td><td valign='top'>$from</td></tr>
                         <tr><td valign='top'><b>Date:</b></td><td valign='top'>".date_format($date, "l, F d, Y g:i A")."</td></tr>
                     </table>");
-                    $body = $this->removeQuotedText($this->removeNextPart($row['body']));
+                    $body = self::removeQuotedText(self::removeNextPart($row['body']));
                     $wgOut->addHTML("<div class='inner-message'>");
                     $wgOut->addWikiText($body);
                 $wgOut->addHTML("</div></div>");
