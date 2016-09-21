@@ -1,6 +1,6 @@
 <?php
 
-require_once("Classes/simplediff/simplediff.php");
+
 require_once("AbstractDuplicatesHandler.php");
 require_once("DuplicatesTab.php");
 require_once("Handlers/ProductHandler.php");
@@ -22,6 +22,10 @@ function handleDuplicates($action, $request){
     if($action == 'getDuplicates' ||
        $action == 'deleteDuplicates' ||
        $action == 'ignoreDuplicates'){
+        require_once("Classes/simplediff/simplediff.php");
+        ProductHandler::init();
+	    MyProductHandler::init();
+	    PersonHandler::init();
         foreach(AbstractDuplicatesHandler::$handlers as $handler){
             if($_GET['handler'] == $handler->id){
                 if($action == "getDuplicates"){
@@ -62,6 +66,9 @@ class Duplicates extends SpecialPage{
 
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut;
+	    ProductHandler::init();
+	    MyProductHandler::init();
+	    PersonHandler::init();
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
         $structure = Product::structure();
