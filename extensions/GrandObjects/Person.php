@@ -1988,7 +1988,7 @@ class Person extends BackboneModel {
         $maxRoleValue = 0;
         foreach($roles as $role){
             if(!$role->isAlias()){
-                if($wgRoleValues[$role->getRole()] > $maxRoleValue){
+                if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
                     $maxRoleValue = $wgRoleValues[$role->getRole()];
                     $maxRole = $role->getRole();
                 }
