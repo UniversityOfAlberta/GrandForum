@@ -13,7 +13,7 @@ $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 class PersonPage {
 
     function userCanExecute(&$title, &$user, $action, &$result){
-	global $config;
+        global $config;
         $name = $title->getNSText();
         if($name == HQP){
             $result = $user->isLoggedIn() || $config->getValue('hqpIsPublic');
