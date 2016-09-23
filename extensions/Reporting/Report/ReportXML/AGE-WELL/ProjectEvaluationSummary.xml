@@ -65,9 +65,6 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <script type="text/javascript">
-                    $("#summary").dataTable();
-                </script>
             ]]>
         </ReportItem>
     </ReportSection>
