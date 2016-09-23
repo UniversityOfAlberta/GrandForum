@@ -8,7 +8,7 @@
     <ReportSection id="overview" type="ReportSection" tooltip="Summary" name="Summary">
         <ReportItem id="head" type="Static">
             <![CDATA[
-                <table class='wikitable small'>
+                <table id="summary" class='wikitable small'>
                     <thead>
                         <tr>
                             <th></th>
@@ -43,20 +43,20 @@
                 <![CDATA[
                     <tr>
                         <td>{$project_name}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,RESEARCH,REV_2_5_M1,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})}</td>
-                        <td>&nbsp;</td>
-                        <td>{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M1,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,KTEE2,REV_2_5_M4,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M1,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M4,0,0,{$project_id})}</td>
-                        <td>{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_2_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})}</td>
+                        <td align="right">&nbsp;</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_2_5_M4,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M1,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M4,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -65,6 +65,9 @@
             <![CDATA[
                     </tbody>
                 </table>
+                <script type="text/javascript">
+                    $("#summary").dataTable();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
