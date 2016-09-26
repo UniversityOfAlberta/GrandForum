@@ -13,7 +13,7 @@
                         <tr>
                             <th></th>
                             <th colspan='3'>Scientific Excellence</th>
-                            <th colspan='4'>Networking and Partnerships</th>
+                            <th colspan='7'>Networking and Partnerships</th>
                             <th colspan='3'>KTEE (KM & Commercialization combined)</th>
                             <th colspan='4'>HQP</th>
                         </tr>
@@ -24,7 +24,10 @@
                             <th># of international collaborators involved in the project</th>
                             <th># of partners</th>
                             <th>Total cash and in-kind contributions the project received</th>
-                            <th># of stakeholders involved in research</th>
+                            <th># of stakeholders (older adult or caregiver)</th>
+                            <th># of stakeholders (community organization)</th>
+                            <th># of stakeholders (industry member)</th>
+                            <th># of stakeholders (policymaker)</th>
                             <th># of project meetings and events (workshops) that included non-academic partners</th>
                             <th># of non-academic dissemination activities (total)</th>
                             <th># of licensing agreements</th>
@@ -48,7 +51,18 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})}</td>
-                        <td align="right">&nbsp;</td>
+                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})},
+                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})},
+                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M10,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})},
+                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})},
+                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M11,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})},
+                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})},
+                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M12,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})},
+                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})},
+                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M13,0,0,{$project_id})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
