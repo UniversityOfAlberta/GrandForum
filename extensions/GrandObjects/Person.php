@@ -1990,13 +1990,19 @@ class Person extends BackboneModel {
      * @return string One of the roles that this person is
      */
     function getType(){
+        global $wgRoleValues;
         $roles = $this->getRoles();
+        $maxRole = null;
+        $maxRoleValue = 0;
         foreach($roles as $role){
             if(!$role->isAlias()){
-                return $role->getRole();
+                if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
+                    $maxRoleValue = $wgRoleValues[$role->getRole()];
+                    $maxRole = $role->getRole();
+                }
             }
         }
-        return null;
+        return $maxRole;
     }
     
     /**
