@@ -40,7 +40,7 @@
                             <th colspan='3'>Scientific Excellence</th>
                             <th colspan='7'>Networking and Partnerships</th>
                             <th colspan='3'>KTEE (KM & Commercialization combined)</th>
-                            <th colspan='4'>HQP</th>
+                            <th colspan='5'>HQP</th>
                         </tr>
                         <tr>
                             <th></th>
@@ -61,6 +61,7 @@
                             <th># of HQP involved as a lead author on a publication</th>
                             <th># of HQP that worked directly with partner organizations</th>
                             <th># of HQP successfully completing EPIC training program</th>
+                            <th># of HQP involved as a lead author on a publication</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +97,7 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M4,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M5,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M9A,0,0,{$project_id})}</td>
                     </tr>
                 ]]>
             </ReportItem>
