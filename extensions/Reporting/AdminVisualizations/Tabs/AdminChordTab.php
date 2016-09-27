@@ -1,7 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
-
 class AdminChordTab extends AbstractTab {
 	
 	function AdminChordTab(){

@@ -1,6 +1,11 @@
 <?php
-require_once('ProjectPage/ProjectVisualizationsTab.php');
+
 autoload_register('GrandObjectPage/ProjectPage');
+
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
 
 $wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';

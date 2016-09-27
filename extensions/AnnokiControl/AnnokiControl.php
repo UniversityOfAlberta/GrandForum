@@ -40,6 +40,8 @@ function isExtensionEnabled($ext){
     return (array_search($ext, $extensions) !== false);
 }
 
+autoload_register('../Classes/Inflect');
+
 $egAnnokiExtensions = array();
 
 $egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
@@ -74,9 +76,6 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
-
-/*$egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
-                                      'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");*/
 
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
@@ -116,9 +115,6 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
                                               
 $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
                                                     'path' => "$IP/extensions/Visualizations/PublicVisualizations/PublicVisualizations.php");
-
-$egAnnokiExtensions['Survey'] = array('name' => 'Survey',
-                                      'path' => "$IP/extensions/Survey/Survey.php");
 
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");

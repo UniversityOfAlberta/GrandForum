@@ -1,11 +1,13 @@
 <?php
 
-require_once("Tabs/AdminChordTab.php");
-require_once("Tabs/AdminUniTreeTab.php");
-require_once("Tabs/AdminDiscTreeTab.php");
-require_once("Tabs/AdminProjTreeTab.php");
-require_once("Tabs/AdminUniversityMapTab.php");
-require_once("Tabs/HQPPromotionsTab.php");
+autoload_register('Reporting/AdminVisualizations/Tabs');
+
+$wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
+$wgHooks['UnknownAction'][] = 'AdminUniTreeTab::getAdminUniTreeData';
+$wgHooks['UnknownAction'][] = 'AdminDiscTreeTab::getAdminDiscTreeData';
+$wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
+$wgHooks['UnknownAction'][] = 'AdminUniversityMapTab::getAdminUniversityMapData';
+$wgHooks['UnknownAction'][] = 'HQPPromotionsTab::getHQPPromotionsData';
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AdminVisualizations'] = 'AdminVisualizations'; # Let MediaWiki know about the special page.

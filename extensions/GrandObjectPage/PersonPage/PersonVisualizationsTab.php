@@ -1,9 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
-
 class PersonVisualizationsTab extends AbstractTab {
 
     var $person;

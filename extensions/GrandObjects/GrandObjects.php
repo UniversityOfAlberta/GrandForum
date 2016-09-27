@@ -1,7 +1,6 @@
 <?php
 // The purpose of this file is to simply include the other datastructures
 require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
-require_once("Blob.php");
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("MENTORS", 'Mentors');
