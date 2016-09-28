@@ -3,9 +3,10 @@
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="overview" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Summary" name="Summary">
+    <ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
         <ReportItem id="head" type="Static">
             <![CDATA[
                 <script type="text/javascript">
@@ -102,11 +103,59 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="head" type="Static">
+        <ReportItem id="foot" type="Static">
             <![CDATA[
                     </tbody>
                 </table>
             ]]>
         </ReportItem>
     </ReportSection>
+    <!--ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <table id="summary" class='wikitable small'>
+                    <thead>
+                        <th>Project</th><th>Overview</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet">
+            <ReportItem id="row" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td>{$project_name}</td>
+                        <td><input class="button" type="button" value="Download" />
+                            <div id="doc">
+                                <h1>Core Research Program Project Evaluation 
+Project Overview</h1>
+                                <br />
+                                <b>{$project_name}</b><br />
+                                <b>Project Leads:</b> {$project_leaders}<br />
+                                <br />
+                                <br />
+                                <h2>1) Project Summary</h2>
+                                
+                                <h2>2) Product Summary</h2>
+                ]]>
+            </ReportItem>                
+            <ReportItemSet type="">
+                <ReportItem id=""></ReportItem>
+            </ReportItemSet>
+            <ReportItem id="row" type="Static">
+                <![CDATA[
+                                <b>What kind of product(s):</b> 
+                            </div>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection-->
 </Report>

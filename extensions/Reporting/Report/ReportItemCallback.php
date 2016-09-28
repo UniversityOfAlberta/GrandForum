@@ -386,7 +386,12 @@ class ReportItemCallback {
         $presentations = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $presentations = $project->getPapers('Presentation', $startDate, $endDate);
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                if($presentation->getStatus() == "Invited"){
+                    $presentations[] = $pres;
+                }
+            }
         }
         return count($presentations);
     }
