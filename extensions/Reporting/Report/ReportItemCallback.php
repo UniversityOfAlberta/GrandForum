@@ -388,7 +388,7 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             $pres = $project->getPapers('Presentation', $startDate, $endDate);
             foreach($pres as $presentation){
-                if($presentation->getStatus() == "Invited"){
+                if($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation"){
                     $presentations[] = $pres;
                 }
             }
@@ -1506,7 +1506,7 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", "){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
@@ -1517,7 +1517,7 @@ class ReportItemCallback {
             $array = $blb->getData();
             $value = @$array[$index];
             if(is_array($value)){
-                return @implode(", ", $value);
+                return @implode($delim, $value);
             }
             return $value;
         }
