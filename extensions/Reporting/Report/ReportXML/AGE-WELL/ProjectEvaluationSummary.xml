@@ -187,7 +187,7 @@
                                 </div>
                 ]]>          
             </ReportItem>
-            <ReportItem type="Static">
+            <ReportItem id="foot" type="Static">
                 <![CDATA[
                             </div>
                         </td>
