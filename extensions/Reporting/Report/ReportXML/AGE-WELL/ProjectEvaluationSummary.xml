@@ -126,7 +126,7 @@
                     <tr>
                         <td>{$project_name}</td>
                         <td><a id="dlink" style="display:none;"></a>
-                            <input class="button" type="button" onclick="divToDoc('doc_{$project_id}', 'Project Evaluation Summary', 'ProjectEvaluationSummary.doc')" value="Download" />
+                            <input class="button" type="button" onclick="divToDoc('doc_{$project_id}', 'Project Evaluation Summary', '{$project_name} Overview.doc')" value="Download" />
                             <div id="doc_{$project_id}" style="display:none;">
                                 <div style="font-family: Arial">
                                 <center><b>Core Research Program Project Evaluation <br />Project Overview</b></center>
