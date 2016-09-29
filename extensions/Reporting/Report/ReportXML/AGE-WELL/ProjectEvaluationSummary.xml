@@ -3,9 +3,10 @@
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="overview" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Summary" name="Summary">
+    <ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
         <ReportItem id="head" type="Static">
             <![CDATA[
                 <script type="text/javascript">
@@ -102,10 +103,123 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="head" type="Static">
+        <ReportItem id="foot" type="Static">
             <![CDATA[
                     </tbody>
                 </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
+        <ReportItem id="head" type="Static">
+            <![CDATA[
+                <table id="summary" class='wikitable small'>
+                    <thead>
+                        <th>Project</th><th>Overview</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet">
+            <ReportItem id="row" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td>{$project_name}</td>
+                        <td><a id="dlink" style="display:none;"></a>
+                            <input class="button" type="button" onclick="divToDoc('doc_{$project_id}', '{$project_name} Overview.doc')" value="Download" />
+                            <div id="doc_{$project_id}" style="display:none;">
+                                <div style="font-family: Arial">
+                                <center><b>Core Research Program Project Evaluation <br />Project Overview</b></center>
+                                <br />
+                                <b>{$project_name}</b><br />
+                                <br />
+                                <b>Project Leads:</b> {$project_leaders}<br />
+                                <br />
+                                <br />
+                                <b><u>1) Project Summary</u></b><br />
+                                {$project_description}
+                                
+                                <b><u>2) Product Summary</u></b><br />
+                                <br />
+                                <b>What kind of product(s):</b> <div>{getArray(RP_PROJ_EVALUATION,NARRATIVE1,PRODUCT,0,0,{$project_id},product,<br />)}</div>
+                                <br />
+                                <b>Product description:</b> {getHTML(RP_PROJ_EVALUATION,NARRATIVE1,VALUE,0,0,{$project_id})}
+                                <br />
+                                <b>PRL Current Year:</b> ______<br />
+                                <br />
+                                <b>Projected PRL:</b> ______<br />
+                                <br />
+                                <b><u>3) Funding Profile</u></b><br />
+                                <br />
+                                <b>3 Year Award Value:</b> ______<br /><br />
+                                
+                                <table style="font-family: Arial">
+                                    <thead>
+                                        <tr>
+                                            <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Year</th>
+                                            <th style="border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Funds received</th>
+                                            <th style="border: 1.00pt solid #000000;font-family: Arial">Unspent balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">2015-16</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">&nbsp;</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid; #000000;font-family: Arial">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">2016-17</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">&nbsp;</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid; #000000;font-family: Arial">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">2017-18</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">&nbsp;</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid;font-family: Arial">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">Total</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: none;font-family: Arial">&nbsp;</td>
+                                            <td style="border-top: none; border-bottom: 1.00pt solid #000000; border-left: 1.00pt solid #000000; border-right: 1.00pt solid;font-family: Arial">&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                ]]>          
+            </ReportItem>
+            <ReportItem id="foot" type="Static">
+                <![CDATA[
+                            </div>
+                        </td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table><script type="text/javascript">
+                    var divToDoc = (function () {
+                        var uri = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,',
+                            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="http://www.w3.org/TR/REC-html40"><head></head><body>{div}</body></html>',
+                            base64 = function (s) {
+                                return window.btoa(unescape(encodeURIComponent(s)))
+                            }, format = function (s, c) {
+                                return s.replace(/{(\w+)}/g, function (m, p) {
+                                    return c[p];
+                                })
+                            }
+                        return function (div, filename) {
+                            if (!div.nodeType) div = document.getElementById(div)
+                            var ctx = {
+                                div: div.innerHTML
+                            }
+                            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                                document.getElementById("dlink").download = filename;
+                                document.getElementById("dlink").click();
+                        }
+                    })();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
