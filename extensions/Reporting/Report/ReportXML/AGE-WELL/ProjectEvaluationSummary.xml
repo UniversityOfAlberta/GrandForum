@@ -126,7 +126,7 @@
                     <tr>
                         <td>{$project_name}</td>
                         <td><a id="dlink" style="display:none;"></a>
-                            <input class="button" type="button" onclick="divToDoc('doc_{$project_id}', 'Project Evaluation Summary', '{$project_name} Overview.doc')" value="Download" />
+                            <input class="button" type="button" onclick="divToDoc('doc_{$project_id}', '{$project_name} Overview.doc')" value="Download" />
                             <div id="doc_{$project_id}" style="display:none;">
                                 <div style="font-family: Arial">
                                 <center><b>Core Research Program Project Evaluation <br />Project Overview</b></center>
@@ -209,7 +209,7 @@
                                     return c[p];
                                 })
                             }
-                        return function (div, name, filename) {
+                        return function (div, filename) {
                             if (!div.nodeType) div = document.getElementById(div)
                             var ctx = {
                                 div: div.innerHTML
