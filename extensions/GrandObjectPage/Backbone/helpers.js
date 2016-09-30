@@ -95,7 +95,8 @@ HTML.TextBox = function(view, attr, options){
     $(el).attr('type', 'text');
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -106,7 +107,7 @@ HTML.TextBox = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     $(el).wrap('div');
     return $(el).parent().html();
 }
@@ -115,10 +116,11 @@ HTML.TextArea = function(view, attr, options){
     var el = HTML.Element("<textarea type='text'></textarea>", options);
     $(el).attr('name', HTML.Name(attr));
     $(el).text(HTML.Value(view, attr));
-    var events = function(e){
+    var events = view.events;
+    view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.$el.delegate('textarea[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     $(el).wrap('div');
     return $(el).parent().html();
 }
@@ -129,7 +131,8 @@ HTML.CheckBox = function(view, attr, options){
     if(HTML.Value(view, attr) == options.value){
         $(el).attr('checked', 'checked');
     }
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -150,7 +153,7 @@ HTML.CheckBox = function(view, attr, options){
             }
         }
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     return $(el)[0].outerHTML;
 }
 
@@ -163,7 +166,8 @@ HTML.Radio = function(view, attr, options){
         }
         $(el).append("<p><input type='radio' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " />" + opt + "</p>");
     });
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var index = attr.indexOf('.');
             var data = view.model.get(attr.substr(0, index));
@@ -174,7 +178,7 @@ HTML.Radio = function(view, attr, options){
             view.model.set(attr, $(e.target).val());
         }
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     $(el).wrap('div');
     return $(el).parent().html();
 }
@@ -184,10 +188,11 @@ HTML.DatePicker = function(view, attr, options){
     $(el).attr('name', HTML.Name(attr));
 
     $(el).attr('value', HTML.Value(view, attr));
-    var events = function(e){
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.$el.delegate('input[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     $(el).wrap('div');
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').keydown(function() {
@@ -215,14 +220,16 @@ HTML.Select = function(view, attr, options){
             $(el).append("<option " + selected + ">" + opt + "</option>");
         }
     });
+
     if(!foundSelected){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
 
-    var events = function(e){
+    var events = view.events;
+    view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
     };
-    view.$el.delegate('select[name=' + HTML.Name(attr) + ']', 'change', events);
+    view.delegateEvents(events);
     $(el).wrap('div');
     return $(el).parent().html();
 }

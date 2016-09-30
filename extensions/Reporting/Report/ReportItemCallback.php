@@ -449,6 +449,11 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $collaborators = $project->getAllPeopleDuring(CHAMP, $startDate, $endDate);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $c){
+                foreach($c->getPartners() as $p){
+                    $collaborators[$p->getOrganization()] = $p;
+                }
+            }
         }
         return count($collaborators);
     }

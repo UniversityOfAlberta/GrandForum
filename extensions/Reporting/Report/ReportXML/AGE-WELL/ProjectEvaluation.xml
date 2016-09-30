@@ -722,7 +722,7 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Integer" size="3" default="{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #of publications with investigators from other projects: {$item} <b>{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}</b>
                 </td>
