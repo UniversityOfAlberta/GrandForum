@@ -99,27 +99,27 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_1_5_M3,0,0,{$project_id})}</td>
-                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})},
-                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})},
-                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M10,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})},
+                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})},
+                                                    {getNumber(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M10,0,0,{$project_id})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M2,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M6,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M10,0,0,{$project_id})}</td>
-                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})},
-                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})},
-                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M11,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})},
+                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})},
+                                                    {getNumber(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M11,0,0,{$project_id})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M3,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M7,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M11,0,0,{$project_id})}</td>
-                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})},
-                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})},
-                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M12,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})},
+                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})},
+                                                    {getNumber(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M12,0,0,{$project_id})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M4,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M8,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M12,0,0,{$project_id})}</td>
-                        <td align="right">{add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})},
-                                               {add({getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})},
-                                                    {getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M13,0,0,{$project_id})})})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})},
+                                               {add({getNumber(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})},
+                                                    {getNumber(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M13,0,0,{$project_id})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M5,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M9,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M13,0,0,{$project_id})}</td>
