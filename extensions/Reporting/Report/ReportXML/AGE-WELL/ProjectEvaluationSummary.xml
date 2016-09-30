@@ -93,7 +93,7 @@
             <ReportItem id="row" type="Static">
                 <![CDATA[
                     <tr>
-                        <td>{$project_name}</td>
+                        <td style="white-space:nowrap;">{$project_name}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M2,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_2_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M1,0,0,{$project_id})}</td>
