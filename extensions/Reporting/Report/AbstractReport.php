@@ -766,7 +766,11 @@ abstract class AbstractReport extends SpecialPage {
                             else if(isset($perm['perm']['project'])){
                                 $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
-                            if($pResult && !($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
+                            if($pResult && !($me->isMemberOf($this->project) || 
+                                             $me->leadershipOf($this->project) || 
+                                             $me->isThemeLeaderOf($this->project) || 
+                                             $me->isThemeCoordinatorOf($this->project) ||
+                                             $me->isRoleAtLeast(STAFF))){
                                 $pResult = false;
                             }
                         }
