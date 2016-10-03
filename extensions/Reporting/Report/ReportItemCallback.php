@@ -30,6 +30,7 @@ class ReportItemCallback {
             "project_n_conferences" => "getNConferences",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
+            "project_n_partners" => "getNPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
             "project_contributions" => "getProjectContributions",
@@ -449,6 +450,19 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $collaborators = $project->getAllPeopleDuring(CHAMP, $startDate, $endDate);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $c){
+                foreach($c->getPartners() as $p){
+                    $collaborators[$p->getOrganization()] = $p;
+                }
+            }
+        }
+        return count($collaborators);
+    }
+    
+    function getNPartners($startDate = false, $endDate = false){
+        $collaborators = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $c){
                 foreach($c->getPartners() as $p){
                     $collaborators[$p->getOrganization()] = $p;
