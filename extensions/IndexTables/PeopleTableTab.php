@@ -34,7 +34,7 @@ class PeopleTableTab extends AbstractTab {
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
-            if($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator()){
+            if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
                 $epicHeader = "<th style='white-space: nowrap;'>EPIC Due Date</th>";
             }
         }
