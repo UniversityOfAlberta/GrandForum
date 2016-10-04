@@ -40,7 +40,7 @@
                             <th></th>
                             <th colspan='3'>Scientific Excellence</th>
                             <th colspan='18'>Networking and Partnerships</th>
-                            <th colspan='3'>KTEE (KM & Commercialization combined)</th>
+                            <th colspan='4'>KTEE (KM & Commercialization combined)</th>
                             <th colspan='5'>HQP</th>
                         </tr>
                         <tr>
@@ -56,6 +56,7 @@
                             <th colspan='4'># of stakeholders (policymaker)</th>
                             <th rowspan='2'># of project meetings and events (workshops) that included non-academic partners</th>
                             <th rowspan='2'># of non-academic dissemination activities (total)</th>
+                            <th rowspan='2'># of academic dissemination (total)</th>
                             <th rowspan='2'># of licensing agreements</th>
                             <th rowspan='2'># of patents</th>
                             <th rowspan='2'># of HQP hired on project</th>
@@ -125,6 +126,10 @@
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M13,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,NETWORKING,REV_2_5_M1,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})}</td>
+                        <td align="right">{add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0A,0,0,{$project_id})},
+                                               {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0B,0,0,{$project_id})},
+                                                    {add({getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0C,0,0,{$project_id})},
+                                                         {getNumber(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0D,0,0,{$project_id})})})})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_1_5_M2,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,KTEE2,REV_2_5_M4,0,0,{$project_id})}</td>
                         <td align="right">{getText(RP_PROJ_EVALUATION,HQP,REV_1_6_M1,0,0,{$project_id})}</td>
