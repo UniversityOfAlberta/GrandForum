@@ -614,6 +614,10 @@ EOF;
 		        margin-bottom: 0;
 		    }
 		    
+		    #pdfBody .tinymce table p {
+		        margin-bottom: 0 !important;
+		    }
+		    
 		    #pdfBody b, #pdfBody strong {
                 font-weight: bold !important;
             }
