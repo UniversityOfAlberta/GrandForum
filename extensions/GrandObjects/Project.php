@@ -263,6 +263,7 @@ class Project extends BackboneModel {
         if($name == "Other"){
             return Project::newFromName($name);
         }
+        $name = DBFunctions::escape($name);
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
