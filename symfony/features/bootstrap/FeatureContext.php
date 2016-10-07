@@ -316,6 +316,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
         $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
+        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().fire('keyup');");
     }
 
 }

@@ -3131,7 +3131,8 @@ class Person extends BackboneModel {
                 $position == "graduate student - master's" ||
                 $position == "post-doctoral fellow" ||
                 $this->isSubRole("Affiliate HQP") || 
-                $this->isSubRole("WP/CC Funded HQP"));
+                $this->isSubRole("WP/CC Funded HQP") ||
+                $this->isSubRole("Alumni HQP"));
     }
     
     /**

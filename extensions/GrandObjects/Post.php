@@ -96,7 +96,8 @@ class Post extends BackboneModel{
         $status = DBFunctions::insert('grand_posts',
                                       array('thread_id' => $this->thread_id,
                                             'user_id' => $this->user_id,
-                                            'message' => $this->getMessage()), true);
+                                            'message' => $this->getMessage(),
+                                            'search' => strip_tags($this->getMessage())), true);
         $data = DBFunctions::select(array('grand_posts'),
                                     array('id'),
                                     array('thread_id' =>$this->thread_id),
@@ -120,6 +121,7 @@ class Post extends BackboneModel{
                                           array('thread_id' => $this->thread_id,
                                                 'user_id' => $this->getUser()->getId(),
                                                 'message' => $this->getMessage(),
+                                                'search' => strip_tags($this->getMessage()),
                                                 'date_created' => $this->getDateCreated()),
                                           array('id' => EQ($this->id)));
             if($status){

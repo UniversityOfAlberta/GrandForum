@@ -51,6 +51,7 @@
         </Role>
         <Person id="2" />
         <Person id="3" />
+        <Person id="1023" />
         <Project deleted="false" />
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
@@ -561,10 +562,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Hidden" size="3" default="{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of partners: {$item} <b>{project_n_collaborators({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of partners: {$item} <b>{project_n_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1141,7 +1142,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
             <![CDATA[
-                    #of non-academic dissemination activities in the  following mediums:<br />
+                    #of non-academic dissemination activities in the following mediums:<br />
                     print (e.g. magazines, newspapers): {$item}<br />
             ]]>
         </ReportItem>
