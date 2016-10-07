@@ -29,7 +29,7 @@ class HQPEpicTab extends AbstractEditableTab {
             return "";
         }
         $position = strtolower($this->person->getPosition());
-        if($this->person->isSubRole("Affiliate HQP") || $this->person->isSubRole("Alumni HQP")){
+        if($this->person->isSubRole("Affiliate HQP") || ($position == "Undergraduate Student" && $this->person->isSubRole("Alumni HQP"))){
             $this->generateAffiliate();
         }
         else if($this->person->isSubRole("WP/CC Funded HQP")){

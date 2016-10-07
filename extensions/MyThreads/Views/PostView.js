@@ -84,6 +84,7 @@ PostView = Backbone.View.extend({
                     ed.on('keyup', update);
                     ed.on('change', update);
                     ed.on('init', update);
+                    ed.on('blur', update);
                 }
             });
         });
