@@ -62,7 +62,7 @@ PostView = Backbone.View.extend({
                 $('#tinyMCEUploadForm input').val('');
             });
         }
-        _.defer(function(){
+        _.defer($.proxy(function(){
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
@@ -87,7 +87,7 @@ PostView = Backbone.View.extend({
                     ed.on('blur', update);
                 }
             });
-        });
+        }, this));
     },
 
     render: function(){
