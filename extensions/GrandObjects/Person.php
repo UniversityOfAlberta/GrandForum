@@ -1228,7 +1228,14 @@ class Person extends BackboneModel {
      * @return string The user name of this Person
      */
     function getName(){
-        return $this->name;
+        $me = Person::newFromWgUser();
+	    if($me->isRoleAtLeast(MANAGER) || $this->getId() == $me->getId() || $this->isRole(MANAGER) || $this->isRole(Expert)){
+            return $this->name;
+        }
+        else if($this->name != ""){
+            return $this->getAlias();
+        }
+        return "";
     }
     
     /**
@@ -1236,7 +1243,14 @@ class Person extends BackboneModel {
      * @return string The real name of this Person
      */
     function getRealName(){
-        return $this->realname;
+        $me = Person::newFromWgUser();
+	    if($me->isRoleAtLeast(MANAGER) || $this->getId() == $me->getId() || $this->isRole(MANAGER) || $this->isRole(Expert)){
+            return $this->realname;
+        }
+        else if($this->realname != ""){
+            return $this->getAlias();
+        }
+        return "";
     }
     
     /**
@@ -1417,8 +1431,8 @@ class Person extends BackboneModel {
     function getPhoto($cached=false){
         global $wgServer, $wgScriptPath;
         if($this->photo == null || !$cached){
-            if(file_exists("Photos/".str_ireplace(".", "_", $this->name).".jpg")){
-                $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->name).".jpg";
+            if(file_exists("Photos/".str_ireplace(".", "_", $this->getName()).".jpg")){
+                $this->photo = "$wgServer$wgScriptPath/Photos/".str_ireplace(".", "_", $this->getName()).".jpg";
                 if(!$cached){
                     return $this->photo."?".microtime(true);
                 }
@@ -1436,7 +1450,7 @@ class Person extends BackboneModel {
      */
     function getNameForPost(){
         $repl = array('.' => '_', ' ' => '_');
-        return strtr($this->name, $repl);
+        return strtr($this->getName(), $repl);
     }
     
     /**
@@ -1451,14 +1465,14 @@ class Person extends BackboneModel {
             $firstname = implode(" ", $names);
         }
         else{
-            $names = explode(".", $this->name, 2);
+            $names = explode(".", $this->getName(), 2);
             $lastname = "";
             if(count($names) > 1){
                 $lastname = str_ireplace(".", " ", $names[1]);
             }
             else if(strstr($names[0], " ") != false){
             // Some names do not follow the First.Last convention, so we need to do some extra work
-                $names = explode(" ", $this->name, 2);
+                $names = explode(" ", $this->getName(), 2);
                 if(count($names > 1)){
                     $lastname = $names[1];
                 }
