@@ -101,7 +101,7 @@ MyThreadsView = Backbone.View.extend({
                                     	this.$("#saveThread").prop('disabled', false);
                                     	clearAllMessages();
                                         addSuccess("Thread has been successfully saved");
-                                    	document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:MyThreads";		
+                                    	document.location = wgServer + wgScriptPath + "/index.php/Special:MyThreads";		
                             	    }, this),
                             	    error: $.proxy(function(){
                                     	this.$(".throbber").hide();

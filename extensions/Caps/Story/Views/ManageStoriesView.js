@@ -88,7 +88,7 @@ ManageStoriesView = Backbone.View.extend({
                                     this.$(".throbber").hide();
                                     this.$("#saveThread").prop('disabled', false);
                                     clearAllMessages();
-                                    document.location = "http://grand.cs.ualberta.ca/caps/index.php/Special:StoryManagePage";
+                                    document.location = wgServer + wgScriptPath + "/index.php/Special:StoryManagePage";
 
                             }, this),
                             error: $.proxy(function(){
