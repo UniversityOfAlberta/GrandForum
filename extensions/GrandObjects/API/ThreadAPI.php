@@ -62,11 +62,19 @@ class ThreadAPI extends RESTAPI {
                 foreach($previous_authors as $person){
                     $ids[] = $person->getId();
                 }
-                if(!in_array($me->getId(), $ids)){
-	                $authors[] = $me;
+                foreach($authors as $a){
+                    $author = Person::newFromNameLike($a->name);
+                    if(!in_array($author->getId(), $ids)){
+                        // This is a new author, send them a notification
+                        $expert = Person::newFromId($author->getId());
+                        Notification::addNotification(null, $expert, "Ask an Expert Assignment", "You have been assigned a to respond to an 'Ask an Expert'", "{$thread->getUrl()}", true);
+                    }
                 }
-                $thread->setUsers($authors);
+                /*if(!in_array($me->getId(), $ids)){
+	                $authors[] = $me;
+                }*/
             }
+            $thread->setUsers($authors);
 	    }
         $thread->setTitle($this->POST('title'));
         $thread->setCategory($this->POST('category'));

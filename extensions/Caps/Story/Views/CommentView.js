@@ -32,7 +32,6 @@ CommentView = Backbone.View.extend({
 
     render: function(){
         var classes = new Array();
-        console.log(this.model);
         var isMine = {"isMine": false};
         if(this.model.get('author').id == me.id){
              isMine.isMine = true;

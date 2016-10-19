@@ -40,6 +40,8 @@ ManageStoriesView = Backbone.View.extend({
 	    this.table.draw();
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
+	    this.$(".dataTables_filter").css('left', 10);
+	    this.$(".dataTables_filter").css('right', 'auto');
     },
 
     addStory: function(){

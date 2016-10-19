@@ -6,7 +6,8 @@ $messages['en'] = array(
 			   'MyPolls' => 'My Polls',
 			   'mypolls' => 'My Polls'
 			   );
-$messages['en'] = array(
+			   
+$messages['fr'] = array(
                            'myPolls' => 'Mes Sondages',
                            'MyPolls' => 'Mes Sondages',
                            'mypolls' => 'Mes Sondages'

@@ -210,6 +210,9 @@ class Thread extends BackboneModel{
             $users = array();
             $me = Person::newFromWgUser();
             foreach($this->users as $user){
+                if($user == null){
+                    continue;
+                }
                 if(isset($user->id) && $user->id != 0){
                     $users[] = $user->id;
                 }
@@ -229,7 +232,7 @@ class Thread extends BackboneModel{
                                                     'date_created' => $this->getDateCreated()),
                                               array('id' => EQ($this->id)));
                 if($status){
-		    DBFunctions::commit();
+		            DBFunctions::commit();
                     return true;
                 }
             }

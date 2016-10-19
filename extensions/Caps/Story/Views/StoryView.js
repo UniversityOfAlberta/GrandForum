@@ -57,7 +57,6 @@ StoryView = Backbone.View.extend({
     render: function(){
         main.set('title', striphtml(this.model.get('title')));
         this.$el.empty();
-        console.log(this.model);
         var data = this.model.toJSON();
         this.$el.html(this.template(data));
 	    this.addRows();

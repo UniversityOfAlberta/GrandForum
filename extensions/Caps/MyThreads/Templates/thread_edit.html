@@ -15,62 +15,65 @@
                  </select>
             </td>
         </tr>
-        <tr>
-            <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
-            <td>
+        <% if(_.findWhere(me.get('roles'), {'role': ADMIN}) != null ||
+              _.findWhere(me.get('roles'), {'role': MANAGER}) != null){ %>
+            <tr>
+                <td><b><span class='en'>Visibility</span><span class='fr'>Visibilité:</span></b></td>
+                <td>
 
-                    <% if(wgLang == 'en'){ %>
-	                    <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
-                        <% } else if(wgLang == 'fr'){ %>
-                	    <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
-                    <% } %>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="provinceSearch" style='display:none'><b>Expert Province:</b>
-            </td>
-            <td>
-                <div class="provinceSearch" style='display:none'>
-                                <% if(wgLang == 'en'){ %>
-                                    <select style="width:415px;" id='prov' class='chzn-select'>
-                                                      <option value="All">All</option>
-                                                      <option value="Alberta">Alberta</option>
-                                                      <option value="British Columbia">British Columbia</option>
-                                                      <option value="Manitoba">Manitoba</option>
-                                                      <option value="New Brunswick">New Brunswick</option>
-                                                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                      <option value="Northwest Territories">Northwest Territories</option>
-                                                      <option value="Nova Scotia">Nova Scotia</option>
-                                                      <option value="Nunavut">Nunavut</option>
-                                                      <option value="Ontario">Ontario</option>
-                                                      <option value="Prince Edward Island">Prince Edward Island</option>
-                                                      <option value="Quebec">Quebec</option>
-                                                      <option value="Saskatchewan">Saskatchewan</option>
-                                                      <option value="Yukon">Yukon</option>
-                                    </select>
-                                <% } else if(wgLang == 'fr'){ %>
-                                    <select style="width:415px;" id='prov' class='chzn-select'>
-                                                      <option value=""></option>
-                                                      <option value="Alberta">Alberta</option>
-                                                      <option value="British Columbia">British Columbia</option>
-                                                      <option value="Manitoba">Manitoba</option>
-                                                      <option value="New Brunswick">New Brunswick</option>
-                                                      <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                      <option value="Northwest Territories">Northwest Territories</option>
-                                                      <option value="Nova Scotia">Nova Scotia</option>
-                                                      <option value="Nunavut">Nunavut</option>
-                                                      <option value="Ontario">Ontario</option>
-                                                      <option value="Prince Edward Island">Prince Edward Island</option>
-                                                      <option value="Quebec">Quebec</option>
-                                                      <option value="Saskatchewan">Saskatchewan</option>
-                                                      <option value="Yukon">Yukon</option>
-                                    </select>
-                                <% } %>
+                        <% if(wgLang == 'en'){ %>
+	                        <%= HTML.Select(this, "visibility", {options: ["Choose a visibility...", "All Experts", "Chosen Experts"]}) %>
+                            <% } else if(wgLang == 'fr'){ %>
+                    	    <%= HTML.Select(this, "visibility", {options: ["Choisissez une visibilité...", "Tous les Experts", "Experts Choisis"]}) %>
+                        <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="provinceSearch" style='display:none'><b>Expert Province:</b>
+                </td>
+                <td>
+                    <div class="provinceSearch" style='display:none'>
+                                    <% if(wgLang == 'en'){ %>
+                                        <select style="width:415px;" id='prov' class='chzn-select'>
+                                                          <option value="All">All</option>
+                                                          <option value="Alberta">Alberta</option>
+                                                          <option value="British Columbia">British Columbia</option>
+                                                          <option value="Manitoba">Manitoba</option>
+                                                          <option value="New Brunswick">New Brunswick</option>
+                                                          <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                                          <option value="Northwest Territories">Northwest Territories</option>
+                                                          <option value="Nova Scotia">Nova Scotia</option>
+                                                          <option value="Nunavut">Nunavut</option>
+                                                          <option value="Ontario">Ontario</option>
+                                                          <option value="Prince Edward Island">Prince Edward Island</option>
+                                                          <option value="Quebec">Quebec</option>
+                                                          <option value="Saskatchewan">Saskatchewan</option>
+                                                          <option value="Yukon">Yukon</option>
+                                        </select>
+                                    <% } else if(wgLang == 'fr'){ %>
+                                        <select style="width:415px;" id='prov' class='chzn-select'>
+                                                          <option value=""></option>
+                                                          <option value="Alberta">Alberta</option>
+                                                          <option value="British Columbia">British Columbia</option>
+                                                          <option value="Manitoba">Manitoba</option>
+                                                          <option value="New Brunswick">New Brunswick</option>
+                                                          <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                                          <option value="Northwest Territories">Northwest Territories</option>
+                                                          <option value="Nova Scotia">Nova Scotia</option>
+                                                          <option value="Nunavut">Nunavut</option>
+                                                          <option value="Ontario">Ontario</option>
+                                                          <option value="Prince Edward Island">Prince Edward Island</option>
+                                                          <option value="Quebec">Quebec</option>
+                                                          <option value="Saskatchewan">Saskatchewan</option>
+                                                          <option value="Yukon">Yukon</option>
+                                        </select>
+                                    <% } %>
 
-                </div>
-            </td>
-        </tr>
+                    </div>
+                </td>
+            </tr>
+         <% } %>
     </table>
     <br />
     <div id="threadPeople" style='display:none'>
