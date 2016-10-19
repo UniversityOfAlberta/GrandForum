@@ -30,21 +30,22 @@ class HelpfulResources extends SpecialPage{
         $user = Person::newFromId($wgUser->getId());
         $wgOut->addHTML("<div style='float:left'><span class='en'>Below are the different categories of resources available in {$config->getValue('networkName')}. Click on the icons to view the files for each category.</span><span class='fr'>
 Voici les différentes catégories de ressources disponibles dans {$config->getValue('networkName')} . Cliquez sur les icônes pour afficher les fichiers pour chaque catégorie .</span><br /><br />
-<a href='http://www.cart-grac.ubc.ca' target='_blank'><img src='../skins/UBC_logo.png' onerror='this.src='skins/UBC_logo.png';' width='100' /></a>
+<div class='helpful_resources' style='display:inline-block; font-size:1.1em'>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Clinical'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/clinical_guidelines_files.png'></a><br /><span class='en'>Clinical Guidelines</span><span class='fr'>Lignes directrices cliniques</span></div>
+			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Tools'><img width='100px'  src='$wgServer$wgScriptPath/skins/icons/caps/tools_tips_files.png'></a><br /><span class='en'>Tools & Tips</span><span class='fr'>Outils et conseils</span></div>
+			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Organizations'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/organizations_files.png'></a><br /><span class='en'>Organizations</span><span class='fr'>Organizations</span></div>
+			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
+                    </div><br /><br /><br />
+<center><hr style='width:80%;' /></center><br />");
+	$wgOut->addHTML("
+	    <a href='http://www.cart-grac.ubc.ca' target='_blank'><img src='../skins/UBC_logo.png' onerror='this.src='skins/UBC_logo.png';' width='100' /></a>
 <a href='http://sogc.org/' target='_blank'><img class='en' src='../skins/OBGYN.png' onerror='this.src='skins/OBGYN.png';' width='250' /><img class='fr' src='../skins/french_obgyn.png' onerror='this.src='skins/OBGYN.png';' width='250' /></a>
 <a href='http://www.cfpc.ca/' target='_blank'><img src='../skins/CFPC.png' onerror='this.src='skins/CFPC.png';' width='250' /></a><br />
 <a href='http://www.pharmacists.ca/' target='_blank'><img src='../skins/CPhA.png' onerror='this.src='skins/CPhA.png';' width='250' /></a>
 <a href='http://cart-grac.ubc.ca/' target='_blank'><img src='../skins/CART.png' onerror='this.src='skins/CART.png';' width='250' /></a><br />
 <a href='https://www.inspq.qc.ca/' target='_blank'><img src='../skins/INSPQ_logo.png' onerror='this.src='skins/INSPQ_logo.png';' width='250' /></a>
 </br></br>
-<center><hr style='width:80%;' /></center><br /><br />");
-	$wgOut->addHTML("<div class='helpful_resources' style='display:inline-block; font-size:1.1em'>
-                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Clinical'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/clinical_guidelines_files.png'></a><br /><span class='en'>Clinical Guidelines</span><span class='fr'>Lignes directrices cliniques</span></div>
-			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Tools'><img width='100px'  src='$wgServer$wgScriptPath/skins/icons/caps/tools_tips_files.png'></a><br /><span class='en'>Tools & Tips</span><span class='fr'>Outils et conseils</span></div>
-			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Organizations'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/organizations_files.png'></a><br /><span class='en'>Organizations</span><span class='fr'>Organizations</span></div>
-			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
-                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
-                    </div>
        </div>");
             $html = <<<EOF
                 <div id='twitter' style='width: 200px%; text-align: right; float:right;'>
