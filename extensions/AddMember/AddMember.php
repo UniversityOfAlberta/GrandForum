@@ -99,14 +99,15 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th>
                             <th>User Name</th>
                             <th>Timestamp</th>
-                            <th>Staff</th>
+			                <th>Language</th>
                             <th>User Type</th>
-                            <th>Projects</th>
-                            <th>Institution</th>
-                            <th>Candidate</th>
+                            <th>Specialty (If applicable)</th>
+                            <th>City, Province</th>
+                            {$hqpType}
+                            <th>Reference</th>
+			                <th>Provision</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
         }
@@ -114,53 +115,22 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View History</a><br /><br />
                         <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
-                            <th>Requesting User</th>
                             <th>User Name</th>
                             <th>Timestamp</th>
-			    <th>Language</th>
+			                <th>Language</th>
                             <th>User Type</th>
                             <th>Specialty (If applicable)</th>
                             <th>City, Province</th>
                             {$hqpType}
                             <th>Reference</th>
-			    <th>Provision</th>
+			                <th>Provision</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
         }
     
         $requests = UserCreateRequest::getAllRequests($history);
         foreach($requests as $request){
-            $req_user = $request->getRequestingUser();
-            $projects = $req_user->getProjects();
-            $projs = array();
-            if(count($projects) > 0){
-                foreach($projects as $project){
-                    if(!$project->isSubProject()){
-                        $subprojs = array();
-                        foreach($project->getSubProjects() as $subproject){
-                            if($req_user->isMemberOf($subproject)){
-                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-                            }
-                        }
-                        $subprojects = "";
-                        if(count($subprojs) > 0){
-                            $subprojects = "(".implode(", ", $subprojs).")";
-                        }
-                        $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-                    }
-                }
-            }
-            $roles = array();
-            if($req_user->getRoles() != null){
-                foreach($req_user->getRoles() as $role){
-                    $roles[] = $role->getRole();
-                }
-            }
-            $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
-                        <td align='left'>
-                            <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a> (".implode(",", $roles).")<br /><a onclick='$(\"#{$request->id}\").slideToggle();$(this).remove();' style='cursor:pointer;'>Show Projects</a>
-                            <div id='{$request->id}' style='display:none;padding-left:15px;'>".implode("<br />", $projs)."</div>
-                        </td>");
+            $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>");
             if($history && $request->isCreated()){
                 $user = Person::newFromName($request->getName());
                 $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
@@ -169,10 +139,7 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("<td align='left'>{$request->getName()}<br />{$request->getEmail()}</td>");
             } 
             $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getLastModified())."</td>");
-            if($history){
-                $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
-            }
-	    $extras = $request->getExtras();
+	        $extras = $request->getExtras();
             $wgOut->addHTML("<td>{$extras['language']}</td>
 			     <td>{$request->getRoles()}</td>
                              <td align='left'>{$request->getProjects()}</td>
