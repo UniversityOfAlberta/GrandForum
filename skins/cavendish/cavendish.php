@@ -1066,7 +1066,7 @@ $(function(){
                 $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
 
                 array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
+                array_splice($GLOBALS['toolbox']['Other']['links'],3,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
@@ -1273,9 +1273,9 @@ $emailPassword
 EOF;
             echo <<< EOF
         <br />
-        <span class='pBodyTitle0 en'>Member Registration</span>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 en'>Member Registration</span></a>
         <div class='pBody0 en' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
-        <span class='pBodyTitle0 fr'>Inscription Membre</span>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 fr'>Inscription Membre</span></a>
         <div class='pBody0 fr' style='padding: 10px;'>Si vous souhaitez postuler pour devenir membre en MAJUSCULES alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
 EOF;
         }
