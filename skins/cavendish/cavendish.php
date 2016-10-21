@@ -82,6 +82,19 @@ class CavendishTemplate extends QuickTemplate {
                 <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/skins/markitup/style.css" />
                 <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/style.css" />
 		
+		<style>
+		    <?php
+		        
+		        if($wgLang->getCode() == "en"){
+		            echo ".fr { display: none !important; }";
+		        }
+		        else if($wgLang->getCode() == "fr"){
+		            echo ".en { display: none !important; }";
+		        }
+		        
+		    ?>
+		</style>
+		
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/to-title-case.js"></script>
@@ -830,10 +843,10 @@ $(function(){
                     $title ="CPCA";
                 }
                 $GLOBALS['tabs']['Main'] = TabUtils::createTab($title, "$wgServer$wgScriptPath/index.php/Main_Page");
-		$title = "My Profile";
-		if($wgLang->getCode() == "fr"){
-		    $title ="Mon Profil";
-		}
+		        $title = "My Profile";
+		        if($wgLang->getCode() == "fr"){
+		            $title ="Mon Profil";
+		        }
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab($title);
                 $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                 
@@ -1079,6 +1092,15 @@ $(function(){
 	                $i++;
 	            }
 	        }
+	        
+	        if($me->isCandidate()){
+	            echo <<< EOF
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 en'>Become a Full Member</span></a>
+        <div class='pBody0 en' style='padding: 10px;'>Complete your <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>registration</a> to become a full member.</div>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 fr'>Devenir membre à part entière</span></a>
+        <div class='pBody0 fr' style='padding: 10px;'>Complétez votre <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>inscription</a> pour devenir membre à part entière.</div>
+EOF;
+            }
 		}
 		else {
 		    global $wgSiteName, $wgOut;
@@ -1276,7 +1298,7 @@ EOF;
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 en'>Member Registration</span></a>
         <div class='pBody0 en' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 fr'>Inscription Membre</span></a>
-        <div class='pBody0 fr' style='padding: 10px;'>Si vous souhaitez postuler pour devenir membre en MAJUSCULES alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
+        <div class='pBody0 fr' style='padding: 10px;'>Si vous souhaitez postuler pour devenir membre en CPCA alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
 EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );

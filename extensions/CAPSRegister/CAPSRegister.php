@@ -4,6 +4,8 @@ $wgSpecialPages['CAPSRegister'] = 'CAPSRegister'; # Let MediaWiki know about the
 $wgExtensionMessagesFiles['CAPSRegister'] = $dir . 'CAPSRegister.i18n.php';
 $wgSpecialPageGroups['CAPSRegister'] = 'network-tools';
 
+require_once("CAPSCompleteRegister.php");
+
 function runCAPSRegister($par) {
     CAPSRegister::execute($par);
 }
@@ -193,8 +195,8 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                               <a href='#!' onclick='$(\"#fileUploadInfo\").dialog({width:\"221px\",position:{my: \"center\", at:\"center\", of: window}})'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);*/
             $fileLabel = new Label("file_label", "Proof of Certification:</div>
                                                   <div style='text-align:right; font-size:0.7em'>
-                                                  <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOT_NULL, false);
-            $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOT_NULL);
+                                                  <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);
+            $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOTHING);
             $fileRow = new FormTableRow("file_row");
             $fileRow->attr('style','line-height: 10px;');
             $fileRow->append($fileLabel)->append($fileField);
@@ -310,7 +312,7 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
             $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
             $provisionLabel = new Label("provision_label", "Fourniture Avant de<hr style='height:0pt; visibility:hidden;'/>Les services d'avortement", "La mise à disposition préalable des services d'avortement médical ou chirurgical de l'utilisateur", VALIDATE_NOTHING);
-            $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
+            $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("Yes","No"), array("Yes","No"), VALIDATE_NOTHING);
             $provisionRow = new FormTableRow("provision_row");
             $provisionRow->attr('style','display:none');
             $provisionRow->append($provisionLabel)->append($provisionField);
@@ -558,11 +560,9 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                 $pharmacy_name = $form->getElementById('pharmacy_name_field')->setPOST('wpPharmacyName');
                 $pharmacy_address = $form->getElementById('pharmacy_address_field')->setPOST('wpPharmacyAddress');
             }
-            if($_FILES['file_field']['size'] < $max_file_size*1024*1024){
-                $file = $_FILES['file_field']['tmp_name'];           
-                $content = chunk_split(base64_encode(file_get_contents($file)));
+            if(!isset($_FILES['file_field']) || $_FILES['file_field']['size'] < $max_file_size*1024*1024){
                 $uid = md5(uniqid(time()));
-                $name = basename($file);
+                
                 $msg = "The following person has asked to be registered for the CAPS website."."\n"."Please review and approve the member on https://www.caps-cpca.ubc.ca/index.php/Special:AddMember?action=view" . "\n"."\n";
                 $msg .= "First name: ".$_POST['wpFirstName']."\n";
                 $msg .= "Last name: ".$_POST['wpLastName']."\n";
@@ -596,11 +596,15 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                 $nmessage .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
                 $nmessage .= $msg."\r\n\r\n";
                 $nmessage .= "--".$uid."\r\n";
-                $nmessage .= "Content-Type: ".$_FILES['file_field']['type']."; name=\""."credentials"."\"\r\n";
-                $nmessage .= "Content-Transfer-Encoding: base64\r\n";
-                $nmessage .= "Content-Disposition: attachment; filename=\""."credentials"."\"\r\n\r\n";
-                $nmessage .= $content."\r\n\r\n";
-                $nmessage .= "--".$uid."--";
+                if(isset($_FILES['file_field']) && $_FILES['file_field']['tmp_name'] != "" && $_FILES['file_field']['size'] < $max_file_size*1024*1024){
+                    $file = $_FILES['file_field']['tmp_name'];           
+                    $content = chunk_split(base64_encode(file_get_contents($file)));
+                    $nmessage .= "Content-Type: ".$_FILES['file_field']['type']."; name=\""."credentials"."\"\r\n";
+                    $nmessage .= "Content-Transfer-Encoding: base64\r\n";
+                    $nmessage .= "Content-Disposition: attachment; filename=\""."credentials"."\"\r\n\r\n";
+                    $nmessage .= $content."\r\n\r\n";
+                    $nmessage .= "--".$uid."--";
+                }
                 //Note: Change the address here to email to someone else. this will only notify them
 
                 $managers = Person::getAllPeople(MANAGER);

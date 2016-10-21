@@ -62,6 +62,9 @@ class Person extends BackboneModel {
     var $projectCache = array();
     var $evaluateCache = array();
     //CAPS specific
+    var $confidential;
+    var $collectDemo;
+    var $collectComments;
     var $postal_code;
     var $city;
     var $province;
@@ -325,6 +328,9 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_gender',
                                               'candidate',
+                                              'collect_comments',
+                                              'collect_demo',
+                                              'confidential',
                                               'alias'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
@@ -783,11 +789,12 @@ class Person extends BackboneModel {
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
-	    $this->alias = @$data[0]['alias'];
+            $this->confidential = @$data[0]['confidential'];
+            $this->collectDemo = @$data[0]['collect_demo'];
+            $this->collectComments = @$data[0]['collect_comments'];
+            $this->alias = @$data[0]['alias'];
         }
-
-	$this->getCapsPersonalInformation();
-	
+	    $this->getCapsPersonalInformation();
     }
     
     function toArray(){
@@ -2837,6 +2844,10 @@ class Person extends BackboneModel {
     
     function isCandidate(){
         return $this->candidate;
+    }
+    
+    function isConfidential(){
+        return $this->confidential;
     }
     
     function isActive(){

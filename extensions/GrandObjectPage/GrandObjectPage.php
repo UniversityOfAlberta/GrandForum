@@ -5,7 +5,7 @@
     require_once("Backbone/BackbonePage.php");
     require_once("PersonPage.php");
     require_once("ProjectPage.php");
-    require_once("EditRelations.php");
+    //require_once("EditRelations.php");
     if(isExtensionEnabled('Products')){
         require_once("ThemePage.php");
         require_once("ContributionPage.php");

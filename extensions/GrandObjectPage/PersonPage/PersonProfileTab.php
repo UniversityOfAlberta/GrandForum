@@ -248,7 +248,6 @@ EOF;
         global $config;
         $this->html .= "
                             
-                                <h3>Live on Forum:</h3>
                                 <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
                             
                         ";

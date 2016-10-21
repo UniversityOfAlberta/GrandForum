@@ -102,7 +102,7 @@ class RequestUserAPI extends API{
 		    }
 		}
         $wpCaps = array();
-	$wpFile = array();
+        $wpFile = array();
 		// Finished manditory checks
 		// Add a request for a user to be created
         if($me->getId() == ""){
@@ -123,22 +123,21 @@ class RequestUserAPI extends API{
         $wpCaps['city'] = isset($_POST['wpCity']) ? $_POST['wpCity'] : "";
         $wpCaps['province'] = isset($_POST['wpProvince']) ? $_POST['wpProvince'] : "";
         $wpCaps['reference'] = isset($_POST['wpReference']) ? $_POST['wpReference'] : "";
-            $wpCaps['clinic'] = isset($_POST['wpClinic']) ? $_POST['wpClinic'] : "";
-            $wpCaps['specialty'] = isset($_POST['wpSpecialty']) ? $_POST['wpSpecialty'] : "";
-            $wpCaps['provision'] = isset($_POST['wpProvision']) ? $_POST['wpProvision'] : "";
-            $wpCaps['pharmacy_name'] = isset($_POST['wpPharmacyName']) ? $_POST['wpPharmacyName'] : "";
-            $wpCaps['pharmacy_address'] = isset($_POST['wpPharmacyAddress']) ? $_POST['wpPharmacyAddress'] : "";
-	if(isset($_FILES['file_filed'])){
+        $wpCaps['clinic'] = isset($_POST['wpClinic']) ? $_POST['wpClinic'] : "";
+        $wpCaps['specialty'] = isset($_POST['wpSpecialty']) ? $_POST['wpSpecialty'] : "";
+        $wpCaps['provision'] = isset($_POST['wpProvision']) ? $_POST['wpProvision'] : "";
+        $wpCaps['pharmacy_name'] = isset($_POST['wpPharmacyName']) ? $_POST['wpPharmacyName'] : "";
+        $wpCaps['pharmacy_address'] = isset($_POST['wpPharmacyAddress']) ? $_POST['wpPharmacyAddress'] : "";
+	    if(isset($_FILES['file_filed'])){
             $contents = base64_encode(file_get_contents($_FILES['file_field']['tmp_name']));
             $filename = $_FILES['file_field']['name'];
             $filesize = $_FILES['file_field']['size'];
             $filetype = $_FILES['file_field']['type'];
             $wpFile['file_data'] = array('name' => $filename,
-                              'size' => $filesize,
-                              'type' => $filetype,
-                              'file' => $contents
-                              );
-	}
+                                         'size' => $filesize,
+                                         'type' => $filetype,
+                                         'file' => $contents);
+	    }
 		if($candidate == "Yes" || $candidate == "1"){
 		    $candidate = 1;
 		}
@@ -158,8 +157,8 @@ class RequestUserAPI extends API{
 		                          'position' => $position,
 		                          'candidate' => $candidate,
 		                          'created' => 0,
-                                  	  'extras' => serialize($wpCaps),
-				   	  'proof_certification' => serialize($wpFile)));
+                                  'extras' => serialize($wpCaps),
+				   	              'proof_certification' => serialize($wpFile)));
 		
 		$me = Person::newFromId($requesting_user);
 		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");

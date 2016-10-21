@@ -33,9 +33,9 @@ class PollView {
 			if($_GET['id'] == "latest"){
 			    $this->pollCollection = PollCollection::getLatest();
 			}
-                        elseif($_GET['id'] == "random"){
-                            $this->pollCollection = PollCollection::getRandom();
-                        }
+            elseif($_GET['id'] == "random"){
+                $this->pollCollection = PollCollection::getRandom();
+            }
 			else{
 			    $this->pollCollection = PollCollection::newFromId($_GET['id']);
 			}

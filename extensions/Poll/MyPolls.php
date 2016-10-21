@@ -14,8 +14,13 @@ function runMyPolls($par) {
 class MyPolls extends SpecialPage{
 
 	function MyPolls() {
-		SpecialPage::__construct("MyPolls", HQP.'+', true, 'runMyPolls');
+		SpecialPage::__construct("MyPolls", null, true, 'runMyPolls');
 	}
+	
+	function userCanExecute($user){
+        $person = Person::newFromUser($user);
+        return ($person->isRoleAtLeast(HQP) || $person->isCandidate());
+    }
 
 	function execute($par){
 		global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;

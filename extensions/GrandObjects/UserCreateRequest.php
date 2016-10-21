@@ -22,6 +22,7 @@ class UserCreateRequest {
     var $ignored;
     var $lastModified;
     var $extras;    
+    var $certification;
     static function getAllRequests($history=false){
         if($history){
             $data = DBFunctions::select(array('grand_user_request'),
@@ -29,17 +30,26 @@ class UserCreateRequest {
                                         array('created' => EQ(1),
                                               WHERE_OR('`ignore`') => EQ(1)),
                                         array('last_modified' => 'DESC'));
-		}
-		else{
-		    $data = DBFunctions::select(array('grand_user_request'),
-		                                array('id'),
-		                                array('created' => EQ(0),
-		                                      '`ignore`' => EQ(0)));
+        }
+        else{
+            $data = DBFunctions::select(array('grand_user_request'),
+                                        array('id'),
+                                        array('`ignore`' => EQ(0)));
         }
         $requests = array();
         if(count($data) > 0){
             foreach($data as $row){
-                $requests[] = UserCreateRequest::newFromId($row['id']);
+                $request = UserCreateRequest::newFromId($row['id']);
+                $person = Person::newFromName($request->getName());
+                if($history){
+                    $requests[] = $request;
+                    
+                }
+                else{
+                    if(!$request->isCreated() || $person->isCandidate()){
+                        $requests[] = $request;
+                    }
+                }
             }
         }
         return $requests;
@@ -49,7 +59,14 @@ class UserCreateRequest {
         $data = DBFunctions::select(array('grand_user_request'),
                                     array('*'),
                                     array('id' => EQ($id)));
-		return new UserCreateRequest($data);
+        return new UserCreateRequest($data);
+    }
+    
+    static function newFromName($name){
+        $data = DBFunctions::select(array('grand_user_request'),
+                                    array('*'),
+                                    array('wpName' => EQ($name)));
+        return new UserCreateRequest($data);
     }
     
     function UserCreateRequest($data){
@@ -69,7 +86,8 @@ class UserCreateRequest {
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
-	    $this->extras = $data[0]['extras'];
+            $this->extras = $data[0]['extras'];
+            $this->certification = $data[0]['proof_certification'];
         }
     }
     
@@ -83,6 +101,10 @@ class UserCreateRequest {
     
     function getAcceptedBy(){
         return $this->acceptedBy;
+    }
+    
+    function getPerson(){
+        return Person::newFromName($this->name);
     }
     
     function getName(){
@@ -126,7 +148,7 @@ class UserCreateRequest {
     }
 
     function getExtras(){
-	return unserialize($this->extras);
+        return unserialize($this->extras);
     }
     
     function isCreated(){
@@ -139,6 +161,10 @@ class UserCreateRequest {
     
     function getLastModified(){
         return $this->lastModified;
+    }
+    
+    function getCertification(){
+        return @unserialize($this->certification);
     }
     
     function getCreatedUser(){
@@ -166,6 +192,21 @@ class UserCreateRequest {
                                   'staff' => $user->getId(),
                                   'created' => 1),
                             array('id' => $this->id));
+    }
+    
+    static function stream($action){
+        $me = Person::newFromWgUser();
+        if($action == "getCertification" && isset($_GET['id'])){
+            $request = UserCreateRequest::newFromId($_GET['id']);
+            if($me->isLoggedIn() && ($me->isRoleAtLeast(MANAGER) || $me->getName() == $request->getName())){
+                $certification = $request->getCertification();
+                header("Content-Disposition: attachment; filename={$request->getName()}");
+                header("Content-Type: {$certification['file_data']['type']}");
+                echo base64_decode($certification['file_data']['file']);
+                exit;
+            }
+        }
+        return true;
     }
     
 }

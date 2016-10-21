@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['AddMember'] = $dir . 'AddMember.i18n.php';
 $wgSpecialPageGroups['AddMember'] = 'network-tools';
 
 $wgHooks['ToolboxLinks'][] = 'AddMember::createToolboxLinks';
+$wgHooks['SubLevelTabs'][] = 'AddMember::createSubTabs';
 
 autoload_register('AddMember/Validations');
 
@@ -35,6 +36,14 @@ class AddMember extends SpecialPage{
                 $request = UserCreateRequest::newFromId($_POST['id']);
                 $request->ignoreRequest();
             }
+            else if(isset($_POST['submit']) && $_POST['submit'] == "Promote"){
+                $request = UserCreateRequest::newFromId($_POST['id']);
+                $person = $request->getPerson();
+                $person->candidate = 0;
+                DBFunctions::update('mw_user',
+                                    array('candidate' => 0),
+                                    array('user_id' => $person->getId()));
+            }
             AddMember::generateViewHTML($wgOut);
         }
         else if(!isset($_POST['submit'])){
@@ -52,7 +61,7 @@ class AddMember extends SpecialPage{
                 //$form->getElementById('project_field')->setPOST('wpNS');
                 //$form->getElementById('university_field')->setPOST('university');
                 //$form->getElementById('dept_field')->setPOST('department');
-               // $form->getElementById('position_field')->setPOST('position');
+                //$form->getElementById('position_field')->setPOST('position');
                 $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
@@ -107,6 +116,7 @@ class AddMember extends SpecialPage{
                             <th>City, Province</th>
                             {$hqpType}
                             <th>Reference</th>
+                            <th>Certification</th>
 			                <th>Provision</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
@@ -123,8 +133,10 @@ class AddMember extends SpecialPage{
                             <th>City, Province</th>
                             {$hqpType}
                             <th>Reference</th>
+                            <th>Certification</th>
 			                <th>Provision</th>
-                            <th>Action</th>
+                            <th>Create?</th>
+                            <th>Full User?</th>
                         </tr></thead><tbody>\n");
         }
     
@@ -153,9 +165,14 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("</td>");
             }
             $wpSendMail = ($wgEnableEmail) ? "true" : "false";
+            $certification = $request->getCertification();
+            $file_name = @$certification['file_data']['name'];
+            $file_name = ($file_name != "") ? "<a class='button' href='$wgServer$wgScriptPath/index.php?action=getCertification&id={$request->getId()}'>Certification</a>" : "";
+            $provision = @implode("<br />", $extras['provision']);
             $wgOut->addHTML("
                         <td>{$extras['reference']}</td>
-			<td>{$extras['provision']}</td>
+                        <td>{$file_name}</td>
+			            <td>{$provision}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
@@ -187,7 +204,14 @@ class AddMember extends SpecialPage{
                 }
             }
             else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input type='submit' name='submit' value='Ignore' /></td>");
+                if(!$request->isCreated()){
+                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input type='submit' name='submit' value='Ignore' /></td>");
+                    $wgOut->addHTML("<td></td>");
+                }
+                else{
+                    $wgOut->addHTML("<td></td>");
+                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Promote' /></td>");
+                }
             }
             $wgOut->addHTML("</form>
                     </tr>");
@@ -301,12 +325,22 @@ class AddMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
-	$title = "Add Member";
-	if($wgLang->getCode() == "fr"){
-	    $title = "Ajouter un Membre";
-	}
+	    $title = "Add Member";
+	    if($wgLang->getCode() == "fr"){
+	        $title = "Ajouter un Membre";
+	    }
         if($me->isRoleAtLeast(MANAGER)){
             $toolbox['People']['links'][0] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:AddMember");
+        }
+        return true;
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(MANAGER)){
+            $selected = ("AddMember" == $wgTitle->getText() && @$_GET['action'] == 'view') ? "selected" : "";
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Registration Queue", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view", $selected);
         }
         return true;
     }
