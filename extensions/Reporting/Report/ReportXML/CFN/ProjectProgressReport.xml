@@ -392,7 +392,9 @@
                     <h2>PI Financial Reports</h2>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI">
+            <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI" 
+                        startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                        endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
                 <ReportItem id="header" type="Static">
                     <![CDATA[
                         <h3>{$user_name}</h3>
@@ -431,7 +433,9 @@
                 <p>Click on the HQP's header and fill in any relevant information.  You may need to edit the HQP's profile in order for all of the information to show up.  If some HQP are missing, or none are showing up, then you will need to either <a href='https://forum.tvn-nce.ca/index.php/Special:AddMember' target='_blank'>create the HQP</a> or <a href='https://forum.tvn-nce.ca/index.php/Special:ManagePeople' target='_blank'>edit the roles</a> of an existing HQP so that they are listed as a member of {$project_name}.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
+        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP" 
+                       startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="demographic_head" type="StaticReportItem">
                     <![CDATA[
