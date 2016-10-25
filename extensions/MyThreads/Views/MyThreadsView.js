@@ -11,7 +11,8 @@ MyThreadsView = Backbone.View.extend({
         this.$el.html(this.template());
         this.$("#boards").dataTable({
             bFilter: false,
-            bPaginate: false
+            bPaginate: false,
+            bSort: false
         });
         this.$("#boards_info").remove();
     }
