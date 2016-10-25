@@ -22,7 +22,9 @@
 <% this.model.each(function(board){ %>
         <tr>
             <td style="white-space: nowrap;">
-                <h3><a href="<%= board.get('url') %>"><%= board.get('title') %></a></h3>
+                <div style="font-size:120%; font-weight: bold; margin: 5px;">
+                    <a href="<%= board.get('url') %>"><%= board.get('title') %></a>
+                </div>
             </td>
             <td>
                 <%= nl2br(board.get('description')) %>
