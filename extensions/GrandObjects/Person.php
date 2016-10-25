@@ -2862,11 +2862,11 @@ class Person extends BackboneModel {
         
         if(count($role_objs) > 0){
             $defaultSkip = false;
-            /*foreach($role_objs as $r){
-                if(count($r->getProjects()) > 0){
+            foreach($role_objs as $r){
+                if($project != null && count($r->getProjects()) > 0){
                     $defaultSkip = true;
                 }
-            }*/
+            }
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
