@@ -28,17 +28,14 @@ Thread = Backbone.Model.extend({
 Threads = Backbone.Collection.extend({
 
     model: Thread,
-   
     search: '',
+    board_id: 0,
 
     url: function(){
         if(this.search != ''){
-            return 'index.php?action=api.threads/' + encodeURIComponent(this.search);
+            return 'index.php?action=api.threads/' + this.board_id + "/" + encodeURIComponent(this.search);
         }
-        if(this.roles == undefined){
-            return 'index.php?action=api.threads';
-        }
-        return 'index.php?action=api.threads/';
+        return 'index.php?action=api.threads/' + this.board_id;
     }
 
 });

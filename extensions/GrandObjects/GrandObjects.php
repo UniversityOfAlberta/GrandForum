@@ -73,11 +73,15 @@ $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
 $apiRequest->addAction('Hidden','wikipage/:id', 'WikiPageAPI');
 $apiRequest->addAction('Hidden','wikipage/:namespace/:title', 'WikiPageAPI');
 
+//Board
+$apiRequest->addAction('Hidden','board/:id', 'BoardAPI');
+$apiRequest->addAction('Hidden','boards', 'BoardsAPI');
+
 //Thread
 $apiRequest->addAction('Hidden','thread', 'ThreadAPI');
 $apiRequest->addAction('Hidden','thread/:id', 'ThreadAPI');
-$apiRequest->addAction('Hidden','threads', 'ThreadsAPI');
-$apiRequest->addAction('Hidden','threads/:search', 'ThreadsAPI');
+$apiRequest->addAction('Hidden','threads/:board', 'ThreadsAPI');
+$apiRequest->addAction('Hidden','threads/:board/:search', 'ThreadsAPI');
 
 //Post
 $apiRequest->addAction('Hidden','post', 'PostAPI');
@@ -102,6 +106,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js?".filemtime("extensions/GrandObjects/BackboneModels/RelationModel.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RangeCollection.js?".filemtime("extensions/GrandObjects/BackboneModels/RangeCollection.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Thread.js?".filemtime("extensions/GrandObjects/BackboneModels/Thread.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Board.js?".filemtime("extensions/GrandObjects/BackboneModels/Board.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Post.js?".filemtime("extensions/GrandObjects/BackboneModels/Post.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Link.js?".filemtime("extensions/GrandObjects/BackboneModels/Link.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js?".filemtime("extensions/GrandObjects/BackboneModels/Person.js")."'></script>\n";

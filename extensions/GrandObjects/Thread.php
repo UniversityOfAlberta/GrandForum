@@ -5,6 +5,7 @@
 class Thread extends BackboneModel {
 
     var $id;
+    var $board_id;
     var $user_id; //person who created thread
     var $users = array();
     var $roles = array();
@@ -17,6 +18,7 @@ class Thread extends BackboneModel {
         function Thread($data){
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
+                $this->board_id = $data[0]['board_id'];
                 $this->user_id = $data[0]['user_id'];
                 $this->users = unserialize($data[0]['users']);
                 $this->roles = unserialize($data[0]['roles']);
@@ -43,7 +45,7 @@ class Thread extends BackboneModel {
      * Returns all Threads available to a user
      * @return threads An Array of Threads
      */
-    static function getAllThreads(){
+    static function getAllThreads($board_id=0){
         global $wgRoleValues;
         $threads = array();
         $me = Person::newFromWgUser();
@@ -66,7 +68,9 @@ class Thread extends BackboneModel {
         if(count($data) >0){
             foreach($data as $threadId){
                 $thread = Thread::newFromId($threadId['id']);
-                $threads[] = $thread;
+                if($thread->getBoardId() == $board_id){
+                    $threads[] = $thread;
+                }
             }
         }
         return $threads;
@@ -76,6 +80,14 @@ class Thread extends BackboneModel {
     // Returns the id of this Story
     function getId(){
         return $this->id;
+    }
+    
+    function getBoardId(){
+        return $this->board_id;
+    }
+    
+    function getBoard(){
+        return Board::newFromId($this->getBoardId());
     }
 
     function getThreadOwner(){
@@ -289,6 +301,7 @@ class Thread extends BackboneModel {
                       'roles' => $this->getRole(),
                       'title' => $this->getTitle(),
                       'posts' => $posts,
+                      'board' => $this->getBoard()->toArray(),
                       'url' => $this->getUrl(),
                       'date_created' => $this->getDateCreated());
         return $json;
@@ -310,9 +323,9 @@ class Thread extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
-            return "{$wgServer}{$wgScriptPath}/index.php/Special:MyThreads#/{$this->getId()}";
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:MyThreads#/{$this->getBoardId()}/{$this->getId()}";
         }
-        return "{$wgServer}{$wgScriptPath}/index.php/Special:MyThreads?embed#/{$this->getId()}";
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:MyThreads?embed#/{$this->getBoardId()}/{$this->getId()}";
     }
 }
 

@@ -4,8 +4,9 @@ class ThreadsAPI extends RESTAPI {
 
     function doGET(){
         $me = Person::newFromWgUser();
+        $board_id = $this->getParam('board');
         if($this->getParam('search') == ""){
-            $threads = new Collection(Thread::getAllThreads());
+            $threads = new Collection(Thread::getAllThreads($board_id));
         }
         else{
             $threads = array();

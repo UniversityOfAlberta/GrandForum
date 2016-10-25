@@ -20,8 +20,9 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-        ":id": "viewThread",
-        ":id/edit": "editThread",
+        ":board_id": "viewBoard",
+        ":board_id/:id": "viewThread",
+        ":board_id/:id/edit": "editThread",
     }
 });
 
@@ -31,18 +32,25 @@ var pageRouter = new PageRouter;
 pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', 'Message Boards');
     this.closeCurrentView();
-    var threads = new Threads();
-    threads.fetch();
-    this.currentView = new MyThreadsView({el: $("#currentView"), model: threads});
+    var boards = new Boards();
+    boards.fetch();
+    this.currentView = new MyThreadsView({el: $("#currentView"), model: boards});
 });
 
-pageRouter.on('route:viewThread', function (id) {
+pageRouter.on('route:viewBoard', function(board_id) {
+    this.closeCurrentView();
+    var board = new Board({id: board_id});
+    board.fetch();
+    this.currentView = new BoardView({el: $("#currentView"), model: board});
+});
+
+pageRouter.on('route:viewThread', function (board_id, id) {
     this.closeCurrentView();
     var thread = new Thread({'id':id});
     this.currentView = new ThreadView({el: $("#currentView"), model: thread});
 });
 
-pageRouter.on('route:editThread', function (id) {
+pageRouter.on('route:editThread', function (board_id, id) {
     this.closeCurrentView();
     var thread = new Thread({'id':id});
     this.currentView = new ThreadEditView({el: $("#currentView"), model: thread});

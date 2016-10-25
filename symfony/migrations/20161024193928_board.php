@@ -25,6 +25,7 @@ class Board extends AbstractMigration
         $table = $this->table("grand_boards", array("id" => "id"));
         if(!$table->exists()){
             $table->addColumn('title', 'string', array('limit' => 64))
+                  ->addColumn('description', 'text')
                   ->create();
         }
         

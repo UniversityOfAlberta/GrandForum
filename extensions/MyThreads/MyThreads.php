@@ -20,6 +20,7 @@ class MyThreads extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
                      'my_threads',
+                     'board',
                      'my_threads_row',
                      'thread',
                      'post',
@@ -31,6 +32,7 @@ class MyThreads extends BackbonePage {
         return array('Backbone/*',
                      'MyThreadsView',
                      'MyThreadsRowView',
+                     'BoardView',
                      'ThreadView',
                      'PostView',
                      'ThreadEditView'
