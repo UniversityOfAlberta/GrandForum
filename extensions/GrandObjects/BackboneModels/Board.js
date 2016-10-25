@@ -11,7 +11,6 @@ Board = Backbone.Model.extend({
             title: "",
             description: "",
             url: "",
-            board: {},
             nThreds: 0
         };
     }

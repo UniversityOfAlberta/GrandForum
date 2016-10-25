@@ -182,13 +182,15 @@ class Thread extends BackboneModel {
         if($me->isRoleAtLeast(AR)){
             DBFunctions::begin();
             $status = DBFunctions::insert('grand_threads',
-                                          array('user_id' => $this->user_id,
+                                          array('board_id' => $this->board_id,
+                                                'user_id' => $this->user_id,
                                                 'users' => serialize($users),
                                                 'roles' => serialize($this->roles),
                                                 'title' => $this->title), true);
             $data = DBFunctions::select(array('grand_threads'),
                                         array('id'),
-                                        array('user_id' =>$this->user_id,
+                                        array('board_id' => $this->board_id,
+                                              'user_id' =>$this->user_id,
                                               'title' => $this->title),
                                         array('date_created'=>'desc'));
             if($status){
@@ -215,7 +217,8 @@ class Thread extends BackboneModel {
         }
         if($me->isRoleAtLeast(ADMIN) || $me->getId() == $this->user_id){
             $status = DBFunctions::update('grand_threads',
-                                          array('users'=>serialize($users),
+                                          array('board_id' => $this->board_id,
+                                                'users'=>serialize($users),
                                                 'roles' =>serialize($this->roles),
                                                 'user_id' => $this->user_id,
                                                 'title' => $this->getTitle(),

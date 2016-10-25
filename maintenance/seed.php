@@ -130,6 +130,10 @@ DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) 
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme5', 'Theme 5', 'Theme 5 Description')", true);
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme6', 'Theme 6', 'Theme 6 Description')", true);
 
+//Initialize Boards
+DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('General', 'General Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('Other Topics', 'Other Topics Description')", true);
+
 $id = 100;
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Cal', 'public' => '0'));
 $id += 2;

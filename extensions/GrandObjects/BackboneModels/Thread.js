@@ -8,6 +8,7 @@ Thread = Backbone.Model.extend({
     defaults: function() {
         return{
             id: null,
+            board_id: 0,
             user: "",
             users: "",
             author: "",
@@ -15,6 +16,7 @@ Thread = Backbone.Model.extend({
             roles: "",
             title: "",
             posts: new Array(),
+            board: {},
             url: "",
             date_created: "0000-00-00 00:00:00",
         };

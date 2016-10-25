@@ -36,7 +36,7 @@ BoardView = Backbone.View.extend({
     },
 
     addThread: function(){
-        var model = new Thread({author: {id: me.id, name:me.get('name'), url:me.get('url')}});
+        var model = new Thread({board_id: this.model.get('id'), author: {id: me.id, name:me.get('name'), url:me.get('url')}});
         var model2 = new Post({'user_id':me.id});
         var view = new ThreadEditView({el: $('#editThreadView', this.editDialog), model: model, isDialog: true});
         var view2 = new PostView({el: $('#editPostView', this.editDialog), model: model2, isDialog: true});

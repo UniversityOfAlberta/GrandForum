@@ -10,6 +10,7 @@ Feature: Threads
     Scenario: Adding a new Thread to Admin Group as Admin
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "Message Board"
+        And I follow "General"
         And I press "Add Thread"
         And I fill in "title" with "New Thread By Admin.User1"
         And I select "Admin" from "roles"
@@ -21,21 +22,24 @@ Feature: Threads
     Scenario: Viewing list of Threads as Admin
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I go to "index.php/Special:MyThreads"
+        And I follow "General"
         Then I should see "New Thread By Admin.User1"
 
     Scenario: Viewing list of Threads as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:MyThreads"
+        And I follow "General"
         Then I should see "No data available in table"
 
     Scenario: Viewing Thread as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
-        When I go to "index.php/Special:MyThreads#/1"
+        When I go to "index.php/Special:MyThreads#/1/1"
         Then I should see "This Thread does not exist."
 
     Scenario: Adding a new Thread to NI Group as Admin
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
         When I follow "Message Board"
+        And I follow "General"
         And I press "Add Thread"
         And I fill in "title" with "New NI Thread By Admin.User1"
         And I select "CI" from "roles"
@@ -47,11 +51,13 @@ Feature: Threads
     Scenario: Viewing list of Threads as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:MyThreads"
+        And I follow "General"
         Then I should see "New NI Thread By Admin.User1"
 
     Scenario: Adding a new Post to NI Thread as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:MyThreads"
+        And I follow "General"
         And I follow "New NI Thread By Admin.User1"
         And I wait "100"
         Then I should see "This is the description."
@@ -63,6 +69,7 @@ Feature: Threads
     Scenario: Editing a post as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:MyThreads"
+        And I follow "General"
         And I follow "New NI Thread By Admin.User1"
         And I wait "500"
         And I click by css ".edit-icon"
