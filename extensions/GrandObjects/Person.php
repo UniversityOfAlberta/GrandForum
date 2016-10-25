@@ -2859,9 +2859,16 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRoles();
+        
         if(count($role_objs) > 0){
+            $defaultSkip = false;
             foreach($role_objs as $r){
-                $skip = false;
+                if(count($r->getProjects()) > 0){
+                    $defaultSkip = true;
+                }
+            }
+            foreach($role_objs as $r){
+                $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
                     $skip = true;
                     foreach($r->getProjects() as $p){
