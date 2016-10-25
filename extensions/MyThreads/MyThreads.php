@@ -46,7 +46,7 @@ class MyThreads extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if(self::userCanExecute($wgUser)){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Message Board", "$wgServer$wgScriptPath/index.php/Special:MyThreads");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Message Boards", "$wgServer$wgScriptPath/index.php/Special:MyThreads");
         }
         return true;
     }

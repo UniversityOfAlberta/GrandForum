@@ -5,11 +5,11 @@ Feature: Threads
 
     Scenario: Viewing message board in tools
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        Then I should see "Message Board"
+        Then I should see "Message Boards"
 
     Scenario: Adding a new Thread to Admin Group as Admin
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Message Board"
+        When I follow "Message Boards"
         And I follow "General"
         And I press "Add Thread"
         And I fill in "title" with "New Thread By Admin.User1"
@@ -38,7 +38,7 @@ Feature: Threads
 
     Scenario: Adding a new Thread to NI Group as Admin
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I follow "Message Board"
+        When I follow "Message Boards"
         And I follow "General"
         And I press "Add Thread"
         And I fill in "title" with "New NI Thread By Admin.User1"
