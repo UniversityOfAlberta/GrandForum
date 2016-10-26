@@ -77,7 +77,12 @@ BoardView = Backbone.View.extend({
                                                      'aLengthMenu': [[-1], ['All']],
                                                      'drawCallback': function(settings){
             // Make sure sticky threads remain at the top
-            this.$('#listTable tbody tr:first').before(stickies);
+            if(this.$('#listTable tbody tr:first').length > 0){
+                this.$('#listTable tbody tr:first').before(stickies);
+            }
+            else{
+                this.$('#listTable tbody').html(stickies);
+            }
         }});
         this.table.draw();
         if(networkName == "GlycoNet"){
