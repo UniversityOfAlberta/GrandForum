@@ -53,6 +53,7 @@ class PersonProjectsAPI extends RESTAPI {
         if(count($data) > 0){
             $this->params['personProjectId'] = $data[0]['id'];
         }
+        Cache::delete("project{$project->getId()}_people*", true);
         $person->projects = null;
         MailingList::subscribeAll($person);
         return $this->doGET();
@@ -85,6 +86,8 @@ class PersonProjectsAPI extends RESTAPI {
         if($this->POST('endDate') != '0000-00-00 00:00:00'){
             Notification::addNotification($me, $person, "Project Membership Removed", "Effective {$this->POST('endDate')} you are no longer a member of <b>{$project->getName()}</b>", "{$person->getUrl()}");
         }
+        Cache::delete("project{$project->getId()}_people*", true);
+        $person->projects = null;
         MailingList::subscribeAll($person);
         if(!$status){
             $this->throwError("The project <i>{$project->getName()}</i> could not be updated");
@@ -121,6 +124,7 @@ class PersonProjectsAPI extends RESTAPI {
         }
         Notification::addNotification($me, Person::newFromId(0), "Project Membership Removed", "<b>{$person->getNameForForms()}</b> has been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
         Notification::addNotification($me, $person, "Project Membership Removed", "You have been removed from <b>{$project->getName()}</b>", "{$person->getUrl()}");
+        Cache::delete("project{$project->getId()}_people*", true);
         $person->projects = null;
         MailingList::subscribeAll($person);
         return json_encode(array());
