@@ -254,6 +254,8 @@ class CavendishTemplate2 extends QuickTemplate {
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
+		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
+		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
