@@ -54,12 +54,13 @@ BoardView = Backbone.View.extend({
         if(this.table != undefined){
             this.table.destroy();
         }
+        var onlyStickies = (this.threads.where({'stickied': "0"}).length == 0);
         this.threads.each($.proxy(function(p, i){
             var row = new MyThreadsRowView({model: p, parent: this});
-            if(p.get('stickied') == 1){
+            if(p.get('stickied') == 1 && !onlyStickies){
                 this.$("#stickies").append(row.$el);
             }
-            if(p.get('stickied') == 0){
+            if(p.get('stickied') == 0 || onlyStickies){
                 this.$("#threads").append(row.$el);
             }
             row.render();
