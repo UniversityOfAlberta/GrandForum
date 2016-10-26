@@ -66,7 +66,7 @@ class Budget extends QueryableTable{
             $this->structure = $this->preprocessStructure($structure);
         }
         else{
-            $this->structure = $this->preprocessStructure($budgetStructures[$structure]);
+            $this->structure = @$this->preprocessStructure($budgetStructures[$structure]);
         }
         if(!$this->readCells($data, $sheet)){
             // Some error happened when reading the data, try to recover
