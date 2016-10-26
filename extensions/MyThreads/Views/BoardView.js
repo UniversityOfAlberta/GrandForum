@@ -56,7 +56,12 @@ BoardView = Backbone.View.extend({
         }
         this.threads.each($.proxy(function(p, i){
             var row = new MyThreadsRowView({model: p, parent: this});
-            this.$("#personRows").append(row.$el);
+            if(p.get('stickied') == 1){
+                this.$("#stickies").append(row.$el);
+            }
+            if(p.get('stickied') == 0){
+                this.$("#threads").append(row.$el);
+            }
             row.render();
         }, this));
         this.createDataTable();
@@ -64,10 +69,16 @@ BoardView = Backbone.View.extend({
     },
     
     createDataTable: function(){
+        var stickies = this.$("#stickies tr").detach();
+        this.$("#stickies").remove();
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'bFilter': false,
                                                      'autoWidth': false,
-                                                     'aLengthMenu': [[-1], ['All']]});
+                                                     'aLengthMenu': [[-1], ['All']],
+                                                     'drawCallback': function(settings){
+            // Make sure sticky threads remain at the top
+            this.$('#listTable tbody tr:first').before(stickies);
+        }});
         this.table.draw();
         if(networkName == "GlycoNet"){
             this.table.order([3, 'desc']);

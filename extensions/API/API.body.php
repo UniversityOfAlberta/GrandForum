@@ -57,7 +57,7 @@ class APIRequest{
 				                                    strstr($param, ":") !== false));
 				                if($match && is_string($a)){
 				                    $a = new $a();
-				                    $api = $a;
+				                    $api = $a; // Set the API to this for now (params might not match exactly, but will use it as a fallback)
 				                }
 				                if($match && strstr($param, ":") !== false){
 				                    $a->params[str_replace(":", "", $param)] = $params[$key];

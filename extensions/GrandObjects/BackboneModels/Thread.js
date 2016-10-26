@@ -9,6 +9,7 @@ Thread = Backbone.Model.extend({
         return{
             id: null,
             board_id: 0,
+            stickied: false,
             user: "",
             users: "",
             author: "",
@@ -21,6 +22,7 @@ Thread = Backbone.Model.extend({
             date_created: "0000-00-00 00:00:00",
         };
     },
+    
     getPossibleRoles: function(){
         return _.pluck(me.get('roles'),'role');
     }

@@ -16,6 +16,7 @@ class ThreadAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         $thread = new Thread(array());
         $thread->board_id = $this->POST('board_id');
+        $thread->stickied = $this->POST('stickied');
         $thread->setTitle($this->POST('title'));
         $thread->setUserId($this->POST('author')->id);
         $thread->setUsers($this->POST('authors'));
@@ -49,6 +50,7 @@ class ThreadAPI extends RESTAPI {
             $thread->setUsers(array($me));
         }
         $thread->board_id = $this->POST('board_id');
+        $thread->stickied = $this->POST('stickied');
         $thread->setRoles($this->POST('roles'));
         $thread->setTitle($this->POST('title'));
         $thread->setUsers($this->POST('authors'));

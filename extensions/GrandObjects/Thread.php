@@ -6,6 +6,7 @@ class Thread extends BackboneModel {
 
     var $id;
     var $board_id;
+    var $stickied;
     var $user_id; //person who created thread
     var $users = array();
     var $roles = array();
@@ -19,6 +20,7 @@ class Thread extends BackboneModel {
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
                 $this->board_id = $data[0]['board_id'];
+                $this->stickied = $data[0]['stickied'];
                 $this->user_id = $data[0]['user_id'];
                 $this->users = unserialize($data[0]['users']);
                 $this->roles = unserialize($data[0]['roles']);
@@ -183,6 +185,7 @@ class Thread extends BackboneModel {
             DBFunctions::begin();
             $status = DBFunctions::insert('grand_threads',
                                           array('board_id' => $this->board_id,
+                                                'stickied' => $this->stickied,
                                                 'user_id' => $this->user_id,
                                                 'users' => serialize($users),
                                                 'roles' => serialize($this->roles),
@@ -218,6 +221,7 @@ class Thread extends BackboneModel {
         if($me->isRoleAtLeast(ADMIN) || $me->getId() == $this->user_id){
             $status = DBFunctions::update('grand_threads',
                                           array('board_id' => $this->board_id,
+                                                'stickied' => $this->stickied,
                                                 'users'=>serialize($users),
                                                 'roles' =>serialize($this->roles),
                                                 'user_id' => $this->user_id,
@@ -298,6 +302,8 @@ class Thread extends BackboneModel {
             $posts[] = array('id' => $post->getId());
         }
         $json = array('id' => $this->getId(),
+                      'board_id' => $this->getBoardId(),
+                      'stickied' => $this->stickied,
                       'author' => $author,
                       'users' => $authors,
                       'authors' => $authors,

@@ -19,6 +19,13 @@
     </td>
 </tr>
 <% } %>
+<% if(_.findWhere(me.get('roles'), {"role":"Admin"}) != undefined || 
+      _.findWhere(me.get('roles'), {"role":"Manager"}) != undefined){ %>
+    <tr>
+        <td><b>Stickied?</b></td>
+        <td><%= HTML.CheckBox(this, 'stickied', {value: '1', default: '0'}) %></td>
+    </tr>
+<% } %>
 </table>
 <br />
 <div id="threadPeople"></div>
