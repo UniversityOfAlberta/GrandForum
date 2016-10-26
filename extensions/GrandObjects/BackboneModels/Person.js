@@ -45,6 +45,16 @@ Person = Backbone.Model.extend({
         });
     },
     
+    isBoardMod: function(){
+        var isMod = false;
+        _.each(boardMods, function(r){
+            if(_.findWhere(me.get('roles'), {role: r}) != undefined){
+                isMod = true;
+            }
+        });
+        return isMod;
+    },
+    
     getLink: function(){
         return new Link({id: this.get('id'),
                          text: this.get('reversedName'),

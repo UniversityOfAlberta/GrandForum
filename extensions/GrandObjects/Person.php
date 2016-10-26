@@ -2822,6 +2822,20 @@ class Person extends BackboneModel {
         global $wgUser;
         return ($wgUser->getId() == $this->getId());
     }
+    
+    /**
+     * Returns whether this Person is a Message Board Moderator
+     * @return boolean Whether this Person is a Message Board Moderator
+     */
+    function isBoardMod(){
+        global $config;
+        foreach($config->getValue('boardMods') as $role){
+            if($this->isRole($role)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns whether this Person is the given role (on the given optional project)

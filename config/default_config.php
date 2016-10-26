@@ -297,6 +297,9 @@
     
     $config->setValue("roleAliases", array());
         
+    $config->setValue("boardMods", array($config->getConst('STAFF'), 
+                                         $config->getConst('MANAGER'),
+                                         $config->getConst('ADMIN')));
     /* Other */
     $config->setValue("analyticsCode", "");
 ?>
