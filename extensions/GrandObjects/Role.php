@@ -122,7 +122,9 @@ class Role extends BackboneModel {
             }
         }
         $this->getPerson()->projectCache = array();
-        
+        foreach($this->getPerson()->getProjects(true) as $project){
+            Cache::delete("project{$project->getId()}_people*", true);
+        }
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
 	}
@@ -154,6 +156,9 @@ class Role extends BackboneModel {
 	    Person::$rolesCache = array();
 	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
+	    foreach($this->getPerson()->getProjects(true) as $project){
+            Cache::delete("project{$project->getId()}_people*", true);
+        }
 	    Notification::addNotification($me, Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
@@ -172,6 +177,9 @@ class Role extends BackboneModel {
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
+	    foreach($this->getPerson()->getProjects(true) as $project){
+            Cache::delete("project{$project->getId()}_people*", true);
+        }
 	    if($status){
 	        Notification::addNotification($me, Person::newFromId(0), "Role Removed", "<b>{$person->getNameForForms()}</b> is no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
 	        Notification::addNotification($me, $person, "Role Removed", "You are no longer <b>{$this->getRole()}</b>", "{$person->getUrl()}");
