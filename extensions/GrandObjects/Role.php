@@ -109,6 +109,7 @@ class Role extends BackboneModel {
 	                                                  'project_id' => $p->getId(),
 	                                                  'start_date' => $this->getStartDate()));
 	                    }
+	                    Cache::delete("project{$p->getId()}_people*", true);
 	                }
 	            }
 	            Notification::addNotification($me, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
@@ -138,6 +139,9 @@ class Role extends BackboneModel {
 	                                        'end_date'   => $this->getEndDate(),
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
+	    foreach($this->getPerson()->getProjects(true) as $project){
+            Cache::delete("project{$project->getId()}_people*", true);
+        }
 	    DBFunctions::delete('grand_role_projects',
 	                        array('role_id' => EQ($this->getId())));
 	    foreach($this->projects as $project){
@@ -151,14 +155,12 @@ class Role extends BackboneModel {
 	                                              'project_id' => $p->getId(),
 	                                              'start_date' => $this->getStartDate()));
             }
+            Cache::delete("project{$p->getId()}_people*", true);
 	    }
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->projectCache = array();
 	    $this->getPerson()->roles = null;
-	    foreach($this->getPerson()->getProjects(true) as $project){
-            Cache::delete("project{$project->getId()}_people*", true);
-        }
 	    Notification::addNotification($me, Person::newFromId(0), "Role Changed", "The role ({$this->getRole()}) of <b>{$this->getPerson()->getNameForForms()}</b> has been changed", "{$this->getPerson()->getUrl()}");
         MailingList::subscribeAll($this->getPerson());
 	    return $status;
