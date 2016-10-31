@@ -33,8 +33,8 @@
                     })();
                 </script>
                 <a id="dlink"  style="display:none;"></a>
-                <input id="btnExport" type="button" onclick="tableToExcel('summary', 'Project Evaluation Summary', 'ProjectEvaluationSummary.xls')" value="Download as Spreadsheet" />
-                <table id="summary" class='wikitable small'>
+                <input id="btnExport1" type="button" onclick="tableToExcel('summary1', 'Project Evaluation Summary', 'ProjectEvaluationSummary.xls')" value="Download as Spreadsheet" />
+                <table id="summary1" class='wikitable small'>
                     <thead>
                         <tr>
                             <th></th>
@@ -151,6 +151,120 @@
                 </table>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="head2" type="Static">
+            <![CDATA[
+                <h2>Transdisciplinary Metrics</h2>
+                <input id="btnExport2" type="button" onclick="tableToExcel('summary2', 'Project Evaluation Summary', 'ProjectEvaluationSummary_Transdisciplinary.xls')" value="Download as Spreadsheet" />
+                <table id="summary2" class='wikitable small'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2'></th>
+                            <th colspan='3'># of leadership positions in policy & practice you hold</th>
+                            <th colspan='4'># of partners by sector</th>
+                            <th colspan='4'># of stakeholders involved in your research as research subjects</th>
+                            <th colspan='4'># of stakeholders involved in your research as advisory board members</th>
+                            <th colspan='4'># of stakeholders involved in your research as co-investigators/partners</th>
+                            <th colspan='4'># of academic dissemination activities in the following mediums</th>
+                            <th colspan='5'># of non-academic dissemination activities in the  following mediums</th>
+                            <th colspan='4'># of publications published that involved</th>
+                            <th colspan='4'># presentations that involved</th>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <th>local level</th>
+                            <th>national level</th>
+                            <th>International level</th>
+                            <th>Industry</th>
+                            <th>Community/Not for profit</th>
+                            <th>Provincial</th>
+                            <th>Federal</th>
+                            <th>older adult or caregiver</th>
+                            <th>community organization</th>
+                            <th>industry member</th>
+                            <th>policymaker</th>
+                            <th>older adult or caregiver</th>
+                            <th>community organization</th>
+                            <th>industry member</th>
+                            <th>policymaker</th>
+                            <th>older adult or caregiver</th>
+                            <th>community organization</th>
+                            <th>industry member</th>
+                            <th>policymaker</th>
+                            <th>print</th>
+                            <th>digital</th>
+                            <th>face-to-face</th>
+                            <th>other</th>
+                            <th>print</th>
+                            <th>digital</th>
+                            <th>face-to-face</th>
+                            <th>TV & radio interviews</th>
+                            <th>other</th>
+                            <th>older adult or caregiver</th>
+                            <th>community organization</th>
+                            <th>industry member</th>
+                            <th>policymaker</th>
+                            <th>older adult or caregiver</th>
+                            <th>community organization</th>
+                            <th>Industry member</th>
+                            <th>policymaker</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="projects2" type="AllProjectsReportItemSet">
+            <ReportItem id="row" type="Static">
+                <![CDATA[
+                    <tr>
+                        <td style="white-space:nowrap;">{$project_name}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M3,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M4,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,RESEARCH,REV_1_5_M5,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_1_5_M2A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_1_5_M2B,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_1_5_M2C,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_1_5_M2D,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M2,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M3,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M4,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M5,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M6,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M7,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M8,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M9,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M10,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M11,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M12,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,NETWORK,REV_2_5_M13,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0B,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0C,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M0D,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1B,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1C,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1D,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_3_5_M1E,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M1A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M1B,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M1C,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M1D,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M2A,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M2B,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M2C,0,0,{$project_id})}</td>
+                        <td align="right">{getText(RP_PROJ_EVALUATION,KTEE1,REV_1_5_M2D,0,0,{$project_id})}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="foot2" type="Static">
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </ReportItem>
+        
     </ReportSection>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
         <ReportItem id="head" type="Static">
