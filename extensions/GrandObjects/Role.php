@@ -151,9 +151,9 @@ class Role extends BackboneModel {
 	                                  'project_id' => $p->getId()));
 	        if(!$this->getPerson()->isMemberOf($p)){
                 DBFunctions::insert('grand_project_members',
-	                                        array('user_id' => $this->getPerson()->getId(),
-	                                              'project_id' => $p->getId(),
-	                                              'start_date' => $this->getStartDate()));
+                                    array('user_id' => $this->getPerson()->getId(),
+                                          'project_id' => $p->getId(),
+                                          'start_date' => $this->getStartDate()));
             }
             Cache::delete("project{$p->getId()}_people*", true);
 	    }
