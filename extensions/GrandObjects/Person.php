@@ -3209,7 +3209,10 @@ class Person extends BackboneModel {
                                           'created' => EQ(1)));
         $members = array();
         foreach($data as $row){
-            $members[] = Person::newFromName($row['wpName']);
+            $person = Person::newFromName($row['wpName']);
+            if($person->getId() > 0){
+                $members[] = $person;
+            }
         }
         return $members;
     }

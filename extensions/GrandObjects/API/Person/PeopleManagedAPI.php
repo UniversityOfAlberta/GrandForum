@@ -29,6 +29,9 @@ class PeopleManagedAPI extends RESTAPI {
                         $people[$member->getReversedName()] = $member;
                     }
                 }
+                foreach($me->getRequestedMembers() as $person){
+                    $people[$person->getReversedName()] = $person;
+                }
                 foreach($me->getManagedPeople() as $person){
                     $people[$person->getReversedName()] = $person;
                 }
