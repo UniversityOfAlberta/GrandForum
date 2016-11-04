@@ -4,7 +4,7 @@ class ArrayReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
-        $array = unserialize($this->getAttr("array"));
+        $array = @unserialize($this->getAttr("array"));
         $index = $this->getAttr("index", null);
         if($index != null && isset($array[$index])){
             $array = $array[$index];
