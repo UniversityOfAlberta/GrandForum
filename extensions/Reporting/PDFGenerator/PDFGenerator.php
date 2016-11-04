@@ -214,7 +214,7 @@ abstract class PDFGenerator {
      * @param AbstractReport $report The report that this PDF is for (optionally used to add extra information)
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null){
+    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
         if(self::$preview){
@@ -775,7 +775,9 @@ if ( isset($pdf) ) {
         Image_Cache::clear();
         $GLOBALS['footnotes'] = array();
         $GLOBALS["nFootnotesProcessed"] = 0;
-        return array('html' => $finalHTML, 'pdf' => $pdfStr);
+        if(!$stream){
+            return array('html' => $finalHTML, 'pdf' => $pdfStr);
+        }
         PDFGenerator::stream($pdfStr);
     }
     

@@ -109,6 +109,9 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if($visibility['isLead'] && isExtensionEnabled('Reporting')){
+                    $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
