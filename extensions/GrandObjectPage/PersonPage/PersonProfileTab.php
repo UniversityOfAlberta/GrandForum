@@ -522,6 +522,7 @@ EOF;
             $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
             $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
             $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+            $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
             $nationality = "<tr>
                 <td align='right'><b>Nationality:</b></td>
                 <td>
@@ -531,6 +532,7 @@ EOF;
                         <option value='American' $amerSelected>American</option>
                         <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
                         <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                        <option value='International' $interSelected>International</option>
                     </select>
                 </td>
             </tr>";
