@@ -25,14 +25,14 @@ MyThreadsView = Backbone.View.extend({
 	        this.editDialog.dialog({
      		height: $(window).height()*0.75,
                 	width: 800,
-                	title: "Create Thread"
+                	title: "<span class='en'>Ask an Expert</span><span class='fr'>Demandez à un Expert</span>"
                 });
 	    }
 	    else{
             this.editDialog.dialog({
                 height: $(window).height()*0.60,
                 width: 650,
-                title: "Create Thread"
+                title: "<span class='en'>Ask an Expert</span><span class='fr'>Demandez à un Expert</span>"
             });
 	    }
         this.editDialog.dialog('open');

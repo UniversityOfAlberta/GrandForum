@@ -49,6 +49,7 @@ ManageStoriesView = Backbone.View.extend({
         var view = new StoryEditView({el: this.editDialog, model: model, isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
+            title: "<span class='en'>Share a Case or Experience</span><span class='fr'>Partager un Cas ou de L'experience</span>",
             height: $(window).height()*0.80,
             width: 650
         });
@@ -64,10 +65,10 @@ ManageStoriesView = Backbone.View.extend({
         var mod = _.extend(this.model.toJSON(), me);
         this.el.innerHTML = this.template(mod);
         this.addRows();
-	var text = "Share Case or Experience";
-	if(wgLang == 'fr'){
-	    text = "Partager le Cas ou de L'experience";
-	}
+	    var text = "Share Case or Experience";
+	    if(wgLang == 'fr'){
+	        text = "Partager le Cas ou de L'experience";
+	    }
         this.editDialog = this.$("#editDialog").dialog({
 	        autoOpen: false,
 	        modal: true,
