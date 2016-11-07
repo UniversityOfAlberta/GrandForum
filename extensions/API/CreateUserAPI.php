@@ -122,24 +122,30 @@ class CreateUserAPI extends API{
                                                       'sub_role' => $subtype));
                         }
                     }
-		    $language = "en";
-		    $provison = false;
-		    if($_POST['wpProvision'] = "Yes"){
-			$provision = true;
-		    }
-	            elseif($_POST['Language'] == "French"){
-			$language = "fr";
-		    }
-		    $person->getUser()->setOption("language", $language);
-		    DBFunctions::insert('grand_personal_caps_info',
-					array('user_id' => $person->id,
-					      'postal_code' => $_POST['wpPostalCode'],
-					      'city' => $_POST['wpCity'],
-					      'province' => $_POST['wpProvince'],
-					      'specialty' => $_POST['wpSpecialty'],
-					      'prior_abortion_service' => $provision,
-					      'accept_referrals' => 0));
-
+                    $language = "en";
+                    $provison = false;
+                    if($_POST['wpProvision'] = "Yes"){
+                        $provision = true;
+                    }
+                    else if($_POST['Language'] == "French"){
+                        $language = "fr";
+                    }
+                    $person->getUser()->setOption("language", $language);
+                    DBFunctions::insert('grand_personal_caps_info',
+                        array('user_id' => $person->id,
+                              'postal_code' => $_POST['wpPostalCode'],
+                              'city' => $_POST['wpCity'],
+                              'province' => $_POST['wpProvince'],
+                              'specialty' => $_POST['wpSpecialty'],
+                              'prior_abortion_service' => $provision,
+                              'accept_referrals' => 0));
+                    
+                    $collect_demo     = (isset($_POST['wpCollectDemo']))     ? $_POST['wpCollectDemo'] : '0';
+                    $collect_comments = (isset($_POST['wpCollectComments'])) ? $_POST['wpCollectComments'] : '0';
+                    DBFunctions::update('mw_user',
+                                        array('collect_comments' => $collect_comments,
+                                              'collect_demo' => $collect_demo),
+                                        array('user_id'=>$person->id));
                     Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
                     $data = DBFunctions::select(array('grand_notifications'),
                                                 array('id'),

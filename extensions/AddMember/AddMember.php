@@ -193,6 +193,8 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpProvision' value='".str_replace("'", "&#39;", $extras['provision'])."' />
                             <input type='hidden' name='wpPharmacyName' value='".str_replace("'", "&#39;", $extras['pharmacy_name'])."' />
                             <input type='hidden' name='wpPharmacyAddress' value='".str_replace("'", "&#39;", $extras['pharmacy_address'])."' />
+                            <input type='hidden' name='wpCollectDemo' value='".str_replace("'", "&#39;", @$extras['collect_demo'])."' />
+                            <input type='hidden' name='wpCollectComments' value='".str_replace("'", "&#39;", @$extras['collect_comments'])."' />
 
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){

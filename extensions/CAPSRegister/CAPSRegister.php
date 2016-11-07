@@ -50,13 +50,11 @@ class CAPSRegister extends SpecialPage{
 <br /><br />
 This website is part of the Mifepristone Implementation Research in Canada study (The CART-Mife Study) which aims to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone.
 <br /><br />
-We will collect data including: your demographic information; posts on challenges, barriers and facilitators; responses to a weekly 1-question poll; and participant usage statistics. We will also collect your contact information to inform you of future opportunities to participate in research. You will be assigned a unique study number and your personal information will be kept confidential. Your name and identifying information will not be included anywhere in the analysis or report for this study. Computer files will be password-protected on a password-protected computer and stored securely on a UBC server. 
+We will collect data including: your demographic information; posts on challenges, barriers and facilitators; responses to a weekly 1-question poll; and participant usage statistics. We will also collect your contact information to inform you of future opportunities to participate in research. You will be assigned a unique study number and your personal information will be kept confidential. Your name and identifying information will not be included anywhere in the analysis or report for this study. Member IP addresses and identifiers will not be collected for research purposes. Computer files will be password-protected on a password-protected computer and stored securely on a UBC server. 
 <br /><br />
 We do not believe that participating in this study represents any risk to you. Participants will contribute to knowledge of the barriers and challenges faced when providing medical abortion care in Canada. The main results of our study will be presented to health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. We will also report aggregate findings (with no personal identifiers) in academic journals and conferences.  
 <br /><br />
-Your participation is optional and you may choose to withdraw from the study at any time. For more information, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics (e) <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> (t) 604-822-8598 or 1-877-822-8598. Principal Investigator: Dr. Wendy Norman, Associate Professor, Dept. of Family Practice, Faculty of Medicine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'>wendy.norman@ubc.ca</a> (t) 604-875-2424 x4880
-<br /><br />
-By completing the registration, you are consenting to participate in this research.</span>
+Your participation is optional and you may choose to withdraw from the study at any time. For more information, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics (e) <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> (t) 604-822-8598 or 1-877-822-8598. Principal Investigator: Dr. Wendy Norman, Associate Professor, Dept. of Family Practice, Faculty of Medicine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'>wendy.norman@ubc.ca</a> (t) 604-875-2424 x4880</span>
             ";
         $frenchTerms = "
 <img src='../skins/UBC_logo.png' width='50' />
@@ -74,13 +72,11 @@ Formulaire de consentement pour CAPS site <br /> <br />
 <br /> <br />
 Ce site fait partie de la mise en œuvre de la recherche mifépristone dans l'étude Canada (L'étude CART-Mife) qui vise à identifier et traiter les facilitateurs et les obstacles à l'initiation réussie et la prestation continue des services d'avortement médicamenteux utilisant la mifépristone.
 <br /> <br />
-Nous allons recueillir des données, y compris: vos renseignements démographiques; messages sur les défis, les obstacles et les facilitateurs; les réponses à un hebdomadaire 1 question sondage; et les statistiques d'utilisation des participants. Nous allons également recueillir vos coordonnées pour vous informer de futures occasions de participer à la recherche. Vous recevrez un numéro d'étude unique et vos informations personnelles seront gardées confidentielles. Votre nom et les informations d'identification ne sera pas incluse partout dans l'analyse ou un rapport pour cette étude. Les fichiers informatiques seront sur un ordinateur protégé par mot de passe et stockés en toute sécurité sur un serveur UBC protégé par mot de passe.
+Nous allons recueillir des données, y compris: vos renseignements démographiques; messages sur les défis, les obstacles et les facilitateurs; les réponses à un hebdomadaire 1 question sondage; et les statistiques d'utilisation des participants. Nous allons également recueillir vos coordonnées pour vous informer de futures occasions de participer à la recherche. Vous recevrez un numéro d'étude unique et vos informations personnelles seront gardées confidentielles. Votre nom et les informations d'identification ne sera pas incluse partout dans l'analyse ou un rapport pour cette étude. Adresses et identifiants IP membres ne seront pas collectées à des fins de recherche. Les fichiers informatiques seront sur un ordinateur protégé par mot de passe et stockés en toute sécurité sur un serveur UBC protégé par mot de passe.
 <br /> <br />
 Nous ne croyons pas que la participation à cette étude représente un risque pour vous. Les participants contribueront à la connaissance des obstacles et des défis rencontrés lors de la prestation de soins de l'avortement médicamenteux au Canada. Les principaux résultats de notre étude seront présentés au système et aux politiques de la santé des dirigeants pour améliorer les politiques et les systèmes qui prennent en charge votre prestation de sécurité, l'accessibilité des services d'avortement médical. Nous allons également rendre compte des résultats globaux (sans identificateurs personnels) dans des revues spécialisées et des conférences.
 <br /> <br />
-Votre participation est facultative et vous pouvez choisir de se retirer de l'étude à tout moment. Pour plus d'informations, contacter la recherche Participant Plainte ligne à l'Université de la Colombie-Britannique Bureau de l'éthique de la recherche (e) <a href='mailto:RSIL@ors.ubc.ca'> RSIL@ors.ubc.ca </a> (t) 604-822-8598 ou 1-877-822-8598. Chercheur principal: Dr Wendy Norman, professeur agrégé, Département de médecine familiale, Faculté de médecine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'> wendy.norman@ubc.ca </a> (t) 604-875-2424 x4880
-<br /> <br />
-En remplissant l'inscription, vous consentez à participer à cette recherche. </span>";
+Votre participation est facultative et vous pouvez choisir de se retirer de l'étude à tout moment. Pour plus d'informations, contacter la recherche Participant Plainte ligne à l'Université de la Colombie-Britannique Bureau de l'éthique de la recherche (e) <a href='mailto:RSIL@ors.ubc.ca'> RSIL@ors.ubc.ca </a> (t) 604-822-8598 ou 1-877-822-8598. Chercheur principal: Dr Wendy Norman, professeur agrégé, Département de médecine familiale, Faculté de médecine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'> wendy.norman@ubc.ca </a> (t) 604-875-2424 x4880</span>";
         if($wgLang->getCode() == "en"){
             $formContainer = new FormContainer("form_container");
             $formTable = new FormTable("form_table");
@@ -218,14 +214,22 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                                              
                                                                                             
                                              ");
-            $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("I have read and agree to the terms and conditions"), VALIDATE_NOTHING);
+            $termsAgree = new VerticalCheckBox("terms_agree", "terms_agree", array(), array("I have read and agree to the terms and conditions"), VALIDATE_NOTHING);
+            $termsExtra = new VerticalCheckBox("terms_extra", "terms_extra", 
+                                               array("collect_demo", "collect_comments"), 
+                                               array("I agree to have my demographic information used for research purposes." => "collect_demo",
+                                                     "I agree to have my posts on challenges, barriers and facilitators used for research purposes." => "collect_comments"),
+                                               VALIDATE_NOTHING);
             $termsRow = new FormTableRow("terms_row");
-            $termsAgree->attr("disabled","disabled")->attr("style","opacity:0.3");
+            $termsAgree->attr("disabled","disabled");
             $termsRow->append($termsLabel)->append($termsField);
             $agreeRow = new FormTableRow("agree_row");
+            $agreeExtraRow = new FormTableRow("agree_extra_row");
             $agreeCell = new EmptyElement();
+            $agreeExtraCell = new EmptyElement();
             $agreeRow->append($agreeCell)->append($termsAgree);
-            $agreeRow->attr("align","right")->attr("class","terms");
+            $agreeExtraRow->append($agreeExtraCell)->append($termsExtra);
+            $agreeRow->attr("class","terms");
             $submitCell = new EmptyElement();
             $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
             $submitField->attr("disabled","disabled");
@@ -372,12 +376,12 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                                              ");
             $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("Je l'ai lu et accepté les termes et conditions"), VALIDATE_NOTHING);
             $termsRow = new FormTableRow("terms_row");
-            $termsAgree->attr("disabled","disabled")->attr("style","opacity:0.3");
+            $termsAgree->attr("disabled","disabled");
             $termsRow->append($termsLabel)->append($termsField);
             $agreeRow = new FormTableRow("agree_row");
             $agreeCell = new EmptyElement();
             $agreeRow->append($agreeCell)->append($termsAgree);
-            $agreeRow->attr("align","right")->attr("class","terms");
+            $agreeRow->attr("class","terms");
             $submitCell = new EmptyElement();
             $submitField = new SubmitButton("submit", "Envoyer la demande", "Envoyer la demande", VALIDATE_NOTHING);
             $submitField->attr("disabled","disabled");
@@ -407,6 +411,7 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                   ->append($referenceRow)
                   ->append($captchaRow)
                   ->append($termsRow)
+                  ->append($agreeExtraRow)
                   ->append($agreeRow)
                   ->append($submitRow);
         
@@ -502,7 +507,6 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
                         $('.TermsOuterDiv').scroll(function() {
                             if ($(this).scrollTop()+5 >= $(this)[0].scrollHeight - $(this).innerHeight()) {
                                 $(\"input[name='terms_agree[]']\").removeAttr('disabled');
-                                $(\"input[name='terms_agree[]']\").css('opacity','1');
                             }
                         });
                     }
@@ -546,6 +550,7 @@ En remplissant l'inscription, vous consentez à participer à cette recherche. <
             $city = $form->getElementById('city_field')->setPOST('wpCity');
             $province = $form->getElementById('province_field')->setPOST('wpProvince');
             $reference = $form->getElementById('reference_field')->setPOST('wpReference');
+            $agreeExtra = $form->getElementById('terms_extra')->setPOST('wpAgreeExtra');
             if($_POST['wpRole'] == "Physician"){
                 $clinic = $form->getElementById('clinic_field')->setPOST('wpClinic');
                 $provision = $form->getElementById('provision_field')->setPOST('wpProvision');

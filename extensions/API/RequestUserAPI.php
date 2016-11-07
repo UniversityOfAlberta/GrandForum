@@ -17,6 +17,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpPharmacyName", true, "The pharmacists pharmacy name", "Me");
         $this->addPOST("wpPharmacyAddress", true, "The pharmacist's pharmacy address", "21345 134 ave");
         $this->addPOST("wpReference", true, "The Person who is a reference for the user", "HQP, RMC");
+        $this->addPOST("wpAgreeExtra", false, "Agreement fields", "");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
         $this->addPOST("university",false, "", "");
@@ -128,6 +129,8 @@ class RequestUserAPI extends API{
         $wpCaps['provision'] = isset($_POST['wpProvision']) ? $_POST['wpProvision'] : "";
         $wpCaps['pharmacy_name'] = isset($_POST['wpPharmacyName']) ? $_POST['wpPharmacyName'] : "";
         $wpCaps['pharmacy_address'] = isset($_POST['wpPharmacyAddress']) ? $_POST['wpPharmacyAddress'] : "";
+        $wpCaps['collect_demo'] = @(array_search('collect_demo', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
+        $wpCaps['collect_comments'] = @(array_search('collect_comments', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
 	    if(isset($_FILES['file_filed'])){
             $contents = base64_encode(file_get_contents($_FILES['file_field']['tmp_name']));
             $filename = $_FILES['file_field']['name'];
