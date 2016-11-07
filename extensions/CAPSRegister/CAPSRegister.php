@@ -375,12 +375,20 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                                                                                             
                                              ");
             $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("Je l'ai lu et accepté les termes et conditions"), VALIDATE_NOTHING);
+            $termsExtra = new VerticalCheckBox("terms_extra", "terms_extra", 
+                                               array("collect_demo", "collect_comments"), 
+                                               array("Je suis d'accord pour avoir mes informations démographiques utilisées à des fins de recherche." => "collect_demo",
+                                                     "Je suis d'accord pour que mes messages sur les défis, les obstacles et les facilitateurs utilisés à des fins de recherche." => "collect_comments"),
+                                               VALIDATE_NOTHING);
             $termsRow = new FormTableRow("terms_row");
             $termsAgree->attr("disabled","disabled");
             $termsRow->append($termsLabel)->append($termsField);
             $agreeRow = new FormTableRow("agree_row");
+            $agreeExtraRow = new FormTableRow("agree_extra_row");
             $agreeCell = new EmptyElement();
+            $agreeExtraCell = new EmptyElement();
             $agreeRow->append($agreeCell)->append($termsAgree);
+            $agreeExtraRow->append($agreeExtraCell)->append($termsExtra);
             $agreeRow->attr("class","terms");
             $submitCell = new EmptyElement();
             $submitField = new SubmitButton("submit", "Envoyer la demande", "Envoyer la demande", VALIDATE_NOTHING);
