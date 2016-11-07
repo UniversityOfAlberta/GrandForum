@@ -827,7 +827,7 @@ $(function(){
         ?>
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
-        <div id="sideToggle">
+        <!--div id="sideToggle">
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&#12297;"; } else { echo "&#12296;";}?>
         </div>
 	    <div id="header">
@@ -936,7 +936,7 @@ $(function(){
 		           echo htmlspecialchars($action['text']) ?></a></li><?php
 		         } ?>
 		    </ul>
-        </div>
+        </div-->
 	</div>
     
     <?php global $dropdownScript; echo "<script type='text/javascript'>$dropdownScript</script>"; ?>

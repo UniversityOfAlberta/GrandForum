@@ -331,16 +331,7 @@ class AddMember extends SpecialPage{
 	    }
         if($me->isRoleAtLeast(MANAGER)){
             $toolbox['People']['links'][0] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:AddMember");
-        }
-        return true;
-    }
-    
-    static function createSubTabs(&$tabs){
-        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-        $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(MANAGER)){
-            $selected = ("AddMember" == $wgTitle->getText() && @$_GET['action'] == 'view') ? "selected" : "";
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Registration Queue", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view", $selected);
+            $toolbox['People']['links'][2] = TabUtils::createToolboxLink("Registration Queue", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view");
         }
         return true;
     }
