@@ -7,7 +7,7 @@ class StoryAPI extends RESTAPI {
             $me = Person::newFromWgUser();
             $story = Story::newFromId($this->getParam('id'));
             if(!$story->canView()){
-		permissionError();
+                permissionError();
             }
             return $story->toJSON();
         }
@@ -21,17 +21,17 @@ class StoryAPI extends RESTAPI {
         $story->story = $this->POST('story');
         $status = $story->create();
         if(!$status){
-            $this->throwError("The user <i>{$story->getName()}</i> could not be created");
+            $this->throwError("The story <i>{$story->getTitle()}</i> could not be created");
         }
         $story = Story::newFromTitle($this->POST('title'));
-	if($me->isRoleAtLeast(MANAGER)){
-	    $story->approve();
-	    $people = Person::getAllPeople();
-	    foreach($people as $person){
-	    	//Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}");
-                Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}", true);
+        if($me->isRoleAtLeast(MANAGER)){
+            $story->approve();
+	        $people = Person::getAllPeople();
+	        foreach($people as $person){
+	        	//Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}");
+                    Notification::addNotification($me,$person,"New Post by Manager: {$story->getTitle()}", "{$me->getNameForForms()} has made a new Admin post", "{$story->getUrl()}", true);
+	        }
 	    }
-	}
         return $story->toJSON();
     }
 
