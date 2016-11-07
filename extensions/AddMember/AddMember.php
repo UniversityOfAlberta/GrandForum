@@ -335,6 +335,16 @@ class AddMember extends SpecialPage{
         }
         return true;
     }
+    
+    static function createSubTabs(&$tabs){
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(MANAGER)){
+            $selected = ("AddMember" == $wgTitle->getText() && @$_GET['action'] == 'view') ? "selected" : "";
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Registration Queue", "$wgServer$wgScriptPath/index.php/Special:AddMember?action=view", $selected);
+        }
+        return true;
+    }
 }
 
 ?>
