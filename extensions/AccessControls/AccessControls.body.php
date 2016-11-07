@@ -146,7 +146,7 @@ function parsePublicSections($title, $text){
 		
 			$text = $buffer;
 		
-			$text = preg_replace("/\[private\].*\[\/private\]/s", "", $text);
+			$text = preg_replace("/\[private\](.*?)\[\/private\]/s", "", $text);
 		}
 	}
 	$text = str_ireplace("[public]", "<public>", $text);
@@ -159,7 +159,7 @@ function parsePublicSections($title, $text){
 function parseGuestSections($title, $text){
 	global $wgUser, $wgScriptPath, $wgOut;
 	if(!is_null($title) && !$wgOut->isDisabled() && $wgUser->isLoggedIn()){
-		$text = preg_replace("/\[guest\].*\[\/guest\]/s", "", $text);
+		$text = preg_replace("/\[guest\](.*?)\[\/guest\]/s", "", $text);
 	}
 	$text = str_ireplace("[guest]", "<guest>", $text);
 	$text = str_ireplace("[/guest]", "</guest>", $text);
