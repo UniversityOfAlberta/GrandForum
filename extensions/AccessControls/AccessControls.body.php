@@ -119,6 +119,7 @@ function createExtraTables() {
 
 function checkPublicSections(&$parser, &$text){
 	$text = parsePublicSections($parser->getTitle(), $text);
+	$text = parseGuestSections($parser->getTitle(), $text);
 	return true;
 }
 
@@ -152,6 +153,16 @@ function parsePublicSections($title, $text){
 	$text = str_ireplace("[/public]", "</public>", $text);
 	$text = str_ireplace("[private]", "<private>", $text);
 	$text = str_ireplace("[/private]", "</private>", $text);
+	return $text;
+}
+
+function parseGuestSections($title, $text){
+	global $wgUser, $wgScriptPath, $wgOut, $publicPresent;
+	if(!is_null($title) && !$wgOut->isDisabled() && $wgUser->isLoggedIn()){
+		$text = preg_replace("/\[guest\].*\[\/guest\]/", "", $text);
+	}
+	$text = str_ireplace("[guest]", "<guest>", $text);
+	$text = str_ireplace("[/guest]", "</guest>", $text);
 	return $text;
 }
 
