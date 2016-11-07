@@ -1296,11 +1296,16 @@ EOF;
             echo <<< EOF
         <br />
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 en'>Member Registration</span></a>
-        <div class='pBody0 en' style='padding: 10px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
+        <div class='pBody0 en' style='padding: 10px;margin-bottom: 4px;'>If you would like to apply to become a member in CAPS then please fill out the <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>registration form</a>.</div>
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'><span class='pBodyTitle0 fr'>Inscription Membre</span></a>
-        <div class='pBody0 fr' style='padding: 10px;'>Si vous souhaitez postuler pour devenir membre en CPCA alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
+        <div class='pBody0 fr' style='padding: 10px;margin-bottom: 4px;'>Si vous souhaitez postuler pour devenir membre en CPCA alors s'il vous plaît remplir le <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSRegister'>formulaire d'inscription</a>.</div>
+        
 EOF;
         }
+        echo "<a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'><span class='pBodyTitle1 en'>About</span></a>
+        <div class='pBody1 en' style='padding: 10px;margin-bottom: 4px;margin-left:4px;margin-right:4px;'>Learn more about the website <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'>here</a>.</div>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'><span class='pBodyTitle1 fr'>Propos</span></a>
+        <div class='pBody1 fr' style='padding: 10px;margin-bottom: 4px;margin-left:4px;margin-right:4px;'>En savoir plus sur le site <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'>ici</a>.</div>";
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
