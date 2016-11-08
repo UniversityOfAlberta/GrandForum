@@ -1079,7 +1079,7 @@ $(function(){
                 $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
 
                 array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],3,0,$resources_tab);
+                array_splice($GLOBALS['toolbox']['Other']['links'],2,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
@@ -1096,9 +1096,9 @@ $(function(){
 	        if($me->isCandidate()){
 	            echo <<< EOF
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 en'>Become a Full Member</span></a>
-        <div class='pBody0 en' style='padding: 10px;'>Complete your <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>registration</a> to become a full member.</div>
+        <div class='pBody0 en' style='padding: 10px;margin-bottom:4px;'>Complete your <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>registration</a> to become a full member.</div>
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 fr'>Devenir membre à part entière</span></a>
-        <div class='pBody0 fr' style='padding: 10px;'>Complétez votre <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>inscription</a> pour devenir membre à part entière.</div>
+        <div class='pBody0 fr' style='padding: 10px;margin-bottom:4px;'>Complétez votre <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>inscription</a> pour devenir membre à part entière.</div>
 EOF;
             }
 		}

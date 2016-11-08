@@ -99,6 +99,7 @@ function permissionError(){
         // Depending on when this function is called, the title may not be created yet, so make an empty one
         $wgTitle = new Title();
     }
+    wfRunHooks('BeforeDisplayNoArticleText', array(null));
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
                      <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");

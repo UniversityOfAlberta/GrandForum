@@ -265,7 +265,7 @@ class Story extends BackboneModel{
 	function canView(){
             $me = Person::newFromWgUser();
 	    $bool = false;
-	    if($me->isLoggedIn() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
+	    if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
 		$bool = true;
 	    }
 	    return $bool;

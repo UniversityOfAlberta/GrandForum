@@ -262,7 +262,7 @@ class Thread extends BackboneModel{
 	    foreach($threads as $thread){
 		$ids[] = $thread->getId();
 	    }
-            if($me->isLoggedIn() && ($me->getId() === $this->getThreadOwner()->getId() 
+            if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getThreadOwner()->getId() 
 				     || $me->isRoleAtLeast(MANAGER) || in_array($this->getId(), $ids))){
                 $bool = true;
             }

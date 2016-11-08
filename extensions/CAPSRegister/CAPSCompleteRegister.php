@@ -36,29 +36,51 @@ class CAPSCompleteRegister extends SpecialPage{
         $request = UserCreateRequest::newFromName($me->getName());
         $certification = $request->getCertification();
         $file_name = @$certification['file_data']['name'];
-        $file_name = ($file_name != "") ? "<a href='$wgServer$wgScriptPath/index.php?action=getCertification&id={$request->getId()}'>Proof of Certification</a>" : "Proof of Certification";
+        $file_name = ($file_name != "") ? "<a style='float:left;' href='$wgServer$wgScriptPath/index.php?action=getCertification&id={$request->getId()}'>
+                                               <span class='en'>[Download]</span>
+                                               <span class='fr'>[Télécharger]</span>
+                                           </a>" : "";
         $extra = $request->getExtras();
-        $reference = @$extra['reference'];
+        $references = @$extra['references'];
+        $values = array();
+        if(is_array($references)){
+            foreach($references as $key => $reference){
+                $values[] = array_values($reference);
+            }
+        }
+        
         if($wgLang->getCode() == "en"){
             $formContainer = new FormContainer("form_container");
             $formTable = new FormTable("form_table");
 
-            $fileLabel = new Label("file_label", "{$file_name}:</div>
-                                                  <div style='text-align:right; font-size:0.7em'>
+            $fileLabel = new Label("file_label", "Proof of Certification:</div>
+                                                  <div style='text-align:right; font-size:0.7em'>$file_name
                                                   <a href='#!' onclick='openDialog()'>[what is this?]</a>", "The prior file of medical or surgical abortion services of the user", VALIDATE_NOTHING, false);
             $fileField = new FileField("file_field", "Proof of Certification", "", VALIDATE_NOTHING);
             $fileRow = new FormTableRow("file_row");
             $fileRow->attr('style','line-height: 10px;');
             $fileRow->append($fileLabel)->append($fileField);
+            
+            $plusMinus = new PlusMinus('reference_array', $values);
 
-            $referenceLabel = new Label("reference_label", "Name of Reference", "The physician or pharmacist who referred the user", VALIDATE_NOTHING);
-            $referenceField = new TextField("reference_field", "Name of Reference", "", VALIDATE_NOTHING);
-            if($reference != ""){
-                $referenceField->attr('value', $reference);
-            }
+            $referenceLabel = new Label("reference_label", "Sponsors", "The physician or pharmacist who referred the user", VALIDATE_NOTHING);
+            $referenceNameField = new TextField("reference_name_field[]", "Name of Sponsor", "", VALIDATE_NOTHING);
+            $referenceAffilField = new TextField("reference_affil_field[]", "Affiliation of Sponsor", "", VALIDATE_NOTHING);
+            $referenceEmailField = new TextField("reference_email_field[]", "Email of Sponsor", "", VALIDATE_NOTHING);
+            $referencePhoneField = new TextField("reference_phone_field[]", "Phone Number of Sponsor", "", VALIDATE_NOTHING);
+            
+            $referenceNameField->attr('placeholder', 'Name')->attr('size', 16);
+            $referenceAffilField->attr('placeholder', 'Affiliation')->attr('size', 20);
+            $referenceEmailField->attr('placeholder', 'Email Address')->attr('size', 20);
+            $referencePhoneField->attr('placeholder', 'Phone Number')->attr('size', 16);
+            
+            $plusMinus->append($referenceNameField);
+            $plusMinus->append($referenceAffilField);
+            $plusMinus->append($referenceEmailField);
+            $plusMinus->append($referencePhoneField);
             
             $referenceRow = new FormTableRow("reference_row");
-            $referenceRow->append($referenceLabel)->append($referenceField);
+            $referenceRow->append($referenceLabel)->append($plusMinus);
 
             $submitCell = new EmptyElement();
             $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -71,20 +93,34 @@ class CAPSCompleteRegister extends SpecialPage{
             $formTable = new FormTable("form_table");
             
             $fileLabel = new Label("file_label", "Preuve de la certification:<sup><span style='color:red;'>*</span></sup></div>
-                                                  <div style='text-align:right; font-size:0.7em'>
+                                                  {$file_name}<div style='text-align:right; font-size:0.7em'>
                                                   <a href='#!' onclick='openDialog()'>[Qu'est-ce que c'est?]</a>", "Le fichier avant des services d'avortement médical ou chirurgical de l'utilisateur", VALIDATE_NOTHING, false);
             $fileField = new FileField("file_field", "Preuve de certification", "", VALIDATE_NOTHING);
             $fileRow = new FormTableRow("file_row");
             $fileRow->attr('style','line-height: 10px;');
             $fileRow->append($fileLabel)->append($fileField);
 
-            $referenceLabel = new Label("reference_label", "Nom de référence", "Le médecin ou le pharmacien qui a renvoyé l' utilisateur", VALIDATE_NOTHING);
-            $referenceField = new TextField("reference_field", "Name of Reference", "", VALIDATE_NOTHING);
-            if($reference != ""){
-                $referenceField->attr('value', $reference);
-            }
+            $plusMinus = new PlusMinus('reference_array', $values);
+
+            $referenceLabel = new Label("reference_label", "Sponsors", "Le médecin ou le pharmacien qui a renvoyé l'utilisateur", VALIDATE_NOTHING);
+            $referenceNameField = new TextField("reference_name_field[]", "Nom du commanditaire", "", VALIDATE_NOTHING);
+            $referenceAffilField = new TextField("reference_affil_field[]", "Affiliation du commanditaire", "", VALIDATE_NOTHING);
+            $referenceEmailField = new TextField("reference_email_field[]", "Email du commanditaire", "", VALIDATE_NOTHING);
+            $referencePhoneField = new TextField("reference_phone_field[]", "Numéro de téléphone du commanditaire", "", VALIDATE_NOTHING);
+            
+            $referenceNameField->attr('placeholder', 'Nom')->attr('size', 16);
+            $referenceAffilField->attr('placeholder', 'Affiliation')->attr('size', 20);
+            $referenceEmailField->attr('placeholder', 'Adresse Email')->attr('size', 20);
+            $referencePhoneField->attr('placeholder', 'Numéro de Téléphone')->attr('size', 16);
+            
+            $plusMinus->append($referenceNameField);
+            $plusMinus->append($referenceAffilField);
+            $plusMinus->append($referenceEmailField);
+            $plusMinus->append($referencePhoneField);
+            
             $referenceRow = new FormTableRow("reference_row");
-            $referenceRow->append($referenceLabel)->append($referenceField);
+            $referenceRow->append($referenceLabel)->append($plusMinus);
+
 
             $submitCell = new EmptyElement();
             $submitField = new SubmitButton("submit", "Envoyer la demande", "Envoyer la demande", VALIDATE_NOTHING);
@@ -104,12 +140,14 @@ class CAPSCompleteRegister extends SpecialPage{
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
         if($wgLang->getCode() == "en"){
+            $wgOut->addHTML("<p>This section is for certified mifepristone abortion care providers (physicians and pharmacists).<br />
+                                To enter, please provide information on a sponsor who can confirm your eligibility. We will review and respond within 7 days. If you have any questions please contact the site administrators EMAIL ADDRESS HERE.</p>");
             $wgOut->addHTML("<div id='fileUploadInfo' title='Proof of Certification' style='display:none'>Please upload a copy of your proof of certification from the Mifepristone training program.</div>");
-            $wgOut->addHTML("<p>In order to complete your registration, a proof of certification document and a name of reference need to be provided.  Once you have filled out this information, then an administrator will review the document and then make you a full user.</p>");
         }
         else if($wgLang->getCode() == "fr"){
+            $wgOut->addHTML("<p>Cette section est pour les fournisseurs certifiés de soins mifépristone avortement (médecins et pharmaciens). <br />
+                                Pour entrer, s'il vous plaît fournir des informations sur un sponsor qui peut confirmer votre admissibilité. Nous allons examiner et de répondre dans les 7 jours. Si vous avez des questions s'il vous plaît contacter le site aux administrateurs COURRIEL ICI</p>");
             $wgOut->addHTML("<div id='fileUploadInfo' title='Proof of Certification' style='display:none'>S'il vous plaît télécharger une copie de votre preuve de certification du programme de formation mifépristone .</div>");
-            $wgOut->addHTML("<p>Afin de compléter votre inscription, une preuve du document de certification et un nom de référence doivent être fournis. Une fois que vous avez rempli ces informations, puis un administrateur examinera le document, puis vous faire un utilisateur complet.</p>");
         }
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:CAPSCompleteRegister' method='post' enctype='multipart/form-data'>\n");
         $form = self::createForm();
@@ -137,8 +175,18 @@ class CAPSCompleteRegister extends SpecialPage{
         if($status){
             $request = UserCreateRequest::newFromName($me->getName());
             $extras = $request->getExtras();
-            $form->getElementById('reference_field')->setPOST('reference');
-            $extras['reference'] = $_POST['reference'];
+
+            $extras['references'] = array();
+            if(@count($_POST['reference_name_field']) > 0){
+                foreach(@$_POST['reference_name_field'] as $key => $reference){
+                    if($reference != ""){
+                        $extras['references'][] = array('name' => $_POST['reference_name_field'][$key],
+                                                        'affil' => $_POST['reference_affil_field'][$key],
+                                                        'email' => $_POST['reference_email_field'][$key],
+                                                        'phone' => $_POST['reference_phone_field'][$key]);
+                    }
+                }
+            }
             
             DBFunctions::update('grand_user_request',
                                 array('extras' => serialize($extras)),

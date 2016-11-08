@@ -33,6 +33,7 @@ class PharmacyMap extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser,$wgOut,$wgLang;
+        $me = Person::newFromWgUser();
         $title_locate = "Locate a Pharmacy";
         if($wgLang->getCode() == "fr"){
              $title_locate = "Localiser une Pharmacie";
@@ -41,7 +42,7 @@ class PharmacyMap extends BackbonePage {
         if($wgLang->getCode() == "fr"){
              $title_add = "Ajouter une Pharmacie";
         }
-        if(self::userCanExecute($wgUser)){
+        if($me->isLoggedIn()){
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_locate, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap");
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap#/add");
 

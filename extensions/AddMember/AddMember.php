@@ -132,7 +132,7 @@ class AddMember extends SpecialPage{
                             <th>Specialty (If applicable)</th>
                             <th>City, Province</th>
                             {$hqpType}
-                            <th>Reference</th>
+                            <th>Sponsors</th>
                             <th>Certification</th>
 			                <th>Provision</th>
                             <th>Create?</th>
@@ -168,9 +168,23 @@ class AddMember extends SpecialPage{
             $certification = $request->getCertification();
             $file_name = @$certification['file_data']['name'];
             $file_name = ($file_name != "") ? "<a class='button' href='$wgServer$wgScriptPath/index.php?action=getCertification&id={$request->getId()}'>Certification</a>" : "";
-            $provision = @implode("<br />", $extras['provision']);
+            $provision = @$extras['provision'];
+            if(is_array($provision)){
+                // Must be from older version
+                $provision = "";
+            }
+            $references = @$extras['references'];
+            $refHTML = array();
+            if(count($references) > 0){
+                foreach($references as $reference){
+                    $refHTML[] = @"<li>{$reference['name']}<br />
+                                       {$reference['affil']}, {$reference['email']}, {$reference['phone']}
+                                   </li>";
+                }
+            }
+            $refHTML = "<ul>".implode("", $refHTML)."</ul>";
             $wgOut->addHTML("
-                        <td>{$extras['reference']}</td>
+                        <td align='left' style='white-space:nowrap;'>{$refHTML}</td>
                         <td>{$file_name}</td>
 			            <td>{$provision}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
@@ -187,7 +201,6 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpPostalCode' value='".str_replace("'", "&#39;", $extras['postal_code'])."' />
                             <input type='hidden' name='wpCity' value='".str_replace("'", "&#39;", $extras['city'])."' />
                             <input type='hidden' name='wpProvince' value='".str_replace("'", "&#39;", $extras['province'])."' />
-                            <input type='hidden' name='wpReference' value='".str_replace("'", "&#39;", $extras['reference'])."' />
                             <input type='hidden' name='wpClinic' value='".str_replace("'", "&#39;", $extras['clinic'])."' />
                             <input type='hidden' name='wpSpecialty' value='".str_replace("'", "&#39;", $extras['specialty'])."' />
                             <input type='hidden' name='wpProvision' value='".str_replace("'", "&#39;", $extras['provision'])."' />

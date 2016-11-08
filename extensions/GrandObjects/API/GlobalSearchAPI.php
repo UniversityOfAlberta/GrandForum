@@ -192,9 +192,9 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
         case 'stories':
                 $data = array();
-                $projects = Story::getAllUserStories();
-                foreach($projects as $project){
-                    $pName = unaccentChars(str_replace(".", " ", $project->getTitle()));
+                $stories = Story::getAllUserStories();
+                foreach($stories as $story){
+                    $pName = unaccentChars(str_replace(".", " ", $story->getTitle()));
                     $names = array_merge(explode(" ", unaccentChars($pName)));
                     $found = true;
                     foreach($searchNames as $name){
@@ -206,18 +206,20 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('story_id' => $project->getId(),
-                                        'story_title' => $project->getTitle());
+                        $data[] = array('story_id' => $story->getId(),
+                                        'story_title' => $story->getTitle());
                     }
                 }
                 $results = array();
                 foreach($data as $row){
-                    $project = Story::newFromId($row['story_id']);
-                    similar_text(unaccentChars($row['story_title']), unaccentChars($origSearch), $percent);
-                    if($project->isOwnedBy($me)){
-                        $percent += 50;
+                    $story = Story::newFromId($row['story_id']);
+                    if($story->canView()){
+                        similar_text(unaccentChars($row['story_title']), unaccentChars($origSearch), $percent);
+                        if($story->isOwnedBy($me)){
+                            $percent += 50;
+                        }
+                        $results[$row['story_id']] = $percent;
                     }
-                    $results[$row['story_id']] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);
@@ -227,9 +229,9 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
         case 'threads':
                 $data = array();
-                $projects = Thread::getAllThreads();
-                foreach($projects as $project){
-                    $pName = unaccentChars(str_replace(".", " ", $project->getTitle()));
+                $threads = Thread::getAllThreads();
+                foreach($threads as $thread){
+                    $pName = unaccentChars(str_replace(".", " ", $thread->getTitle()));
                     $names = array_merge(explode(" ", unaccentChars($pName)));
                     $found = true;
                     foreach($searchNames as $name){
@@ -241,18 +243,20 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('thread_id' => $project->getId(),
-                                        'thread_title' => $project->getTitle());
+                        $data[] = array('thread_id' => $thread->getId(),
+                                        'thread_title' => $thread->getTitle());
                     }
                 }
                 $results = array();
                 foreach($data as $row){
-                    $project = Thread::newFromId($row['thread_id']);
-                    similar_text(unaccentChars($row['thread_title']), unaccentChars($origSearch), $percent);
-                    if($project->getThreadOwner() === $me->getId()){
-                        $percent += 50;
+                    $thread = Thread::newFromId($row['thread_id']);
+                    if($thread->canView()){
+                        similar_text(unaccentChars($row['thread_title']), unaccentChars($origSearch), $percent);
+                        if($thread->getThreadOwner() === $me->getId()){
+                            $percent += 50;
+                        }
+                        $results[$row['thread_id']] = $percent;
                     }
-                    $results[$row['thread_id']] = $percent;
                 }
                 asort($results);
                 $results = array_reverse($results, true);

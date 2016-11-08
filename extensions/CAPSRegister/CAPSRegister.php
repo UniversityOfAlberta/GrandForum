@@ -155,7 +155,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $yearsRow->attr('style','display:none');
             $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
-            $provisionLabel = new Label("provision_label", "Prior Provision of<hr style='height:0pt; visibility:hidden;'/>Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
+            $provisionLabel = new Label("provision_label", "Prior Provision of<br />Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
             $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
             $provisionRow = new FormTableRow("provision_row");
             $provisionRow->attr('style','display:none');
@@ -415,8 +415,8 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                   ->append($disclosureRow)
                   ->append($pharmacyRow)
                   ->append($pharmacyAddressRow)
-                  ->append($fileRow)
-                  ->append($referenceRow)
+                  //->append($fileRow)
+                  //->append($referenceRow)
                   ->append($captchaRow)
                   ->append($termsRow)
                   ->append($agreeExtraRow)
@@ -557,11 +557,14 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $postalcode = $form->getElementById('postalcode_field')->setPOST('wpPostalCode');
             $city = $form->getElementById('city_field')->setPOST('wpCity');
             $province = $form->getElementById('province_field')->setPOST('wpProvince');
-            $reference = $form->getElementById('reference_field')->setPOST('wpReference');
+            //$reference = $form->getElementById('reference_field')->setPOST('wpReference');
             $agreeExtra = $form->getElementById('terms_extra')->setPOST('wpAgreeExtra');
             if($_POST['wpRole'] == "Physician"){
                 $clinic = $form->getElementById('clinic_field')->setPOST('wpClinic');
                 $provision = $form->getElementById('provision_field')->setPOST('wpProvision');
+                if($_POST['wpProvision'] != "Yes" && $_POST['wpProvision'] != "No"){
+                    $_POST['wpProvision'] = "";
+                }
                 $specialty = $form->getElementById('specialty_field')->setPOST('wpSpecialty');
                 if($_POST['wpSpecialty'] == "Other (Specify)"){
                     $specialty = $form->getElementById('other_specialty_field')->setPOST('wpSpecialty');
@@ -596,7 +599,8 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                         $msg .= "Pharmacy Address: ".$_POST['wpPharmacyAddress']."\n";
                     }
                 }
-                $msg .= "Reference: ".$_POST['wpReference']."\n";
+
+                //$msg .= "Reference: ".$_POST['wpReference']."\n";
                 // header
                 $header = "From: ".$_POST['wpFirstName']." ".$_POST['wpLastName']." <".$_POST['wpEmail'].">\r\n";
                 $header .= "Reply-To: ".$_POST['wpEmail']."\r\n";

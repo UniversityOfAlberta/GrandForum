@@ -2,7 +2,10 @@
 
 class PlusMinus extends UIElementArray {
     
-    function FieldSet($id){
+    var $values;
+    
+    function PlusMinus($id, $values=array()){
+        $this->values = $values;
         parent::UIElementArray($id);
     }
     
@@ -15,14 +18,23 @@ class PlusMinus extends UIElementArray {
         $hiddenHTML .= "</div></div>";
         $html = $hiddenHTML;
         $html .= "<div id='{$this->id}'>
-            <div class='plusminus_contents'></div>
+            <div class='plusminus_contents'>";
+        foreach($this->values as $row){
+            $html .= "<div class='{$this->id}_contents'>";
+            foreach($this->elements as $key => $element){
+                $element->default = @$row[$key];
+                $html .= $element->render();
+            }
+            $html .= "</div>";
+        }
+        $html .= "</div>
             <button type='button' id='{$this->id}add' style='width: 30px;padding-left: 10px;padding-right: 10px;'>+</button>&nbsp;
             <button type='button' id='{$this->id}minus' style='width: 30px;padding-left: 10px;padding-right: 10px;'>-</button>
         </div>";
         $html .= "<script type='text/javascript'>
             _.defer(function(){
                 var contents = $('.{$this->id}_contents_template').detach();
-                $('#{$this->id} .plusminus_contents').append(contents.html());
+                //$('#{$this->id} .plusminus_contents').append(contents.html());
                 $('#{$this->id}add').click(function(){
                     $('#{$this->id} .plusminus_contents').append(contents.html());
                     if($('#{$this->id} .plusminus_contents').children().length > 0){
