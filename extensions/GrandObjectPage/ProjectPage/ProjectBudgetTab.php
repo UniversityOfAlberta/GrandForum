@@ -158,7 +158,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = YEAR;
+            $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             if($project->deleted){
                 $startYear = substr($project->getDeleted(), 0, 4)-1;
             }
