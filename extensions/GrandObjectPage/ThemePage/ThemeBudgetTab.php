@@ -95,7 +95,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = YEAR;
+            $endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
 
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = substr($phaseDates[$theme->getPhase()], 0, 4);
