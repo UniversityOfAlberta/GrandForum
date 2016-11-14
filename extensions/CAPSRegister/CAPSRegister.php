@@ -156,6 +156,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
             $provisionLabel = new Label("provision_label", "Prior Provision of<br />Abortion Services", "The prior provision of medical or surgical abortion services of the user", VALIDATE_NOTHING);
+            $provisionLabel->attr('style', 'line-height: 1.1em; padding-top:5px;');
             $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("provision_fieldyes","provision_fieldno"), array("Yes","No"), VALIDATE_NOTHING);
             $provisionRow = new FormTableRow("provision_row");
             $provisionRow->attr('style','display:none');
@@ -315,7 +316,8 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $yearsRow->attr('style','display:none');
             $yearsRow->append($yearsLabel)->append($yearsField->attr('size',5));
 
-            $provisionLabel = new Label("provision_label", "Fourniture Avant de<hr style='height:0pt; visibility:hidden;'/>Les services d'avortement", "La mise à disposition préalable des services d'avortement médical ou chirurgical de l'utilisateur", VALIDATE_NOTHING);
+            $provisionLabel = new Label("provision_label", "Fourniture Avant de<br />Les services d'avortement", "La mise à disposition préalable des services d'avortement médical ou chirurgical de l'utilisateur", VALIDATE_NOTHING);
+            $provisionLabel->attr('style', 'line-height: 1.1em; padding-top:5px;');
             $provisionField = new VerticalRadioBox("provision_field", "Prior Provision of Abortion Services", array("Yes","No"), array("Yes","No"), VALIDATE_NOTHING);
             $provisionRow = new FormTableRow("provision_row");
             $provisionRow->attr('style','display:none');
