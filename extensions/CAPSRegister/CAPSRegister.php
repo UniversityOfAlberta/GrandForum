@@ -98,7 +98,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "",array("Physician", "Pharmacist", "Clinical Staff"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "",array("Physician", "Pharmacist", "Faculty Staff"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
@@ -258,7 +258,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Rôle", "Le rôle de l' utilisateur", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "",array("Médecin", "Pharmacien", "Personnel Clinique"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "",array("Médecin", "Pharmacien", "Le personnel de la faculté"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
@@ -486,7 +486,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                             $('#disclosure_div').parent().parent().hide();
                             $('input[name=disclosure_field]').parent().parent().hide();
                         }
-                        if($('#role_field').val() == 'Clinical Staff' || $('#role_field').val() == 'Personnel Clinique'){
+                        if($('#role_field').val() == 'Faculty Staff' || $('#role_field').val() == 'Le personnel de la faculté'){
                             $('#other_role_label').parent().parent().show();
                         }
                         else{
@@ -549,7 +549,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                 $_POST['wpUserType'] = AR;
                 $_POST['wpRole'] = AR;
             }
-            else if(in_array($_POST['wpRole'], array("Clinical Staff", "Personnel Clinique"))){
+            else if(in_array($_POST['wpRole'], array("Faculty Staff", "Le personnel de la faculté"))){
                 $_POST['wpUserType'] = HQP;
                 $_POST['wpRole'] = HQP;
             }
