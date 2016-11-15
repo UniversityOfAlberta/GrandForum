@@ -1236,6 +1236,11 @@ td.budgetError {
 	color: #FFFFFF;
 }
 
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    width: 100%;
+    text-align: right;
+}
+
 /* jQuery tablesort plugin CSS */
 
 th.tablesorter-header { 

@@ -50,7 +50,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	                        this.editRoles.addRole();
 	                    }, this), 
 	                    disabled: (allowedRoles.length == 0),
-	                    style: "position:absolute;left:0;"
+	                    style: "float: left;"
 	                },
 	                "Save": $.proxy(function(e){
 	                    this.editRoles.saveAll();
@@ -99,7 +99,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	                        this.editProjects.addProject();
 	                    }, this),
 	                    disabled: (allowedProjects.length == 0),
-	                    style: "position:absolute;left:0;"
+	                    style: "float: left;"
 	                },
 	                "Save": $.proxy(function(e){
 	                    this.editProjects.saveAll();
@@ -147,7 +147,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	                    click: $.proxy(function(e){
 	                        this.editRelations.addRelation();
 	                    }, this), 
-	                    style: "position:absolute;left:0;"
+	                    style: "float: left;"
 	                },
 	                "Save": $.proxy(function(e){
 	                    this.editRelations.saveAll();
@@ -195,7 +195,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	                    click: $.proxy(function(e){
 	                        this.editUniversities.addUniversity();
 	                    }, this), 
-	                    style: "position:absolute;left:0;"
+	                    style: "float: left;"
 	                },
 	                "Save": $.proxy(function(e){
 	                    this.editUniversities.saveAll();

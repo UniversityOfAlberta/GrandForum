@@ -940,6 +940,11 @@ div#person .ui-tabs-panel {
     box-shadow: none;
 }
 
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    width: 100%;
+    text-align: right;
+}
+
 .tick {
     border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
     position: absolute;
