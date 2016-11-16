@@ -1603,9 +1603,13 @@ class Paper extends BackboneModel{
             }
             if(is_array($this->getProjects())){
                 foreach($this->getProjects() as $project){
+                    $url = "";
+                    if($project->getId() != -1){
+                        $url = $project->getUrl();
+                    }
                     $projects[] = array('id' => $project->getId(),
                                         'name' => $project->getName(),
-                                        'url' => $project->getUrl());
+                                        'url' => $url);
                 }
             }
             $data = $this->getData();
