@@ -138,7 +138,7 @@
         </ReportItem>
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000">
             <![CDATA[
-                <h3>Research Proposal</h3>
+                <h3>Research Proposal <small>(max 2000 words, including references)</small></h3>
                 <p>Address your own research progress in areas relating to the proposed project, research objectives, a brief overview of current literature to help put the proposal into context, methodology to be used, and impact of the project.</p>
                 {$item}
             ]]>
