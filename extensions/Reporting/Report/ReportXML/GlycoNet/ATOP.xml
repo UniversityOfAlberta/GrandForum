@@ -135,24 +135,79 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000">
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500">
             <![CDATA[
                 <h3>HQP Training Plan</h3>
-                <p>Address your own research progress in areas relating to the proposed project, research objectives, a brief overview of current literature to help put the proposal into context, methodology to be used, and impact of the project.</p>
+                <p>Describe the undergraduate/co-op HQP’s involvement in the proposed research, and explain how this trainee will benefit in both the short- and long-term from the project.</p>
                 {$item}
             ]]>
+        </ReportItem>
+        <ReportItem id="stipend" type="Integer" blobItem="STIPEND" min="0" max="8000" size="4">
+            <![CDATA[
+                <h3>Requested Budget</h3> (max $8000)
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td><b>UG/Co-op student stipend:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="supplies" type="Integer" blobItem="SUPPLIES" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Supplies and consumables:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Integer" blobItem="OTHER" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Other:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total" type="Integer" blobItem="TOTAL" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>TOTAL:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="match" type="Integer" blobItem="MATCH" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Matching funds (if applicable):</b></td>
+                        <td>${$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <p>Describe how the requested funds will be spent. If other sources of matching funds are available, describe them here.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="Upload" blobType="BLOB_RAW" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Uploads</h2>
+                <h3>Figures and schemes</h3>
+                <p>Upload as a single separate PDF document. Include legends below each figure or scheme.</p>
+                {$item}
+            ]]>  
         </ReportItem>
     </ReportSection>
     <ReportSection id="declaration" name="Applicant Declaration" type="EULA" blobSection="DECLARATION">
         <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the declaration" no="No, I do not agree to the declaration">
             <![CDATA[
-                <p>By submitting this GDSS Application Form I agree with GlycoNet that:</p>
+                <p>By submitting this Advanced Training Opportunity Program Application Form I agree with GlycoNet that:</p>
                 <ol>
                     <li>the information contained in this form is true, complete, and accurate;</li>
                     <li>I will use the funds received by me solely for the purpose set out in this application and as required pursuant to any applicable policies and procedures of GlycoNet;</li> 
-                    <li>I will immediately notify the GlycoNet Training Coordinator of any substantive changes to the proposed seminar;</li>
-                    <li>I consent to being identified by name as a recipient of funding under the GDSS program on the GlycoNet website and in GlycoNet publications;</li>
-                    <li>I will acknowledge GlycoNet and the NCE program as funding sources when advertising this event.</li>
+                    <li>I will immediately notify the GlycoNet Training Coordinator of any change in my academic status or substantial change to the scope of the project;</li>
+                    <li>I consent to being identified by name as a recipient of funding under the Research Exchange Program on the GlycoNet website and in GlycoNet publications;</li>
+                    <li>I will acknowledge GlycoNet as a funding source when presenting work carried out during the tenure of the ATOP program; and</li>
+                    <li>I will comply with the final reporting requirements of the ATOP program required by GlycoNet. </li>
                 </ol>
                 {$item}
             ]]>
@@ -164,10 +219,10 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_SEMINAR_SERIES,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
                 <p>You need to accept the declaration before you can submit your application.</p>
             ]]>
