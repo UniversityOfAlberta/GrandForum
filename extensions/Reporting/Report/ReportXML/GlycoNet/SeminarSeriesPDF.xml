@@ -42,7 +42,7 @@
         <ReportItem id="theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="THEME" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
             <![CDATA[
                 <tr>
-                    <td style="white-space:nowrap;" valign='top'><b>Theme:</b><br /><small>(may select more than one)</small></td>
+                    <td style="white-space:nowrap;" valign='top'><b>Theme:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>

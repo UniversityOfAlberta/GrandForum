@@ -117,7 +117,7 @@
         </ReportItem>
         <ReportItem id="stipend" type="Integer" blobItem="STIPEND" min="0" max="8000" size="4">
             <![CDATA[
-                <h3>Requested Budget</h3> (max $8000)
+                <h3>Requested Budget</h3>
                 <table class="wikitable" frame="box" rules="all">
                     <tr>
                         <td><b>UG/Co-op student stipend:</b></td>
