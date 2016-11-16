@@ -18,6 +18,7 @@ class Project extends BackboneModel {
     var $parentId;
     var $bigbet;
     var $people;
+    var $phase;
     var $contributions;
     var $multimedia;
     var $startDates;

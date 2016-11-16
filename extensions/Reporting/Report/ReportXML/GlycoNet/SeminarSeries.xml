@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="GlycoNet Departmental Seminar Series" reportType="RP_SEMINAR_SERIES" pdfType="SEMINAR_SERIES" pdfFiles="SeminarSeriesPDF" ajax="true" disabled="false" year="2016">
     <Permissions>
-        <Role role="HQP">
+        <Role role="NI">
             <SectionPermission id="background" permissions="rw" />
-            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -71,7 +72,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" optional="true" limit="500">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" optional="true" limit="250">
             <![CDATA[
                 <h3>Description</h3>
                 <p>Describe how the invited speaker’s visit will be maximized for the benefit of the department(s) and trainees involved.</p>

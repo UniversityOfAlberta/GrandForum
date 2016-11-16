@@ -31,7 +31,10 @@ ProductEditView = Backbone.View.extend({
         me.projects.ready().then($.proxy(function(){
             this.projects = me.projects.getCurrent();
             this.allProjects.ready().then($.proxy(function(){
+                var other = new Project({id: "-1", name: "Other"});
+                other.id = "-1";
                 this.otherProjects = this.allProjects.getCurrent();
+                this.otherProjects.add(other);
                 this.oldProjects = this.allProjects.getOld();
                 this.otherProjects.remove(this.projects.models);
                 this.oldProjects.remove(this.projects.models);
@@ -135,6 +138,7 @@ ProductEditView = Backbone.View.extend({
     },
     
     showOther: function(e){
+        console.log(this.model.get('projects'));
         this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         var lastHeight = this.$el.prop("scrollHeight")
         var interval = setInterval($.proxy(function(){
@@ -216,7 +220,6 @@ ProductEditView = Backbone.View.extend({
         var left = _.pluck(this.model.get('authors'), 'fullname');
         var right = _.difference(this.allPeople.pluck('fullName'), left);
         var objs = [];
-        console.log(this.allPeople);
         this.allPeople.each(function(p){
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),

@@ -77,7 +77,12 @@ ProductView = Backbone.View.extend({
             _.each(projects, function(project){
                 if(project.get('subprojects').length > 0){
                     projects = _.without(projects, project);
-                    this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+                    if(project.get('id') == -1){
+                        this.$('#productProjects ul').append("<li id='" + project.get('id') + "'>" + project.get('name') + "</li>");
+                    }
+                    else{
+                        this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+                    }
                     var subs = new Array();
                     _.each(project.get('subprojects'), function(sub){
                         if(_.where(projects, {id: sub.id}).length > 0){
@@ -91,7 +96,12 @@ ProductView = Backbone.View.extend({
                 }
             });
             _.each(projects, function(project){
-                this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+                if(project.get('id') == -1){
+                    this.$('#productProjects ul').append("<li id='" + project.get('id') + "'>" + project.get('name') + "</li>");
+                }
+                else{
+                    this.$('#productProjects ul').append("<li id='" + project.get('id') + "'><a href='" + project.get('url') + "'>" + project.get('name') + "</a></li>");
+                }
             });
         }, this));
     },
