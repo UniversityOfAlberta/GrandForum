@@ -1994,11 +1994,13 @@ class Person extends BackboneModel {
         $roles = $this->getRoles();
         $maxRole = null;
         $maxRoleValue = 0;
-        foreach($roles as $role){
-            if(!$role->isAlias()){
-                if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
-                    $maxRoleValue = $wgRoleValues[$role->getRole()];
-                    $maxRole = $role->getRole();
+        if(count($roles) > 0){
+            foreach($roles as $role){
+                if(!$role->isAlias()){
+                    if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
+                        $maxRoleValue = $wgRoleValues[$role->getRole()];
+                        $maxRole = $role->getRole();
+                    }
                 }
             }
         }
@@ -2140,9 +2142,11 @@ class Person extends BackboneModel {
             return "FAKENI";
         }
         else {
-            foreach($this->getRoles() as $role){
-                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
-                    return $role->getRole();
+            if(count($this->getRoles()) > 0){
+                foreach($this->getRoles() as $role){
+                    if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
+                        return $role->getRole();
+                    }
                 }
             }
         }
