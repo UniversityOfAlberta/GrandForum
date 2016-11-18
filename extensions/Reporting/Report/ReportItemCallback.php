@@ -418,7 +418,7 @@ class ReportItemCallback {
             $journalsTmp = $project->getPapers('Publication', $startDate, $endDate);
             foreach($journalsTmp as $journal){
                 if($journal->getType() == "Conference Paper" || $journal->getType() == "Conference Abstract" ||
-                   $journal->getType() == "Proceedings Paper" || $journal->getType() == "Proceedings Paper"){
+                   $journal->getType() == "Proceedings Paper"){
                     $journals[] = $journal;
                 }
             }
