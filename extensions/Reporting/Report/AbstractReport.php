@@ -225,10 +225,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             if(!$this->checkPermissions()){
-                $wgOut->setPageTitle("Permission error");
-                $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                                 <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-                return;
+                permissionError();
             }
             if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
                 $oldData = array();
