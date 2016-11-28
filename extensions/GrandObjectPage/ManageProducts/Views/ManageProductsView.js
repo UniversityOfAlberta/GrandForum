@@ -485,9 +485,14 @@ ManageProductsView = Backbone.View.extend({
                                     }
                                 }, this));
                             }, this),
-                            error: $.proxy(function(){
+                            error: $.proxy(function(o, e){
                                 clearAllMessages("#dialogMessages");
-                                addError("There was an error saving the " + productsTerm, true, "#dialogMessages");
+                                if(e.responseText != ""){
+                                    addError(e.responseText, true, "#dialogMessages");
+                                }
+                                else{
+                                    addError("There was a problem saving the " + productsTerm, true, "#dialogMessages");
+                                }
                             }, this)
                         });
                     }, this)
