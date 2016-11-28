@@ -169,6 +169,9 @@ EOF;
         if(!$edit){
             $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
             $this->showRole(PL);
+            if($this->project->getType() == "Administrative"){
+                $this->showRole("NMO");
+            }
             $this->showRole(CI);
             $this->showRole(AR);
             $this->html .= "</td><td width='50%' valign='top'>";
