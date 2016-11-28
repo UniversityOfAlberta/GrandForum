@@ -19,6 +19,8 @@
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
+                    <% } else if(val.type == "File"){ %>
+                        <a download="<%= data[index]['filename'] %>" href="<%= data[index]['data'] %>" target="_blank"><%= data[index]['filename'] %></a>
                     <% } else { %>
                         <%= data[index] %>
                     <% } %>

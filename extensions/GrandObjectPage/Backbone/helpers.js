@@ -234,6 +234,39 @@ HTML.Select = function(view, attr, options){
     return $(el).parent().html();
 }
 
+HTML.File = function(view, attr, options){
+    var el = HTML.Element("<input type='file' />", options);
+    $(el).attr('type', 'file');
+    $(el).attr('name', HTML.Name(attr));
+    $(el).attr('value', HTML.Value(view, attr));
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.addEventListener("load", $.proxy(function() {
+            var fileObj = {
+                filename: file.name,
+                type: file.type,
+                data: reader.result
+            };
+            fileObj.filename = file.name;
+            if(attr.indexOf('.') != -1){
+                var index = attr.indexOf('.');
+                var data = view.model.get(attr.substr(0, index));
+                data[attr.substr(index+1)] = fileObj;
+                view.model.set(attr.substr(0, index), _.clone(data));
+            }
+            else{
+                view.model.set(attr, fileObj);
+            }
+        }, this));
+        reader.readAsDataURL(file);
+    };
+    view.delegateEvents(events);
+    $(el).wrap('div');
+    return $(el).parent().html();
+}
+
 HTML.MiscAutoComplete = function(view, attr, options){
     var el = HTML.Element("<input type='text' />", options);
     $(el).attr('name', HTML.Name(attr));

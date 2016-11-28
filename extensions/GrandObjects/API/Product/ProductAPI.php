@@ -51,6 +51,7 @@ class ProductAPI extends RESTAPI {
     
     function doPOST(){
         $paper = new Paper(array());
+        $this->checkFile();
         header('Content-Type: application/json');
         $paper->title = $this->POST('title');
         $paper->category = $this->POST('category');
@@ -76,6 +77,7 @@ class ProductAPI extends RESTAPI {
         if($paper == null || $paper->getTitle() == ""){
             $this->throwError("This product does not exist");
         }
+        $this->checkFile();
         header('Content-Type: application/json');
         $paper->title = $this->POST('title');
         $paper->category = $this->POST('category');
@@ -108,6 +110,27 @@ class ProductAPI extends RESTAPI {
             return $paper->toJSON();
         }
         return $this->doGET();
+    }
+    
+    function checkFile(){
+        global $wgFileExtensions;
+        $data = $this->POST('data');
+        if(isset($data->file) && isset($data->file->data)){
+            $file = $data->file;
+            list($partname, $ext) = UploadBase::splitExtensions($file->filename);
+            if(count($ext)){
+                $finalExt = $ext[count($ext) - 1];
+            }
+            else{
+                $finalExt = '';
+            }
+            if(strlen($file->data)*(3/4) > 1024*1024*2){ // Checks the approx size
+                $this->throwError("File cannot be larger than 2MB");
+            }
+            else if(!UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
+                $this->throwError("File type not allowed, must be one of the following: ".implode(", ", $wgFileExtensions));
+            }
+        }
     }
 	
 }

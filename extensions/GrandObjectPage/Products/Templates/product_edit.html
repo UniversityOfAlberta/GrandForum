@@ -87,12 +87,18 @@
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(!val.hidden){ %>
             <tr>
-                <td class="label"><%= val.label %>:</td>
+                <td class="label"><%= val.label %>:
+                    <% if(val.type == "File"){ %>
+                        <small style="display:block;line-height:6px;">(Max 2MB)</small>
+                    <% } %>
+                </td>
                 <td class="field">
                     <% if(val.type == "String"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } else if(val.type == "Radio"){ %>
                         <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "File"){ %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
                     <% } else { %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } %>

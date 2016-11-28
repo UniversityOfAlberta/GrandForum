@@ -203,11 +203,16 @@ ProductEditView = Backbone.View.extend({
                 clearAllMessages();
                 document.location = this.model.get('url');
             }, this),
-            error: $.proxy(function(){
+            error: $.proxy(function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
-                addError("There was a problem saving the Product", true);
+                if(e.responseText != ""){
+                    addError(e.responseText, true);
+                }
+                else{
+                    addError("There was a problem saving the Product", true);
+                }
             }, this)
         });
     },
