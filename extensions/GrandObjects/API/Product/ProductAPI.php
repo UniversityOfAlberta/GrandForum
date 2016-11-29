@@ -124,8 +124,8 @@ class ProductAPI extends RESTAPI {
             else{
                 $finalExt = '';
             }
-            if(strlen($file->data)*(3/4) > 1024*1024*2){ // Checks the approx size
-                $this->throwError("File cannot be larger than 2MB");
+            if(strlen($file->data)*(3/4) > 1024*1024*5){ // Checks the approx size
+                $this->throwError("File cannot be larger than 5MB");
             }
             else if(!UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
                 $this->throwError("File type not allowed, must be one of the following: ".implode(", ", $wgFileExtensions));
