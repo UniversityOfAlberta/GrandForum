@@ -180,10 +180,11 @@ class ThemeBudgetTab extends AbstractEditableTab {
                     if($config->getValue('networkName') == "AGE-WELL"){
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL WP Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item. Please remember that only known expenses are to be requested at this time. You can request the rest of the allocated funds throughout the year as activities and events are organized.</p>
+                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
                                         <h3>Carry Over</h3>
-                                        <p>Total Amount of the Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget you wish to carry over to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
+                                        <p>Total amount of the unspent Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget funds: $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
+                                        <p><small>*Note: the total amount of unspent funds will be deducted from your Year ".($i-$startYear+1)." budget. Please ensure that the reduction of Y".($i-$startYear)." unspent funds from your Year ".($i-$startYear+1)." budget is factored in above.</small></p>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";

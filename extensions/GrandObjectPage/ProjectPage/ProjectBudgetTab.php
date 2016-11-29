@@ -221,7 +221,6 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         {$alloc}<br />";
                     }
-                    $this->html .= "&nbsp;&nbsp;&nbsp;*Please note that the allocated project funds are separate from funding provided to support ".$config->getValue('projectThemes')." Activity (ex. ".$config->getValue('projectThemes')." Adminstration).<br />";
                     $this->html .= "<h3>Upload Budget</h3>
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
@@ -267,9 +266,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         <p>Please describe any proposed changes to your Year ".($i-$startYear+1)." ($i/".substr(($i+1),2,2).") budget from what was anticipated at the start of your project (e.g. changes to co-investigators, HQP or other significant adjustments).</p>
                                         <textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea>
                                         <h3>Carry Over</h3>
-                                        <p>From the Terms & Conditions of AGE-WELL Funding: Network Investigators may carry over up to 20% of the current year’s budget to the next (this may vary year to year). A written justification of the carry over will be required as part of the reporting process. Unless the AGE-WELL Network Management Office has granted prior written approval, any amount <u>above</u> the carry over maximum for a fiscal year will be deducted from any new allocation awarded to a Network Investigator.</p><br />
+                                        <p>Network Investigators are only eligible to carry forward 15% of the funds received. Only under exceptional circumstances will a greater than 15% carry forward be approved by the Research Management Committee (RMC). A written justification of the carryover will be required as part of the reporting process. Unless the AGE-WELL RMC has granted approval, any amount above the carry over maximum will be recalled.</p><br />
                                         <p>Total Amount of the Year ".($i-$startYear)." project budget you wish to carry over to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p><br />
-                                        <p>If carry over is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1).", including any amounts greater than twenty percent (20%).  Please also include a justification for how these funds will be spent in 2016/2017 once approved.</p>
+                                        <p>If carry over is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1).", including any amounts greater than twenty percent (15%).  Please also include a justification for how these funds will be spent in $i/".($i+1)." once approved.</p>
                                         <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
