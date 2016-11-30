@@ -242,8 +242,8 @@ EOF;
         if($project->getType() == 'Administrative'){
             $researchProject = Project::newFromName($project->getName()." Research");
             if($researchProject->getId() != 0){
-                $wgOut->addHTML("<h2>Research Project</h2>");
-                $wgOut->addHTML("<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a>");
+                $this->html .= "<h2>Research Project</h2>";
+                $this->html .= "<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a>";
             }
         }
     }
