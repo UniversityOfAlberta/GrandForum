@@ -293,7 +293,7 @@ class IndexTable {
                 }
                 $leaderString = implode(", ", $leaders);
                 $wgOut->addHTML("<tr>
-                                    <td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>
+                                    <td><a href='{$project->getUrl()}'>{$project->getName()}<a></td>
                                     <td>{$project->getFullName()}</td>
                                     <td>{$leaderString}</td>");
                 if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
