@@ -239,6 +239,13 @@ EOF;
                 });
             </script>";
         }
+        if($project->getType() == 'Administrative'){
+            $researchProject = Project::newFromName($project->getName()." Research");
+            if($researchProject->getId() != 0){
+                $wgOut->addHTML("<h2>Research Project</h2>");
+                $wgOut->addHTML("<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a>");
+            }
+        }
     }
 
 }    
