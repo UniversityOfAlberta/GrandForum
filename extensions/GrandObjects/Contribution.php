@@ -424,7 +424,7 @@ class Contribution extends BackboneModel {
     function getHumanReadableTypeFor($partner){
         $this->getPartners();
         $id = md5(serialize($partner));
-        $type0 = $this->type[$id];
+        $type0 = @$this->type[$id];
         $type = "";
         switch($type0){
             default:
@@ -492,7 +492,7 @@ class Contribution extends BackboneModel {
     function getHumanReadableSubTypeFor($partner){
         $this->getPartners();
         $id = md5(serialize($partner));
-        $type0 = $this->subtype[$id];
+        $type0 = @$this->subtype[$id];
         $type = "";
         switch($type0){
             case "none":

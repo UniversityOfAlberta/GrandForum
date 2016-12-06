@@ -186,16 +186,18 @@
                         <th>Name</th>
                         <th>Location</th>
                         <th>E-mail address</th>
+                        <th>% Time Devoted<br />to Project</th>
                     </tr>
             ]]>
         </ReportItem>
         <ReportItemSet id="co-investigators" type="ProjectPeopleNoLeaders" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
-            <ReportItem id="investigators_info" type="StaticReportItem">
+            <ReportItem id="investigators_info" type="IntegerReportItem" min="0" max="100" size="3" blobItem="TIME" blobSubItem="{$user_id}">
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
                         <td>{$user_uni}</td>
                         <td>{$user_email}</td>
+                        <td align="center">{$item}</td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -644,7 +646,7 @@
         <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
-                <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions, amounts paid, and percentage of time/salary devoted to the Network. Network Investigators should indicate the percentage of time dedicated to the Network from their overall activities.</p>
+                <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions, amounts paid, and percentage of time/salary devoted to the Network.</p>
             ]]>
         </ReportItem>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -678,7 +680,7 @@
         <ReportItem id="hqp_table" type="StaticReportItem">
             <![CDATA[
                 <h3>HQP Budget</h3>
-                <table class='wikitable'>
+                <table class='wikitable hqp-budget'>
                     <tr>
                         <th rowspan='2'>Name</th>
                         <th rowspan='2'>Citizenship</th>
@@ -686,11 +688,15 @@
                         <th rowspan='2'>Title</th>
                         <th rowspan='2'># Months<br />working on<br />GlycoNet Project<br />(1-12)</th>
                         <th colspan='2'>%Salary/time<br />devoted to project*</th>
+                        <th colspan='2'>Person Years</th>
                     </tr>
                     <tr>
                         <th>Paid from<br />NCE funds</th>
                         <th>Paid from<br />other funds</th>
+                        <th>Paid from<br />NCE funds</th>
+                        <th>Paid from<br />other funds</th>
                     </tr>
+                    <tbody>
             ]]>
         </ReportItem>
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
@@ -705,25 +711,50 @@
             </ReportItem>
             <ReportItem id="hqp_months" type="IntegerReportItem" blobItem="HQP_MONTHS" blobSubItem="{$user_id}" max="100" min="1" size="4">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='months'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="hqp_nce" type="IntegerReportItem" blobItem="HQP_NCE" blobSubItem="{$user_id}" max="100" min="0" size="4">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='nce'>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="hqp_other" type="IntegerReportItem" blobItem="HQP_OTHER" blobSubItem="{$user_id}" max="100" min="0" size="4">
                 <![CDATA[
-                        <td align='center'>{$item}</td>
+                        <td align='center' class='other'>{$item}</td>
+                        <td align='center' class='calc_nce'></td>
+                        <td align='center' class='calc_other'></td>
                     </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="hqp_table" type="StaticReportItem">
             <![CDATA[
+                    </tbody>
                 </table>
                 <p>*For example, if a technician was devoting half of his/her salaried time to a GlycoNet project, and that time was paid for equally by NCE and external funds, then each column would be 25%.</p>
+                <script type="text/javascript">
+                    var calcs = function(){
+                        var rows = $(".hqp-budget tbody tr");
+                        rows.each(function(i, el){
+                            var months = parseInt($(".months input", el).val());
+                            var nce = parseInt($(".nce input", el).val());
+                            var other = parseInt($(".other input", el).val());
+                            var nce_time = ((nce/12)/100*months);
+                            var other_time = ((other/12)/100*months);
+                            
+                            if(_.isNaN(nce_time)){ nce_time = ""; }
+                            if(_.isNaN(other_time)){ other_time = ""; }
+                            
+                            $(".calc_nce", el).html(nce_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                            $(".calc_other", el).html(other_time.toLocaleString("en-CA", {minimumSignificantDigits: 3, maximumSignificantDigits: 3}));
+                        }); 
+                    };
+                    
+                    $(".hqp-budget input").change(calcs);
+                    $(".hqp-budget input").keyup(calcs);
+                    calcs();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
