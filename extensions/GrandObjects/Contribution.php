@@ -534,7 +534,7 @@ class Contribution extends BackboneModel {
     
     function getContactFor($partner){
         $id = md5(serialize($partner));
-        return $this->contact[$id];
+        return @$this->contact[$id];
     }
     
     function getByType($type, $partner=null){
