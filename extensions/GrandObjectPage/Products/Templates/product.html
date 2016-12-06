@@ -31,7 +31,7 @@
                         blob = new Blob([byteArray], {type: type});
                         var blobUrl = URL.createObjectURL(blob);
                     %>
-                        <a download="<%= data[index]['filename'] %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'] %>'); }" target="_blank"><%= data[index]['filename'] %></a>
+                        <a download="<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>'); }" target="_blank"><%= data[index]['filename'] %></a>
                     <% } else { %>
                         <%= data[index] %>
                     <% } %>
