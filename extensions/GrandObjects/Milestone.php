@@ -186,7 +186,7 @@ class Milestone {
      * @return Milestone The revision closest to the given date
      */
     function getRevisionByDate($date){
-        $parent = $this->getParent();
+        $parent = $this;
         $dateTime = strtotime($date);
         $minDistance = 1000000000;
         $smallestSoFar = null;
@@ -199,6 +199,7 @@ class Milestone {
             else{
                 $endDate = strtotime($endDate);
             }
+            
             $avgTime = ($startDate+$endDate)/2;
             $diffTime = abs($avgTime - $dateTime);
             if($diffTime <= $minDistance && $startDate <= $dateTime && $endDate >= $dateTime){

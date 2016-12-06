@@ -156,7 +156,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
     }
     
-    function showMilestones($pdf=false){
+    function showMilestones($pdf=false, $year=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
         $project = $this->project;
@@ -167,7 +167,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         
         $activities = array();
         $activityNames = array();
-        $milestones = $project->getMilestones(true);
+        if($year === false){
+            $milestones = $project->getMilestones(true);
+        }
+        else{
+            $milestones = $project->getMilestonesDuring(substr($year, 0, 4));
+        }
         
         foreach($project->getActivities() as $activity){
             $activities[$activity->getId()] = array();
@@ -175,6 +180,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
         
         foreach($milestones as $milestone){
+            if($year !== false){
+                $milestone = $milestone->getRevisionByDate($year);
+            }
+            if($milestone == null){
+                continue;
+            }
             $activities[$milestone->getActivity()->getId()][] = $milestone;
             $activityNames[$milestone->getActivity()->getId()] = $milestone->getActivity()->getName();
         }

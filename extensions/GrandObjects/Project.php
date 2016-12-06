@@ -1042,7 +1042,8 @@ EOF;
      */
     function userCanEdit(){
         $me = Person::newFromWgUser();
-        if(!$me->isRoleAtLeast(STAFF) && 
+        if(!$me->isRoleAtLeast(STAFF) &&
+           !$me->isRole(SD) && 
            !$me->isRole("CF") &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
@@ -1502,7 +1503,7 @@ EOF;
             $year = date('Y');
         }
         
-        $startRange = $year.'01-01 00:00:00';
+        $startRange = $year.'-01-01 00:00:00';
         $endRange = $year.'-12-31 23:59:59';
         
         $milestones = array();
@@ -1546,8 +1547,13 @@ EOF;
                 if(isset($milestoneIds[$row2['milestone_id']])){
                     continue;
                 }
+                
                 $milestoneIds[$row2['milestone_id']] = true;
-                $milestones[] = Milestone::newFromId($row2['milestone_id']);
+                $milestone = Milestone::newFromId($row2['milestone_id']);
+                if($milestone->getStatus() == 'Deleted'){
+                    continue;
+                }
+                $milestones[] = $milestone;
             }
         }
         return $milestones;

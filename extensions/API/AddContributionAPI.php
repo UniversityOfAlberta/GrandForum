@@ -10,6 +10,7 @@ class AddContributionAPI extends API{
         $this->addPOST("description", true, "The description of the contribution", "This is the description of my contribution");
         $this->addPOST("access_id", false, "The id of the user that this contribution belongs to", "4");
         $this->addPOST("partners", true, "The list of the parters involved with this contribution, separated by commas", "IBM, Intel");
+        $this->addPOST("contact", true, "The contact information for the partner", "John Doe (john.doe@gmail.com)");
         $this->addPOST("type", true, "The type of contribution this is", "cash");
         $this->addPOST("subtype", false, "The sub-type of contribution this is (This is generally only needed if the type is in-kind)", "cash");
         $this->addPOST("kind", true, "The amount of money was contributed In-Kind", "3000");
@@ -93,6 +94,7 @@ class AddContributionAPI extends API{
                 DBFunctions::insert('grand_contributions_partners',
                                     array('contribution_id' => $contribution->rev_id,
                                           'partner' => $value,
+                                          'contact' => @$_POST['contacts'][$key],
                                           'type' => @$_POST['type'][$key],
                                           'subtype' => @$_POST['subtype'][$key],
                                           'cash' => @$_POST['cash'][$key],
@@ -199,6 +201,7 @@ class AddContributionAPI extends API{
                 DBFunctions::insert('grand_contributions_partners',
                                     array('contribution_id' => $contribution->rev_id,
                                           'partner' => $value,
+                                          'contact' => @$_POST['contacts'][$key],
                                           'type' => @$_POST['type'][$key],
                                           'subtype' => @$_POST['subtype'][$key],
                                           'cash' => @$_POST['cash'][$key],

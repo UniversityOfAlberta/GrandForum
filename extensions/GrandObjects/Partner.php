@@ -8,6 +8,7 @@ class Partner {
     
     var $id;
     var $organization;
+    var $contact;
     var $type;
     var $city;
     var $prov;
@@ -77,6 +78,10 @@ class Partner {
     // Returns the organization name of this Partner
     function getOrganization(){
         return $this->organization;
+    }
+    
+    function getContact(){
+        return $this->contact;
     }
     
     // Returns the type of this Partner
