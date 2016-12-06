@@ -32,7 +32,7 @@ class Contribution extends BackboneModel {
     // The most recent revision is grabbed
     static function newFromId($id){
         $me = Person::newFromWgUser();
-        $id = addslashes($id);
+        $id = @addslashes($id);
         if(isset(self::$cache["id$id"])){
             return self::$cache["id$id"];
         }
