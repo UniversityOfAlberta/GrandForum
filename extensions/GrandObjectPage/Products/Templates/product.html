@@ -19,8 +19,19 @@
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
-                    <% } else if(val.type == "File"){ %>
-                        <a download="<%= data[index]['filename'] %>" href="<%= data[index]['data'] %>" target="_blank"><%= data[index]['filename'] %></a>
+                    <% } else if(val.type == "File"){
+                        var dataStr = data[index]['data'].split(';base64,')[1]
+                        var type = data[index]['data'].split(';base64,')[0].replace(/data:/,'')
+                        var byteCharacters = atob(data[index]['data'].split(',')[1]);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
+                        blob = new Blob([byteArray], {type: type});
+                        var blobUrl = URL.createObjectURL(blob);
+                    %>
+                        <a download="<%= data[index]['filename'] %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'] %>'); }" target="_blank"><%= data[index]['filename'] %></a>
                     <% } else { %>
                         <%= data[index] %>
                     <% } %>
