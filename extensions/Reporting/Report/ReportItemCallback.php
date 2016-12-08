@@ -1019,8 +1019,12 @@ class ReportItemCallback {
     }
     
     function getUserSubRoles(){
+        global $config;
         $person = Person::newFromId($this->reportItem->personId);
-        $roles = $person->getSubRoles();
+        $roles = array();
+        foreach(@$person->getSubRoles() as $subRole){
+            $roles[] = $config->getValue('subRoles', $subRole);
+        }
         return implode(", ", $roles);
     }
     
