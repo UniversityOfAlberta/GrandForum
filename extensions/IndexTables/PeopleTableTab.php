@@ -67,7 +67,10 @@ class PeopleTableTab extends AbstractTab {
 </td>
 ";
                 if($subRoleHeader != ""){
-                    $subRoles = $person->getSubRoles();
+                    $subRoles = array();
+                    foreach(@$person->getSubRoles() as $sub){
+                        $subRoles[] = $config->getValue('subRoles', $sub);
+                    }
                     $this->html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
                 }
 
