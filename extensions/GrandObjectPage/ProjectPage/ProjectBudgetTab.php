@@ -191,12 +191,12 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_DEVIATIONS', 0);
                 $result = $blb->load($addr);
                 $deviations = $blb->getData();
-                // Carry Over Amount
+                // Carry Forward Amount
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_CARRYOVERAMOUNT', 0);
                 $result = $blb->load($addr);
                 $carryOverAmount = ($blb->getData() != "") ? $blb->getData() : 0;
-                // Carry Over
+                // Carry Forward
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_CARRYOVER', 0);
                 $result = $blb->load($addr);
@@ -250,7 +250,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             {$justification}
                                             <h3>Budget Update</h3>
                                             {$deviations}
-                                            <h3>Carry Over</h3>
+                                            <h3>Carry Forward</h3>
                                             <p><b>Amount:</b> \$".number_format($carryOverAmount)."</p>
                                             {$carryOver}";
                         }
@@ -265,10 +265,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                         <h3>Budget Update</h3>
                                         <p>Please describe any proposed changes to your Year ".($i-$startYear+1)." ($i/".substr(($i+1),2,2).") budget from what was anticipated at the start of your project (e.g. changes to co-investigators, HQP or other significant adjustments).</p>
                                         <textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea>
-                                        <h3>Carry Over</h3>
-                                        <p>Network Investigators are only eligible to carry forward 15% of the funds received. Only under exceptional circumstances will a greater than 15% carry forward be approved by the Research Management Committee (RMC). Unless the AGE-WELL RMC has granted approval, any amount above the carry over maximum will be recalled.</p><br />
-                                        <p>Total amount of the project budget you wish to carry over to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p><br />
-                                        <p>If carry over is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1).", including any amounts greater than fifteen percent (15%).  Please also include a justification for how these funds will be spent in $i/".($i+1)." once approved.</p>
+                                        <h3>Carry Forward</h3>
+                                        <p>Network Investigators are only eligible to carry forward 15% of the funds received. Only under exceptional circumstances will a greater than 15% carry forward be approved by the Research Management Committee (RMC). Unless the AGE-WELL RMC has granted approval, any amount above the carry forward maximum will be recalled.</p><br />
+                                        <p>Total amount of the project budget you wish to carry forward to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p><br />
+                                        <p>If carry forward is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1).", including any amounts greater than fifteen percent (15%).  Please also include a justification for how these funds will be spent in $i/".($i+1)." once approved.</p>
                                         <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
