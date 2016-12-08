@@ -181,6 +181,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL WP Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
                                         <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item.</p>
+                                        <p>It is requested that all Y".($i-$startYear)." funds are distributed at this time. It is understood that WPLs may not know where/how all of the funds will be spent throughout the year. It is asked that the funds are handled by the WPLs throughout the year via invoicing/expense reimbursement, and avoid second order transfers, as funds are spent throughout the year.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
                                         <h3>Carry Over</h3>
                                         <p>Total amount of the unspent Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget funds: $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
