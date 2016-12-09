@@ -839,5 +839,11 @@
             ]]>
         </ReportItem>
         <ReportItem id="review" type="ReviewSubmitReportItem" emails="snitynsk@ualberta.ca,enanak@ualberta.ca" />
+        <ReportItem id="lines" type="Static">
+            <![CDATA[
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
