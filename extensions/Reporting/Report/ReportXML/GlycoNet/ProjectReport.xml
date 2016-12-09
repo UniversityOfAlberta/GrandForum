@@ -258,7 +258,7 @@
                     If any NIs have uploaded figures, they will be listed below.  You can use them to compile a the figures for the above upload.
                 ]]>
             </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,OldNI,FAKENI">
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
                 <ReportItemSet id="if_null" type="If" if="{!=({getBlobMD5(RP_PROGRESS,INFORMATION,FIGURES,{$user_id},0,{$project_id})},)}">
                     <ReportItem id="ni_upload" type="StaticReportItem">
                         <![CDATA[
@@ -312,7 +312,7 @@
                     {set(benefits,)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,OldNI,FAKENI">
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         {set(achievements,{concat({get(achievements)}, 
@@ -422,7 +422,7 @@
                     {set(impact,)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,OldNI,FAKENI">
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         {set(impact,{concat({get(impact)}, 
@@ -473,7 +473,7 @@
                     {set(accomplishment,)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,OldNI,FAKENI">
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         {set(collaborations,{concat({get(collaborations)}, 
@@ -655,7 +655,7 @@
                     {set(just,)}
                 ]]>
             </ReportItem>
-            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,OldNI,FAKENI">
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
                 <ReportItem id="comments" type="StaticReportItem">
                     <![CDATA[
                         {set(just,{concat({get(just)}, 
