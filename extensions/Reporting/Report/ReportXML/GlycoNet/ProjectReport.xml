@@ -458,7 +458,7 @@
             <![CDATA[
                 <h2>Productivity</h2>
                 <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>
-                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a> (Opens in a new Tab).  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period (April 1, {$this_year} - March 31, {$next_year})</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -646,7 +646,7 @@
         <ReportItem id="header" type="StaticReportItem">
             <![CDATA[
                 <p><b>Provide a written justification for any significant (>20%) deviation of any line item from the original budget in your approved proposal.</b></p>
-                <p>In addition provide details of all stipends paid, including names, citizenship (Canadian/Permanent Resident/Foreign), positions, amounts paid, and percentage of time/salary devoted to the Network.</p>
+                <p>In addition, please ensure the HQP Budget table provides the names, citizenship, gender, position, and salary details for all HQP working on this project.</p>
             ]]>
         </ReportItem>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
@@ -792,7 +792,8 @@
                 &lt;li&gt;time on committees and boards.&lt;/li&gt;
             &lt;/ul&gt;">
             <![CDATA[
-                {$item}
+                {$item}<br />
+                <small>(Opens in a new Tab)</small>
             ]]>
         </ReportItem>
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
