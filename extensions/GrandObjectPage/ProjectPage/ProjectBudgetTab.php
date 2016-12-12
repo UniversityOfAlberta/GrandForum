@@ -261,14 +261,14 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
                                         <p>Please provide a detailed justification for each category where a budget request has been made.  Justifications should include the rationale for the requested item";
-                        if($project->getType() != "Administrative"){
+                        if(strpos($project->getName(), "CC") !== 0){
                             $this->html .= ", such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving";
                         }
                         $this->html .= ".</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
                                         <h3>Budget Update</h3>
                                         <p>Please describe any proposed changes to your Year ".($i-$startYear+1)." ($i/".substr(($i+1),2,2).") ";
-                        if($project->getType() != "Administrative"){
+                        if(strpos($project->getName(), "CC") !== 0){
                             $this->html .= "budget from what was anticipated at the start of your project (e.g. changes to co-investigators, HQP or other significant adjustments).</p>";
                         }
                         else{
@@ -276,7 +276,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         }
                         $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea>
                                         <h3>Carry Forward</h3>";
-                        if($project->getType() != "Administrative"){
+                        if(strpos($project->getName(), "CC") !== 0){
                             $this->html .= "<p>Network Investigators are only eligible to carry forward 15% of the funds received. Only under exceptional circumstances will a greater than 15% carry forward be approved by the Research Management Committee (RMC). Unless the AGE-WELL RMC has granted approval, any amount above the carry forward maximum will be recalled.</p><br />";
                         }
                         else{
@@ -284,11 +284,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         }
                         $this->html .= "<p>Total amount of the project budget you wish to carry forward to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p><br />
                                         <p>If carry forward is requested, please provide a justification of the amount per investigator that you request to transfer to Year ".($i-$startYear+1);
-                        if($project->getType() != "Administrative"){
+                        if(strpos($project->getName(), "CC") !== 0){
                             $this->html .= ", including any amounts greater than fifteen percent (15%)";
                         }
                         $this->html .=".  Please also include a justification for how these funds will be spent in $i/".($i+1);
-                        if($project->getType() != "Administrative"){
+                        if(strpos($project->getName(), "CC") !== 0){
                             $this->html .= " once approved";
                         }
                         $this->html .= ".</p>

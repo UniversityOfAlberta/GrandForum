@@ -104,7 +104,9 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                if($project->getType() != 'Administrative'){
+                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
