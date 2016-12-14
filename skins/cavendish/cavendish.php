@@ -1009,11 +1009,17 @@ $(function(){
 	} 
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader($title);
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader(Inflect::pluralize($config->getValue('productsTerm')));
-        $title = "Actions";
+        $title = "For All Members";
         if($wgLang->getCode() == "fr"){
-            $title = "Actes";
+            $title = "Pour tous les membres";
         } 
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader($title);
+        
+        $title = "For Certified Members";
+        if($wgLang->getCode() == "fr"){
+            $title = "Pour les membres certifiés";
+        }
+        $GLOBALS['toolbox']['Other2'] = TabUtils::createToolboxHeader($title);
  
 		if($wgUser->isLoggedIn()){
 		    echo "
@@ -1056,13 +1062,13 @@ $(function(){
         }
                 $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
 		$person = Person::newFromId($wgUser->getId());
-		if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
-        $title = "Other Tools";
-        if($wgLang->getCode() == "fr"){
-            $title = "Autres Outils";
-        }
-	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-	        }
+		/*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
+            $title = "Other Tools";
+            if($wgLang->getCode() == "fr"){
+                $title = "Autres Outils";
+            }
+            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+        }*/
 		global $toolbox;
 	        $i = 0;
         $title = "Take a Poll";
@@ -1083,6 +1089,7 @@ $(function(){
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
+	                $i = min(1, $i);
 	                echo "<span class='pBodyTitle$i'>{$hr}{$header['text']}</span><ul class='pBody$i'>";
 	                ksort($header['links']);
 	                foreach($header['links'] as $lKey => $link){

@@ -43,8 +43,8 @@ class PharmacyMap extends BackbonePage {
              $title_add = "Ajouter une Pharmacie";
         }
         if($me->isLoggedIn()){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_locate, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap");
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap#/add");
+            $toolbox['Other2']['links'][] = TabUtils::createToolboxLink($title_locate, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap");
+            $toolbox['Other2']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap#/add");
 
         }
         return true;

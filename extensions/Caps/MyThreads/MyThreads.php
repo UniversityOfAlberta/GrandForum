@@ -46,7 +46,7 @@ class MyThreads extends BackbonePage {
 	    }
 
         if($me->isLoggedIn()){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyThreads");
+            $toolbox['Other2']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyThreads");
         }
         return true;
     }

@@ -44,7 +44,7 @@ class StoryManagePage extends BackbonePage {
              $title_add = "Partager un Cas ou de L'expérience";
         }
         if($me->isLoggedIn()){
-            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
+            $toolbox['Other2']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
         }
         return true;
     }
