@@ -98,18 +98,18 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "",array("Physician", "Pharmacist", "Faculty Staff"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician", "Pharmacist", "Facility Staff", "Other"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
             $otherRoleLabel = new Label("other_role_label", "Specify Role", "The role of the user", VALIDATE_NOTHING);
-            $otherRoleField = new TextField("other_role_field", "other_Role", "", VALIDATE_NOTHING);
+            $otherRoleField = new SelectBox("other_role_field", "other_Role", "", array("Administrator", "Counsellor", "Nurse", "Clerical"), VALIDATE_NOTHING);
             $otherRoleRow = new FormTableRow("other_role_row");
             $otherRoleRow->attr("style","display:none");
             $otherRoleRow->append($otherRoleLabel)->append($otherRoleField);
 
             $languageLabel = new Label("language_label", "Language", "The language of the user", VALIDATE_NOT_NULL);
-            $languageField = new SelectBox("language_field", "Language", "",array("English", "French"), VALIDATE_NOT_NULL);
+            $languageField = new SelectBox("language_field", "Language", "", array("English", "French"), VALIDATE_NOT_NULL);
             $languageRow = new FormTableRow("language_row");
             $languageRow->append($languageLabel)->append($languageField);
            
@@ -258,19 +258,19 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow = new FormTableRow("email_row");
             $emailRow->append($emailLabel)->append($emailField);
 
-            $roleLabel = new Label("role_label", "Rôle", "Le rôle de l' utilisateur", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "",array("Médecin", "Pharmacien", "Le personnel de la faculté"), VALIDATE_NOT_NULL);
+            $roleLabel = new Label("role_label", "Rôle", "Le rôle de l'utilisateur", VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Médecin", "Pharmacien", "Personnel de l'installation", "Autre"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
-            $otherRoleLabel = new Label("other_role_label", "Spécifiez Rôle", "Le rôle de l' utilisateur", VALIDATE_NOTHING);
-            $otherRoleField = new TextField("other_role_field", "other_Role", "", VALIDATE_NOTHING);
+            $otherRoleLabel = new Label("other_role_label", "Spécifiez Rôle", "Le rôle de l'utilisateur", VALIDATE_NOTHING);
+            $otherRoleField = new SelectBox("other_role_field", "other_Role", "", array("Administrateur", "Conseiller", "Infirmière", "Commis de bureau"), VALIDATE_NOTHING);
             $otherRoleRow = new FormTableRow("other_role_row");
             $otherRoleRow->attr("style","display:none");
             $otherRoleRow->append($otherRoleLabel)->append($otherRoleField);
 
             $languageLabel = new Label("language_label", "La langue", "La langue de l'utilisateur", VALIDATE_NOT_NULL);
-            $languageField = new SelectBox("language_field", "Language", "",array("English", "Français"), VALIDATE_NOT_NULL);
+            $languageField = new SelectBox("language_field", "Language", "", array("English", "Français"), VALIDATE_NOT_NULL);
             $languageRow = new FormTableRow("language_row");
             $languageRow->append($languageLabel)->append($languageField);
            
@@ -488,7 +488,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                             $('#disclosure_div').parent().parent().hide();
                             $('input[name=disclosure_field]').parent().parent().hide();
                         }
-                        if($('#role_field').val() == 'Faculty Staff' || $('#role_field').val() == 'Le personnel de la faculté'){
+                        if($('#role_field').val() == 'Facility Staff' || $('#role_field').val() == 'Personnel de l\'installation'){
                             $('#other_role_label').parent().parent().show();
                         }
                         else{
@@ -543,6 +543,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $lastname = $form->getElementById('last_name_field')->setPOST('wpLastName');
             $email = $form->getElementById('email_field')->setPOST('wpEmail');
             $form->getElementById('role_field')->setPOST('wpRole');
+            $form->getElementById('other_role_field')->setPOST('wpOtherRole');
             if(in_array($_POST['wpRole'], array("Physician", "Médecin"))){
                 $_POST['wpUserType'] = CI;
                 $_POST['wpRole'] = CI;
@@ -551,10 +552,27 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                 $_POST['wpUserType'] = AR;
                 $_POST['wpRole'] = AR;
             }
-            else if(in_array($_POST['wpRole'], array("Faculty Staff", "Le personnel de la faculté"))){
+            else if(in_array($_POST['wpRole'], array("Facility Staff", "Personnel de l'installation"))){
                 $_POST['wpUserType'] = HQP;
                 $_POST['wpRole'] = HQP;
             }
+            else if(in_array($_POST['wpRole'], array("Other", "Autre"))){
+                $_POST['wpUserType'] = EXTERNAL;
+                $_POST['wpRole'] = EXTERNAL;
+            }
+            if(in_array($_POST['wpOtherRole'], array("Nurse", "Infirmière"))){
+                $_POST['wpOtherRole'] = "Nurse";
+            }
+            else if(in_array($_POST['wpOtherRole'], array("Administrator", "Administrateur"))){
+                $_POST['wpOtherRole'] = "Administrator";
+            }
+            else if(in_array($_POST['wpOtherRole'], array("Counsellor", "Conseiller"))){
+                $_POST['wpOtherRole'] = "Councillor";
+            }
+            else if(in_array($_POST['wpOtherRole'], array("Clerical", "Commis de bureau"))){
+                $_POST['wpOtherRole'] = "Clerical";
+            }
+            
             $language = $form->getElementById('language_field')->setPOST('wpLanguage');
             $postalcode = $form->getElementById('postalcode_field')->setPOST('wpPostalCode');
             $city = $form->getElementById('city_field')->setPOST('wpCity');

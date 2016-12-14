@@ -7,6 +7,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
+        $this->addPOST("wpOtherRole", false, "The type of facility staff this user is");
         $this->addPOST("wpPostalCode", true, "The User's postal code", "t7t3m1");
         $this->addPOST("wpCity", true, "The User's city", "Edmonton");
         $this->addPOST("wpProvince", true, "The User province", "Alberta");
@@ -55,7 +56,7 @@ class RequestUserAPI extends API{
 			    return false;
 		    }
 		}
-//DO FOR LOOP HERE TO ADD USERNAME NUMBERS
+        //DO FOR LOOP HERE TO ADD USERNAME NUMBERS
 		$person = Person::newFromName($name);
 		if($person != null && $person->getName() != null){
 		    if($doEcho){
@@ -119,6 +120,7 @@ class RequestUserAPI extends API{
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
 		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
+		$wpCaps['otherRole'] = isset($_POST['wpOtherRole']) ? $_POST['wpOtherRole'] :"";
         $wpCaps['language'] = isset($_POST['wpLanguage']) ? $_POST['wpLanguage'] :"";
         $wpCaps['postal_code'] = isset($_POST['wpPostalCode']) ? $_POST['wpPostalCode'] : "";
         $wpCaps['city'] = isset($_POST['wpCity']) ? $_POST['wpCity'] : "";

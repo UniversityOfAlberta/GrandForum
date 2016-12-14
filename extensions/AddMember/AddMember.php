@@ -27,6 +27,43 @@ class AddMember extends SpecialPage{
                     $sendEmail = "true";
                 }
                 $_POST['wpSendMail'] = "$sendEmail";
+                $aliases = array(array());
+                do {
+                    $_POST['wpAlias'] = "";
+                    if($_POST['wpUserType'] == CI){
+                        $_POST['wpAlias'] = "MD";
+                    }
+                    else if($_POST['wpUserType'] == AR){
+                        $_POST['wpAlias'] = "PH";
+                    }
+                    else if($_POST['wpUserType'] == HQP){
+                        if($_POST['wpOtherRole'] == "Nurse"){
+                            $_POST['wpAlias'] = "RN";
+                        }
+                        else if($_POST['wpOtherRole'] == "Administrator"){
+                            $_POST['wpAlias'] = "AD";
+                        }
+                        else if($_POST['wpOtherRole'] == "Counsellor"){
+                            $_POST['wpAlias'] = "CS";
+                        }
+                        else if($_POST['wpOtherRole'] == "Clerical"){
+                            $_POST['wpAlias'] = "CC";
+                        }
+                    }
+                    else if($_POST['wpUserType'] == EXTERNAL){
+                        $_POST['wpAlias'] = "OT";
+                    }
+                    if($_POST['wpAlias'] == ""){
+                        $aliases = array();
+                        break;
+                    }
+                    $digits = 5;
+                    $_POST['wpAlias'] = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT).$_POST['wpAlias'];
+                    $aliases = DBFunctions::select(array('mw_user'),
+                                                   array('alias'),
+                                                   array('alias' => EQ($_POST['wpAlias'])));
+                } while (count($aliases) > 0);
+                
                 $result = APIRequest::doAction('CreateUser', false);
                 if(strstr($result, "already exists") === false){
                     $request->acceptRequest();
@@ -194,6 +231,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
+                            <input type='hidden' name='wpOtherRole' value='".str_replace("'", "&#39;", @$extras['otherRole'])."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
