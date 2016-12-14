@@ -1084,8 +1084,8 @@ $(function(){
 
                 $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
 
-                array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],2,0,$resources_tab);
+                array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$poll_tab);
+                array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
