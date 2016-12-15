@@ -1102,10 +1102,10 @@ $(function(){
 	        
 	        if($me->isCandidate()){
 	            echo <<< EOF
-        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 en'>Become a Full Member</span></a>
-        <div class='pBody0 en' style='padding: 10px;margin-bottom:4px;'>Complete your <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>registration</a> to become a full member.</div>
-        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle0 fr'>Devenir membre à part entière</span></a>
-        <div class='pBody0 fr' style='padding: 10px;margin-bottom:4px;'>Complétez votre <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>inscription</a> pour devenir membre à part entière.</div>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle1 en'>Become a Full Member</span></a>
+        <div class='pBody1 en' style='padding: 10px;margin-bottom:4px;'>Complete your <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>registration</a> to become a full member.</div>
+        <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'><span class='pBodyTitle1 fr'>Devenir membre à part entière</span></a>
+        <div class='pBody1 fr' style='padding: 10px;margin-bottom:4px;'>Complétez votre <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/Special:CAPSCompleteRegister'>inscription</a> pour devenir membre à part entière.</div>
 EOF;
             }
 		}

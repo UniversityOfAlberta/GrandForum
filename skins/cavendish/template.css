@@ -416,54 +416,56 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	}
 
 	#nav .pBody1{
-                border: none;
-                background: #99D6F2;
-                border-bottom-right-radius: 10px;
-                border-bottom-left-radius: 10px;
+        border: none;
+        background: #99D6F2;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        margin-left: 4px;
+        margin-right: 4px;
 	}
 
-        #nav .pBodyLogin {
-                border: none;
-                background: #FFFFFF;
-                border-radius: 10px;
+    #nav .pBodyLogin {
+            border: none;
+            background: #FFFFFF;
+            border-radius: 10px;
 
-        }
+    }
 
-        #nav .pBodyTitle0 {
-                border: none;
-                color: #426C7E;
-                background: #BDE8FA;
-                border-top-right-radius: 10px;
-                border-top-left-radius: 10px;
-                font-size: larger;
-        }
+    #nav .pBodyTitle0 {
+            border: none;
+            color: #426C7E;
+            background: #BDE8FA;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            font-size: larger;
+    }
 
-        #nav .pBodyTitle1 {
-                border: none;
-		        color: #426C7E;
-                background: #99D6F2;
-                border-top-right-radius: 10px;
-		        border-top-left-radius: 10px;
-		        font-size: larger;
-        }
+    #nav .pBodyTitle1 {
+            border: none;
+	        color: #426C7E;
+            background: #99D6F2;
+            border-top-right-radius: 10px;
+	        border-top-left-radius: 10px;
+	        font-size: larger;
+    }
 
-        #nav .loginText{
-            border: none !important;
-            background:#AADDD1;
-            -webkit-box-shadow: 0 0 0px 1000px #AADDD1 inset;
-            width: 160px !important;
-        }
+    #nav .loginText{
+        border: none !important;
+        background:#AADDD1;
+        -webkit-box-shadow: 0 0 0px 1000px #AADDD1 inset;
+        width: 160px !important;
+    }
 
-        #nav .loginPassword{
-            border: none !important;
-            background:#A2D29C;
-            -webkit-box-shadow: 0 0 0px 1000px #A2D29C inset;
-            width: 160px !important;
-        }
+    #nav .loginPassword{
+        border: none !important;
+        background:#A2D29C;
+        -webkit-box-shadow: 0 0 0px 1000px #A2D29C inset;
+        width: 160px !important;
+    }
 
-        #nav .mw-input-string{
-            background:#FFFFFF;
-        }
+    #nav .mw-input-string{
+        background:#FFFFFF;
+    }
 
 /* Footer */
 

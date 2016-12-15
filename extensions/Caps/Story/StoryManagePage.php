@@ -9,8 +9,8 @@ class StoryManagePage extends BackbonePage {
     }
     
     function userCanExecute($user){
-        $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(NI);
+        $person = Person::newFromUser($user);
+        return $person->isLoggedIn();
     }
     
     function getTemplates(){
@@ -44,7 +44,7 @@ class StoryManagePage extends BackbonePage {
              $title_add = "Partager un Cas ou de L'expérience";
         }
         if($me->isLoggedIn()){
-            $toolbox['Other2']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:StoryManagePage");
         }
         return true;
     }

@@ -176,7 +176,7 @@ class Story extends BackboneModel{
 					array('*'),
 					array());
 	    $id = count($data)+1;//have to manually add for now because may do revisions in the future
-            if($me->isRoleAtLeast(AR)){
+            if($me->isLoggedIn()){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_user_stories',
                                               array('id' => $id,
@@ -265,7 +265,7 @@ class Story extends BackboneModel{
 	function canView(){
             $me = Person::newFromWgUser();
 	    $bool = false;
-	    if($me->isLoggedIn() && !$me->isCandidate() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
+	    if($me->isLoggedIn() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
 		$bool = true;
 	    }
 	    return $bool;
