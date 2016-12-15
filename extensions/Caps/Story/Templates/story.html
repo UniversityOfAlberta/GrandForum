@@ -1,17 +1,19 @@
-<h2>Author</h2>
+<h2><span class="en">Author</span><span class="fr">Auteur</span></h2>
 <%= author.name %>
 </div>
 <h2>Description</h2>
 <%= nl2br(striphtml(story)) %>
 <h2>Information</h2>
-<b>Date Submitted:</b> <%= date_submitted  %><br>
-<b>Approved:</b> <% if(approved==1){ %>Yes<%} else{ %> No <% } %>
+<b><span class="en">Date Submitted</span><span class="fr">Date de soumission</span>:</b> <%= date_submitted  %><br>
+<b><span class="en">Approved</span><span class="fr">Approuvé</span>:</b> <% if(approved==1){ %><span class="en">Yes</span><span class="fr">Oui</span><%} else{ %> <span class="en">No</span><span class="fr">Non</span> <% } %>
 <% if(parseInt(me.get('id')) > 0 && approved ==0) { %>
     <br /><br />
     <button id='editStory'>Edit Case or Experience</button>
 <% } %>
 <br />
-<b>Comments (This is anonymous by default, but feel free to leave contact information):</b>
+<b>
+   <span class="en">Comments (This is anonymous by default, but feel free to leave contact information)</span>
+   <span class="fr">Commentaires (Ceci est anonyme par défaut, mais n'hésitez pas à laisser vos coordonnées)</span>:</b>
 <div id="comments">
 	<table id="Comments" style=" width:100%">
 	    <tbody id="commentRows">
