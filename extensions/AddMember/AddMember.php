@@ -80,6 +80,7 @@ class AddMember extends SpecialPage{
                 DBFunctions::update('mw_user',
                                     array('candidate' => 0),
                                     array('user_id' => $person->getId()));
+                Notification::addNotification(null, $person, "Account Certified", "Your CAPS-CPCA account was certified.", "$wgServer$wgScriptPath", true);
             }
             AddMember::generateViewHTML($wgOut);
         }
