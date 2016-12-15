@@ -7,7 +7,7 @@
                     <img class="photo" src="<%= author.photo %>">
                 </td>
                 <td class="caps-thread" valign="top">
-                    <b>From:</b>
+                    <b>De:</b>
                 </td>
                 <td class="caps-thread" valign="top">
                     <a href="<%= author.url %>"><b><%= author.name %></b></a>
@@ -32,7 +32,7 @@
     <div id="addMessage" align="right">
             <%= HTML.TextArea(this, 'message', {style: 'max-height: 200px; resize: none;'}) %>
         <br>
-        <button id="submitPost" type="button" style="height:40px">Post</button>
+        <button id="submitPost" type="button" style="height:40px"><span class="en">Post</span><span class="fr">Poster</span></button>
         <span class="throbber" style="display:none;"></span>
 
     </div>
