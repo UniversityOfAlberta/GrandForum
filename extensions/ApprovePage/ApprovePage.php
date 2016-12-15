@@ -23,7 +23,7 @@ class ApprovePage extends SpecialPage{
             ApprovePage::generateViewHTML($wgOut);
         }
         else{
-	    permissionError();
+            permissionError();
         }
     }
     
@@ -48,7 +48,7 @@ class ApprovePage extends SpecialPage{
                         </td>");
             $wgOut->addHTML("<td>{$date}</td>");
             $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$title}</a></td>
-			        <input type='hidden' name='id' value='{$request->getId()}' />");
+                             <input type='hidden' name='id' value='{$request->getId()}' />");
             $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td>");
             $wgOut->addHTML("</form>
                     </tr>");

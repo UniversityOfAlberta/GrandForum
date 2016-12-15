@@ -102,10 +102,10 @@ class Story extends BackboneModel{
         }
 
         function getUser(){
-	    $person = "";
-	    if($this->user != ""){
-	    	$person = Person::newFromId($this->user);
-	    }
+	        $person = "";
+	        if($this->user != ""){
+	        	$person = Person::newFromId($this->user);
+	        }
             return $person;
         }
 
