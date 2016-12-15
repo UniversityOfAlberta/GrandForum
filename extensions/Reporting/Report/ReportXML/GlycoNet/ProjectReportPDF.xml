@@ -88,20 +88,6 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true">
-            <![CDATA[
-                <br />
-                <p><b>Executive Summary</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true">
-            <![CDATA[
-                <br />
-                <p><b>Background Information</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="figures" type="UploadPDFReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p><b>Figures Upload</b></p>
@@ -123,6 +109,20 @@
                 ]]>
             </ReportItem>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" name="Executive Summary" blobSection="INFORMATION">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
+        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
         <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="1500">

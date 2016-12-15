@@ -3,7 +3,9 @@
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="information" permissions="r" />
+            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="figures" permissions="-" />
             <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="achievements" permissions="-" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -17,6 +19,8 @@
         <Role role="FAKENI">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -30,6 +34,8 @@
         <Role role="CI">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -43,6 +49,8 @@
         <Role role="AR">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -56,6 +64,8 @@
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
@@ -237,6 +247,8 @@
                 </table>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" name="Summary/Background" blobSection="INFORMATION">
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true">
@@ -251,6 +263,11 @@
                     {$item}
                 ]]>
             </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="figures" type="EditableReportSection" name="Figures" blobSection="INFORMATION">
+        <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
             <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf">
                 <![CDATA[
                     <p><b>Figures Upload</b></p>
