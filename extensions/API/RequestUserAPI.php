@@ -7,7 +7,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
-        $this->addPOST("wpOtherRole", false, "The type of facility staff this user is");
+        $this->addPOST("wpOtherRole", false, "The type of facility staff this user is", "Nurse");
         $this->addPOST("wpPostalCode", true, "The User's postal code", "t7t3m1");
         $this->addPOST("wpCity", true, "The User's city", "Edmonton");
         $this->addPOST("wpProvince", true, "The User province", "Alberta");
