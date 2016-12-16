@@ -377,7 +377,7 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" blobSubItem="{$user_id}" rich="true">
+                <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_COMMENTS" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h3>Comments & Feedback</h3>
                         <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist CFN in improving the program in the future.</p>
