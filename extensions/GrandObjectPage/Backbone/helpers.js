@@ -83,7 +83,11 @@ HTML.Value = function(view, attr){
     if(attr.indexOf('.') != -1){
         var index = attr.indexOf('.');
         var data = view.model.get(attr.substr(0, index));
-        return data[attr.substr(index+1)];
+        var ret = data[attr.substr(index+1)];
+        if(ret == undefined){
+            ret = "";
+        }
+        return ret;
     }
     else{
         return view.model.get(attr);
@@ -159,9 +163,10 @@ HTML.CheckBox = function(view, attr, options){
 
 HTML.Radio = function(view, attr, options){
     var el = HTML.Element("<span>");
+    var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
-        if(HTML.Value(view, attr) == opt){
+        if(val == opt){
             checked = "checked='checked'"
         }
         $(el).append("<p><input type='radio' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " />" + opt + "</p>");
@@ -227,7 +232,15 @@ HTML.Select = function(view, attr, options){
 
     var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
-        view.model.set(attr, $(e.target).val());
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = $(e.target).val();
+            view.model.set(attr.substr(0, index), _.clone(data));
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
     };
     view.delegateEvents(events);
     $(el).wrap('div');

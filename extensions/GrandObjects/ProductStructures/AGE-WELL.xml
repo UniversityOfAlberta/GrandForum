@@ -5,24 +5,7 @@
     <Activities category="Activity">
         <Activity type="Event Organization" status="Invited|Not Invited">
             <data>
-                <field label="Event Title" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Workshop Organization" status="Invited|Not Invited">
-            <data>
-                <field label="Event Title" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Seminar Organization" status="Invited|Not Invited">
-            <data>
+                <field label="Event Type" type="Select" options="Seminar|Workshop|Other">event_type</field>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -49,14 +32,6 @@
         </Activity>
         
         <Activity type="Student Volunteering" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Reviewing" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -94,6 +69,15 @@
             </data>
         </Activity>
         
+        <Activity type="Internship">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -102,19 +86,6 @@
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
-
-        <!--
-        There are a number of these in DB, but not supported in UI anymore
-        <Activity type="Panel" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-
-        <Activity type="Tutorial" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-        -->
     </Activities>
 
     <!-- Publications -->
@@ -608,9 +579,10 @@
         
         <Presentation type="Seminar Presentation" status="Invited|Not Invited">
             <data>
-                <field label="Title" type="String">event_title</field>
-                <field label="Location" type="String">location</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -647,8 +619,10 @@
         
         <Presentation type="Invited Presentation" status="">
             <data>
+                <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -690,6 +664,7 @@
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -699,6 +674,7 @@
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -822,17 +798,5 @@
             </data>
         </Award>
     </Awards>
-    
-    <!-- Internships -->
-    <Internships category="Internship">
-        <Internship type="Internship">
-            <data>
-                <field label="Skill Set Learned" type="String">skill_set_learned</field>
-                <field label="Start Date" type="Date">start_date</field>
-                <field label="End Date" type="Date">end_date</field>
-                <field label="Where/What Organization" type="String">organization</field>
-            </data>
-        </Internship>
-    </Internships> 
 
 </Products>
