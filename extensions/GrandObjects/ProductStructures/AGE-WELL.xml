@@ -453,7 +453,7 @@
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="PHD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+        <Publication type="PhD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
                 <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
@@ -477,7 +477,7 @@
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
         
-        <Publication type="PHD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+        <Publication type="PhD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
             <data>
                 <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
