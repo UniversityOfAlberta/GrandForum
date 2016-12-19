@@ -384,19 +384,6 @@
             <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
-            <data>
-                <field label="Venue" type="String">venue</field>
-                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
-                <field bibtex="note" label="Note" type="String">note</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field bibtex="url" label="URL" type="URL">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-        </Publication>
-
         <Publication type="Conference Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
                 <type lov_id="00000000000000000000000100007000">Paper</type>
@@ -579,6 +566,32 @@
             <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
             <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Scoping Review" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
     </Publications>
 
     <!-- Presentations -->
@@ -688,32 +701,6 @@
         <Product type="Data Set" status="">
             <data></data>
         </Product>
-        
-        <Product type="Report of Invention" status="">
-            <data></data>
-        </Product>
-        
-        <Product type="License Agreement" status="">
-            <data></data>
-        </Product>
-        
-        <Product type="Patent" status="">
-            <data>
-                <field label="Patent Number" type="String">number</field>
-            </data>
-        </Product>
-        
-        <Product type="Trademark" status="">
-            <data>
-                <field label="Application Number" type="String">number</field>
-            </data>
-        </Product>
-        
-        <Product type="Copyright" status="">
-            <data>
-                <field label="Registration Number" type="String">number</field>
-            </data>
-        </Product>
 
         <Product type="Software" status="">
             <data>
@@ -772,8 +759,48 @@
                 <field label="URL" type="URL">url</field>
             </data>
         </Product>
-        
     </Products>
+    
+    <!-- IP Management -->
+    <IPManagements category="IP Management">
+        <Product type="License Agreement" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Report of Invention" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="IP Disclosure" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Provisional Patent" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Patent Cooperation Treaty (PCT)" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Copyright" status="">
+            <data>
+                <field label="Registration Number" type="String">number</field>
+            </data>
+        </Product>
+        
+        <Product type="Patent" status="">
+            <data>
+                <field label="Patent Number" type="String">number</field>
+            </data>
+        </Product>
+        
+        <Product type="Trademark" status="">
+            <data>
+                <field label="Application Number" type="String">number</field>
+            </data>
+        </Product>
+    </IPManagements>
     
     <!-- Awards -->
     <Awards category="Award">

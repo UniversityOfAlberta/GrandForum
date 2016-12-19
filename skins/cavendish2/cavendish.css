@@ -1073,12 +1073,12 @@ del {
     font-size: 1.0em;
     font-weight: bold;
     vertical-align: top;
-    line-height: 27px;
+    line-height: 25px;
     white-space:nowrap;
 }
 
 .field {
-    
+    vertical-align: top;
 }
 
 /* Messages */
