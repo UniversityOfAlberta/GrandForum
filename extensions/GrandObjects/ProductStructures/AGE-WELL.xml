@@ -763,43 +763,43 @@
     
     <!-- IP Management -->
     <IPManagements category="IP Management">
-        <Product type="License Agreement" status="">
+        <IPManagement type="License Agreement" status="">
             <data></data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Report of Invention" status="">
+        <IPManagement type="Report of Invention" status="">
             <data></data>
-        </Product>
+        </IPManagement>
         
-        <Product type="IP Disclosure" status="">
+        <IPManagement type="IP Disclosure" status="">
             <data></data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Provisional Patent" status="">
+        <IPManagement type="Provisional Patent" status="">
             <data></data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Patent Cooperation Treaty (PCT)" status="">
+        <IPManagement type="Patent Cooperation Treaty (PCT)" status="">
             <data></data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Copyright" status="">
+        <IPManagement type="Copyright" status="">
             <data>
                 <field label="Registration Number" type="String">number</field>
             </data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Patent" status="">
+        <IPManagement type="Patent" status="">
             <data>
                 <field label="Patent Number" type="String">number</field>
             </data>
-        </Product>
+        </IPManagement>
         
-        <Product type="Trademark" status="">
+        <IPManagement type="Trademark" status="">
             <data>
                 <field label="Application Number" type="String">number</field>
             </data>
-        </Product>
+        </IPManagement>
     </IPManagements>
     
     <!-- Awards -->
@@ -812,6 +812,18 @@
                 <field label="URL" type="URL">url</field>
             </data>
         </Award>
-    </Awards>   
+    </Awards>
+    
+    <!-- Internships -->
+    <Internships category="Internship">
+        <Internship type="Internship">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Internship>
+    </Internships> 
 
 </Products>
