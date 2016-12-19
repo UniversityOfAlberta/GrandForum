@@ -650,11 +650,7 @@
     </Presentations>
     
     <!-- Products -->
-    <Products category="Product">
-        <Product type="Tool" status="">
-            <data></data>
-        </Product>
-        
+    <Products category="Product">        
         <Product type="Data Set" status="">
             <data></data>
         </Product>
@@ -703,6 +699,12 @@
             </data>
         </Product>
         
+        <Product type="Framework" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
         <Product type="Start-Up">
             <data>
                 <field label="Company Name" type="String">name</field>
@@ -721,12 +723,9 @@
     <Awards category="Award">
         <Award type="Award">
             <data>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Award>
-        
-        <Award type="Misc">
-            <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Award>
