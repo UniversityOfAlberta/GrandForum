@@ -106,6 +106,7 @@ class Inflect
         'equipment',
         'press',
         'intellectual property',
+        'ip management',
         'network management office'
     );
 
