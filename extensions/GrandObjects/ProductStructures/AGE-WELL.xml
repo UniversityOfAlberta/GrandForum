@@ -584,8 +584,9 @@
     <!-- Presentations -->
     <Presentations category="Presentation">
         
-        <Presentation type="Seminar" status="Invited|Not Invited">
+        <Presentation type="Seminar Presentation" status="Invited|Not Invited">
             <data>
+                <field label="Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -630,10 +631,43 @@
             </data>
         </Presentation>
         
-        <Presentation type="Media Interview" status="">
+        <Presentation type="Print Media Interview" status="">
             <data>
                 <field label="Location" type="String">location</field>
                 <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Radio Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="TV Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Digital News Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Workshop Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -694,6 +728,28 @@
         </Product>
         
         <Product type="Technology" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Policy Brief" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Website" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Algorithm" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Toolkit" status="">
             <data>
                 <field label="URL" type="URL">url</field>
             </data>
