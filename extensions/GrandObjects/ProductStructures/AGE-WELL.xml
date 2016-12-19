@@ -5,32 +5,34 @@
     <Activities category="Activity">
         <Activity type="Event Organization" status="Invited|Not Invited">
             <data>
-                <field label="Conference" type="String">conference</field>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
         
-        <Activity type="Workshop" status="Invited|Not Invited">
+        <Activity type="Workshop Organization" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
         
-        <Activity type="Seminar" status="Invited|Not Invited">
+        <Activity type="Seminar Organization" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
         
-        <Activity type="Panel" status="Invited|Not Invited">
+        <Activity type="Panel Organization" status="Invited|Not Invited">
             <data>
-                <field label="Conference" type="String">conference</field>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -86,8 +88,15 @@
             </data>
         </Activity>
         
+        <Activity type="Blog">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
