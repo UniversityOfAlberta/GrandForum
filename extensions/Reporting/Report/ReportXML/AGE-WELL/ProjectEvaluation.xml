@@ -1037,7 +1037,7 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_white({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_policy({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_policy({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
@@ -1211,7 +1211,7 @@
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>IP Management</b> (e.g. policies in place and plans for licensing IP to a partner)</td>
+                <td><b>Product Development & IP Management</b></td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1230,52 +1230,40 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of IP policies in place {$item}
+                    #of patents: {$item} <b>{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}">
+            <![CDATA[
+                    #of provisional patents: {$item} <b>{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}">
+            <![CDATA[
+                    #of ip disclosures: {$item} <b>{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #of licensing agreements: {$item} <b>{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}</b>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Product development</b> (e.g. anticipated products and stage of development)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of commercial products/services anticipated for project {$item}
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of patents: {$item} <b>{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of copyrights: {$item} <b>{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}">
+            <![CDATA[
+                    #of trademarks: {$item} <b>{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1339,7 +1327,7 @@
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
-                <td><b>IP Management</b> (e.g. policies in place and plans for licensing IP to a partner)</td>
+                <td><b>Product Development & IP Management</b></td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
@@ -1358,52 +1346,40 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of IP policies in place {$item}
+                    #of patents: {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+         <ReportItem id="plan_1_5_m3" blobItem="PLAN_1_5_M3" type="Integer" size="3">
+            <![CDATA[
+                    #of provisional patents: {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m4" blobItem="PLAN_1_5_M4" type="Integer" size="3">
+            <![CDATA[
+                    #of ip disclosures: {$item}
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
             <![CDATA[
                     #of licensing agreements: {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Product development</b> (e.g. anticipated products and stage of development)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of commercial products/services anticipated for project {$item}
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m5" blobItem="PLAN_1_5_M5" type="Integer" size="3">
             <![CDATA[
-                    #of patents: {$item}
+                    #of copyrights: {$item}
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m6" blobItem="PLAN_1_5_M6" type="Integer" size="3">
+            <![CDATA[
+                    #of trademarks: {$item}
                     </td>
                 </tr>
             ]]>

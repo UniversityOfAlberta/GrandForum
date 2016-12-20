@@ -56,6 +56,10 @@ class ReportItemCallback {
             "project_n_startups" => "getNStartUps",
             "project_n_licenses" => "getNLicenses",
             "project_n_patents" => "getNPatents",
+            "project_n_provisional_patents" => "getNProvisionalPatents",
+            "project_n_ip_disclosures" => "getNIpDisclosures",
+            "project_n_copyrights" => "getNCopyrights",
+            "project_n_trademarks" => "getNTrademarks",
             "project_n_workshops" => "getNWorkshops",
             "project_n_hqp" => "getNHQP",
             "project_n_epic" => "getNEpic",
@@ -248,7 +252,7 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             $websiteUrl = $project->getWebsite();
             if($websiteUrl != "" && $websiteUrl != "http://" && $websiteUrl != "https://"){
-                $website = "<a href='$websiteUrl' target='_blank'>Website</a>";
+                $website = "<a href='$websiteUrl' class='externalLink' target='_blank'>Website</a>";
             }
         }
         return $website;
@@ -811,7 +815,7 @@ class ReportItemCallback {
         $products = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
             foreach($productsTmp as $product){
                 if($product->getType() == "License Agreement"){
                     $products[] = $product;
@@ -825,9 +829,65 @@ class ReportItemCallback {
         $products = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
             foreach($productsTmp as $product){
                 if($product->getType() == "Patent"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNProvisionalPatents($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Provisional Patent"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNIpDisclosures($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "IP Disclosure"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNCopyrights($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Copyright"){
+                    $products[] = $product;
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNTrademarks($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productsTmp = $project->getPapers("IP Management", $startDate, $endDate);
+            foreach($productsTmp as $product){
+                if($product->getType() == "Trademark"){
                     $products[] = $product;
                 }
             }
