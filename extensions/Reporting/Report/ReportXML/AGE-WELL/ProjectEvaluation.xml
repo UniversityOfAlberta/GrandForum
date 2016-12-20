@@ -976,13 +976,13 @@
         <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_products({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>{project_n_products({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>{project_n_products({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m3" blobItem="REV_2_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the publicly-funded health care system {$item}
+                    #of products integrated into the publicly-funded health care system {$item}
                     </td>
                 </tr>
             ]]>
@@ -1011,6 +1011,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
             <![CDATA[
+                <td>
                     #of non-academic dissemination activities in the following mediums:<br />
                     print (e.g. magazines, newspapers): {$item}<br />
             ]]>
@@ -1100,13 +1101,13 @@
         <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of service or knowledge products integrated into the assistive technology marketplace (nationally or internationally). {$item}
+                    #of products integrated into the assistive technology marketplace (nationally or internationally). {$item}
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Integer" size="3">
             <![CDATA[
-                    #of service or knowledge products integrated into the publicly-funded health care system {$item}
+                    #of products integrated into the publicly-funded health care system {$item}
                     </td>
                 </tr>
             ]]>
@@ -1135,6 +1136,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
             <![CDATA[
+                <td>
                     #of non-academic dissemination activities in the  following mediums:<br />
                     print (e.g. magazines, newspapers): {$item}<br />
             ]]>
