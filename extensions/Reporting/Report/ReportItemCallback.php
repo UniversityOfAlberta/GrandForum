@@ -37,6 +37,10 @@ class ReportItemCallback {
             "project_n_federal_partners" => "getNFederalPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
+            "project_n_hqp_lead_author" => "getNProductsWithHQPLeadAuthor",
+            "project_n_hqp_co_author" => "getNProductsWithHQPCoAuthor",
+            "project_n_hqp_co_presenter" => "getNProductsWithHQPCoPresenter",
+            "project_n_hqp_interns" => "getNProductsWithHQPInterns",
             "project_contributions" => "getProjectContributions",
             "project_contributions_cash" => "getProjectContributionsCash",
             "project_contributions_inkind" => "getProjectContributionsInKind",
@@ -552,6 +556,78 @@ class ReportItemCallback {
                     if($author->isRoleDuring(HQP, $startDate, $endDate)){
                         $products[] = $product;
                         break;
+                    }
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNProductsWithHQPLeadAuthor($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $author){
+                    if($author->isRoleDuring(HQP, $startDate, $endDate)){
+                        $products[] = $product;
+                    }
+                    break; // Only do the first
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNProductsWithHQPCoAuthor($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $key => $author){
+                    if($key > 0){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate)){
+                            $products[] = $product;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNProductsWithHQPCoPresenter($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $key => $author){
+                    if($author->isRoleDuring(HQP, $startDate, $endDate)){
+                        $products[] = $product;
+                        break;
+                    }
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNProductsWithHQPInterns($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            foreach($productTmp as $product){
+                if($product->getType() == "Internship"){
+                    foreach($product->getAuthors() as $key => $author){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate)){
+                            $products[] = $product;
+                            break;
+                        }
                     }
                 }
             }
