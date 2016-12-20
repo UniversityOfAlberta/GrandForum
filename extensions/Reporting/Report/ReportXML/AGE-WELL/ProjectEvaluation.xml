@@ -231,9 +231,16 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{project_n_presentations_national({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: {$item} <b>{project_n_presentations({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #invited expert presentations meetings keynotes, etc. at:<br />
+                    national: {$item} <b>{project_n_presentations_national({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{project_n_presentations_international({$this_year}-10-01, {$next_year}-09-30)}">
+            <![CDATA[
+                    international: {$item} <b>{project_n_presentations_international({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -364,12 +371,6 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
-            <![CDATA[
-                    #publications/presentations that include partners as authors: {$item} <b>{project_n_products_with_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
             <![CDATA[
                     #of publications published with any of the following listed as a co-author:<br />
@@ -470,9 +471,16 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m2a" blobItem="PLAN_1_5_M2A" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: {$item}
+                    #invited expert presentations meetings keynotes, etc. at:<br />
+                    national: {$item}
+                    <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m2b" blobItem="PLAN_1_5_M2B" type="Integer" size="3">
+            <![CDATA[
+                    international: {$item}
                     <hr />
             ]]>
         </ReportItem>
@@ -600,12 +608,6 @@
         <ReportItem id="plan_3_5_m0" blobItem="PLAN_3_5_M0" type="Integer" size="3">
             <![CDATA[
                     #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers {$item}
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
-            <![CDATA[
-                    #publications/presentations that include partners as authors: {$item}
                     <hr />
             ]]>
         </ReportItem>

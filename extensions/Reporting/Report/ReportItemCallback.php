@@ -27,6 +27,8 @@ class ReportItemCallback {
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_presentations" => "getNPresentations",
+            "project_n_presentations_national" => "getNPresentationsNational",
+            "project_n_presentations_international" => "getNPresentationsInternational",
             "project_n_journals" => "getNJournals",
             "project_n_conferences" => "getNConferences",
             "project_n_print" => "getNPrint",
@@ -421,6 +423,38 @@ class ReportItemCallback {
             $pres = $project->getPapers('Presentation', $startDate, $endDate);
             foreach($pres as $presentation){
                 if($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation"){
+                    $presentations[] = $pres;
+                }
+            }
+        }
+        return count($presentations);
+    }
+    
+    function getNPresentationsNational($startDate = false, $endDate = false){
+        $presentations = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                $data = $presentation->getData();
+                if(@$data['level'] == "National" && 
+                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
+                    $presentations[] = $pres;
+                }
+            }
+        }
+        return count($presentations);
+    }
+    
+    function getNPresentationsInternational($startDate = false, $endDate = false){
+        $presentations = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                $data = $presentation->getData();
+                if(@$data['level'] == "International" && 
+                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
                     $presentations[] = $pres;
                 }
             }

@@ -106,9 +106,16 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: <b>{$item}</b>
+                    #invited expert presentations meetings keynotes, etc. at:<br />
+                    national: <b>{$item}</b>
+                    <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Integer" size="3">
+            <![CDATA[
+                    international: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -343,9 +350,16 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m2" blobItem="PLAN_1_5_M2" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m2a" blobItem="PLAN_1_5_M2A" type="Integer" size="3">
             <![CDATA[
-                    #invited expert presentations meetings keynotes, etc. at national or international-level academic conferences and events: <b>{$item}</b>
+                    #invited expert presentations meetings keynotes, etc. at:<br />
+                    national: <b>{$item}</b>
+                    <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m2b" blobItem="PLAN_1_5_M2B" type="Integer" size="3">
+            <![CDATA[
+                    international: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
