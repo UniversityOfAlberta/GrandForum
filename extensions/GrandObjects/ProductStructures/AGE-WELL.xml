@@ -5,16 +5,7 @@
     <Activities category="Activity">
         <Activity type="Event Organization" status="Invited|Not Invited">
             <data>
-                <field label="Event Type" type="Select" options="Seminar|Workshop|Other">event_type</field>
-                <field label="Event Title" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Panel Organization" status="Invited|Not Invited">
-            <data>
+                <field label="Event Type" type="Select" options="Conference|Panel|Seminar|Workshop|Other">event_type</field>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
