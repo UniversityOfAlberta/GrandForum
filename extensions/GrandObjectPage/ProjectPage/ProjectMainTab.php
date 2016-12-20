@@ -60,6 +60,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
         
+        $website = $this->project->getWebsite();
         $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
         if($edit){
@@ -81,6 +82,12 @@ class ProjectMainTab extends AbstractEditableTab {
         if($config->getValue("projectStatus")){
             $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
         }
+        if(!$edit && $website){
+            $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
+        }
+        else if($edit){
+            $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
+        }
         $this->html .= "</table>";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
@@ -98,9 +105,11 @@ class ProjectMainTab extends AbstractEditableTab {
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @$_POST['fullName'];
         $_POST['description'] = @$_POST['description'];
+        $_POST['website'] = @str_replace("'", "&#39;", $_POST['website']);
         $_POST['long_description'] = $this->project->getLongDescription();
         if($_POST['description'] != $this->project->getDescription() ||
-           $_POST['fullName'] != $this->project->getFullName()){
+           $_POST['fullName'] != $this->project->getFullName() ||
+           $_POST['website'] != $this->project->getWebsite()){
             $error = APIRequest::doAction('ProjectDescription', true);
             if($error != ""){
                 return $error;

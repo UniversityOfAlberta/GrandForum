@@ -441,6 +441,7 @@ class Project extends BackboneModel {
                        'fullname' => $this->getFullName(),
                        'description' => $this->getDescription(),
                        'longDescription' => $this->getLongDescription(),
+                       'website' => $this->getWebsite(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -1123,6 +1124,31 @@ EOF;
             return $data[0]['long_description'];
         }
         return "";
+    }
+    
+    function getWebsite($history=false){
+        $website = "";
+        $sql = "(SELECT website 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT long_description
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            $website = $data[0]['website'];
+        }
+        if (preg_match("#https?://#", $website) === 0) {
+            $website = 'http://'.$website;
+        }
+        return $website;
     }
     
     /**

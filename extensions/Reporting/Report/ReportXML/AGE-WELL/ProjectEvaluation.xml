@@ -1009,26 +1009,26 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{project_n_print({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
                     #of non-academic dissemination activities in the following mediums:<br />
-                    print (e.g. magazines, newspapers): {$item}<br />
+                    print (e.g. magazines, newspapers): {$item} <b>{project_n_print({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{project_n_digital({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    digital: {$item}<br />
+                    digital: {$item} <b>{project_n_digital({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{project_n_face({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item}<br />
+                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item} <b>{project_n_face({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{project_n_tv({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    TV & radio interviews: {$item}<br />
+                    TV & radio interviews: {$item} <b>{project_n_tv({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1e" blobItem="REV_3_5_M1E" type="Integer" size="3">
@@ -1039,13 +1039,13 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_white({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_white({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_policy({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Text" width="80px">
+        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Static">
             <![CDATA[
-                    Project has a website or other online presence? (if yes) number of hits? {$item}
+                    Project has a website or other online presence? <b>{$project_website}</b>
                     </td>
                 </tr>
             ]]>
@@ -1168,9 +1168,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Text" width="80px">
+        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Static">
             <![CDATA[
-                    Project has a website or other online presence? (if yes) number of hits? {$item}
+                    Project has a website or other online presence? <b>{$project_website}</b>
                     </td>
                 </tr>
             ]]>

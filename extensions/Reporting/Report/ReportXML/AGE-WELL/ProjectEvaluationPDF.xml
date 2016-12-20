@@ -897,9 +897,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Text" width="80px">
+        <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Static">
             <![CDATA[
-                    Project has a website or other online presence? (if yes) number of hits? <b>{$item}</b>
+                    Project has a website or other online presence? <b>{$project_website}</b>
                     </td>
                 </tr>
             ]]>
@@ -1026,9 +1026,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Text" width="80px">
+        <ReportItem id="plan_3_5_m3" blobItem="PLAN_3_5_M3" type="Static">
             <![CDATA[
-                    Project has a website or other online presence? (if yes) number of hits? <b>{$item}</b>
+                    Project has a website or other online presence? <b>{$project_website}</b>
                     </td>
                 </tr>
             ]]>

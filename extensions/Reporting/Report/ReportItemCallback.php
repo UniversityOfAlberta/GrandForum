@@ -15,6 +15,7 @@ class ReportItemCallback {
             "project_name" => "getProjectName",
             "project_full_name" => "getProjectFullName",
             "project_url" => "getProjectUrl",
+            "project_website" => "getProjectWebsite",
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
@@ -28,6 +29,10 @@ class ReportItemCallback {
             "project_n_presentations" => "getNPresentations",
             "project_n_journals" => "getNJournals",
             "project_n_conferences" => "getNConferences",
+            "project_n_print" => "getNPrint",
+            "project_n_digital" => "getNDigital",
+            "project_n_face" => "getNFace",
+            "project_n_tv" => "getNTV",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "project_n_partners" => "getNPartners",
@@ -45,7 +50,7 @@ class ReportItemCallback {
             "project_contributions_cash" => "getProjectContributionsCash",
             "project_contributions_inkind" => "getProjectContributionsInKind",
             "project_n_connected_projects" => "getNConnectedProjects",
-            "project_n_white" => "getNWhite",
+            "project_n_policy" => "getNPolicy",
             "project_n_products" => "getNProducts",
             "project_n_media" => "getNMedia",
             "project_n_startups" => "getNStartUps",
@@ -235,6 +240,18 @@ class ReportItemCallback {
             $project_url = $project->getUrl();
         }
         return $project_url;
+    }
+    
+    function getProjectWebsite(){
+        $website = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $websiteUrl = $project->getWebsite();
+            if($websiteUrl != "" && $websiteUrl != "http://" && $websiteUrl != "https://"){
+                $website = "<a href='$websiteUrl' target='_blank'>Website</a>";
+            }
+        }
+        return $website;
     }
     
     function getProjectStatus(){
@@ -434,6 +451,67 @@ class ReportItemCallback {
             }
         }
         return count($journals);
+    }
+    
+    function getNPrint($startDate = false, $endDate = false){
+        $prints = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $printTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($printTmp as $print){
+                if($print->getType() == "Magazine/Newspaper Article" || 
+                   $print->getType() == "Print Media Interview"){
+                    $prints[] = $print;
+                }
+            }
+        }
+        return count($prints);
+    }
+    
+    function getNDigital($startDate = false, $endDate = false){
+        $digitals = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $digitalTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($digitalTmp as $digital){
+                if($digital->getType() == "Digital News Interview" || 
+                   $digital->getType() == "Blog"){
+                    $digitals[] = $digital;
+                }
+            }
+        }
+        return count($digitals);
+    }
+    
+    function getNFace($startDate = false, $endDate = false){
+        $faces = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $faceTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($faceTmp as $face){
+                if($face->getType() == "Meeting" || 
+                   $face->getType() == "Workshop Presentation" ||
+                   $face->getType() == "Seminar Presentation"){
+                    $faces[] = $face;
+                }
+            }
+        }
+        return count($faces);
+    }
+    
+    function getNTV($startDate = false, $endDate = false){
+        $tvs = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $tvTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($tvTmp as $tv){
+                if($tv->getType() == "Radio Interver" || 
+                   $tv->getType() == "TV Interview"){
+                    $tvs[] = $tv;
+                }
+            }
+        }
+        return count($tvs);
     }
     
     function getNProductsWithPartners($startDate = false, $endDate = false){
@@ -683,18 +761,18 @@ class ReportItemCallback {
         return count($connectedProjects);
     }
     
-    function getNWhite($startDate = false, $endDate = false){
-        $whites = array();
+    function getNPolicy($startDate = false, $endDate = false){
+        $policies = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $whitesTmp = $project->getPapers('Publication', $startDate, $endDate);
-            foreach($whitesTmp as $white){
-                if($white->getType() == "White Paper"){
-                    $whites[] = $white;
+            $policyTmp = $project->getPapers('Publication', $startDate, $endDate);
+            foreach($policyTmp as $policy){
+                if($policy->getType() == "Policy Brief"){
+                    $policies[] = $policy;
                 }
             }
         }
-        return count($whites);
+        return count($policies);
     }
     
     function getNProducts($startDate = false, $endDate = false){
