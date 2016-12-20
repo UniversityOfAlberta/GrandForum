@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Review" reportType="RP_PROJ_REVIEW" ajax="true">
+<Report name="Project Review" reportType="RP_PROJ_REVIEW" ajax="true" year="2015">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Evaluator">
             <SectionPermission id="review" permissions="rw" />

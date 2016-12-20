@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Review Feedback" reportType="RP_PROJ_REVIEW" ajax="true" personId="0">
+<Report name="Project Review Feedback" reportType="RP_PROJ_REVIEW" ajax="true" personId="0" year="2015">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="Staff">
             <SectionPermission id="feedback" permissions="rw" />
