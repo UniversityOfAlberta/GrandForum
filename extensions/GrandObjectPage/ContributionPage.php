@@ -314,7 +314,7 @@ class ContributionPage {
                                 
                                 var nPartners = 0;
                                 function addPartner(){
-                                    $('#partners').append(\"<table id='table\" + nPartners + \"'><tbody><tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr><tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[\" + nPartners + \"]' value='' /></td></tr><tr><td style='width:120px;' align='right'><b>Contact:</b><br /><small>(Name, email/phone#)</small></td><td><input size='50' class='contact' type='text' name='contacts[\" + nPartners + \"]' value='' /></td></tr><tr><td align='right' valign='top' style='padding-top:5px;'><b>Type:</b></td><td><select style='display:block;' id='\" + nPartners + \"' class='type' name='type[\" + nPartners + \"]'><option value='none' selected='selected'>[Select Contribution Type]</option><option value='cash'>Cash</option><option value='caki' >Cash and In-Kind</option><option value='inki' >In-Kind</option><option value='grnt'>Grant</option><option value='char'>Research Chair</option><option value='scho'>Scholarship</option><option value='fell'>Fellowship</option><option value='cont'>Contract</option></select></td></tr><tr style='display:none;'><td align='right'><b>In-Kind:</b></td><td><input class='money' id='inkind\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='inKind[\" + nPartners + \"]' value='0' />$</td></tr><tr style='display:none;'><td align='right'><b>Cash:</b></td><td><input class='money' id='cash\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='cash[\" + nPartners + \"]' value='0' />$</td></tr><tr><td></td><td><a name='\" + nPartners + \"' id='delete\" + nPartners + \"' class='button'>Delete Partner</a></td></tr><tr><td colspan='2'><hr /></td></tr></tbody></table>\");
+                                    $('#partners').append(\"<table id='table\" + nPartners + \"'><tbody><tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr><tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[\" + nPartners + \"]' value='' /></td></tr><tr><td style='width:120px;' align='right'><b>Contact:</b><br /><small>(Name, email/phone#)</small></td><td><input size='50' class='contact' type='text' name='contacts[\" + nPartners + \"]' value='' /></td></tr><tr><td style='width:120px;' align='right'><b>Sector:</b></td><td><select name='industries[\" + nPartners + \"]'><option value=''>---</option><option>Industry</option><option>Community/Not for profit</option></select></td></tr><tr><td style='width:120px;' align='right'><b>Level:</b></td><td><select name='levels[\" + nPartners + \"]'><option value=''>---</option><option>Provincial</option><option>Federal</option></select></td></tr><tr><td align='right' valign='top' style='padding-top:5px;'><b>Type:</b></td><td><select style='display:block;' id='\" + nPartners + \"' class='type' name='type[\" + nPartners + \"]'><option value='none' selected='selected'>[Select Contribution Type]</option><option value='cash'>Cash</option><option value='caki' >Cash and In-Kind</option><option value='inki' >In-Kind</option><option value='grnt'>Grant</option><option value='char'>Research Chair</option><option value='scho'>Scholarship</option><option value='fell'>Fellowship</option><option value='cont'>Contract</option></select></td></tr><tr style='display:none;'><td align='right'><b>In-Kind:</b></td><td><input class='money' id='inkind\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='inKind[\" + nPartners + \"]' value='0' />$</td></tr><tr style='display:none;'><td align='right'><b>Cash:</b></td><td><input class='money' id='cash\" + nPartners + \"' size='6' type='text' onKeyUp='stripAlphaChars(this.id)' name='cash[\" + nPartners + \"]' value='0' />$</td></tr><tr><td></td><td><a name='\" + nPartners + \"' id='delete\" + nPartners + \"' class='button'>Delete Partner</a></td></tr><tr><td colspan='2'><hr /></td></tr></tbody></table>\");
                                     $('#' + nPartners).change(function(){
                                         changeFields($(this));
                                     });
@@ -511,6 +511,12 @@ class ContributionPage {
                                     if($partner->getContact() != ""){
                                         $wgOut->addHTML("<tr><td align='right'><b>Contact:</b></td><td>{$partner->getContact()}</td></tr>");
                                     }
+                                    if($partner->getIndustry() != ""){
+                                        $wgOut->addHTML("<tr><td align='right'><b>Sector:</b></td><td>{$partner->getIndustry()}</td></tr>");
+                                    }
+                                    if($partner->getLevel() != ""){
+                                        $wgOut->addHTML("<tr><td align='right'><b>Level:</b></td><td>{$partner->getLevel()}</td></tr>");
+                                    }
                                     $wgOut->addHTML("<tr><td align='right'><b>Type:</b></td><td>{$hrType}</td></tr>");
                                     if($type == "inki" || $type == "caki"){
                                         $wgOut->addHTML("<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>");
@@ -539,6 +545,21 @@ class ContributionPage {
                                 $wgOut->addHTML("<tr><td colspan='2'><div class='warning' style='display:none;width:700px;'></div></td></tr>");
                                 $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Partner:</b></td><td><input size='50' class='partners' type='text' name='partners[$id]' value='".str_replace("'", "&#39;", $partner->getOrganization())."' /><td></tr>");
                                 $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Contact:</b><br /><small>(Name, email/phone#)</small></td><td><input size='50' class='contact' type='text' name='contacts[$id]' value='".str_replace("'", "&#39;", $partner->getContact())."' /><td></tr>");
+                                
+                                $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Sector:</b></td><td><select name='industries[$id]'>");
+                                
+                                if($partner->getIndustry() == ""){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='' $selected>---</option>");
+                                if($partner->getIndustry() == "Industry"){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option $selected>Industry</option>");
+                                if($partner->getIndustry() == "Community/Not for profit"){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option $selected>Community/Not for profit</option>");
+                                
+                                $wgOut->addHTML("</select><td></tr>");
+                                $wgOut->addHTML("<tr><td style='width:120px;' align='right'><b>Level:</b></td><td><select name='levels[$id]'>");
+                                
+                                if($partner->getLevel() == ""){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option value='' $selected>---</option>");
+                                if($partner->getLevel() == "Provincial"){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option $selected>Provincial</option>");
+                                if($partner->getLevel() == "Federal"){$selected="selected='selected'";}else{$selected="";} $wgOut->addHTML("<option $selected>Federal</option>");
+                                
+                                $wgOut->addHTML("</select><td></tr>");
                                 
                                 $type = isset($_POST['type'][$id]) ? $_POST['type'][$id] : $contribution->getTypeFor($partner);
                                 $subtype = str_replace("'", "&#39;", isset($_POST['subtype'][$id]) ? $_POST['subtype'][$id] : $contribution->getSubTypeFor($partner));

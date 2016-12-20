@@ -31,9 +31,15 @@ class ReportItemCallback {
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "project_n_partners" => "getNPartners",
+            "project_n_industry_partners" => "getNIndustryPartners",
+            "project_n_community_partners" => "getNCommunityPartners",
+            "project_n_provincial_partners" => "getNProvincialPartners",
+            "project_n_federal_partners" => "getNFederalPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
             "project_contributions" => "getProjectContributions",
+            "project_contributions_cash" => "getProjectContributionsCash",
+            "project_contributions_inkind" => "getProjectContributionsInKind",
             "project_n_connected_projects" => "getNConnectedProjects",
             "project_n_white" => "getNWhite",
             "project_n_products" => "getNProducts",
@@ -459,7 +465,7 @@ class ReportItemCallback {
         return count($collaborators);
     }
     
-    function getNPartners($startDate = false, $endDate = false){
+    private function getPartners($startDate = false, $endDate = false){
         $collaborators = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
@@ -469,7 +475,52 @@ class ReportItemCallback {
                 }
             }
         }
-        return count($collaborators);
+        return $collaborators;
+    }
+    
+    function getNPartners($startDate = false, $endDate = false){
+        $partners = self::getPartners($startDate, $endDate);
+        return count($partners);
+    }
+    
+    function getNIndustryPartners($startDate = false, $endDate = false){
+        $partners = self::getPartners($startDate, $endDate);
+        foreach($partners as $key => $partner){
+            if($partner->getIndustry() != "Industry"){
+                unset($partners[$key]);
+            }
+        }
+        return count($partners);
+    }
+    
+    function getNCommunityPartners($startDate = false, $endDate = false){
+        $partners = self::getPartners($startDate, $endDate);
+        foreach($partners as $key => $partner){
+            if($partner->getIndustry() != "Community/Not for profit"){
+                unset($partners[$key]);
+            }
+        }
+        return count($partners);
+    }
+    
+    function getNProvincialPartners($startDate = false, $endDate = false){
+        $partners = self::getPartners($startDate, $endDate);
+        foreach($partners as $key => $partner){
+            if($partner->getLevel() != "Provincial"){
+                unset($partners[$key]);
+            }
+        }
+        return count($partners);
+    }
+    
+    function getNFederalPartners($startDate = false, $endDate = false){
+        $partners = self::getPartners($startDate, $endDate);
+        foreach($partners as $key => $partner){
+            if($partner->getLevel() != "Federal"){
+                unset($partners[$key]);
+            }
+        }
+        return count($partners);
     }
     
     function getNProductsWithOther($startDate = false, $endDate = false){
@@ -514,6 +565,28 @@ class ReportItemCallback {
             $project = Project::newFromId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
                 $contributions += $contribution->getTotal();
+            }
+        }
+        return number_format($contributions);
+    }
+    
+    function getProjectContributionsCash($startDate = false, $endDate = false){
+        $contributions = 0;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
+                $contributions += $contribution->getCash();
+            }
+        }
+        return number_format($contributions);
+    }
+    
+    function getProjectContributionsInKind($startDate = false, $endDate = false){
+        $contributions = 0;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
+                $contributions += $contribution->getKind();
             }
         }
         return number_format($contributions);

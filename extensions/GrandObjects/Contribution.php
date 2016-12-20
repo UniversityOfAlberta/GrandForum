@@ -116,6 +116,8 @@ class Contribution extends BackboneModel {
         foreach($this->getPartners() as $partner){
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
+                                "industry" => $partner->getIndustry(),
+                                "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
@@ -350,6 +352,12 @@ class Contribution extends BackboneModel {
                     if($p != null && $p->getContact() == null && $row['contact'] != null){
                         $p->contact = $row['contact'];
                     }
+                    if($p != null && $p->getIndustry() == null && $row['industry'] != null){
+                        $p->industry = $row['industry'];
+                    }
+                    if($p != null && $p->getLevel() == null && $row['level'] != null){
+                        $p->level = $row['level'];
+                    }
                     $id = md5(serialize($p));
                     $this->type[$id] = $row['type'];
                     
@@ -535,6 +543,16 @@ class Contribution extends BackboneModel {
     function getContactFor($partner){
         $id = md5(serialize($partner));
         return @$this->contact[$id];
+    }
+    
+    function getIndustryFor($partner){
+        $id = md5(serialize($partner));
+        return @$this->industry[$id];
+    }
+    
+    function getLevelFor($partner){
+        $id = md5(serialize($partner));
+        return @$this->level[$id];
     }
     
     function getByType($type, $partner=null){
