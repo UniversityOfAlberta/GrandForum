@@ -82,7 +82,7 @@ class ProjectMainTab extends AbstractEditableTab {
         if($config->getValue("projectStatus")){
             $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
         }
-        if(!$edit && $website){
+        if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
             $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
         }
         else if($edit){
