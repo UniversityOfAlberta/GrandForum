@@ -234,30 +234,30 @@
         <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{project_n_presentations_national({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #invited expert presentations meetings keynotes, etc. at:<br />
-                    national: {$item} <b>{project_n_presentations_national({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    national: {$item} <b>{$value}</b>
                     <br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{project_n_presentations_international({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    international: {$item} <b>{project_n_presentations_international({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    international: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{project_n_leadership_local({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #of leadership positions in policy & practice you hold (e.g. membership in communities of practice, funding organizations, grass-roots organizations, advocacy groups, NGOs) at the:<br />
-                    local level: {$item} <b>{project_n_leadership_local({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    local level: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{project_n_leadership_national({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    national level: {$item} <b>{project_n_leadership_national({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    national level: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{project_n_leadership_international({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    international level: {$item} <b>{project_n_leadership_international({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    international level: {$item} <b>{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -284,16 +284,16 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{project_n_journals({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Journal Paper|Journal Abstract)}">
             <![CDATA[
                 <td>
-                    #journal publications: {$item} <b>{project_n_journals({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #journal publications: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})}">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Conference Paper|Conference Abstract|Proceedings Paper)})}">
             <![CDATA[
-                    #conference presentations (including invited expert presentations): {$item} <b>{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})}</b>
+                    #conference presentations (including invited expert presentations): {$item} <b>{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -367,7 +367,7 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m0" blobItem="REV_3_5_M0" type="Hidden" size="3" default="{project_n_face_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item} <b>{project_n_face_with_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -719,29 +719,29 @@
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of partners: {$item} <b>{project_n_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of partners: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{project_n_industry_partners({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30, Industry, null)}">
             <![CDATA[
                     #of partners by sector<br />
-                    Industry: {$item} <b>{project_n_industry_partners({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    Industry: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{project_n_community_partners({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30, Community/Not for profit, null)}">
             <![CDATA[
-                    Community/Not for profit: {$item} <b>{project_n_community_partners({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    Community/Not for profit: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2c" blobItem="REV_1_5_M2C" type="Hidden" size="3" default="{project_n_provincial_partners({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2c" blobItem="REV_1_5_M2C" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30, null, Provincial)}">
             <![CDATA[
-                    Provincial: {$item} <b>{project_n_provincial_partners({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    Provincial: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2d" blobItem="REV_1_5_M2D" type="Hidden" size="3" default="{project_n_federal_partners({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2d" blobItem="REV_1_5_M2D" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30, null, Federal)}">
             <![CDATA[
-                    Federal: {$item} <b>{project_n_federal_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    Federal: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -783,13 +783,13 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of other Age-Well projects that the project is connected with? {$item} <b>{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of other Age-Well projects that the project is connected with? {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of publications with investigators from other projects: {$item} <b>{project_n_products_other({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of publications with investigators from other projects: {$item} <b>{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -1011,26 +1011,26 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{project_n_print({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Magazine/Newspaper Article|Print Media Interview)}">
             <![CDATA[
                 <td>
                     #of non-academic dissemination activities in the following mediums:<br />
-                    print (e.g. magazines, newspapers): {$item} <b>{project_n_print({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    print (e.g. magazines, newspapers): {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{project_n_digital({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Digital News Interview|Blog)}">
             <![CDATA[
-                    digital: {$item} <b>{project_n_digital({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    digital: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{project_n_face({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Meeting|Workshop Presentation|Seminar Presentation)}">
             <![CDATA[
-                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item} <b>{project_n_face({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{project_n_tv({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Radio Interview|TV Interview)}">
             <![CDATA[
-                    TV & radio interviews: {$item} <b>{project_n_tv({$this_year}-10-01, {$next_year}-09-30)}</b><br />
+                    TV & radio interviews: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1e" blobItem="REV_3_5_M1E" type="Integer" size="3">
@@ -1039,9 +1039,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{project_n_policy({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Policy Brief)}">
             <![CDATA[
-                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{project_n_policy({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of policy briefs provided to government and non-governmental organisations: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -1232,40 +1232,40 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
             <![CDATA[
                 <td>
-                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Provisional Patent)}">
             <![CDATA[
-                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, IP Disclosure)}">
             <![CDATA[
-                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, License Agreement)}">
             <![CDATA[
-                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Copyright)}">
             <![CDATA[
-                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Trademark)}">
             <![CDATA[
-                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{$value}</b>
                     </td>
                 </tr>
             ]]>
@@ -1292,10 +1292,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Start-Up)}">
             <![CDATA[
                 <td>
-                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{$value}</b>
                     </td>
                 </tr>
             ]]>
@@ -1474,36 +1474,36 @@
         <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Hidden" size="3" default="{project_n_hqp({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of HQP hired on project: {$item} <b title="The count of HQP on this project">{project_n_hqp({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of HQP hired on project: {$item} <b title="The count of HQP on this project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m9a" blobItem="REV_1_6_M9A" type="Hidden" size="3" default="{project_n_hqp_lead_author({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of HQP involved as a lead author on a publication: {$item} <b title="The count of HQP listed as the first author of a Publication associated with this project">{project_n_hqp_lead_author({$this_year}-10-01, {$next_year}-09-30)}</b> <br />
+                    #of HQP involved as a lead author on a publication: {$item} <b title="The count of HQP listed as the first author of a Publication associated with this project">{$value}</b> <br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m9b" blobItem="REV_1_6_M9B" type="Hidden" size="3" default="{project_n_hqp_co_author({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    and co-author: {$item} <b title="The count of HQP listed as the second or later author of a Publication associated with this project">{project_n_hqp_co_author({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    and co-author: {$item} <b title="The count of HQP listed as the second or later author of a Publication associated with this project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m10" blobItem="REV_1_6_M10" type="Hidden" size="3" default="{project_n_hqp_co_presenter({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of HQP involved as a co-presenter on a presentation: {$item} <b title="The count of HQP listed as an author of a presentation associated with this project">{project_n_hqp_co_presenter({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of HQP involved as a co-presenter on a presentation: {$item} <b title="The count of HQP listed as an author of a presentation associated with this project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m3" blobItem="REV_1_6_M3" type="Hidden" size="3" default="{project_n_hqp_interns({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of internships HQP accomplished {$item} <b title="The count of Activities of type 'Internship' that are associated with this project and have at least 1 HQP as an author">{project_n_hqp_interns({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of internships HQP accomplished {$item} <b title="The count of Activities of type 'Internship' that are associated with this project and have at least 1 HQP as an author">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m5" blobItem="REV_1_6_M5" type="Hidden" size="3" default="{project_n_epic({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of HQP successfully completing EPIC training program: {$item} <b title="The count of HQP who are currently elligible for EPIC (have the EPIC tab on their profile)">{project_n_epic({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of HQP successfully completing EPIC training program: {$item} <b title="The count of HQP who are currently elligible for EPIC (have the EPIC tab on their profile)">{$value}</b>
                     </td>
                  </tr>
             ]]>
