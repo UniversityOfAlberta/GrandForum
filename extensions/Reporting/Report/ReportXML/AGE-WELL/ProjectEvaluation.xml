@@ -975,10 +975,10 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_products({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of products integrated into the assistive technology marketplace (nationally or internationally). {$item} <b>{project_n_products({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of products integrated into the assistive technology marketplace (nationally or internationally). {$item}
                     <hr />
             ]]>
         </ReportItem>
@@ -1235,37 +1235,37 @@
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of patents: {$item} <b>{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{project_n_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of provisional patents: {$item} <b>{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{project_n_provisional_patents({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of ip disclosures: {$item} <b>{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{project_n_ip_disclosures({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of licensing agreements: {$item} <b>{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{project_n_licenses({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of copyrights: {$item} <b>{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{project_n_copyrights({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of trademarks: {$item} <b>{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{project_n_trademarks({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
@@ -1295,7 +1295,7 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
-                    #of start-ups created: {$item} <b>{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{project_n_startups({$this_year}-10-01, {$next_year}-09-30)}</b>
                     </td>
                 </tr>
             ]]>
