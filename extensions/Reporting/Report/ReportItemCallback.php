@@ -35,6 +35,7 @@ class ReportItemCallback {
             "project_n_digital" => "getNDigital",
             "project_n_face" => "getNFace",
             "project_n_tv" => "getNTV",
+            "project_n_face_with_partners" => "getNFaceWithPartners",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "project_n_partners" => "getNPartners",
@@ -550,6 +551,27 @@ class ReportItemCallback {
             }
         }
         return count($tvs);
+    }
+    
+    function getNFaceWithPartners($startDate = false, $endDate = false){
+        $faces = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $faceTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($faceTmp as $face){
+                if($face->getType() == "Meeting" || 
+                   $face->getType() == "Workshop Presentation" ||
+                   $face->getType() == "Seminar Presentation"){
+                    foreach($face->getAuthors() as $author){
+                        if($author->isRoleDuring(CHAMP, $startDate, $endDate)){
+                            $faces[] = $face;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return count($faces);
     }
     
     function getNProductsWithPartners($startDate = false, $endDate = false){

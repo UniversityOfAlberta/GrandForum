@@ -291,9 +291,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})}">
             <![CDATA[
-                    #conference publications: {$item} <b>{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)}</b>
+                    #conference presentations (including invited expert presentations): {$item} <b>{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{project_n_conferences({$this_year}-10-01, {$next_year}-09-30)})}</b>
                 </td>
                 </tr>
             ]]>
@@ -365,9 +365,9 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m0" blobItem="REV_3_5_M0" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m0" blobItem="REV_3_5_M0" type="Hidden" size="3" default="{project_n_face_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers {$item}
+                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item} <b>{project_n_face_with_partners({$this_year}-10-01, {$next_year}-09-30)}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -533,7 +533,7 @@
         </ReportItem>
         <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #conference publications: {$item}
+                    #conference presentations (including invited expert presentations): {$item}
                 </td>
                 </tr>
             ]]>
@@ -607,7 +607,7 @@
         </ReportItem>
         <ReportItem id="plan_3_5_m0" blobItem="PLAN_3_5_M0" type="Integer" size="3">
             <![CDATA[
-                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers {$item}
+                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item}
                     <hr />
             ]]>
         </ReportItem>

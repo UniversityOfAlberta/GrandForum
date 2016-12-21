@@ -168,7 +168,7 @@
         </ReportItem>
         <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #conference publications: <b>{$item}</b>
+                    #conference presentations (including invited expert presentations): <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
@@ -412,7 +412,7 @@
         </ReportItem>
         <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
             <![CDATA[
-                    #conference publications: <b>{$item}</b>
+                    #conference presentations (including invited expert presentations): <b>{$item}</b>
                 </td>
                 </tr>
             ]]>
