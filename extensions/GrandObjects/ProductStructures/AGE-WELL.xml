@@ -46,6 +46,14 @@
             </data>
         </Activity>
         
+        <Activity type="Leadership Position">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Position" type="String">position</field>
+                <field label="Level" type="Select" options="Local|National|International">level</field>
+            </data>
+        </Activity>
+        
         <Activity type="Meeting">
             <data>
                 <field label="Location" type="String">location</field>

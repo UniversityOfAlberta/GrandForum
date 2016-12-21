@@ -39,6 +39,9 @@ class ReportItemCallback {
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "project_n_partners" => "getNPartners",
+            "project_n_leadership_local" => "getNLeadershipLocal",
+            "project_n_leadership_national" => "getNLeadershipNational",
+            "project_n_leadership_international" => "getNLeadershipInternational",
             "project_n_industry_partners" => "getNIndustryPartners",
             "project_n_community_partners" => "getNCommunityPartners",
             "project_n_provincial_partners" => "getNProvincialPartners",
@@ -678,6 +681,54 @@ class ReportItemCallback {
                         $products[] = $product;
                         break;
                     }
+                }
+            }
+        }
+        return count($products); 
+    }
+    
+    function getNLeadershipLocal($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            foreach($productTmp as $product){
+                $data = $product->getData();
+                if($product->getType() == "Leadership Position" && @$data['level'] == "Local"){
+                    $products[] = $product;
+                    break;
+                }
+            }
+        }
+        return count($products); 
+    }
+    
+    function getNLeadershipNational($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            foreach($productTmp as $product){
+                $data = $product->getData();
+                if($product->getType() == "Leadership Position" && @$data['level'] == "National"){
+                    $products[] = $product;
+                    break;
+                }
+            }
+        }
+        return count($products); 
+    }
+    
+    function getNLeadershipInternational($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            foreach($productTmp as $product){
+                $data = $product->getData();
+                if($product->getType() == "Leadership Position" && @$data['level'] == "International"){
+                    $products[] = $product;
+                    break;
                 }
             }
         }

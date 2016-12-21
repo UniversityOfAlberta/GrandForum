@@ -244,20 +244,20 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{project_n_leadership_local({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                     #of leadership positions in policy & practice you hold (e.g. membership in communities of practice, funding organizations, grass-roots organizations, advocacy groups, NGOs) at the:<br />
-                    local level: {$item}<br />
+                    local level: {$item} <b>{project_n_leadership_local({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{project_n_leadership_national({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    national level: {$item}<br />
+                    national level: {$item} <b>{project_n_leadership_national({$this_year}-10-01, {$next_year}-09-30)}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{project_n_leadership_international({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    international level: {$item}
+                    international level: {$item} <b>{project_n_leadership_international({$this_year}-10-01, {$next_year}-09-30)}</b>
                 </td>
                 </tr>
             ]]>
