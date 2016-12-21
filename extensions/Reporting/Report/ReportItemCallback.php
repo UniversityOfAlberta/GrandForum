@@ -48,9 +48,9 @@ class ReportItemCallback {
             "project_n_federal_partners" => "getNFederalPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
-            "project_n_hqp_lead_author" => "getNProductsWithHQPLeadAuthor",
-            "project_n_hqp_co_author" => "getNProductsWithHQPCoAuthor",
-            "project_n_hqp_co_presenter" => "getNProductsWithHQPCoPresenter",
+            "project_n_hqp_lead_author" => "getNHQPLeadAuthor",
+            "project_n_hqp_co_author" => "getNHQPCoAuthor",
+            "project_n_hqp_co_presenter" => "getNHQPCoPresenter",
             "project_n_hqp_interns" => "getNProductsWithHQPInterns",
             "project_contributions" => "getProjectContributions",
             "project_contributions_cash" => "getProjectContributionsCash",
@@ -752,57 +752,55 @@ class ReportItemCallback {
         return count($products);
     }
     
-    function getNProductsWithHQPLeadAuthor($startDate = false, $endDate = false){
-        $products = array();
+    function getNHQPLeadAuthor($startDate = false, $endDate = false){
+        $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $productTmp = $project->getPapers('Publication', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
-                    if($author->isRoleDuring(HQP, $startDate, $endDate)){
-                        $products[] = $product;
+                    if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                        $hqps[$author->getId()] = $author;
                     }
                     break; // Only do the first
                 }
             }
         }
-        return count($products);
+        return count($hqps);
     }
     
-    function getNProductsWithHQPCoAuthor($startDate = false, $endDate = false){
-        $products = array();
+    function getNHQPCoAuthor($startDate = false, $endDate = false){
+        $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $productTmp = $project->getPapers('Publication', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $key => $author){
                     if($key > 0){
-                        if($author->isRoleDuring(HQP, $startDate, $endDate)){
-                            $products[] = $product;
-                            break;
+                        if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                            $hqps[$author->getId()] = $author;
                         }
                     }
                 }
             }
         }
-        return count($products);
+        return count($hqps);
     }
     
-    function getNProductsWithHQPCoPresenter($startDate = false, $endDate = false){
-        $products = array();
+    function getNHQPCoPresenter($startDate = false, $endDate = false){
+        $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $productTmp = $project->getPapers('Presentation', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $key => $author){
-                    if($author->isRoleDuring(HQP, $startDate, $endDate)){
-                        $products[] = $product;
-                        break;
+                    if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                        $hqps[$author->getId()] = $author;
                     }
                 }
             }
         }
-        return count($products);
+        return count($hqps);
     }
     
     function getNProductsWithHQPInterns($startDate = false, $endDate = false){
@@ -813,7 +811,7 @@ class ReportItemCallback {
             foreach($productTmp as $product){
                 if($product->getType() == "Internship"){
                     foreach($product->getAuthors() as $key => $author){
-                        if($author->isRoleDuring(HQP, $startDate, $endDate)){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
                             $products[] = $product;
                             break;
                         }
