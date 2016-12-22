@@ -32,6 +32,8 @@ class ReportItemCallback {
             "project_n_face_with_partners" => "getNFaceWithPartners",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
+            "getNStakeholders" => "getNStakeholders",
+            "getNStakeholderProducts" => "getNStakeholderProducts",
             "project_n_partners" => "getNPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
@@ -494,6 +496,38 @@ class ReportItemCallback {
             }
         }
         return count($collaborators);
+    }
+    
+    function getNStakeholders($startDate = false, $endDate = false, $stakeholderCategory="", $role = null){
+        $stakeholders = array();
+        $role = ($role == "" || $role == "null") ? null : $role;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $people = $project->getAllPeopleDuring($role, $startDate, $endDate);
+            foreach($people as $key => $person){
+                if($person->isStakeHolder() && $person->getStakeholder() == $stakeholderCategory){
+                    $stakeholders[$person->getId()] = $person;
+                }
+            }
+        }
+        return count($stakeholders);
+    }
+    
+    function getNStakeholderProducts($startDate = false, $endDate = false, $stakeholderCategory="", $category="all"){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers($category, $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $author){
+                    if($author->isStakeHolder() && $author->getStakeholder() == $stakeholderCategory){
+                        $products[] = $product;
+                        break;
+                    }
+                }
+            }
+        }
+        return count($products);
     }
     
     function getNPartners($startDate = false, $endDate = false, $industry = null, $level = null){

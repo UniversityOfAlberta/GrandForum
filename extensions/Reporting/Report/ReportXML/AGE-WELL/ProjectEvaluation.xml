@@ -320,48 +320,48 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m6" blobItem="REV_3_5_M6" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m6" blobItem="REV_3_5_M6" type="Hidden" size="3" default="{add({getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Older Adult,Advisory Board)},{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Caregiver,Advisory Board)})}">
             <![CDATA[
                 <td>
                     #of stakeholders involved in your research as advisory board members:<br />
-                    older adult or caregiver: {$item}<br />
+                    older adult or caregiver: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m7" blobItem="REV_3_5_M7" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m7" blobItem="REV_3_5_M7" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Community Organization,Advisory Board)}">
             <![CDATA[
-                    community organization: {$item}<br />
+                    community organization: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m8" blobItem="REV_3_5_M8" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m8" blobItem="REV_3_5_M8" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Industry Member,Advisory Board)}">
             <![CDATA[
-                    industry member: {$item}<br />
+                    industry member: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m9" blobItem="REV_3_5_M9" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m9" blobItem="REV_3_5_M9" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Policymaker,Advisory Board)}">
             <![CDATA[
-                    policymaker: {$item}
+                    policymaker: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m10" blobItem="REV_3_5_M10" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m10" blobItem="REV_3_5_M10" type="Hidden" size="3" default="{add({getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Older Adult,AR)},{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Caregiver,AR)})}">
             <![CDATA[
                     #of stakeholders involved in your research as affiliated researcher:<br />
-                    older adult or caregiver: {$item}<br />
+                    older adult or caregiver: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m11" blobItem="REV_3_5_M11" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m11" blobItem="REV_3_5_M11" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Community Organization,AR)}">
             <![CDATA[
-                    community organization: {$item}<br />
+                    community organization: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m12" blobItem="REV_3_5_M12" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m12" blobItem="REV_3_5_M12" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Industry Member,AR)}">
             <![CDATA[
-                    industry member: {$item}<br />
+                    industry member: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m13" blobItem="REV_3_5_M13" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m13" blobItem="REV_3_5_M13" type="Hidden" size="3" default="{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Policymaker,AR)}">
             <![CDATA[
-                    policymaker: {$item}
+                    policymaker: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -371,47 +371,47 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,Publication)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,Publication)}}">
             <![CDATA[
                     #of publications published with any of the following listed as a co-author:<br />
-                    older adult or caregiver: {$item} <br />
+                    older adult or caregiver: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,Publication)}">
             <![CDATA[
-                    community organization: {$item} <br />
+                    community organization: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,Publication)}">
             <![CDATA[
-                    industry member: {$item} <br />
+                    industry member: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,Publication)}">
             <![CDATA[
-                    policymaker: {$item}
+                    policymaker: {$item} <b>{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,Presentation)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,Presentation)}}">
             <![CDATA[
                     #presentations that involved:<br />
-                    older adult or caregiver: {$item}<br />
+                    older adult or caregiver: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,Presentation)}">
             <![CDATA[
-                    community organization: {$item}<br />
+                    community organization: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,Presentation)}">
             <![CDATA[
-                    industry member: {$item}<br />
+                    industry member: {$item} <b>{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Integer" size="3">
+        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,Presentation)}">
             <![CDATA[
-                    policymaker: {$item}
+                    policymaker: {$item} <b>{$value}</b>
             ]]>
         </ReportItem>
         <ReportItem id="rev_foot" type="Static">
