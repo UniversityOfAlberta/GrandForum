@@ -33,9 +33,6 @@ class ReportItemCallback {
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "project_n_partners" => "getNPartners",
-            "project_n_leadership_local" => "getNLeadershipLocal",
-            "project_n_leadership_national" => "getNLeadershipNational",
-            "project_n_leadership_international" => "getNLeadershipInternational",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
             "project_n_hqp_lead_author" => "getNHQPLeadAuthor",
@@ -539,54 +536,6 @@ class ReportItemCallback {
         return count($products); 
     }
     
-    function getNLeadershipLocal($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
-            foreach($productTmp as $product){
-                $data = $product->getData();
-                if($product->getType() == "Leadership Position" && @$data['level'] == "Local"){
-                    $products[] = $product;
-                    break;
-                }
-            }
-        }
-        return count($products); 
-    }
-    
-    function getNLeadershipNational($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
-            foreach($productTmp as $product){
-                $data = $product->getData();
-                if($product->getType() == "Leadership Position" && @$data['level'] == "National"){
-                    $products[] = $product;
-                    break;
-                }
-            }
-        }
-        return count($products); 
-    }
-    
-    function getNLeadershipInternational($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
-            foreach($productTmp as $product){
-                $data = $product->getData();
-                if($product->getType() == "Leadership Position" && @$data['level'] == "International"){
-                    $products[] = $product;
-                    break;
-                }
-            }
-        }
-        return count($products); 
-    }
-    
     function getNProductsWithHQP($startDate = false, $endDate = false){
         $products = array();
         if($this->reportItem->projectId != 0){
@@ -722,7 +671,7 @@ class ReportItemCallback {
         return count($connectedProjects);
     }
     
-    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all"){
+    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all", $data=""){
         $products = array();
         if($this->reportItem->projectId != 0){
             // Project Products
@@ -739,6 +688,16 @@ class ReportItemCallback {
             foreach($products as $key => $product){
                 if(!in_array($product->getType(), $types)){
                     // Type doesn't match
+                    unset($products[$key]);
+                }
+            }
+        }
+        if($data != ""){
+            foreach($products as $key => $product){
+                $productData = $product->getData();
+                $datas = explode("=", $data);
+                if($productData[$datas[0]] != $datas[1]){
+                    // Data doesn't match
                     unset($products[$key]);
                 }
             }
