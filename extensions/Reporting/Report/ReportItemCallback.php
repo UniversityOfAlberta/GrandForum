@@ -97,8 +97,6 @@ class ReportItemCallback {
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
-            "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
-            "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
@@ -1189,34 +1187,6 @@ class ReportItemCallback {
             return time2date($project->getEndDate($person));
         }
         return "";
-    }
-    
-    function getUserPhase1Projects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
-            if(!$project->isSubProject() && $project->getPhase() == 1){
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-        }
-        if(count($projects) > 0){
-            return implode(", ", $projects);
-        }
-        return "N/A";
-    }
-    
-    function getUserPhase2Projects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
-            if(!$project->isSubProject() && $project->getPhase() == 2){
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-        }
-        if(count($projects) > 0){
-            return implode(", ", $projects);
-        }
-        return "N/A";
     }
     
     function getTVNFileNumber(){
