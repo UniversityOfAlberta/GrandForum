@@ -128,6 +128,7 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
 		$this->addAction('User Accounts', 'updateUserWebsite', 'UserWebsiteAPI');
 		$this->addAction('User Accounts', 'updateUserNationality', 'UserNationalityAPI');
+		$this->addAction('User Accounts', 'updateUserStakeholder', 'UserStakeholderAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
         $this->addAction('User Accounts', 'updateUserGender', 'UserGenderAPI');
 		$this->addAction('User Accounts', 'updateUserUniversity', 'UserUniversityAPI');

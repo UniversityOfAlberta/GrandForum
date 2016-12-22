@@ -24,6 +24,7 @@ class Person extends BackboneModel {
     var $email;
     var $phone;
     var $nationality;
+    var $stakeholder;
     var $gender;
     var $photo;
     var $twitter;
@@ -297,6 +298,7 @@ class Person extends BackboneModel {
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
+                                              'user_stakeholder',
                                               'user_gender',
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
@@ -782,6 +784,7 @@ class Person extends BackboneModel {
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
             $this->nationality = @$data[0]['user_nationality'];
+            $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
@@ -882,6 +885,7 @@ class Person extends BackboneModel {
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
+                                          'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
@@ -923,6 +927,7 @@ class Person extends BackboneModel {
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
+                                          'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
@@ -1259,6 +1264,26 @@ class Person extends BackboneModel {
             return $this->nationality;
         }
         return "";
+    }
+    
+    /**
+     * Returns the stakeholder category of this Person
+     * @return string The stakeholder category of this Person
+     */
+    function getStakeholder(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->stakeholder;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns whether this Person is a stakeholder
+     * @return string Whether this Person is a stakeholder
+     */
+    function isStakeholder(){
+        return ($this->getStakeholder() != "");
     }
     
     /**

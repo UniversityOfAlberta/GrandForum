@@ -133,6 +133,7 @@ Person = Backbone.Model.extend({
         reversedName: '',
         email: '',
         nationality: '',
+        stakeholder: '',
         gender: '',
         photo: wgServer + wgScriptPath + '/skins/face.png',
         cachedPhoto: wgServer + wgScriptPath + '/skins/face.png',

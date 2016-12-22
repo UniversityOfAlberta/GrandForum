@@ -296,6 +296,8 @@
     $config->setValue("subRoles", array());
     
     $config->setValue("roleAliases", array());
+    
+    $config->setValue("stakeholderCategories", array());
         
     $config->setValue("boardMods", array($config->getConst('STAFF'), 
                                          $config->getConst('MANAGER'),

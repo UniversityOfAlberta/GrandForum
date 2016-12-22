@@ -177,6 +177,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
+            $_POST['stakeholder'] = @$_POST['stakeholder'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
@@ -194,6 +195,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserWebsiteAPI();
             $api->doAction(true);
             $api = new UserNationalityAPI();
+            $api->doAction(true);
+            $api = new UserStakeholderAPI();
             $api->doAction(true);
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -513,7 +516,7 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $config;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
@@ -550,6 +553,24 @@ EOF;
                     </select>
                 </td>
             </tr>";
+            
+            $stakeholderCategories = $config->getValue('stakeholderCategories');
+            $stakeholder = "";
+            if(count($stakeholderCategories) > 0){
+                $blankSelected = (!$person->isStakeholder()) ? "selected='selected'" : "";
+                $stakeholder = "<tr>
+                    <td align='right'><b>Stakeholder<br />Category:</b></td>
+                    <td>
+                        <select name='stakeholder'>
+                            <option value='' $blankSelected>---</option>";
+                foreach($stakeholderCategories as $category){
+                    $selected = ($person->getStakeholder() == $category) ? "selected='selected'" : "";
+                    $stakeholder .= "<option value='$category' $selected>$category</option>";
+                }
+                $stakeholder .= "</select>
+                    </td>
+                </tr>";
+            }
         }
         $this->html .= "<table>
                             <tr>
@@ -557,7 +578,8 @@ EOF;
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
-                            {$gender}";
+                            {$gender}
+                            {$stakeholder}";
         
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());

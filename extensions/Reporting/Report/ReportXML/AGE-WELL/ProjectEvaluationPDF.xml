@@ -819,42 +819,6 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Real-life impact (social & economic impact)</b></td>
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of products integrated into the assistive technology marketplace: <b>{$item}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_5_m3" blobItem="REV_2_5_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of products integrated into the publicly-funded health care system: <b>{$item}</b>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -946,42 +910,6 @@
                         <th>Inputs - resources required to carry out project activities</th>
                         <th>Metrics</th>
                     </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Real-life impact (social & economic impact)</b></td>
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_5_m2" blobItem="PLAN_2_5_M2" type="Integer" size="3">
-            <![CDATA[
-                <td>
-                    #of products integrated into the assistive technology marketplace: <b>{$item}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_2_5_m3" blobItem="PLAN_2_5_M3" type="Integer" size="3">
-            <![CDATA[
-                    #of products integrated into the publicly-funded health care system: <b>{$item}</b>
-                    </td>
-                </tr>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
