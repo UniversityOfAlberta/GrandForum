@@ -1,5 +1,5 @@
 <% if(_.contains(allowedRoles, name)){ %>
-    <td><%= HTML.Select(this, 'name', {style: 'max-width:150px;text-overflow: ellipsis;', options: _.map(allowedRoles, function(role){ return {option: role + " - " + roleDefs[role], value: role} })}) %></td>
+    <td><%= HTML.Select(this, 'name', {style: 'max-width:150px;text-overflow: ellipsis;', options: _.map(allowedRoles, function(role){ return {option: roleDefs[role], value: role} })}) %></td>
     <td style="white-space:nowrap;">
         <table id="projects" style="width:100%;">
 
