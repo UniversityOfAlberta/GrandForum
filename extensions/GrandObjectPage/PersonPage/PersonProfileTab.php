@@ -504,7 +504,7 @@ EOF;
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
-                $(document).ready(function(){    
+                $(document).ready(function(){
                     var person = new Person({$person->toJSON()});
                     var card = new LargePersonCardView({el: $("#card"), model: person});
                     card.render();

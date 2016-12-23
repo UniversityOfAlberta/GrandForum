@@ -240,12 +240,6 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m0" blobItem="REV_3_5_M0" type="Integer" size="3">
-            <![CDATA[
-                    #of project meetings and events that included non-academic stakeholders as attendees or organizers: <b>{$item}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Integer" size="3">
             <![CDATA[
                     #of publications published with any of the following listed as a co-author:<br />
@@ -484,13 +478,7 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m0" blobItem="PLAN_3_5_M0" type="Integer" size="3">
-            <![CDATA[
-                    #of project meetings and events that included non-academic stakeholders as attendees or organizers: <b>{$item}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
- <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
+        <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
             <![CDATA[
                     #of publications published with any of the following listed as a co-author:<br />
                     older adult or caregiver: <b>{$item}</b><br />

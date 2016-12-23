@@ -839,6 +839,7 @@ class Person extends BackboneModel {
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
                       'nationality' => $this->getNationality(),
+                      'stakeholder' => $this->getStakeholder(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'photo' => $this->getPhoto(),

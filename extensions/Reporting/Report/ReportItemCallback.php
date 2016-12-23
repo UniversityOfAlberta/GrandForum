@@ -29,7 +29,6 @@ class ReportItemCallback {
             "project_n_presentations" => "getNPresentations",
             "project_n_presentations_national" => "getNPresentationsNational",
             "project_n_presentations_international" => "getNPresentationsInternational",
-            "project_n_face_with_partners" => "getNFaceWithPartners",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "getNStakeholders" => "getNStakeholders",
@@ -444,7 +443,7 @@ class ReportItemCallback {
         return count($presentations);
     }
     
-    function getNFaceWithPartners($startDate = false, $endDate = false){
+    function getNFaceWithStakeholder($startDate = false, $endDate = false){
         $faces = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
@@ -454,7 +453,7 @@ class ReportItemCallback {
                    $face->getType() == "Workshop Presentation" ||
                    $face->getType() == "Seminar Presentation"){
                     foreach($face->getAuthors() as $author){
-                        if($author->isRoleDuring(CHAMP, $startDate, $endDate)){
+                        if($author->isStakeholder()){
                             $faces[] = $face;
                             break;
                         }

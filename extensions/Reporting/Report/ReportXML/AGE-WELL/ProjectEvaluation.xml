@@ -365,12 +365,6 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m0" blobItem="REV_3_5_M0" type="Hidden" size="3" default="{project_n_face_with_partners({$this_year}-10-01, {$next_year}-09-30)}">
-            <![CDATA[
-                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item} <b>{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,Publication)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,Publication)}}">
             <![CDATA[
                     #of publications published with any of the following listed as a co-author:<br />
@@ -602,12 +596,6 @@
         <ReportItem id="plan_3_5_m13" blobItem="PLAN_3_5_M13" type="Integer" size="3">
             <![CDATA[
                     policymaker: {$item}
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_3_5_m0" blobItem="PLAN_3_5_M0" type="Integer" size="3">
-            <![CDATA[
-                    #of project meetings and events (workshops) that included non-academic stakeholders as attendees or organizers: {$item}
                     <hr />
             ]]>
         </ReportItem>
