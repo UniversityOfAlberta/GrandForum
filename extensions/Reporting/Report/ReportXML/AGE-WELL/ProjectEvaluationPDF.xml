@@ -651,7 +651,7 @@
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of other Age-Well projects that the project is connected with? <b>{$item}</b>
+                    #of other Age-Well projects that the project is actively collaborating with: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -781,7 +781,7 @@
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of other Age-Well projects that the project is connected with? <b>{$item}</b>
+                    #of other Age-Well projects that the project is actively collaborating with: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
