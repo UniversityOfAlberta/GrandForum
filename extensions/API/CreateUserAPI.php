@@ -19,7 +19,7 @@ class CreateUserAPI extends API{
     }
 
     function doAction($doEcho=true){
-        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail;
+        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication, $wgEnableUserEmail;
         $me = Person::newFromId($wgUser->getId());
         $oldWPNS = "";
         $oldWPType = "";
@@ -54,12 +54,17 @@ class CreateUserAPI extends API{
             }
             $wgRequest->setVal('wpName', $_POST['wpName']);
             // Actually create a new user
+            $oldWgEnableEmail = $wgEnableEmail;
+            $wgEnableEmail = true;
             if(isset($_POST['wpSendMail']) && $wgEnableEmail){
                 if($_POST['wpSendMail'] === "true"){
                     $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
                     $wgRequest->setVal('wpCreateaccountMail', true);
                 }
                 else {
+                    $wgEmailAuthentication = false;
+                    $wgEnableUserEmail = false;
+                    $wgEnableEmail = false;
                     $wgRequest->setVal('wpCreateaccount', true);
                     $_POST['wpPassword'] = User::randomPassword();
                     $_POST['wpRetype'] = $_POST['wpPassword'];
@@ -88,10 +93,9 @@ class CreateUserAPI extends API{
             $specialUserLogin->getUser()->mEffectiveGroups = null;
             GrandAccess::$alreadyDone = array();
             $tmpUser = User::newFromName($_POST['wpName']);
-            $oldWgEnableEmail = $wgEnableEmail;
-            $wgEnableEmail = true;
             if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
                 $wgEnableEmail = $oldWgEnableEmail;
+                $wgEmailAuthentication = true;
                 Person::$cache = array();
                 Person::$namesCache = array();
                 Person::$aliasCache = array();

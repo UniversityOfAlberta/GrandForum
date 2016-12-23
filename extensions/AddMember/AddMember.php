@@ -26,11 +26,11 @@ class AddMember extends SpecialPage{
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 $request = UserCreateRequest::newFromId($_POST['id']);
-                $sendEmail = "false";
+                /*$sendEmail = "false";
                 if(isset($_POST['wpEmail']) && $_POST['wpEmail'] != ""){
                     $sendEmail = "true";
                 }
-                $_POST['wpSendMail'] = "$sendEmail";
+                $_POST['wpSendMail'] = "$sendEmail";*/
                 $result = APIRequest::doAction('CreateUser', false);
                 if(strstr($result, "already exists") === false){
                     $request->acceptRequest();
@@ -53,6 +53,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
+                $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('university_field')->setPOST('university');
@@ -187,7 +188,7 @@ class AddMember extends SpecialPage{
                 }
                 $wgOut->addHTML("</td>");
             }
-            $wpSendMail = ($wgEnableEmail) ? "true" : "false";
+            $wpSendMail = ($wgEnableEmail) ? $request->getSendEmail() : "false";
             $wgOut->addHTML("
                         <td>{$request->getCandidate(true)}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
@@ -247,6 +248,11 @@ class AddMember extends SpecialPage{
         $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_WARNING));
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
+        
+        $sendEmailLabel = new CustomElement("sendEmail_label", "", "", "");
+        $sendEmailField = new VerticalCheckBox("sendEmail_field", "Email", array("true"), array("Send Registration Email?" => "true"), VALIDATE_NOTHING);
+        $sendEmailRow = new FormTableRow("sendEmail_row");
+        $sendEmailRow->append($sendEmailLabel)->append($sendEmailField);
         
         $roleValidations = VALIDATE_NOT_NULL;
         if($me->isRoleAtLeast(STAFF)){
@@ -321,6 +327,7 @@ class AddMember extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
+                  ->append($sendEmailRow)
                   ->append($rolesRow)
                   ->append($projectsRow)
                   ->append($universityRow)
@@ -343,7 +350,7 @@ class AddMember extends SpecialPage{
         if($user->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
         }
-        $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
+        $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administratoer will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember' method='post'>\n");
         
         $form = self::createForm();
