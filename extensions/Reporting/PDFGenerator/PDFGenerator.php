@@ -251,6 +251,18 @@ abstract class PDFGenerator {
         }
         $nInfo = max(5, $nInfo);
         
+        $tables = $dom->getElementsByTagName('table');
+        foreach($tables as $table){
+            $brs = $table->getElementsByTagName('br');
+            for($i=0; $i<$brs->length; $i++){
+                $br = $brs->item($i);
+                if($br->getAttribute('style') == 'font-size:1em;'){
+                    $i--;
+                    $br->parentNode->removeChild($br);
+                }
+            }
+        }
+        
         $html = "$dom";
         if($person == null){
             $person = Person::newFromId($wgUser->getId());
