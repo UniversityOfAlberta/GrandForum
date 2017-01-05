@@ -82,7 +82,7 @@ class HQPEpicTab extends AbstractEditableTab {
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -163,7 +163,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -244,7 +244,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -316,7 +316,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -388,7 +388,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
