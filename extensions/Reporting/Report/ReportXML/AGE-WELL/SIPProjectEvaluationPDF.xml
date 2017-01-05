@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SIP Project Evaluation" extends="ProjectEvaluationPDF">
+    <ReportSection id="research">
+        <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="planning" delete="true" />
+        <ReportItem id="plan_head">
+            <![CDATA[
+                <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="networking">
+        <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="planning" delete="true" />
+        <ReportItem id="plan_head">
+            <![CDATA[
+                <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee1">
+        <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="planning" delete="true" />
+        <ReportItem id="plan_head">
+            <![CDATA[
+                <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee2">
+        <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="planning" delete="true" />
+        <ReportItem id="plan_head">
+            <![CDATA[
+                <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="hqp">
+        <ReportItem id="pagebreak" delete="true" />
+        <ReportItem id="planning" delete="true" />
+        <ReportItem id="plan_head">
+            <![CDATA[
+                <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
