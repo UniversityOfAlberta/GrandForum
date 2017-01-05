@@ -129,9 +129,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -210,9 +210,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -281,9 +281,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -352,9 +352,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -424,9 +424,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
