@@ -75,11 +75,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="application" name="Application" title="Application Form" tooltip="Application Form" type="EditableReportSection" blobSection="APPLICATION">
-        <Instructions>
-            <![CDATA[
-                Hello World
-            ]]>
-        </Instructions>
         <ReportItem id="trainee_head" type="Static">
             <![CDATA[
                 <h2>Trainee</h2>
