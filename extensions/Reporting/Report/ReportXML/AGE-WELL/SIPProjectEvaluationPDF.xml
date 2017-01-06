@@ -45,4 +45,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="narrative2">
+        <ReportItem id="justification" delete="true" />
+        <ReportItem id="level" delete="true" />
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+            <![CDATA[
+                <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
 </Report>

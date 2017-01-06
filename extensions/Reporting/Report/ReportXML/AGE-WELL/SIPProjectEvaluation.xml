@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SIP Project Evaluation" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation">
-    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
+    <ReportSection id="overview">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>The objectives of the NCE program are to mobilize multi-disciplinary research capacity from across Canada, engage partners from multiple academic institutions and various public and private-sector organizations, train the next generation of highly qualified people, work with end users to accelerate the creation and application of new knowledge as well as increase collaboration between research in Canada and abroad.</p>
@@ -65,6 +65,16 @@
         <ReportItem id="plan_head">
             <![CDATA[
                 <table style="display:none;">
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="narrative2">
+        <ReportItem id="justification" delete="true" />
+        <ReportItem id="level" delete="true" />
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+            <![CDATA[
+                <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
