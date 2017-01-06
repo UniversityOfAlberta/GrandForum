@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SIP Project Evaluation" pdfFiles="SIPProjectEvaluationPDF" extends="ProjectEvaluation">
     <ReportSection id="overview">
-        <ReportItem id="instructions" type="Static">
+        <ReportItem id="instructions">
             <![CDATA[
                 <p>The objectives of the NCE program are to mobilize multi-disciplinary research capacity from across Canada, engage partners from multiple academic institutions and various public and private-sector organizations, train the next generation of highly qualified people, work with end users to accelerate the creation and application of new knowledge as well as increase collaboration between research in Canada and abroad.</p>
  
