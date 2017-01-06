@@ -99,10 +99,21 @@
                 <td>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Integer" size="3">
+        <ReportItem id="rev_1_5_m1a" blobItem="REV_1_5_M1A" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of international collaborators involved in the project: <b>{$item}</b>
+                    #of international collaborators involved in the project<br />
+                    Researcher: <b>{$item}</b><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m1b" blobItem="REV_1_5_M1B" type="Integer" size="3">
+            <![CDATA[
+                    Trainee: <b>{$item}</b><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m1c" blobItem="REV_1_5_M1C" type="Integer" size="3">
+            <![CDATA[
+                    Community/Industry Organization: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
@@ -337,10 +348,21 @@
                 <td>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_1_5_m1a" blobItem="PLAN_1_5_M1A" type="Integer" size="3">
             <![CDATA[
                 <td>
-                    #of international collaborators involved in the project: <b>{$item}</b>
+                    #of international collaborators involved in the project<br />
+                    Researcher: <b>{$item}</b><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m1b" blobItem="PLAN_1_5_M1B" type="Integer" size="3">
+            <![CDATA[
+                    Trainee: <b>{$item}</b><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan_1_5_m1c" blobItem="PLAN_1_5_M1C" type="Integer" size="3">
+            <![CDATA[
+                    Community/Industry Organization: <b>{$item}</b>
                     <hr />
             ]]>
         </ReportItem>
