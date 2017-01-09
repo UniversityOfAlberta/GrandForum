@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="SIP Project Evaluation" extends="ProjectEvaluationPDF">
+    <ReportSection id="narrative1">
+        <ReportItem id="economic">
+            <![CDATA[
+                <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How have/will the outcomes of your project benefit the Canadian economy and what progress has your project made in the last 12 months in achieving these outcomes?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="progress" type="Radio" options="Yes|No">
+            <![CDATA[
+                <h3>Did your product progress from one PRL stage/level to another over the award term?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="prl2" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Stage|PRL Level" types="Text|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)" class="wikitable">
+            <![CDATA[
+                <h3>If yes, what PRL Level did your project start at:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="research">
         <ReportItem id="pagebreak" delete="true" />
         <ReportItem id="planning" delete="true" />
@@ -48,7 +68,7 @@
     <ReportSection id="narrative2">
         <ReportItem id="justification" delete="true" />
         <ReportItem id="level" delete="true" />
-        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true" position="0">
             <![CDATA[
                 <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
                 {$item}

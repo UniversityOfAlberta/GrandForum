@@ -675,7 +675,7 @@
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" tooltip="Networking and Partnerships" name="Networking/Partnerships" title="Networking and Partnerships">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
-                <p>The project must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It must be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project.</p>
+                <p>AGE-WELL Network is expected to demonstrate that the projects have brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It should be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project. </p>
                 <ul>
                     <li>the social innovations to be implemented as a result of the Network  and the extent to which these will contribute to more effective public policy in Canada;</li>
                     <li>effective collaboration with the private, public and not-for-profit sectors in technology, market development, and public policy development;</li>
@@ -1039,7 +1039,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
@@ -1552,7 +1552,7 @@
         </ReportItem>
         <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
             <![CDATA[
-                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL.</h3>
+                <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. (OPTIONAL)</h3>
                 {$item}
             ]]>
         </ReportItem>

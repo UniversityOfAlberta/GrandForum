@@ -9,7 +9,7 @@
 
                 <p>AGE-WELL produces products (technologies, services and policy) that MUST have impact. Progress towards achieving these products can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress towards a product across 5 stages that overlay the Technology Readiness Levels (TRL). The five stage progression is based on the funding continuum of the innovation pipeline developed for CIHR’s eHealth innovations Partnership Program (eHIPP). The TRL is a well-established approach in engineering and other fields.  AGE-WELL has adapted both scales to be inclusive of the types of projects and products that are part of the Network. Please refer to the Product Readiness Levels Guideline table for definitions of the PRL levels, as well as example outputs at each level across product type.  Note that the current outputs in this table are only examples and will be added to as we continue to roll out this process. (Feedback is welcomed.)</p>
 
-                <p>Each project is required to complete one table related to each of the 5 NCE objectives (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training) <b>for the period of the award term</b>. <u>All projects are asked to only complete the cells relevant to their project</u>. Projects will only be reviewed against themselves and the progress they make towards the objectives they proposed in their application.</p>
+                <p>Each project is required to complete one table related to each of the 5 NCE objectives (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization, Commercialization and HQP Training) <b>for the period of the award term</b>. <u>All projects are asked to only complete the cells relevant to their project</u>. Information provided will be used to inform the Network Management Office of the various outputs and activities that were completed throughout the award term and will be incorporated in AGE-WELL’s report to the NCE.</p>
 
                 <p>The report consists of qualitative and quantitative information to appropriately capture the progress your project has made on the key impact areas.</p>
 
@@ -20,6 +20,62 @@
                         <li>Case study (optional)- a short vignette that describes an outstanding work or achievement by the project.</li>
                     </ol>
                 </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="narrative1">
+        <ReportItem id="economic">
+            <![CDATA[
+                <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How have/will the outcomes of your project benefit the Canadian economy and what progress has your project made in the last 12 months in achieving these outcomes?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="progress" type="Radio" options="Yes|No">
+            <![CDATA[
+                <h3>Did your product progress from one PRL stage/level to another over the award term?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="prl2" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Stage|PRL Level" types="Text|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)">
+            <![CDATA[
+                <h3>If yes, what PRL Level did your project start at:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    setInterval(function(){
+                        $('#table_AssessmentReadiness_prl2 tr.obj').each(function(i, el){
+                            var selects = $('select', $(el));
+                            var spans = $('span.recommended', $(el));
+                            var stage = $(selects[0]);
+                            var level = $(selects[1]);
+                            var val = stage.val();
+                            var recommended = "1";
+                            
+                            if(spans.length > 0){
+                                spans.remove();
+                            }
+                            
+                            switch(val){
+                                case "INNOVATION":
+                                    recommended = "1";
+                                    break;
+                                case "INCUBATOR":
+                                    recommended = "2-3"
+                                    break;
+                                case "PROTOTYPE":
+                                    recommended = "4-5";
+                                    break;
+                                case "EXPERIMENTAL IMPLEMENTATION":
+                                    recommended = "6-7"
+                                    break;
+                                case "OUTCOMES":
+                                    recommended = "8-9";
+                                    break;
+                            }
+                            
+                            level.after("<span class='recommended' style='width:50px;display:inline-block;font-weight:bold;vertical-align:middle;line-height:25px;'>(" + recommended + ")</span>");
+                        });
+                    }, 100);
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -71,7 +127,7 @@
     <ReportSection id="narrative2">
         <ReportItem id="justification" delete="true" />
         <ReportItem id="level" delete="true" />
-        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true">
+        <ReportItem id="steps" type="Textarea" blobItem="STEPS" rich="true" position="0">
             <![CDATA[
                 <h3>What are the next steps for your product to progress along the PRL scale? What resources do you have in place/need to ensure ongoing success?</h3>
                 {$item}

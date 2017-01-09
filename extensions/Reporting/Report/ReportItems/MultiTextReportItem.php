@@ -73,7 +73,7 @@ class MultiTextReportItem extends AbstractReportItem {
             var max{$this->getPostId()} = {$max}+1;
             function addObj{$this->getPostId()}(i){
                 $("#table_{$this->getPostId()}").append(
-                    "<tr id='" + i + "' class='obj'>" +
+                    "<tr id='obj" + i + "' class='obj'>" +
 EOF;
                     foreach($indices as $j => $index){
                         $align = "";
@@ -133,14 +133,14 @@ EOF;
                     }
                     $colspan = 1;
                     if($isVertical){
-                        $item .= "\"<tr id='\" + i + \"'>\" + \n";
+                        $item .= "\"<tr id='obj\" + i + \"'>\" + \n";
                         $colspan = 2;
                     }
                     $item .= <<<EOF
                         "<td colspan='$colspan'><button type='button' onClick='removeObj{$this->getPostId()}(this);'>-</button></td></tr>"
 EOF;
                     if($isVertical){
-                        $item .= "+ \"<tr id='\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
+                        $item .= "+ \"<tr id='obj\" + i + \"'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>\"";
                     }
                     $item .= <<<EOF
                     );
@@ -211,11 +211,11 @@ EOF;
         $i = 0;
         foreach($values as $i => $value){
             if($i > -1){
-                $item .= "<tr id='$i' class='obj'>";
+                $item .= "<tr id='obj$i' class='obj'>";
                 foreach($indices as $j => $index){
                     $align = "";
                     if($isVertical){
-                        $item .= "<tr id='$i' class='$i'><td align='right'><b>{$labels[$j]}:</b></td>";
+                        $item .= "<tr id='obj$i' class='$i'><td align='right'><b>{$labels[$j]}:</b></td>";
                         $align = "left";
                     }
                     if(@$types[$j] == "NI"){
@@ -280,7 +280,7 @@ EOF;
                 }
                 $colspan = 1;
                 if($isVertical){
-                    $item .= "<tr id='$i'>";
+                    $item .= "<tr id='obj$i'>";
                     $colspan = 2;
                 }
                 if($multiple){
@@ -288,7 +288,7 @@ EOF;
                 }
                 $item .= "</tr>";
                 if($isVertical){
-                    $item .= "<tr id='$i'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>";
+                    $item .= "<tr id='obj$i'><td colspan='$colspan' style='background:#CCCCCC;'></td></tr>";
                 }
             }
         }

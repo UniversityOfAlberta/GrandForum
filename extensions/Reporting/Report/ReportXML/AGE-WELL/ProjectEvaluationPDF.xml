@@ -909,7 +909,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="rev_head" type="Static">
+        <ReportItem id="plan_head" type="Static">
             <![CDATA[
                 <table rules="all" frame="box" class="wikitable smaller">
                     <tr>
