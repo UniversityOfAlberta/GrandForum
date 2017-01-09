@@ -1657,8 +1657,13 @@ class ReportItemCallback {
         return "{$str1}{$str2}";
     }
     
-    function add($val1, $val2){
-        return $val1 + $val2;
+    function add(){
+        $args = func_get_args();
+        $sum = 0;
+        foreach($args as $arg){
+            $sum += $arg;
+        }
+        return $sum;
     }
     
     function subtract($val1, $val2){

@@ -10,6 +10,7 @@
             <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -22,6 +23,7 @@
             <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -34,6 +36,7 @@
             <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -46,6 +49,7 @@
             <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
