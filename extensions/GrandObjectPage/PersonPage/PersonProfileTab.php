@@ -336,6 +336,7 @@ EOF;
         $chord->width = 226;
         $chord->height = 226;
         $chord->options = false;
+        $chord->fn = '$("#personProducts_wrapper input").val(data.labels[d.index]); $("#personProducts_wrapper input").trigger("keyup")';
         $html .= $chord->show();
         $html .= "</div>";
         $wgOut->addScript("<script type='text/javascript'>
