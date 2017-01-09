@@ -268,7 +268,8 @@ abstract class AbstractReportItem {
     }
     
     private function stripBlob($value){
-        return trim(htmlentities($value, null, 'utf-8', false));
+        $value = trim(htmlentities($value, null, 'utf-8', false));
+        $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
         return $value;
     }
 
