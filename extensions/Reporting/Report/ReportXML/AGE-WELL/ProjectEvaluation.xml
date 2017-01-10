@@ -7,7 +7,6 @@
             <SectionPermission id="research" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
-            <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
@@ -20,7 +19,6 @@
             <SectionPermission id="research" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
-            <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
@@ -33,7 +31,6 @@
             <SectionPermission id="research" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
-            <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
@@ -46,7 +43,6 @@
             <SectionPermission id="research" permissions="rw" />
             <SectionPermission id="networking" permissions="rw" />
             <SectionPermission id="ktee1" permissions="rw" />
-            <SectionPermission id="ktee2" permissions="rw" />
             <SectionPermission id="hqp" permissions="rw" />
             <SectionPermission id="narrative2" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
@@ -92,6 +88,7 @@
         </ReportItem>
         <ReportItem id="product" type="Checkbox" blobItem="PRODUCT" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product - a service or information product that will be used by another entity">
             <![CDATA[
+                <h2>Product Description</h2>
                 <h3>What kind of product(s) are you developing (check all that apply):</h3>
                 {$item}
             ]]>
@@ -111,6 +108,7 @@
         </ReportItem>
         <ReportItem id="economic" type="Textarea" blobItem="ECONOMIC" rich="true" limit="300">
             <![CDATA[
+                <h2>Product Development</h2>
                 <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How will the outcomes of your project benefit the Canadian economy and what progress has your project made in achieving these outcomes?</h3>
                 {$item}
             ]]>
@@ -123,7 +121,6 @@
         </ReportItem>
         <ReportItem id="nProducts" blobItem="N_PRODUCTS" type="Integer" min="0" max="100" size="3">
             <![CDATA[
-                <h2>PRL</h2>
                 <p>How many products is your project developing?</p> {$item}
             ]]>
         </ReportItem>
@@ -182,7 +179,7 @@
     <ReportSection id="research" type="EditableReportSection" blobSection="RESEARCH" tooltip="Scientific Excellence" name="Scientific Excellence">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
-                <p>The AGE-WELL research program must be driven to address Canadian needs and problems and to demonstrate world-class scientific achievements.</p>
+                <p>The AGE-WELL research program is expected to address Canadian needs and problems and to demonstrate world-class scientific achievements.</p>
             ]]>
         </ReportItem>
         <!-- Table 1 -->
@@ -940,7 +937,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge and Technology Exchange and Exploitation - Knowledge Mobilization" name="Knowledge Mobilization" title="Knowledge and Technology Exchange and Exploitation - Knowledge Mobilization">
+    <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge and Technology Exchange and Exploitation - Knowledge mobilization &amp; Commercialization" name="Knowledge Mobilization" title="Knowledge and Technology Exchange and Exploitation - Knowledge mobilization &amp; Commercialization">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication.</p>
@@ -1026,6 +1023,96 @@
         <ReportItem id="rev_3_5_m3" blobItem="REV_3_5_M3" type="Static">
             <![CDATA[
                     Project has a website or other online presence? <b title="The project website from the project profile">{$project_website}</b>
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr>
+                <td><b>Product Development & IP Management</b></td>
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
+            <![CDATA[
+                <td>
+                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{$value}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Provisional Patent)}">
+            <![CDATA[
+                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{$value}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, IP Disclosure)}">
+            <![CDATA[
+                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{$value}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, License Agreement)}">
+            <![CDATA[
+                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{$value}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Copyright)}">
+            <![CDATA[
+                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{$value}</b>
+                    <hr />
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Trademark)}">
+            <![CDATA[
+                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{$value}</b>
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr>
+                <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Start-Up)}">
+            <![CDATA[
+                <td>
+                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{$value}</b>
                     </td>
                 </tr>
             ]]>
@@ -1119,155 +1206,6 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_foot" type="Static">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="ktee2" type="EditableReportSection" blobSection="KTEE2" tooltip="Knowledge and Technology Exchange and Exploitation - Commercialization" name="Commercialization" title="Knowledge and Technology Exchange and Exploitation - Commercialization">
-        <ReportItem id="instructions" type="Static">
-            <![CDATA[
-                <p>Projects are expected to generate social and economic benefits by ensuring the rapid flow of intellectual property (IP) from research into the Canadian economy in terms of new products, services and business ventures. Projects that aim to create technology and/or service products (see previous sections) are expected to demonstrate that the appropriate activities have been undertaken and the appropriate resources allocated to the commercialization of their IP.</p>
-            ]]>
-        </ReportItem>
-        <!-- Table 1 -->
-        <ReportItem id="review" type="Textarea" blobItem="REVIEW" rich="true" optional="true" limit="250">
-            <![CDATA[
-                <h2>Review scorecard</h2>
-                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_head" type="Static">
-            <![CDATA[
-                <table rules="all" frame="box" class="small">
-                    <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Product Development & IP Management</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
-            <![CDATA[
-                <td>
-                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Provisional Patent)}">
-            <![CDATA[
-                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, IP Disclosure)}">
-            <![CDATA[
-                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, License Agreement)}">
-            <![CDATA[
-                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Copyright)}">
-            <![CDATA[
-                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{$value}</b>
-                    <hr />
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Trademark)}">
-            <![CDATA[
-                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{$value}</b>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
-            <![CDATA[
-                <tr>
-                <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_4" blobItem="REV_3_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Start-Up)}">
-            <![CDATA[
-                <td>
-                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{$value}</b>
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_foot" type="Static">
-            <![CDATA[
-                </table>
-            ]]>
-        </ReportItem>
-        <!-- Table 2 -->
-        <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
-            <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
-                <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_head" type="Static">
-            <![CDATA[
-                <table rules="all" frame="box" class="small">
-                    <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
-                    </tr>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
@@ -1328,29 +1266,29 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
+        <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
                 <tr>
                 <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
+        <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
+        <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_4" blobItem="PLAN_3_4" type="Textarea" height="100%">
+        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
+        <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
                     #of start-ups created: {$item}

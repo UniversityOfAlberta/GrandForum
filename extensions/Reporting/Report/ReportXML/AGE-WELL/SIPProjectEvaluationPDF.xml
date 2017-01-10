@@ -3,6 +3,7 @@
     <ReportSection id="narrative1">
         <ReportItem id="economic">
             <![CDATA[
+                <h2>Product Development</h2>
                 <h3>AGE-WELL is expected to deliver significant economic benefits through new products, enterprises, improved services and the net monetary value of improved health and independence of seniors and caregivers. How have/will the outcomes of your project benefit the Canadian economy and what progress has your project made in the last 12 months in achieving these outcomes?</h3>
                 {$item}
             ]]>
@@ -39,15 +40,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="ktee1">
-        <ReportItem id="pagebreak" delete="true" />
-        <ReportItem id="planning" delete="true" />
-        <ReportItem id="plan_head">
-            <![CDATA[
-                <table style="display:none;">
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="ktee2">
         <ReportItem id="pagebreak" delete="true" />
         <ReportItem id="planning" delete="true" />
         <ReportItem id="plan_head">
