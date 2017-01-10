@@ -194,12 +194,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -216,11 +215,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -291,11 +285,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Journal Paper|Journal Abstract)}">
             <![CDATA[
                 <td>
@@ -323,11 +312,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_4" blobItem="REV_3_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -439,12 +423,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -461,11 +444,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_1_4" blobItem="PLAN_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -536,11 +514,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
@@ -568,11 +541,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_3_4" blobItem="PLAN_3_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -696,12 +664,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -718,11 +685,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -786,11 +748,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_4" blobItem="REV_3_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
                 <td>
@@ -822,12 +779,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -844,11 +800,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_1_4" blobItem="PLAN_1_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -912,11 +863,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_3_4" blobItem="PLAN_3_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
@@ -955,12 +901,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -977,11 +922,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_3_4" blobItem="REV_3_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -1044,11 +984,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_4" blobItem="REV_1_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
             <![CDATA[
                 <td>
@@ -1104,11 +1039,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_4" blobItem="REV_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Start-Up)}">
             <![CDATA[
                 <td>
@@ -1134,12 +1064,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1156,11 +1085,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_3_4" blobItem="PLAN_3_4" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -1223,11 +1147,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_1_4" blobItem="PLAN_1_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
             <![CDATA[
                 <td>
@@ -1283,11 +1202,6 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="plan_2_4" blobItem="PLAN_2_4" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
             <![CDATA[
                 <td>
@@ -1320,12 +1234,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Completed Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Completed Outputs - Deliverables meeting the project objectives</th>
-                        <th align="left" width="20%">Completed Activities - completed to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources utilized to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Completed Outputs - Deliverables meeting the project objectives</th>
+                        <th align="left" width="25%">Completed Activities - completed to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1342,11 +1255,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rev_1_5" blobItem="REV_1_5" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
@@ -1405,12 +1313,11 @@
             <![CDATA[
                 <table rules="all" frame="box" class="small">
                     <tr>
-                        <th align="left" width="1%">Category</th>
-                        <th align="left" width="20%">Planned Objectives - main objectives of project over last year</th>
-                        <th align="left" width="20%">Planned Outputs - Deliverables required to meet project objectives</th>
-                        <th align="left" width="20%">Planned Activities - required to generate outputs</th>
-                        <th align="left" width="20%">Inputs - resources required to carry out project activities</th>
-                        <th align="left" width="10%">Metrics</th>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives - main objectives of project over last year</th>
+                        <th align="left" width="25%">Planned Outputs - Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Activities - required to generate outputs</th>
+                        <th align="left" width="20%">Metrics</th>
                     </tr>
             ]]>
         </ReportItem>
@@ -1427,11 +1334,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
-            <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="plan_1_5" blobItem="PLAN_1_5" type="Textarea" height="100%">
             <![CDATA[
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
