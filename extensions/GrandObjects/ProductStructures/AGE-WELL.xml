@@ -68,6 +68,12 @@
             </data>
         </Activity>
         
+        <Product type="Start-Up">
+            <data>
+                <field label="Company Name" type="String">name</field>
+            </data>
+        </Product>
+        
         <Activity type="Internship">
             <data>
                 <field label="Skill Set Learned" type="String">skill_set_learned</field>
@@ -729,12 +735,6 @@
         <Product type="Framework" status="">
             <data>
                 <field label="URL" type="URL">url</field>
-            </data>
-        </Product>
-        
-        <Product type="Start-Up">
-            <data>
-                <field label="Company Name" type="String">name</field>
             </data>
         </Product>
         

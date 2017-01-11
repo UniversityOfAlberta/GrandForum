@@ -1039,7 +1039,7 @@
                 <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Start-Up)}">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Activity, Start-Up)}">
             <![CDATA[
                 <td>
                     #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{$value}</b>
