@@ -716,7 +716,12 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidates(AR);
             $cis = self::getAllCandidates(CI);
-            return array_merge($ars, $cis);
+            $merged = array_merge($ars, $cis);
+            $people = array();
+            foreach($merged as $person){
+                $people[$person->getName()] = $person;
+            }
+            return $people;
         }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
@@ -746,7 +751,12 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
             $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
-            return array_merge($ars, $cis);
+            $merged = array_merge($ars, $cis);
+            $people = array();
+            foreach($merged as $person){
+                $people[$person->getName()] = $person;
+            }
+            return $people;
         }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
