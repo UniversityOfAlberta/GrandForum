@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Evaluation" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
     <Permissions>
-        <Role role="STAFF+">
+        <Role role="SD+">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
