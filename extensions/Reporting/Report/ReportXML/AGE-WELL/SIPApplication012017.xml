@@ -278,12 +278,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
             <![CDATA[
                 <h2>Team Summary</h2>
                 <p class='small'>Use the following code for Role:<br />
                 <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
                 <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
+                <b>&nbsp;&nbsp;AR:</b> Affiliated Researcher<br />
+                <b>&nbsp;&nbsp;Collaborator</b><br />
                 <b>&nbsp;&nbsp;Partner</b></p>
                 {$item}
             ]]>
