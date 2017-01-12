@@ -767,7 +767,7 @@ abstract class AbstractReport extends SpecialPage {
                                              $me->leadershipOf($this->project) || 
                                              $me->isThemeLeaderOf($this->project) || 
                                              $me->isThemeCoordinatorOf($this->project) ||
-                                             $me->isRoleAtLeast(STAFF))){
+                                             $me->isRoleAtLeast(SD))){
                                 $pResult = false;
                             }
                         }
