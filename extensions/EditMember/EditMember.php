@@ -883,7 +883,7 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                 }
             }
             else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td> <td><input type='submit' name='submit' value='Ignore' /></td>");
+                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' onclick=\"return confirm('Are you sure you want to accept the request?');\" /></td> <td><input type='submit' name='submit' value='Ignore' onclick=\"return confirm('Are you sure you want to ignore the request?');\" /></td>");
             }
             $wgOut->addHTML("
                         </form>

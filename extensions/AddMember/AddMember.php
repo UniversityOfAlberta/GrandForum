@@ -259,12 +259,12 @@ class AddMember extends SpecialPage{
             }
             else{
                 if(!$request->isCreated()){
-                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input type='submit' name='submit' value='Ignore' /></td>");
+                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' onclick=\"return confirm('Are you sure you want to accept the request?');\" /><br /><input type='submit' name='submit' value='Ignore' onclick=\"return confirm('Are you sure you want to ignore the request?');\" /></td>");
                     $wgOut->addHTML("<td></td>");
                 }
                 else{
                     $wgOut->addHTML("<td></td>");
-                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Promote' /></td>");
+                    $wgOut->addHTML("<td><input type='submit' name='submit' value='Promote' onclick=\"return confirm('Are you sure you want to promote this user?');\" /></td>");
                 }
             }
             $wgOut->addHTML("</form>
