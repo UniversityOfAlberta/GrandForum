@@ -173,7 +173,7 @@ class MailList{
             
             $wgOut->addHTML("<h2>$project_name Mail List Archive</h2>");
             $data = MailingList::getThreads($project_name);   
-            if(DBFunctions::getNRows() > 0){
+            if(count($data) > 0){
                 $wgOut->addHTML("<table style='display:none;' id='mailingListMessages' frame='box' rules='all'>
                         <thead><tr>
                             <th style='white-space:nowrap;'>First Message</th><th style='white-space:nowrap;'>Last Message</th><th style='white-space:nowrap;'>Subject</th><th style='white-space:nowrap;'>Messages</th><th style='white-space:nowrap;'>People</th>

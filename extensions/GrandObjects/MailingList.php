@@ -16,6 +16,7 @@ class MailingList extends BackboneModel {
     
     var $id;
     var $name;
+    var $public;
     var $rules = null;
     
     static function newFromId($id){
@@ -61,6 +62,7 @@ class MailingList extends BackboneModel {
         if(count($data) > 0){
             $this->id = $data[0]['projectid'];
             $this->name = $data[0]['mailListName'];
+            $this->public = $data[0]['public'];
         }
     }
     
@@ -70,6 +72,10 @@ class MailingList extends BackboneModel {
     
     function getName(){
         return $this->name;
+    }
+    
+    function isPublic(){
+        return $this->public;
     }
     
     function getRules(){
@@ -139,6 +145,19 @@ class MailingList extends BackboneModel {
             }
         }
         return self::$threadCache[$project_id][$thread];
+    }
+    
+    static function getPublicLists(){
+        $lists = array();
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('mailListName'),
+                                    array('public' => EQ('1')));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $lists[] = $row['mailListName'];
+            }
+        }
+        return $lists;
     }
 
     /**

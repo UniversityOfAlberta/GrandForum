@@ -31,6 +31,7 @@ class MyMailingLists extends SpecialPage{
             redirect("$wgServer$wgScriptPath/index.php/Special:MyMailingLists");
             exit;
         }
+        $publicLists = array();
         if($person->isRoleAtLeast(MANAGER)){
             $lists = MailingList::listLists();
         }
@@ -39,6 +40,11 @@ class MyMailingLists extends SpecialPage{
         }
         else{
             $lists = MailingList::getPersonLists($person);
+            foreach(MailingList::getPublicLists() as $list){
+                if(array_search($list, $lists) === false){
+                    $publicLists[] = $list;
+                }
+            }
         }
         $wgOut->addHTML("<form method='POST'><table class='mailTable' frame='box' rules='all'><thead>
                             <tr><th>List Name</th><th># Threads</th><th><span class='tooltip' title='Unsubscribing will remove you from the selected list(s) and will prevent you from being added to that list in the future'>Unsubscribe?</span></th></tr>
@@ -46,6 +52,9 @@ class MyMailingLists extends SpecialPage{
         foreach($lists as $list){
             $threads = MailingList::getThreads($list);
             $wgOut->addHTML("<tr><td><a href='mailto:$list@{$config->getValue('domain')}'>$list</a><a style='float:right;' href='$wgServer$wgScriptPath/index.php/Mail:$list'>View Archives</a></td><td align='right'>".count($threads)."</td><td align='center'><input type='checkbox' name='unsub[]' value='{$list}' /></td></tr>\n");
+        }
+        foreach($publicLists as $list){
+            $wgOut->addHTML("<tr><td><a href='mailto:$list@{$config->getValue('domain')}'>$list</a></td><td align='right'></td><td align='center'></td></tr>\n");
         }
         $wgOut->addHTML("</tbody></table><br />
             <input type='submit' value='Submit' />
