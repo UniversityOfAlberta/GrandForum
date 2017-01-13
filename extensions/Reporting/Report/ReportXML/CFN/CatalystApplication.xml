@@ -218,7 +218,7 @@
                 <div class="warning" id="incompleteWarning" style="display:none;"></div>
             ]]>
         </ReportItem>
-        <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false" emails="perry@cfn-nce.ca,doug@cfn-nce.ca,kate@cfn-nce.ca">
+        <ReportItem id="submit" type="SimpleReviewSubmit" pdfFiles="CatalystIntentToApplyPDF" showWarning="false" emails="perry@cfn-nce.ca,mat@cfn-nce.ca,kate@cfn-nce.ca">
             <![CDATA[
                 {$item}
             ]]>
