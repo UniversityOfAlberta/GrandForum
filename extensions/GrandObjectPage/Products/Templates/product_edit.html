@@ -10,6 +10,12 @@
 <h2>Information</h2>
 <table id="productData" width="100%">
     <tr>
+        <td class="label" style="vertical-align: middle;">Tags:</td>
+        <td class="field" colspan="2">
+            <div id="productTags" style="width: 550px;"></div>
+        </td>
+    </tr>
+    <tr>
         <td class="label">Category:</td>
         <td class="field">
             <% var def = (category == "") ? [{option: "Choose a Category...", value: ""}] : []; %>

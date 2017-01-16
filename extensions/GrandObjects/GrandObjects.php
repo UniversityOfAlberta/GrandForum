@@ -56,6 +56,7 @@ $apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProdu
 
 // Product
 $apiRequest->addAction('Hidden','product', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/tags', 'ProductTagsAPI');
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id', 'ProductAPI');

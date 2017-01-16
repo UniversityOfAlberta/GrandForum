@@ -330,12 +330,15 @@ HTML.TagIt = function(view, attr, options){
         var newItems = Array();
         for(cId in current){
             var c = current[cId];
-            var tuple = {};
-            tuple[subName] = c;
-            newItems.push(tuple);
+            newItems.push(c);
         }
         var field = attr.substr(0, index);
-        eval("view.model.set({" + field + ": newItems}, {silent:true});");
+        if(attr.indexOf('.') != -1){
+            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+        }
+        else{                
+            view.model.set(attr, _.clone(newItems), {silent: true});
+        }
     };
     view.delegateEvents(events);
     return el;

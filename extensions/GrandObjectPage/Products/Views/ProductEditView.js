@@ -255,9 +255,24 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
+    renderTagsWidget: function(){
+        $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags', $.proxy(function(availableTags){
+            var html = HTML.TagIt(this, 'tags', {
+                strictValues: false, 
+                values: this.model.get('tags'),
+                options: {
+                    removeConfirmation: false,
+                    availableTags: availableTags,
+                }
+            });
+            this.$("#productTags").html(html);
+        }, this))
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
+        this.renderTagsWidget();
         return this.$el;
     }
 
