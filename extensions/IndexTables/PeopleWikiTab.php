@@ -113,10 +113,10 @@ class PeopleWikiTab extends AbstractTab {
        </div>";
 
 	}
-        $this->html .= "
-                    <span class='en'>Below are all the $this->table Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.</span></br>
-                    <span class='fr'>Ci-dessous sont tous les $this->table des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
-</span><br /><br />";
+        $this->html .= "<br />
+                    <div style='font-size: 1.5em;'><span class='en'>Below are all the {$this->table} Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.</span></br>
+                    <span class='fr'>Ci-dessous sont tous les {$this->table} des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.
+</span></div><br />";
         if($this->table == "Organizations"){
         $this->html .= "
                     <span class='en'>
