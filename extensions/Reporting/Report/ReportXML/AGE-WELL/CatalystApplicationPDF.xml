@@ -26,56 +26,73 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="i" type="TextReportItem" blobItem="PROJECT">
+        <ReportItem id="ia" type="TextReportItem" width="200px" blobItem="LEADERS">
             <![CDATA[
                 <h4>COVER SHEET</h4>
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
                 <ol id='list' type="i">
-                <li>
-                    <b>Investigator Name: </b>{$user_name}&nbsp;&nbsp;&nbsp;<b>Institution: </b>{$user_uni}<br />
-                    <b>Project Title:&nbsp;</b>{$item}
+                    <li>
+                    <table>
+                        <tr>
+                            <td align="right"><b>Project&nbsp;lead(s):&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ib" type="TextReportItem" width="200px" blobItem="INSTITUTION">
+            <![CDATA[
+                        <tr>
+                            <td align="right"><b>Institution:&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ic" type="TextReportItem" width="300px" blobItem="PROJECT">
+            <![CDATA[
+                        <tr>
+                            <td align="right"><b>Project&nbsp;Title:&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                     </table>
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="ii" type="RadioReportItem" options="Yes|No" blobItem="THEME">
+        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
             <![CDATA[
                 <li>
-                    <b>Project Theme</b><br />
-                    Does your project fall within the theme of ‘Older workers and the Workplace’?
-                    {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="ii_no" type="TextReportItem" blobItem="THEME_NO" optional="true">
-            <![CDATA[
-                    <b>If no, please indicate the thematic area:</b> {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="150" blobItem="SUMMARY">
-            <![CDATA[
-                <li>
-                    <b>Provide a 150-word plain language summary of the purpose, rationale and anticipated impact(s) of the project.</b>
+                    <b>Provide a 300-word lay summary that includes a problem statement, research purpose and anticipated impact(s) of the project. This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be  used for future communications if the proposal is successful.) </b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="iv" type="IntegerReportItem" min="0" max="75000" width="43px" align="left" blobItem="INVESTMENT">
+        <ReportItem id="iv" type="IntegerReportItem" min="0" max="50000" width="43px" align="left" blobItem="INVESTMENT">
             <![CDATA[
                 <li>
                     <b>Total value of AGE-WELL investment requested:</b> ${$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
+        <!--ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
             <![CDATA[
                 <li>
                     <b>Collaborators/partners invested in the project (if applicable)</b> {$item}
                 </li>
             ]]>
-        </ReportItem>
-        <ReportItem id="vi" type="SelectReportItem" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
+        </ReportItem-->
+        <ReportItem id="via" type="SelectReportItem" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH|Other" blobItem="WP">
             <![CDATA[
                 <li>
                     <b>The proposed project is best aligned with AGE-WELL:</b>
+                    {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="vib" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY_OTHER">
+            <![CDATA[
+                    <b>If you have selected “Other” and think that the proposed project falls outside of AGE-WELL’s current WP structure, please provide a justification for this:</b>
                     {$item}
                 </li>
                 </ol>
