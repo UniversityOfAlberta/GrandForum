@@ -315,7 +315,7 @@
                 <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
                 <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
                 <b>&nbsp;&nbsp;AR:</b> Affiliated Researcher<br />
-                <b>&nbsp;&nbsp;Collaborator</b></p>
+                <b>&nbsp;&nbsp;Collaborator</b><br />
                 <b>&nbsp;&nbsp;Partner</b></p>
                 {$item}
             ]]>
