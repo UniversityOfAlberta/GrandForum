@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Strategic Investment Program Application" reportType="RP_SIP_01_2017" pdfType="RPTP_SIP_01_2017" allowIdProjects="true" pdfFiles="SIPApplication012017PDF" ajax="true" year="2015">
     <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
