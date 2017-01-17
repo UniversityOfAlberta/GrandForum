@@ -226,7 +226,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="appendix" tooltip="Budget and Activities" title="Budget and Activities" name="Budget and Activities" type="EditableReportSection" blobSection="APPENDIX">
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" class="wikitable smaller" multiple="true">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" class="wikitable smaller" multiple="true">
             <![CDATA[
                 <h2>Team Summary</h2>
                 {$item}
