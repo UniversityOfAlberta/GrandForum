@@ -287,12 +287,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h2>Milestones</h2>
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO" pagebreak="false">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">

@@ -261,7 +261,7 @@
         <ReportItem id="plans" type="TextareaReportItem" rich="true" blobItem="PLANS">
             <![CDATA[
                 <li><b>Future plans to ensure sustainability of this study - </b>
-                    <i>Describe any future funding opportunities or collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</i>
+                    <i>What is the longer term vision of the project within AGE-WELL and/or  other funding sources? Describe any future funding opportunities or collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</i>
                     {$item}
                 </li>
                 </ol>
@@ -410,19 +410,12 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h2>Milestones</h2>
-                <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
             <![CDATA[
                 <h3>Investigator Bio</h3>
-                <p>Please submit a brief bio (2 page maximum) for each named investigator from Part 2, highlighting experience and activities relevant to the application.</p>
+                <p>Please submit a brief bio for each named investigator from the narrative section, highlighting experience and activities relevant to the application (one page per bio maximum).</p>
                 {$item}
             ]]>
         </ReportItem>
