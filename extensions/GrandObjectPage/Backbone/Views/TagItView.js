@@ -70,7 +70,6 @@ TagItView = Backbone.View.extend({
     },
     
     render: function(){
-        var that = this;
         this.$el.html(this.template(this.model.toJSON()));
         _.each(this.model.get('values'), $.proxy(function(val){
             this.$("ul.tagit").append("<li>" + val + "</li>");

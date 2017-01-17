@@ -27,23 +27,27 @@ ProductEditView = Backbone.View.extend({
         
         this.allProjects = new Projects();
         this.allProjects.fetch();
+        var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
         me.getProjects();
-        me.projects.ready().then($.proxy(function(){
-            this.projects = me.projects.getCurrent();
-            this.allProjects.ready().then($.proxy(function(){
-                var other = new Project({id: "-1", name: "Other"});
-                other.id = "-1";
-                this.otherProjects = this.allProjects.getCurrent();
-                this.otherProjects.add(other);
-                this.oldProjects = this.allProjects.getOld();
-                this.otherProjects.remove(this.projects.models);
-                this.oldProjects.remove(this.projects.models);
-                if(!this.model.isNew() && !this.isDialog){
-                    this.model.fetch();
-                }
-                else{
-                    _.defer(this.render);
-                }
+        tagsGet.then($.proxy(function(availableTags){
+            this.availableTags = availableTags;
+                me.projects.ready().then($.proxy(function(){
+                this.projects = me.projects.getCurrent();
+                this.allProjects.ready().then($.proxy(function(){
+                    var other = new Project({id: "-1", name: "Other"});
+                    other.id = "-1";
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.otherProjects.add(other);
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    if(!this.model.isNew() && !this.isDialog){
+                        this.model.fetch();
+                    }
+                    else{
+                        _.defer(this.render);
+                    }
+                }, this));
             }, this));
         }, this));
         $(document).click($.proxy(function(e){
@@ -256,17 +260,15 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderTagsWidget: function(){
-        $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags', $.proxy(function(availableTags){
-            var html = HTML.TagIt(this, 'tags', {
-                strictValues: false, 
-                values: this.model.get('tags'),
-                options: {
-                    removeConfirmation: false,
-                    availableTags: availableTags,
-                }
-            });
-            this.$("#productTags").html(html);
-        }, this))
+        var html = HTML.TagIt(this, 'tags', {
+            strictValues: false, 
+            values: this.model.get('tags'),
+            options: {
+                removeConfirmation: false,
+                availableTags: this.availableTags
+            }
+        });
+        this.$("#productTags").html(html);
     },
     
     render: function(){

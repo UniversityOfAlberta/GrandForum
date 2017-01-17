@@ -327,7 +327,7 @@ HTML.TagIt = function(view, attr, options){
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var current = tagitView.tagit("assignedTags");
-        var newItems = Array();
+        var newItems = new Array();
         for(cId in current){
             var c = current[cId];
             newItems.push(c);
