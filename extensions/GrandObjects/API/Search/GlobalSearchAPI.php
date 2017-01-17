@@ -144,13 +144,22 @@ class GlobalSearchAPI extends RESTAPI {
                 $products = DBFunctions::select(array('grand_products'),
                                                 array('title', 'category', 'type', 'id'),
                                                 array('deleted' => '0'));
+                Product::generateProductTagsCache();
                 foreach($products as $product){
                     $pTitle = unaccentChars($product['title']);
                     $pCategory = unaccentChars($product['category']);
                     $pType = unaccentChars($product['type']);
+                    $pTags = array();
+                    if(isset(Product::$productTagsCache[$product['id']])){
+                        foreach(Product::$productTagsCache[$product['id']] as $tag){
+                            $pTags[] = $tag;
+                        }
+                    }
+                    $pTags = unaccentChars(implode(" ", $pTags));
                     $names = array_merge(explode(" ", $pTitle),
                                          explode(" ", $pCategory),
-                                         explode(" ", $pType));
+                                         explode(" ", $pType),
+                                         explode(" ", $pTags));
                     $found = true;
                     foreach($searchNames as $name){
                         $name = preg_quote($name);
