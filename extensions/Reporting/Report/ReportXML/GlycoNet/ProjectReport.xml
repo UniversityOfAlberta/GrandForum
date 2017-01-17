@@ -190,7 +190,7 @@
         <ReportItem id="co-investigators_table" type="StaticReportItem">
             <![CDATA[
                 </p>
-                <p><b>Co-Investigators:</b>
+                <p><b>Investigators:</b>
                 <table class='wikitable'>
                     <tr>
                         <th>Name</th>
@@ -200,7 +200,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="co-investigators" type="ProjectPeopleNoLeaders" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
+        <ReportItemSet id="co-investigators" type="ProjectPeople" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItem id="investigators_info" type="IntegerReportItem" min="0" max="100" size="3" blobItem="TIME" blobSubItem="{$user_id}">
                 <![CDATA[
                     <tr>
