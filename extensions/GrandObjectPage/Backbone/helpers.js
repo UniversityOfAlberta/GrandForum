@@ -315,6 +315,7 @@ HTML.TagIt = function(view, attr, options){
     var tagit = new TagIt(options);
     var tagitView = new TagItView({model: tagit});
     var el = tagitView.render();
+    $("input", el).attr('id', 'tagit_' + attr);
     
     var index = attr.indexOf('.');
     var subName = attr.substr(index+1);

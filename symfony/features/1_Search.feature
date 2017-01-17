@@ -27,6 +27,11 @@ Feature: Search
         When I fill in "globalSearchInput" with "Üšër Wìth"
         Then I wait until I see "Üšër WìthÁççénts" up to "5000"
         
+    Scenario: NI searches for product by tag
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I fill in "globalSearchInput" with "Hello World"
+        Then I wait until I see "Publication with Tags" up to "5000"
+        
     Scenario: Guest searches for HQP
         Given I am on "index.php"
         When I fill in "globalSearchInput" with "HQP"

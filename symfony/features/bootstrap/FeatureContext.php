@@ -318,5 +318,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
         $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().fire('keyup');");
     }
+    
+    /**
+     * @Given /^I fill in TagIt "(?P<id>(?:[^"]|\\")*)" with "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function fillInTagItWith($id, $text){
+        $text = addslashes($text);
+        $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
+    }
 
 }
