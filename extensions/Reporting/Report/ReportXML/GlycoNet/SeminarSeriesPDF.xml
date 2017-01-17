@@ -90,7 +90,7 @@
                         <td>${$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="budget_accommodation_comments" type="Text" blobItem="BUDGET_TRAVEL_COMMENTS">
+        <ReportItem id="budget_accommodation_comments" type="Text" blobItem="BUDGET_ACCOMMODATION_COMMENTS">
             <![CDATA[
                         <td>{$item}</td>
                     </tr>
