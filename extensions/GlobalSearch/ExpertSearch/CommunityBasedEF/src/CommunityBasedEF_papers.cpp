@@ -569,7 +569,6 @@ void communityBasedEF(map<int , int> pClusters, map<int , list<int> > docCluster
 	}
 	out.close();
 	allOut.close();
-
 	delete pIndex;
 	delete rwIndex;
 	delete prIndex;
@@ -752,15 +751,14 @@ int main(int argc, char* argv[])
 	communityBasedEF(queryCluster,RClusters,"jm",atof(argv[10]),atof(argv[11]),argv[12],argv[7],argv[13],atoi(argv[14]),argv[15],SelectedReviewers, argv[8],atof(argv[16]),"Index/indexFile/queries_index.key","Index/indexFile/profiles_index.key","Index/indexFile/publications_index.key");
 	t_u = time(NULL) - t_u;
 	/// This is for constrained based problem.
-	if((strcmp(argv[13],"Constrained") == 0) || (strcmp(argv[13],"Both") == 0))
-	{
+	/*if((strcmp(argv[13],"Constrained") == 0) || (strcmp(argv[13],"Both") == 0))
+	{   
 		//cout<<"before read affinity"<<endl;
 		readAllAffinity(argv[15], PRAffinity);
 		t_c = time(NULL);	
 		greeadyCommunityConstraint(atof(argv[17]),reviewersS,PRAffinity,SelectedReviewers,qpapers,argv[18],atoi(argv[14]),atoi(argv[19]));
 		t_c = time(NULL) - t_c;	
-	}
-
+	}*/
 	cout<<"all time is : "<<t_u + t_c<<" unconstrained time is : "<<t_u<<" constrained time is : "<<t_c<<endl;
 	
 	
