@@ -37,6 +37,15 @@
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
+        <Role role="AR">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="" />
+            <SectionPermission id="hqp_description" permissions="" />
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="declaration" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <ReportItem id="instructions" type="Static">
