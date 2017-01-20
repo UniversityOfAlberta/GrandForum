@@ -338,7 +338,7 @@
                 <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" blobSubItem="{$user_id}" limit="750" rich="true" height="400px">
                     <![CDATA[
                         <h2>Project Description - <small>750 words maximum, including references</small></h2>
-                        <p>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                        <p>Describe the proposed summer research project, emphasizing the student's role and alignment with one or more of GlycoNet's themes. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
                         {$item}
                     ]]>
                 </ReportItem>
