@@ -109,9 +109,16 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 file_put_contents("search.lock", "");
                 exec("./search.sh ".escapeshellarg($origSearch), $output);
+                $exp = array();
                 foreach($output as $line){
                     if(strstr($line, "EXP") !== false){
-                        $exploded = explode(" ", $line);
+                        $exp[] = $line;
+                    }   
+                }
+                foreach($exp as $line){
+                    $exploded = explode(" ", $line);
+                    $e = floatval($exploded[4]);
+                    if($e > 1/count($exp)){
                         $ids[] = @intval($exploded[2]);
                     }
                 }
