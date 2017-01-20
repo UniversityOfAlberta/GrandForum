@@ -99,6 +99,17 @@ class GlobalSearchAPI extends RESTAPI {
 	                $ids[] = intval($key);
 	            }
                 break;
+            case 'experts':
+                $output = array();
+                chdir("extensions/GlobalSearch/ExpertSearch/");
+                exec("./search.sh ".escapeshellarg($origSearch), $output);
+                foreach($output as $line){
+                    if(strstr($line, "EXP") !== false){
+                        $exploded = explode(" ", $line);
+                        $ids[] = @intval($exploded[2]);
+                    }
+                }
+                break;
             case 'projects':
                 $data = array();
                 $projects = Project::getAllProjectsDuring('0000','9999', true);

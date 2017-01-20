@@ -1,8 +1,8 @@
 #!/bin/bash
 #Enter Path to Your data!
-profiles="../../../maintenance/expert/profiles"
-publications="../../../maintenance/expert/publications"
-assocFile="../../../maintenance/expert/experts.txt"
+profiles="expert/profiles"
+publications="expert/publications"
+assocFile="expert/experts.txt"
 numProfile=`ls -1 $profiles | wc -l`
 numQueries="1"
 #Topic Modeling

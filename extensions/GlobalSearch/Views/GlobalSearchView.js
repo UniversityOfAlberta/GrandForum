@@ -100,6 +100,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         "personResults" : function(){
             return new PersonResultsView({parent: this, model: new GlobalSearch({group: 'people', search: ''})});
         },
+        "expertResults" : function(){
+            return new ExpertResultsView({parent: this, model: new GlobalSearch({group: 'experts', search: ''})});
+        },
         "projectResults" : function(){
             return new ProjectResultsView({parent: this, model: new GlobalSearch({group: 'projects', search: ''})});
         },
@@ -405,6 +408,20 @@ PersonResultsView = ResultsView.extend({
     
     render: function(){
         this.$el.html(this.template({group: "People"}));
+    }
+});
+
+ExpertResultsView = ResultsView.extend({
+    createCardView: function(model){
+        return new SmallPersonCardView({model: model});
+    },
+    
+    createModel: function(obj){
+        return new Person({id: obj});
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Experts"}));
     }
 });
 

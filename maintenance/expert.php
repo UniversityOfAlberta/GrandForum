@@ -19,9 +19,9 @@
     
     $wgUser = User::newFromId(1);
     
-    @mkdir("expert");
-    @mkdir("expert/publications");
-    @mkdir("expert/profiles");
+    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert");
+    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/publications");
+    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/profiles");
     
     $products = Product::getAllPapers('all', 'all', 'grand', false);
     $people = Person::getAllPeople(NI);
@@ -29,7 +29,7 @@
     foreach($products as $product){
         $productIds[$product->getId()] = $product;
         $content = "{$product->getTitle()}\n{$product->getDescription()}";
-        writeText("expert/publications/{$product->getId()}.txt", $content, $product->getId());
+        writeText("../extensions/GlobalSearch/ExpertSearch/expert/publications/{$product->getId()}.txt", $content, $product->getId());
     }
     
     $lines = array();
@@ -46,10 +46,10 @@
             }
         }
         if(count($myProducts) > 0){
-            writeText("expert/profiles/{$person->getId()}.txt", implode("\n", $profile), $person->getId());
+            writeText("../extensions/GlobalSearch/ExpertSearch/expert/profiles/{$person->getId()}.txt", implode("\n", $profile), $person->getId());
         }
     }
-    file_put_contents("expert/experts.txt", implode("\n", $lines));
+    file_put_contents("../extensions/GlobalSearch/ExpertSearch/expert/experts.txt", implode("\n", $lines));
     
     chdir("../extensions/GlobalSearch/ExpertSearch/");
     system("./index.sh");
