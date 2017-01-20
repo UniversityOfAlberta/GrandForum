@@ -51,5 +51,7 @@
     }
     file_put_contents("expert/experts.txt", implode("\n", $lines));
     
+    chdir("../extensions/GlobalSearch/ExpertSearch/");
+    system("./index.sh");
     
 ?>
