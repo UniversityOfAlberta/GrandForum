@@ -1,0 +1,16 @@
+<parameters>
+<retModel>2</retModel>
+<index>Index/indexFile/profiles_index.key</index>
+<textQuery>CommunityBasedEF/conf/query_profiles.ldf</textQuery>
+<resultFile>CommunityBasedEF/output/kl/klOutfile.txt</resultFile>
+<resultCount>1000</resultCount>
+<resultFormat>1</resultFormat>
+<smoothSupportFile>CommunityBasedEF/conf/klSmooth.supp</smoothSupportFile>
+<smoothStrategy>0</smoothStrategy>
+<smoothMethod>0</smoothMethod>
+<discountDelta>0.5</discountDelta>
+<JelinekMercerLambda>0.5</JelinekMercerLambda>
+<DirichletPrior>13567</DirichletPrior>
+<feedbackDocCount>0</feedbackDocCount>
+<feedbackTermCount>20</feedbackTermCount>
+</parameters>
