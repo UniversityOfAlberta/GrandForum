@@ -326,5 +326,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $text = addslashes($text);
         $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
     }
+    
+     /**
+     * @Given /^I index expert search$/
+     */
+    public function indexExpertSearch(){
+        $output = array();
+        exec("php ../maintenance/expert.php &> /dev/null", $output);
+    }
 
 }

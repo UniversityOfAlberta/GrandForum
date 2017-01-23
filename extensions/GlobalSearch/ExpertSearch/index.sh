@@ -70,5 +70,5 @@ klOutFile="CommunityBasedEF/output/kl/klOutfile.txt"
 klConfigFile="CommunityBasedEF/conf/KLconfile"
 
 GenerateSmoothSupport "CommunityBasedEF/conf/supp_param"
-rm $klOutFile
-rm $queryFile
+rm -f $klOutFile
+rm -f $queryFile

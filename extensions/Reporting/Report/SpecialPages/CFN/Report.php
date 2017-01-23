@@ -34,8 +34,8 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        $hqps = $person->getHQPDuring(REPORTING_CYCLE_START, "2017-12-31 00:00:00");
-        $projects = $person->getProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $hqps = $person->getHQPDuring();
+        $projects = $person->getProjects();
         if($person->isRole(PL) && !$person->isRole(HQP)){
             foreach($person->leadership() as $project){
                 if(!$project->isDeleted()){
@@ -48,7 +48,7 @@ class Report extends AbstractReport{
             }
         }
         foreach($projects as $project){
-            if($person->isRoleDuring(CI, REPORTING_CYCLE_START, REPORTING_CYCLE_END, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
+            if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
                 if(strstr($project->getName(), "SSA2016") === false){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);
