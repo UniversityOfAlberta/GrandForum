@@ -168,8 +168,8 @@ class ApplicationsTable extends SpecialPage{
     function generateWP(){
         global $wgOut;
         $tabbedPage = new TabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015-16"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
