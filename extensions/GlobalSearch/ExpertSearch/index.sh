@@ -17,6 +17,9 @@ java -jar ConvertMalletToWeka.jar "TopicModeling/output/papers-doc-topics.csv" "
 #Loading CSV File in Weka
 
 cd Clustering
+mkdir input
+mkdir output
+mkdir trecData
 
 java -cp weka.jar weka.core.converters.CSVLoader input/papers-doc-topics-weka.csv > input/papers-doc-topics-weka.arff
 
