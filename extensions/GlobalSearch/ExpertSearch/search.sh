@@ -8,6 +8,7 @@ numQueries="1"
 
 #Runnig Community-based EF
 mkdir "Output/"
+mkdir -p "CommunityBasedEF/conf/queryConf/kl/output"
 queryFile="CommunityBasedEF/conf/query_profiles.ldf"
 klOutFile="CommunityBasedEF/output/kl/klOutfile.txt"
 klConfigFile="CommunityBasedEF/conf/KLconfile"
