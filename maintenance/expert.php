@@ -23,7 +23,7 @@
     @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/publications");
     @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/profiles");
     
-    $products = Product::getAllPapers('all', 'all', 'grand', false);
+    $products = Product::getAllPapers('all', 'all', 'both', false);
     $people = Person::getAllPeople(NI);
     $productIds = array();
     foreach($products as $product){
@@ -34,7 +34,7 @@
     
     $lines = array();
     foreach($people as $person){
-        $myProducts = $person->getPapers('all');
+        $myProducts = $person->getPapers('all', false, 'both', false);
         $profile = array();
         if($person->getProfile() != ""){
             $profile[] = "{$person->getProfile()}";
