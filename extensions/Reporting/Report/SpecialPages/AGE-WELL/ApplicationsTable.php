@@ -126,14 +126,15 @@ class ApplicationsTable extends SpecialPage{
     function generateCIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CIP', $this->nis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CIP', $this->nis, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCatalyst(){
         global $wgOut;
         $tabbedPage = new TabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CAT', $this->nis, 2015, "Catalyst"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', $this->nis, 2016, "2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', $this->nis, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
