@@ -1,7 +1,6 @@
 #!/bin/bash
 #Enter Path to Your data!
 profiles="expert/profiles"
-publications="expert/publications"
 assocFile="expert/experts.txt"
 numProfile=`ls -1 $profiles | wc -l`
 numQueries="1"
