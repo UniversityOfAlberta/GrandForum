@@ -79,6 +79,8 @@ Feature: Products
         When I follow "Manage Products"
         And I press "Add Product"
         And I fill in "title" with "Publication with Tags"
+        And I select "NI User2" from "rightauthors"
+        And I press "<<"
         And I fill in TagIt "tags" with "Hello World"
         And I select "Publication" from "category"
         And I select "Proceedings Paper" from "type"
