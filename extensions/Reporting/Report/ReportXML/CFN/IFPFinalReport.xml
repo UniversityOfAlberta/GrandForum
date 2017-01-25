@@ -348,37 +348,39 @@
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
-                    <![CDATA[
-                        <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="social" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_SOCIAL" blobSubItem="{$user_id}" rich="true">
-                    <![CDATA[
-                        <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="leadership" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_LEADER" blobSubItem="{$user_id}" rich="true">
-                    <![CDATA[
-                        <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
-                    <![CDATA[
-                        <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
-                <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" blobSubItem="{$user_id}" rich="true">
-                    <![CDATA[
-                        <h3>Please elaborate:</h3>
-                        {$item}
-                    ]]>
-                </ReportItem>
+            <ReportItemSet id="if" type="IfReportItemSet" if="{!contains({$user_projects},IFP2016)}">
+                <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                    <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="social" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_SOCIAL" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="leadership" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_LEADER" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
+                        <![CDATA[
+                            <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>Please elaborate:</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItem id="reminder" type="StaticReportItem">
