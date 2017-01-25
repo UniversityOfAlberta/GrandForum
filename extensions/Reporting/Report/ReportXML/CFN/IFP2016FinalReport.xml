@@ -301,7 +301,6 @@
             </ReportItem>
             <ReportItem id="multidisciplinary" type="StaticReportItem">
                 <![CDATA[
-                    <h2>{$user_name}</h2>
                     <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
                     {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_MULTI,{$parent_id},{$user_id},0)}
                 ]]>
