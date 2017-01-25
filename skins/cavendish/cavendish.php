@@ -1292,7 +1292,8 @@ If you have forgotten your password please enter your login and ID and request a
 		</tr>
 	    <tr>
 			<td colspan="2" class="mw-submit">
-				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
+				<input type='submit' class='dark en' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
+				<input type='submit' class='dark fr' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Entrer" />
 			</td>
 		</tr>
 	</table>
