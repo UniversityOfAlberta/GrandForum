@@ -4,7 +4,7 @@ profiles="expert/profiles"
 assocFile="expert/experts.txt"
 numProfile=`ls -1 $profiles | wc -l`
 hash=`echo -n "$1\`date +%s%N\`" | md5sum | awk '{print $1}'`
-hash=`echo -n "$1" | md5sum | awk '{print $1}'`
+#hash=`echo -n "$1" | md5sum | awk '{print $1}'`
 numQueries="1"
 
 #Runnig Community-based EF
