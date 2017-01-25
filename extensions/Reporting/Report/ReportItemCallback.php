@@ -138,6 +138,7 @@ class ReportItemCallback {
             "index" => "getIndex",
             "value" => "getValue",
             "extraIndex" => "getExtraIndex",
+            "getProjects" => "getProjects",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
@@ -1201,6 +1202,21 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
         foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
+            if(!$project->isSubProject()){
+                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjects() as $project){
             if(!$project->isSubProject()){
                 $deleted = ($project->isDeleted()) ? " (Ended)" : "";
                 $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
