@@ -118,7 +118,7 @@ class PeopleWikiTab extends AbstractTab {
                     <i style='font-size: 0.666em;'>*For example, view this easy to read <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fact sheet</a> comparing medical and aspiration abortion</i></span>
                     <span class='fr'>Ci-dessous sont tous les <b>{$this->table}</b> des fichiers dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.<br /><br />
                     <i style='font-size: 0.666em;'>*Par exemple, consultez cette <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fiche d'information</a> facile à lire comparant l'avortement médical et l'asthme</i>
-</span></div><br /><br />";
+</span></div><br />";
         if($this->table == "Organizations"){
         $this->html .= "
                     <span class='en'>

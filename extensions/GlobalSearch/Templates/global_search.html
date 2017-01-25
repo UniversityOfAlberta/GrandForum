@@ -1,4 +1,4 @@
 <!--form style="padding:0;" action="index.php" autocomplete="off" id="globalSearchForm"-->
-    <input type='text' id="globalSearchInput" name="search" placeholder="Search..." autocomplete="off" /><div id="globalSearchThrobber"><div class="throbber" style="display:none;margin-top:7px;"></div></div><div name="fulltext" id="globalSearchButton" value=""><img style="margin-top:7px;" src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></div>
+    <input type="text" class="en" id="globalSearchInput" name="search" placeholder="Search..." autocomplete="off" /><input type="text" class="fr" id="globalSearchInput" name="search" placeholder="Chercher..." autocomplete="off" /><div id="globalSearchThrobber"><div class="throbber" style="display:none;margin-top:7px;"></div></div><div name="fulltext" id="globalSearchButton" value=""><img style="margin-top:7px;" src="<%= wgServer + wgScriptPath %>/<%= iconPathHighlighted %>magnifying_glass_16x16.png" /></div>
 <!--/form-->
 <%= subview('globalSearchResults') %>

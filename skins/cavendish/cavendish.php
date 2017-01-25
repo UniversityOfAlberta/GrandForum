@@ -1271,14 +1271,14 @@ If you have forgotten your password please enter your login and ID and request a
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
 			<td class="mw-input mw-input-string">
-				<input type='text' class='loginText' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Username"
-					tabindex="1" size='20' />
+				<input type='text' class='loginText en' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Username" tabindex="1" size='20' />
+				<input type='text' class='loginText fr' style='width:97%;' name="wpName" value="$name" id="wpName1" placeholder="Nom d'utilisateur" tabindex="1" size='20' />
 			</td>
 		</tr>
 		<tr>
 			<td class="mw-input mw-input-string">
-				<input type='password' class='loginPassword' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Password"
-					tabindex="2" size='20' autocomplete='off' />
+				<input type='password' class='loginPassword en' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Password" tabindex="2" size='20' autocomplete='off' />
+				<input type='password' class='loginPassword fr' style='width:97%' name="wpPassword" id="wpPassword1" placeholder="Mot de passe" tabindex="2" size='20' autocomplete='off' />
 			</td>
 		</tr>
 		<tr>
