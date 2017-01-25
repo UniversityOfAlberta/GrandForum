@@ -112,7 +112,7 @@ class GlobalSearchAPI extends RESTAPI {
                 foreach($exp as $line){
                     $exploded = explode(" ", $line);
                     $e = floatval($exploded[4]);
-                    if($e > 1/count($exp)){
+                    if($e > round(1/count($exp), 8)){
                         $ids[] = @intval($exploded[2]);
                     }
                 }
