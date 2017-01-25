@@ -102,12 +102,6 @@ class GlobalSearchAPI extends RESTAPI {
             case 'experts':
                 $output = array();
                 chdir("extensions/GlobalSearch/ExpertSearch/");
-                $nWaits = 0;
-                while(file_exists("search.lock") && $nWaits < 10){
-                    $nWaits++;
-                    usleep(0.1*1000*1000); // Wait 0.1 seconds
-                }
-                file_put_contents("search.lock", "");
                 exec("./search.sh ".escapeshellarg($origSearch), $output);
                 $exp = array();
                 foreach($output as $line){
@@ -122,7 +116,6 @@ class GlobalSearchAPI extends RESTAPI {
                         $ids[] = @intval($exploded[2]);
                     }
                 }
-                unlink("search.lock");
                 break;
             case 'projects':
                 $data = array();
