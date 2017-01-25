@@ -85,11 +85,11 @@ double distance(vector<double> q , vector<double> c)
 //	return sum2;
 	return sqrt(sum2);
 }
-void FindClusterOfEachQuery(list<int>& qpapers, map<int , int>& queryClusters,string cIndexPath)
+void FindClusterOfEachQuery(list<int>& qpapers, map<int , int>& queryClusters,string cIndexPath, string hash)
 {
 	cout<<"Cluster index path is : "<<cIndexPath<<endl;
-	ifstream qin("CommunityBasedEF/conf/queryConf/query.ldf");
-	ofstream qout("CommunityBasedEF/conf/queryConf/query.trectext");
+	ifstream qin("CommunityBasedEF/conf/queryConf/" + hash + "/query.ldf");
+	ofstream qout("CommunityBasedEF/conf/queryConf/" + hash + "/query.trectext");
 	string line;
 	string content = "";
 	int qid = -1;
@@ -126,34 +126,33 @@ void FindClusterOfEachQuery(list<int>& qpapers, map<int , int>& queryClusters,st
 	qout.close();
 	qin.close();
 	//Index queries
-	ofstream dFile("Index/conf/buildfile_queries.txt");
-	ofstream buildFile("Index/conf/BuildConfFile_queries.txt");
-	dFile<<"CommunityBasedEF/conf/queryConf/query.trectext";
-	buildFile<<"<parameters>\n<index>Index/indexFile/queries_index</index>\n<indexType>key</indexType>\n<dataFiles>Index/conf/buildfile_queries.txt</dataFiles>\n<docFormat>trec</docFormat>\n<stopwords>Index/conf/stopwords.list</stopwords>\n<memory>2G</memory>\n</parameters>"<<endl;
+	ofstream dFile("Index/conf/" + hash + "/buildfile_queries.txt");
+	ofstream buildFile("Index/conf/" + hash + "/BuildConfFile_queries.txt");
+	dFile<<"CommunityBasedEF/conf/queryConf/" + hash + "/query.trectext";
+	buildFile<<"<parameters>\n<index>Index/indexFile/" + hash + "/queries_index</index>\n<indexType>key</indexType>\n<dataFiles>Index/conf/" + hash + "/buildfile_queries.txt</dataFiles>\n<docFormat>trec</docFormat>\n<stopwords>Index/conf/stopwords.list</stopwords>\n<memory>2G</memory>\n</parameters>"<<endl;
 	dFile.close();
 	buildFile.close();
-	string command = "rm -r Index/indexFile/queries_index.*";
-	int returnval = system(command.c_str());
-	command = "BuildIndex Index/conf/BuildConfFile_queries.txt";
-     	returnval = system(command.c_str());
+
+	string command = "BuildIndex Index/conf/" + hash + "/BuildConfFile_queries.txt";
+    int returnval = system(command.c_str());
 	//run kl to find closest cluster
-	ofstream klConfFileQuery("CommunityBasedEF/conf/queryConf/klConfFile.txt");
-	ofstream smoothParamFile("CommunityBasedEF/conf/queryConf/klSmoothConf.supp");
+	ofstream klConfFileQuery("CommunityBasedEF/conf/queryConf/" + hash + "/klConfFile.txt");
+	ofstream smoothParamFile("CommunityBasedEF/conf/queryConf/" + hash + "/klSmoothConf.supp");
 
-	smoothParamFile<<"<parameters>\n<index>"<<cIndexPath<<"</index>\n<smoothSupportFile>CommunityBasedEF/conf/queryConf/klSmooth.supp</smoothSupportFile>\n</parameters>"<<endl;
+	smoothParamFile<<"<parameters>\n<index>"<<cIndexPath<<"</index>\n<smoothSupportFile>CommunityBasedEF/conf/queryConf/" + hash + "/klSmooth.supp</smoothSupportFile>\n</parameters>"<<endl;
 
-	klConfFileQuery<<"<parameters>\n<retModel>2</retModel>\n<index>"<<cIndexPath<<"</index>\n<textQuery>CommunityBasedEF/conf/queryConf/query.ldf</textQuery>\n<resultFile>CommunityBasedEF/conf/queryConf/kl/output/klOutfile.txt</resultFile>\n<resultCount>10</resultCount>\n<resultFormat>1</resultFormat>\n<smoothSupportFile>CommunityBasedEF/conf/queryConf/klSmooth.supp</smoothSupportFile>\n<smoothStrategy>0</smoothStrategy>\n<smoothMethod>0</smoothMethod>\n<discountDelta>0.5</discountDelta>\n<JelinekMercerLambda>0.5</JelinekMercerLambda>\n<DirichletPrior>13567</DirichletPrior>\n<feedbackDocCount>0</feedbackDocCount>\n<feedbackTermCount>20</feedbackTermCount>\n</parameters>"<<endl;
+	klConfFileQuery<<"<parameters>\n<retModel>2</retModel>\n<index>"<<cIndexPath<<"</index>\n<textQuery>CommunityBasedEF/conf/queryConf/" + hash + "/query.ldf</textQuery>\n<resultFile>CommunityBasedEF/conf/queryConf/kl/output/" + hash + "/klOutfile.txt</resultFile>\n<resultCount>10</resultCount>\n<resultFormat>1</resultFormat>\n<smoothSupportFile>CommunityBasedEF/conf/queryConf/" + hash + "/klSmooth.supp</smoothSupportFile>\n<smoothStrategy>0</smoothStrategy>\n<smoothMethod>0</smoothMethod>\n<discountDelta>0.5</discountDelta>\n<JelinekMercerLambda>0.5</JelinekMercerLambda>\n<DirichletPrior>13567</DirichletPrior>\n<feedbackDocCount>0</feedbackDocCount>\n<feedbackTermCount>20</feedbackTermCount>\n</parameters>"<<endl;
 
 	smoothParamFile.close();
 	klConfFileQuery.close();
 	
-	command = "GenerateSmoothSupport CommunityBasedEF/conf/queryConf/klSmoothConf.supp";
+	command = "GenerateSmoothSupport CommunityBasedEF/conf/queryConf/" + hash + "/klSmoothConf.supp";
      	returnval = system(command.c_str());
 	
-	command = "RetEval CommunityBasedEF/conf/queryConf/klConfFile.txt";
+	command = "RetEval CommunityBasedEF/conf/queryConf/" + hash + "/klConfFile.txt";
      	returnval = system(command.c_str());
 	ifstream klout;
-	klout.open("CommunityBasedEF/conf/queryConf/kl/output/klOutfile.txt");
+	klout.open("CommunityBasedEF/conf/queryConf/kl/output/" + hash + "/klOutfile.txt");
 	if(klout.good())
 	{
 		string l;
@@ -728,10 +727,11 @@ int main(int argc, char* argv[])
 	//path to query file of docs
        writeDocAsQuery(argv[1],argv[2]);
     //path to confing file
-      string filename = argv[3];
-      string command = "RetEval " + filename;
+      string hash = argv[20];
+      //string filename = argv[3];
+      //string command = "RetEval " + filename;
   //  cout<<"command is : "<<command<<endl;
-     int returnval = system(command.c_str());
+     //int returnval = system(command.c_str());
     
 	//path to output of kl
 	readAllAffinityRS(argv[4],reviewersS);
@@ -739,7 +739,7 @@ int main(int argc, char* argv[])
 	readAssoc(argv[6], assoc);
 	readRClusters(assoc,paperClusters,RClusters);
 
-	FindClusterOfEachQuery(qpapers,queryCluster,argv[7]);
+	FindClusterOfEachQuery(qpapers,queryCluster,argv[7],hash);
 		
 	///Selecting reviewers
 	SelectReviewers(SelectedReviewers,argv[2],argv[8],atoi(argv[9]));
@@ -748,7 +748,7 @@ int main(int argc, char* argv[])
 	time_t t_u = time(NULL);
 	time_t t_c = 0;
 
-	communityBasedEF(queryCluster,RClusters,"jm",atof(argv[10]),atof(argv[11]),argv[12],argv[7],argv[13],atoi(argv[14]),argv[15],SelectedReviewers, argv[8],atof(argv[16]),"Index/indexFile/queries_index.key","Index/indexFile/profiles_index.key","Index/indexFile/publications_index.key");
+	communityBasedEF(queryCluster,RClusters,"jm",atof(argv[10]),atof(argv[11]),argv[12],argv[7],argv[13],atoi(argv[14]),argv[15],SelectedReviewers, argv[8],atof(argv[16]),"Index/indexFile/" + hash + "/queries_index.key","Index/indexFile/profiles_index.key","Index/indexFile/publications_index.key");
 	t_u = time(NULL) - t_u;
 	/// This is for constrained based problem.
 	/*if((strcmp(argv[13],"Constrained") == 0) || (strcmp(argv[13],"Both") == 0))
