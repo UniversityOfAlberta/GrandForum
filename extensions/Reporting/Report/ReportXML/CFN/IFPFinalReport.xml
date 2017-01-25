@@ -348,7 +348,7 @@
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <ReportItemSet id="if" type="IfReportItemSet" if="{!contains({$user_projects},IFP2016)}">
+            <ReportItemSet id="if" type="IfReportItemSet" if="{!contains({$getProjects},IFP2016)}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
                         <![CDATA[
