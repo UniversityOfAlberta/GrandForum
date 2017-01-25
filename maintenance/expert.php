@@ -28,7 +28,7 @@
     $productIds = array();
     foreach($products as $product){
         $productIds[$product->getId()] = $product;
-        $content = "{$product->getTitle()} \n{$product->getDescription()}";
+        $content = "{$product->getTitle()} {$product->getDescription()}";
         writeText("../extensions/GlobalSearch/ExpertSearch/expert/publications/{$product->getId()}.txt", $content, $product->getId());
     }
     
@@ -42,11 +42,11 @@
         foreach($myProducts as $product){
             if(isset($productIds[$product->getId()])){
                 $lines[] = "{$person->getId()} {$product->getId()}";
-                $profile[] = "{$product->getTitle()} \n{$product->getDescription()}";
+                $profile[] = "{$product->getTitle()} {$product->getDescription()}";
             }
         }
         if(count($myProducts) > 0){
-            writeText("../extensions/GlobalSearch/ExpertSearch/expert/profiles/{$person->getId()}.txt", implode(" \n", $profile), $person->getId());
+            writeText("../extensions/GlobalSearch/ExpertSearch/expert/profiles/{$person->getId()}.txt", implode(" ", $profile), $person->getId());
         }
     }
     file_put_contents("../extensions/GlobalSearch/ExpertSearch/expert/experts.txt", implode("\n", $lines));
