@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Feedback" reportType="RP_PROJ_FEEDBACK" pdfFiles="PLFeedbackPDF" personId="0" ajax="true">
+<Report name="Project Feedback" reportType="RP_PROJ_FEEDBACK" pdfFiles="PLFeedbackPDF" personId="0" ajax="true" year="2015">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="feedback" permissions="rw" />

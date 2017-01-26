@@ -414,7 +414,7 @@
         <!-- Table 2 -->
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
@@ -770,7 +770,7 @@
         <!-- Table 2 -->
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
@@ -1055,7 +1055,7 @@
         <!-- Table 2 -->
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>
@@ -1304,7 +1304,7 @@
         <!-- Table 2 -->
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 <p>Please provide any additional details needed to support the information in the table below, including justification for categories that have not been completed.</p>
                 {$item}
             ]]>

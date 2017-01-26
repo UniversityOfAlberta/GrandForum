@@ -294,7 +294,7 @@
         </ReportItem>
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true"  optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -643,7 +643,7 @@
         </ReportItem>
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -926,7 +926,7 @@
         </ReportItem>
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -1173,7 +1173,7 @@
         </ReportItem>
         <ReportItem id="planning" type="Textarea" blobItem="PLANNING" rich="true" optional="true" limit="250">
             <![CDATA[
-                <h2>Planning scorecard for next year (2016/17)</h2>
+                <h2>Planning scorecard for next year (2017/18)</h2>
                 {$item}
             ]]>
         </ReportItem>
