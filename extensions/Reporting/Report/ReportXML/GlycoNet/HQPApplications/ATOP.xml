@@ -123,7 +123,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="project_title" type="Text" blobItem="PROJECT">
+        <ReportItem id="project_title" type="Text" blobItem="PROJECT_TITLE">
             <![CDATA[
                 <p>If yes, please provide the title/acronym of the currently funded project:</p>
                 {$item}

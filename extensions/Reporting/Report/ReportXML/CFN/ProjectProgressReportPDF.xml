@@ -391,7 +391,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                <ReportItem id="trainee_completed" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
                     <![CDATA[
                         <tr>
                             <td class='label'>Term Completed:</td>
