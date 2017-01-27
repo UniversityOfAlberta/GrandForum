@@ -17,6 +17,7 @@ class ApplicationsTable extends SpecialPage{
     var $fullHQPs;
     var $hqps;
     var $wps;
+    var $ccs;
     var $projects;
 
     function ApplicationsTable() {
@@ -48,7 +49,13 @@ class ApplicationsTable extends SpecialPage{
         
         $this->wps = Theme::getAllThemes();
         
+        $this->ccs = array();
         $this->projects = Project::getAllProjects();
+        foreach($this->projects as $project){
+            if($project->getType() == 'Administrative'){
+                $this->ccs[] = $project;            
+            }
+        }
     }
     
     function generateHTML($wgOut){
@@ -74,6 +81,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0){
@@ -105,6 +113,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "wp" && $me->isRoleAtLeast(SD)){
             $this->generateWP();
+        }
+        else if($program == "cc" && $me->isRoleAtLeast(SD)){
+            $this->generateCC();
         }
         else if($program == "project" && $me->isRoleAtLeast(SD)){
             $this->generateProject();
@@ -170,6 +181,13 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new TabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015-16"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCC(){
+        global $wgOut;
+        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2016, "2016-17"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
