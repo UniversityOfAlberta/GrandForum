@@ -55,6 +55,11 @@
         <Project deleted="false" />
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview">
+        <ReportItem id="pdf" type="PDFReportItem" buttonName="Last Year's PDF" project="true" reportType="ProjectEvaluation" year="{$last_year}">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>The objectives of the NCE program are to mobilize multi-disciplinary research capacity from across Canada, engage partners from multiple academic institutions and various public and private-sector organizations, train the next generation of highly qualified people, work with end users to accelerate the creation and application of new knowledge as well as increase collaboration between research in Canada and abroad.</p>
