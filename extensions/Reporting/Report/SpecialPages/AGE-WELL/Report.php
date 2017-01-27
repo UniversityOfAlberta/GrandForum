@@ -136,6 +136,15 @@ class Report extends AbstractReport {
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", "{$url}WPReport&project={$theme->getAcronym()}", $selected);
             }
         }
+        if($person->isRole(APL)){
+            $ccs = $person->leadership();
+            foreach($ccs as $cc){
+                if($cc->getType() == 'Administrative'){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CCReport" && @$_GET['project'] == $cc->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$cc->getName()}", "{$url}CCReport&project={$cc->getName()}", $selected);
+                }
+            }
+        }
         if(count($person->getEvaluates("HQP-2016-07-15", 2016)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award 2016-07-15", "{$url}HQPReview", $selected);
