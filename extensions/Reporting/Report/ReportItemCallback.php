@@ -1669,8 +1669,13 @@ class ReportItemCallback {
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
     }
     
-    function concat($str1, $str2){
-        return "{$str1}{$str2}";
+    function concat(){
+        $args = func_get_args();
+        $concat = "";
+        foreach($args as $arg){
+            $concat .= $arg;
+        }
+        return $concat;
     }
     
     function add(){
