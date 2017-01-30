@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Crosscutting Activities Report" pdfFiles="CCReportPDF" extends="WPReport">
     <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="PL">
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="nce" permissions="rw" />
