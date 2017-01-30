@@ -215,7 +215,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                                              
                                                                                             
                                              ");
-            $termsAgree = new VerticalCheckBox("terms_agree", "terms_agree", array(), array("I have read and agree to the terms and conditions"), VALIDATE_NOTHING);
+            $termsAgree = new VerticalCheckBox("terms_agree", "terms_agree", array(), array("I have read and agree to the terms in the consent form"), VALIDATE_NOTHING);
             $termsExtra = new VerticalCheckBox("terms_extra", "terms_extra", 
                                                array("collect_demo", "collect_comments"), 
                                                array("I agree to have my demographic information used for research purposes." => "collect_demo",
@@ -376,7 +376,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                                              
                                                                                             
                                              ");
-            $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("Je l'ai lu et accepté les termes et conditions"), VALIDATE_NOTHING);
+            $termsAgree = new HorizontalCheckBox("terms_agree", "terms_agree", array(), array("J'ai lu et j'accepte les termes du formulaire de consentement"), VALIDATE_NOTHING);
             $termsExtra = new VerticalCheckBox("terms_extra", "terms_extra", 
                                                array("collect_demo", "collect_comments"), 
                                                array("Je suis d'accord pour avoir mes informations démographiques utilisées à des fins de recherche." => "collect_demo",

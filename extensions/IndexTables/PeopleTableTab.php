@@ -24,7 +24,7 @@
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        $this->html .= "Below are all the current $this->table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $this->html .= "Below are all the current {$this->table} in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
                 $this->html .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
