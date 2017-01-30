@@ -7,7 +7,7 @@ ThreadView = Backbone.View.extend({
                 this.$el.html("This Thread does not exist.");
             }, this)
         });
-        this.model.bind('sync', this.render);//change to on
+        this.model.bind('sync', this.render);
     },
 
     events: {

@@ -19,6 +19,7 @@ PostView = Backbone.View.extend({
 
     events: {
         "click .edit-icon": "editPost",
+        "click .delete-icon": "deletePost",
         "click #submitPost": "submitPost",
         "click #cancel": "cancel",
         "click #save": "save",
@@ -28,6 +29,12 @@ PostView = Backbone.View.extend({
         this.oldMessage = this.model.get('message');
         this.editing = true;
         this.render();
+    },
+    
+    deletePost: function(){
+        this.model.destroy({success: $.proxy(function(model, response){
+            this.$el.remove();
+        }, this)});
     },
 
     submitPost: function(){
@@ -93,7 +100,7 @@ PostView = Backbone.View.extend({
     render: function(){
         var classes = new Array();
         var isMine = {"isMine": false};
-        if(this.model.get('author').id == me.id){
+        if(this.model.get('author').id == me.id || _.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
              isMine.isMine = true;
         }
         var mod = _.extend(this.model.toJSON(), isMine);
