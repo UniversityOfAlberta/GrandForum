@@ -265,7 +265,7 @@ class GlobalSearchAPI extends RESTAPI {
                 }   
                 break; 
 	case 'wikipage':
-                $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
+                $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=text&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -297,16 +297,7 @@ class GlobalSearchAPI extends RESTAPI {
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
                         if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
-                            $project = Project::newFromName($article->getTitle()->getNSText());
-                            if($project != null && $project->getName() != ""){
-                                // Namespace belongs to a project
-                                if($project->getType() == 'Administrative' || $me->isMemberOf($project)){
-                                    $ids[] = $page->pageid;
-                                }
-                            }
-                            else if(strpos($article->getTitle()->getText(), "MAIL") !== 0){
-                                $ids[] = $page->pageid;
-                            }
+                            $ids[] = $page->pageid;
                         }
                     }
                 }
