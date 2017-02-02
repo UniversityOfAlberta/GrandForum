@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Evaluation" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
+<Report name="AGE-WELL's Project Scorecard and Reporting Framework" reportType="RP_PROJ_EVALUATION" pdfType="RPTP_PROJ_EVALUATION" pdfFiles="ProjectEvaluationPDF" personId="0" ajax="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Project Planning and Evaluation<br />{$project_name}</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL's Project Scorecard and<br /> Reporting Framework: {$project_name}</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -28,7 +28,7 @@
         </ReportItem>
         <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="300">
             <![CDATA[
-                <h3>Describe what your product(s) will be and the potential added value of what you are completing in your project.</h3>
+                <h3>Describe the outcome of your project and the potential added value of what you have completed over the past year.</h3>
                 {$item}
             ]]>
         </ReportItem>
