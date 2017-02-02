@@ -17,9 +17,9 @@ class PersonProfileTab extends AbstractEditableTab {
         global $wgUser, $wgOut;
         if(!$wgUser->isLoggedIn()){
             $wgOut->clearHTML();
-	    $this->html = permissionError();
-	    return;
-	}
+            $this->html = permissionError();
+            return;
+        }
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
@@ -39,7 +39,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 $extra[] = $this->showCloud($this->person, $this->visibility);
             }
             $extra[] = $this->showDoughnut($this->person, $this->visibility);
-	}
+        }
         $extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
@@ -185,17 +185,18 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
-	        $_POST['city'] = @$_POST['city'];
-	        $_POST['province'] = @$_POST['province'];
-	        $_POST['specialty'] = @$_POST['specialty'];
-	        $_POST['referral'] = @$_POST['referral'];
+            $_POST['city'] = @$_POST['city'];
+            $_POST['province'] = @$_POST['province'];
+            $_POST['specialty'] = @$_POST['specialty'];
+            $_POST['postal_code'] = @$_POST['postal_code'];
+            $_POST['referral'] = @$_POST['referral'];
 
 
             $api = new UserUniversityAPI();
             $api->processParams(array());
             $api->doAction(true);
-	        $api = new UserCapsAPI();
-	        $api->doAction(true);
+            $api = new UserCapsAPI();
+            $api->doAction(true);
             $api = new UserPhoneAPI();
             $api->doAction(true);
             $api = new UserWebsiteAPI();
@@ -285,29 +286,29 @@ EOF;
     }
     
     static function getPersonCloudData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getPersonCloudData"){
-	        $text = "";
-	        $person = Person::newFromId($_GET['person']);
-	        $text .= $person->getProfile()."\n";
-	        
-	        $products = $person->getPapers("all", false, 'both', false, 'Public');
-	        foreach($products as $product){
-	            $text .= $product->getTitle()."\n";
-	            $text .= $product->getDescription()."\n";
-	        }
-	        CommonWords::$commonWords[] = strtolower($person->getFirstName());
-	        CommonWords::$commonWords[] = strtolower($person->getLastName());
-	        $data = Wordle::createDataFromText($text);
-	        $data = array_slice($data, 0, 75);
+        global $wgServer, $wgScriptPath;
+        if($action == "getPersonCloudData"){
+            $text = "";
+            $person = Person::newFromId($_GET['person']);
+            $text .= $person->getProfile()."\n";
+            
+            $products = $person->getPapers("all", false, 'both', false, 'Public');
+            foreach($products as $product){
+                $text .= $product->getTitle()."\n";
+                $text .= $product->getDescription()."\n";
+            }
+            CommonWords::$commonWords[] = strtolower($person->getFirstName());
+            CommonWords::$commonWords[] = strtolower($person->getLastName());
+            $data = Wordle::createDataFromText($text);
+            $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
         }
         return true;
-	}
-	
-	function showDoughnut($person, $visibility){
+    }
+    
+    function showDoughnut($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
         $fn = '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")';
@@ -490,6 +491,10 @@ EOF;
                                 <td align='right'><b>Phone Number:</b></td>
                                 <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
                             </tr>
+                            <tr>
+                                <td align='right'><b>Postal Code:</b></td>
+                                <td><input type='text' name='postal_code' value='".str_replace("'", "&#39;", $person->getPostalCode())."' /></td>
+                            </tr>
                         </table></td>";
     }
     
@@ -511,7 +516,7 @@ EOF;
 EOF;
         if(isExtensionEnabled('Visualizations')){
             $this->html .= $this->showChord($person, $visibility);
-	}
+        }
         $this->html .= "</div>";
     }
     
@@ -543,22 +548,22 @@ EOF;
                             </tr>
                             {$nationality}
                             {$gender}";
-	$role_strings = array();
-	$roles = $person->getRoles();
+        $role_strings = array();
+        $roles = $person->getRoles();
         foreach($roles as $role){
-	    $role_strings[] = $role->role;
-	}
-	    $city = new TextField('city', 'city', $person->getCity());
-	    $this->html .= "<tr>
-				<td align='right'><b>City:</b></td>
-				<td>{$city->render()}</td>
-			</tr>";
+            $role_strings[] = $role->role;
+        }
+        $city = new TextField('city', 'city', $person->getCity());
+        $this->html .= "<tr>
+                            <td align='right'><b>City:</b></td>
+                            <td>{$city->render()}</td>
+                        </tr>";
             $province = new TextField('province', 'province', $person->getProvince());
             $this->html .= "<tr>
                                 <td align='right'><b>Province:</b></td>
                                 <td>{$province->render()}</td>
                         </tr>";
-	if(($visibility['isMe'] || $visibility['isSupervisor']) && in_array("Physician", $role_strings)){
+        if(($visibility['isMe'] || $visibility['isSupervisor']) && in_array("Physician", $role_strings)){
 
             $blankSelected = ($person->getAcceptReferrals() == "") ? "selected='selected'" : "";
             $yesSelected = ($person->getAcceptReferrals() == "Yes") ? "selected='selected'" : "";
@@ -581,8 +586,8 @@ EOF;
                                 <td align='right'><b>Specialty:</b></td>
                                 <td>{$specialtyCombo->render()}</td>
                         </tr>
-			{$referral}";
-	}
+            {$referral}";
+        }
 
         $this->html .= "</table></td></tr>";
         $this->html .= "</table>";

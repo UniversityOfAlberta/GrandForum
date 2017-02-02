@@ -851,13 +851,13 @@ class Person extends BackboneModel {
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl(),
-		      'postal_code' => $this->getPostalCode(),
-		      'city' => $this->getCity(),
-		      'province' => $this->getProvince(),
-		      'specialty' => $this->getSpecialty(),
-		      'years_in_practice' => $this->getYearsInPractice(),
-		      'prior_abortion_service' => $this->getPriorAbortionService(),
-		      'accept_referrals' => $this->getAcceptReferrals());
+		              'postal_code' => $this->getPostalCode(),
+		              'city' => $this->getCity(),
+		              'province' => $this->getProvince(),
+		              'specialty' => $this->getSpecialty(),
+		              'years_in_practice' => $this->getYearsInPractice(),
+		              'prior_abortion_service' => $this->getPriorAbortionService(),
+		              'accept_referrals' => $this->getAcceptReferrals());
         return $json;
     }
     
@@ -899,15 +899,14 @@ class Person extends BackboneModel {
 
              $status = DBFunctions::insert('grand_personal_caps_info',
                                      array('user_id' => $this->getId(),
-					   'postal_code' => $this->getPostalCode(),
+                                           'postal_code' => $this->getPostalCode(),
                                            'city' => $this->getCity(),
                                            'province' => $this->getProvince(),
                                            'specialty' => $this->getSpecialty(),
                                            'years_in_practice' => $this->getYearsInPractice(),
                                            'prior_abortion_service' => $this->getPriorAbortionService(),
                                            'accept_referrals' => $this->getAcceptReferrals()),
-					   true);
-
+                                     true);
             DBFunctions::commit();
             Person::$cache = array();
             Person::$namesCache = array();
@@ -952,17 +951,17 @@ class Person extends BackboneModel {
                                     array('user_id' => EQ($this->getId())));
 
 
-	     $province = Province::newFromName($this->getProvinceString());
-	     $status = DBFunctions::update('grand_personal_caps_info',
-				     array('postal_code' => $this->getPostalCode(),
-					   'city' => $this->getCity(),
-					   'province' =>$province->getId(),
-					   'specialty' => $this->getSpecialty(),
-					   'years_in_practice' => $this->getYearsInPractice(),
-					   'prior_abortion_service' => $this->getPriorAbortionService(),
-					   'accept_referrals' => $this->accept_referrals),
-				      array('user_id' =>EQ($this->getId())));
-	    $this->getUser()->invalidateCache();
+            $province = Province::newFromName($this->getProvinceString());
+            $status = DBFunctions::update('grand_personal_caps_info',
+                                    array('postal_code' => $this->getPostalCode(),
+                                          'city' => $this->getCity(),
+                                          'province' =>$province->getId(),
+                                          'specialty' => $this->getSpecialty(),
+                                          'years_in_practice' => $this->getYearsInPractice(),
+                                          'prior_abortion_service' => $this->getPriorAbortionService(),
+                                          'accept_referrals' => $this->accept_referrals),
+                                    array('user_id' =>EQ($this->getId())));
+            $this->getUser()->invalidateCache();
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
@@ -1321,7 +1320,10 @@ class Person extends BackboneModel {
      * @return string The postal code of this Person
      */
     function getPostalCode(){
-        return $this->postal_code;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn() || $this->isRoleAtLeast(STAFF) || $this->isRole(SD)){
+            return $this->postal_code;
+        }
     }
 
     /**

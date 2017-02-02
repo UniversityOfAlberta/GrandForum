@@ -126,7 +126,7 @@ class PersonPage {
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                    $tabbedPage->addTab(new HQPExitTab($person, $visibility));
+                   // $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));

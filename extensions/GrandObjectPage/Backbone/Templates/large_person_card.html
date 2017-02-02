@@ -25,10 +25,16 @@
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
                 </tr>
             <% } %>
-            <% if(phone != "" && phone != "http://"){ %>
+            <% if(phone != "" && phone){ %>
                 <tr>
                     <td width="100">Phone Number&nbsp;</td>
                     <td style="color:#333333;"><%= phone %></td>
+                </tr>
+            <% } %>
+            <% if(postal_code != ""){ %>
+                <tr>
+                    <td width="100">Postal Code&nbsp;</td>
+                    <td style="color:#333333;"><%= postal_code %></td>
                 </tr>
             <% } %>
             <% if(this.model.getCapsRoleString().indexOf("Physician") != -1){ %>
