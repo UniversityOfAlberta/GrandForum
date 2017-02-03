@@ -239,19 +239,20 @@ class Thread extends BackboneModel{
             return false;
 	}
 
-	function delete(){
-            $me = Person::newFromWgUser();
-            if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
-                DBFunctions::begin();
-                $status = DBFunctions::delete('grand_threads',
-                                              array('id' => EQ($this->rev_id)));
-                if($status){
-		    DBFunctions::commit();
-                    return true;
-                }
+    function delete(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+            DBFunctions::begin();
+            $status = DBFunctions::delete('grand_threads',
+                                          array('id' => EQ($this->id)));
+            if($status){
+	            $this->id = null;
+                DBFunctions::commit();
+                return $this;
             }
-            return false;
-	}
+        }
+        return false;
+    }
 //--------General Functions-------//
 
         function canView(){
@@ -330,5 +331,5 @@ class Thread extends BackboneModel{
         return "{$wgServer}{$wgScriptPath}/index.php/Special:MyThreads?embed#/{$this->getId()}";
     }
 }
-	
+
 ?>

@@ -23,15 +23,31 @@ MyThreadsRowView = Backbone.View.extend({
         csv.separator = ', ';
         csv.render();
     },
+    
+    deleteThread: function(){
+        var doDelete = false;
+        if(wgLang == "en"){
+            doDelete = confirm("Are you sure you want to delete this thread?");
+        }
+        else if(wgLang == "fr"){
+            doDelete = confirm("Voulez-vous vraiment supprimer ce fil?");
+        }
+        if(doDelete){
+            this.model.destroy({success: $.proxy(function(model, response){
+                this.$el.remove();
+            }, this)});
+        }
+    },
 
     events: {
+        "click .delete-icon": "deleteThread"
     },
 
     render: function(){
         var isMine = {"isMine": false};
-	if(this.model.get('author').id == me.id){
+        if(this.model.get('author').id == me.id){
              isMine.isMine = true;
-	}
+        }
         var mod = _.extend(this.model.toJSON(), isMine);
         this.el.innerHTML = this.template(mod);
         return this.$el;

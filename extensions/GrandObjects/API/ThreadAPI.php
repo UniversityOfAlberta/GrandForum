@@ -87,6 +87,16 @@ class ThreadAPI extends RESTAPI {
     }
 
     function doDELETE(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(MANAGER)){
+            $thread = Thread::newFromId($this->getParam('id'));
+            $thread = $thread->delete();
+
+            if($thread === false){
+                $this->throwError("The post could not be created");
+            }
+            return $thread->toJSON();
+        }
         return false;
     }
 }

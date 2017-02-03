@@ -1,4 +1,7 @@
 <td align="left">
+    <% if(_.where(me.get('roles'), {role: ADMIN}).length > 0 || _.where(me.get('roles'), {role: MANAGER}).length > 0){ %>
+        <span class="delete-icon" style="float:right; margin-left: 3px;"></span>
+    <% } %>
     <a href="<%= url %>"><%= striphtml(title) %></a>
 </td>
 <td>
@@ -27,10 +30,10 @@
 </td>
 <td style="white-space: nowrap;">
     <% if(users.length > 0){ %>
-	<span class="en">Yes</span>
-	<span class="fr">Oui</span>
+	    <span class="en">Yes</span>
+	    <span class="fr">Oui</span>
     <% } else{%>
-	<span class="en">No</span>
-	<span class="fr">Non</span>
+	    <span class="en">No</span>
+	    <span class="fr">Non</span>
     <% } %>
 </td>

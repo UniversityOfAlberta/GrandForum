@@ -9,7 +9,7 @@ MyThreadsView = Backbone.View.extend({
         this.listenTo(this.model, "sync", function(){
             this.threads = this.model;
             this.listenTo(this.threads, "addThread", this.addRows);
-            this.listenTo(this.threads, "remove", this.addRows);
+            //this.listenTo(this.threads, "remove", this.addRows);
             this.render();
         }, this);
     },
