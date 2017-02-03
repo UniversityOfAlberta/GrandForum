@@ -20,24 +20,58 @@ PostView = Backbone.View.extend({
     },
 
     events: {
+        "click .edit-icon": "editPost",
+        "click .delete-icon": "deletePost",
         "click #submitPost": "submitPost",
+        "click #cancel": "cancel",
+        "click #save": "save",
+    },
+    
+    editPost: function(){
+        this.oldMessage = this.model.get('message');
+        this.editing = true;
+        this.render();
+    },
+    
+    deletePost: function(){
+        var doDelete = false;
+        if(wgLang == "en"){
+            doDelete = confirm("Are you sure you want to delete this post?");
+        }
+        else{
+            doDelete = confirm("Es-tu sur de vouloir supprimer cette annonce?");
+        }
+        if(doDelete){
+            this.model.destroy({success: $.proxy(function(model, response){
+                this.$el.remove();
+            }, this)});
+        }
     },
 
     submitPost: function(){
         this.model.save();
-    //    this.parent.$("#personRows").append(this.$el);
-	    this.parent.addNewRow();
-
+        this.parent.addNewRow();
+    },
+    
+    cancel: function(){
+        this.editing = false;
+        this.model.set('message', this.oldMessage);
+        this.render();
+    },
+    
+    save: function(){
+        this.editing = false;
+        this.model.save();
     },
 
     render: function(){
         var classes = new Array();
         var isMine = {"isMine": false};
-	    if(this.model.get('author').id == me.id){
-                 isMine.isMine = true;
-	    }
+        if(this.model.get('author').id == me.id || _.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+             isMine.isMine = true;
+        }
         var mod = _.extend(this.model.toJSON(), isMine);
-        this.el.innerHTML = this.template(mod);
+        this.$el.html(this.template(mod));
         return this.$el;
     }
 });

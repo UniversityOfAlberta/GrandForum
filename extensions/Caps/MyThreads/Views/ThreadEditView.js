@@ -16,12 +16,12 @@ ThreadEditView = Backbone.View.extend({
             this.isDialog = options.isDialog;
         }
         this.template = _.template($('#thread_edit_template').html());
-                if(!this.model.isNew() && !this.isDialog){
-                    this.model.fetch();
-                }
-                else{
-                    _.defer(this.render);
-                }
+        if(!this.model.isNew() && !this.isDialog){
+            this.model.fetch();
+        }
+        else{
+            _.defer(this.render);
+        }
     },
     
     events: {

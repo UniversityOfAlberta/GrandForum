@@ -1060,7 +1060,10 @@ $(function(){
         if($wgLang->getCode() == "fr"){
             $title = "Questions Fréquemment Posées";
         }
-                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
+        $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
+        if($me->isRoleAtLeast(MANAGER)){
+            $GLOBALS['toolbox']['People']['links'][9999] = TabUtils::createToolboxLink("Reset Password", "$wgServer$wgScriptPath/index.php/Special:PasswordReset");
+        }
 		$person = Person::newFromId($wgUser->getId());
 		/*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
             $title = "Other Tools";

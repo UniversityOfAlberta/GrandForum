@@ -95,10 +95,10 @@ MyThreadsView = Backbone.View.extend({
                 		        this.$("#saveThread").prop('disabled', false);
 				                this.editDialog.view2.model.set("thread_id", m.responseJSON.id);
 				                this.editDialog.view2.model.save(null, {
-                                    
                             	    success: $.proxy(function(){
                                     	this.$(".throbber").hide();
                                     	this.$("#saveThread").prop('disabled', false);
+                                    	this.editDialog.dialog("close");
                                     	clearAllMessages();
                                         addSuccess("Thread has been successfully saved");
                                     	document.location = wgServer + wgScriptPath + "/index.php/Special:MyThreads";		
