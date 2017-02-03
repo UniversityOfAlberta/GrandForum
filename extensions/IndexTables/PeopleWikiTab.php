@@ -114,20 +114,29 @@ class PeopleWikiTab extends AbstractTab {
 
         }
         $this->html .= "<br />
-                    <div style='font-size: 1.5em;'><span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.<br /><br />
-                    <i style='font-size: 0.666em;'>*For example, view this easy to read <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fact sheet</a> comparing medical and aspiration abortion</i></span>
-                    <span class='fr'>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA . Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.<br /><br />
-                    <i style='font-size: 0.666em;'>*Par exemple, consultez cette <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fiche d'information</a> facile à lire comparant l'avortement médical et l'asthme</i>
-</span></div><br />";
+                    <div style='font-size: 1.5em;'>
+                    <span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.<br /></span>
+                    <span class='fr'><i>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA. Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</i></span><br /></div>";
         if($this->table == "Organizations"){
-        $this->html .= "
-                    <span class='en'>
-    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-    Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+            $this->html .= "<span class='en'>
+                <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+                Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
 
-    <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-    Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
-    </span><br /><br />";
+                <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
+                Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
+                </span><br /><br />";
+        }
+        else if($this->table == "Clinical"){
+            $this->html .= "
+                <span class='en'><i>*For example, view these <a href='https://www.caps-cpca.ubc.ca/index.php/File:Clinical_Clinical_Practice_Guideline_2016.pdf' target='_blank'>clinical practice guidelines</a></i></span>
+                <span class='fr'><i>*Par exemple, consultez ces <a href='https://www.caps-cpca.ubc.ca/index.php/File:Clinical_Clinical_Practice_Guideline_2016.pdf' target='_blank'>lignes directrices de pratique clinique</a></i></span>
+                <br /><br />";
+        }
+        else if($this->table == "Patients"){
+            $this->html .= "
+                <span class='en'><i>*For example, view this easy to read <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fact sheet</a> comparing medical and aspiration abortion</i></span>
+                <span class='fr'><i>*Par exemple, consultez cette <a href='https://www.caps-cpca.ubc.ca/index.php/File:Patients_early_abortion_options.pdf' target='_blank'>fiche d'information</a> facile à lire comparant l'avortement médical et l'asthme</i></span>
+                <br /><br />";
         }
  
 
