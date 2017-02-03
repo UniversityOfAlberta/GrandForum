@@ -115,8 +115,9 @@ class PeopleWikiTab extends AbstractTab {
         }
         $this->html .= "<br />
                     <div style='font-size: 1.5em;'>
-                    <span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.<br /></span>
-                    <span class='fr'><i>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA. Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</i></span><br /></div>";
+                    <span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span>
+                    <span class='fr'><i>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA. Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span>
+                    <br /><br /></div>";
         if($this->table == "Organizations"){
             $this->html .= "<span class='en'>
                 <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
