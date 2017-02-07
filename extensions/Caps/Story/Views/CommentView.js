@@ -34,9 +34,18 @@ CommentView = Backbone.View.extend({
     },
     
     deletePost: function(){
-        this.model.destroy({success: $.proxy(function(model, response){
-            this.$el.remove();
-        }, this)});
+        var doDelete = false;
+        if(wgLang == "en"){
+            doDelete = confirm("Are you sure you want to delete this comment?");
+        }
+        else{
+            doDelete = confirm("Es-tu sur de vouloir supprimer cette commentaire?");
+        }
+        if(doDelete){
+            this.model.destroy({success: $.proxy(function(model, response){
+                this.$el.remove();
+            }, this)});
+        }
     },
 
     submitPost: function(){
