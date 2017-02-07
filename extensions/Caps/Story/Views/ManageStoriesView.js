@@ -9,7 +9,7 @@ ManageStoriesView = Backbone.View.extend({
         this.listenTo(this.model, "sync", function(){
             this.stories = this.model;
             this.listenTo(this.stories, "add", this.addRows);
-            this.listenTo(this.stories, "remove", this.addRows);
+            //this.listenTo(this.stories, "remove", this.addRows);
             this.render();
         }, this);
     },

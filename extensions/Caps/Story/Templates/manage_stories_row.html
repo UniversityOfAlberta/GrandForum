@@ -1,4 +1,8 @@
-<td align="left"><a href="<%= story_url %>"><%= striphtml(title) %></a>
+<td align="left">
+    <% if(_.where(me.get('roles'), {role: ADMIN}).length > 0 || _.where(me.get('roles'), {role: MANAGER}).length > 0){ %>
+        <span class="delete-icon" style="float:right; margin-left: 3px;"></span>
+    <% } %>
+    <a href="<%= story_url %>"><%= striphtml(title) %></a>
 </td>
 <% if(me.getCapsRoleString().indexOf('Admin') > -1 || me.getCapsRoleString().indexOf('Manager') > -1){ %>
 <td  style="white-space: nowrap;"><a href="<%= author.url %>"><%= author.name %></a></td>

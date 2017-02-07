@@ -56,21 +56,19 @@ class StoryAPI extends RESTAPI {
         $story = Story::newFromId($this->getParam('id'));
         return $story->toJSON();
     }
+    
     function doDELETE(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(MANAGER)){
+            $thread = Story::newFromId($this->getParam('id'));
+            $thread = $thread->delete();
+            if($thread === false){
+                $this->throwError("The story could not be deleted");
+            }
+            return $thread->toJSON();
+        }
         return false;
     }
-
-   /* 
-    function doDELETE(){
-        $person = Person::newFromId($this->getParam('id'));
-        if($person == null || $person->getName() == ""){
-            $this->throwError("This user does not exist");
-        }
-        $status = $person->delete();
-        if(!$status){
-            $this->throwError("The user <i>{$person->getName()}</i> could not be deleted");
-        }
-    }*/
 }
 
 class StoriesAPI extends RESTAPI {

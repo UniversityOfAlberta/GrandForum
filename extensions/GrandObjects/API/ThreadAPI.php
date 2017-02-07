@@ -93,7 +93,7 @@ class ThreadAPI extends RESTAPI {
             $thread = $thread->delete();
 
             if($thread === false){
-                $this->throwError("The post could not be created");
+                $this->throwError("The thread could not be deleted");
             }
             return $thread->toJSON();
         }
