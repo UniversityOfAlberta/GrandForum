@@ -20,14 +20,40 @@ CommentView = Backbone.View.extend({
     },
 
     events: {
+        "click .edit-icon": "editPost",
+        "click .delete-icon": "deletePost",
         "click #submitPost": "submitPost",
+        "click #cancel": "cancel",
+        "click #save": "save",
+    },
+    
+    editPost: function(){
+        this.oldMessage = this.model.get('message');
+        this.editing = true;
+        this.render();
+    },
+    
+    deletePost: function(){
+        this.model.destroy({success: $.proxy(function(model, response){
+            this.$el.remove();
+        }, this)});
     },
 
     submitPost: function(){
         this.model.save();
         this.parent.$("#commentRows").append(this.$el);
         this.parent.addNewRow();
-
+    },
+    
+    cancel: function(){
+        this.editing = false;
+        this.model.set('message', this.oldMessage);
+        this.render();
+    },
+    
+    save: function(){
+        this.editing = false;
+        this.model.save();
     },
 
     render: function(){

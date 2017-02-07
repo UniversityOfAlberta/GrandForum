@@ -199,13 +199,13 @@ class Story extends BackboneModel{
                 $status = DBFunctions::update('grand_user_stories',
                                               array('id' => $this->getId(),
                                                     'user_id' => $this->user,
-						    'title' => $this->getTitle(),
+                                                    'title' => $this->getTitle(),
                                                     'story' => $this->getStory(),
                                                     'date_submitted' => $this->getDateSubmitted(),
                                                     'approved' => 0),
                                               array('rev_id' => EQ($this->rev_id)));
                 if($status){
-		    DBFunctions::commit();
+		            DBFunctions::commit();
                     return true;
                 }
             }
@@ -219,8 +219,9 @@ class Story extends BackboneModel{
                 $status = DBFunctions::delete('grand_user_stories',
                                               array('rev_id' => EQ($this->rev_id)));
                 if($status){
-		    DBFunctions::commit();
-                    return true;
+		            $this->id = null;
+                    DBFunctions::commit();
+                    return $this;
                 }
             }
             return false;

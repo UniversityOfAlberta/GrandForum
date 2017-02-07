@@ -26,10 +26,30 @@ class StoryCommentAPI extends RESTAPI {
     }
 
     function doPUT(){
-        return false;
+        $me = Person::newFromWgUser();
+        $post = StoryComment::newFromId($this->getParam('id'));
+        if(!$post->canEdit()){
+            $this->throwError("You must be logged in to view this post");
+        }
+        $post->setMessage($this->POST('message'));
+        $post = $post->update();
+        if($post === false){
+            $this->throwError("The post could not be updated");
+        }
+        return $post->toJSON();
     }
+    
     function doDELETE(){
-        return false;
+        $me = Person::newFromWgUser();
+        $post = StoryComment::newFromId($this->getParam('id'));
+        if(!$post->canEdit()){
+            $this->throwError("You must be logged in to view this post");
+        }
+        $post = $post->delete();
+        if($post === false){
+            $this->throwError("The post could not be updated");
+        }
+        return $post->toJSON();
     }
 }
 

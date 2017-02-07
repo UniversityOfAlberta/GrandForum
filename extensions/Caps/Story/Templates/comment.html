@@ -1,5 +1,9 @@
 <% if(id != null) {%>
     <div class="thread-message" width="100%">
+        <% if(isMine && !this.editing){ %>
+            <span class="delete-icon" style="float:right; margin-left: 3px;"></span>
+            <span class="edit-icon" style="float:right; margin-right: 3px;"></span>
+        <% } %>
         <table padding="0">
             <tbody>
                 <tr>
@@ -25,9 +29,16 @@
                     </td>
                 </tr>
         </table>
-        <div class="inner-message">
-            <%= nl2br(striphtml(message)) %>
-        </div>
+        <% if(this.editing){ %>
+            <%= HTML.TextArea(this, 'message', {style: 'max-height: 200px; resize: none;'}) %>
+            <div style="margin-top:5px; text-align: right;">
+                <button id="cancel" type="button">Cancel</button>&nbsp;<button id="save" type="button">Save</button>
+            </div>
+        <% } else { %>
+            <div class="inner-message">
+                <%= nl2br(striphtml(message)) %>
+            </div>
+        <% } %>
     </div>
 <%} else{ %>
     <div id="addMessage" align="right">
