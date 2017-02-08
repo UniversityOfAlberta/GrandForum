@@ -334,7 +334,8 @@ class PeopleWikiTab extends AbstractTab {
             $this->html .= "<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#accordion').accordion({
-                      collapsible: true
+                      collapsible: true,
+                      heightStyle: 'content'
                     });
                 });
             </script>";
