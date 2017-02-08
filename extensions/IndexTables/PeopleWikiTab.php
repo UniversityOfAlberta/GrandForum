@@ -299,9 +299,6 @@ class PeopleWikiTab extends AbstractTab {
                 switch($keywords){
                     case "Theme 1":
                         $theme1[] = $url;
-                        $theme1[] = $url;
-                        $theme1[] = $url;
-                        $theme1[] = $url;
                         break;
                     case "Theme 2":
                         $theme2[] = $url;
