@@ -116,7 +116,7 @@ class PeopleWikiTab extends AbstractTab {
         $this->html .= "<br />
                     <div style='font-size: 1.5em;'>
                     <span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span>
-                    <span class='fr'><i>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA. Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span>
+                    <span class='fr'>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA. Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span>
                     <br /><br /></div>";
         if($this->table == "Organizations"){
             $this->html .= "<span class='en'>
@@ -227,30 +227,67 @@ class PeopleWikiTab extends AbstractTab {
         </script>";
 
         $pages = Wiki::getFiles($this->table);
-        $this->html .= "<h2 class='en'>Uploaded Files</h2><h2 class='fr'>Les fichiers téléchargés</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
-        $this->html .= "<tbody>\n";
-        foreach($pages as $page){
-            if($page->getTitle()->getText() != "Main"){
-                $data = DBFunctions::select(array('mw_an_upload_permissions'),
-                                            array('*'),
-                                            array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText())));
-                if(count($data)==0){
+        if($this->table != "Articles"){
+            $this->html .= "<h2 class='en'>Uploaded Files</h2><h2 class='fr'>Les fichiers téléchargés</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+            $this->html .= "<tbody>\n";
+            foreach($pages as $page){
+                if($page->getTitle()->getText() != "Main"){
                     $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                                 array('*'),
-                                                array("upload_name" => "File:".$page->getTitle()->getText()));
-                }
+                                                array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText()),
+                                                      WHERE_OR("upload_name") => "File:".$page->getTitle()->getText()
+                                                ));
 
-                $this->html .= "<tr>\n";
-                $revId = $page->getRevIdFetched();
-                $revision = Revision::newFromId($revId);
-                $date = $revision->getTimestamp();
-                $year = substr($date, 0, 4);
-                $month = substr($date, 4, 2);
-                $day = substr($date, 6, 2);
-                $hour = substr($date, 8, 2);
-                $minute = substr($date, 10, 2);
-                $second = substr($date, 12, 2);
-                $editor = Person::newFromId($revision->getRawUser());
+                    $this->html .= "<tr>\n";
+                    $revId = $page->getRevIdFetched();
+                    $revision = Revision::newFromId($revId);
+                    $date = $revision->getTimestamp();
+                    $year = substr($date, 0, 4);
+                    $month = substr($date, 4, 2);
+                    $day = substr($date, 6, 2);
+                    $hour = substr($date, 8, 2);
+                    $minute = substr($date, 10, 2);
+                    $second = substr($date, 12, 2);
+                    $editor = Person::newFromId($revision->getRawUser());
+                    if($data[0]['title'] != ""){
+                        $title = ucfirst($data[0]['title']);
+                    }
+                    else{
+                        $title = $page->getTitle()->getText();
+                    }
+                    $keywords = $data[0]['keywords'];
+                    $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."' target='_blank'>$title</a></td>\n";
+                    $this->html .= "<td>$keywords</td>";
+                    $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
+                    $me = Person::newFromWgUser();
+                    if($me->isRoleAtLeast(MANAGER)){
+                        $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getNameForForms()}</a></td>\n";
+                    }
+                    else{
+                        $this->html .= "<td>{$editor->getNameForForms()}</td>\n";
+                    }
+                    $this->html .= "</tr>\n";
+                }
+            }
+            $this->html .= "</tbody></table>";
+            $this->html .= "<script type='text/javascript'>
+                $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+            </script>";
+            $this->html .= "<script type='text/javascript'>
+                $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+            </script>";
+        }
+        else{
+            $theme1 = array();
+            $theme2 = array();
+            $theme3 = array();
+            $theme4 = array();
+            foreach($pages as $page){
+                $data = DBFunctions::select(array('mw_an_upload_permissions'),
+                                                array('*'),
+                                                array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText()),
+                                                      WHERE_OR("upload_name") => "File:".$page->getTitle()->getText()
+                                                ));
                 if($data[0]['title'] != ""){
                     $title = ucfirst($data[0]['title']);
                 }
@@ -258,26 +295,50 @@ class PeopleWikiTab extends AbstractTab {
                     $title = $page->getTitle()->getText();
                 }
                 $keywords = $data[0]['keywords'];
-                $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."' target='_blank'>$title</a></td>\n";
-                $this->html .= "<td>$keywords</td>";
-                $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
-                $me = Person::newFromWgUser();
-                if($me->isRoleAtLeast(MANAGER)){
-                    $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getNameForForms()}</a></td>\n";
+                $url = "<p><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."' target='_blank'><img src='$wgServer$wgScriptPath/skins/icons/caps/Very-Basic-Document-icon.png'>&nbsp;$title</a></p>";
+                switch($keywords){
+                    case "Theme 1":
+                        $theme1[] = $url;
+                        break;
+                    case "Theme 2":
+                        $theme2[] = $url;
+                        break;
+                    case "Theme 3":
+                        $theme3[] = $url;
+                        break;
+                    case "Theme 4":
+                        $theme4[] = $url;
+                        break;
                 }
-                else{
-                    $this->html .= "<td>{$editor->getNameForForms()}</td>\n";
-                }
-                $this->html .= "</tr>\n";
             }
+            
+            $this->html .= "<br /><br />
+                <div id='accordion'>
+                    <h2>Adverse Events/Outcomes<br /><span style='font-size:0.75em;'>Keywords: significant adverse events, clostridium-associated toxic shock</span></h2>
+                    <div>
+                        ".implode("", $theme1)."
+                    </div>
+                    <h2>First Trimester Medical Abortion<br /><span style='font-size:0.75em;'>Keywords: Medical abortion comparisons to surgical abortion, gestational age up to 70days, medical management, and abortion service location in Canada</span></h2>
+                    <div>
+                        ".implode("", $theme2)."
+                    </div>
+                    <h2>Pharmacological Information<br /><span style='font-size:0.75em;'>Keywords: Pharmacological restrictions, pharmacokinetics, dosing, routes of administration </span></h2>
+                    <div>
+                        ".implode("", $theme3)."
+                    </div>
+                    <h2>Post Abortion Care<br /><span style='font-size:0.75em;'>Keywords: Counselling, attitudes, immigrant/non-immigrant, values</span></h2>
+                    <div>
+                        ".implode("", $theme4)."
+                    </div>
+                </div>";
+            $this->html .= "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('#accordion').accordion({
+                      collapsible: true
+                    });
+                });
+            </script>";
         }
-        $this->html .= "</tbody></table>";
-        $this->html .= "<script type='text/javascript'>
-            $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-        </script>";
-        $this->html .= "<script type='text/javascript'>
-            $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-        </script>";
         return $this->html;
     }
 

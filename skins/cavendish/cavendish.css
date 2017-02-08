@@ -914,7 +914,6 @@ div#person .ui-tabs-panel {
 
 .ui-accordion-header > a {
     color: #000000 !important;
-    text-shadow: #FFFFFF 1px 1px 0;
     padding: 0 .5em 0 1em !important;
 }
 
@@ -951,17 +950,14 @@ div#person .ui-tabs-panel {
 }
 
 .toggleHeader, .ui-accordion-header {
-    background-color: #EEEEEE !important;
-    background-image: url('../black_gradient.png') !important;
-	border: 1px solid #AAAAAA !important;
+    background: #E8E8E8 !important;
 	color: #000000;
-    text-shadow: #FFFFFF 1px 1px 0;
 	padding: 4px !important;
-    padding-left:10px !important;
+	-moz-border-radius:0;
+    -webkit-border-radius:0;
+    border-radius:0;
+    padding-left:30px !important;
     padding-right:10px !important;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    border-radius:3px;
     margin-bottom:5px !important;
     cursor: pointer;
     
@@ -976,7 +972,7 @@ div#person .ui-tabs-panel {
 }
 
 .toggleHeader:hover, .ui-accordion-header:hover {
-    background-image: url('../black_gradient_darker.png') !important;
+    background: #E0E0E0 !important;
 }
 
 ul.ui-autocomplete {
