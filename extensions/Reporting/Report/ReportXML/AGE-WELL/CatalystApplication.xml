@@ -132,7 +132,7 @@
         <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
             <![CDATA[
                 <li>
-                    <b>Provide a 300-word lay summary that includes a problem statement, research purpose and anticipated impact(s) of the project. This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be  used for future communications if the proposal is successful.)</b>
+                    <b>Provide a 300-word lay summary that includes a problem statement, research purpose and anticipated impact(s) of the project. This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be  used for future communications if the proposal is successful.</b>
                     {$item}
                 </li>
             ]]>

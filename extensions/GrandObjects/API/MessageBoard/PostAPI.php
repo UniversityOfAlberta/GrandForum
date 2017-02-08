@@ -42,6 +42,7 @@ class PostAPI extends RESTAPI {
         }
         return $post->toJSON();
     }
+    
     function doDELETE(){
         $me = Person::newFromWgUser();
         $post = Post::newFromId($this->getParam('id'));
