@@ -56,6 +56,21 @@
             ]]>
         </ReportItem>
         
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  max="10"
+                                  showHeader="false">
+            <![CDATA[
+                <p><b><u>Keywords</u></b></p>
+                <div style='font-size: smaller;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
         <!-- Partners involved (Companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" 
                               blobType="BLOB_ARRAY" 
@@ -115,6 +130,22 @@
                 <div style='font-size: smaller;'><i>{$item}</i></div>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
+            <![CDATA[
+                <br />
+                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet grant</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_COLLAB,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+                <![CDATA[
+                    <p><b>Please provide a response to the previous reviews</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">

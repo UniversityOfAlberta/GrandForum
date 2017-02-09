@@ -56,6 +56,21 @@
             ]]>
         </ReportItem>
         
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  max="10"
+                                  showHeader="false">
+            <![CDATA[
+                <p><b><u>Keywords</u></b></p>
+                <div style='font-size: smaller;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
         <!-- Partners involved (Companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" 
                               blobType="BLOB_ARRAY" 
@@ -66,22 +81,6 @@
                               showHeader="false">
             <![CDATA[
                 <p><b><u>Partners involved</u> (Name, Dollars requested, Cash, In-Kind)</b></p>
-                <div style='font-size: smaller;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        
-        <!-- Suggested reviewers -->
-        <ReportItem id="reviewers" type="MultiTextReportItem" 
-                                   blobType="BLOB_ARRAY" 
-                                   blobItem="CAT_DESC_REV" 
-                                   multiple="true" 
-                                   labels="Name|E-Mail|Affiliation" 
-                                   sizes="33%|33%|33%"
-                                   types="text|text|text|" 
-                                   showHeader="false">
-            <![CDATA[
-                <p><b><u>Suggested Reviewers</u> (Name, E-Mail, Affiliation)</b></p>
-                Please suggest at least 3 reviewers for the application.
                 <div style='font-size: smaller;'>{$item}</div>
             ]]>
         </ReportItem>
@@ -110,7 +109,7 @@
         <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
             <![CDATA[
                 <p><b><u>Conflict of Interest</u></b></p>
-                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
+                <b>Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?</b>
                 {$item}
             ]]>
         </ReportItem>
@@ -118,7 +117,7 @@
         <!-- Conflict of Interest Multi -->
         <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" sizes="50%|50%" showHeader="false">
             <![CDATA[
-                <p>If Yes, please indicate which researcher and the relevant company.</p>
+                <p><b>If Yes, please indicate which researcher and the relevant company</b></p>
                 <div style='font-size: smaller;'>{$item}</div>
             ]]>
         </ReportItem>
@@ -127,10 +126,26 @@
         <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" sizes="100%" showHeader="false">
             <![CDATA[
                 <br />
-                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
+                <p><b>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</b></p>
                 <div style='font-size: smaller;'><i>{$item}</i></div>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
+            <![CDATA[
+                <br />
+                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet grant</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_CATALYST,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+                <![CDATA[
+                    <p><b>Please provide a response to the previous reviews</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">

@@ -113,10 +113,35 @@
             ]]>
         </ReportItem>
         
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  sizes="150"
+                                  max="10">
+            <![CDATA[
+                <h2>Key Words</h2>
+                <p>A minimum of 5 keywords must be provided.  There can be no more than 10 keywords</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <!-- Partners involved (Companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h2>Partners involved (Companies, agencies etc)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Suggested reviewers -->
+        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text|">
+            <![CDATA[
+                <h2>Suggested Reviewers</h2>
+                Please suggest at least 5 reviewers for the application.  At least three of the five suggested reviewers must be working at locations outside of Canada. Suggested reviewers should not be members of the GlycoNet  Scientific Advisory Board or Research Management Committee.  In addition, the Network follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>; please consult that policy before suggesting reviewers.
                 {$item}
             ]]>
         </ReportItem>
@@ -161,6 +186,35 @@
             <![CDATA[
                 <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
                 {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
+            <![CDATA[
+                <p>Is this application a resubmission of a previously unsuccessful GlycoNet grant</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+            <![CDATA[
+                <script type="text/javascript">
+                    var resub = function(){
+                        var value = $("input[name=Description_resub]:checked").val();
+                        if(value == "Yes"){
+                            $("#response_div").show();
+                        }
+                        else{
+                            $("#response_div").hide();
+                        }
+                    }
+                    $("input[name=Description_resub]").change(resub);
+                    resub();
+                </script>
+                <div id="response_div">
+                    <p>Please provide a response to the previous reviews</p>
+                    {$item}
+                </div>
             ]]>
         </ReportItem>
         
