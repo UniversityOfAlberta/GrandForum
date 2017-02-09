@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="{$this_year} Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" ajax="true" disabled="false">
+<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -11,7 +11,7 @@
         <!-- Theme -->
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>2016 Catalyst Grant Application</h4>
+                <h4 style='font-size:1.40em;'>Catalyst Grant Application</h4>
                 <br />
                 <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
                 <br />
