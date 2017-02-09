@@ -3,7 +3,7 @@ Bibliography = Backbone.Model.extend({
     initialize: function(){
     },
 
-    urlRoot: 'index.php?action=api.biliography',
+    urlRoot: 'index.php?action=api.bibliography',
 
     defaults: function() {
         return{

@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * @package GrandObjects
@@ -102,6 +102,10 @@ class Bibliography extends BackboneModel{
     
     function exists(){
         return ($this->id != "" && $this->id != 0);
+    }
+    
+    function getCacheId(){
+        return 'bibliography'.$this->getId();
     }
     
 }
