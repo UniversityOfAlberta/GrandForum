@@ -292,6 +292,10 @@ class PeopleWikiTab extends AbstractTab {
             </script>";
         }
         else if($table == "Organizations"){
+            $this->html .= "<script type='text/javascript'>
+                $('#newFilePage').hide();
+                $('.searchDesc').hide();
+            </script>";
             $canadian = array(array('img'    => 'Canadian1.jpg',
                                     'en'     => 'https://sogc.org/',
                                     'fr'     => 'https://sogc.org/fr/index.html',
