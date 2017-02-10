@@ -99,6 +99,14 @@ class PeopleWikiTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $edit = $this->visibility['edit'];
         
+        $extraText = "";
+        if($table == "Articles"){
+            $extraText = " selected by the CAPS team as recommended reading for our members";
+        }
+        else if("Organizations"){
+            $extraText = " members may be most interested in becoming familiar with";
+        }
+        
         if(!$this->visibility['isMember'] && false){
             return $this->html;
         }
@@ -110,24 +118,15 @@ class PeopleWikiTab extends AbstractTab {
                                      <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
                         <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
                     </div>
-       </div>";
+            </div>";
 
         }
         $this->html .= "<br />
                     <div style='font-size: 1.5em;'>
-                    <span class='en'>Below are all the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}.  <span class='searchDesc'>To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span></span>
+                    <span class='en'>Below are the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}{$extraText}.  <span class='searchDesc'>To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span></span>
                     <span class='fr'>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA.  <span class='searchDesc'>Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span></span>
                     <br /><br /></div>";
-        if($this->table == "Organizations"){
-            $this->html .= "<span class='en'>
-                <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-                Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
-
-                <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='350'></a><br /><br />
-                Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
-                </span><br /><br />";
-        }
-        else if($this->table == "Clinical"){
+        if($this->table == "Clinical"){
             $this->html .= "
                 <span class='en'><i>*For example, view these <a href='https://www.caps-cpca.ubc.ca/index.php/File:Clinical_Clinical_Practice_Guideline_2016.pdf' target='_blank'>clinical practice guidelines</a></i></span>
                 <span class='fr'><i>*Par exemple, consultez ces <a href='https://www.caps-cpca.ubc.ca/index.php/File:Clinical_Clinical_Practice_Guideline_2016.pdf' target='_blank'>lignes directrices de pratique clinique</a></i></span>
@@ -227,57 +226,7 @@ class PeopleWikiTab extends AbstractTab {
         </script>";
 
         $pages = Wiki::getFiles($this->table);
-        if($this->table != "Articles"){
-            $this->html .= "<h2 class='en'>Uploaded Files</h2><h2 class='fr'>Les fichiers téléchargés</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
-            $this->html .= "<tbody>\n";
-            foreach($pages as $page){
-                if($page->getTitle()->getText() != "Main"){
-                    $data = DBFunctions::select(array('mw_an_upload_permissions'),
-                                                array('*'),
-                                                array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText()),
-                                                      WHERE_OR("upload_name") => "File:".$page->getTitle()->getText()
-                                                ));
-
-                    $this->html .= "<tr>\n";
-                    $revId = $page->getRevIdFetched();
-                    $revision = Revision::newFromId($revId);
-                    $date = $revision->getTimestamp();
-                    $year = substr($date, 0, 4);
-                    $month = substr($date, 4, 2);
-                    $day = substr($date, 6, 2);
-                    $hour = substr($date, 8, 2);
-                    $minute = substr($date, 10, 2);
-                    $second = substr($date, 12, 2);
-                    $editor = Person::newFromId($revision->getRawUser());
-                    if($data[0]['title'] != ""){
-                        $title = ucfirst($data[0]['title']);
-                    }
-                    else{
-                        $title = $page->getTitle()->getText();
-                    }
-                    $keywords = $data[0]['keywords'];
-                    $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."' target='_blank'>$title</a></td>\n";
-                    $this->html .= "<td>$keywords</td>";
-                    $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
-                    $me = Person::newFromWgUser();
-                    if($me->isRoleAtLeast(MANAGER)){
-                        $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getNameForForms()}</a></td>\n";
-                    }
-                    else{
-                        $this->html .= "<td>{$editor->getNameForForms()}</td>\n";
-                    }
-                    $this->html .= "</tr>\n";
-                }
-            }
-            $this->html .= "</tbody></table>";
-            $this->html .= "<script type='text/javascript'>
-                $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-            </script>";
-            $this->html .= "<script type='text/javascript'>
-                $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
-            </script>";
-        }
-        else{
+        if($this->table == "Articles"){
             $theme1 = array();
             $theme2 = array();
             $theme3 = array();
@@ -340,6 +289,142 @@ class PeopleWikiTab extends AbstractTab {
                       autoHeight: false
                     });
                 });
+            </script>";
+        }
+        else if($table == "Organizations"){
+            $canadian = array(array('img'    => 'Canadian1.jpg',
+                                    'en'     => 'https://sogc.org/',
+                                    'fr'     => 'https://sogc.org/fr/index.html',
+                                    'enText' => 'The Society of Obstetricians and Gynecologists of Canada',
+                                    'frText' => 'La Société Des Obstétriciens et Gynécologues Du Canada'),
+                              array('img'    => 'Canadian2.png',
+                                    'en'     => 'http://www.cfpc.ca/Home/',
+                                    'fr'     => 'http://www.cfpc.ca/projectassets/templates/home.aspx?id=510&langType=3084',
+                                    'enText' => 'The College of Family Physicians of Canada',
+                                    'frText' => 'Le Collège Des Médecins De Famille Du Canada'),
+                              array('img'    => 'Canadian3.png',
+                                    'en'     => 'https://www.cma.ca/en/pages/cma_default.aspx',
+                                    'fr'     => 'https://www.cma.ca/fr/pages/cma_default.aspx',
+                                    'enText' => 'Canadian Medical Association',
+                                    'frText' => 'Association Médicale Canadienne'),
+                              array('img'    => 'Canadian4.jpg',
+                                    'en'     => 'http://www.pharmacists.ca/',
+                                    'enText' => 'Canadian Pharmacists Association')
+            );
+            
+            $american = array(array('img'    => 'American1.png',
+                                    'en'     => 'http://www.aafp.org/home.html',
+                                    'enText' => 'American Academy of Family Physicians'),
+                              array('img'    => 'American2.png',
+                                    'en'     => 'http://www.acog.org/',
+                                    'enText' => 'The American Congress of Obstetricians and Gynecologists'),
+                              array('img'    => 'American3.png',
+                                    'en'     => 'http://www.reproductiveaccess.org/',
+                                    'enText' => 'Reproductive Health Access Project')
+            );
+            
+            $international = array(array('img'    => 'International1.gif',
+                                         'en'     => 'https://www.rcog.org.uk/',
+                                         'enText' => 'A global women’s health network that works to improve the standard of care delivered to women and to encourage the study and advancement of practice in obstetrics and gynaecology'),
+                                   array('img'    => 'International2.png',
+                                         'en'     => 'http://www.teachtraining.org/',
+                                         'enText' => ' Academic –community partnership that aims to implement abortion training into curricula and practice'),
+                                   array('img'    => 'International3.jpg',
+                                         'en'     => 'http://www.who.int/reproductivehealth/en/',
+                                         'fr'     => 'http://www.who.int/reproductivehealth/fr/',
+                                         'enText' => 'Reproductive Health Access Project',
+                                         'frText' => 'Sante sexuelle et reproductive')
+            );
+        
+            $this->html .= "<h2>Canadian</h2>";
+            $this->html .= "<span class='en'>
+                <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='300'></a><br /><br />
+                Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+
+                <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='300'></a><br /><br />
+                Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
+                </span><br /><br />";
+            foreach($canadian as $o){
+                $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:300px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
+                if(isset($o['en'])){
+                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                }
+                if(isset($o['fr'])){
+                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                }
+                $this->html .= "</div></div><br /><br />";
+            }
+            $this->html .= "<h2>American</h2>";
+            foreach($american as $o){
+                $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:220px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
+                if(isset($o['en'])){
+                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                }
+                if(isset($o['fr'])){
+                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                }
+                $this->html .= "</div></div><br /><br />";
+            }
+            $this->html .= "<h2>International</h2>";
+            foreach($international as $o){
+                $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:220px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
+                if(isset($o['en'])){
+                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                }
+                if(isset($o['fr'])){
+                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                }
+                $this->html .= "</div></div><br /><br />";
+            }
+        }
+        else{
+            $this->html .= "<h2 class='en'>Uploaded Files</h2><h2 class='fr'>Les fichiers téléchargés</h2><table id='projectFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'><thead><tr bgcolor='#F2F2F2'><th>Page Title</th><th>Keywords</th><th>Last Edited</th><th>Last Edited By</th></tr></thead>\n";
+            $this->html .= "<tbody>\n";
+            foreach($pages as $page){
+                if($page->getTitle()->getText() != "Main"){
+                    $data = DBFunctions::select(array('mw_an_upload_permissions'),
+                                                array('*'),
+                                                array("upload_name" => "File:".str_replace(" ", "_", $page->getTitle()->getText()),
+                                                      WHERE_OR("upload_name") => "File:".$page->getTitle()->getText()
+                                                ));
+
+                    $this->html .= "<tr>\n";
+                    $revId = $page->getRevIdFetched();
+                    $revision = Revision::newFromId($revId);
+                    $date = $revision->getTimestamp();
+                    $year = substr($date, 0, 4);
+                    $month = substr($date, 4, 2);
+                    $day = substr($date, 6, 2);
+                    $hour = substr($date, 8, 2);
+                    $minute = substr($date, 10, 2);
+                    $second = substr($date, 12, 2);
+                    $editor = Person::newFromId($revision->getRawUser());
+                    if($data[0]['title'] != ""){
+                        $title = ucfirst($data[0]['title']);
+                    }
+                    else{
+                        $title = $page->getTitle()->getText();
+                    }
+                    $keywords = $data[0]['keywords'];
+                    $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".urlencode(str_replace(" ", "_", "{$page->getTitle()->getText()}"))."' target='_blank'>$title</a></td>\n";
+                    $this->html .= "<td>$keywords</td>";
+                    $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
+                    $me = Person::newFromWgUser();
+                    if($me->isRoleAtLeast(MANAGER)){
+                        $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getNameForForms()}</a></td>\n";
+                    }
+                    else{
+                        $this->html .= "<td>{$editor->getNameForForms()}</td>\n";
+                    }
+                    $this->html .= "</tr>\n";
+                }
+            }
+            $this->html .= "</tbody></table>";
+            $this->html .= "<script type='text/javascript'>
+                $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+            </script>";
+            $this->html .= "<script type='text/javascript'>
+                $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
             </script>";
         }
         return $this->html;
