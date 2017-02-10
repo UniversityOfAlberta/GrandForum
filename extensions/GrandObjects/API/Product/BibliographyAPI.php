@@ -3,9 +3,14 @@
 class BibliographyAPI extends RESTAPI {
     
     function doGET(){
-        if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) == 1){
+        if($this->getParam('id') != ""){
             $bib = Bibliography::newFromId($this->getParam('id'));
             return $bib->toJSON();
+        }
+        else if($this->getParam('person_id') != "" ){
+            $person = Person::newFromId($this->getParam('person_id'));
+            $bibs = new Collection($person->getBibliographies());
+            return $bibs->toJSON();
         }
     }
     

@@ -18,9 +18,11 @@ Bibliography = Backbone.Model.extend({
 Bibliographies = Backbone.Collection.extend({
 
     model: Bibliography,
+    
+    person: null,
 
     url: function(){
-        return 'index.php?action=api.bibliographies';
+        return 'index.php?action=api.bibliography/person/' + this.person;
     }
 
 });

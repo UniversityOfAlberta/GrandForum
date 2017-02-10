@@ -3757,6 +3757,21 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of this Person's Bibliographies
+     * @return array The array of this Person's Bibliographies
+     */
+    function getBibliographies(){
+        $data = DBFunctions::select(array('grand_bibliography'),
+                                    array('id'),
+                                    array('person_id' => $this->getId()));
+        $bibs = array();
+        foreach($data as $row){
+            $bibs[] = Bibliography::newFromId($row['id']);
+        }
+        return $bibs;
+    }
+    
+    /**
      * Returns an array of People who are authors of Products writted by this Person or their HQP
      * @param string $category The category of Papers to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)

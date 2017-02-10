@@ -67,6 +67,7 @@ $apiRequest->addAction('Hidden','product/:id/projects/:personId', 'ProjectProduc
 $apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', 'ProductDuplicatesAPI');
 $apiRequest->addAction('Hidden','bibliography', 'BibliographyAPI');
 $apiRequest->addAction('Hidden','bibliography/:id', 'BibliographyAPI');
+$apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');
 
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
