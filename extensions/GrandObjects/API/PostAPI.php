@@ -27,7 +27,7 @@ class PostAPI extends RESTAPI {
         foreach($people as $person){
             Notification::addNotification($me,$person,"New post on thread '{$thread->getTitle()}'", "{$me->getNameForForms()} has added a new post to '{$thread->getTitle()}'", "{$thread->getUrl()}");
         }
-            //add notification send here
+        //add notification send here
         if($post === false){
             $this->throwError("The post could not be created");
         }
