@@ -351,10 +351,10 @@ class PeopleWikiTab extends AbstractTab {
             foreach($canadian as $o){
                 $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:300px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
                 if(isset($o['en'])){
-                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['en']}'>{$o['enText']}</a><br />";
                 }
                 if(isset($o['fr'])){
-                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['fr']}'>{$o['frText']}</a><br />";
                 }
                 $this->html .= "</div></div><br /><br />";
             }
@@ -362,10 +362,10 @@ class PeopleWikiTab extends AbstractTab {
             foreach($american as $o){
                 $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:220px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
                 if(isset($o['en'])){
-                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['en']}'>{$o['enText']}</a><br />";
                 }
                 if(isset($o['fr'])){
-                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['fr']}'>{$o['frText']}</a><br />";
                 }
                 $this->html .= "</div></div><br /><br />";
             }
@@ -373,10 +373,10 @@ class PeopleWikiTab extends AbstractTab {
             foreach($international as $o){
                 $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:220px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
                 if(isset($o['en'])){
-                    $this->html .= "<a href='{$o['en']}'>{$o['enText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['en']}'>{$o['enText']}</a><br />";
                 }
                 if(isset($o['fr'])){
-                    $this->html .= "<a href='{$o['fr']}'>{$o['frText']}</a><br />";
+                    $this->html .= "<a target='_blank' href='{$o['fr']}'>{$o['frText']}</a><br />";
                 }
                 $this->html .= "</div></div><br /><br />";
             }
