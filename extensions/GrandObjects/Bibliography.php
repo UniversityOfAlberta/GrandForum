@@ -13,9 +13,9 @@ class Bibliography extends BackboneModel{
     var $products = array();
     
     /**
-     * Returns a new Paper from the given id
-     * @param integer $id The id of the Paper
-     * @return Paper The Paper with the given id
+     * Returns a new Bibliography from the given id
+     * @param integer $id The id of the Bibliography
+     * @return Bibliography The Bibliography with the given id
      */
     static function newFromId($id){
         if(isset(self::$cache[$id])){
@@ -27,7 +27,7 @@ class Bibliography extends BackboneModel{
                                     array('*'),
                                     array('id' => EQ($id)));
         $bib = new Bibliography($data);
-        self::$cache[$paper->id] = &$bib;
+        self::$cache[$bib->id] = &$bib;
         return $bib;
     }
  
@@ -35,10 +35,7 @@ class Bibliography extends BackboneModel{
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->person = Person::newFromId($data[0]['person_id']);
-            $products = unserialize($data[0]['products']);
-            foreach($products as $product){
-                $this->products[] = Product::newFromId($product);
-            }
+            $this->products = unserialize($data[0]['products']);
         }
     }
     
@@ -51,27 +48,24 @@ class Bibliography extends BackboneModel{
     }
     
     function getProducts(){
-        return $this->products;
+        $products = array();
+        foreach($this->products as $product){
+            $products[] = Product::newFromId($product);
+        }
+        return $products;
     }
     
     function create(){
-        $products = array();
-        foreach($this->getProducts() as $product){
-            $products[] = $product->getId();
-        }
         DBFunctions::insert('grand_bibliography',
-                            array('person' => $this->getPerson()->getId(),
-                                  'products' => serialize($products)));
+                            array('person_id' => $this->getPerson()->getId(),
+                                  'products' => serialize($this->products)));
+        $this->id = DBFunctions::insertId();
         return $this;
     }
     
     function update(){
-        $products = array();
-        foreach($this->getProducts() as $product){
-            $products[] = $product->getId();
-        }
         DBFunctions::update('grand_bibliography',
-                            array('products' => serialize($products)),
+                            array('products' => serialize($this->products)),
                             array('id' => EQ($this->getId())));
         return $this;
     }
@@ -85,17 +79,13 @@ class Bibliography extends BackboneModel{
     
     function toArray(){
         $person = $this->getPerson();
-        $products = array();
-        foreach($this->getProducts() as $product){
-            $products[] = $product->toArray();
-        }
         $data = array(
             'id' => $this->getId(),
             'person' => array('id' => $person->getId(),
                               'name' => $person->getNameForProduct(),
                               'fullname' => $person->getNameForForms(),
                               'url' => $person->getUrl()),
-            'products' => $products
+            'products' => $this->products
         );
         return $data;
     }

@@ -4,11 +4,8 @@ class BibliographyAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) == 1){
-            $paper = Paper::newFromId($this->getParam('id'));
-            if($paper == null || $paper->getTitle() == ""){
-                $this->throwError("This product does not exist");
-            }
-            return $paper->toJSON();
+            $bib = Bibliography::newFromId($this->getParam('id'));
+            return $bib->toJSON();
         }
     }
     
@@ -16,6 +13,7 @@ class BibliographyAPI extends RESTAPI {
         $bib = new Bibliography(array());
         $bib->person = Person::newFromId($this->POST('person')->id);
         $bib->products = $this->POST('products');
+        $bib->create();
         return $bib->toJSON();
     }
     
