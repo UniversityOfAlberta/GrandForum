@@ -265,9 +265,9 @@ class GlobalSearchAPI extends RESTAPI {
                 }   
                 break; 
 	case 'wikipage':
-                $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=text&gsrsearch=".$search."&format=json";
+                $url1 = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=text&gsrsearch=".$search."&format=json";
+                $url2 = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
                 // get http header for cookies
@@ -281,9 +281,13 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                 }
                 curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
-                $response = curl_exec($ch);
+                curl_setopt($ch, CURLOPT_URL, $url1);
+                $response1 = curl_exec($ch);
+                curl_setopt($ch, CURLOPT_URL, $url2);
+                $response2 = curl_exec($ch);
                 curl_close($ch);
-                $results = json_decode($response);
+                $results1 = json_decode($response1);
+                $results2 = json_decode($response2);
                 $blacklistedNamespaces = array('Publication',
                                                'Artifact',
                                                'Presentation',
@@ -293,14 +297,24 @@ class GlobalSearchAPI extends RESTAPI {
                                                'NI',
                                                'HQP',
                                                'Mail');
-                if(isset($results->query)){
-                    foreach($results->query->pages as $page){
+                if(isset($results2->query)){
+                    // Prefer results with the search in the title
+                    foreach($results2->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
                         if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $ids[] = $page->pageid;
                         }
                     }
                 }
+                if(isset($results1->query)){
+                    foreach($results1->query->pages as $page){
+                        $article = Article::newFromId($page->pageid);
+                        if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
+                            $ids[] = $page->pageid;
+                        }
+                    }
+                }
+                $ids = array_unique($ids);
                 break;
             case 'specialpage':
                 global $wgSpecialPages;
