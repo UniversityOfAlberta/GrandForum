@@ -342,12 +342,13 @@ class PeopleWikiTab extends AbstractTab {
         
             $this->html .= "<h2>Canadian</h2>";
             $this->html .= "<span class='en'>
-                <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='300'></a><br /><br />
-                Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
-
-                <span class='fr'><a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' width='300'></a><br /><br />
-                Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.
-                </span><br /><br />";
+                <div style='line-height:2em;'>
+                    <a target='_blank' href='http://www.nafcanada.org/'><img src='http://prochoice.org/wp-content/uploads/NAFlogoCanada-small.jpg' style='width:300px;margin-right:20px;' /></a>
+                    <div style='vertical-align:middle;display:inline-block;max-width:500px;'>
+                        <span class='en'>Click <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'> here</a> to become a member.</span>
+                        <span class='fr'>Cliquez <a target='_blank' href='http://prochoice.org/health-care-professionals/naf-membership/'>ici</a> pour devenir membre.</span>
+                    </div>
+                </div><br /><br />";
             foreach($canadian as $o){
                 $this->html .= "<div style='line-height:2em;'><img src='$wgServer$wgScriptPath/skins/{$o['img']}' style='width:300px;margin-right:20px;' /><div style='vertical-align:middle;display:inline-block;max-width:500px;'>";
                 if(isset($o['en'])){
