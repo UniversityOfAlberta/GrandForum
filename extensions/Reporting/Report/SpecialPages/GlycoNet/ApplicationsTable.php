@@ -125,7 +125,18 @@ class ApplicationsTable extends SpecialPage{
     function generateCat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2016, "2016"));
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2016, "2016", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
@@ -133,6 +144,18 @@ class ApplicationsTable extends SpecialPage{
     function generateTrans(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2016, "2016", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
@@ -140,7 +163,18 @@ class ApplicationsTable extends SpecialPage{
     function generateCollab(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

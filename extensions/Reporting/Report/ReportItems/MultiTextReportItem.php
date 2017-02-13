@@ -355,7 +355,12 @@ EOF;
             foreach($values as $vals){
                 $innerValues[] = implode(", ", $vals);
             }
-            $item .= implode(", ", $innerValues);
+            if(count($labels) > 1){
+                $item .= implode("<br />", $innerValues);
+            }
+            else{
+                $item .= implode(", ", $innerValues);
+            }
         }
         else if($max > -1 && !$isList){
             if(!$isVertical){
@@ -431,6 +436,7 @@ EOF;
         }
         $item = $this->processCData($item);
         $wgOut->addHTML($item);
+        return $item;
     }
 }
 

@@ -138,7 +138,7 @@
         </ReportItem>
         
         <!-- Suggested reviewers -->
-        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text|">
+        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
             <![CDATA[
                 <h2>Suggested Reviewers</h2>
                 Please suggest at least 5 reviewers for the application.  At least three of the five suggested reviewers must be working at locations outside of Canada. Suggested reviewers should not be members of the GlycoNet  Scientific Advisory Board or Research Management Committee.  In addition, the Network follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>; please consult that policy before suggesting reviewers.
