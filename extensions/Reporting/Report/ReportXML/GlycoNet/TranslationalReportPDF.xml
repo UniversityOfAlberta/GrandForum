@@ -64,10 +64,11 @@
                                   labels="Key Word" 
                                   types="text"
                                   max="10"
-                                  showHeader="false">
+                                  showHeader="false"
+                                  orientation="list">
             <![CDATA[
                 <p><b><u>Keywords</u></b></p>
-                <div style='font-size: smaller;'>{$item}</div>
+                <div style='font-size: smaller;'>{$item}</div><br />
             ]]>
         </ReportItem>
         

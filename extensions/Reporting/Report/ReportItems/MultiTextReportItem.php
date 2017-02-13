@@ -331,6 +331,7 @@ EOF;
         $showBullets = $this->getAttr('showBullets', 'false');
         $orientation = $this->getAttr('orientation', 'horizontal');
         $isVertical = (strtolower($orientation) == 'vertical');
+        $isList = (strtolower($orientation) == 'list');
         $pagebreak = (strtolower($this->getAttr('pagebreak', 'false')) == 'true'); 
         $class = $this->getAttr('class', ''); // Don't assume wikitable by default for pdfs
         $rules = "";
@@ -349,7 +350,14 @@ EOF;
             $max = max(array_keys($values));
         }
         $item = "";
-        if($max > -1){
+        if($max > -1 && $isList){
+            $innerValues = array();
+            foreach($values as $vals){
+                $innerValues[] = implode(", ", $vals);
+            }
+            $item .= implode(", ", $innerValues);
+        }
+        else if($max > -1 && !$isList){
             if(!$isVertical){
                 if(count($labels) > 0 && $labels[0] != ""){
                     $item = "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
