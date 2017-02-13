@@ -205,7 +205,7 @@
         
         <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
             <![CDATA[
-                <p>Is this application a resubmission of a previously unsuccessful GlycoNet grant</p>
+                <p>Is this application a resubmission of a previously unsuccessful GlycoNet Catalyst grant</p>
                 {$item}
             ]]>
         </ReportItem>
