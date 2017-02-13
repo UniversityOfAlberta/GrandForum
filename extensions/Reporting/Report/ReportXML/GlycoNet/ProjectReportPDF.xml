@@ -110,6 +110,13 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
+    <ReportSection id="appendix" type="EditableReportSection" blobSection="MILESTONES" name="Last Year's Milestones" title="Last Year's Milestones">
+        <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" name="Executive Summary" blobSection="INFORMATION">
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
             <![CDATA[
@@ -294,7 +301,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_CONTRIBUTION_STRUCTURE" table="false" details="true" showButton="false" totalOnly="true">
             <![CDATA[
                 {$item}<br />
@@ -303,14 +310,6 @@
         <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION">
             <![CDATA[
                 <h3>Explanation</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="appendix" type="EditableReportSection" blobSection="MILESTONES" name="Appendix" title="Milestones" pagebreak="false">
-        <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
-            <![CDATA[
-                <h2>Last Year's Milestones</h2>
                 {$item}
             ]]>
         </ReportItem>
