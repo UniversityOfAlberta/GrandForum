@@ -315,6 +315,14 @@
                 <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
+        <ReportItemSet type="ToggleHeaderReportItemSet" title="Last Year's Milestones">
+            <ReportItem id="table" type="ProjectMilestoneTable" date="{$this_year}-04-01 00:00:00">
+                <![CDATA[
+                    {$item}
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItemSet id="is_pl" type="If" if="{contains({$my_full_roles},PL)}">
             <ReportItem id="comments" type="TextareaReportItem" blobItem="COMMENTS">
                 <![CDATA[
