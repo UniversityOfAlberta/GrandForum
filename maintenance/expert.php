@@ -1,7 +1,8 @@
 <?php
 
     require_once('commandLine.inc');
-    
+    $realpath = realpath(dirname(__FILE__));
+
     function writeText($fileName, $content, $id){
         $doc = html_entity_decode(strip_tags($content), ENT_QUOTES);
         file_put_contents($fileName, $doc);
@@ -19,9 +20,9 @@
     
     $wgUser = User::newFromId(1);
     
-    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert");
-    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/publications");
-    @mkdir("../extensions/GlobalSearch/ExpertSearch/expert/profiles");
+    @mkdir("$realpath/../extensions/GlobalSearch/ExpertSearch/expert");
+    @mkdir("$realpath/../extensions/GlobalSearch/ExpertSearch/expert/publications");
+    @mkdir("$realpath/../extensions/GlobalSearch/ExpertSearch/expert/profiles");
     
     $products = Product::getAllPapers('all', 'all', 'both', false);
     $people = Person::getAllPeople(NI);
@@ -29,7 +30,7 @@
     foreach($products as $product){
         $productIds[$product->getId()] = $product;
         $content = "{$product->getTitle()} {$product->getDescription()}";
-        writeText("../extensions/GlobalSearch/ExpertSearch/expert/publications/{$product->getId()}.txt", $content, $product->getId());
+        writeText("$realpath/../extensions/GlobalSearch/ExpertSearch/expert/publications/{$product->getId()}.txt", $content, $product->getId());
     }
     
     $lines = array();
@@ -46,12 +47,12 @@
             }
         }
         if(count($myProducts) > 0){
-            writeText("../extensions/GlobalSearch/ExpertSearch/expert/profiles/{$person->getId()}.txt", implode(" ", $profile), $person->getId());
+            writeText("$realpath/../extensions/GlobalSearch/ExpertSearch/expert/profiles/{$person->getId()}.txt", implode(" ", $profile), $person->getId());
         }
     }
-    file_put_contents("../extensions/GlobalSearch/ExpertSearch/expert/experts.txt", implode("\n", $lines));
+    file_put_contents("$realpath/../extensions/GlobalSearch/ExpertSearch/expert/experts.txt", implode("\n", $lines));
     
-    chdir("../extensions/GlobalSearch/ExpertSearch/");
+    chdir("$realpath/../extensions/GlobalSearch/ExpertSearch/");
     system("./index.sh");
     
 ?>
