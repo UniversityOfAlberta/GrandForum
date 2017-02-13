@@ -120,13 +120,12 @@
     <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
         <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000">
             <![CDATA[
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="references" type="EditableReportSection" name="References" blobSection="INFORMATION">
         <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
             <![CDATA[
+                <p><b>References</b></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -152,7 +151,7 @@
         </ReportItem>
         <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" rich="true">
             <![CDATA[
-                <p><b>References – Please use Journal of Biological Chemistry Style</b></p>
+                <p><b>References</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>

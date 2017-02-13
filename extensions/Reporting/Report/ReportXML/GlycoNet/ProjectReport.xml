@@ -268,7 +268,8 @@
                 <![CDATA[
                     <br /><br />
                     <p><b>References</b><br />
-                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428</small></p>
+                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
+                    These references only apply to the Background section</small></p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -410,7 +411,9 @@
             </ReportItem>
             <ReportItem id="benefits_popup" type="PopupReportItem" title="NI Comments" text="{get(benefits)}">
                 <![CDATA[
-                    <p><b>References – Please use Journal of Biological Chemistry Style</b></p>
+                    <p><b>References</b><br />
+                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
+                    These references only apply to the Achievements section</small></p>
                     {$item}
                 ]]>
             </ReportItem>
@@ -442,7 +445,9 @@
             </ReportItem>
             <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>References – Please use Journal of Biological Chemistry Style</b></p>
+                    <p><b>References</b><br />
+                    <small>Please use Journal of Biological Chemistry Style: MacDonald, G. M., Steenhuis, J. J., and Barry, B. A. (1995) A difference Fourier transform infrared spectroscopic study of chlorophyll oxidation in hydroxylamine-treated photosystem II. J. Biol. Chem. <b>270</b>, 8420–8428<br />
+                    These references only apply to the Achievements section</small></p>
                     {$item}
                 ]]>
             </ReportItem>
