@@ -158,6 +158,11 @@ class APIRequest{
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
+
+                //POST
+                $this->addAction('Hidden', 'updateSop', new UpdateSopStatisticsAPI());
+                $this->addAction('Hidden', 'getError', new AtdErrorsAPI());
+                $this->addAction('User Accounts', 'convertPdf', new ConvertPdfAPI());
 	}
 }
 
@@ -204,11 +209,13 @@ abstract class API {
 				    $this->doAction();
 				}
 			}
-			header('Content-Type: application/json');
-			echo json_encode(array('errors' => $this->errors,
-			                       'messages' => $this->messages,
-			                       'data' => $this->data));
-			exit;
+			if(!isset($_GET['last'])){
+                            header('Content-Type: application/json');
+			    echo json_encode(array('errors' => $this->errors,
+			                           'messages' => $this->messages,
+			                           'data' => $this->data));
+			    exit;
+			}
 		}
 	}
 	

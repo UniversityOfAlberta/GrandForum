@@ -81,6 +81,8 @@ class CavendishTemplate2 extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish2/highlights.css.php" />
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/skins/markitup/style.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/style.css" />
+                <link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/annotator.min.css" rel="Stylesheet" />
+                <link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/select2/css/select2.min.css" rel="Stylesheet" />
 		
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
@@ -475,7 +477,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		            }, 100);
 		        }
 		        
-		        $("#sideToggle").click(function(e, force){
+		        /*$("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
 		                $("#sideToggle").html("&#12297;");
@@ -509,7 +511,7 @@ class CavendishTemplate2 extends QuickTemplate {
                         sideToggled = 'out';
                         $.cookie('sideToggled', 'out', {expires: 30});
                     }
-		        });
+		        });*/
 		    });
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
@@ -517,16 +519,17 @@ class CavendishTemplate2 extends QuickTemplate {
                 $(document).ready(function(){
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
-                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").load(function(){
-                            $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
-                                document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                        $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                            $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                            $("#logoutFrame").load(function(){
+                                $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                                    document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                                });
                             });
                         });
                     });
                 });
 	        </script>
-	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
@@ -616,7 +619,9 @@ class CavendishTemplate2 extends QuickTemplate {
 <body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
 <?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
  class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
-
+<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
+    <iframe id="logoutFrame" style="display:none;" src=""></iframe>
+<?php } ?>
 <div id="internal"></div>
 <div id="container">
     <div id="topheader">
@@ -733,7 +738,6 @@ class CavendishTemplate2 extends QuickTemplate {
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
         <div id="sideToggle" class="highlightsBackground0">
-            <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&#12297;"; } else { echo "&#12296;";}?>
         </div>
 	    <div id="header">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/icons/white_mix/hamburger.png" /></a>
@@ -745,9 +749,11 @@ class CavendishTemplate2 extends QuickTemplate {
                 
                 $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
                 $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-                $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-                
+               // $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+                        //$GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+	        if($me->isRoleAtLeast(Manager)){
+                    $GLOBALS['tabs']['Review'] = TabUtils::createTab("Review","$wgServer$wgScriptPath/index.php/Special:Sops");
+		} 
 	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>
@@ -843,7 +849,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    <?php
 		        $this->toolbox();
 	        ?>
-		    </ul>  
+		    </ul>
 		</div><!-- end of SIDE div -->
     <div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
@@ -916,6 +922,9 @@ class CavendishTemplate2 extends QuickTemplate {
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
 		    $me = Person::newFromWgUser();
+		    if($wgTitle->getText() == "Main Page" && $me->isRole(CI)){
+		        redirect("$wgServer$wgScriptPath/index.php/Special:Report?report=OTForm");
+		    }
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
@@ -1166,8 +1175,8 @@ EOF;
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
+		echo "</ul></li>";
 ?>
-	</li>
 <?php
 	}
 

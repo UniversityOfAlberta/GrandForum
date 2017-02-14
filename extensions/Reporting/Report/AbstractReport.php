@@ -127,12 +127,20 @@ abstract class AbstractReport extends SpecialPage {
                 $this->project->id = $projectName;
             }
             else{
-                $this->project = Project::newFromName($projectName);
-                if($this->project == null ||
-                   $this->project->getId() == 0){
-                    // Try themes
-                    $this->project = Theme::newFromName($projectName);
-                }
+		if(strpos($projectName, 'Sop') !== false ){
+		    $sopString = explode(":",$projectName);
+		    $this->project = new Project(array());
+		    $this->project->id = $sopString[1];
+		    $this->project->name = $projectName;
+		}
+		else{
+                    $this->project = Project::newFromName($projectName);
+                    if($this->project == null ||
+                       $this->project->getId() == 0){
+                     // Try themes
+                       $this->project = Theme::newFromName($projectName);
+                    }
+		}
             }
         }
         if(isset($_GET['generatePDF'])){
@@ -264,7 +272,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace("/", str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name))))] = $section->getPercentComplete();
+                        $prog[str_replace("/", "", str_replace("&", "", str_replace("'", "", str_replace(" ", "", $section->name))))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');

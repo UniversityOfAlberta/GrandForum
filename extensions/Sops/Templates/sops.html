@@ -1,0 +1,186 @@
+<input type="button" id="showfilter" value="Show Filter Options" style="background: #079651;"><br />
+<div id="filters" style="display:none; margin-top:10px;">
+                <button style="margin-bottom:10px;" id="clearFiltersButton">Clear Filters</button>
+
+	<table>
+	    <tr>
+		<td>
+		    <table>
+			<tr>
+			    <td align="right"><b>Student Name:</b></td>
+			    <td><input type="text" class="filter_option" id="nameInput" placeholder="Search here..." style="width: 205px"></td>
+			</tr>
+			<tr>
+			    <td align="right"><b>Reviewer Name:</b></td>
+			    <td> <input type="text" class="filter_option" id="reviewerNameInput" placeholder="Search here..." style="width: 205px"></td>
+			</tr>
+		    </table>
+		</td>
+		<td>
+		    <table>
+    			<tr>
+        		    <td align="right"><text><b>Sentiment Type:</b></text></td>
+        		    <td><select id="sentimentType"  class="filter_option" style="width: 120px">
+				<option value="" selected="selected">--</option>
+  				<option value="positive">Positive</option>
+  				<option value="neutral">Neutral</option>
+				<option value="negative">Negative</option>
+			    </select></td>
+    		    	</tr>
+    		   	<tr>
+        		    <td align="right"><text><b>Admit:</b></text></td>
+        		    <td><select id="admitType" class="filter_option" style="width: 120px">
+				<option value="" selected="selected">--</option>
+                		<option value="admit">Admit</option>
+                		<option value="not admit">Not Admit</option>
+        		    </select></td>
+    			</tr>
+		    </table>
+	     	</td>
+		<td>
+		    <table>
+			<tr>
+			    <input type="checkbox" id="filterByTags" class="filter_option check_tags"/>Filter by Tags
+			</tr>
+			<tr>
+			    <div class="multiselect">
+    			    <div class="selectBox" onclick="showCheckboxes()">
+				<select>
+            				<option>Select Tags</option>
+        			</select>
+        		    <div class="overSelect">
+			    </div>
+    			</div>
+    			<div id="checkboxes">
+        		    <label><input type="checkbox" class="filter_option check_tags" id="positivepersonalqualities"  unchecked/>Positive personal qualities</label>
+        		    <label><input type="checkbox" class="filter_option check_tags" id="negativepersonalquantities"  unchecked/>Negative personal qualities</label>
+        		    <label><input type="checkbox" class="filter_option check_tags" id="relevantpersonalexperience"  unchecked/>Relevant personal experience</label>
+        		    <label><input type="checkbox" class="filter_option check_tags" id="irrelevantinformation"  unchecked/>Irrelevant information</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="understandingofotincorporatedintopersonalexperience"  unchecked/>Understanding of OT incorporated into personal experience</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="interestinot"  unchecked/>Interest in OT</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="matchtootascareer"  unchecked/>Match to OT as career</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="superficialunderstandingofot"  unchecked/>Superficial understanding of OT</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="accurateknowledgeofot"  unchecked/>Accurate knowledge of OT</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="mentalcognitivespiritualhealthawareness"  unchecked/>Mental/cognitive/spiritual health awareness</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="innacurateunderstandingofot"  unchecked/>Innacurate understanding of OT</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="qualitiesrelatedtobeingasuccessfulstudent"  unchecked/>Qualities related to being a successful student</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="focusonphysicalaspect"  unchecked/>Focus on physical aspect</label>
+        		    <label><input type="checkbox" class="filter_option check_tags" id="explanationofpoorgrades"  unchecked/>Explanation of poor grades</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="poorlywritten"  unchecked/>Poorly written</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="notconvincing"  unchecked/>Not convincing</label>
+        		   <label><input type="checkbox" class="filter_option check_tags" id="informallanguage"  unchecked/>Informal language</label>
+    			</div>
+		</div></tr></table>
+	    </td>
+	</tr>
+    </table>
+</div>
+<!--End of of Search & Filters-->
+
+<table id="listTable" frame="box" rules="all" style="float: left;">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th style="white-space:nowrap" title="This is a count of the number of words of the student's statement of purpose and the count of all the spelling/grammar issues made by the student">Word Count<br />Syntax Errors</th>
+            <th title="This measures the Flesch Reading Ease of the student. It measures the grade-level of the reader out of 100. The higher the number, the easier the text is to read. 
+90-100 : Very Easy 
+80-89 : Easy 
+70-79 : Fairly Easy 
+60-69 : Standard 
+50-59 : Fairly Difficult 
+30-49 : Difficult 
+0-29 : Very Confusing " >Reading Ease</th>
+            <th title="This measures the general attitude of the student. Using IBM watson it analyzes all words used by the student that carry any positive/negative connotation. This is an overall sentiment of the student.">Sentiment Type (Score)</th>
+                <th id="id" style="display:none"></th>
+	    <th> Reviewed By</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody id="sopRows">
+
+    </tbody>
+</table>
+
+<script>
+var values;
+
+var expanded = false;
+function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+        checkboxes.style.display = "block";
+        checkboxes.style.position = "absolute";
+        checkboxes.style.background="white";
+	expanded = true;
+    } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+    }
+}
+
+function filterWordCount() {
+    
+    var minInput, maxInput, table, tr, td, i;
+
+    minInput = document.getElementById("minWordCountInput").value;
+    maxInput = document.getElementById("maxWordCountInput").value;
+
+    if(!minInput && !maxInput && values == ""){
+	var rows = $('#sopRows > tr').show()
+    }
+    else{
+        if (!minInput){
+            minInput = 0;
+    	}
+        if (!maxInput){
+            maxInput = Number.MAX_VALUE;
+    	}
+        filterByColumnRange(6, minInput, maxInput);
+    }
+} 
+
+function filterByColumnRange(index, minVal, maxVal) {
+    
+    table = document.getElementById("listTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[index];
+        if (td) {
+            value = parseFloat(td.innerHTML);
+            if (!((value >= minVal) && (value <= maxVal))) {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+</script>
+
+<style>
+    .multiselect {
+        width: 350px;
+    }
+    .selectBox {
+        position: relative;
+    }
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+    }
+    .overSelect {
+        position: absolute;
+        left: 0; right: 0; top: 0; bottom: 0;
+    }
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+	z-index:10000;
+    }
+    #checkboxes label {
+        display: block;
+    }
+    #checkboxes label:hover {
+        background-color: #1e90ff;
+    }
+</style>
+

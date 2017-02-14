@@ -134,7 +134,9 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/jquery.markitup.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/set.js"></script>
-
+                <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/atd-jquery/csshttprequest.js"></script>
+                <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/atd-jquery/jquery.atd.js"></script>
+                <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/atd-jquery/jquery.atd.textarea.js"></script>
         <script type='text/javascript'>
         
             $.ajaxSetup({ cache: false, 

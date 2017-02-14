@@ -127,6 +127,8 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
+            //SOP
+            "sop_table" => "getSopTable",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -190,7 +192,7 @@ class ReportItemCallback {
     }
     
     function getProjectId(){
-        $project_id = 0;
+        $project_id = $_GET['project'];//=0
         if($this->reportItem->projectId != 0){
             $project_id = $this->reportItem->projectId;
         }
@@ -1653,6 +1655,79 @@ class ReportItemCallback {
     function getReportSection(){
         return $this->reportItem->getSection()->name;
     }
+
+    function getSopTable(){
+        $sop = SOP::newFromId($this->getProjectId());
+        $html = "
+<table border=1>
+  <tr>
+    <th>Algorithm</th>
+    <th>US Grade</th>
+    <th>Minimum Age</th>
+  </tr>
+  <tr>
+    <td>Readability Index</td>
+    <td align='right'>{$sop->ari_grade}</td>
+    <td align='right'>{$sop->ari_age}</td>
+  </tr>
+  <tr>
+    <td>Coleman-Liau</td>
+    <td align='right'>{$sop->colemanliau_grade}</td>
+    <td align='right'>{$sop->colemanliau_age}</td>
+  </tr>
+  <tr>
+    <td>Dalechall</td>
+    <td align='right'>{$sop->dalechall_grade}</td>
+    <td align='right'>{$sop->dalechall_age}</td>
+  </tr>
+  <tr>
+    <td>Flesch-Kincaid</td>
+    <td align='right'>{$sop->fleschkincaid_grade}</td>
+    <td align='right'>{$sop->fleschkincaid_age}</td>
+  </tr>
+  <tr>
+    <td>SMOG</td>
+    <td align='right'>{$sop->smog_grade}</td>
+    <td align='right'>{$sop->smog_age}</td>
+  </tr>
+</table>
+
+<p>Flesch Reading Ease: {$sop->reading_ease}</p>
+<p>Dalechall Readability Index: {$sop->dalechall_index}</p>
+<p>Sentiment Type: {$sop->sentiment_type}</p>
+<p>Sentiment Score: {$sop->sentiment_val}</p>
+ <table border=1>
+  <tbody>
+  <tr>
+    <th >Emotion Type</th>
+    <th >Score</th>
+  </tr>
+  <tr>
+    <td>Anger</td>
+    <td align='right'>{$sop->anger_score}</td>
+  </tr>
+  <tr>
+    <td>Disgust</td>
+    <td align='right'>{$sop->disgust_score}</td>
+  </tr>
+  <tr>
+    <td>Fear</td>
+    <td align='right'>{$sop->fear_score}</td>
+  </tr>
+  <tr>
+    <td>Joy</td>
+    <td align='right'>{$sop->joy_score}</td>
+  </tr>
+</tbody>
+</table>
+
+
+
+
+";
+        return $html;
+    }
+
 }
 
 ?>

@@ -15,7 +15,7 @@ $wgExtensionMessagesFiles['Duplicates'] = $dir . 'Duplicates.i18n.php';
 $wgSpecialPageGroups['Duplicates'] = 'other-tools';
 
 $wgHooks['UnknownAction'][] = 'handleDuplicates';
-$wgHooks['SubLevelTabs'][] = 'Duplicates::createSubTabs';
+//$wgHooks['SubLevelTabs'][] = 'Duplicates::createSubTabs';
 
 function handleDuplicates($action, $request){
     global $wgServer, $wgScriptPath;

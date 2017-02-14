@@ -143,7 +143,10 @@ $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport',
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
-
+$egAnnokiExtensions['Sops'] = array('name' => 'Sops',
+                                         'path' => "$IP/extensions/Sops/Sops.php");
+$egAnnokiExtensions['PdfConversion'] = array('name' => 'PdfConversion',
+                                         'path' => "$IP/extensions/PdfConversion/PdfConversion.php");
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
@@ -196,7 +199,7 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
-             $key == "CreateAccount")){
+             $key == "CreateAccount" || $key == 'Sops')){
             unset($aSpecialPages[$key]);
             continue;
         }

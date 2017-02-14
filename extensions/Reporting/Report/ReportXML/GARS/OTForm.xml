@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="OT Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="OTFormPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="OT">
+            <SectionPermission id="questions" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="eula" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
+            <![CDATA[
+                <h3>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" limit="1800">
+            <![CDATA[
+                <h3>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q3" limit="1800">
+            <![CDATA[
+                <h3>Tell us your academic experience/s and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" limit="1800">
+            <![CDATA[
+                <h3>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900">
+            <![CDATA[
+                <h3>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="eula" name="Declaration" title="Declaration" tooltip="Declaration" blobSection="OT_EULA" type="EULA">
+        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
+                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
+            <![CDATA[
+                <p>Personal information on this form is collected under the authority of Section 33(c) of Alberta’s Freedom of Information and Protection of Privacy Act and will be protected under Part 2 of that Act. It will be used for authorized purposes including admission and registration; administration of records, scholarships and awards, student services; and university planning and research. Students’ personal information may be used by academic and administrative units according to university policy, and operational needs. It is disclosed pursuant to federal and provincial regulatory reporting requirements, data sharing agreements with student governance associations, and to contracted or public health care providers as required. Direct any questions about this collection to the Admissions Services Supervisor, Faculty of Graduate Studies and Research, Killam Centre for Advanced Studies, 2-29 Triffo Hall, University of Alberta, Edmonton, AB T6G 2E1, 780-492-3499 or visit the <a href='http://www.ipo.ualberta.ca/' target='_blank'>Information and Privacy Office website</a>.</p>
+
+                <p>You must agree to the following declaration before submitting your application:</p>
+                <ul>
+                    <li>I agree, if admitted to the University of Alberta, to comply with University regulations.</li>
+                    <li>I certify that the information in this application is true and complete in all respects and that I have withheld no information.</li>
+                    <li>I authorize the University to verify any information provided as part of this application.</li>
+                    <li>I understand that misrepresentation, falsification of documents, or withholding of requested information regarding this application are serious offences and may result in prosecution under the University's Code of Applicant Behaviour, Code of Student Behaviour and/or the Criminal Code of Canada.</li>
+                    <li>I attest that I have completed all questions to the best of my ability and without the assistance of other individuals.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you complete the application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

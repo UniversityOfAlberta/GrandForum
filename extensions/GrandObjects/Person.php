@@ -68,6 +68,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given id
      */
     static function newFromId($id){
+        global $wgUser;
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
@@ -77,6 +78,16 @@ class Person extends BackboneModel {
             $data[] = self::$idsCache[$id];
         }
         $person = new Person($data);
+        if($wgUser->getId() == $person->id){
+            // User should be able to see themselves
+        }
+        else {
+            $me = Person::newFromWgUser();
+            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+                $person = new Person(array());
+            }
+        }
+        
         self::$cache[$person->id] = $person;
         self::$cache[strtolower($person->name)] = $person;
         return $person;
@@ -88,6 +99,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given name
      */
     static function newFromName($name){
+        global $wgUser;
         $name = strtolower(str_replace(' ', '.', $name));
         if(isset(Person::$cache[$name])){
             return Person::$cache[$name];
@@ -98,6 +110,15 @@ class Person extends BackboneModel {
             $data[] = self::$namesCache[$name];
         }
         $person = new Person($data);
+        if($wgUser->getId() == $person->id){
+            // User should be able to see themselves
+        }
+        else {
+            $me = Person::newFromWgUser();
+            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+                $person = new Person(array());
+            }
+        }
         self::$cache[$person->id] = $person;
         self::$cache[strtolower($person->name)] = $person;
         return $person;
@@ -165,6 +186,7 @@ class Person extends BackboneModel {
      * @return Person the Person that matches the name
      */
     static function newFromNameLike($name){
+        global $wgUser;
         $name = Person::cleanName($name);
         $name = unaccentChars(strtolower($name));
         self::generateNamesCache();
@@ -172,7 +194,17 @@ class Person extends BackboneModel {
         if(isset(self::$namesCache[$name])){
             $data[] = self::$namesCache[$name];
         }
-        return new Person($data);
+        $person = new Person($data);
+        if($wgUser->getId() == $person->id){
+            // User should be able to see themselves
+        }
+        else {
+            $me = Person::newFromWgUser();
+            if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+                $person = new Person(array());
+            }
+        }
+        return $person;
     }
 
     /**
@@ -183,6 +215,7 @@ class Person extends BackboneModel {
      * @return Person the Person from the given alias
      */
     static function newFromAlias($alias){
+        global $wgUser;
         // Normalize the alias: trim, remove duplicate spaces / dots, and strip HTML.
         $alias = preg_replace(
                 array('/\s+/', '/\.+/', '/\s*\.+\s*/', '/<[^>]*>/'),
@@ -222,6 +255,15 @@ class Person extends BackboneModel {
             self::$cache[$alias] = &$person;
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
+            if($wgUser->getId() == $person->id){
+                // User should be able to see themselves
+            }
+            else {
+                $me = Person::newFromWgUser();
+                if(!$me->isRoleAtLeast(STAFF) && $me->getId() != $person->id){
+                    $person = new Person(array());
+                }
+            }
             return $person;
         default:
             throw new DomainException("Alias is not unique.");
@@ -653,7 +695,7 @@ class Person extends BackboneModel {
                     continue;
                 }
                 $person = Person::newFromId($row);
-                if($person->getName() != "WikiSysop"){
+                if($person->getName() != "WikiSysop" && $person->getName() != ""){
                     if($me->isLoggedIn() || $person->isRoleAtLeast(NI) || $config->getValue('hqpIsPublic') ){
                         $people[] = $person;
                     }
@@ -675,7 +717,7 @@ class Person extends BackboneModel {
         $people = array();
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
+            if($person->getName() != "WikiSysop" && $person->getName() != "" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
                 $people[] = $person;
             }
         }
@@ -693,7 +735,7 @@ class Person extends BackboneModel {
         $people = array();
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
+            if($person->getName() != "WikiSysop" && $person->getName() != "" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
                 $people[] = $person;
             }
         }
@@ -721,7 +763,7 @@ class Person extends BackboneModel {
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
+            if($person->getName() != "WikiSysop" && $person->getName() != "" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
                 if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                     $people[] = $person;
                 }
@@ -751,7 +793,7 @@ class Person extends BackboneModel {
             $rowA = array();
             $rowA[0] = $row;
             $person = Person::newFromId($rowA[0]['user_id']);
-            if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter.'-Candidate', $startDate, $endDate))){
+            if($person->getName() != "WikiSysop" && $person->getName() != "" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter.'-Candidate', $startDate, $endDate))){
                 if($me->isLoggedIn() || $person->isRoleAtLeastDuring(NI, $startDate, $endDate)){
                     $people[] = $person;
                 }
@@ -3785,7 +3827,7 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        if($p instanceof Project && !$p->clear){
+        if($p instanceof Project && isset($p->clear) && !$p->clear){
             foreach($p->getPreds() as $pred){
                 if($this->leadershipOf($pred, $type)){
                     return true;

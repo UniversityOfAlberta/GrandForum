@@ -102,7 +102,6 @@ class ShibAuthPlugin extends AuthPlugin {
 	 */
 	function updateUser( &$user ) {
 		wfRunHooks('ShibUpdateUser', array($this->existingUser, $user));
- 
 		//For security, set password to a non-existant hash.
 		if ($user->mPassword != "nologin"){
 			$user->mPassword = "nologin";
@@ -113,7 +112,6 @@ class ShibAuthPlugin extends AuthPlugin {
 		DBFunctions::commit();
 		return true;
 	}
- 
  
 	/**
 	 * Return true if the wiki should create a new local account automatically
@@ -435,6 +433,7 @@ function ShibUserLoadFromSession($user, &$result)
 	global $shib_groups;
 	global $shib_email;
 	global $config;
+	global $wgUser;
 
 	ShibKillAA();
  
@@ -460,9 +459,12 @@ function ShibUserLoadFromSession($user, &$result)
 		wfSetupSession();
 		$user->setCookies();
 		ShibAddGroups($user);
+		$wgUser = $user;
+		wfRunHooks('AuthPluginSetup', array());
 		return true;
 	}
  
+    $wgUser = $user;
 	//Place the hook back (Not strictly necessarily MW Ver >= 1.9)
 	ShibBringBackAA();
  
@@ -533,6 +535,7 @@ function ShibUserLoadFromSession($user, &$result)
 	                              'role'       => $config->getValue('shibDefaultRole'),
 	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 	}
+	wfRunHooks('AuthPluginSetup', array());
 	return true;
 }
 function ShibAddGroups($user) {

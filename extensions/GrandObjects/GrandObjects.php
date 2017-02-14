@@ -72,6 +72,13 @@ $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', new Mailing
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
 $apiRequest->addAction('Hidden','virtu', new VirtuAPI());
+//Sop
+$apiRequest->addAction('Hidden','sop/:id', new SopAPI());
+$apiRequest->addAction('Hidden','sops', new SopsAPI());
+$apiRequest->addAction('Hidden','sop/:sop_id/annotations', new SopAnnotationAPI());
+$apiRequest->addAction('Hidden','sop/:sop_id/annotations/:annotation_id', new SopAnnotationAPI());
+$apiRequest->addAction('Hidden','sop/annotations/:annotation_id', new SopAnnotationAPI());
+$apiRequest->addAction('Hidden','sop/annotations', new SopAnnotationAPI());
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
@@ -89,6 +96,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Sop.js?".filemtime("extensions/GrandObjects/BackboneModels/Sop.js")."'></script>\n";
     
     return true;
 }

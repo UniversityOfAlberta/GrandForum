@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="OT Form" reportType="RP_OT" pdfType="RPTP_OT" pdfFiles="OTFormPDF" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <ReportItem id="report_info_head" type="StaticReportItem">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>GARS OT Application</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/gars_logo.jpg' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="questions" tooltip="Questions" name="Questions" blobSection="OT_QUESTIONS" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" reportLimits="true" limit="1800">
+            <![CDATA[
+                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Describe how your personal background and experiences would make you a good occupational therapist.</h3>
+                {$item}
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" reportLimits="true" limit="1800">
+            <![CDATA[
+                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Tell us about your work or volunteer experiences and how that would ultimately contribute to the profession of occupational therapy.</h3>
+                {$item}
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q3" reportLimits="true" limit="1800">
+            <![CDATA[
+                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Tell us your academic experience/s and how that has prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                {$item}
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" reportLimits="true" limit="1800">
+            <![CDATA[
+                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Outline the key way Canada's health care system can meet the challenges of tomorrow.</h3>
+                {$item}
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="q5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" reportLimits="true" limit="900">
+            <![CDATA[
+                <h3 style='background:#027d46;border:none;color:white;font-weight:bold;'>Is there anything else you would like to tell us to help the Admissions Committee in making their decision?</h3>
+                {$item}
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

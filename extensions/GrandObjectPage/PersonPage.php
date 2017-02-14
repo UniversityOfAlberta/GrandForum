@@ -121,14 +121,14 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
-                $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);

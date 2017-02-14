@@ -6,10 +6,10 @@ require_once('PeopleTableTab.php');
 
 $indexTable = new IndexTable();
 
-$wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
-$wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
+//$wgHooks['OutputPageParserOutput'][] = array($indexTable, 'generateTable');
+//$wgHooks['userCan'][] = array($indexTable, 'userCanExecute');
 
-$wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
+//$wgHooks['SubLevelTabs'][] = 'IndexTable::createSubTabs';
 
 class IndexTable {
 
