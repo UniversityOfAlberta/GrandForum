@@ -255,7 +255,6 @@ class Impersonate extends SpecialPage {
 	                            <b>Search:</b> <input style='width:100%;' id='search' type='text' onKeyUp='filterResults(this.value);' />
 	                        </td></tr>
 	                        <tr><td>
-	                        <form id='mainForm' action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
 	                            <select id='names' name='name' size='10' style='width:100%'>
 	                                <option id='no' disabled>Search did not match anyone</option>\n");
 	    foreach($allPeople as $person){
@@ -271,7 +270,7 @@ class Impersonate extends SpecialPage {
 	            </td></tr>
 	            <tr><td>
 	        <input type='button' id='button' name='next' value='Impersonate' />
-	    </form></td></tr></table>");
+	    </td></tr></table>");
 	}
 	
 	static function createDelegateLink(&$toolbox){

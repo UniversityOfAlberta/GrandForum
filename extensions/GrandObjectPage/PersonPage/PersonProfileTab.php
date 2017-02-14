@@ -1,7 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
-
 class PersonProfileTab extends AbstractEditableTab {
 
     var $person;
@@ -179,6 +177,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['nationality'] = @$_POST['nationality'];
+            $_POST['stakeholder'] = @$_POST['stakeholder'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
@@ -196,6 +195,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserWebsiteAPI();
             $api->doAction(true);
             $api = new UserNationalityAPI();
+            $api->doAction(true);
+            $api = new UserStakeholderAPI();
             $api->doAction(true);
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -335,6 +336,7 @@ EOF;
         $chord->width = 226;
         $chord->height = 226;
         $chord->options = false;
+        $chord->fn = '$("#personProducts_wrapper input").val(data.labels[d.index]); $("#personProducts_wrapper input").trigger("keyup")';
         $html .= $chord->show();
         $html .= "</div>";
         $wgOut->addScript("<script type='text/javascript'>
@@ -503,7 +505,7 @@ EOF;
         $this->html .= <<<EOF
             <div id='card' style='min-height:142px;display:inline-block;vertical-align:top;'></div>
             <script type='text/javascript'>
-                $(document).ready(function(){    
+                $(document).ready(function(){
                     var person = new Person({$person->toJSON()});
                     var card = new LargePersonCardView({el: $("#card"), model: person});
                     card.render();
@@ -515,7 +517,7 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $config;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
@@ -524,6 +526,7 @@ EOF;
             $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
             $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
             $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+            $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
             $nationality = "<tr>
                 <td align='right'><b>Nationality:</b></td>
                 <td>
@@ -533,6 +536,7 @@ EOF;
                         <option value='American' $amerSelected>American</option>
                         <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
                         <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                        <option value='International' $interSelected>International</option>
                     </select>
                 </td>
             </tr>";
@@ -550,6 +554,24 @@ EOF;
                     </select>
                 </td>
             </tr>";
+            
+            $stakeholderCategories = $config->getValue('stakeholderCategories');
+            $stakeholder = "";
+            if(count($stakeholderCategories) > 0){
+                $blankSelected = (!$person->isStakeholder()) ? "selected='selected'" : "";
+                $stakeholder = "<tr>
+                    <td align='right'><b>Stakeholder<br />Category:</b></td>
+                    <td>
+                        <select name='stakeholder'>
+                            <option value='' $blankSelected>---</option>";
+                foreach($stakeholderCategories as $category){
+                    $selected = ($person->getStakeholder() == $category) ? "selected='selected'" : "";
+                    $stakeholder .= "<option value='$category' $selected>$category</option>";
+                }
+                $stakeholder .= "</select>
+                    </td>
+                </tr>";
+            }
         }
         $this->html .= "<table>
                             <tr>
@@ -557,7 +579,8 @@ EOF;
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
-                            {$gender}";
+                            {$gender}
+                            {$stakeholder}";
         
         $roles = $person->getRoles();
         $universities = new Collection(University::getAllUniversities());

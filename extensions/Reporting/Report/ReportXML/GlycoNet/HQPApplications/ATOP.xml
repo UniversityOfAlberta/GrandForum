@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Advanced Training Opportunity Program" reportType="RP_ATOP" pdfType="ATOP" pdfFiles="HQPApplications/ATOPPDF" ajax="true" disabled="false" year="2016">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="proposal" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
+        <ReportItem id="instructions" type="Static">
+            <![CDATA[
+                <h3>Background</h3>
+                <p>Senior graduate students, postdoctoral fellowship and research associate programs represent the highest stages of training, where senior trainees are developing skills that will allow them to become independent scientists.</p>
+                <p>The Advanced Training Opportunity Program (ATOP) will allow senior GlycoNet HQP to formally develop the soft skills necessary for success such as grant writing, identifying milestones, budgeting, hiring personnel, and managing people.</p>
+                <p>This training award provides senior Network HQP with the opportunity to write a mini-NSERC Discovery grant, which, if funded, would allow them to hire an undergraduate or co-op student for 4 months with a small amount of operational funds.</p>
+ 
+                <h3>Guidelines and Process</h3>
+                <ul>
+                    <li>Proposal will be written by the senior trainee, and will be awarded based on NSERC criteria: scientific excellence of the researcher (senior trainee), merit of the proposal, and contributions to HQP.</li>
+                    <li>Projects must align with at least one of GlycoNet’s research themes.</li>
+                    <li>Funds will be held by the applicant’s supervisor, who must be eligible to hold Tri-Council funds. The supervisor will also provide mentorship to the applicant.</li>
+                    <li>Any intellectual property (IP) generated will be managed through consultation between the applicant, the applicant’s supervisor, and the host institution, in accordance with GlycoNet/institutional IP policies.</li>
+                    <li>Proposals will be submitted, through the GlycoNet Forum, to the Training Committee for selection of successful applications.  Applications will include a title, summary of proposal, proposal, proposed expenditures, HPQ training plan, significant contributions, CV, and supervisor letter of support. The Training Committee may engage external reviewers in this process.</li>
+                    <li>A Notice of Award will be sent to successful senior trainees and their supervisors.</li>
+                    <li>Successful applicants will submit a final report within 60 days of the end of the project</li>
+                    <li>Successful applicants will agree to mentor future applicants to the ATOP program.</li>
+                </ul>
+                
+                <h3>Budget</h3>
+                <p>GlycoNet will fund up to two proposals each year. Each proposal may request up to $8,000.</p>
+
+                <h3>Deadline</h3>
+                <p>Proposals must be submitted through the Forum no later than <b>January 15</b>, with projects carried out in the period between April 1<sup>st</sup> to March 31<sup>st</sup>.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
+        <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Program/Position|Department|Institution|City|Province|Phone|Email" types="Text|Select(MSc,PhD,PDF,Technician,RA)|Text|Text|Text|Text|Text|Text" sizes="125|125|125|125|100|100|100|125">
+            <![CDATA[
+                <h3>Applicant Profile</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="supervisor" type="MultiText" blobType="BLOB_ARRAY" blobItem="SUPERVISOR" labels="Name|Department|Institution|City|Province|Phone|Email" sizes="125|125|125|100|100|100|125">
+            <![CDATA[
+                <h3>Current Supervisor</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500">
+            <![CDATA[
+                <h3>Most Significant Contributions to Research</h3>
+                <p>Describe up to five of your most significant research contributions, specifying your role in the contribution and highlighting the impact of your research in the broader field of study.  </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="Upload" blobType="BLOB_RAW" blobItem="CV" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Uploads</h2>
+                <h3>CV</h3>
+                <p>Please include: current & past academic experience; work experience; publications, presentations, and intellectual property; a cover letter is not needed.</p>
+                {$item}
+            ]]>  
+        </ReportItem>
+        <ReportItem id="letter" type="Upload" blobType="BLOB_RAW" blobItem="LETTER" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h3>Signed letter (1 page) of support from primary academic supervisor</h3>
+                <p>Upload as a single separate PDF document.</p>
+                {$item}
+            ]]>  
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" name="Proposal" tooltip="Application" type="EditableReportSection" blobSection="PROPOSAL">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td><b>Project Title:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="THEME" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+            <![CDATA[
+                <tr>
+                    <td valign='top'><b>Theme:</b><br /><small>(may select more than one)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="start" type="Calendar" blobItem="START">
+            <![CDATA[
+                <tr>
+                    <td valign='top'><b>Start Date:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="Calendar" blobItem="END">
+            <![CDATA[
+                <tr>
+                    <td valign='top'><b>End Date:</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="project" type="Radio" blobItem="PROJECT" options="Yes|No">
+            <![CDATA[
+                <h3>Is this project related to a currently funded GlycoNet Project?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_title" type="Text" blobItem="PROJECT_TITLE">
+            <![CDATA[
+                <p>If yes, please provide the title/acronym of the currently funded project:</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Summary of Proposal</h3>
+                <p>This summary may be used in GlycoNet publications and on the GlycoNet website.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000">
+            <![CDATA[
+                <h3>Research Proposal <small>(max 2000 words, including references)</small></h3>
+                <p>Address your own research progress in areas relating to the proposed project, research objectives, a brief overview of current literature to help put the proposal into context, methodology to be used, and impact of the project.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500">
+            <![CDATA[
+                <h3>HQP Training Plan</h3>
+                <p>Describe the undergraduate/co-op HQP’s involvement in the proposed research, and explain how this trainee will benefit in both the short- and long-term from the project.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="stipend" type="Integer" blobItem="STIPEND" min="0" max="8000" size="4">
+            <![CDATA[
+                <h3>Requested Budget</h3> (max $8000)
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td><b>UG/Co-op student stipend:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="supplies" type="Integer" blobItem="SUPPLIES" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Supplies and consumables:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Integer" blobItem="OTHER" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Other:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="total" type="Integer" blobItem="TOTAL" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>TOTAL:</b></td>
+                        <td>${$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="match" type="Integer" blobItem="MATCH" min="0" max="8000" size="4">
+            <![CDATA[<tr>
+                        <td><b>Matching funds (if applicable):</b></td>
+                        <td>${$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <p>Describe how the requested funds will be spent. If other sources of matching funds are available, describe them here.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="Upload" blobType="BLOB_RAW" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Uploads</h2>
+                <h3>Figures and schemes</h3>
+                <p>Upload as a single separate PDF document. Include legends below each figure or scheme.</p>
+                {$item}
+            ]]>  
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="declaration" name="Applicant Declaration" type="EULA" blobSection="DECLARATION">
+        <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the declaration" no="No, I do not agree to the declaration">
+            <![CDATA[
+                <p>By submitting this Advanced Training Opportunity Program Application Form I agree with GlycoNet that:</p>
+                <ol>
+                    <li>the information contained in this form is true, complete, and accurate;</li>
+                    <li>I will use the funds received by me solely for the purpose set out in this application and as required pursuant to any applicable policies and procedures of GlycoNet;</li> 
+                    <li>I will immediately notify the GlycoNet Training Coordinator of any change in my academic status or substantial change to the scope of the project;</li>
+                    <li>I consent to being identified by name as a recipient of funding under the Research Exchange Program on the GlycoNet website and in GlycoNet publications;</li>
+                    <li>I will acknowledge GlycoNet as a funding source when presenting work carried out during the tenure of the ATOP program; and</li>
+                    <li>I will comply with the final reporting requirements of the ATOP program required by GlycoNet. </li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you can submit your application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

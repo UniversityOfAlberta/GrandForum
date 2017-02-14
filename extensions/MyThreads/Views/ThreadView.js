@@ -7,16 +7,11 @@ ThreadView = Backbone.View.extend({
                 this.$el.html("This Thread does not exist.");
             }, this)
         });
-        this.model.bind('sync', this.render);//change to on
+        this.model.bind('sync', this.render);
     },
 
     events: {
         "click #EditThreadButton": "editThread",
-        "click #BackButton": "back",
-    },
-
-    back: function(){
-        document.location = wgServer+wgScriptPath+"/index.php/Special:MyThreads#";
     },
 
     editThread: function(){
@@ -50,7 +45,9 @@ ThreadView = Backbone.View.extend({
     },
 
     render: function(){
-        main.set('title', striphtml(this.model.get('title')));
+        main.set('title', "<a href='" + wgServer + wgScriptPath + "/index.php/Special:MyThreads'>Message Boards</a> &gt; " + 
+                          "<a href='" + this.model.get('board').url + "'>" + this.model.get('board').title + "</a> &gt; " + 
+                          striphtml(this.model.get('title')));
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));

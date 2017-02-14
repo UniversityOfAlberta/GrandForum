@@ -278,8 +278,9 @@ abstract class AbstractReportSection {
             $this->items[] = $item;
         }
         else{
-            array_splice($this->items, $position, 0, $item);
+            array_splice($this->items, $position, 0, array($item));
         }
+        
         $item->setPersonId($this->parent->person->getId());
     }
     

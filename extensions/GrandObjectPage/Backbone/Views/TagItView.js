@@ -70,9 +70,10 @@ TagItView = Backbone.View.extend({
     },
     
     render: function(){
-        var that = this;
         this.$el.html(this.template(this.model.toJSON()));
-        this.$("ul.tagit").val(this.model.get('values').join(', '));
+        _.each(this.model.get('values'), $.proxy(function(val){
+            this.$("ul.tagit").append("<li>" + val + "</li>");
+        }, this));
         this.$("ul.tagit").tagit(this.model.get('options'));
         if(this.model.get('capitalize')){
             this.$("ul.tagit").css('text-transform', 'uppercase');

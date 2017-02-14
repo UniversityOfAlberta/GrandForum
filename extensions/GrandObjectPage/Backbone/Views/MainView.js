@@ -7,7 +7,8 @@ MainView = Backbone.View.extend({
     
     changeTitle: function(){
         $('#pageTitle').html(this.get('title'));
-        document.title = this.get('title');
+        var title = $("<span>" + this.get('title') + "</span>");
+        document.title = title.text();
     },
     
     render: function(){ 

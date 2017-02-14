@@ -40,6 +40,8 @@ function isExtensionEnabled($ext){
     return (array_search($ext, $extensions) !== false);
 }
 
+autoload_register('../Classes/Inflect');
+
 $egAnnokiExtensions = array();
 
 $egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
@@ -74,9 +76,6 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
-
-/*$egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
-                                      'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");*/
 
 $egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
                                            'path' => "$IP/extensions/MailingList/mailingList.body.php");
@@ -117,9 +116,6 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
 $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
                                                     'path' => "$IP/extensions/Visualizations/PublicVisualizations/PublicVisualizations.php");
 
-$egAnnokiExtensions['Survey'] = array('name' => 'Survey',
-                                      'path' => "$IP/extensions/Survey/Survey.php");
-
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
@@ -143,7 +139,10 @@ $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport',
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
-
+$egAnnokiExtensions['Sops'] = array('name' => 'Sops',
+                                         'path' => "$IP/extensions/Sops/Sops.php");
+$egAnnokiExtensions['PdfConversion'] = array('name' => 'PdfConversion',
+                                         'path' => "$IP/extensions/PdfConversion/PdfConversion.php");
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
@@ -196,7 +195,7 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
-             $key == "CreateAccount")){
+             $key == "CreateAccount" || $key == 'Sops')){
             unset($aSpecialPages[$key]);
             continue;
         }

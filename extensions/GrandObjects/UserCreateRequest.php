@@ -12,6 +12,7 @@ class UserCreateRequest {
     var $name;
     var $realName;
     var $email;
+    var $sendEmail;
     var $roles;
     var $projects;
     var $university;
@@ -60,6 +61,7 @@ class UserCreateRequest {
             $this->name = $data[0]['wpName'];
             $this->realName = $data[0]['wpRealName'];
             $this->email = $data[0]['wpEmail'];
+            $this->sendEmail = $data[0]['wpSendEmail'];
             $this->roles = $data[0]['wpUserType'];
             $this->projects = $data[0]['wpNS'];
             $this->university = $data[0]['university'];
@@ -94,6 +96,10 @@ class UserCreateRequest {
     
     function getEmail(){
         return $this->email;
+    }
+    
+    function getSendEmail(){
+        return $this->sendEmail;
     }
     
     function getRoles(){

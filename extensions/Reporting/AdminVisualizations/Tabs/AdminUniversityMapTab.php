@@ -1,7 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminUniversityMapTab::getAdminUniversityMapData';
-
 class AdminUniversityMapTab extends AbstractTab {
 	
 	function AdminUniversityMapTab(){

@@ -92,7 +92,7 @@ abstract class QueryableTable {
         $rowOffset = 0;
         $colOffset = 0;
         $lastRowN = 0;
-        foreach($structure as $rowN => $row){
+        foreach(@$structure as $rowN => $row){
             if(!is_numeric($rowN) || $rowN < 0){
                 $params = array();
                 if(!is_numeric($rowN)){

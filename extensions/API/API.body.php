@@ -55,6 +55,10 @@ class APIRequest{
 				            foreach($routeParams as $key => $param){
 				                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
 				                                    strstr($param, ":") !== false));
+				                if($match && is_string($a)){
+				                    $a = new $a();
+				                    $api = $a; // Set the API to this for now (params might not match exactly, but will use it as a fallback)
+				                }
 				                if($match && strstr($param, ":") !== false){
 				                    $a->params[str_replace(":", "", $param)] = $params[$key];
 				                }
@@ -107,57 +111,61 @@ class APIRequest{
 	
 	function createActions(){
 	    //POST
-	    $this->addAction('Products', 'uploadCCV', new UploadCCVAPI());
-	    $this->addAction('Products', 'uploadICS', new UploadICSAPI());
-	    $this->addAction('Products', 'importBibTeX', new ImportBibTeXAPI());
-	    $this->addAction('Products', 'importDOI', new ImportDOIAPI());
-	    $this->addAction('Products', 'getPublicationSearch', new PublicationSearchAPI());
+	    $this->addAction('Products', 'uploadCCV', 'UploadCCVAPI');
+	    $this->addAction('Products', 'uploadICS', 'UploadICSAPI');
+	    $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
+	    $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
+	    $this->addAction('Products', 'getPublicationSearch', 'PublicationSearchAPI');
 	
 		//POST
-		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
-		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());
-		$this->addAction('User Accounts', 'addUserRole', new AddRoleAPI());
-		$this->addAction('User Accounts', 'addProjectLeader', new AddProjectLeaderAPI());
-		$this->addAction('User Accounts', 'addThemeLeader', new AddThemeLeaderAPI());
-		$this->addAction('User Accounts', 'addHQPThesis', new AddHQPThesisAPI());
-		$this->addAction('User Accounts', 'addHQPMovedOn', new AddHQPMovedOnAPI());
-		$this->addAction('User Accounts', 'addRelation', new AddRelationAPI());
-		$this->addAction('User Accounts', 'updateUserTwitterAccount', new UserTwitterAccountAPI());
-		$this->addAction('User Accounts', 'updateUserPhone', new UserPhoneAPI());
-		$this->addAction('User Accounts', 'updateUserWebsite', new UserWebsiteAPI());
-		$this->addAction('User Accounts', 'updateUserNationality', new UserNationalityAPI());
-        $this->addAction('User Accounts', 'updateUserEmail', new UserEmailAPI());
-        $this->addAction('User Accounts', 'updateUserGender', new UserGenderAPI());
-		$this->addAction('User Accounts', 'updateUserUniversity', new UserUniversityAPI());
-		$this->addAction('User Accounts', 'updateUserProfile', new UserProfileAPI());
-		$this->addAction('User Accounts', 'updateProjectRelation', new UpdateProjectRelationAPI());
-		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
-		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
-		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
+		$this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
+		$this->addAction('User Accounts', 'addUserRequest', 'RequestUserAPI');
+		$this->addAction('User Accounts', 'addProjectLeader', 'AddProjectLeaderAPI');
+		$this->addAction('User Accounts', 'addThemeLeader', 'AddThemeLeaderAPI');
+		$this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
+		$this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
+		$this->addAction('User Accounts', 'updateUserTwitterAccount', 'UserTwitterAccountAPI');
+		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
+		$this->addAction('User Accounts', 'updateUserWebsite', 'UserWebsiteAPI');
+		$this->addAction('User Accounts', 'updateUserNationality', 'UserNationalityAPI');
+		$this->addAction('User Accounts', 'updateUserStakeholder', 'UserStakeholderAPI');
+        $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
+        $this->addAction('User Accounts', 'updateUserGender', 'UserGenderAPI');
+		$this->addAction('User Accounts', 'updateUserUniversity', 'UserUniversityAPI');
+		$this->addAction('User Accounts', 'updateUserProfile', 'UserProfileAPI');
+		$this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
+		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
 		
 		//POST
-		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
-		$this->addAction('Contributions', 'updateContribution', new AddContributionAPI());
+		$this->addAction('Contributions', 'addContribution', 'AddContributionAPI');
+		$this->addAction('Contributions', 'updateContribution', 'AddContributionAPI');
 		
 		//POST
-		$this->addAction('Projects', 'createProject', new CreateProjectAPI());
-		$this->addAction('Projects', 'addProjectMember', new AddProjectMemberAPI());
-		$this->addAction('Projects', 'addProjectMilestone', new ProjectMilestoneAPI());
-		$this->addAction('Projects', 'addProjectJoinRequest', new ProjectJoinRequestAPI());
-		$this->addAction('Projects', 'updateProjectAcronym', new UpdateProjectAcronymAPI());
-		$this->addAction('Projects', 'updateProjectDescription', new ProjectDescriptionAPI());
-		$this->addAction('Projects', 'updateProjectChallenge', new ProjectChallengeAPI());
+		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
+		$this->addAction('Projects', 'addProjectMember', 'AddProjectMemberAPI');
+		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');
+		$this->addAction('Projects', 'addProjectJoinRequest', 'ProjectJoinRequestAPI');
+		$this->addAction('Projects', 'updateProjectAcronym', 'UpdateProjectAcronymAPI');
+		$this->addAction('Projects', 'updateProjectDescription', 'ProjectDescriptionAPI');
+		$this->addAction('Projects', 'updateProjectChallenge', 'ProjectChallengeAPI');
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
-		$this->addAction('Projects', 'evolveProject', new EvolveProjectAPI());
-		$this->addAction('Projects', 'deleteProjectMember', new DeleteProjectMemberAPI());
-		$this->addAction('Projects', 'deleteProject', new DeleteProjectAPI());
+		$this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
+		$this->addAction('Projects', 'deleteProjectMember', 'DeleteProjectMemberAPI');
+		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
 		//GET
-		$this->addAction('Themes', 'getThemeInfo', new ThemeInfoAPI());
+		$this->addAction('Themes', 'getThemeInfo', 'ThemeInfoAPI');
 		
 		// HIDDENS
-		$this->addAction('Hidden', 'getJung', new JungAPI());
-		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
-		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
+
+        //POST
+        $this->addAction('Hidden', 'updateSop', 'UpdateSopStatisticsAPI');
+        $this->addAction('Hidden', 'getError', 'AtdErrorsAPI');
+        $this->addAction('User Accounts', 'convertPdf', 'ConvertPdfAPI');
+
+		$this->addAction('Hidden', 'getJung', 'JungAPI');
+		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
+		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
+
 	}
 }
 
@@ -204,11 +212,13 @@ abstract class API {
 				    $this->doAction();
 				}
 			}
-			header('Content-Type: application/json');
-			echo json_encode(array('errors' => $this->errors,
-			                       'messages' => $this->messages,
-			                       'data' => $this->data));
-			exit;
+			if(!isset($_GET['last'])){
+                            header('Content-Type: application/json');
+			    echo json_encode(array('errors' => $this->errors,
+			                           'messages' => $this->messages,
+			                           'data' => $this->data));
+			    exit;
+			}
 		}
 	}
 	
@@ -352,103 +362,4 @@ abstract class API {
 	abstract function doAction();
 }
 
-/**
- * @package API
- */
-abstract class RESTAPI extends API {
-
-    var $params = array();
-    
-    function processRequest($params=null){
-		global $wgUser;
-		if(isset($_GET['getHelp'])){
-			$this->getHelp();
-		}
-		else{
-			if($this->isLoginRequired() && !$wgUser->isLoggedIn()){
-                header("HTTP/1.0: 403 Authentication Required");
-                exit;
-            }
-			$this->processParams($params);
-		    $this->doAction();
-		}
-	}
-	
-	/**
-	 * Returns the value of the specified parameter if it exists ("" otherwise)
-	 * @param string $id The id of the parameter
-	 * @return string Returns the value of the parameter
-	 */
-	function getParam($id){
-	    return (isset($this->params[$id])) ? $this->params[$id] : "";
-	}
-	
-	/**
-	 * In most cases for the RESTAPI login should not be required.
-	 * This should instead be implemented for each of the doACTION functions.
-	 */
-	function isLoginRequired(){
-        return false;
-    }
-	
-	/**
-	 * Generates a error message via the HTTP 400 return code, and exits execution
-	 * @param string $message The message to display
-	 * @param int $code the HTTP error code
-	 */
-	function throwError($message, $code=400){
-	    header("HTTP/1.0: $code $message");
-	    echo $message;
-	    exit;
-	}
-    
-    function doAction(){
-        global $wgUser;
-        $method = $_SERVER['REQUEST_METHOD'];
-        if($method == "GET"){
-            $json = $this->doGET();
-        }
-        else if($method == "PUT" || ($method == "POST" && @$_POST['_method'] == "PUT")){
-            $json = $this->doPUT();
-        }
-        else if($method == "DELETE" || ($method == "POST" && @$_POST['_method'] == "DELETE")){
-            $json = $this->doDELETE();
-        }
-        else if($method == "POST"){
-            $json = $this->doPOST();
-        }
-        header('Content-Type: application/json');
-        ob_start("ob_gzhandler");
-        echo $json;
-        DBFunctions::close();
-        exit;
-    }
-    
-    function processParams($params){ }
-    
-    /**
-     * CREATE/POST
-     * @abstract
-     */
-    abstract function doPOST();
-    
-    /**
-     * READ/GET
-     * @abstract
-     */
-    abstract function doGET();
-
-    /**
-     * UPDATE/PUT
-     * @abstract
-     */
-    abstract function doPUT();
-    
-    /**
-     * DELETE/DELETE
-     * @abstract
-     */
-    abstract function doDELETE();
-    
-}
 ?>

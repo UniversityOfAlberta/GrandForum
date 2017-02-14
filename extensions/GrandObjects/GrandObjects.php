@@ -1,94 +1,137 @@
 <?php
 // The purpose of this file is to simply include the other datastructures
 require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
-require_once("Blob.php");
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("MENTORS", 'Mentors');
 
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
+autoload_register('GrandObjects/API/Person');
+autoload_register('GrandObjects/API/Role');
+autoload_register('GrandObjects/API/Project');
+autoload_register('GrandObjects/API/Product');
+autoload_register('GrandObjects/API/University');
+autoload_register('GrandObjects/API/Wiki');
+autoload_register('GrandObjects/API/MessageBoard');
+autoload_register('GrandObjects/API/PDF');
+autoload_register('GrandObjects/API/MailingList');
+autoload_register('GrandObjects/API/Search');
+autoload_register('GrandObjects/API/Sop');
 
 global $apiRequest;
 // Person
-$apiRequest->addAction('Hidden','person/:id', new PersonAPI());
-$apiRequest->addAction('Hidden','person/:id/projects', new PersonProjectsAPI());
-$apiRequest->addAction('Hidden','person/:id/roles', new PersonRolesAPI());
-$apiRequest->addAction('Hidden','person/:id/products', new PersonProductAPI());
-$apiRequest->addAction('Hidden','person/:id/products/private', new PersonProductAPI());
-$apiRequest->addAction('Hidden','person/:id/products/all', new PersonProductAPI());
-$apiRequest->addAction('Hidden','person/:id/products/:productId', new PersonProductAPI());
-$apiRequest->addAction('Hidden','person/:id/contributions', new PersonContributionsAPI());
-$apiRequest->addAction('Hidden','person/:id/allocations', new PersonAllocationsAPI());
-$apiRequest->addAction('Hidden','personRoleString/:id', new PersonRoleStringAPI());
-$apiRequest->addAction('Hidden','people', new PeopleAPI());
-$apiRequest->addAction('Hidden','people/:role', new PeopleAPI());
-$apiRequest->addAction('Hidden','people/:role/:university', new PeopleAPI());
-// Role
-$apiRequest->addAction('Hidden','role', new RoleAPI());
-$apiRequest->addAction('Hidden','role/:id', new RoleAPI());
-// Project
-$apiRequest->addAction('Hidden','project', new ProjectAPI());
-$apiRequest->addAction('Hidden','project/:id', new ProjectAPI());
-$apiRequest->addAction('Hidden','project/:id/members', new ProjectMembersAPI());
-$apiRequest->addAction('Hidden','project/:id/members/:role', new ProjectMembersAPI());
-$apiRequest->addAction('Hidden','project/:id/contributions', new ProjectContributionsAPI());
-$apiRequest->addAction('Hidden','project/:id/allocations', new ProjectAllocationsAPI());
+$apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
+$apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
+$apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
+$apiRequest->addAction('Hidden','person/:id/universities', 'PersonUniversitiesAPI');
+$apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', 'PersonUniversitiesAPI');
+$apiRequest->addAction('Hidden','person/:id/roles', 'PersonRolesAPI');
+$apiRequest->addAction('Hidden','person/:id/relations', 'PersonRelationsAPI');
+$apiRequest->addAction('Hidden','person/:id/relations/:relId', 'PersonRelationsAPI');
+$apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/products/all', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/products/:productId', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','person/:id/contributions', 'PersonContributionsAPI');
+$apiRequest->addAction('Hidden','person/:id/allocations', 'PersonAllocationsAPI');
+$apiRequest->addAction('Hidden','personRoleString/:id', 'PersonRoleStringAPI');
+$apiRequest->addAction('Hidden','people', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/managed', 'PeopleManagedAPI');
+$apiRequest->addAction('Hidden','people/:role', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/:role/:university', 'PeopleAPI');
 
-$apiRequest->addAction('Hidden','project/:id/products', new ProjectProductAPI());
-$apiRequest->addAction('Hidden','project/:id/products/:productId', new ProjectProductAPI());
+// Role
+$apiRequest->addAction('Hidden','role', 'RoleAPI');
+$apiRequest->addAction('Hidden','role/:id', 'RoleAPI');
+
+// Project
+$apiRequest->addAction('Hidden','project', 'ProjectAPI');
+$apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
+$apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');
+$apiRequest->addAction('Hidden','project/:id/members/:role', 'ProjectMembersAPI');
+$apiRequest->addAction('Hidden','project/:id/contributions', 'ProjectContributionsAPI');
+$apiRequest->addAction('Hidden','project/:id/allocations', 'ProjectAllocationsAPI');
+$apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
+$apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
+
 // Product
-$apiRequest->addAction('Hidden','product', new ProductAPI());
-$apiRequest->addAction('Hidden','product/:projectId/:category/:grand', new ProductAPI());
-$apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', new ProductAPI());
-$apiRequest->addAction('Hidden','product/:id', new ProductAPI());
-$apiRequest->addAction('Hidden','product/:id/authors', new PersonProductAPI());
-$apiRequest->addAction('Hidden','product/:id/authors/:personId', new PersonProductAPI());
-$apiRequest->addAction('Hidden','product/:id/projects', new ProjectProductAPI());
-$apiRequest->addAction('Hidden','product/:id/projects/:personId', new ProjectProductAPI());
-$apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', new ProductDuplicatesAPI());
+$apiRequest->addAction('Hidden','product', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/tags', 'ProductTagsAPI');
+$apiRequest->addAction('Hidden','product/:projectId/:category/:grand', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/:id', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/:id/authors', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductAPI');
+$apiRequest->addAction('Hidden','product/:id/projects', 'ProjectProductAPI');
+$apiRequest->addAction('Hidden','product/:id/projects/:personId', 'ProjectProductAPI');
+$apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', 'ProductDuplicatesAPI');
+$apiRequest->addAction('Hidden','bibliography', 'BibliographyAPI');
+$apiRequest->addAction('Hidden','bibliography/:id', 'BibliographyAPI');
+$apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');
+
 // University
-$apiRequest->addAction('Hidden','university', new UniversityAPI());
-$apiRequest->addAction('Hidden','university/:id', new UniversityAPI());
+$apiRequest->addAction('Hidden','university', 'UniversityAPI');
+$apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
+
 // Wiki
-$apiRequest->addAction('Hidden','wikipage/:id', new WikiPageAPI());
-$apiRequest->addAction('Hidden','wikipage/:namespace/:title', new WikiPageAPI());
+$apiRequest->addAction('Hidden','wikipage/:id', 'WikiPageAPI');
+$apiRequest->addAction('Hidden','wikipage/:namespace/:title', 'WikiPageAPI');
+
+//Board
+$apiRequest->addAction('Hidden','board/:id', 'BoardAPI');
+$apiRequest->addAction('Hidden','boards', 'BoardsAPI');
+
 //Thread
-$apiRequest->addAction('Hidden','thread', new ThreadAPI());
-$apiRequest->addAction('Hidden','thread/:id', new ThreadAPI());
-$apiRequest->addAction('Hidden','threads', new ThreadsAPI());
-$apiRequest->addAction('Hidden','threads/:search', new ThreadsAPI());
+$apiRequest->addAction('Hidden','thread', 'ThreadAPI');
+$apiRequest->addAction('Hidden','thread/:id', 'ThreadAPI');
+$apiRequest->addAction('Hidden','threads/:board', 'ThreadsAPI');
+$apiRequest->addAction('Hidden','threads/:board/:search', 'ThreadsAPI');
+
 //Post
-$apiRequest->addAction('Hidden','post', new PostAPI());
-$apiRequest->addAction('Hidden','post/:id', new PostAPI());
-$apiRequest->addAction('Hidden','posts', new PostsAPI());
+$apiRequest->addAction('Hidden','post', 'PostAPI');
+$apiRequest->addAction('Hidden','post/:id', 'PostAPI');
+$apiRequest->addAction('Hidden','posts', 'PostsAPI');
+
 // PDF
-$apiRequest->addAction('Hidden','pdf/:id', new PDFAPI());
+$apiRequest->addAction('Hidden','pdf/:id', 'PDFAPI');
+
 // MailingList
-$apiRequest->addAction('Hidden','mailingList', new MailingListAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId', new MailingListAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId/rules', new MailingListRuleAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', new MailingListRuleAPI());
+$apiRequest->addAction('Hidden','mailingList', 'MailingListAPI');
+$apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
+$apiRequest->addAction('Hidden','mailingList/:listId/rules', 'MailingListRuleAPI');
+$apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingListRuleAPI');
+
+//Sop
+$apiRequest->addAction('Hidden','sop/:id', 'SopAPI');
+$apiRequest->addAction('Hidden','sops', 'SopsAPI');
+$apiRequest->addAction('Hidden','sop/:sop_id/annotations', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','sop/:sop_id/annotations/:annotation_id', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','sop/annotations/:annotation_id', 'SopAnnotationAPI');
+$apiRequest->addAction('Hidden','sop/annotations', 'SopAnnotationAPI');
 // NewSearch
-$apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
-$apiRequest->addAction('Hidden','virtu', new VirtuAPI());
+$apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
+$apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RelationModel.js?".filemtime("extensions/GrandObjects/BackboneModels/RelationModel.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/RangeCollection.js?".filemtime("extensions/GrandObjects/BackboneModels/RangeCollection.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Thread.js?".filemtime("extensions/GrandObjects/BackboneModels/Thread.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Board.js?".filemtime("extensions/GrandObjects/BackboneModels/Board.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Post.js?".filemtime("extensions/GrandObjects/BackboneModels/Post.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Link.js?".filemtime("extensions/GrandObjects/BackboneModels/Link.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Person.js?".filemtime("extensions/GrandObjects/BackboneModels/Person.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Role.js?".filemtime("extensions/GrandObjects/BackboneModels/Role.js")."'></script>\n";
 	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Bibliography.js?".filemtime("extensions/GrandObjects/BackboneModels/Bibliography.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js?".filemtime("extensions/GrandObjects/BackboneModels/Virtu.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Sop.js?".filemtime("extensions/GrandObjects/BackboneModels/Sop.js")."'></script>\n";
     
     return true;
 }

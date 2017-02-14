@@ -7,6 +7,7 @@ class Chord extends Visualization {
     var $width = "500";
     var $height = "500";
     var $options = true;
+    var $fn = "";
     
     function Chord($url){
         $this->url = $url;
@@ -160,9 +161,11 @@ class Chord extends Visualization {
               .enter().append("path")
                 .style("fill", function(d) { return fill(d.index); })
                 .style("stroke", function(d) { return fill(d.index); })
+                .style("cursor", "pointer")
                 .attr("class", function(d) { return "outer _" + fill(d.index).replace('#', ''); })
                 .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
                 .attr("title", function(d) { return data.labels[d.index]; })
+                .on("click", function(d){ {$this->fn} })
                 .on("mouseover", fade(.3))
                 .on("mouseout", fade(1));
                 

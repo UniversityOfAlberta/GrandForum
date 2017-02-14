@@ -27,6 +27,14 @@ class University extends BackboneModel {
                                     array('u.*', 'p.province', 'p.color' => 'col'),
                                     array('university_id' => EQ($id),
                                           'province_id' => EQ(COL('p.id'))));
+        if(count($data) == 0){
+            $data = DBFunctions::select(array('grand_universities' => 'u', 
+                                              'grand_provinces' => 'p'),
+                                        array('u.*', 'p.province', 'p.color' => 'col'),
+                                        array('university_id' => EQ($id),
+                                              'u.province_id' => EQ(0),
+                                              'province' => EQ('Other')));
+        }
         $university = new University($data);
         $cache[$id] = $university;
         return $university;
@@ -41,6 +49,14 @@ class University extends BackboneModel {
                                     array('u.*', 'p.province', 'p.color' => 'col'),
                                     array('university_name' => EQ($name),
                                           'province_id' => EQ(COL('p.id'))));
+        if(count($data) == 0){
+            $data = DBFunctions::select(array('grand_universities' => 'u', 
+                                              'grand_provinces' => 'p'),
+                                        array('u.*', 'p.province', 'p.color' => 'col'),
+                                        array('university_name' => EQ($name),
+                                              'u.province_id' => EQ(0),
+                                              'province' => EQ('Other')));
+        }
         $university = new University($data);
         $cache[$name] = $university;
         return $university;
@@ -54,7 +70,10 @@ class University extends BackboneModel {
                                           'university_name' => 'ASC'));
         $unis = array();
         foreach($data as $row){
-            $unis[] = University::newFromId($row['university_id']);
+            $uni = University::newFromId($row['university_id']);
+            if($uni->getId() != null){
+                $unis[] = $uni;
+            }
         }
         return $unis;
     }

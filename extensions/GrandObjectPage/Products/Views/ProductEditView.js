@@ -27,20 +27,27 @@ ProductEditView = Backbone.View.extend({
         
         this.allProjects = new Projects();
         this.allProjects.fetch();
+        var tagsGet = $.get(wgServer + wgScriptPath + '/index.php/index.php?action=api.product/tags');
         me.getProjects();
-        me.projects.ready().then($.proxy(function(){
-            this.projects = me.projects.getCurrent();
-            this.allProjects.ready().then($.proxy(function(){
-                this.otherProjects = this.allProjects.getCurrent();
-                this.oldProjects = this.allProjects.getOld();
-                this.otherProjects.remove(this.projects.models);
-                this.oldProjects.remove(this.projects.models);
-                if(!this.model.isNew() && !this.isDialog){
-                    this.model.fetch();
-                }
-                else{
-                    _.defer(this.render);
-                }
+        tagsGet.then($.proxy(function(availableTags){
+            this.availableTags = availableTags;
+                me.projects.ready().then($.proxy(function(){
+                this.projects = me.projects.getCurrent();
+                this.allProjects.ready().then($.proxy(function(){
+                    var other = new Project({id: "-1", name: "Other"});
+                    other.id = "-1";
+                    this.otherProjects = this.allProjects.getCurrent();
+                    this.otherProjects.add(other);
+                    this.oldProjects = this.allProjects.getOld();
+                    this.otherProjects.remove(this.projects.models);
+                    this.oldProjects.remove(this.projects.models);
+                    if(!this.model.isNew() && !this.isDialog){
+                        this.model.fetch();
+                    }
+                    else{
+                        _.defer(this.render);
+                    }
+                }, this));
             }, this));
         }, this));
         $(document).click($.proxy(function(e){
@@ -135,6 +142,7 @@ ProductEditView = Backbone.View.extend({
     },
     
     showOther: function(e){
+        console.log(this.model.get('projects'));
         this.$("div.otherPopup").html(this.otherPopupTemplate(this.model.toJSON()));
         var lastHeight = this.$el.prop("scrollHeight")
         var interval = setInterval($.proxy(function(){
@@ -199,11 +207,16 @@ ProductEditView = Backbone.View.extend({
                 clearAllMessages();
                 document.location = this.model.get('url');
             }, this),
-            error: $.proxy(function(){
+            error: $.proxy(function(o, e){
                 this.$(".throbber").hide();
                 this.$("#saveProduct").prop('disabled', false);
                 clearAllMessages();
-                addError("There was a problem saving the Product", true);
+                if(e.responseText != ""){
+                    addError(e.responseText, true);
+                }
+                else{
+                    addError("There was a problem saving the Product", true);
+                }
             }, this)
         });
     },
@@ -216,7 +229,6 @@ ProductEditView = Backbone.View.extend({
         var left = _.pluck(this.model.get('authors'), 'fullname');
         var right = _.difference(this.allPeople.pluck('fullName'), left);
         var objs = [];
-        console.log(this.allPeople);
         this.allPeople.each(function(p){
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
@@ -247,9 +259,22 @@ ProductEditView = Backbone.View.extend({
         }
     },
     
+    renderTagsWidget: function(){
+        var html = HTML.TagIt(this, 'tags', {
+            strictValues: false, 
+            values: this.model.get('tags'),
+            options: {
+                removeConfirmation: false,
+                availableTags: this.availableTags
+            }
+        });
+        this.$("#productTags").html(html);
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
+        this.renderTagsWidget();
         return this.$el;
     }
 

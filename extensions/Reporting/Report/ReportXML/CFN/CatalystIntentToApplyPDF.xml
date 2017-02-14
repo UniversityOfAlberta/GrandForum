@@ -99,14 +99,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other_phone" type="Text" blobItem="SEC_NAME" optional="true">
+        <ReportItem id="sec_name" type="Text" blobItem="SEC_NAME" optional="true">
             <![CDATA[
                 <tr>
                     <td align="right" colspan='2'><b>Secondary Contact Name:</b></td>
                     <td>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="other_phone" type="Text" blobItem="SEC_TELE" optional="true">
+        <ReportItem id="sec_tele" type="Text" blobItem="SEC_TELE" optional="true">
             <![CDATA[
                     <td align="right" colspan='2'><b>Secondary Telephone Number & Email:</b></td>
                     <td>{$item}</td>

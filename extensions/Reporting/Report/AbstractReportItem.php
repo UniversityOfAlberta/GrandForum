@@ -24,6 +24,7 @@ abstract class AbstractReportItem {
     var $extraIndex;
     var $private;
     var $deleted;
+    var $blobSection;
     var $blobItem;
     var $blobSubItem;
     var $value;
@@ -37,6 +38,7 @@ abstract class AbstractReportItem {
         $this->value = "";
         $this->blobType = BLOB_TEXT;
         $this->projectId = 0;
+        $this->blobSection = null;
         $this->blobItem = 0;
         $this->blobSubItem = 0;
         $this->attributes = array();
@@ -140,6 +142,11 @@ abstract class AbstractReportItem {
     function setDeleted($deleted){
         $this->deleted = $deleted;
     }
+    
+    // Sets the Blob Section of this AbstractReportItem (optional)
+    function setBlobSection($item){
+        $this->blobSection = $item;
+    }
 
     // Sets the Blob Item of this AbstractReportItem
     function setBlobItem($item){
@@ -161,6 +168,20 @@ abstract class AbstractReportItem {
         $cdata = $this->varSubstitute($cdata);
         $cdata = str_replace('{$item}', $output, $cdata);
 		return $cdata;
+    }
+    
+    // Returns the 'pdf' rendered version of the widget in text form
+    function getText(){
+        global $wgOut;
+        $oldWgOut = $wgOut;
+        $oldValue = $this->value;
+        $wgOut = new OutputPage();
+        $this->value = '{$item}';
+        $this->renderForPDF();
+        $this->value = $oldValue;
+        $text = $wgOut->getHTML();
+        $wgOut = $oldWgOut;
+        return $text;
     }
 
     //Responsible for rendering the actual widget
@@ -268,7 +289,8 @@ abstract class AbstractReportItem {
     }
     
     private function stripBlob($value){
-        return trim(htmlentities($value, null, 'utf-8', false));
+        $value = trim(htmlentities($value, null, 'utf-8', false));
+        $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
         return $value;
     }
 
@@ -277,8 +299,9 @@ abstract class AbstractReportItem {
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $sectionId = ($this->blobSection != null) ? $this->blobSection : $section->sec;
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
-	    $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $this->blobItem, $this->blobSubItem);
+	    $blob_address = ReportBlob::create_address($report->reportType, $sectionId, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address);
 	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();

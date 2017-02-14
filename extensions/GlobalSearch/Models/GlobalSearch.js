@@ -5,7 +5,7 @@ GlobalSearch = Backbone.Model.extend({
     },
     
     urlRoot: function(){
-        return 'index.php?action=api.globalSearch/' + escape(this.get('group')) + '/' + escape(this.get('search')).replace(/\//g, ' ');
+        return 'index.php?action=api.globalSearch/' + escape(this.get('group')) + '/' + encodeURIComponent(this.get('search')).replace(/\//g, ' ');
     },
     
     defaults: {

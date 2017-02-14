@@ -18,6 +18,7 @@ class Project extends BackboneModel {
     var $parentId;
     var $bigbet;
     var $people;
+    var $phase;
     var $contributions;
     var $multimedia;
     var $startDates;
@@ -263,6 +264,7 @@ class Project extends BackboneModel {
         if($name == "Other"){
             return Project::newFromName($name);
         }
+        $name = DBFunctions::escape($name);
         $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.bigbet
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
@@ -439,6 +441,7 @@ class Project extends BackboneModel {
                        'fullname' => $this->getFullName(),
                        'description' => $this->getDescription(),
                        'longDescription' => $this->getLongDescription(),
+                       'website' => $this->getWebsite(),
                        'status' => $this->getStatus(),
                        'type' => $this->getType(),
                        'theme' => $theme,
@@ -1040,7 +1043,8 @@ EOF;
      */
     function userCanEdit(){
         $me = Person::newFromWgUser();
-        if(!$me->isRoleAtLeast(STAFF) && 
+        if(!$me->isRoleAtLeast(STAFF) &&
+           !$me->isRole(SD) && 
            !$me->isRole("CF") &&
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
@@ -1120,6 +1124,31 @@ EOF;
             return $data[0]['long_description'];
         }
         return "";
+    }
+    
+    function getWebsite($history=false){
+        $website = "";
+        $sql = "(SELECT website 
+                FROM grand_project_descriptions d
+                WHERE d.project_id = '{$this->id}'\n";
+        if(!$history){
+            $sql .= "AND evolution_id = '{$this->evolutionId}' 
+                     ORDER BY id DESC LIMIT 1)
+                    UNION
+                    (SELECT long_description
+                     FROM `grand_project_descriptions` d
+                     WHERE d.project_id = '{$this->id}'";
+        }
+        $sql .= "ORDER BY id DESC LIMIT 1)";
+        
+        $data = DBFunctions::execSQL($sql);
+        if(DBFunctions::getNRows() > 0){
+            $website = $data[0]['website'];
+        }
+        if (preg_match("#https?://#", $website) === 0) {
+            $website = 'http://'.$website;
+        }
+        return $website;
     }
     
     /**
@@ -1500,7 +1529,7 @@ EOF;
             $year = date('Y');
         }
         
-        $startRange = $year.'01-01 00:00:00';
+        $startRange = $year.'-01-01 00:00:00';
         $endRange = $year.'-12-31 23:59:59';
         
         $milestones = array();
@@ -1544,8 +1573,13 @@ EOF;
                 if(isset($milestoneIds[$row2['milestone_id']])){
                     continue;
                 }
+                
                 $milestoneIds[$row2['milestone_id']] = true;
-                $milestones[] = Milestone::newFromId($row2['milestone_id']);
+                $milestone = Milestone::newFromId($row2['milestone_id']);
+                if($milestone->getStatus() == 'Deleted'){
+                    continue;
+                }
+                $milestones[] = $milestone;
             }
         }
         return $milestones;

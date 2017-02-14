@@ -1,4 +1,7 @@
 function between(object, start, end){
+    if(end.indexOf('0000') != -1){
+        end = '9999-12-31';
+    }
     var start1 = object.get('startDate');
     var end1 = object.get('endDate');
     return ((start1 <= start && end1   >= end)   ||             // ---s1----s----e----e1---

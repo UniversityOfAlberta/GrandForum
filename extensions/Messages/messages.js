@@ -47,7 +47,7 @@ function addSuccess(message, scroll, selector){
 }
 
 function addWarning(message, scroll, selector){
-    addMessage('warning', message, scroll);
+    addMessage('warning', message, scroll, selector);
 }
 
 function addInfo(message, scroll, selector){

@@ -1,0 +1,26 @@
+<td align="center" >
+   <b><a href="<%= url %>" id="sop<%= id %>"><%= author.name %></a></b><br />
+   <%=date_created %>   
+</td>
+<td align="right" style="white-space: nowrap;">
+<%= word_count %><br />
+<%= errors %>
+</td>
+<td align="right" style="white-space: nowrap;">
+<%= reading_ease %> (of 100)
+</td>
+<td style="white-space: nowrap;">
+<%= sentiment_type %> (<%= sentiment_val %>)
+</td>
+<td style="display:none;">
+ <%= id %>
+</td>
+<td style="white-space: nowrap;">
+<% for(var i=0; i < reviewers.length;i++){ %>
+        <a href="<%= reviewers[i].url %>"><%= reviewers[i].name %></a> (<%= reviewers[i].decision %>)<br>
+
+<% } %>
+</td>
+<td style="">
+    <span id="span<%= id %>"></span>
+</td>

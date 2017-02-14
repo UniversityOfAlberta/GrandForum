@@ -2,8 +2,8 @@
 
 $messages = array();
 $messages['en'] = array( 
-			   'ApplicationsTable' => 'Applications Table',
-			   'Applicationstable' => 'Applications Table',
-			   'applicationstable' => 'Applications Table',
+			   'ApplicationsTable' => 'Report Table',
+			   'Applicationstable' => 'Report Table',
+			   'applicationstable' => 'Report Table',
 			   );
 ?>

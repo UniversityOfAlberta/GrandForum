@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Catalyst Program Application" reportType="RP_CAT" pdfType="RPTP_CAT" pdfFiles="CatalystApplicationPDF" ajax="true" disabled="true">
+<Report name="AGE-WELL Catalyst Program Application" reportType="RP_CAT" pdfType="RPTP_CAT" pdfFiles="CatalystApplicationPDF" ajax="true" disabled="false">
     <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="cover" permissions="rw" />
+            <SectionPermission id="narrative" permissions="rw" />
+            <SectionPermission id="appendix" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="NI">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="cover" permissions="rw" />
@@ -34,61 +42,60 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="2016 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2016 AGE-WELL Catalyst Program">
+    <ReportSection id="description" tooltip="2017 AGE-WELL Catalyst Program" name="Program Description" type="ReportSection" title="2017 AGE-WELL Catalyst Program">
         <ReportItem id="description" type="Static">
             <![CDATA[
-                <h3>Program Description</h3>
-                <p>AGE-WELL’s Catalyst Program supports creative, novel and innovative research projects that will generate, promote or accelerate economic and social benefits aligned with AGE-WELL’s research priorities and themes. The Catalyst Program will support scalable research projects including pilot studies, feasibility studies, and novel and innovative approaches aligned with research priorities and themes. It is expected that successful Catalyst projects may be suitable for future AGE-WELL investments.</p>
+                <p>AGE-WELL’s Catalyst Program supports innovative research projects aimed at generating, promoting or accelerating economic and social benefit in the field of technology and aging. This program is essential to the long term direction and future of AGE-WELL.</p>
+                        
+                <p>The Catalyst program is the first stage in AGE-WELL’s innovation pipeline and will support early-stage, scalable research projects including pilot studies, feasibility studies and novel approaches that are aligned with AGE-WELL’s mission and vision. This program is for projects with new ideas that are challenging the status quo; projects that can demonstrate strong potential for real-world impact, that are mobilizing a research team and planning, or developing project that will closely address problems/needs.</p>
 
-                <p>Successful projects should accelerate Canadian innovation and economic competitiveness, and improve the quality of life for older adults or caregivers.</p>
-
-                <p>The theme of each call will be determined by the Research Management Committee and announced with each competition.</p> 
-
-                <p>The theme of the 2016 Catalyst Funding Program is "<i><b>Older adults, caregivers and the workplace</b></i>".</p>
-
-                <p>Priority in this competition will be given to research that looks at topics such as (but not restricted to):</p>
+                <p>It is expected that Catalyst projects will lead to major new research initiatives, either as part of AGE-WELL or through other granting agencies.  Successful projects may be suitable for future AGE-WELL investment as they progress along the innovation pipeline, following the initial one year investment. To be eligible for continued funding through AGE-WELL, project deliverable at the end of the grant term must provide justification for advancing the project through a renewal of Catalyst funding or by funding through other AGE-WELL programs (e.g. post-discovery accelerator program). See Project Deliverables and Potential for Continued Funding.</p>
+                
+                <h3>Award Value and Term</h3>
+                <p>Up to $50,000 over 12 months. Renewable for one year.</p>
+                
+                <p><b>Deadline:</b> March 8th, 2017, 5:00 pm EST.</p>
+                
+                <h3>Eligibility</h3>
                 <ul>
-                    <li>productivity in the workplace</li>
-                    <li>helping and attracting older workers stay in the workforce</li>
-                    <li>making the workplace more supportive for older workers</li>
-                    <li>combining caregiving and paid work</li>
-                    <li>technology to support older workers or caregivers in the workplace</li>
+                    <li>The competition is open to researchers based at Canadian institutions working in the field of technology and aging. AGE-WELL uses the Canadian Institutes of Health Research (CIHR) definition of “independent researchers” when defining eligible grant holders (see <a href="http://www.cihr-irsc.gc.ca/e/34190.html" target="_blank">http://www.cihr-irsc.gc.ca/e/34190.html</a>).</li>
+                    <li>The applicant’s host institution must be eligible to hold Tri-Council funding. Canadian universities and investigators who are not already members of AGE-WELL will be required to sign onto the Network Agreement prior to receiving funds.</li>
+                    <li>Investigators may not hold more than one AGE-WELL Catalyst grant in the same fiscal year.</li>
+                    <li>Catalyst funds cannot be used for activities funded through other AGE-WELL research competitions (e.g. activities that are part of an AGE-WELL Core Research Project).</li>
+                    <li>Investigators will normally be expected to include partner organizations in their projects, including as part of any dissemination or commercialization planning. Such organizations should be described in the application, even where the partnership is at a very early stage of development. For reporting purposes, all partnership activities should be quantified in the application.</li>
+                    <li>Proposals will ideally demonstrate some level of additional cash and/or in-kind contributions from industry or community partners or describe a plan to secure such contributions. There is no minimum contribution level required for the Catalyst program.</li>
                 </ul>
                 
-                <h3>Award Value</h3>
-                <p>$35,000 with an upper limit of $50,000 from AGE-WELL where there are cash contributions from partners. </p>
-                
-                <h3>Timeframe</h3>
-                <p>AGE-WELL will provide investment for up to twelve (12) months per application.  These investments are non-renewable.</p>
-
-                <h3>Eligibility</h3>
-
-                <p>The competition is open to Canadian-based investigators working in the field of technology and aging. Canadian universities and investigators who are not already members of the AGE-WELL network will be required to sign onto the Network Agreement prior to receiving funds.</p>
-
-                <p>Catalyst funds cannot be used for activities funded through other AGE-WELL competitions (e.g. Core Research Program); <i>however, new activities such as start-ups developed from prior AGE-WELL investments are eligible for Catalyst funding.</i></p>
-
-                <p>Funded projects must be aligned with AGE-WELL’s overall mission and vision (<a href='http://agewell-nce.ca/research' target='_blank'>http://agewell-nce.ca/research</a>) and tied to one of the specified themes chosen by AGE-WELL’s Research Management Committee.</p>
-                
-                <p>Although cash and in-kind contributions from commercial or community partners are not strictly required for this funding program, projects will normally be expected to include partner organizations in dissemination or commercialization planning and should detail these in the application. For reporting purposes, all partnership activities should be quantified in the Partnerships and Letters section as well as in the Budget and Activities section of the application package.</p>
-                
-                <h3>Application Forms and Process</h3>
-                <p>Catalyst applications will be accepted online through the AGE-WELL Forum Research Portal. The application consists of a 5 page maximum narrative application; tables for team summary, budget and partner contributions, activities and milestones; and partner letter(s) of support, if applicable.</p>
-
-                <h3>Review Process</h3>
+                <h3>Application and Review Process:</h3>
+                <p>Applications will be accepted through AGE-WELL’s Forum Research Portal.</p>
                 <ol>
-                    <li>Applications will be screened for completeness by Network Management Office staff. Additional information may be requested if the information provided is deemed to be insufficient or unclear.</li>
-                    <li>A sub-committee of the RMC will review all complete applications. Results will be reported to RMC at the next regularly scheduled meeting.</li>
-                    <li>The RMC committee will review all complete applications and determine their eligibility for support, the appropriate level of investment, and any associated terms and conditions that must be met prior to the commitment of AGE-WELL resources.</li>
-                    <li>Funding decisions will be communicated to the corresponding Network Investigator in writing by the Network Management Office.</li>
+                    <li>Access the Catalyst Program section of the Forum Research Portal.
+                        <ul>
+                            <li>All current AGE-WELL Network Investigators have Forum accounts and can access the Catalyst Program application materials through the 'My Applications' tab visible when the log into Forum.</li>
+                            <li>Applicants who are not already AGE-WELL Network Investigators must first request access to Forum by emailing <a href="mailto:info@agewell-nce.ca">info@agewell-nce.ca</a> to request an account.  Accounts will be set up within 24 hours (maximum) of receiving the request. Once an account is set up, access application materials through the 'My Applications' tab visible upon login.</li>
+                        </ul>
+                    </li>
+                    <li>Complete the information in each section, uploading attachments as requested. The narrative sections of the application should not exceed 5 pages.</li>
+                    <li>It is critical that AGE-WELL research investments support the potential for “real world impact”. A Relevancy Review will be carried out by network stakeholders (older adults and caregivers) to determine the potential for uptake and impact if funded by AGE-WELL. Results of the relevancy review will be taken into consideration by the Research Management Committee during the Scientific Review of the proposal.</li>
                 </ol>
-
-                <h3>Submission Deadlines:</h3>
-                <p>Applications must be received through the AGE-WELL Forum Research Portal by 5:00pm EST on <b>Friday, March 4th, 2016</b>.</p>
+                
+                <h3>Potential for Continued Funding and Project Deliverables</h3>
+                <p>The Catalyst program is about demonstrating long-term viability and preparing for the next steps in the innovation pipeline. All teams who anticipate making applications for further AGE-WELL funding will be expected to produce specific and measurable deliverables at the conclusion of their project:</p>
+                
+                <ul>
+                    <li>Problem/solution statement providing evidence of co-creation with key stakeholders over the term of the project. This should emphasize the need/problem/aspiration of stakeholder(s).  "Solutions" should be high level and noncommittal as to technology platform at this stage.</li>
+                    <li>Environmental scan and/or literature review to provide an overview of the state of the art with respect to the problem/solution statement and will provide the justification for advancing the project.</li>
+                    <li>Research project outline for next steps that would map out approach and likely methods for how a follow-up R&D project would be carried out.</li>
+                    <li>Preliminary business case addressing either knowledge mobilization and/or commercialization plans; business canvas and basic market analysis.</li>
+                </ul>
+                
+                <h3>Key Contact:</h3>
+                <p>Questions about the Catalyst Program should be directed to Jeanie Zabukovec, AGE-WELL Research and Partnerships Administrator (<a href="mailto:Jeanie@agewell-nce.ca">Jeanie@agewell-nce.ca</a>).</p>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="EditableReportSection">
-        <ReportItem id="i" type="TextReportItem" width="300px" blobItem="PROJECT">
+        <ReportItem id="ia" type="TextReportItem" width="200px" blobItem="LEADERS">
             <![CDATA[
                 <style>
                     ol#list > li {
@@ -96,54 +103,67 @@
                     }
                 </style>
                 <ol id='list' type="i">
-                <li>
-                    <b>Investigator Name: </b>{$user_name}&nbsp;&nbsp;&nbsp;<b>Institution: </b>{$user_uni}<br />
-                    <b>Project Title:&nbsp;</b>{$item}
+                    <li>
+                    <table>
+                        <tr>
+                            <td align="right"><b>Project&nbsp;lead(s):&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ib" type="TextReportItem" width="200px" blobItem="INSTITUTION">
+            <![CDATA[
+                        <tr>
+                            <td align="right"><b>Institution:&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ic" type="TextReportItem" width="300px" blobItem="PROJECT">
+            <![CDATA[
+                        <tr>
+                            <td align="right"><b>Project&nbsp;Title:&nbsp;</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                     </table>
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="ii" type="RadioReportItem" options="Yes|No" blobItem="THEME">
+        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
             <![CDATA[
                 <li>
-                    <b>Project Theme</b><br />
-                    Does your project fall within the theme of ‘Older workers and the Workplace’?
+                    <b>Provide a 300-word lay summary that includes a problem statement, research purpose and anticipated impact(s) of the project. This summary will be provided to network stakeholders in order to facilitate a Relevancy Review to determine the potential for uptake and impact if funded. This description will also be  used for future communications if the proposal is successful.</b>
                     {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="ii_no" type="TextReportItem" blobItem="THEME_NO" optional="true">
-            <![CDATA[
-                    <b>If no, please indicate the thematic area:</b> {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="150" blobItem="SUMMARY">
-            <![CDATA[
-                <li>
-                    <b>Provide a 150-word plain language summary of the purpose, rationale and anticipated impact(s) of the project.</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="iv" type="IntegerReportItem" min="0" max="75000" width="43px" align="left" blobItem="INVESTMENT">
+        <ReportItem id="iv" type="IntegerReportItem" min="0" max="50000" width="43px" align="left" blobItem="INVESTMENT">
             <![CDATA[
                 <li>
                     <b>Total value of AGE-WELL investment requested:</b> ${$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
+        <!--ReportItem id="v" type="TextareaReportItem" rich="true" blobItem="PARTNERS" optional="true">
             <![CDATA[
                 <li>
                     <b>Collaborators/partners invested in the project (if applicable)</b> {$item}
                 </li>
             ]]>
-        </ReportItem>
-        <ReportItem id="vi" type="SelectReportItem" blobType="BLOB_TEXT" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH" blobItem="WP">
+        </ReportItem-->
+        <ReportItem id="via" type="SelectReportItem" blobType="BLOB_TEXT" options="WP1 NEEDS-OA|WP2 NEEDS-CG|WP3 TECH-FAI|WP4 TECH-APS|WP5 TECH-DD|WP6 TECH-MCH|WP7 POLICY-TECH|WP8 ETHICS-TECH|Other" blobItem="WP">
             <![CDATA[
                 <li>
                     <b>The proposed project is best aligned with AGE-WELL</b>
                     {$item}
-                    (WP descriptions are available here: <a href='http://www.agewell-nce.ca' target="_blank">www.agewell-nce.ca</a>) 
+                    (WP descriptions are available here: <a href='http://www.agewell-nce.ca' target="_blank">www.agewell-nce.ca</a>)<br />
+                    <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="vib" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY_OTHER">
+            <![CDATA[
+                    <b>If you have selected “Other” and think that the proposed project falls outside of AGE-WELL’s current WP structure, please provide a justification for this:</b>
+                    {$item}
                 </li>
                 </ol>
             ]]>
@@ -164,7 +184,7 @@
                 </style>
                 <ol id='list' type="i">
                 <li><b>Background, Research Question, and/or Objectives -</b>
-                    <i>description of problem area and rationale. Cleary state the underlying hypothesis (if applicable) and why this proposal is considered to have the potential to improve the lives of Canadian seniors.</i>
+                    <i>description of problem area and rationale. Cleary state the underlying hypothesis (if applicable) and why this proposal is considered to have the potential to improve the lives of Canadian seniors.  This should provide evidence of co-creation with key stakeholders over the term of the project. </i>
                     {$item}
                 </li>
             ]]>
@@ -233,7 +253,7 @@
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Timeline of Research Deliverables & Milestones - </b>
-                    <i>Describe the research milestones and deliverables over the course of the duration of the project outlined in the table provided (Part 2 - Appendix). These milestones will be used to track progress with the grant and linked to ongoing payments. Identify all feasibility issues, challenges and limitations, and what the investigative team will do to overcome them. Include a summary of how this project will be managed and deliverables tracked.</i>
+                    <i>Describe the research milestones and deliverables over the duration of the project. Identify all feasibility issues, challenges and limitations, and what the investigative team will do to overcome them. Include a summary of how this project will be managed and deliverables tracked.</i>
                     {$item}
                 </li>
             ]]>
@@ -241,7 +261,7 @@
         <ReportItem id="plans" type="TextareaReportItem" rich="true" blobItem="PLANS">
             <![CDATA[
                 <li><b>Future plans to ensure sustainability of this study - </b>
-                    <i>Describe any future funding opportunities or collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</i>
+                    <i>What is the longer term vision of the project within AGE-WELL and/or  other funding sources? Describe any future funding opportunities or collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</i>
                     {$item}
                 </li>
                 </ol>
@@ -272,7 +292,7 @@
         <ReportItem id="collab" type="TextareaReportItem" rich="true" blobItem="COLLAB">
             <![CDATA[
                 <li><b>Collaborators/Partners and added value of the collaboration - </b>
-                    <i>list in Partnership Section of this application and ensure that a letter of support is included. Partner contributions should appear in the Appendix section in the Budget spreadsheet.</i>
+                    <i>Part 3 of this application  will include letter(s) of support confirming quantified contributions. Partner contributions should also appear in the Budget spreadsheet.</i>
                     {$item}
                 </li>
             ]]>
@@ -280,7 +300,7 @@
         <ReportItem id="funding" type="TextareaReportItem" rich="true" blobItem="FUNDING">
             <![CDATA[
                 <li><b>Other Funding - </b>
-                    <i>Please provide details of other funding applied for that could leverage/support your AGE-WELL Network proposal.  Funding should be described by individual, for the Project Leader, all other Principal Investigators, and all Co-Investigators, for grants currently planned to be applied for, being applied for, pending, about to be submitted, and all grants received, for the entire period covered by this application. This information should reflect the amount provided in Part 2 – Appendix; Other Funds.</i>
+                    <i>Please provide details of other funding applied for that could leverage/support your AGE-WELL Network proposal.  Funding should be described by individual, for the Project Leader, all other Principal Investigators, and all Co-Investigators, for grants currently planned to be applied for, being applied for, pending, about to be submitted, and all grants received, for the entire period covered by this application.</i>
                     {$item}
                 </li>
                 </ol>
@@ -288,12 +308,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="appendix" tooltip="Budget and Activities" title="Budget and Activities" name="Budget and Activities" type="EditableReportSection" blobSection="APPENDIX">
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member Name|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
             <![CDATA[
                 <h2>Team Summary</h2>
                 <p class='small'>Use the following code for Role:<br />
                 <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
                 <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
+                <b>&nbsp;&nbsp;AR:</b> Affiliated Researcher<br />
+                <b>&nbsp;&nbsp;Collaborator</b><br />
                 <b>&nbsp;&nbsp;Partner</b></p>
                 {$item}
             ]]>
@@ -388,19 +410,12 @@
                 </ol>
             ]]>
         </ReportItem>
-        <ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h2>Milestones</h2>
-                <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
-                {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="bio" tooltip="Partnerships and Letters" title="Partnerships and Letters" name="Partnerships and Letters" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
             <![CDATA[
                 <h3>Investigator Bio</h3>
-                <p>Please submit a brief bio (2 page maximum) for each named investigator from Part 2, highlighting experience and activities relevant to the application.</p>
+                <p>Please submit a brief bio for each named investigator from the narrative section, highlighting experience and activities relevant to the application (one page per bio maximum).</p>
                 {$item}
             ]]>
         </ReportItem>

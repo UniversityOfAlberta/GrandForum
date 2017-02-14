@@ -32,7 +32,7 @@ class Contribution extends BackboneModel {
     // The most recent revision is grabbed
     static function newFromId($id){
         $me = Person::newFromWgUser();
-        $id = addslashes($id);
+        $id = @addslashes($id);
         if(isset(self::$cache["id$id"])){
             return self::$cache["id$id"];
         }
@@ -115,6 +115,9 @@ class Contribution extends BackboneModel {
         $partners = array();
         foreach($this->getPartners() as $partner){
             $partners[] = array("name" => $partner->getOrganization(),
+                                "contact" => $partner->getContact(),
+                                "industry" => $partner->getIndustry(),
+                                "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
@@ -346,6 +349,15 @@ class Contribution extends BackboneModel {
                         $p->organization = $row['partner'];
                         $partners[] = $p;
                     }
+                    if($p != null && $p->getContact() == null && $row['contact'] != null){
+                        $p->contact = $row['contact'];
+                    }
+                    if($p != null && $p->getIndustry() == null && $row['industry'] != null){
+                        $p->industry = $row['industry'];
+                    }
+                    if($p != null && $p->getLevel() == null && $row['level'] != null){
+                        $p->level = $row['level'];
+                    }
                     $id = md5(serialize($p));
                     $this->type[$id] = $row['type'];
                     
@@ -420,7 +432,7 @@ class Contribution extends BackboneModel {
     function getHumanReadableTypeFor($partner){
         $this->getPartners();
         $id = md5(serialize($partner));
-        $type0 = $this->type[$id];
+        $type0 = @$this->type[$id];
         $type = "";
         switch($type0){
             default:
@@ -488,7 +500,7 @@ class Contribution extends BackboneModel {
     function getHumanReadableSubTypeFor($partner){
         $this->getPartners();
         $id = md5(serialize($partner));
-        $type0 = $this->subtype[$id];
+        $type0 = @$this->subtype[$id];
         $type = "";
         switch($type0){
             case "none":
@@ -526,6 +538,21 @@ class Contribution extends BackboneModel {
                 break;
         }
         return $type;
+    }
+    
+    function getContactFor($partner){
+        $id = md5(serialize($partner));
+        return @$this->contact[$id];
+    }
+    
+    function getIndustryFor($partner){
+        $id = md5(serialize($partner));
+        return @$this->industry[$id];
+    }
+    
+    function getLevelFor($partner){
+        $id = md5(serialize($partner));
+        return @$this->level[$id];
     }
     
     function getByType($type, $partner=null){

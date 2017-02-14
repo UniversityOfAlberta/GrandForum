@@ -49,7 +49,6 @@ set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_includ
 
 require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/config/Config.php" );
-require_once( "$IP/Classes/Inflect/Inflect.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
@@ -383,6 +382,12 @@ function str_replace_every_other($needle, $replace, $haystack, &$count=null, $re
         }
     }
     return $haystack;
+}
+
+function flatten(array $array) {
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return $return;
 }
 
 function adjustBrightness($hex, $steps) {

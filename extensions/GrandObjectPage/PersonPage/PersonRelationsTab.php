@@ -58,7 +58,7 @@ class PersonRelationsTab extends AbstractTab {
                         $this->html .= "Contact your supervisor in order be added as their student";
                     }
                     else if($this->person->isMe()){
-                        $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditRelations'>Edit Relations</a>";
+                        $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage People</a>";
                     }
                 }
                 $this->html .= "<table width='100%'><tr>";

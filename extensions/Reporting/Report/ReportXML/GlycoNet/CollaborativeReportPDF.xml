@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="{$this_year} Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" ajax="true" disabled="false">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -11,7 +11,7 @@
         <!-- Theme -->
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>2016 Collaborative Team Grant Application</h4>
+                <h4 style='font-size:1.40em;'>Collaborative Team Grant Application</h4>
                 <br />
                 <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
                 <br />
@@ -53,6 +53,22 @@
             <![CDATA[
                 <p><b><u>Other Investigators</u> (Name, Affiliation, Telephone, E-mail)</b></p>
                 <div style='font-size: smaller;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  max="10"
+                                  showHeader="false"
+                                  orientation="list">
+            <![CDATA[
+                <p><b><u>Keywords</u></b></p>
+                <div style='font-size: smaller;'>{$item}</div><br />
             ]]>
         </ReportItem>
         
@@ -115,6 +131,22 @@
                 <div style='font-size: smaller;'><i>{$item}</i></div>
             ]]>
         </ReportItem>
+        
+        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
+            <![CDATA[
+                <br />
+                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Collaborative Team grant</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_COLLAB,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+                <![CDATA[
+                    <p><b>Please provide a response to the previous reviews</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">
@@ -127,6 +159,20 @@
     </ReportSection>
     <ReportSection id="description" name="Project Proposal" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="description" name="Knowledge and Technology Exchange and Exploitation" blobSection="CAT_DESC" type="EditableReportSection">
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="description" name="Training Potential" blobSection="CAT_DESC" type="EditableReportSection">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px">
             <![CDATA[
                 {$item}
             ]]>

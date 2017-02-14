@@ -81,6 +81,8 @@ class CavendishTemplate2 extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish2/highlights.css.php" />
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/skins/markitup/style.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/style.css" />
+                <link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/annotator.min.css" rel="Stylesheet" />
+                <link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/select2/css/select2.min.css" rel="Stylesheet" />
 		
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js"></script>
@@ -103,7 +105,6 @@ class CavendishTemplate2 extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.md5.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/jquery.dropdown.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.reallyvisible.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.dom-outline.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.jsPlumb-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/colorbox/jquery.colorbox-min.js"></script>   
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/js/jquery.dataTables.min.js"></script>
@@ -127,13 +128,13 @@ class CavendishTemplate2 extends QuickTemplate {
         
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/d3.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/html2canvas.js"></script>
-        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/ScreenRecord/record.js"></script>
     
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/underscore-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-subviews.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-trackit.js"></script>
         <!--script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/backbone-relational-min.js"></script>-->
-        <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/jquery.markitup.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/set.js"></script>
         
@@ -239,6 +240,7 @@ class CavendishTemplate2 extends QuickTemplate {
 		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
+		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
 		    
 		    <?php
 		        foreach($config->constants as $key => $value){
@@ -255,6 +257,8 @@ class CavendishTemplate2 extends QuickTemplate {
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
+		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
+		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
@@ -747,9 +751,12 @@ class CavendishTemplate2 extends QuickTemplate {
                 
                 $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
                 $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                //$GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-                $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-                
+
+                // $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+                // $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+	            if($me->isRoleAtLeast(Manager)){
+                    $GLOBALS['tabs']['Review'] = TabUtils::createTab("Review","$wgServer$wgScriptPath/index.php/Special:Sops");
+		        } 
 	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>

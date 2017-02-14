@@ -1,7 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
-
 class AdminProjTreeTab extends AbstractTab {
 	
 	function AdminProjTreeTab(){

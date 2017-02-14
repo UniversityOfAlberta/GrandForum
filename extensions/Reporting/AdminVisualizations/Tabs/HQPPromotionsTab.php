@@ -1,7 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'HQPPromotionsTab::getHQPPromotionsData';
-
 class HQPPromotionsTab extends AbstractTab {
 	
 	function HQPPromotionsTab(){

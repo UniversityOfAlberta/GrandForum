@@ -135,7 +135,7 @@ input:focus, textarea:focus {
     border: 1px solid $inputColor !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn):not(.annotator-adder) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):not(.annotator-filter-clear):not(.annotator-edit):not(.annotator-delete) {
     background: $inputColor !important;
 }
 

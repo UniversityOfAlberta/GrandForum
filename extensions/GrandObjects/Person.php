@@ -24,6 +24,7 @@ class Person extends BackboneModel {
     var $email;
     var $phone;
     var $nationality;
+    var $stakeholder;
     var $gender;
     var $photo;
     var $twitter;
@@ -47,7 +48,7 @@ class Person extends BackboneModel {
     var $rolesDuring;
     var $candidate;
     var $isEvaluator = array();
-    var $relations;
+    var $relations = array();
     var $hqps;
     var $historyHqps;
     var $contributions;
@@ -339,6 +340,7 @@ class Person extends BackboneModel {
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
+                                              'user_stakeholder',
                                               'user_gender',
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
@@ -537,7 +539,7 @@ class Person extends BackboneModel {
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_positions'),
                                     array('*'),
-                                    array(),
+                                    array('position' => NEQ('')),
                                     array('`order`' => 'ASC',
                                           'position' => 'ASC'));
         $positions = array();
@@ -641,7 +643,12 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
-            return array_merge($ars, $cis);
+            $merged = array_merge($ars, $cis);
+            $people = array();
+            foreach($merged as $person){
+                $people[$person->getName()] = $person;
+            }
+            return $people;
         }
         $me = Person::newFromWgUser();
         self::generateAllPeopleCache();
@@ -751,7 +758,12 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidates(AR);
             $cis = self::getAllCandidates(CI);
-            return array_merge($ars, $cis);
+            $merged = array_merge($ars, $cis);
+            $people = array();
+            foreach($merged as $person){
+                $people[$person->getName()] = $person;
+            }
+            return $people;
         }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
@@ -781,7 +793,12 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
             $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
-            return array_merge($ars, $cis);
+            $merged = array_merge($ars, $cis);
+            $people = array();
+            foreach($merged as $person){
+                $people[$person->getName()] = $person;
+            }
+            return $people;
         }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array('mw_user'),
@@ -824,6 +841,7 @@ class Person extends BackboneModel {
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
             $this->nationality = @$data[0]['user_nationality'];
+            $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
@@ -878,6 +896,7 @@ class Person extends BackboneModel {
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
                       'nationality' => $this->getNationality(),
+                      'stakeholder' => $this->getStakeholder(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'photo' => $this->getPhoto(),
@@ -924,6 +943,7 @@ class Person extends BackboneModel {
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
+                                          'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
@@ -965,6 +985,7 @@ class Person extends BackboneModel {
                                           'user_website' => $this->getWebsite(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
+                                          'user_stakeholder' => $this->getStakeholder(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
@@ -1301,6 +1322,26 @@ class Person extends BackboneModel {
             return $this->nationality;
         }
         return "";
+    }
+    
+    /**
+     * Returns the stakeholder category of this Person
+     * @return string The stakeholder category of this Person
+     */
+    function getStakeholder(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->stakeholder;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns whether this Person is a stakeholder
+     * @return string Whether this Person is a stakeholder
+     */
+    function isStakeholder(){
+        return ($this->getStakeholder() != "");
     }
     
     /**
@@ -1889,6 +1930,14 @@ class Person extends BackboneModel {
         return null;
     }
     
+    /*
+     * Returns an array of Universities that this Person is currently at
+     * @return array The current Universities this Person is at
+     */
+    function getCurrentUniversities(){
+        return $this->getUniversitiesDuring(date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
+    }
+    
     /**
      * Returns all the Universities that this Person was at between the given range
      * @param string $startRange The start date to look at
@@ -2024,13 +2073,21 @@ class Person extends BackboneModel {
      * @return string One of the roles that this person is
      */
     function getType(){
+        global $wgRoleValues;
         $roles = $this->getRoles();
-        foreach($roles as $role){
-            if(!$role->isAlias()){
-                return $role->getRole();
+        $maxRole = null;
+        $maxRoleValue = 0;
+        if(count($roles) > 0){
+            foreach($roles as $role){
+                if(!$role->isAlias()){
+                    if($wgRoleValues[$role->getRole()] >= $maxRoleValue){
+                        $maxRoleValue = $wgRoleValues[$role->getRole()];
+                        $maxRole = $role->getRole();
+                    }
+                }
             }
         }
-        return null;
+        return $maxRole;
     }
     
     /**
@@ -2168,9 +2225,11 @@ class Person extends BackboneModel {
             return "FAKENI";
         }
         else {
-            foreach($this->getRoles() as $role){
-                if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
-                    return $role->getRole();
+            if(count($this->getRoles()) > 0){
+                foreach($this->getRoles() as $role){
+                    if(!isset($committees[$role->getRole()]) && $this->isRoleOn($role->getRole(), $year, $project)){
+                        return $role->getRole();
+                    }
                 }
             }
         }
@@ -2185,9 +2244,22 @@ class Person extends BackboneModel {
         global $wgRoleValues, $wgRoles;
         $maxValue = 0;
         $roles = array();
+        $roleNames = array();
+        foreach($this->getRoles() as $role){
+            $roleNames[] = $role->getRole();
+        }
+        if($this->isProjectLeader()){
+            $roleNames[] = "PL";
+        }
+        if($this->isThemeLeader()){
+            $roleNames[] = TL;
+        }
+        if($this->isThemeCoordinator()){
+            $roleNames[] = TC;
+        }
         if(is_array($this->getRoles())){
-            foreach($this->getRoles() as $role){
-                $maxValue = max($maxValue, $wgRoleValues[$role->getRole()]);
+            foreach($roleNames as $role){
+                $maxValue = max($maxValue, $wgRoleValues[$role]);
             }
             foreach($wgRoleValues as $role => $value){
                 if($value <= $maxValue && array_search($role, $wgRoles) !== false){
@@ -2374,7 +2446,7 @@ class Person extends BackboneModel {
         }
         return $roles;        
     }
-    
+
     /**
      * Returns an array of the subRoles that this Person is in
      * @return array The subRoles that this Person is in
@@ -2440,6 +2512,64 @@ class Person extends BackboneModel {
             $projects = $tmpProjects;
         }
         return $projects;
+    }
+
+    /*
+     * Returns an array of 'PersonProjects' (used for Backbone API)
+     * @return array
+     */
+    function getPersonProjects(){
+        $projects = array();
+        $data = DBFunctions::select(array('grand_project_members' => 'u',
+                                          'grand_project' => 'p'),
+                                    array('u.id', 'u.project_id', 'u.start_date', 'u.end_date', 'u.comment'),
+                                    array('u.user_id' => EQ($this->id),
+                                          'p.id' => EQ(COL('u.project_id'))),
+                                    array('end_date' => 'DESC'));
+        foreach($data as $row){
+            $project = Project::newFromId($row['project_id']);
+            if(!$project->isSubProject()){
+                $projects[] = array(
+                    'id' => $row['id'],
+                    'projectId' => $project->getId(),
+                    'personId' => $this->getId(),
+                    'startDate' => $row['start_date'],
+                    'endDate' => $row['end_date'],
+                    'name' => $project->getName(),
+                    'comment' => $row['comment']
+                );
+            }
+        }
+        return $projects;
+    }
+    
+    
+    /*
+     * Returns an array of 'PersonUniversities' (used for Backbone API)
+     * @return array
+     */
+    function getPersonUniversities(){
+        $universities = array();
+        $data = DBFunctions::select(array('grand_user_university' => 'uu',
+                                          'grand_universities' => 'u',
+                                          'grand_positions' => 'p'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.user_id' => EQ($this->id),
+                                          'u.university_id' => EQ(COL('uu.university_id')),
+                                          'p.position_id' => EQ(COL('uu.position_id'))),
+                                    array('end_date' => 'DESC'));
+        foreach($data as $row){
+            $universities[] = array(
+                'id' => $row['id'],
+                'university' => $row['university_name'],
+                'personId' => $this->getId(),
+                'department' => $row['department'],
+                'position' => $row['position'],
+                'startDate' => $row['start_date'],
+                'endDate' => $row['end_date']
+            );
+        }
+        return $universities;
     }
 
     /**
@@ -2581,6 +2711,22 @@ class Person extends BackboneModel {
         return $relations;
     }
     
+    /*
+     * Returns an array of People that this Person manages
+     * @return array The People that this Person manages
+     */
+    function getManagedPeople(){
+        $people = array();
+        $data = DBFunctions::select(array('grand_managed_people'),
+                                    array('managed_id'),
+                                    array('user_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $person = Person::newFromId($row['managed_id']);
+            $people[$person->getReversedName()] = $person;
+        }
+        return $people;
+    }
+
     /**
      * Returns the Relationships this Person has
      * @param string $type The type of Relationship
@@ -2776,6 +2922,20 @@ class Person extends BackboneModel {
         global $wgUser;
         return ($wgUser->getId() == $this->getId());
     }
+    
+    /**
+     * Returns whether this Person is a Message Board Moderator
+     * @return boolean Whether this Person is a Message Board Moderator
+     */
+    function isBoardMod(){
+        global $config;
+        foreach($config->getValue('boardMods') as $role){
+            if($this->isRole($role)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns whether this Person is the given role (on the given optional project)
@@ -2813,9 +2973,16 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRoles();
+        
         if(count($role_objs) > 0){
+            $defaultSkip = false;
             foreach($role_objs as $r){
-                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $defaultSkip = true;
+                }
+            }
+            foreach($role_objs as $r){
+                $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
                     $skip = true;
                     foreach($r->getProjects() as $p){
@@ -2866,8 +3033,14 @@ class Person extends BackboneModel {
             }
         }
         if(count($role_objs) > 0){
+            $defaultSkip = false;
             foreach($role_objs as $r){
-                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $defaultSkip = true;
+                }
+            }
+            foreach($role_objs as $r){
+                $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
                     $skip = true;
                     foreach($r->getProjects() as $p){
@@ -2922,8 +3095,14 @@ class Person extends BackboneModel {
             }
         }
         if(count($role_objs) > 0){
+            $defaultSkip = false;
             foreach($role_objs as $r){
-                $skip = false;
+                if($project != null && count($r->getProjects()) > 0){
+                    $defaultSkip = true;
+                }
+            }
+            foreach($role_objs as $r){
+                $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
                     // Projects are explicitely specified
                     $skip = true;
@@ -3085,7 +3264,8 @@ class Person extends BackboneModel {
                 $position == "graduate student - master's" ||
                 $position == "post-doctoral fellow" ||
                 $this->isSubRole("Affiliate HQP") || 
-                $this->isSubRole("WP/CC Funded HQP"));
+                $this->isSubRole("WP/CC Funded HQP") ||
+                $this->isSubRole("Alumni HQP"));
     }
     
     /**
@@ -3116,7 +3296,10 @@ class Person extends BackboneModel {
                                           'created' => EQ(1)));
         $members = array();
         foreach($data as $row){
-            $members[] = Person::newFromName($row['wpName']);
+            $person = Person::newFromName($row['wpName']);
+            if($person->getId() > 0){
+                $members[] = $person;
+            }
         }
         return $members;
     }
@@ -3616,6 +3799,21 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of this Person's Bibliographies
+     * @return array The array of this Person's Bibliographies
+     */
+    function getBibliographies(){
+        $data = DBFunctions::select(array('grand_bibliography'),
+                                    array('id'),
+                                    array('person_id' => $this->getId()));
+        $bibs = array();
+        foreach($data as $row){
+            $bibs[] = Bibliography::newFromId($row['id']);
+        }
+        return $bibs;
+    }
+    
+    /**
      * Returns an array of People who are authors of Products writted by this Person or their HQP
      * @param string $category The category of Papers to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
@@ -3827,7 +4025,7 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0){
             return true;
         }
-        if($p instanceof Project && !$p->clear){
+        if($p instanceof Project && isset($p->clear) && !$p->clear){
             foreach($p->getPreds() as $pred){
                 if($this->leadershipOf($pred, $type)){
                     return true;

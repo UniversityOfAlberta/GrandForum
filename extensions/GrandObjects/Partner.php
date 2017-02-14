@@ -8,6 +8,9 @@ class Partner {
     
     var $id;
     var $organization;
+    var $contact;
+    var $industry;
+    var $level;
     var $type;
     var $city;
     var $prov;
@@ -77,6 +80,30 @@ class Partner {
     // Returns the organization name of this Partner
     function getOrganization(){
         return $this->organization;
+    }
+    
+    /**
+     * Returns the contact information for this Partner
+     * @return String The contact information for this Partner
+     */
+    function getContact(){
+        return $this->contact;
+    }
+    
+    /**
+     * Returns whether this is an Industry or Community/Not for profit Partner
+     * @return String Whether this is an Industry or Community/Not for profit Partner
+     */
+    function getIndustry(){
+        return $this->industry;
+    }
+    
+    /**
+     * Returns whether this is a Provincial or Federal level Partner
+     * @return String Whether this is a provincial or federal level Partner
+     */
+    function getLevel(){
+        return $this->level;
     }
     
     // Returns the type of this Partner

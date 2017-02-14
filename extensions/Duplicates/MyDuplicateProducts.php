@@ -21,6 +21,9 @@ class MyDuplicateProducts extends SpecialPage{
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut, $wgUser, $config;
 	    $me = Person::newFromId($wgUser->getId());
+	    ProductHandler::init();
+	    MyProductHandler::init();
+	    PersonHandler::init();
         $handlers = AbstractDuplicatesHandler::$handlers;
         $tabbedPage = new TabbedPage("duplicates");
         

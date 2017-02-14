@@ -1,10 +1,13 @@
 <?php
-require_once('ProjectPage/ProjectVisualizationsTab.php');
+
 autoload_register('GrandObjectPage/ProjectPage');
 
-$projectPage = new ProjectPage();
-$wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
 
+$wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
@@ -101,11 +104,16 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                if($project->getType() != 'Administrative'){
+                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if($visibility['isLead'] && isExtensionEnabled('Reporting')){
+                    $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();

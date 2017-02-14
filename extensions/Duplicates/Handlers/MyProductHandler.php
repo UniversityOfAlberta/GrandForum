@@ -1,10 +1,5 @@
 <?php
 
-$structure = Product::structure();
-foreach($structure['categories'] as $catkey => $cat){
-    $publicationHandler = new MyProductHandler("my$catkey", $catkey);
-}
-
 class MyProductHandler extends AbstractDuplicatesHandler {
         
     var $type;
@@ -12,6 +7,13 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     function MyProductHandler($id, $type){
         $this->AbstractDuplicatesHandler($id);
         $this->type = $type;
+    }
+    
+    static function init(){
+        $structure = Product::structure();
+        foreach($structure['categories'] as $catkey => $cat){
+            $publicationHandler = new MyProductHandler("my$catkey", $catkey);
+        }
     }
     
     function getArray(){

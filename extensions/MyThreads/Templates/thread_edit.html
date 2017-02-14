@@ -19,6 +19,12 @@
     </td>
 </tr>
 <% } %>
+<% if(me.isBoardMod()){ %>
+    <tr>
+        <td><b>Stickied?</b></td>
+        <td><%= HTML.CheckBox(this, 'stickied', {value: '1', default: '0'}) %></td>
+    </tr>
+<% } %>
 </table>
 <br />
 <div id="threadPeople"></div>

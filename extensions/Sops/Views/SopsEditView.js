@@ -1,0 +1,292 @@
+SopsEditView = Backbone.View.extend({
+
+    sops: null,
+
+    initialize: function(){
+        this.template = _.template($('#sops_edit_template').html());
+        this.listenTo(this.model, "sync", function(){
+            this.sops = this.model;
+            this.render();
+        }, this);
+    },
+    
+    events: {
+        "click #check_readability" : "check_readability",
+        "click #check_coleman" : "check_coleman",
+        "click #check_dalechall" : "check_dalechall",
+        "click #check_flesch" : "check_flesch",
+        "click #check_smog" : "check_smog",
+        "click #check_dalechall_reading" : "check_dalechall_reading",
+        "click #check_sentiment" : "check_sentiment",
+        "click #check_sentiment_score" : "check_sentiment_score",
+        "click #check_emotion" : "check_emotion",
+        "click #check_anger" : "check_anger",
+        "click #check_disgust" : "check_disgust",
+        "click #check_fear" : "check_fear",
+        "click #check_joy" : "check_joy",
+        "click #check_readingease" : "check_readingease"
+
+    },
+    check_joy: function(){                $('#joy_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_fear: function(){                $('#fear_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_disgust: function(){                $('#disgust_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_anger: function(){                $('#anger_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_emotion: function(){
+        $('#emotion_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_sentiment_score: function(){        $('#sentiment_score_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_sentiment: function(){
+        $('#sentiment_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_dalechall_reading: function(){
+        $('#dalechall_reading_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_readability: function(){
+	$('#readabilty_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+
+    check_coleman: function(){
+        $('#coleman_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_dalechall: function(){
+        $('#dalechall_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_flesch: function(){
+        $('#flesch_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_smog: function(){
+        $('#smog_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+    check_readingease: function(){
+        $('#readingease_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+
+
+    spellcheck: function(){
+       AtD.check('sopItem', {
+       		success : function(errorCount){
+       		},
+       		error : function(reason){
+       		}
+       });
+    },
+
+    openDialog: function(div){
+	$('#'+div).dialog({width:'200px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+
+    render: function(){
+      	var self = this;
+        main.set('title', self.model.get('author').name);
+        var moveAnnotatorFilter = setInterval(function(){
+            if(($('.annotator-filter').length)>0){
+                var annotator_filter = $('.annotator-filter').detach();
+                $('#sop_acc').prepend(annotator_filter);
+                clearInterval(moveAnnotatorFilter);
+            }
+        }, 500);
+        setTimeout(function (){
+	    self.spellcheck();
+                        $('iframe').css('border','0 !important');
+
+	}, 1000);
+	setTimeout(function(){
+          $("#sopItem").annotator()
+              .annotator('addPlugin', 'Filter', {
+                filters: [
+                  {
+                    label: 'MyTags',
+                    property: 'tags',
+                    isFiltered: function (input, tags){
+                      if(input && tags && tags.length){
+                        var keywords = input.split(/\s+/g);
+                        for(var i = 0; i < keywords.length; i += 1){
+                          for(var j = 0; j < tags.length; j += 1){
+                            if(tags[j].indexOf(keywords[i]) !== -1){
+                              return true;
+                            }
+                          }
+                        }
+                      }
+                      return false;
+                    }
+                  }
+                ]
+              })
+              .annotator('addPlugin', 'MyTags', {
+                availableTags: [
+                  "positive personal qualities",
+                  "negative personal qualities",
+                  "relevant personal experience",
+                  "irrelevant information",
+                  "understanding of OT incorporated into personal experience",
+                  "interest in OT",
+                  "match to OT as career",
+                  "superficial understanding of OT",
+                  "accurate knowledge of OT",
+                  "mental/cognitive/spiritual health awareness",
+                  "inaccurate understanding of OT",
+                  "qualities related to being a successful student",
+                  "focus on physical aspect",
+                  "explanation of poor grades",
+                  "poorly written",
+                  "not convincing",
+                  "informal language",
+                ], // use tags
+              })
+              .annotator( 'addPlugin', 'Store', {
+                  prefix: wgServer+wgScriptPath+"/index.php?action=api.sop/" + self.model.id,
+                  urls: {
+                      create: '/annotations',
+                      update: '/annotations/:id',
+                      read: '/annotations/:id',
+                      destroy: '/annotations/:id',
+                      search: '/annotations'
+                  },
+              }).annotator('addPlugin', 'Permissions', {
+                userAuthorize: function(action, annotation, user) {
+                  var token, tokens, _i, _len;
+                  if (annotation.permissions) {
+                    tokens = annotation.permissions[action] || [];
+                    if (tokens.length === 0) {
+                      return true;
+                    }
+                    for (_i = 0, _len = tokens.length; _i < _len; _i++) {
+                      token = tokens[_i];
+                      if (this.userId(user) === token) {
+                        return true;
+                      }
+                    }
+                    return true;
+                  } else if (annotation.user) {
+                    if (user) {
+                      return this.userId(user) === this.userId(annotation.user);
+                    } else {
+                      return true;
+                    }
+                  }
+                  return true;
+                },
+                showEditPermissionsCheckbox: false,
+                showViewPermissionsCheckbox: false,
+                user: me.get('fullName'), // 'me.id' -> logged in user id
+                userId: function (user) {
+                  if (user && user.id) {
+                    return user.id;
+                  }
+                  return user;
+                },
+                userString: function (user) {
+                  if (user && user.name) {
+                    return user.name;
+                  }
+                  return user;
+                }
+              });
+
+        }, 4000);
+	/** This part constantly updates the errors column. It needs to check for the ajax response from AtD **/
+	$( document ).ajaxComplete(function() {
+	    if($("#grammar_errors").text() == "0" || $("#grammar_errors").text() == ""){
+                $("#grammar_errors").html($(".hiddenGrammarError").size());
+	    }
+            if($("#spelling_errors").text() == "0" || $("#spelling_errors").text() == ""){
+		$("#spelling_errors").html($(".hiddenSpellError").size());
+	    }
+            if($("#style_errors").text() == "0" || $("#style_errors").text() == ""){
+		$("#style_errors").html($(".hiddenSuggestion").size());
+	    }
+	});
+	/** ----------------------------------------------------------------------------------------------  **/
+        var mod = _.extend(this.model.toJSON());
+        this.el.innerHTML = this.template(mod);
+		$(document).ready(function () {
+		      $("#accordion > div").accordion({
+			  autoHeight: false,
+      			  collapsible: true,
+			  active:false
+    		      });
+		});
+        return this.$el;
+    }
+});

@@ -26,11 +26,11 @@ class AddMember extends SpecialPage{
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
                 $request = UserCreateRequest::newFromId($_POST['id']);
-                $sendEmail = "false";
+                /*$sendEmail = "false";
                 if(isset($_POST['wpEmail']) && $_POST['wpEmail'] != ""){
                     $sendEmail = "true";
                 }
-                $_POST['wpSendMail'] = "$sendEmail";
+                $_POST['wpSendMail'] = "$sendEmail";*/
                 $result = APIRequest::doAction('CreateUser', false);
                 if(strstr($result, "already exists") === false){
                     $request->acceptRequest();
@@ -53,6 +53,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
+                $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('university_field')->setPOST('university');
@@ -187,7 +188,7 @@ class AddMember extends SpecialPage{
                 }
                 $wgOut->addHTML("</td>");
             }
-            $wpSendMail = ($wgEnableEmail) ? "true" : "false";
+            $wpSendMail = ($wgEnableEmail) ? $request->getSendEmail() : "false";
             $wgOut->addHTML("
                         <td>{$request->getCandidate(true)}</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
@@ -248,6 +249,11 @@ class AddMember extends SpecialPage{
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
         
+        $sendEmailLabel = new CustomElement("sendEmail_label", "", "", "");
+        $sendEmailField = new VerticalCheckBox("sendEmail_field", "Email", array("true"), array("Send Registration Email?" => "true"), VALIDATE_NOTHING);
+        $sendEmailRow = new FormTableRow("sendEmail_row");
+        $sendEmailRow->append($sendEmailLabel)->append($sendEmailField);
+        
         $roleValidations = VALIDATE_NOT_NULL;
         if($me->isRoleAtLeast(STAFF)){
             $roleValidations = VALIDATE_NOTHING;
@@ -271,6 +277,7 @@ class AddMember extends SpecialPage{
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
+        $rolesLabel->attr('style', 'width:160px;');
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
@@ -284,6 +291,9 @@ class AddMember extends SpecialPage{
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
         $candRow = new FormTableRow("cand_row");
         $candRow->append($candLabel)->append($candField);
+        if(!$me->isRoleAtLeast(STAFF)){
+            $candRow->attr('style', 'display:none;');
+        }
                
         $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
         $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
@@ -305,8 +315,9 @@ class AddMember extends SpecialPage{
         $positionLabel = new Label("position_label", "HQP Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
         $positionField = new SelectBox("position_field", "HQP Academic Status", "", $positions, VALIDATE_NOTHING);
         $positionField->attr("style", "width: 260px;");
-        $positionRow = new FormTableRow("university_row");
+        $positionRow = new FormTableRow("position_row");
         $positionRow->append($positionLabel)->append($positionField);
+        $positionRow->attr('id', 'position_row');
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -316,6 +327,7 @@ class AddMember extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($emailRow)
+                  ->append($sendEmailRow)
                   ->append($rolesRow)
                   ->append($projectsRow)
                   ->append($universityRow)
@@ -338,11 +350,33 @@ class AddMember extends SpecialPage{
         if($user->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
         }
-        $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
+        $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administratoer will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember' method='post'>\n");
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());
+        $wgOut->addHTML("<script type='text/javascript'>
+            var fn = function(){
+                var found = false;
+                var otherFound = false;
+                $.each($('input[name=\"role_field[]\"]:checked'), function(id, el){
+                    found = (found || $(el).val() == '".HQP."');
+                    otherFound = (otherFound || $(el).val() != '".HQP."');
+                });
+                if(found){
+                    $('#position_row').show();
+                }
+                else{
+                    $('#position_row').hide();
+                }
+                $('#roleWarning').remove();
+                if(found && otherFound){
+                    $('#role_label').after('<div id=\'roleWarning\' style=\'width:156px;\' class=\'inlineWarning\'>HQP should not be selected with any other role.  Are you sure you want to proceed?</div>');
+                }
+            }
+            $('input[name=\"role_field[]\"]').change(fn);
+            fn();
+        </script>");
         $wgOut->addHTML("</form>");
     }
     
@@ -350,7 +384,7 @@ class AddMember extends SpecialPage{
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(NI)){
-            $toolbox['People']['links'][0] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
+            $toolbox['People']['links'][-1] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;
     }

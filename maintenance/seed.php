@@ -25,15 +25,33 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
 function addUserRole($name, $role){
     Person::$cache = array();
     Person::$namesCache = array();
-    $_POST['user'] = $name;
-    $_POST['role'] = $role;
-    APIRequest::doAction('AddRole', true);
+    $person = Person::newFromName($name);
+    $_POST['userId'] = $person->getId();
+    $_POST['name'] = $role;
+    $_POST['startDate'] = '2010-01-01 00:00:00';
+    $_POST['endDate'] = '0000-00-00 00:00:00';
+    $_POST['comment'] = '';
+    
+    $api = new RoleAPI();
+    $api->doPOST();
 }
 
 function addUserProject($name, $project){
     $_POST['user'] = $name;
     $_POST['role'] = $project;
     APIRequest::doAction('AddProjectMember', true);
+}
+
+function addUserUniversity($name, $uni, $dept, $pos){
+    $person = Person::newFromName($name);
+    $_POST['university'] = $uni;
+    $_POST['department'] = $dept;
+    $_POST['position'] = $pos;
+    $_POST['startDate'] = '2010-01-01 00:00:00';
+    $_POST['endDate'] = '0000-00-00 00:00:00';
+    $api = new PersonUniversitiesAPI();
+    $api->params['id'] = $person->getId();
+    $api->doPOST();
 }
 
 function addProjectLeader($name, $project, $coLead='False', $manager='False'){
@@ -53,10 +71,16 @@ function addThemeLeader($name, $theme, $coLead='False', $coord='False'){
 }
 
 function addRelation($name1, $name2, $type){
-    $_POST['name1'] = $name1;
-    $_POST['name2'] = $name2;
+    $person1 = Person::newFromName($name1);
+    $person2 = Person::newFromName($name2);
+    $_POST['user1'] = $person1->getId();
+    $_POST['user2'] = $person2->getId();
     $_POST['type'] = $type;
-    APIRequest::doAction('AddRelation', true);
+    $_POST['startDate'] = '2010-01-01';
+    $_POST['endDate'] = '0000-00-00 00:00:00';
+    $_POST['comment'] = "";
+    $api = new PersonRelationsAPI();
+    $api->doPOST();
 }
 
 global $wgTestDBname, $wgDBname, $wgRoles, $wgUser;
@@ -105,6 +129,10 @@ DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) 
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme4', 'Theme 4', 'Theme 4 Description')", true);
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme5', 'Theme 5', 'Theme 5 Description')", true);
 DBFunctions::execSQL("INSERT INTO grand_themes (`acronym`,`name`,`description`) VALUES ('Theme6', 'Theme 6', 'Theme 6 Description')", true);
+
+//Initialize Boards
+DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('General', 'General Description')", true);
+DBFunctions::execSQL("INSERT INTO grand_boards (`title`,`description`) VALUES ('Other Topics', 'Other Topics Description')", true);
 
 $id = 100;
 DBFunctions::insert('mw_an_extranamespaces', array('nsId' => $id, 'nsName' => 'Cal', 'public' => '0'));
@@ -235,6 +263,12 @@ addUserProject("NI.User2", "Phase2Project1");
 addUserProject("NI.User3", "Phase2Project2");
 addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User3", "Phase2Project1");
+
+addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");
+addUserUniversity("NI.User2", "University of Calgary", "Computing Science", "Professor");
+addUserUniversity("NI.User3", "University of Saskatchewan", "Computing Science", "Associate Professor");
+addUserUniversity("HQP.User1", "University of Alberta", "Computing Science", "Graduate Student");
+addUserUniversity("HQP.User2", "University of Calgary", "Computing Science", "PhD Student");
 
 addProjectLeader("PL.User1", "Phase2Project1");
 addProjectLeader("PL.User2", "Phase2Project3");

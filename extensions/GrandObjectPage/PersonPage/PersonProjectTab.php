@@ -18,7 +18,7 @@ class PersonProjectTab extends AbstractTab {
         $this->showProjects($this->person, $this->visibility, 'Active');
         $this->showProjects($this->person, $this->visibility, 'Ended');
         if($this->visibility['isSupervisor']){
-            $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:EditMember?project&name={$this->person->getName()}'>Edit Projects</a>";
+            $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople?project&name={$this->person->getName()}'>Manage People</a>";
         }
         return $this->html;
     }

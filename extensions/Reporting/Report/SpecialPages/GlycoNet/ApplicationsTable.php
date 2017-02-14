@@ -27,30 +27,207 @@ class ApplicationsTable extends SpecialPage{
         ApplicationsTable::generateHTML($wgOut);
     }
     
+    function initArrays(){
+    
+        $this->nis = Person::getAllPeople(NI);
+        $this->allNis = array_merge($this->nis, 
+                                    Person::getAllCandidates(NI), 
+                                    Person::getAllPeople(EXTERNAL), 
+                                    Person::getAllCandidates(EXTERNAL));
+        
+        $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
+        
+        $this->projects = Project::getAllProjects();
+    }
+    
     function generateHTML($wgOut){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
         
-        $hqp = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        $ni = Person::getAllPeople(NI);
-        $allNis = array_merge($ni, 
-                              Person::getAllCandidates(NI), 
-                              Person::getAllPeople(EXTERNAL), 
-                              Person::getAllCandidates(EXTERNAL));
-        $projects = Project::getAllProjects();
+        $me = Person::newFromWgUser();
         
-        $tabbedPage = new TabbedPage("person");
-
+        $links = array();
+        
+        $wgOut->addHTML("<style type='text/css'>
+            #bodyContent > h1:first-child {
+                display: none;
+            }
+            
+            #contentSub {
+                display: none;
+            }
+        </style>");
+        
+        if($me->isRoleAtLeast(SD)){
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=candidates'>Candidates</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tech'>Tech</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=regional'>Regional</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=seminar'>Seminar</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Report</a>";
+        }
+        
+        $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
+        if(!isset($_GET['program'])){
+            return;
+        }
+        $program = $_GET['program'];
+        
+        $this->initArrays();
+        
+        if($program == "candidates" && $me->isRoleAtLeast(SD)){
+            $this->generateCandidates();
+        }
+        if($program == "cat" && $me->isRoleAtLeast(SD)){
+            $this->generateCat();
+        }
+        else if($program == "trans" && $me->isRoleAtLeast(SD)){
+            $this->generateTrans();
+        }
+        if($program == "collab" && $me->isRoleAtLeast(SD)){
+            $this->generateCollab();
+        }
+        else if($program == "exchange" && $me->isRoleAtLeast(SD)){
+            $this->generateExchange();
+        }
+        else if($program == "summer" && $me->isRoleAtLeast(SD)){
+            $this->generateSummer();
+        }
+        else if($program == "atop" && $me->isRoleAtLeast(SD)){
+            $this->generateATOP();
+        }
+        else if($program == "tech" && $me->isRoleAtLeast(SD)){
+            $this->generateTech();
+        }
+        else if($program == "regional" && $me->isRoleAtLeast(SD)){
+            $this->generateRegional();
+        }
+        else if($program == "seminar" && $me->isRoleAtLeast(SD)){
+            $this->generateSeminar();
+        }
+        else if($program == "project" && $me->isRoleAtLeast(SD)){
+            $this->generateProject();
+        }
+        return;
+    }
+    
+    function generateCandidates(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new CandidatesTab());
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $allNis, 2015, "Cat 2015"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $allNis, 2015, "Trans 2015"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $allNis, 2016, "Cat 2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $allNis, 2016, "Collab 2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $hqp, 2015, "Research Exchange"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $hqp, 2015, "Summer"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $ni, 2015, "Tech Workshop"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array_merge(Person::getAllPeople(HQP), $ni), 2015, "Regional Meeting"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $projects, 2015, "Project Report"));
-        $tabbedPage->showPage();
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCat(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2016, "2016", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateTrans(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCollab(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateExchange(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateSummer(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateATOP(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "ATOP"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateTech(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $this->nis, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $this->nis, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateRegional(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array_merge(Person::getAllPeople(HQP), $this->nis), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array_merge(Person::getAllPeople(HQP), $this->nis), 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateSeminar(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateProject(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "Project Report"));
+        $wgOut->addHTML($tabbedPage->showPage());
     }
     
     static function createSubTabs(&$tabs){

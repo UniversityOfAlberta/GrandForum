@@ -3,6 +3,9 @@ Feature: Reporting
     As a User
     I need to be able to access the relevant reports and edit the fields in the report
 
+    Scenario: Validate Report XML
+        Given I validate report xml
+
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=Report"

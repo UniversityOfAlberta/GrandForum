@@ -13,7 +13,7 @@ Feature: Login
         Then I should see "Admin User1"
         And I should not see "Bad title"
         
-    Scenario: Loggin in using lower case letters
+    Scenario: Logging in using lower case letters
         Given I am logged in as "admin.user1" using password "admin.pass1"
         Then I should not see "Admin User1"
         And I should not see "admin user1"

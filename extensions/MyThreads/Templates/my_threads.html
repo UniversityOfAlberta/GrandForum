@@ -1,7 +1,3 @@
-<div id="editDialog" style="display:none;">
-<div id="editThreadView"></div>
-<div id="editPostView"></div>
-</div>
 <% if(networkName == "GlycoNet"){ %>
     <p>
         This page is used for HQP to post questions to their peers and get answers.  Only HQP and Staff can view/reply to threads.
@@ -16,25 +12,27 @@
         </ul>
     </p>
 <% } %>
-<div>
-    <button id="addThreadButton">Add Thread</button>
-</div><br />
-<div style="float:right;">
-    <b>Search: </b><input type="text" id="advancedSearch" size="30" value="<%= this.threads.search %>" /><button id="advancedSearchButton">Search</button>
-</div>
-<table id="listTable" frame="box" rules="all">
+<table id="boards" frame="box" rules="all" style="border: 1px solid #AAAAAA; margin-bottom: 10px;">
     <thead>
-        <tr>
-            <th>Title</th>
-            <th>Posts</th>
-            <% if(networkName != "GlycoNet"){ %>
-                <th width="5%" style="white-space: nowrap;">Group</th>
-            <% } %>
-            <th width="5%" style="white-space: nowrap;">Created By</th>
-            <th width="5%" style="white-space: nowrap;">Date Created</th>
-        </tr>
+        <th>Board</th>
+        <th>Description</th>
+        <th>#&nbsp;Threads</th>
     </thead>
-    <tbody id="personRows">
-
+    <tbody>
+<% this.model.each(function(board){ %>
+        <tr>
+            <td style="white-space: nowrap;">
+                <div style="font-size:120%; font-weight: bold; margin: 5px;">
+                    <a href="<%= board.get('url') %>"><%= board.get('title') %></a>
+                </div>
+            </td>
+            <td>
+                <%= nl2br(board.get('description')) %>
+            </td>
+            <td align="right">
+                <%= board.get('nThreads') %>
+            </td>
+        </tr>
+<% }) %>
     </tbody>
 </table>

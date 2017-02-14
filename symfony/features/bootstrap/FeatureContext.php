@@ -316,6 +316,91 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
         $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
+        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().fire('keyup');");
+    }
+    
+    /**
+     * @Given /^I fill in TagIt "(?P<id>(?:[^"]|\\")*)" with "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function fillInTagItWith($id, $text){
+        $text = addslashes($text);
+        $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
+    }
+    
+     /**
+     * @Given /^I index expert search$/
+     */
+    public function indexExpertSearch(){
+        $output = array();
+        exec("php ../maintenance/expert.php &> /dev/null", $output);
+    }
+    
+    /**
+     * @Given /^I validate report xml$/
+     */
+    public function validateReportXML(){
+        $files = self::listFiles("../extensions/Reporting/Report/ReportXML");
+        foreach($files as $file){
+            $content = file_get_contents($file);
+            $xml = @simplexml_load_string($content);
+            if($xml === false){
+                throw new Exception("$file is not a valid xml file.");
+            }
+            if($xml->getName() == "Report"){
+                $children = $xml->children();
+                foreach($children as $section){
+                    if($section->getName() == "ReportSection"){
+                        $ids = array();
+                        $blobItems = array();
+                        
+                        $items = $section->xpath("descendant-or-self::*");
+                        foreach($items as $item){
+                            if($item->getName() == "ReportItem"){
+                                $node = dom_import_simplexml($item);
+                                $path = $node->parentNode->getNodePath();
+                                
+                                $id = @$item->attributes()->id;
+                                $blobItem = @$item->attributes()->blobItem."/".$item->attributes()->blobSubItem;
+                                
+                                if($blobItem != "/"){
+                                    if(isset($ids["$id"])){
+                                        foreach($ids["$id"] as $p){
+                                            if(strstr("$path", "$p") !== false || strstr("$p", "$path") !== false){
+                                                throw new Exception("$file containts duplicate id \"$id\" in section \"{$section->attributes()->id}\"");
+                                            }
+                                        }
+                                    }
+                                    if(isset($blobItems["$blobItem"])){
+                                        foreach($blobItems["$blobItem"] as $p){
+                                            if(strstr("$path", "$p") !== false || strstr("$p", "$path") !== false){
+                                                throw new Exception("$file containts duplicate blobItem/blobSubItem \"$blobItem\" in section \"{$section->attributes()->id}\"");
+                                            }
+                                        }
+                                    }
+                                    $blobItems["$blobItem"][] = $path;
+                                    $ids["$id"][] = $path;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    static function listFiles($dir){
+        global $config;
+        $return = array();
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach($files as $file){
+            if(is_dir("{$dir}/{$file}/")){
+                $return = array_merge(self::listFiles("{$dir}/{$file}/"), $return);
+            }
+            else{
+                $return[] = "{$dir}{$file}";
+            }
+        }
+        return $return;
     }
 
 }
