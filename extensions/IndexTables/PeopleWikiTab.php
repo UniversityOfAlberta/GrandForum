@@ -140,8 +140,8 @@ class PeopleWikiTab extends AbstractTab {
         }
         else if($this->table == "Tools"){
             $this->html .= "
-                <span class='en'><i>*For example, the official Health Canada recommended <a href='https://www.caps-cpca.ubc.ca/index.php/File:Tools_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>fact sheet</a>Mifegymiso Consent Form for Patients</i></span>
-                <span class='fr'><i>*Par exemple, le ministère de la Santé <a href='https://www.caps-cpca.ubc.ca/index.php/File:Tools_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>fiche d'information</a>Formulaire de consentement Mifegymiso pour les patients</i></span>
+                <span class='en'><i>*For example, the official Health Canada recommended <a href='https://www.caps-cpca.ubc.ca/index.php/File:Tools_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>Mifegymiso Consent Form for Patients</a></i></span>
+                <span class='fr'><i>*Par exemple, le ministère de la Santé <a href='https://www.caps-cpca.ubc.ca/index.php/File:Tools_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>Formulaire de consentement Mifegymiso pour les patients</a></i></span>
                 <br /><br />";
         }
  
