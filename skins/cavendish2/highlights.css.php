@@ -144,7 +144,7 @@ input[type=button]:active, input[type=submit]:active, .button:active, .ui-button
     color: $hlFontColor !important;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover, :not(.mce-btn button) {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover) {
     background: $inputColorDark !important;
     color: $hlFontColor !important;
 }
@@ -351,11 +351,10 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }
 
 #sideToggle:hover {
-    background: $hl2;
 }
 
 #header ul a {
-    color: $hlTextColor;
+    color: $hlFontColor;
 }
 
 #submenu li {

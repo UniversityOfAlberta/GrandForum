@@ -5,6 +5,7 @@ require_once("SpecialImpersonate.php");
 $wgHooks['AuthPluginSetup'][] = 'impersonate';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 $wgHooks['UnknownAction'][] = 'getUserMode';
+$wgHooks['SubLevelTabs'][] = 'impersonateCreateSubTabs';
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating, $wgDelegating;
@@ -60,6 +61,7 @@ function impersonate(){
         $wgUser->setId(0);
         return true;
     }
+    
     $exploded = explode("?", @$_SERVER["REQUEST_URI"]);
     $page = $exploded[0];
     $title = explode("/", $page);
@@ -127,6 +129,7 @@ function impersonate(){
         $person = Person::newFromName($name);
         $message = getImpersonatingMessage();
         $realPerson = Person::newFromId($wgRealUser->getId());
+        $wgMessage->clearInfo();
         $wgMessage->addInfo($message);
         
         $pageAllowed = false;
@@ -233,6 +236,16 @@ function clearImpersonation( &$user, &$inject_html, $old_name ){
         setcookie('impersonate', '', time()-(60*60), '/'); // Delete Cookie
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         redirect("{$wgServer}{$urlBeforeImpersonate}");
+    }
+    return true;
+}
+
+function impersonateCreateSubTabs(&$tabs){
+    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+    $person = Person::newFromWgUser($wgUser);
+    if($person->isRoleAtLeast(MANAGER)){
+        $selected = @($wgTitle->getText() == "Impersonate") ? "selected" : false;
+        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Impersonate", "$wgServer$wgScriptPath/index.php/Special:Impersonate", $selected);
     }
     return true;
 }

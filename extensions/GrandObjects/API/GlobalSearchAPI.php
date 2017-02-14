@@ -20,6 +20,10 @@ class GlobalSearchAPI extends RESTAPI {
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
                 foreach($people as $pRow){
+                    $check = Person::newFromName($pRow['user_name']);
+                    if($check->getId() == 0){
+                        continue;
+                    }
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
                     $person->realname = $pRow['user_real_name'];

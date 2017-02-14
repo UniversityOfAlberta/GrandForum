@@ -187,12 +187,12 @@ EOF;
                 $blobValue1 = substr($blobValue, 0, $limit + $lengthDiff);
                 $blobValue2 = substr($blobValue, $limit + $lengthDiff);
                 if($blobValue2 != ""){
-                    if(isset($_GET['preview'])){
+                    //if(isset($_GET['preview'])){
                         $blobValue = "{$blobValue1}<s style='color:red;'>{$blobValue2}</s>";
-                    }
-                    else{
-                        $blobValue = "$blobValue1...";
-                    }
+                    //}
+                    //else{
+                    //    $blobValue = "$blobValue1...";
+                    //}
                 }
                 else{
                     $blobValue = $blobValue1;
@@ -207,7 +207,7 @@ EOF;
             else{
                 $type = "recommended";
             }
-            $html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)</small></span>";
+            //$html .= "<span class='$class'><small>(<i>currently {$length} ".Inflect::smart_pluralize($length, "character")." out of a {$type} {$limit}</i>)<br /></small></span>";
         }
         $dom = new SmartDOMDocument();
         $dom->loadHTML($blobValue);

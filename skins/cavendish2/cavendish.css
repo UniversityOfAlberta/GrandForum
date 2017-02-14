@@ -95,7 +95,6 @@ body {
     position: absolute;
     text-align: center;
     font-weight: normal;
-    cursor: pointer;
     z-index: 100;
     z-index: 1000;
     border-bottom-left-radius: 10px;
