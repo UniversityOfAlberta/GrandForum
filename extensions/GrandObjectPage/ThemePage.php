@@ -2,8 +2,7 @@
 
 autoload_register('GrandObjectPage/ThemePage');
 
-$themePage = new ThemePage();
-$wgHooks['ArticleViewHeader'][] = array($themePage, 'processPage');
+$wgHooks['ArticleViewHeader'][] = 'ThemePage::processPage';
 
 class ThemePage {
 

@@ -161,6 +161,8 @@ abstract class PDFGenerator {
 "/(&clubs;)/",
 "/(&hearts;)/",
 "/(&#9210;)/",
+"/(&#10003;)/",
+"/(&#10004;)/",
 "/(&diams;)/");
         $str = preg_replace($specials, "<span style='font-family: dejavu sans !important; line-height:50%;'>$1</span>", $str);
         $str = str_replace("&#8209;", "-", $str);
@@ -212,7 +214,7 @@ abstract class PDFGenerator {
      * @param AbstractReport $report The report that this PDF is for (optionally used to add extra information)
      * @returns array Returns an array containing the final html, as well as the pdf string
      */
-    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null){
+    function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
         if(self::$preview){
@@ -248,6 +250,18 @@ abstract class PDFGenerator {
             }
         }
         $nInfo = max(5, $nInfo);
+        
+        $tables = $dom->getElementsByTagName('table');
+        foreach($tables as $table){
+            $brs = $table->getElementsByTagName('br');
+            for($i=0; $i<$brs->length; $i++){
+                $br = $brs->item($i);
+                if($br->getAttribute('style') == 'font-size:1em;'){
+                    $i--;
+                    $br->parentNode->removeChild($br);
+                }
+            }
+        }
         
         $html = "$dom";
         if($person == null){
@@ -614,6 +628,10 @@ EOF;
 		        margin-bottom: 0;
 		    }
 		    
+		    #pdfBody .tinymce table p {
+		        margin-bottom: 0 !important;
+		    }
+		    
 		    #pdfBody b, #pdfBody strong {
                 font-weight: bold !important;
             }
@@ -769,7 +787,9 @@ if ( isset($pdf) ) {
         Image_Cache::clear();
         $GLOBALS['footnotes'] = array();
         $GLOBALS["nFootnotesProcessed"] = 0;
-        return array('html' => $finalHTML, 'pdf' => $pdfStr);
+        if(!$stream){
+            return array('html' => $finalHTML, 'pdf' => $pdfStr);
+        }
         PDFGenerator::stream($pdfStr);
     }
     

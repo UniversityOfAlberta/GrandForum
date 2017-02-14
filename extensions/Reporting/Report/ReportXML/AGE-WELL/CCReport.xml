@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Crosscutting Activities Report" pdfFiles="CCReportPDF" extends="WPReport">
+    <Permissions>
+        <Role role="SD+">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PL">
+            <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="nce" permissions="rw" />
+            <SectionPermission id="additional" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="summary">
+        <ReportItem id="summary" limit="2000">
+            <![CDATA[
+                <h3>Report Description</h3>
+                <p>Each CC is asked to collect information and examples from across its constituent members/projects in order to complete a 2-3 page CC Report. Responses will be used to help the Network Management Office to construct the 2016/17 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. CCs are not individually evaluated on the content of these reports.</p>
+
+                <p>Note that the information requested in Sections 1 and 2 is drawn directly from the NCE Annual Report template. Section 3 enables CCs to highlight additional outcomes or benefits of network membership not captured elsewhere in the report. Given the brevity of the report, we are looking for concrete examples from across each CC as opposed to a full accounting of all CC activities. Should you have more to share with us than space limitations permit, please contact <a href='mailto:jeanie@agewell-nce.ca'>jeanie@agewell-nce.ca</a></p>
+                <h3>Executive Summary</h3>
+                <p>Describe the top three achievements, successes, contributions, success stories from your CC and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="nce">
+        <ReportItem id="excellence" limit="2000">
+            <![CDATA[
+                <h3>a) Excellence of the Research Program (2000 characters / ½ pg)</h3>
+                <p><i>AGE-WELL’s research program is driven to address Canadian needs and problems, and is therefore expected to be multidisciplinary and multisectoral.  We are evaluated on the excellence, focus and coherence of the research program. For your CC, please comment on the follow providing concrete examples where possible.</i></p>
+                <i>*If your CC does not conduct research, please leave this section blank</i>
+                <ul>
+                    <li>Describe the balance between discovery and application-based research in this CC</li>
+                    <li>Describe the ways in which the work of this CC is addressing new and emerging social and ethical challenges</li>
+                    <li>Highlight any notable achievements of researchers within your CC, including publications in top-tier journals, leadership awards etc</li>
+                    <li>Provide examples from within your CC of international leadership or activities that have contributed to the visibility of AGE-WELL domestically or abroad</li>
+                    <li>Any other examples that you would like to highlight for NCE</li>
+                </ul>
+                <i>*note that examples of how you may have supported AGE-WELL researchers in this area can be captured under item d)</i>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" limit="2000">
+            <![CDATA[
+                <h3>b) Development of Highly Qualified Personnel (2000 characters ½ pg)</h3>
+                <p><i>The training and retention of HQP is imperative to maximize the effectiveness of the Networks’ contribution to the wealth, wellness and well-being of Canadians. The multidisciplinary and multisectoral nature of a network should be utilized to provide unique mentorship and training opportunities to maximize HQP retention and integration in all facets of the workforce.</i></p>
+                <ul>
+                    <li>Give examples from your CC of HQP being provided with novel, transdisciplinary or innovative experiences, including examples of exposure to the economic, social or ethical implications of AGE-WELL research through training opportunities.</li>
+                    <li>Give examples of any new training initiatives developed from AGE-WELL work (e.g. training modules in your CC area, for example)</li>
+                    <li>If relevant, please highlight examples of HQP leadership / career development related to the knowledge mobilization of commercialization such as launching a start-up company, filing patents, hosting stakeholder consultations etc.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="networking" limit="2000">
+            <![CDATA[
+                <h3>c) Networking and Partnerships (2000 characters/ ½ pg)</h3>
+                <p><i>AGE-WELL must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex Canadian challenges it is designed to address.</i></p>
+                <ul>
+                    <li>Describe new collaborations developed during the reporting period (e.g. new links between national and international academic institutions, federal and provincial agencies, non-governmental organizations and private sector participants). Who was involved and what activities did the team engage in?</li>
+                    <li>Describe any examples of optimization of resources through the sharing of equipment and research facilities, databases and personnel within this CC.</li>
+                    <li>Describe cross-CC or cross-Project activities that your team engaged in this year, highlighting examples of working transdisciplinarily. </li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" limit="2000">
+            <![CDATA[
+                <h3>d) Knowledge Exchange and Exploitation (2000 characters / ½ pg)</h3>
+                <p><i>NCE networks are expected to generate social and economic benefits by ensuring the rapid flow of ideas and innovations from researchers to Canadian receptors.</i></p>
+                <ul>
+                    <li>AGE-WELL CCs play an important role in supporting network investigators to work towards achieving real-world impact. Describe ways in which your CC worked with AGE-WELL project teams, HQP, leadership towards this end.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="additional" >
+        <ReportItem id="outcomes">
+            <![CDATA[
+                <h3>a) Other Activities and Outcomes</h3>
+                <p>While it is important that we demonstrate achievement in the NCE Program areas above, we realize that there are other ways to define success and achievement relevant to AGE-WELL’s mission and vision. In this section, please describe any success or achievements that you would like to highlight that have not been covered in the sections above.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review">
+        
+    </ReportSection>
+    <ReportSection id="submit">
+        
+    </ReportSection>
+</Report>

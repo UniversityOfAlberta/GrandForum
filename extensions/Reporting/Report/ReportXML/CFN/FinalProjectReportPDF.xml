@@ -131,26 +131,26 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" title="Project Milestones and Deliverables" blobSection="FINAL_MILESTONES" type="ReportSection">
-        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+        <ReportItem id="milestones1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES1" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h2>Milestones</h2>
                 <h3>Year 1</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+        <ReportItem id="milestones2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES2" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h3>Year 2</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="milestones3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES3" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+        <ReportItem id="milestones3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_MILESTONES3" labels="Project Milestones|Description of Milestone|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h3>Year 3</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)"  multiple="true" class="wikitable">
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)"  multiple="true" class="wikitable smaller">
             <![CDATA[
                 <br /><br />
                 <h2>Deliverables</h2>
@@ -158,13 +158,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+        <ReportItem id="deliverables2" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES2" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h3>Year 2</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES3" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable">
+        <ReportItem id="deliverables3" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="FINAL_MIL_DELIVERABLES3" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" multiple="true" class="wikitable smaller">
             <![CDATA[
                 <h3>Year 3</h3>
                 {$item}
@@ -403,7 +403,9 @@
                 <h2>PI Financial Reports</h2>
             ]]>
         </ReportItem>
-        <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI">
+        <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI"
+                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
             <ReportItem id="ni_download" type="BudgetReportItem" structure="TVN_BUDGET_STRUCTURE" blobType="BLOB_EXCEL" blobItem="FINAL_BUD_UPLOAD" blobSubItem="{$user_id}" budgetText="Financial Report" downloadOnly="true">
                 <![CDATA[
                     <h3>{$user_name}</h3>
@@ -413,7 +415,9 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="hqp" type="EditableReportSection" blobSection="FINAL_HQP" name="HQP Trainees" pagebreak="false">
-        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
+        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP"
+                       startDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_FINAL_PROJECT,FINAL_INFORMATION,FINAL_INFORMATION_END,0,0,{$project_id})}">
             <ReportItemSet id="notfirst" type="NotFirstReportItemSet">
                 <ReportItem id="pagebreak" type="PageBreakReportItem">
                     <![CDATA[
@@ -489,7 +493,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                <ReportItem id="trainee_completed" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
                     <![CDATA[
                         <tr>
                             <td class='label'>Term Completed:</td>

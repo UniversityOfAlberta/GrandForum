@@ -5,32 +5,8 @@
     <Activities category="Activity">
         <Activity type="Event Organization" status="Invited|Not Invited">
             <data>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Workshop" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Seminar" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Panel" status="Invited|Not Invited">
-            <data>
-                <field label="Conference" type="String">conference</field>
+                <field label="Event Type" type="Select" options="Conference|Panel|Seminar|Workshop|Other">event_type</field>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
@@ -54,14 +30,6 @@
             </data>
         </Activity>
         
-        <Activity type="Reviewing" status="Invited|Not Invited">
-            <data>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
         <Activity type="Ethics Application">
             <data>
                 <field label="Ethics Office" type="String">location</field>
@@ -78,6 +46,14 @@
             </data>
         </Activity>
         
+        <Activity type="Leadership Position">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Position" type="String">position</field>
+                <field label="Level" type="Select" options="Local|National|International">level</field>
+            </data>
+        </Activity>
+        
         <Activity type="Meeting">
             <data>
                 <field label="Location" type="String">location</field>
@@ -86,26 +62,53 @@
             </data>
         </Activity>
         
+        <Activity type="Blog">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Activity>
+        
+        <Product type="Start-Up">
+            <data>
+                <field label="Company Name" type="String">name</field>
+            </data>
+        </Product>
+        
+        <Activity type="Internship">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Student Exchange">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
+        <Activity type="Summer Institute Attendance">
+            <data>
+                <field label="Skill Set Learned" type="String">skill_set_learned</field>
+                <field label="Start Date" type="Date">start_date</field>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Where/What Organization" type="String">organization</field>
+            </data>
+        </Activity>
+        
         <Activity type="Misc" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
-
-        <!--
-        There are a number of these in DB, but not supported in UI anymore
-        <Activity type="Panel" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-
-        <Activity type="Tutorial" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-        -->
     </Activities>
 
     <!-- Publications -->
@@ -384,19 +387,6 @@
             <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
-            <data>
-                <field label="Venue" type="String">venue</field>
-                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
-                <field bibtex="note" label="Note" type="String">note</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field bibtex="url" label="URL" type="URL">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-        </Publication>
-
         <Publication type="Conference Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
                 <type lov_id="00000000000000000000000100007000">Paper</type>
@@ -457,7 +447,7 @@
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="PHD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+        <Publication type="PhD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
                 <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
@@ -481,7 +471,7 @@
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
         
-        <Publication type="PHD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+        <Publication type="PhD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
             <data>
                 <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
@@ -579,15 +569,43 @@
             <authors ccv_id="0593e6041a7646c2b6cd2949878fdac5" ccv_name="Authors"></authors>
             <description ccv_id="4d0d46d2136b499f8a9d24ac05ae9ed3" ccv_name="Description / Contribution Value"></description>
         </Publication>
+        
+        <Publication type="Scoping Review" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
+            <data>
+                <field label="Venue" type="String">venue</field>
+                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field bibtex="url" label="URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Publication>
     </Publications>
 
     <!-- Presentations -->
     <Presentations category="Presentation">
         
-        <Presentation type="Seminar" status="Invited|Not Invited">
+        <Presentation type="Seminar Presentation" status="Invited|Not Invited">
             <data>
-                <field label="Location" type="String">location</field>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -624,16 +642,52 @@
         
         <Presentation type="Invited Presentation" status="">
             <data>
+                <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
         
-        <Presentation type="Media Interview" status="">
+        <Presentation type="Print Media Interview" status="">
             <data>
                 <field label="Location" type="String">location</field>
                 <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Radio Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="TV Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Digital News Interview" status="">
+            <data>
+                <field label="Location" type="String">location</field>
+                <field label="Media Organization" type="String">media_organization</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Workshop Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Event Location" type="String">event_location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -643,6 +697,7 @@
                 <field label="Event Title" type="String">event_title</field>
                 <field label="Event Location" type="String">event_location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Level" type="Radio" options="National|International">level</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Presentation>
@@ -650,39 +705,9 @@
     </Presentations>
     
     <!-- Products -->
-    <Products category="Product">
-        <Product type="Tool" status="">
-            <data></data>
-        </Product>
-        
+    <Products category="Product">        
         <Product type="Data Set" status="">
             <data></data>
-        </Product>
-        
-        <Product type="Report of Invention" status="">
-            <data></data>
-        </Product>
-        
-        <Product type="License Agreement" status="">
-            <data></data>
-        </Product>
-        
-        <Product type="Patent" status="">
-            <data>
-                <field label="Patent Number" type="String">number</field>
-            </data>
-        </Product>
-        
-        <Product type="Trademark" status="">
-            <data>
-                <field label="Application Number" type="String">number</field>
-            </data>
-        </Product>
-        
-        <Product type="Copyright" status="">
-            <data>
-                <field label="Registration Number" type="String">number</field>
-            </data>
         </Product>
 
         <Product type="Software" status="">
@@ -703,9 +728,31 @@
             </data>
         </Product>
         
-        <Product type="Start-Up">
+        <Product type="Policy Brief" status="">
+            <data></data>
+        </Product>
+        
+        <Product type="Website" status="">
             <data>
-                <field label="Company Name" type="String">name</field>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Algorithm" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Toolkit" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Product>
+        
+        <Product type="Framework" status="">
+            <data>
+                <field label="URL" type="URL">url</field>
             </data>
         </Product>
         
@@ -714,22 +761,59 @@
                 <field label="URL" type="URL">url</field>
             </data>
         </Product>
-        
     </Products>
+    
+    <!-- IP Management -->
+    <IPManagements category="IP Management">
+        <IPManagement type="License Agreement" status="">
+            <data></data>
+        </IPManagement>
+        
+        <IPManagement type="Report of Invention" status="">
+            <data></data>
+        </IPManagement>
+        
+        <IPManagement type="IP Disclosure" status="">
+            <data></data>
+        </IPManagement>
+        
+        <IPManagement type="Provisional Patent" status="">
+            <data></data>
+        </IPManagement>
+        
+        <IPManagement type="Patent Cooperation Treaty (PCT)" status="">
+            <data></data>
+        </IPManagement>
+        
+        <IPManagement type="Copyright" status="">
+            <data>
+                <field label="Registration Number" type="String">number</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Patent" status="">
+            <data>
+                <field label="Patent Number" type="String">number</field>
+            </data>
+        </IPManagement>
+        
+        <IPManagement type="Trademark" status="">
+            <data>
+                <field label="Application Number" type="String">number</field>
+            </data>
+        </IPManagement>
+    </IPManagements>
     
     <!-- Awards -->
     <Awards category="Award">
         <Award type="Award">
             <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Award>
-        
-        <Award type="Misc">
-            <data>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Award>
-    </Awards>   
+    </Awards>
 
 </Products>

@@ -53,6 +53,7 @@ class ProjectRolesCell extends Cell{
                     $values[] = $role->getRole();
                 }
             }
+            $values = array_unique($values);
             $this->value = implode(", ", $values);
         }
         else{

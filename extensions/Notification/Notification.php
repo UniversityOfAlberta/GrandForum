@@ -147,7 +147,6 @@ class Notification{
 	    else{
 	        $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php?action=viewNotifications&history=true'>View History</a><br />");
 	        if($me->isRoleAtLeast(STAFF)){
-	            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&history=true'>View Edit Member History</a><br />");
 	            $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View Add Member History</a><br />");
 	        }
 	        $wgOut->addHTML("<br />");

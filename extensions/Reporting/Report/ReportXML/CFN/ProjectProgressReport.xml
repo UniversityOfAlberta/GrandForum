@@ -56,7 +56,7 @@
         <ReportItem id="team" type="StaticReportItem">
             <![CDATA[
                 <h3>Project Team and Roles</h3>
-                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  To add or remove a member from the project, go to <a href='./Special:EditMember' target='_blank'>Edit Roles</a>.  If the person does not yet exist on the Forum, then you will need to go to <a href='./Special:AddMember' target='_blank'>Add Member</a>.  Both actions require staff/admin approval so expect some delay for the table to be updated.</span>
+                    <span>Please list all team members that participated in the project, including new members added since the last reporting period.  To add or remove a member from the project, go to <a href='./Special:ManagePeople' target='_blank'>Edit Roles</a>.  If the person does not yet exist on the Forum, then you will need to go to <a href='./Special:AddMember' target='_blank'>Add Member</a>.  Both actions require staff/admin approval so expect some delay for the table to be updated.</span>
                 <table class='wikitable'>
                     <tr>
                         <th>Team Member and<br />Institution/Organization</th>
@@ -392,7 +392,9 @@
                     <h2>PI Financial Reports</h2>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI">
+            <ReportItemSet id="nis" type="ProjectAllPeopleReportItemSet" role="PI" 
+                        startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                        endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
                 <ReportItem id="header" type="Static">
                     <![CDATA[
                         <h3>{$user_name}</h3>
@@ -428,10 +430,12 @@
     <ReportSection id="hqp" type="EditableReportSection" blobSection="PROG_HQP" name="HQP Trainees">
         <ReportItem id="instructions" type="StaticReportItem">
             <![CDATA[
-                <p>Click on the HQP's header and fill in any relevant information.  You may need to edit the HQP's profile in order for all of the information to show up.  If some HQP are missing, or none are showing up, then you will need to either <a href='https://forum.tvn-nce.ca/index.php/Special:AddMember' target='_blank'>create the HQP</a> or <a href='https://forum.tvn-nce.ca/index.php/Special:EditMember' target='_blank'>edit the roles</a> of an existing HQP so that they are listed as a member of {$project_name}.</p>
+                <p>Click on the HQP's header and fill in any relevant information.  You may need to edit the HQP's profile in order for all of the information to show up.  If some HQP are missing, or none are showing up, then you will need to either <a href='https://forum.tvn-nce.ca/index.php/Special:AddMember' target='_blank'>create the HQP</a> or <a href='https://forum.tvn-nce.ca/index.php/Special:ManagePeople' target='_blank'>edit the roles</a> of an existing HQP so that they are listed as a member of {$project_name}.</p>
             ]]>
         </ReportItem>
-        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP">
+        <ReportItemSet id="students" type="ProjectAllPeopleReportItemSet" role="HQP" 
+                       startDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_START,0,0,{$project_id})}" 
+                       endDate="{getText(RP_PROGRESS,PROG_INFORMATION,PROG_INFORMATION_END,0,0,{$project_id})}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="demographic_head" type="StaticReportItem">
                     <![CDATA[
@@ -496,7 +500,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="trainee_term" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
+                <ReportItem id="trainee_completed" type="IntegerReportItem" blobType="BLOB_TEXT" blobItem="SSA_HQP_COMPLETED" blobSubItem="{$user_id}" min="0" max="100" width="30px">
                     <![CDATA[
                         <tr>
                             <td class='label'>Term Completed:</td>
@@ -594,6 +598,6 @@
 
             ]]>
         </Instructions>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="perry@cfn-nce.ca,jeremy@cfn-nce.ca,doug@cfn-nce.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="perry@cfn-nce.ca,mat@cfn-nce.ca" />
     </ReportSection>
 </Report>

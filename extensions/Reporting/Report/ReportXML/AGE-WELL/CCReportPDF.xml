@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Crosscutting Activities Report" extends="WPReportPDF">
+    <ReportSection id="status">
+        <ReportItem id="report_info_head">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Crosscutting Activities Report</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary">
+        <ReportItem id="summary" limit="2000">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="nce">
+        <ReportItem id="excellence" limit="2000">
+            <![CDATA[
+                <h3>a) Excellence of the Research Program</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" limit="2000">
+            <![CDATA[
+                <h3>b) Development of Highly Qualified Personnel</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="networking" limit="2000">
+            <![CDATA[
+                <h3>c) Networking and Partnerships</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" limit="2000">
+            <![CDATA[
+                <h3>d) Knowledge Exchange and Exploitation</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="additional">
+        <ReportItem id="outcomes">
+            <![CDATA[
+                <h3>a) Other Activities and Outcomes</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

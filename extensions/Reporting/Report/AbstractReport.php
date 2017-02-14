@@ -233,10 +233,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             if(!$this->checkPermissions()){
-                $wgOut->setPageTitle("Permission error");
-                $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                                 <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-                return;
+                permissionError();
             }
             if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
                 $oldData = array();
@@ -774,6 +771,13 @@ abstract class AbstractReport extends SpecialPage {
                             else if(isset($perm['perm']['project'])){
                                 $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
+                            if($pResult && !($me->isMemberOf($this->project) || 
+                                             $me->leadershipOf($this->project) || 
+                                             $me->isThemeLeaderOf($this->project) || 
+                                             $me->isThemeCoordinatorOf($this->project) ||
+                                             $me->isRoleAtLeast(SD))){
+                                $pResult = false;
+                            }
                         }
                         break;
                     case "Person":
@@ -909,6 +913,7 @@ abstract class AbstractReport extends SpecialPage {
             $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');
+		//TODO: Add SOP and Update
             $json[$pdfFile] = array('tok'=>$tok, 'time'=>$tst, 'len'=>$len, 'name'=>"{$report->name}");
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
             	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
@@ -1310,17 +1315,23 @@ abstract class AbstractReport extends SpecialPage {
             $src = $_FILES['image']['tmp_name'];
             $hash = md5($src);
             system("convert +antialias -background transparent $src /tmp/$hash.png");
-            list($width, $height) = getimagesize("/tmp/$hash.png");
-            $imgConst = DPI_CONSTANT*72/96;
-            $width = $width/$imgConst;
-            $height = $height/$imgConst;
-            $png = file_get_contents("/tmp/$hash.png");
-            unlink("/tmp/$hash.png");
-            $str = "top.$('input[aria-label=Width]').val($width);
-                    top.$('input[aria-label=Height]').val($height);
-                    top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
-            echo $str;
-            exit;
+            if(file_exists("/tmp/$hash.png")){
+                list($width, $height) = getimagesize("/tmp/$hash.png");
+                $imgConst = DPI_CONSTANT*72/96;
+                $width = $width/$imgConst;
+                $height = $height/$imgConst;
+                $png = file_get_contents("/tmp/$hash.png");
+                unlink("/tmp/$hash.png");
+                $str = "top.$('input[aria-label=Width]').val($width);
+                        top.$('input[aria-label=Height]').val($height);
+                        top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
+                echo $str;
+                exit;
+            }
+            else{
+                echo "alert('There was a problem with the uploaded file.  Make sure that it is a valid image and under 512KB.');";
+                exit;
+            }
         }
         return true;
     }

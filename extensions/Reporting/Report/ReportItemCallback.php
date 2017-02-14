@@ -15,6 +15,7 @@ class ReportItemCallback {
             "project_name" => "getProjectName",
             "project_full_name" => "getProjectFullName",
             "project_url" => "getProjectUrl",
+            "project_website" => "getProjectWebsite",
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
@@ -26,21 +27,23 @@ class ReportItemCallback {
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_presentations" => "getNPresentations",
-            "project_n_journals" => "getNJournals",
-            "project_n_conferences" => "getNConferences",
+            "project_n_presentations_national" => "getNPresentationsNational",
+            "project_n_presentations_international" => "getNPresentationsInternational",
             "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
+            "getNStakeholders" => "getNStakeholders",
+            "getNStakeholderProducts" => "getNStakeholderProducts",
+            "project_n_partners" => "getNPartners",
             "project_n_products_other" => "getNProductsWithOther",
             "project_n_products_hqp" => "getNProductsWithHQP",
+            "project_n_hqp_lead_author" => "getNHQPLeadAuthor",
+            "project_n_hqp_co_author" => "getNHQPCoAuthor",
+            "project_n_hqp_co_presenter" => "getNHQPCoPresenter",
+            "project_n_hqp_interns" => "getNProductsWithHQPInterns",
             "project_contributions" => "getProjectContributions",
+            "project_contributions_cash" => "getProjectContributionsCash",
+            "project_contributions_inkind" => "getProjectContributionsInKind",
             "project_n_connected_projects" => "getNConnectedProjects",
-            "project_n_white" => "getNWhite",
-            "project_n_products" => "getNProducts",
-            "project_n_media" => "getNMedia",
-            "project_n_startups" => "getNStartUps",
-            "project_n_licenses" => "getNLicenses",
-            "project_n_patents" => "getNPatents",
-            "project_n_workshops" => "getNWorkshops",
             "project_n_hqp" => "getNHQP",
             "project_n_epic" => "getNEpic",
             "project_n_movedon" => "getNMovedOn",
@@ -95,8 +98,6 @@ class ReportItemCallback {
             "user_supervisors" => "getUserSupervisors",
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
-            "user_phase1_projects" => "getUserPhase1Projects", // Hopefully temporary
-            "user_phase2_projects" => "getUserPhase2Projects", // Hopefully temporary
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
             "user_requested_budget" => "getUserRequestedBudget",
             "user_allocated_budget" => "getUserAllocatedBudget",
@@ -137,7 +138,10 @@ class ReportItemCallback {
             "id" => "getId",
             "name" => "getName",
             "index" => "getIndex",
+            "value" => "getValue",
             "extraIndex" => "getExtraIndex",
+            "getProjects" => "getProjects",
+            "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
             "getNumber" => "getNumber",
@@ -226,6 +230,18 @@ class ReportItemCallback {
             $project_url = $project->getUrl();
         }
         return $project_url;
+    }
+    
+    function getProjectWebsite(){
+        $website = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $websiteUrl = $project->getWebsite();
+            if($websiteUrl != "" && $websiteUrl != "http://" && $websiteUrl != "https://"){
+                $website = "<a href='$websiteUrl' class='externalLink' target='_blank'>Website</a>";
+            }
+        }
+        return $website;
     }
     
     function getProjectStatus(){
@@ -388,38 +404,67 @@ class ReportItemCallback {
         $presentations = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $presentations = $project->getPapers('Presentation', $startDate, $endDate);
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                if($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation"){
+                    $presentations[] = $pres;
+                }
+            }
         }
         return count($presentations);
     }
     
-    function getNJournals($startDate = false, $endDate = false){
-        $journals = array();
+    function getNPresentationsNational($startDate = false, $endDate = false){
+        $presentations = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $journalsTmp = $project->getPapers('Publication', $startDate, $endDate);
-            foreach($journalsTmp as $journal){
-                if($journal->getType() == "Journal Paper" || $journal->getType() == "Journal Abstract"){
-                    $journals[] = $journal;
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                $data = $presentation->getData();
+                if(@$data['level'] == "National" && 
+                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
+                    $presentations[] = $pres;
                 }
             }
         }
-        return count($journals);
+        return count($presentations);
     }
     
-    function getNConferences($startDate = false, $endDate = false){
-        $journals = array();
+    function getNPresentationsInternational($startDate = false, $endDate = false){
+        $presentations = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $journalsTmp = $project->getPapers('Publication', $startDate, $endDate);
-            foreach($journalsTmp as $journal){
-                if($journal->getType() == "Conference Paper" || $journal->getType() == "Conference Abstract" ||
-                   $journal->getType() == "Proceedings Paper" || $journal->getType() == "Proceedings Paper"){
-                    $journals[] = $journal;
+            $pres = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($pres as $presentation){
+                $data = $presentation->getData();
+                if(@$data['level'] == "International" && 
+                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
+                    $presentations[] = $pres;
                 }
             }
         }
-        return count($journals);
+        return count($presentations);
+    }
+    
+    function getNFaceWithStakeholder($startDate = false, $endDate = false){
+        $faces = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $faceTmp = $project->getPapers('all', $startDate, $endDate);
+            foreach($faceTmp as $face){
+                if($face->getType() == "Meeting" || 
+                   $face->getType() == "Workshop Presentation" ||
+                   $face->getType() == "Seminar Presentation"){
+                    foreach($face->getAuthors() as $author){
+                        if($author->isStakeholder()){
+                            $faces[] = $face;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return count($faces);
     }
     
     function getNProductsWithPartners($startDate = false, $endDate = false){
@@ -446,6 +491,62 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $collaborators = $project->getAllPeopleDuring(CHAMP, $startDate, $endDate);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $c){
+                foreach($c->getPartners() as $p){
+                    $collaborators[$p->getOrganization()] = $p;
+                }
+            }
+        }
+        return count($collaborators);
+    }
+    
+    function getNStakeholders($startDate = false, $endDate = false, $stakeholderCategory="", $role = null){
+        $stakeholders = array();
+        $role = ($role == "" || $role == "null") ? null : $role;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $people = $project->getAllPeopleDuring($role, $startDate, $endDate);
+            foreach($people as $key => $person){
+                if($person->isStakeHolder() && $person->getStakeholder() == $stakeholderCategory){
+                    $stakeholders[$person->getId()] = $person;
+                }
+            }
+        }
+        return count($stakeholders);
+    }
+    
+    function getNStakeholderProducts($startDate = false, $endDate = false, $stakeholderCategory="", $category="all"){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers($category, $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $author){
+                    if($author->isStakeHolder() && $author->getStakeholder() == $stakeholderCategory){
+                        $products[] = $product;
+                        break;
+                    }
+                }
+            }
+        }
+        return count($products);
+    }
+    
+    function getNPartners($startDate = false, $endDate = false, $industry = null, $level = null){
+        $industry = ($industry == "" || $industry == "null") ? null : $industry;
+        $level =    ($level    == "" || $level    == "null") ? null : $level;
+        
+        $collaborators = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $c){
+                foreach($c->getPartners() as $p){
+                    if(($industry == null || $p->getIndustry() == $industry) &&
+                       ($level    == null || $p->getLevel()    == $level)){
+                        $collaborators[$p->getOrganization()] = $p;
+                    }
+                }
+            }
         }
         return count($collaborators);
     }
@@ -486,12 +587,104 @@ class ReportItemCallback {
         return count($products);
     }
     
+    function getNHQPLeadAuthor($startDate = false, $endDate = false){
+        $hqps = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $author){
+                    if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                        $hqps[$author->getId()] = $author;
+                    }
+                    break; // Only do the first
+                }
+            }
+        }
+        return count($hqps);
+    }
+    
+    function getNHQPCoAuthor($startDate = false, $endDate = false){
+        $hqps = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $key => $author){
+                    if($key > 0){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                            $hqps[$author->getId()] = $author;
+                        }
+                    }
+                }
+            }
+        }
+        return count($hqps);
+    }
+    
+    function getNHQPCoPresenter($startDate = false, $endDate = false){
+        $hqps = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Presentation', $startDate, $endDate);
+            foreach($productTmp as $product){
+                foreach($product->getAuthors() as $key => $author){
+                    if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                        $hqps[$author->getId()] = $author;
+                    }
+                }
+            }
+        }
+        return count($hqps);
+    }
+    
+    function getNProductsWithHQPInterns($startDate = false, $endDate = false){
+        $products = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            foreach($productTmp as $product){
+                if($product->getType() == "Internship"){
+                    foreach($product->getAuthors() as $key => $author){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                            $products[] = $product;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return count($products);
+    }
+    
     function getProjectContributions($startDate = false, $endDate = false){
         $contributions = 0;
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
                 $contributions += $contribution->getTotal();
+            }
+        }
+        return number_format($contributions);
+    }
+    
+    function getProjectContributionsCash($startDate = false, $endDate = false){
+        $contributions = 0;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
+                $contributions += $contribution->getCash();
+            }
+        }
+        return number_format($contributions);
+    }
+    
+    function getProjectContributionsInKind($startDate = false, $endDate = false){
+        $contributions = 0;
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromId($this->reportItem->projectId);
+            foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
+                $contributions += $contribution->getKind();
             }
         }
         return number_format($contributions);
@@ -512,88 +705,34 @@ class ReportItemCallback {
         return count($connectedProjects);
     }
     
-    function getNWhite($startDate = false, $endDate = false){
-        $whites = array();
+    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all", $data=""){
+        $products = array();
         if($this->reportItem->projectId != 0){
+            // Project Products
             $project = Project::newFromId($this->reportItem->projectId);
-            $whitesTmp = $project->getPapers('Publication', $startDate, $endDate);
-            foreach($whitesTmp as $white){
-                if($white->getType() == "White Paper"){
-                    $whites[] = $white;
+            $products = $project->getPapers($category, $startDate, $endDate);
+        }
+        else if($this->reportItem->personId != 0){
+            // Person Products
+            $person = Person::newFromId($this->reportItem->personId);
+            $products = $person->getPapersAuthored($category, $startDate, $endDate, true, true);
+        }
+        if($type != "all"){
+            $types = explode("|", $type);
+            foreach($products as $key => $product){
+                if(!in_array($product->getType(), $types)){
+                    // Type doesn't match
+                    unset($products[$key]);
                 }
             }
         }
-        return count($whites);
-    }
-    
-    function getNProducts($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $products = $project->getPapers('Product', $startDate, $endDate);
-        }
-        return count($products);
-    }
-    
-    function getNMedia($startDate = false, $endDate = false){
-        $multimedia = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $multimedia = $project->getMultimediaDuring($startDate, $endDate);
-        }
-        return count($multimedia);
-    }
-    
-    function getNStartUps($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
-            foreach($productsTmp as $product){
-                if($product->getType() == "Start-Up"){
-                    $products[] = $product;
-                }
-            }
-        }
-        return count($products);
-    }
-    
-    function getNLicenses($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
-            foreach($productsTmp as $product){
-                if($product->getType() == "License Agreement"){
-                    $products[] = $product;
-                }
-            }
-        }
-        return count($products);
-    }
-    
-    function getNPatents($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Product", $startDate, $endDate);
-            foreach($productsTmp as $product){
-                if($product->getType() == "Patent"){
-                    $products[] = $product;
-                }
-            }
-        }
-        return count($products);
-    }
-    
-    function getNWorkshops($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productsTmp = $project->getPapers("Activity", $startDate, $endDate);
-            foreach($productsTmp as $product){
-                if($product->getType() == "Workshop"){
-                    $products[] = $product;
+        if($data != ""){
+            foreach($products as $key => $product){
+                $productData = $product->getData();
+                $datas = explode("=", $data);
+                if($productData[$datas[0]] != $datas[1]){
+                    // Data doesn't match
+                    unset($products[$key]);
                 }
             }
         }
@@ -997,8 +1136,12 @@ class ReportItemCallback {
     }
     
     function getUserSubRoles(){
+        global $config;
         $person = Person::newFromId($this->reportItem->personId);
-        $roles = $person->getSubRoles();
+        $roles = array();
+        foreach(@$person->getSubRoles() as $subRole){
+            $roles[] = $config->getValue('subRoles', $subRole);
+        }
         return implode(", ", $roles);
     }
     
@@ -1072,6 +1215,21 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getProjects(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $projects = array();
+        foreach($person->getProjects() as $project){
+            if(!$project->isSubProject()){
+                $deleted = ($project->isDeleted()) ? " (Ended)" : "";
+                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}{$deleted}</a>";
+            }
+        }
+        if(count($projects) > 0){
+            return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
     function getUserProjectEndDate(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromId($this->reportItem->projectId);
@@ -1080,34 +1238,6 @@ class ReportItemCallback {
             return time2date($project->getEndDate($person));
         }
         return "";
-    }
-    
-    function getUserPhase1Projects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
-            if(!$project->isSubProject() && $project->getPhase() == 1){
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-        }
-        if(count($projects) > 0){
-            return implode(", ", $projects);
-        }
-        return "N/A";
-    }
-    
-    function getUserPhase2Projects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $projects = array();
-        foreach($person->getProjectsDuring(REPORTING_YEAR."-04-01 00:00:00", (REPORTING_YEAR+1)."-03-31 23:59:59") as $project){
-            if(!$project->isSubProject() && $project->getPhase() == 2){
-                $projects[] = "<a target='_blank' href='{$project->getUrl()}'>{$project->getName()}</a>";
-            }
-        }
-        if(count($projects) > 0){
-            return implode(", ", $projects);
-        }
-        return "N/A";
     }
     
     function getTVNFileNumber(){
@@ -1477,6 +1607,16 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getValue(){
+        $default = $this->reportItem->getAttr('default', '');
+		if($default != ''){
+		    return $default;
+		}
+		else{
+		    return $this->reportItem->getBlobValue();
+		}
+    }
+    
     function getExtraIndex(){
         $set = $this->reportItem->getSet();
         while(!($set instanceof ArrayReportItemSet)){
@@ -1503,7 +1643,7 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", "){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
         $result = $blb->load($addr);
@@ -1514,7 +1654,7 @@ class ReportItemCallback {
             $array = $blb->getData();
             $value = @$array[$index];
             if(is_array($value)){
-                return @implode(", ", $value);
+                return @implode($delim, $value);
             }
             return $value;
         }
@@ -1531,12 +1671,22 @@ class ReportItemCallback {
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
     }
     
-    function concat($str1, $str2){
-        return "{$str1}{$str2}";
+    function concat(){
+        $args = func_get_args();
+        $concat = "";
+        foreach($args as $arg){
+            $concat .= $arg;
+        }
+        return $concat;
     }
     
-    function add($val1, $val2){
-        return $val1 + $val2;
+    function add(){
+        $args = func_get_args();
+        $sum = 0;
+        foreach($args as $arg){
+            $sum += $arg;
+        }
+        return $sum;
     }
     
     function subtract($val1, $val2){

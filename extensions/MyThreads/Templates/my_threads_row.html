@@ -1,5 +1,11 @@
 <td align="left">
+    <% if(stickied == 1){ %>
+        <b>
+    <% } %>
     <a href="<%= url %>"><%= striphtml(title) %></a>
+    <% if(stickied == 1){ %>
+        </b>
+    <% } %>
 </td>
 <td align="right" style="width:10px">
     <%= posts.length %>

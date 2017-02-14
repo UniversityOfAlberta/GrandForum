@@ -212,12 +212,13 @@ class ReportXMLParser {
     
     // Parses the XML document starting at the root
     function parse($quick=false){
-        if(isset(self::$parserCache[$this->report->xmlName])){
-            $this->parser = self::$parserCache[$this->report->xmlName];
+        $md5 = md5($this->xml);
+        if(isset(self::$parserCache[$md5])){
+            $this->parser = self::$parserCache[$md5];
         }
         else{
             $this->parser = simplexml_load_string($this->xml);
-            self::$parserCache[$this->report->xmlName] = $this->parser;
+            self::$parserCache[$md5] = $this->parser;
         }
         $this->parseReport($quick);
         $this->showErrors();

@@ -942,6 +942,11 @@ div#person .ui-tabs-panel {
     box-shadow: none;
 }
 
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    width: 100%;
+    text-align: right;
+}
+
 .tick {
     border: 1px solid transparent; /*follows slide handle style for sizing purposes*/
     position: absolute;
@@ -1070,12 +1075,12 @@ del {
     font-size: 1.0em;
     font-weight: bold;
     vertical-align: top;
-    line-height: 27px;
+    line-height: 25px;
     white-space:nowrap;
 }
 
 .field {
-    
+    vertical-align: top;
 }
 
 /* Messages */

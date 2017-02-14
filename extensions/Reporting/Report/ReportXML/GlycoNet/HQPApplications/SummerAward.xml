@@ -37,6 +37,15 @@
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
+        <Role role="AR">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="" />
+            <SectionPermission id="hqp_description" permissions="" />
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="declaration" permissions="" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
         <ReportItem id="instructions" type="Static">
@@ -61,6 +70,7 @@
                 <h3>Funding Available</h3>
                 <p>Each award is valued at $4,500 for 16 consecutive weeks of full time employment, with supervisors supplementing the award to a value of at least 25% from other sources (total of at least $5625/student/summer). Six awards will be available each year.</p>
                 
+                
                 <h3>Instructions</h3>
                 <p>The applicant must complete the application through the GlycoNet forum. Applicants can be added to the forum by their proposed supervisors. A complete application includes:</p>
                 <ul>
@@ -69,17 +79,13 @@
                     <li>Project description (completed by the supervisor through the forum</li>
                     <li>Maximum 1-page signed letter of support from the applicant’s proposed supervisor, speaking to the student’s research potential and interest in the glycomics field (uploaded by the supervisor as a PDF)</li>
                 </ul>
+                <p><b style='color: red;'>The application form is submitted by the student applicant, not the proposed supervisor.</b></p>
                 
                 <p>Deadline for application is <b>February 1</b> each year.</p>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="application" name="Application" title="Application Form" tooltip="Application Form" type="EditableReportSection" blobSection="APPLICATION">
-        <Instructions>
-            <![CDATA[
-                Hello World
-            ]]>
-        </Instructions>
         <ReportItem id="trainee_head" type="Static">
             <![CDATA[
                 <h2>Trainee</h2>
@@ -108,7 +114,7 @@
                         <tr><td align='right' style='font-weight:bold;'>Email:</td><td>{$user_email}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="residency" type="Select" options="Candadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
+        <ReportItem id="residency" type="Select" options="Canadian|Permanent Resident" blobType="BLOB_TEXT" blobItem="RESIDENCY">
             <![CDATA[
                 <tr>
                     <td align='right' style='font-weight:bold;'>Residency Status:</td><td>{$item}</td>
@@ -334,7 +340,7 @@
                 <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" blobSubItem="{$user_id}" limit="750" rich="true" height="400px">
                     <![CDATA[
                         <h2>Project Description - <small>750 words maximum, including references</small></h2>
-                        <p>Describe the proposed exchange, addressing the overall project goals, your role in the project during the exchange, timelines, methodologies, and the benefits this exchange will provide to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                        <p>Describe the proposed summer research project, emphasizing the student's role and alignment with one or more of GlycoNet's themes. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
                         {$item}
                     ]]>
                 </ReportItem>

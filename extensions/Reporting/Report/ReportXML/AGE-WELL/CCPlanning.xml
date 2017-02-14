@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="CC Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF,CC1PlanningPDF,CC2PlanningPDF,CC3PlanningPDF,CC4PlanningPDF" personId="0" ajax="true" disabled="false">
+<Report name="CC Activity Planning" reportType="RP_CC_PLANNING" pdfType="RPTP_CC_PLANNING" pdfFiles="CCPlanningPDF,CC1PlanningPDF,CC2PlanningPDF,CC3PlanningPDF,CC4PlanningPDF" personId="0" ajax="true" disabled="false" year="2015">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />

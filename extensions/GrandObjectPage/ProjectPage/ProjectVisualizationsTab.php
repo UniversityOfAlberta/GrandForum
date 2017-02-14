@@ -1,10 +1,5 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
-
 class ProjectVisualizationsTab extends AbstractTab {
 
     var $project;

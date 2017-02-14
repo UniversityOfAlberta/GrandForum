@@ -29,7 +29,7 @@ PageRouter = Backbone.Router.extend({
 });
 
 function pluralizeCategory(category){
-    if(category == 'Press'){
+    if(category == 'Press' || category == 'IP Management'){
         category = category;
     }
     else{

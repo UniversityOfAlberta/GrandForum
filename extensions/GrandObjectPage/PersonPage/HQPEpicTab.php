@@ -24,14 +24,19 @@ class HQPEpicTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         if(!$this->userCanView()){
             return "";
         }
         $position = strtolower($this->person->getPosition());
-        if($this->person->isSubRole("Affiliate HQP")){
+        if($this->person->isSubRole("Affiliate HQP") || ($position == "undergraduate student" && $this->person->isSubRole("Alumni HQP"))){
             $this->generateAffiliate();
         }
-        else if($this->person->isSubRole("WP/CC Funded HQP")){
+        else if($this->person->isSubRole("WP/CC Funded HQP") || 
+               ($this->person->isSubRole("Alumni HQP") && $position != "undergraduate student" &&
+                                                          $position != "graduate student - doctoral" &&
+                                                          $position != "graduate student - master's" &&
+                                                          $position != "post-doctoral fellow")){
             $this->generateWPCC();
         }
         else if($position == "graduate student - doctoral"){
@@ -43,7 +48,9 @@ class HQPEpicTab extends AbstractEditableTab {
         else if($position == "post-doctoral fellow"){
             $this->generatePDF();
         }
-        $this->html .= "<p><b>When your training is complete, please fill out the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EPICReport'>Annual Report - EPIC Survey</a></b></p>";
+        if($me->getId() == $this->person->getId()){
+            $this->html .= "<p><b>When your training is complete, please fill out the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EPICReport'>Annual Report - EPIC Survey</a></b></p>";
+        }
     }
     
     function generateEditBody(){
@@ -75,7 +82,7 @@ class HQPEpicTab extends AbstractEditableTab {
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -122,9 +129,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -156,7 +163,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -203,9 +210,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -237,7 +244,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -274,9 +281,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_SUP, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_SUP, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -309,7 +316,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -345,9 +352,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -381,7 +388,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             <li>Evidence of activity completion or participation may include: a screenshot, an abstract, conference proceedings, emails, a letter from your supervisor to name a few.</li>
         </ul>
     </li>
-    <li><b>COMPLETE AND SUBMIT ANNUAL REPORT:</b> After completing your activities, submit via Forum an annual report that includes your completed checklist, evidence of satisfactory completion of your planned activities, and a brief evaluation of the activities chosen in terms of learning outcomes.</li>
+    <li><b>COMPLETE AND SUBMIT EPIC REPORTING:</b> After completing your activities please ensure that your EPIC checklist is completed in full. To receive your certificate you must complete and submit the EPIC Survey located at the bottom of your EPIC table. This survey is a brief evaluation of the EPIC program and allows you to upload your evidence of activity completion.  Once this is submitted, the Education and Training Administrator will contact you with a certificate or follow-up questions.</li>
 </ol>";
         $this->html .= "<table class='wikitable'>
             <tr>
@@ -417,9 +424,9 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
             "<tr>
                 <th colspan='4'>Reporting</th>
             </tr>".
-            $this->generateRow("Training activities, publications, presentations must be updated in Forum by 1 March",
+            $this->generateRow("NCE Reporting: EPIC tabs, outputs (publications, presentations etc.) & contributions (awards, grants etc.) must be updated in Forum by 1 March",
                                array(HQP_EPIC_PUBS_DESC, HQP_EPIC_PUBS_HQP, HQP_EPIC_PUBS_NMO)).
-            $this->generateSpecialRow("Annual Report w/ evidence of completed activities submitted to Forum by ",
+            $this->generateSpecialRow("EPIC Reporting: EPIC survey w/ evidence of completed activities submitted to Forum by ",
                                array(HQP_EPIC_REP_DESC, HQP_EPIC_REP_HQP, HQP_EPIC_REP_NMO));
         
         $this->html .= "</table>
@@ -432,7 +439,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
         $str .= "<td><small>{$description}";
         $value = $this->getBlobValue('HQP_EPIC_REP_DATE');
         if($value == ""){
-            $value = "15 August";
+            $value = "Date not set";
         }
         $value = str_replace("'", "&#39;", $value);
         if($me->isRoleAtLeast(STAFF) && $this->visibility['edit']){

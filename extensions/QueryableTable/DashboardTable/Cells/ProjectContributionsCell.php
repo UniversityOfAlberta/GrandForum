@@ -129,21 +129,36 @@ EOF;
             $date = $contribution->getStartYear();
             $projects = $contribution->getProjects();
             $partners = $contribution->getPartners();
+            $people = $contribution->getPeople();
             $projs = array();
             $parts = array();
+            $pers = array();
             $pdfParts = array();
             foreach($projects as $project){
                 if(!$project->isSubProject()){
                     $projs[] = "<a href='{$project->getUrl()}' target='_blank'>{$project->getName()}</a>";
                 }
             }
+            foreach($people as $person){
+                if(is_object($person)){
+                    $pers[] = "{$person->getNameForForms()}";
+                }
+                else{
+                    $pers[] = "$person";
+                }
+            }
             $amount = 0;
             foreach($partners as $part){
                 if($type == "All" || $part->getOrganization() == $partner->getOrganization()){
-                    $parts[] = $part->getOrganization();
+                    $parts[] = $part->getOrganization()." <small style='vertical-align:middle;'>{$part->getContact()}</small>";
                     $amt = number_format($contribution->getByType($contribution->getTypeFor($part), $part));
                     $amounts[] = "\$$amt";
-                    $types[] = "&nbsp;({$contribution->getHumanReadableTypeFor($part)})";
+                    if($contribution->getHumanReadableSubTypeFor($part) != 'None'){
+                        $types[] = "&nbsp;({$contribution->getHumanReadableTypeFor($part)}/{$contribution->getHumanReadableSubTypeFor($part)})";
+                    }
+                    else{
+                        $types[] = "&nbsp;({$contribution->getHumanReadableTypeFor($part)})";
+                    }
                     $amount += $contribution->getByType($type, $partner);
                 }
             }
@@ -152,7 +167,7 @@ EOF;
             }
             $amount = number_format($amount);
             
-            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td class='pdfnodisplay' style='text-align:right;'>\${$amount} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td class='pdfnodisplay'>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly'><div style='display:inline-block;width: 17.5%;margin-left:2.5%;vertical-align:top;'>".implode("<br />", $parts)."</div><div style='display:inline-block;width: 10%;vertical-align:top;text-align:right;'>".implode("<br />", $amounts)."<br /><b>\${$amount}</b></div><div style='display:inline-block;vertical-align:top;width:20%;'>".implode("<br />", $types)."</div><div class='pdfOnly' style='width:50%;text-align:right;display:inline-block;'><i>".implode(", ", $projs)."</i></div></div></td>";
+            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td class='pdfnodisplay' style='text-align:right;'>\${$amount} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td class='pdfnodisplay'>".implode(", ", $parts)."</td><td> <a href='{$contribution->getUrl()}' target='_blank'><i>{$contribution->getName()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly'><div style='display:inline-block;width: 47.5%;margin-left:2.5%;vertical-align:top;'>".implode("<br />", $parts)."</div><div style='display:inline-block;width: 10%;vertical-align:top;text-align:right;'>".implode("<br />", $amounts)."<br /><b>\${$amount}</b></div><div style='display:inline-block;vertical-align:top;width:20%;'>".implode("<br />", $types)."</div><div class='pdfOnly' style='width:20%;text-align:right;display:inline-block;'><i>".implode(", ", $projs)."</i><br />".implode(", ", $pers)."</div></div></td>";
             return $details;
         }
         
@@ -165,9 +180,11 @@ EOF;
                     $details = $this->initDetailsTable($type, $this->getHeaders());
                     foreach($values as $partnerOrg => $items){
                         $partner = null;
+                        $contribution = Contribution::newFromId($items);
                         if($partnerOrg != ""){
                             $partner = Partner::newFromName($partnerOrg);
                             $partner->organization = $partnerOrg;
+                            $partner->contact = $contribution->getContactFor($partnerOrg);
                         }
                         foreach($items as $item){
                             $details .= '<tr>'.$this->detailsRowWithType($item, $type, $partner)."</tr>\n";

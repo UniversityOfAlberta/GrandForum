@@ -1,16 +1,18 @@
 <?php
 
+autoload_register('AccessControls');
+
 require "Management.php";
 //require "NamespaceManager.php";
 require "AnnokiNamespaces.php";
-require "UserNamespaces.php";
+//require "UserNamespaces.php";
 require "AccessControls.body.php";
 //require "CustomSpecialUserRights.php";
-require "ProtectableArticle.php";
+//require "ProtectableArticle.php";
 require "CustomSpecialSearch.php";
 require "ProtectedChangesList.php";
-require "ProtectedRSSFeed.php";
-require "ProtectedAtomFeed.php";
+//require "ProtectedRSSFeed.php";
+//require "ProtectedAtomFeed.php";
 require "CustomSearchEngine.php";
 require "EditPermissions.php";
 require "GrandAccess.php";
@@ -91,14 +93,19 @@ $wgExtensionCredits['specialpage'][] = array(
 				       );
 				       
 function permissionError(){
-    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
     if($wgTitle == null){
         // Depending on when this function is called, the title may not be created yet, so make an empty one
         $wgTitle = new Title();
     }
     $wgOut->setPageTitle("Permission error");
-    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>");
+    if(!$wgUser->isLoggedIn()){
+        $wgOut->addHTML("<p>Login to your account or return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+    }
+    else{
+        $wgOut->addHTML("<p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+    }
     $wgOut->output();
     $wgOut->disable();
     exit;

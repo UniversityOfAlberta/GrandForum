@@ -123,8 +123,6 @@
         'Notification',
         'GrandObjectPage',
         'Cal',
-        'TempEd',
-        //'TextReplace',
         //'Twitter',
         'MailingList',
         'AddMember',
@@ -140,7 +138,6 @@
         'Impersonation',
         'Visualizations',
         'PublicVisualizations',
-        //'Survey',
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
@@ -299,7 +296,12 @@
     $config->setValue("subRoles", array());
     
     $config->setValue("roleAliases", array());
+    
+    $config->setValue("stakeholderCategories", array());
         
+    $config->setValue("boardMods", array($config->getConst('STAFF'), 
+                                         $config->getConst('MANAGER'),
+                                         $config->getConst('ADMIN')));
     /* Other */
     $config->setValue("analyticsCode", "");
 ?>

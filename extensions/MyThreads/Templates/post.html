@@ -1,7 +1,8 @@
 <% if(id != null){ %>
     <div class="thread-message" width="100%">
         <% if(isMine && !this.editing){ %>
-            <span class="edit-icon" style="float:right;"></span>
+            <span class="delete-icon" style="float:right; margin-left: 3px;"></span>
+            <span class="edit-icon" style="float:right; margin-right: 3px;"></span>
         <% } %>
         <table padding="0">
             <tbody>
@@ -33,7 +34,7 @@
             </div>
         <% } else { %>
             <div class="inner-message">
-                <%= nl2br(striphtml(message)) %>
+                <%= message %>
             </div>
         <% } %>
     </div>

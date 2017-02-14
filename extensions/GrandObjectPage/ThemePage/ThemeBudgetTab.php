@@ -95,7 +95,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 });
             </script>");
             $this->html .= "<div id='budgetAccordion'>";
-            $endYear = YEAR;
+            $endYear = date('Y', time() - (9 * 30 * 24 * 60 * 60));
 
             $phaseDates = $config->getValue("projectPhaseDates");
             $startYear = substr($phaseDates[$theme->getPhase()], 0, 4);
@@ -121,7 +121,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);
                 $justification = $blb->getData();
-                // Carry Over Amount
+                // Carry Forward Amount
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->theme->getId());
                 $addr = ReportBlob::create_address('RP_THEME', 'THEME_BUDGET', 'THEME_BUD_CARRYOVERAMOUNT', 0);
                 $result = $blb->load($addr);
@@ -171,7 +171,7 @@ class ThemeBudgetTab extends AbstractEditableTab {
                             $justification = nl2br($justification);
                             $this->html .= "<h3>Budget Justification</h3>
                                             {$justification}
-                                            <h3>Carry Over</h3>
+                                            <h3>Carry Forward</h3>
                                             <p><b>Amount:</b> \$".number_format($carryOverAmount)."</p>";
                         }
                     }
@@ -180,10 +180,12 @@ class ThemeBudgetTab extends AbstractEditableTab {
                     if($config->getValue('networkName') == "AGE-WELL"){
                         $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL WP Budget.xlsx'>Budget Template</a>";
                         $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item. Please remember that only known expenses are to be requested at this time. You can request the rest of the allocated funds throughout the year as activities and events are organized.</p>
+                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item.</p>
+                                        <p>It is requested that all Y".(($i-$startYear)+1)." funds are distributed at this time. It is understood that WPLs may not know where/how all of the funds will be spent throughout the year. It is asked that the funds are handled by the WPLs throughout the year via invoicing/expense reimbursement, and avoid second order transfers, as funds are spent throughout the year.</p>
                                         <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
-                                        <h3>Carry Over</h3>
-                                        <p>Total Amount of the Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget you wish to carry over to Year ".($i-$startYear+1).": $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
+                                        <h3>Carry Forward</h3>
+                                        <p>Total amount of the unspent Year ".($i-$startYear)." {$config->getValue('projectThemes')} budget funds: $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>
+                                        <p><small>*Note: the total amount of unspent funds will be deducted from your Year ".($i-$startYear+1)." budget. Please ensure that the reduction of Y".($i-$startYear)." unspent funds from your Year ".($i-$startYear+1)." budget is factored in above.</small></p>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";

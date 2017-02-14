@@ -1,9 +1,9 @@
 (function( $ ) {
     $.widget( "custom.combobox", {
       _create: function() {
-        var interval = setInterval($.proxy(function(){
-            if(this.element.is(":visible")){
-                
+        var interval = null;
+        var createFn = $.proxy(function(){
+            if(this.element.is(":visible") || this.element.css('width') != '0px'){
                 var next = this.element.next();
                 if(next.hasClass('custom-combobox')){
                     next.remove();
@@ -24,7 +24,13 @@
                 clearInterval(interval);
                 interval = null;
             }
-        }, this), 10);
+        }, this);
+        if(this.element.is(":visible") || this.element.css('width') != '0px'){
+            createFn();
+        }
+        else{
+            var interval = setInterval(createFn, 10);
+        }
       },
  
       _createAutocomplete: function() {
@@ -61,6 +67,12 @@
               item: ui.item.option
             });
             $(invis).attr('value', ui.item.option.value);
+            $("option", element).prop('selected', false);
+            $("option", element).filter(function() {
+                //may want to use $.trim in here
+                return $(this).text() == ui.item.option.value; 
+            }).prop('selected', true);
+            element.trigger('change');
         });
         
         $(this.input).on('keyup', function(event, ui){
@@ -72,10 +84,22 @@
             });
             if(!found){
                 $(invis).attr('value', $(event.target).val());
+                var option = $("<option>");
+                option.addClass('extra');
+                option.html($(event.target).val());
+                option.prop('selected', true);
+                $("option.extra", element).remove();
+                element.append(option);
             }
             else{
                 $(invis).attr('value', found);
+                $("option", element).prop('selected', false);
+                $("option", element).filter(function() {
+                    //may want to use $.trim in here
+                    return $(this).text() == found; 
+                }).prop('selected', true);
             }
+            element.trigger('change');
         });
         
         $(this.input).on('change', function(event, ui){
@@ -87,10 +111,22 @@
             });
             if(!found){
                 $(invis).attr('value', $(event.target).val());
+                var option = $("<option>");
+                option.addClass('extra');
+                option.html($(event.target).val());
+                option.prop('selected', true);
+                $("option.extra", element).remove();
+                element.append(option);
             }
             else{
                 $(invis).attr('value', found);
+                $("option", element).prop('selected', false);
+                $("option", element).filter(function() {
+                    //may want to use $.trim in here
+                    return $(this).text() == found; 
+                }).prop('selected', true);
             }
+            element.trigger('change');
         });
         $(this.input).trigger('change');
       },

@@ -1036,6 +1036,20 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
     border-radius: 0 !important;
 }
 
+.ui-dialog {
+    padding: 2px;
+}
+
+.ui-dialog-buttonset {
+    position: relative;
+    width: 100%;
+    text-align: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 0.3em 1em 0.5em;
+}
+
 /*.ui-state-focus {
     font-weight: bold !important;
     font-size: 12px !important;
@@ -1077,12 +1091,12 @@ del {
     font-size: 1.0em;
     font-weight: bold;
     vertical-align: top;
-    line-height: 27px;
+    line-height: 25px;
     white-space:nowrap;
 }
 
 .field {
-    
+    vertical-align: top;
 }
 
 /* Messages */
@@ -1220,6 +1234,11 @@ td.budgetError {
 
 .ui-dialog .ui-dialog-titlebar {
 	color: #FFFFFF;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    width: 100%;
+    text-align: right;
 }
 
 /* jQuery tablesort plugin CSS */

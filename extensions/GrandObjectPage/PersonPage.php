@@ -1,19 +1,20 @@
 <?php
 
-require_once('PersonPage/PersonProfileTab.php');
-require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
-$personPage = new PersonPage();
-$wgHooks['ArticleViewHeader'][] = array($personPage, 'processPage');
-$wgHooks['userCan'][] = array($personPage, 'userCanExecute');
+$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
+$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
 
+$wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
+$wgHooks['userCan'][] = 'PersonPage::userCanExecute';
 $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
 
     function userCanExecute(&$title, &$user, $action, &$result){
-	global $config;
+        global $config;
         $name = $title->getNSText();
         if($name == HQP){
             $result = $user->isLoggedIn() || $config->getValue('hqpIsPublic');
@@ -24,7 +25,7 @@ class PersonPage {
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $result = true;
-        $this->userCanExecute($wgTitle, $wgUser, "read", $result);
+        self::userCanExecute($wgTitle, $wgUser, "read", $result);
         if(!$result){
             permissionError();
         }
@@ -106,13 +107,18 @@ class PersonPage {
                 $visibility['isSupervisor'] = $isSupervisor;
                 $visibility['isChampion'] = $isChampion;
                 
-                $this->showTitle($person, $visibility);
+                self::showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
+                }
+                if($config->getValue('networkName') == 'AGE-WELL' && 
+                    ($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00') || 
+                     $person->isRoleDuring(HQP."-Candidate", '0000-00-00 00:00:00', '2030-00-00 00:00:00'))){
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
@@ -131,7 +137,7 @@ class PersonPage {
                 //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
-                $this->showTitle($person, $visibility);
+                self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();
             }

@@ -20,14 +20,8 @@ class ProjectPeopleRolesCell extends Cell{
         }
         if(isset($params[2])){
             $person = Person::newFromName($params[2]);
-            $values = array();
-            foreach($person->getRoles() as $role){
-                if($role->getRole() == HQP || 
-                    $role->getRole() == NI){
-                    $values[] = $role->getRole();
-                }
-            }
-            $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a><br />(".implode(", ", $values).")";
+            $roles = $person->getRoleOn($table->obj);
+            $this->value = "<a href='{$person->getUrl()}' target = '_blank'><b>{$person->getNameForForms()}</b></a><br />({$roles})";
         }
         else{
             $this->value = $cellValue;

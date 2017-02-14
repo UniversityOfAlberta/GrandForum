@@ -483,6 +483,14 @@ class DBFunctions {
 	}
 	
 	/**
+	 * Returns the last insert id
+	 * @return int The last insert id
+	 */
+	static function insertId(){
+	    return self::$dbw->insertId();
+	}
+	
+	/**
 	 * Returns the number of rows returned in the last resultset
 	 */
 	static function getNRows(){

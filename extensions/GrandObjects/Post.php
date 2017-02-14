@@ -96,7 +96,8 @@ class Post extends BackboneModel{
         $status = DBFunctions::insert('grand_posts',
                                       array('thread_id' => $this->thread_id,
                                             'user_id' => $this->user_id,
-                                            'message' => $this->getMessage()), true);
+                                            'message' => $this->getMessage(),
+                                            'search' => strip_tags($this->getMessage())), true);
         $data = DBFunctions::select(array('grand_posts'),
                                     array('id'),
                                     array('thread_id' =>$this->thread_id),
@@ -115,11 +116,12 @@ class Post extends BackboneModel{
     //this should be updated eventually when revisions of a story can be made
     function update(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+        if($me->isRoleAtLeast(STAFF) || ($me->getId() == $this->user_id)){
             $status = DBFunctions::update('grand_posts',
                                           array('thread_id' => $this->thread_id,
                                                 'user_id' => $this->getUser()->getId(),
                                                 'message' => $this->getMessage(),
+                                                'search' => strip_tags($this->getMessage()),
                                                 'date_created' => $this->getDateCreated()),
                                           array('id' => EQ($this->id)));
             if($status){
@@ -132,13 +134,14 @@ class Post extends BackboneModel{
 
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+        if($me->isRoleAtLeast(STAFF) || ($me->getId() == $this->user_id)){
             DBFunctions::begin();
             $status = DBFunctions::delete('grand_posts',
                                           array('id' => EQ($this->id)));
             if($status){
+                $this->id = null;
                 DBFunctions::commit();
-                return true;
+                return $this;
             }
         }
         return false;
@@ -152,7 +155,7 @@ class Post extends BackboneModel{
     
     function canEdit(){
         $me = Person::newFromWgUser();
-        return ($me->getId() == $this->user_id);
+        return ($me->isRoleAtLeast(STAFF) || ($me->getId() == $this->user_id));
     }
 
     function toArray(){

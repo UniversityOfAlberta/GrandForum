@@ -16,6 +16,7 @@ class MailingList extends BackboneModel {
     
     var $id;
     var $name;
+    var $public;
     var $rules = null;
     
     static function newFromId($id){
@@ -61,6 +62,7 @@ class MailingList extends BackboneModel {
         if(count($data) > 0){
             $this->id = $data[0]['projectid'];
             $this->name = $data[0]['mailListName'];
+            $this->public = $data[0]['public'];
         }
     }
     
@@ -70,6 +72,10 @@ class MailingList extends BackboneModel {
     
     function getName(){
         return $this->name;
+    }
+    
+    function isPublic(){
+        return $this->public;
     }
     
     function getRules(){
@@ -140,6 +146,19 @@ class MailingList extends BackboneModel {
         }
         return self::$threadCache[$project_id][$thread];
     }
+    
+    static function getPublicLists(){
+        $lists = array();
+        $data = DBFunctions::select(array('wikidev_projects'),
+                                    array('mailListName'),
+                                    array('public' => EQ('1')));
+        if(count($data) > 0){
+            foreach($data as $row){
+                $lists[] = $row['mailListName'];
+            }
+        }
+        return $lists;
+    }
 
     /**
      * Returns the lists that the given person is on
@@ -175,10 +194,17 @@ class MailingList extends BackboneModel {
             $locResult = false;
             $rules = $list->getRules();
             $phaseRules = array();
+            $projRules = array();
             foreach($rules as $rule){
                 // Phase rules are a little different than other types
                 if($rule->getType() == "PHASE"){
                     $phaseRules[] = $rule->getValue();
+                }
+            }
+            foreach($rules as $rule){
+                // Phase rules are a little different than other types
+                if($rule->getType() == "PROJ"){
+                    $projRules[] = $rule->getValue();
                 }
             }
             foreach($rules as $rule){
@@ -199,7 +225,10 @@ class MailingList extends BackboneModel {
                         else if($value == PL && $person->isProjectLeader()){
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
-                                if(count($phaseRules) > 0){
+                                if(count($projRules) > 0){
+                                    $roleResult = ($roleResult || (array_search($proj->getId(), $projRules)));
+                                }
+                                else if(count($phaseRules) > 0){
                                     $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
                                 }
                                 else{
@@ -227,8 +256,15 @@ class MailingList extends BackboneModel {
                         $results['projResult'] = $projResult;
                         break;
                     case "LOC":
-                        $uni = University::newFromName($person->getUni());
-                        $locResult = ($locResult || ($uni->getId() == $value));
+                        $found = false;
+                        foreach($person->getCurrentUniversities() as $uni){
+                            $uni = University::newFromName($uni['university']);
+                            if($uni->getId() == $value){
+                                $found = true;
+                                break;
+                            }
+                        }
+                        $locResult = ($locResult || $found);
                         $results['locResult'] = $locResult;
                         break;
                 }

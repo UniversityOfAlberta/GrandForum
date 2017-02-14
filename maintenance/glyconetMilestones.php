@@ -27,23 +27,6 @@ define('TBD_COL',       18);
 
 $wgUser = User::newFromId(1);
 
-if(isset($argv[0])){
-    if(strtolower($argv[0]) == "catalyst"){
-        $report = RP_CATALYST;
-    }
-    else if(strtolower($argv[0]) == "translational"){
-        $report = RP_TRANS;
-    }
-    else{
-        echo "Invalid Report specified\n";
-        exit;
-    }
-}
-else{
-    echo "You must specify a report type\n";
-    exit;
-}
-
 function addMilestones($data, $person, $project){
     global $config;
     $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
@@ -83,7 +66,7 @@ function addMilestones($data, $person, $project){
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
         echo "== Processing milestones for {$person->getNameForForms()} ==\n";
-        $startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
+        $startYear = REPORTING_YEAR;
         foreach($cells as $rowN => $row){
             if($rowN == 0){
                 foreach($row as $colN => $cell){
@@ -204,41 +187,22 @@ function addMilestones($data, $person, $project){
 }
 
 $alreadyDone = array();
-$allPeople = Person::getAllPeople(NI);
+$allPeople = array_merge(Person::getAllPeople(NI), Person::getAllPeople(EXTERNAL));
 foreach($allPeople as $person){
-    $type = BLOB_EXCEL;
-    $proj = 0;
-    $section = CAT_MILESTONES;
-    $item = CAT_MIL_UPLOAD;
-    $subitem = 0;
-    $blob = new ReportBlob($type, $year, $person->getId(), $proj);
-    $blob_address = ReportBlob::create_address($report, $section, $item, $subitem);
-    $blob->load($blob_address);
-    $data = $blob->getData();
-    $project = "";
-    if($data != null && $data != ""){
-        $data = json_decode($data);
-        $data = base64_decode($data->file);
-    }
-
     $leadership = $person->leadership();
     foreach($leadership as $lead){
-        if(file_exists("docs/{$person->getName()} {$lead->getName()}.xlsx") &&
+        $fileName = "docs/{$person->getName()} {$lead->getName()}.xlsx";
+        if(file_exists($fileName) &&
            !isset($alreadyDone[$person->getName()][$lead->getName()])){
-            $data = file_get_contents("docs/{$person->getName()} {$lead->getName()}.xlsx");
+            $data = file_get_contents($fileName);
             $project = $lead->getName();
             $alreadyDone[$person->getName()][$lead->getName()] = true;
-            
             addMilestones($data, $person, $project);
-            $data = false;
         }
-    }
-    if($data == ""){
-        echo "No data uploaded for {$person->getNameForForms()}\n";
-        continue;
-    }
-    if($data != false){
-        addMilestones($data, $person, $project);
+        else {
+            echo "No data uploaded for {$person->getNameForForms()}\n";
+            continue;
+        }
     }
 }
 

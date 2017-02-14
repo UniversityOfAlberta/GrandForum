@@ -28,6 +28,7 @@ Project = Backbone.Model.extend({
         fullname: '',
         description: '',
         longDescription: '',
+        website: '',
         status: '',
         type: '',
         theme: '',

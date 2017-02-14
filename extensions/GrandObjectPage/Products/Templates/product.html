@@ -5,6 +5,9 @@
 <%= description.replace(/\n/g, "<br />") %>
 <h2>Information</h2>
 <table id="productData">
+    <% if(this.model.get('tags').length > 0){ %>
+        <tr><td align="right"><b>Tags:</b></td><td><%= tags.join(", ") %></td></tr>
+    <% } %>
     <tr><td align="right"><b>Type:</b></td><td><%= type.replace("Misc: ", "") %></td></tr>
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr><td align="right"><b>Status:</b></td><td><%= status %></td></tr>
@@ -19,6 +22,19 @@
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
+                    <% } else if(val.type == "File"){
+                        var dataStr = data[index]['data'].split(';base64,')[1]
+                        var type = data[index]['data'].split(';base64,')[0].replace(/data:/,'')
+                        var byteCharacters = atob(data[index]['data'].split(',')[1]);
+                        var byteNumbers = new Array(byteCharacters.length);
+                        for (var i = 0; i < byteCharacters.length; i++) {
+                            byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        var byteArray = new Uint8Array(byteNumbers);
+                        blob = new Blob([byteArray], {type: type});
+                        var blobUrl = URL.createObjectURL(blob);
+                    %>
+                        <a download="<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>'); }" target="_blank"><%= data[index]['filename'] %></a>
                     <% } else { %>
                         <%= data[index] %>
                     <% } %>

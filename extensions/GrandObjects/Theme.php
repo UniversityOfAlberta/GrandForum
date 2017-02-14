@@ -302,7 +302,7 @@ class Theme {
      */
     function userCanEdit(){
         $me = Person::newFromWgUser();
-        return ($me->isThemeLeaderOf($this) || $me->isThemeCoordinatorOf($this) || $me->isRoleAtLeast(STAFF));
+        return ($me->isThemeLeaderOf($this) || $me->isThemeCoordinatorOf($this) || $me->isRoleAtLeast(STAFF) || $me->isRole(SD));
     }
 }
 

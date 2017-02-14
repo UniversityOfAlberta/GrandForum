@@ -101,6 +101,7 @@ Product = Backbone.Model.extend({
             category: "",
             type: "",
             description: "",
+            tags: new Array(),
             date: Date.format(new Date(), 'yyyy-MM-dd'),
             url: "",
             status: "",

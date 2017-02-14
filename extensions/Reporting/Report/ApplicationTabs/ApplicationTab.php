@@ -5,11 +5,13 @@ class ApplicationTab extends AbstractTab {
     var $rp;
     var $people;
     var $year;
+    var $extraCols;
 
-    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null){
+    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array()){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
+        $this->extraCols = $extraCols;
         $newPeople = array();
         foreach($people as $person){
             $newPeople[$person->getId()] = $person;
@@ -59,7 +61,8 @@ class ApplicationTab extends AbstractTab {
         if(is_array($report)){
             $this->html .= "<tr><th></th>";
             foreach($report as $rep){
-                $this->html .= "<th colspan='2'>{$rep->name}</th>";
+                $colspan = 2 + count($this->extraCols);
+                $this->html .= "<th colspan='$colspan'>{$rep->name}</th>";
             }
             $this->html .= "</tr>";
         }
@@ -69,11 +72,17 @@ class ApplicationTab extends AbstractTab {
             foreach($report as $rep){
                 $this->html .= "<th>Generation Date</th>
                                 <th width='1%'>PDF&nbsp;Download</th>";
+                if(count($this->extraCols) > 0){
+                    $this->html .= "<th>Extra</th>";
+                }
             }
         }
         else{
             $this->html .= "<th>Generation Date</th>
                             <th width='1%'>PDF&nbsp;Download</th>";
+            if(count($this->extraCols) > 0){
+                $this->html .= "<th>Extra</th>";
+            }
         }
         $this->html .= "</tr>
                         </thead>
@@ -118,6 +127,19 @@ class ApplicationTab extends AbstractTab {
                         $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                         $this->html .= "<td align='center'>{$pdfDate}</td>
                                         <td>{$pdfButton}</td>";
+                        foreach($this->extraCols as $extra){
+                            $section = new EditableReportSection();
+                            $section->setParent($rep);
+                            $extra->setParent($section);
+                            $extra->setPersonId($rep->person->getId());
+                            if($rep->project != null){
+                                $extra->setProjectId($rep->project->getId());
+                            }
+                            else{
+                                $extra->setProjectId(0);
+                            }
+                            $this->html .= "<td>{$extra->getText()}</td>";
+                        }
                     }
                 }
                 else{

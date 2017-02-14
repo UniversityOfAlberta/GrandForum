@@ -11,10 +11,12 @@ class Paper extends BackboneModel{
     static $cache = array();
     static $dataCache = array();
     static $productProjectsCache = array();
+    static $productTagsCache = array();
 
     var $id;
     var $category;
     var $description;
+    var $tags;
     var $title;
     var $type;
     var $projects = array();
@@ -459,6 +461,26 @@ class Paper extends BackboneModel{
         }
     }
     
+    static function generateProductTagsCache(){
+        if(count(self::$productTagsCache) == 0){
+            $data = DBFunctions::select(array('grand_product_tags'),
+                                        array('tag', 'product_id'));
+            foreach($data as $row){
+                self::$productTagsCache[$row['product_id']][] = $row['tag'];
+            }
+        }
+    }
+    
+    static function getAllTags(){
+        $data = DBFunctions::select(array('grand_product_tags'),
+                                    array('DISTINCT(`tag`)'));
+        $tags = array();
+        foreach($data as $row){
+            $tags[] = $row['tag'];
+        }
+        return $tags;
+    }
+    
     /**
      * Returns a php version of the Products.xml structure
      * @return array The array containing all the structure in Products.xml
@@ -567,6 +589,7 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
+            $this->tags = null;
             $this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
         }
@@ -610,6 +633,21 @@ class Paper extends BackboneModel{
      */
     function getDescription(){
         return $this->description;
+    }
+    
+    /**
+     * Returns the tags for this Product
+     * @return Array The tags for this Product
+     */
+    function getTags(){
+        if($this->tags == null){
+            self::generateProductTagsCache();
+            $this->tags = array();
+            if(isset(self::$productTagsCache[$this->getId()])){
+                $this->tags = self::$productTagsCache[$this->getId()];
+            }
+        }
+        return $this->tags;
     }
 
     /**
@@ -1418,6 +1456,13 @@ class Paper extends BackboneModel{
                                                   true);
                 }
             }
+            if(count($this->tags) > 0){
+                foreach($this->tags as $tag){
+                    DBFunctions::insert('grand_product_tags',
+                                        array('tag' => $tag,
+                                              'product_id' => $this->id));
+                }
+            }
             if($status){
                 // Commit transaction
                 DBFunctions::commit();
@@ -1498,6 +1543,15 @@ class Paper extends BackboneModel{
                                                   array('product_id' => $this->id,
                                                         'project_id' => $project->id),
                                                   true);
+                }
+            }
+            DBFunctions::delete('grand_product_tags',
+                                array('product_id' => EQ($this->id)));
+            if(count($this->tags) > 0){
+                foreach($this->tags as $tag){
+                    DBFunctions::insert('grand_product_tags',
+                                        array('tag' => $tag,
+                                              'product_id' => $this->id));
                 }
             }
             if($status){
@@ -1603,9 +1657,13 @@ class Paper extends BackboneModel{
             }
             if(is_array($this->getProjects())){
                 foreach($this->getProjects() as $project){
+                    $url = "";
+                    if($project->getId() != -1){
+                        $url = $project->getUrl();
+                    }
                     $projects[] = array('id' => $project->getId(),
                                         'name' => $project->getName(),
-                                        'url' => $project->getUrl());
+                                        'url' => $url);
                 }
             }
             $data = $this->getData();
@@ -1615,6 +1673,7 @@ class Paper extends BackboneModel{
             $json = array('id' => $this->getId(),
                           'title' => $this->getTitle(),
                           'description' => $this->getDescription(),
+                          'tags' => $this->getTags(),
                           'category' => $this->getCategory(),
                           'type' => $this->getType(),
                           'status' => $this->getStatus(),
