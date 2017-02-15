@@ -366,7 +366,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
             $captchaRow = new FormTableRow("captcha_row");
             $captchaRow->append($captchaLabel)->append($captchaField);
-            $termsLabel = new Label("terms_label", "Termes et conditions", "Termes et conditions", VALIDATE_NOTHING);
+            $termsLabel = new Label("terms_label", "<div style='display:inline-block;vertical-align:top;'>Termes et conditions<br /><small>*Doit faire défiler le formulaire de consentement</small></div>", "Termes et conditions", VALIDATE_NOTHING);
             $termsField = new CustomElement("terms", "terms", "terms", 
                                             
                                                " <div class='TermsOuterDiv'>
