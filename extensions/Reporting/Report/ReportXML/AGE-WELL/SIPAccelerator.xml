@@ -201,7 +201,7 @@
         </ReportItem>
         <ReportItem id="header2" type="Static">
             <![CDATA[
-                <h2>2) PROJECT OPPORTUNITY – Commercialization Projects Only (1 page)</h2>
+                <h2>2) PROJECT OPPORTUNITY - Commercialization Projects Only (1 page)</h2>
             ]]>
         </ReportItem>
         <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET" optional="true">
@@ -239,7 +239,7 @@
         </ReportItem>
         <ReportItem id="header3" type="Static">
             <![CDATA[
-                <h2>3) INTELLECTUAL PROPERTY– Commercialization Projects Only (1/2 page)</h2>
+                <h2>3) INTELLECTUAL PROPERTY - Commercialization Projects Only (1/2 page)</h2>
             ]]>
         </ReportItem>
         <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY"  optional="true">
@@ -260,7 +260,7 @@
         </ReportItem>
         <ReportItem id="header4" type="Static">
             <![CDATA[
-                <h2>4) PROJECT OPPORTUNITY– Knowledge Mobilization Projects Only (1.5 page)</h2>
+                <h2>4) PROJECT OPPORTUNITY - Knowledge Mobilization Projects Only (1.5 page)</h2>
             ]]>
         </ReportItem>
         <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE"  optional="true">
