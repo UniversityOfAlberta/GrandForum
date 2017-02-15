@@ -189,7 +189,7 @@
                 <li><b>State the project goals and objectives</b>
                     <ul class='small'>
                         <li>What is the ultimate goal(s) of the proposed initiative?</li>
-                        <li>State the objectives that need to be achieved to realize the ultimate goal(s). (Specific goals, objectives and milestones will be listed in an appendix)</li>
+                        <li>State the objectives that need to be achieved to realize the ultimate goal(s).</li>
                     </ul>
                     {$item}
                 </li>
