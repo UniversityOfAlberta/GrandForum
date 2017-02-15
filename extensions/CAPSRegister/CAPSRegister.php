@@ -34,18 +34,7 @@ class CAPSRegister extends SpecialPage{
     
     function createForm(){
         global $wgLang;
-        $englishTerms = "
-<img src='../skins/UBC_logo.png' width='50' />
-<img class='en' src='../skins/obgyn_transparent.png' width='120' />
-<img class='fr' src='../skins/french_obgyn.png' width='120' />
-<img src='../skins/CFPC.png' width='120' />
-<img src='../skins/cpa_transparent.png' width='120' />
-<img src='../skins/cart_transparent.png' width='120' />
-<img src='../skins/msfhr_transparent.png' width='120' />
-<img src='../skins/bc_women_logo.png' width='120' />
-<img src='../skins/cihr_logo_transparent.png' width='120' />
-<center><hr style='width:80%;' /></center>
-           Consent Form for CAPS Website<br /><br />
+        $englishTerms = "Consent Form for CAPS Website<br /><br />
             <span style=‘text-align: center;’><b>How we protect and use your data</b>
 <br /><br />
 This website is part of the Mifepristone Implementation Research in Canada study (The CART-Mife Study) which aims to identify and address the facilitators and barriers for successful initiation and ongoing provision of medical abortion services using mifepristone.
@@ -55,19 +44,18 @@ We will collect data including: your demographic information; posts on challenge
 We do not believe that participating in this study represents any risk to you. Participants will contribute to knowledge of the barriers and challenges faced when providing medical abortion care in Canada. The main results of our study will be presented to health system and policy leaders to improve policies and systems that support your provision of safe, accessible medical abortion care. We will also report aggregate findings (with no personal identifiers) in academic journals and conferences.  
 <br /><br />
 Your participation is optional and you may choose to withdraw from the study at any time. For more information, contact the Research Participant Complaint Line in the University of British Columbia Office of Research Ethics (e) <a href='mailto:RSIL@ors.ubc.ca'>RSIL@ors.ubc.ca</a> (t) 604-822-8598 or 1-877-822-8598. Principal Investigator: Dr. Wendy Norman, Associate Professor, Dept. of Family Practice, Faculty of Medicine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'>wendy.norman@ubc.ca</a> (t) 604-875-2424 x4880</span>
-            ";
-        $frenchTerms = "
+<center><hr style='width:80%;' /></center>
 <img src='../skins/UBC_logo.png' width='50' />
 <img class='en' src='../skins/obgyn_transparent.png' width='120' />
-<img class='fr' src='../skins/french_obgyn_transparent.png' width='120' />
+<img class='fr' src='../skins/french_obgyn.png' width='120' />
 <img src='../skins/CFPC.png' width='120' />
 <img src='../skins/cpa_transparent.png' width='120' />
 <img src='../skins/cart_transparent.png' width='120' />
 <img src='../skins/msfhr_transparent.png' width='120' />
 <img src='../skins/bc_women_logo.png' width='120' />
 <img src='../skins/cihr_logo_transparent.png' width='120' />
-<center><hr style='width:80%;' /></center>
-Formulaire de consentement pour CAPS site <br /> <br />
+            ";
+        $frenchTerms = "Formulaire de consentement pour CAPS site <br /> <br />
             <span style = 'text-align: center;'> <b> Comment nous protégeons et utilisons vos données </b>
 <br /> <br />
 Ce site fait partie de la mise en œuvre de la recherche mifépristone dans l'étude Canada (L'étude CART-Mife) qui vise à identifier et traiter les facilitateurs et les obstacles à l'initiation réussie et la prestation continue des services d'avortement médicamenteux utilisant la mifépristone.
@@ -76,7 +64,17 @@ Nous allons recueillir des données, y compris: vos renseignements démographiqu
 <br /> <br />
 Nous ne croyons pas que la participation à cette étude représente un risque pour vous. Les participants contribueront à la connaissance des obstacles et des défis rencontrés lors de la prestation de soins de l'avortement médicamenteux au Canada. Les principaux résultats de notre étude seront présentés au système et aux politiques de la santé des dirigeants pour améliorer les politiques et les systèmes qui prennent en charge votre prestation de sécurité, l'accessibilité des services d'avortement médical. Nous allons également rendre compte des résultats globaux (sans identificateurs personnels) dans des revues spécialisées et des conférences.
 <br /> <br />
-Votre participation est facultative et vous pouvez choisir de se retirer de l'étude à tout moment. Pour plus d'informations, contacter la recherche Participant Plainte ligne à l'Université de la Colombie-Britannique Bureau de l'éthique de la recherche (e) <a href='mailto:RSIL@ors.ubc.ca'> RSIL@ors.ubc.ca </a> (t) 604-822-8598 ou 1-877-822-8598. Chercheur principal: Dr Wendy Norman, professeur agrégé, Département de médecine familiale, Faculté de médecine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'> wendy.norman@ubc.ca </a> (t) 604-875-2424 x4880</span>";
+Votre participation est facultative et vous pouvez choisir de se retirer de l'étude à tout moment. Pour plus d'informations, contacter la recherche Participant Plainte ligne à l'Université de la Colombie-Britannique Bureau de l'éthique de la recherche (e) <a href='mailto:RSIL@ors.ubc.ca'> RSIL@ors.ubc.ca </a> (t) 604-822-8598 ou 1-877-822-8598. Chercheur principal: Dr Wendy Norman, professeur agrégé, Département de médecine familiale, Faculté de médecine, UBC (e) <a href='mailto:wendy.norman@ubc.ca'> wendy.norman@ubc.ca </a> (t) 604-875-2424 x4880</span>
+<center><hr style='width:80%;' /></center>
+<img src='../skins/UBC_logo.png' width='50' />
+<img class='en' src='../skins/obgyn_transparent.png' width='120' />
+<img class='fr' src='../skins/french_obgyn_transparent.png' width='120' />
+<img src='../skins/CFPC.png' width='120' />
+<img src='../skins/cpa_transparent.png' width='120' />
+<img src='../skins/cart_transparent.png' width='120' />
+<img src='../skins/msfhr_transparent.png' width='120' />
+<img src='../skins/bc_women_logo.png' width='120' />
+<img src='../skins/cihr_logo_transparent.png' width='120' />";
         if($wgLang->getCode() == "en"){
             $formContainer = new FormContainer("form_container");
             $formTable = new FormTable("form_table");
@@ -207,10 +205,10 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
             $captchaRow = new FormTableRow("captcha_row");
             $captchaRow->append($captchaLabel)->append($captchaField);
-            $termsLabel = new Label("terms_label", "Terms and Conditions", "Terms and conditions", VALIDATE_NOTHING);
+            $termsLabel = new Label("terms_label", "<div style='display:inline-block;vertical-align:top;'>Terms and Conditions<br /><small>*must scroll through consent form</small></div>", "Terms and conditions", VALIDATE_NOTHING);
             $termsField = new CustomElement("terms", "terms", "terms", 
                                             
-                                               " <div class='TermsOuterDiv'>
+                                               "<div class='TermsOuterDiv'>
                                                 $englishTerms</div>
                                              
                                                                                             
