@@ -341,18 +341,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <!--ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" blobItem="OTHER_FUNDS" class="wikitable" multiple="true">
-            <![CDATA[
-                <h3>Other Funds</h3>
-                {$item}
-            ]]>
-        </ReportItem-->
-        <!--ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h2>Milestones</h2>
-                {$item}
-            ]]>
-        </ReportItem-->
     </ReportSection>
     <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO" pagebreak="false">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">

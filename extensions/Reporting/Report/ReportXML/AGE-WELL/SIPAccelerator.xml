@@ -144,16 +144,19 @@
     <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
         <ReportItem id="header1" type="Static">
             <![CDATA[
-                <h2>1) RATIONALE AND APPROACH (1 page)</h2>
-            ]]>
-        </ReportItem>
-        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
-            <![CDATA[
+                <script type='text/javascript'>
+                    $('#reportProgress').hide();
+                </script>
                 <style>
                     ol#list > li {
                         margin-bottom:15px;
                     }
                 </style>
+                <h2>1) RATIONALE AND APPROACH (1 page)</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
+            <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Summarize the rationale for the project</b>
                     <ul class='small'>
@@ -201,7 +204,7 @@
                 <h2>2) PROJECT OPPORTUNITY – Commercialization Projects Only (1 page)</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET">
+        <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET" optional="true">
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>What is the Market Size?</b>
@@ -212,7 +215,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="advantages" type="TextareaReportItem" rich="true" blobItem="ADVANTAGES">
+        <ReportItem id="advantages" type="TextareaReportItem" rich="true" blobItem="ADVANTAGES"  optional="true">
             <![CDATA[
                 <li><b>What are the competitive advantages of your proposed solution?</b>
                     <ul class='small'>
@@ -222,7 +225,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="competitors" type="TextareaReportItem" rich="true" blobItem="COMPETITORS">
+        <ReportItem id="competitors" type="TextareaReportItem" rich="true" blobItem="COMPETITORS"  optional="true">
             <![CDATA[
                 <li><b>Who are your competitors?</b>
                     <ul class='small'>
@@ -236,11 +239,10 @@
         </ReportItem>
         <ReportItem id="header3" type="Static">
             <![CDATA[
-                <h2>3) INTELLECTUAL PROPERTY– Commercialization Projects Only 
-(1/2 page)</h2>
+                <h2>3) INTELLECTUAL PROPERTY– Commercialization Projects Only (1/2 page)</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY">
+        <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY"  optional="true">
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
@@ -248,7 +250,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="protected" type="TextareaReportItem" rich="true" blobItem="PROTECTED">
+        <ReportItem id="protected" type="TextareaReportItem" rich="true" blobItem="PROTECTED"  optional="true">
             <![CDATA[
                 <li><b>Is your Intellectual Property currently protected? If yes, please describe how?</b>
                     {$item}
@@ -261,7 +263,7 @@
                 <h2>4) PROJECT OPPORTUNITY– Knowledge Mobilization Projects Only (1.5 page)</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE">
+        <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE"  optional="true">
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Who are your key audience(s)?</b>
@@ -272,7 +274,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE">
+        <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE" optional="true">
             <![CDATA[
                 <li><b>Who are your key audience(s)?</b>
                     <ul class='small'>
@@ -282,7 +284,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES">
+        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES"  optional="true">
             <![CDATA[
                 <li><b>What knowledge mobilization strategies will you use?</b>
                     <ul class='small'>
@@ -292,7 +294,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="effectiveness" type="TextareaReportItem" rich="true" blobItem="EFFECTIVENESS">
+        <ReportItem id="effectiveness" type="TextareaReportItem" rich="true" blobItem="EFFECTIVENESS"  optional="true">
             <![CDATA[
                 <li><b>How will you evaluate the effectiveness of the knowledge mobilization strategies you are using?</b>
                     <ul class='small'>
@@ -303,7 +305,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="protect" type="TextareaReportItem" rich="true" blobItem="PROTECT">
+        <ReportItem id="protect" type="TextareaReportItem" rich="true" blobItem="PROTECT"  optional="true">
             <![CDATA[
                 <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
                     {$item}
@@ -485,41 +487,6 @@
                 </ol>
             ]]>
         </ReportItem>
-        <!--ReportItem id="other_funds" type="MultiTextReportItem" blobType="BLOB_ARRAY" labels="Funding Agency|Type of Grant|Program|Status|Value" types="Text|Select(1,2,3,4,5,6,7)|Text|Select(PA,GH,E/C)|Integer" sizes="||||75" blobItem="OTHER_FUNDS" multiple="true">
-            <![CDATA[
-                <h3>Other Funds</h3>
-                <table class='small'>
-                    <tr>
-                        <th style='width:200px;' align='left'>Type of Grant</th>
-                        <th align='left'>Status</th>
-                    </tr>
-                    <tr>
-                        <td valign='top'>
-                            1. Provincial<br />
-                            2. CIHR/NSERC/SSHRC<br />
-                            3. Other Provincial<br />
-                            4. Other Federal<br />
-                            5. International<br />
-                            6. Other AGE-WELL NCE<br />
-                            7. Other non-AGE-WELL<br />
-                        </td>
-                        <td valign='top'>
-                            PA: Pending Approval<br />
-                            GH: Grant Held<br />
-                            E/C: Expired/Completed<br />
-                        </td>
-                    </tr>
-                </table>
-                {$item}
-            ]]>
-        </ReportItem-->
-        <!--ReportItem id="milestones" type="Upload" blobType="BLOB_RAW" blobItem="MILESTONES" mimeType="application/vnd.ms-excel">
-            <![CDATA[
-                <h2>Milestones</h2>
-                <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Milestones.xls'>Download Spreadsheet Template</a>
-                {$item}
-            ]]>
-        </ReportItem-->
     </ReportSection>
     <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
         <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
