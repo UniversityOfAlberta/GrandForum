@@ -121,11 +121,20 @@ class PeopleWikiTab extends AbstractTab {
             </div>";
 
         }
-        $this->html .= "<br />
-                    <div style='font-size: 1.5em;'>
-                    <span class='en'>Below are the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}{$extraText}.  <span class='searchDesc'>To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span></span>
-                    <span class='fr'>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA.  <span class='searchDesc'>Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span></span>
-                    <br /><br /></div>";
+        if($this->table != "Organizations"){
+            $this->html .= "<br />
+                        <div style='font-size: 1.5em;'>
+                        <span class='en'>Below are the <b>{$wgOut->getPageTitle()}</b> in {$config->getValue('networkName')}{$extraText}.  <span class='searchDesc'>To search for a file or page in particular, use the search box below.  You can search by name, date last edited, and last editor.</span></span>
+                        <span class='fr'>Ci-dessous sont tous les <b>{$wgOut->getPageTitle()}</b> dans CPCA.  <span class='searchDesc'>Pour rechercher un fichier ou une page en particulier, utiliser les champs de recherche ci-dessous. Vous pouvez rechercher par nom, date dernière édition , et le dernier éditeur.</span></span>
+                        <br /><br /></div>";
+        }
+        else {
+            $this->html .= "<br />
+                        <div style='font-size: 1.5em;'>
+                            <span class='en'>Collaborating Organizations, and those that support medical abortion safe practices and/or guidelines</span>
+                            <span class='fr'>Les organisations collaboratrices et celles qui soutiennent les pratiques et / ou les lignes directrices en matière d'avortement médical</span>
+                        </div>";
+        }
         if($this->table == "Clinical"){
             $this->html .= "
                 <span class='en'><i>*For example, view these <a href='https://www.caps-cpca.ubc.ca/index.php/File:Clinical_Clinical_Practice_Guideline_2016.pdf' target='_blank'>clinical practice guidelines</a></i></span>
@@ -322,11 +331,8 @@ class PeopleWikiTab extends AbstractTab {
                                     'enText' => 'Canadian Pharmacists Association')
             );
             
-            $american = array(array('img'    => 'American1.png',
-                                    'en'     => 'http://www.aafp.org/home.html',
-                                    'enText' => 'American Academy of Family Physicians'),
-                              array('img'    => 'American2.png',
-                                    'en'     => 'http://www.acog.org/',
+            $american = array(array('img'    => 'American2.png',
+                                    'en'     => 'http://www.acog.org/Womens-Health/Abortion',
                                     'enText' => 'The American Congress of Obstetricians and Gynecologists'),
                               array('img'    => 'American3.png',
                                     'en'     => 'http://www.reproductiveaccess.org/',
