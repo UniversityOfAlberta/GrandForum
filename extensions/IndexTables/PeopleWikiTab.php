@@ -349,7 +349,10 @@ class PeopleWikiTab extends AbstractTab {
                                          'en'     => 'http://www.who.int/reproductivehealth/en/',
                                          'fr'     => 'http://www.who.int/reproductivehealth/fr/',
                                          'enText' => 'Reproductive Health Access Project',
-                                         'frText' => 'Sante sexuelle et reproductive')
+                                         'frText' => 'Sante sexuelle et reproductive'),
+                                   array('img'    => 'International4.jpg',
+                                         'en'     => 'http://www.ipas.org/',
+                                         'enText' => 'International Pregnancy Advisory Services')
             );
         
             $this->html .= "<h2>Canadian</h2>";
