@@ -61,14 +61,15 @@
     <ReportSection id="description" tooltip="2017 AGE-WELL SIP Accelerator Program Description" name="Program Description" type="ReportSection" title="2017 AGE-WELL SIP Accelerator Program Description">
         <ReportItem id="description" type="Static">
             <![CDATA[
-                <p>AGE-WELL’s “SIP Accelerator” supports innovative projects focused on the commercialization and/or knowledge mobilization of solutions (e.g. technologies, services or policies) aligned with <a href='http://agewell-nce.ca/about-us' target='_blank'>AGE-WELL’s mission and vision</a>.</p>
+                <p>AGE-WELL’s "SIP Accelerator" supports innovative post-discovery projects focused on the commercialization and/or knowledge mobilization of solutions (e.g. technologies, services or policies) aligned with <a href='http://agewell-nce.ca/about-us' target='_blank'>AGE-WELL’s mission and vision</a>.</p>
                 <p>The program provides:</p>
                 <ul>
                     <li>financial support; </li>
                     <li>training opportunities; and</li>
                     <li>strategic mentorship.</li>
                 </ul>
-                <p>Please refer to the SIP Accelerator webpage (<a href='http://www.agewell-nce.ca' target='_blank'>www.agewell-nce.ca</a>) for information about investigator eligibility, partnerships, award amount etc. </p>
+                <p>AGE-WELL is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our aim is to help older Canadians maintain their independence, health and quality of life through technologies and services that increase their safety and security, support their independent living, and enhance their social participation.</p>
+                <p>Please refer to the SIP Accelerator webpage on the AGE-WELL website (<a href='http://www.agewell-nce.ca' target='_blank'>www.agewell-nce.ca</a>) for information about investigator eligibility, partnerships, award amount etc. </p>
                 <p>Questions about this funding program can be directed to Jeanie Zabukovec, AGE-WELL Research and Partnerships Administrator (<a href='mailto:jeanie@agewell-nce.ca'>jeanie@agewell-nce.ca</a>).</p>
             ]]>
         </ReportItem>
