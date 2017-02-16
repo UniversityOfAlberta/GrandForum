@@ -80,12 +80,12 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $formTable = new FormTable("form_table");
             
             $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-            $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
+            $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL + VALIDATE_NOSPACES);
             $firstNameRow = new FormTableRow("first_name_row");
             $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
             
             $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-            $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
+            $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL + VALIDATE_NOSPACES);
             $lastNameRow = new FormTableRow("last_name_row");
             $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
             $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
