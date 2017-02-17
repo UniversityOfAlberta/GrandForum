@@ -148,14 +148,11 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>User Name</th>
                             <th>Timestamp</th>
-			                <th>Language</th>
                             <th>User Type</th>
-                            <th>Specialty (If applicable)</th>
-                            <th>City, Province</th>
                             {$hqpType}
                             <th>Reference</th>
                             <th>Certification</th>
-			                <th>Provision</th>
+			                <th>Extras</th>
                             <th>Action</th>
                         </tr></thead><tbody>\n");
         }
@@ -165,14 +162,11 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>User Name</th>
                             <th>Timestamp</th>
-			                <th>Language</th>
                             <th>User Type</th>
-                            <th>Specialty (If applicable)</th>
-                            <th>City, Province</th>
                             {$hqpType}
                             <th>Sponsors</th>
                             <th>Certification</th>
-			                <th>Provision</th>
+			                <th>Extras</th>
                             <th>Create?</th>
                             <th>Full User?</th>
                         </tr></thead><tbody>\n");
@@ -183,18 +177,14 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>");
             if($history && $request->isCreated()){
                 $user = Person::newFromName($request->getName());
-                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
+                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a><br />{$request->getEmail()}</td>");
             }
             else{
                 $wgOut->addHTML("<td align='left'>{$request->getName()}<br />{$request->getEmail()}</td>");
             } 
             $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getLastModified())."</td>");
 	        $extras = $request->getExtras();
-            $wgOut->addHTML("<td>{$extras['language']}</td>
-			     <td>{$request->getRoles()}</td>
-                             <td align='left'>{$request->getProjects()}</td>
-                             <td>{$extras['city']},{$extras['province']}<br />
-                                </td> ");
+            $wgOut->addHTML("<td>{$request->getRoles()}</td>");
             if(count($config->getValue('subRoles')) > 0 && !$history){
                 $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>");
                 foreach($config->getValue('subRoles') as $subRole => $fullSubRole){
@@ -206,10 +196,22 @@ class AddMember extends SpecialPage{
             $certification = $request->getCertification();
             $file_name = @$certification['file_data']['name'];
             $file_name = ($file_name != "") ? "<a class='button' href='$wgServer$wgScriptPath/index.php?action=getCertification&id={$request->getId()}'>Certification</a>" : "";
-            $provision = @$extras['provision'];
-            if(is_array($provision)){
-                // Must be from older version
-                $provision = "";
+            $other = array();
+            if(is_array($extras)){
+                foreach($extras as $key => $value){
+                    if(!is_array($value) && $value !== ""){
+                        if($key == "collect_demo" || $key == "collect_comments"){
+                            if($value == 0 || $value == ""){
+                                $value = "No";
+                            }
+                            else {
+                                $value = "Yes";
+                            }
+                        }
+                        $key = ucwords(str_replace("_", " ", $key));
+                        $other[] = "<b>$key</b>: $value";
+                    }
+                }
             }
             $references = @$extras['references'];
             $refHTML = array();
@@ -221,10 +223,9 @@ class AddMember extends SpecialPage{
                 }
             }
             $refHTML = "<ul>".implode("", $refHTML)."</ul>";
-            $wgOut->addHTML("
-                        <td align='left' style='white-space:nowrap;'>{$refHTML}</td>
+            $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>{$refHTML}</td>
                         <td>{$file_name}</td>
-			            <td>{$provision}</td>
+			            <td align='left'>".implode("<br />", $other)."</td>
                             <input type='hidden' name='id' value='{$request->getId()}' />
                             <input type='hidden' name='wpName' value='{$request->getName()}' />
                             <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
