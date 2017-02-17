@@ -9,6 +9,8 @@ class Bibliography extends BackboneModel{
     static $cache = array();
 
     var $id = null;
+    var $title = "";
+    var $description = "";
     var $person = null;
     var $products = array();
     
@@ -34,6 +36,8 @@ class Bibliography extends BackboneModel{
     function Bibliography($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
+            $this->title = $data[0]['title'];
+            $this->description = $data[0]['description'];
             $this->person = Person::newFromId($data[0]['person_id']);
             $this->products = unserialize($data[0]['products']);
         }
@@ -41,6 +45,14 @@ class Bibliography extends BackboneModel{
     
     function getId(){
         return $this->id;
+    }
+    
+    function getTitle(){
+        return $this->title;
+    }
+    
+    function getDescription(){
+        return $this->description;
     }
     
     function getPerson(){
@@ -57,7 +69,9 @@ class Bibliography extends BackboneModel{
     
     function create(){
         DBFunctions::insert('grand_bibliography',
-                            array('person_id' => $this->getPerson()->getId(),
+                            array('title' => $this->title,
+                                  'description' => $this->description,
+                                  'person_id' => $this->getPerson()->getId(),
                                   'products' => serialize($this->products)));
         $this->id = DBFunctions::insertId();
         return $this;
@@ -65,7 +79,9 @@ class Bibliography extends BackboneModel{
     
     function update(){
         DBFunctions::update('grand_bibliography',
-                            array('products' => serialize($this->products)),
+                            array('title' => $this->title,
+                                  'description' => $this->description,
+                                  'products' => serialize($this->products)),
                             array('id' => EQ($this->getId())));
         return $this;
     }
@@ -81,6 +97,8 @@ class Bibliography extends BackboneModel{
         $person = $this->getPerson();
         $data = array(
             'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
             'person' => array('id' => $person->getId(),
                               'name' => $person->getNameForProduct(),
                               'fullname' => $person->getNameForForms(),

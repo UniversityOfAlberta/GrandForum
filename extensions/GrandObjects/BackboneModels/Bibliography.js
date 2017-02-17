@@ -8,6 +8,8 @@ Bibliography = Backbone.Model.extend({
     defaults: function() {
         return{
             id: null,
+            title: "",
+            description: "",
             person: null,
             products: null
         };

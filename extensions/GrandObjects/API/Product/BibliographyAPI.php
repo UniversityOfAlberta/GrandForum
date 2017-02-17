@@ -16,6 +16,8 @@ class BibliographyAPI extends RESTAPI {
     
     function doPOST(){
         $bib = new Bibliography(array());
+        $bib->title = $this->POST('title');
+        $bib->description = $this->POST('description');
         $bib->person = Person::newFromId($this->POST('person')->id);
         $bib->products = $this->POST('products');
         $bib->create();
@@ -24,6 +26,8 @@ class BibliographyAPI extends RESTAPI {
     
     function doPUT(){
         $bib = Bibliography::newFromId($this->getParam('id'));
+        $bib->title = $this->POST('title');
+        $bib->description = $this->POST('description');
         $bib->products = $this->POST('products');
         $bib = $bib->update();
         return $bib->toJSON();
