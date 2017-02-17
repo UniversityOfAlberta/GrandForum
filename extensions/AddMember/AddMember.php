@@ -208,8 +208,8 @@ class AddMember extends SpecialPage{
                                 $value = "Yes";
                             }
                         }
-                        $key = ucwords(str_replace("_", " ", $key));
-                        $other[] = "<b>$key</b>: $value";
+                        $displayKey = ucwords(str_replace("_", " ", $key));
+                        $other[] = "<b>$displayKey</b>: $value";
                     }
                 }
             }
@@ -272,7 +272,7 @@ class AddMember extends SpecialPage{
                     </tr>");
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>
-                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
+                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[1,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }

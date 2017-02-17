@@ -512,6 +512,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                     }
 
                     function disclaimerFunction() {
+                        $(\"input[name='terms_agree[]']\").removeAttr('checked');
                         $('.TermsOuterDiv').scroll(function() {
                             if ($(this).scrollTop()+5 >= $(this)[0].scrollHeight - $(this).innerHeight()) {
                                 $(\"input[name='terms_agree[]']\").removeAttr('disabled');
@@ -541,7 +542,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $lastname = $form->getElementById('last_name_field')->setPOST('wpLastName');
             $email = $form->getElementById('email_field')->setPOST('wpEmail');
             $form->getElementById('role_field')->setPOST('wpRole');
-            $form->getElementById('other_role_field')->setPOST('wpOtherRole');
+            $_POST['wpOtherRole'] = ""; // Initialize to empty to start with
             if(in_array($_POST['wpRole'], array("Physician", "Médecin"))){
                 $_POST['wpUserType'] = CI;
                 $_POST['wpRole'] = CI;
@@ -553,6 +554,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             else if(in_array($_POST['wpRole'], array("Facility Staff", "Personnel de l&#39;installation"))){
                 $_POST['wpUserType'] = HQP;
                 $_POST['wpRole'] = HQP;
+                $form->getElementById('other_role_field')->setPOST('wpOtherRole');
             }
             else if(in_array($_POST['wpRole'], array("Other", "Autre"))){
                 $_POST['wpUserType'] = EXTERNAL;
