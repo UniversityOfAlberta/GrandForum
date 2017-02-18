@@ -63,6 +63,7 @@ class PersonProfileTab extends AbstractEditableTab {
             }, 33);
         </script>";
         $this->showCCV($this->person, $this->visibility);
+        $this->showSop($this->person, $this->visibility);
         return $this->html;
     }
     
@@ -453,6 +454,22 @@ EOF;
                 $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:CCVExport?getXML'>Download CCV</a>";
             }
         }
+    }
+
+    /**
+     * Displays Sop Review of user
+     */
+    function showSop($person,$visibility){
+	global $wgUser;
+        if(isExtensionEnabled('Sops')){
+            $me = Person::newFromWgUser();
+            if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
+		if($person->getSop()){
+                    $sop_url = $person->getSop()->getUrl();                $this->html .= "<a class='button' href='$sop_url'>Review</a>";
+		}
+            }
+        }
+
     }
     
     /**

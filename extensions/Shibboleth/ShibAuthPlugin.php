@@ -448,11 +448,16 @@ function ShibUserLoadFromSession($user, &$result)
 		ShibBringBackAA();
 		return true;
 	}
- 
+        $sql = "SELECT user_id
+                FROM mw_user
+                WHERE CONVERT(user_name USING latin1) LIKE '$shib_UN'";
+        $data = DBFunctions::execSQL($sql); 
 	//Is the user already in the database?
-	if (User::idFromName($shib_UN) != null && User::idFromName($shib_UN) != 0)
+	if (count($data) > 0)
 	{
-		$user = User::newFromName($shib_UN);
+		$user_id = $data[0]['user_id'];
+		$user = User::newFromId($user_id);
+		//$user = User::newFromName($shib_UN);
 		$user->load();
 		$wgAuth->existingUser = true;
 		$wgAuth->updateUser($user); //Make sure password is nologin

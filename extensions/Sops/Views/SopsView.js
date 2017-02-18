@@ -37,6 +37,7 @@ SopsView = Backbone.View.extend({
     events: {
 	"keyup #nameInput": "filterAll",
 	"keyup #reviewerNameInput": "filterAll",
+	"keyup #referenceNameInput": "filterAll",
         "change #sentimentType" : "filterAll",
 	"change #admitType" : "filterAll",
 	"click input[type=checkbox]": "filterAll",
@@ -49,6 +50,7 @@ SopsView = Backbone.View.extend({
 	this.showAllRows();
 	this.filterStudentName();
 	this.filterReviewerName();
+	this.filterReferenceName();
 	this.filterSentimentType();
     	this.filterAdmitType();
 	this.filterByTags();
@@ -96,6 +98,11 @@ SopsView = Backbone.View.extend({
 
     filterReviewerName: function(){
         input = $('#reviewerNameInput').val().toUpperCase();
+        this.filterByRow(6,input);
+    },
+
+    filterReferenceName: function(){
+        input = $('#referenceNameInput').val().toUpperCase();
         this.filterByRow(5,input);
     },
 
@@ -106,13 +113,13 @@ SopsView = Backbone.View.extend({
 
     filterAdmitType: function(){
         input = $('#admitType').val().toUpperCase();
-        this.filterByRow(5,input);
+        this.filterByRow(6,input);
     },
 
     filterByTags: function(){
             $('#listTable > tbody > tr').each(function(){
 		var show = false;
-                var tags = $(this).find('td').eq(6).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
+                var tags = $(this).find('td').eq(7).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
 		for(j = 0; j < tags.length; j++){
 		    var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
 		    if($('#'+tag).is(':checked')){

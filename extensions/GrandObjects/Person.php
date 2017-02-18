@@ -4551,5 +4551,20 @@ class Person extends BackboneModel {
         }
         return false;
     }
+
+    /**
+     * Returns Sop object of person
+     * @return Sop SoP object of person
+   **/
+    function getSop(){
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('id'),
+                                    array('user_id' => EQ($this->getId())));
+        if(count($data)>0){
+            $sop_id = $data[0]['id'];
+	    return SOP::newFromId($sop_id);
+        }
+	return "";
+    }
 }
 ?>

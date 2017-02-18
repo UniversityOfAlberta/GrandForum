@@ -1,0 +1,19 @@
+<div>
+    <span class="label">Member:</span> 
+    <select id="member-select" data-placeholder="Choose a Member...">
+        <option></option>
+        <% this.people.each(function(p){ %>
+            <option value="<%= p.get('id')%>" <% if(person != null && p.get('id') == person.get('id')){ %> selected<% } %>><%= p.get('fullName') %></option>
+        <% }) %>
+    </select>
+    <% if(person != null){ %>
+        <h2>Pdf Upload</h2>
+        <p>Upload the Pdf File for <b><%= person.get('fullName') %></b>.</p>
+        <iframe name="fileUpload" style="display:none;"></iframe>
+        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.convertPdf" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%= person.get('id') %>" />
+            <input type="file" name="file_field" />
+        <form><br /><br />
+        <input id="upload" type="button" value="Upload" /> <span class="throbber" style="display:none;"></span>
+    <% } %>
+</div>
