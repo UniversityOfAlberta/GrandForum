@@ -55,6 +55,11 @@ class Bibliography extends BackboneModel{
         return $this->description;
     }
     
+    function getUrl(){
+        global $wgServer, $wgScriptPath;
+        return "$wgServer$wgScriptPath/index.php/Special:BibliographyPage#/{$this->getId()}";
+    }
+    
     function getPerson(){
         return $this->person;
     }
@@ -99,6 +104,7 @@ class Bibliography extends BackboneModel{
             'id' => $this->getId(),
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
+            'url' => $this->getUrl(),
             'person' => array('id' => $person->getId(),
                               'name' => $person->getNameForProduct(),
                               'fullname' => $person->getNameForForms(),

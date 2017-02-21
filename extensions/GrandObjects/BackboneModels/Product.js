@@ -28,6 +28,12 @@ Product = Backbone.Model.extend({
             }
         });
     },
+    
+    getCitation: function(){
+        return $.get(this.urlRoot + '/' + this.get('id') + '/citation', $.proxy(function(content){
+            this.set('citation', content);
+        }, this));
+    },
 
     getAuthors: function(){
         this.authors.fetch();
@@ -104,6 +110,7 @@ Product = Backbone.Model.extend({
             tags: new Array(),
             date: Date.format(new Date(), 'yyyy-MM-dd'),
             url: "",
+            citation: "",
             status: "",
             data: {},
             authors: new Array(),

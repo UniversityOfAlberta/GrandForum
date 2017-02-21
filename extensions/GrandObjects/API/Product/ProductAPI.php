@@ -8,6 +8,10 @@ class ProductAPI extends RESTAPI {
             if($paper == null || $paper->getTitle() == ""){
                 $this->throwError("This product does not exist");
             }
+            if($this->getParam('citation') != ""){
+                header('Content-Type: text/plain');
+                return $paper->getProperCitation();
+            }
             return $paper->toJSON();
         }
         else if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) > 1){

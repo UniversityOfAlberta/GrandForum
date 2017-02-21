@@ -1,0 +1,14 @@
+<div>
+    <b>Title:</b><br />
+    <%= HTML.TextBox(this, 'title', {size: '50'}) %><br /><br />
+    <b>Description:</b><br />
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %><br />
+</div>
+<h2><%= productsTerm.pluralize() %></h2>
+<div id="products"></div>
+<div style="width:180px;display:inline-block;">
+    <button id="saveBibliography"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography</button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>

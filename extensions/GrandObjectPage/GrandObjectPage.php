@@ -14,6 +14,7 @@
     require_once("AddMultimediaPage.php");
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
+    require_once("Bibliography/Bibliography.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
     $wgHooks['UnknownAction'][] = 'noCreate';
