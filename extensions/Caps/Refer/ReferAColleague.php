@@ -33,7 +33,7 @@ class ReferAColleague extends SpecialPage{
             $headers[] = 'MIME-Version: 1.0';
             $headers[] = 'Content-type: text/html; charset=UTF-8';
             $headers[] = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>";
-            mail($_POST['email_field'], "Welcome to CAPS", $this->getMessage(), implode("\r\n", $headers));
+            mail($_POST['email_field'], "Invitation to Join a Community of Practice for Medical Abortion Providers", $this->getMessage(), implode("\r\n", $headers));
             $wgMessage->addSuccess("Referral email sent to {$_POST['first_name_field']} {$_POST['last_name_field']} ({$_POST['email_field']})");
             $form->reset();
             redirect("$wgServer$wgScriptPath/index.php/Special:ReferAColleague");
@@ -41,6 +41,7 @@ class ReferAColleague extends SpecialPage{
     }
     
     function getMessage(){
+        global $wgServer, $wgScriptPath;
         if($_POST['language_field'] == "en"){
             switch($_POST['role_field']){
                 case "Physician":
