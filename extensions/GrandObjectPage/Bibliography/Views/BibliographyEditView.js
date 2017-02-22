@@ -19,6 +19,7 @@ BibliographyEditView = Backbone.View.extend({
         this.template = _.template($('#bibliography_edit_template').html());
         
         this.allProducts = new Products();
+        this.allProducts.category = 'Publication';
         this.allProducts.fetch();
         this.listenTo(this.allProducts, "sync", this.renderProductsWidget);
         $(document).mousedown(this.hidePreview);
