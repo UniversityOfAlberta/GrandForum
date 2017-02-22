@@ -168,8 +168,9 @@ BibliographyEditView = Backbone.View.extend({
 	    
 	    var changeFn = function(){
 	        var value = this.$(".sortable-search input").val().trim();
+	        var unaccented = unaccentChars(value);
 	        $("#sortable2 li").each(function(i, el){
-	            if(unaccentChars($(el).text()).indexOf(unaccentChars(value)) !== -1 || value == ""){
+	            if(unaccentChars($(el).text()).indexOf(unaccented) !== -1 || value == ""){
 	                $(el).show();
 	            }
 	            else{
