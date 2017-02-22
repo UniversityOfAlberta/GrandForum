@@ -12,8 +12,20 @@
 <td style="white-space: nowrap;">
 <%= sentiment_type %> (<%= sentiment_val %>)
 </td>
-<td style="display:none;">
- <%= id %>
+<td>
+    <%if(pdf_data.Education != undefined){ %>
+         <%= pdf_data.Education[0].degree%>/<%= pdf_data.Education[0].institution%>
+    <%}else{%>
+    <%}%>
+</td>
+<td style="white-space: nowrap;">
+
+    <%if(pdf_data.Referees != undefined){ %>
+        <% for(var i=0; i < pdf_data.Referees.length;i++){ %>
+                <%= pdf_data.Referees[i].name %><br />
+        <%}%>
+    <%}else{%>
+    <%}%>
 </td>
 <td style="white-space: nowrap;">
 <% for(var i=0; i < reviewers.length;i++){ %>
