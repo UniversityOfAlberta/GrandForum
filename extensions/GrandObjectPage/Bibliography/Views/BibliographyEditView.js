@@ -107,6 +107,14 @@ BibliographyEditView = Backbone.View.extend({
     
     renderProductsWidget: function(){
         var model = this.model;
+        if(headerColor != "#333333"){
+            // Headers were changed, use this color
+            this.$(".sortable-header").css("background", headerColor);
+        }
+        else{
+            // Otherwise use the highlight color
+            this.$(".sortable-header").css("background", highlightColor);
+        }
         if(this.allProducts.length == 0){
             return;
         }
