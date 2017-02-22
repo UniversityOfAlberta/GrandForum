@@ -168,15 +168,19 @@ BibliographyEditView = Backbone.View.extend({
 	    
 	    var changeFn = function(){
 	        var value = this.$(".sortable-search input").val().trim();
-	        var unaccented = unaccentChars(value);
+	        var lower = value.toLowerCase();
+	        var showElements = new Array();
+	        var hideElements = new Array();
 	        $("#sortable2 li").each(function(i, el){
-	            if(unaccentChars($(el).text()).indexOf(unaccented) !== -1 || value == ""){
-	                $(el).show();
+	            if($(el).text().toLowerCase().indexOf(lower) !== -1 || value == ""){
+	                showElements.push(el);
 	            }
 	            else{
-	                $(el).hide();
+	                hideElements.push(el);
 	            }
 	        });
+	        $(showElements).show();
+	        $(hideElements).hide();
 	    };
 	    
 	    this.$(".sortable-search input").change($.proxy(changeFn, this));
