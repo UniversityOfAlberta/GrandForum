@@ -3,6 +3,7 @@ BibliographyEditView = Backbone.View.extend({
     isDialog: false,
     timeout: null,
     productView: null,
+    spinner: null,
 
     initialize: function(){
         this.model.fetch({
@@ -116,11 +117,14 @@ BibliographyEditView = Backbone.View.extend({
             // Otherwise use the highlight color
             this.$(".sortable-header").css("background", highlightColor);
         }
+        
         if(this.allProducts.length == 0){
+            this.spin = spinner("products", 20, 40, 10, 6, '#888');
             return;
         }
-        
+        this.spin();
         var products = this.model.get('products');
+        this.$(".sortable-widget").show();
         
         // Left Side (Current)
         _.each(products, $.proxy(function(id){

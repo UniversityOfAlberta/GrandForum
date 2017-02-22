@@ -21,6 +21,10 @@
     max-width: 800px;
 }
 
+.sortable-widget {
+    display: none;
+}
+
 .sortable-search {
     margin-top: 10px;
     text-align: right;

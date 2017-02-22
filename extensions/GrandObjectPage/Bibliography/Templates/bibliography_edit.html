@@ -7,28 +7,30 @@
 </div>
 <h2><%= productsTerm.pluralize() %></h2>
 <div id="products" class="edit">
-    <div class="sortable-search">
-        <div>
-            <input type="text" placeholder="Search Available <%= productsTerm.pluralize() %>..." />
-        </div>
-    </div>
-    <div class="sortable-container">
-        <div class="sortable-left">
-            <div class="sortable-header"><%= productsTerm.pluralize() %> in Bibliography</div>
-            <div class="sortable-list">
-                <ul id="sortable1">
-
-                </ul>
+    <div class="sortable-widget">
+        <div class="sortable-search">
+            <div>
+                <input type="text" placeholder="Search Available <%= productsTerm.pluralize() %>..." />
             </div>
         </div>
-    </div>
-    <div class="sortable-container">
-        <div class="sortable-right">
-            <div class="sortable-header">Available <%= productsTerm.pluralize() %></div>
-            <div class="sortable-list">
-                <ul id="sortable2">
-                    
-                </ul>
+        <div class="sortable-container">
+            <div class="sortable-left">
+                <div class="sortable-header"><%= productsTerm.pluralize() %> in Bibliography</div>
+                <div class="sortable-list">
+                    <ul id="sortable1">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="sortable-container">
+            <div class="sortable-right">
+                <div class="sortable-header">Available <%= productsTerm.pluralize() %></div>
+                <div class="sortable-list">
+                    <ul id="sortable2">
+                        
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
