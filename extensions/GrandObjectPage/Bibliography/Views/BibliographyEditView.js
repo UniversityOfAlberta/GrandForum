@@ -116,8 +116,10 @@ BibliographyEditView = Backbone.View.extend({
         // Left Side (Current)
         _.each(products, $.proxy(function(id){
             var product = this.allProducts.findWhere({id: id.toString()});
-            var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
-            this.$("#sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+            if(product != null){
+                var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
+                this.$("#sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+            }
         }, this));
         
         //Right Side (Available)
