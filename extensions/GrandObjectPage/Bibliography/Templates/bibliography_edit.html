@@ -1,3 +1,4 @@
+<div id="preview" style="display:none;"></div>
 <div>
     <b>Title:</b><br />
     <%= HTML.TextBox(this, 'title', {size: '50'}) %><br /><br />
@@ -5,7 +6,33 @@
     <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %><br />
 </div>
 <h2><%= productsTerm.pluralize() %></h2>
-<div id="products"></div>
+<div id="products" class="edit">
+    <div class="sortable-search">
+        <div>
+            <input type="text" placeholder="Search Available <%= productsTerm.pluralize() %>..." />
+        </div>
+    </div>
+    <div class="sortable-container">
+        <div class="sortable-left">
+            <div class="sortable-header"><%= productsTerm.pluralize() %> in Bibliography</div>
+            <div class="sortable-list">
+                <ul id="sortable1">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="sortable-container">
+        <div class="sortable-right">
+            <div class="sortable-header">Available <%= productsTerm.pluralize() %></div>
+            <div class="sortable-list">
+                <ul id="sortable2">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div style="width:180px;display:inline-block;">
     <button id="saveBibliography"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography</button><span class="throbber" style="display:none;"></span>
 </div>

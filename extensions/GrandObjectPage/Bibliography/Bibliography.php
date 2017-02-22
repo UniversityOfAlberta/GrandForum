@@ -14,12 +14,14 @@ class BibliographyPage extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
+                     'Products/product',
                      'bibliography',
                      'bibliography_edit');
     }
     
     function getViews(){
         return array('Backbone/*',
+                     'Products/ProductView',
                      'BibliographyView',
                      'BibliographyEditView');
     }
