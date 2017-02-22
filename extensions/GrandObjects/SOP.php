@@ -43,6 +43,7 @@ class SOP extends BackboneModel{
     var $word_count;
     var $annotations = array();	
     var $pdf;    
+    var $personality_stats;
 
 
   /**
@@ -92,6 +93,7 @@ class SOP extends BackboneModel{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 	    $this->pdf = $row['pdf_data'];
+	    $this->personality_stats = $row['personality_stats'];
             $emotions_array = unserialize($row['emotion_stats']);
 	    $this->anger_score = $emotions_array['anger'];
             $this->disgust_score = $emotions_array['disgust'];
@@ -126,7 +128,7 @@ class SOP extends BackboneModel{
    static function createSoPFromReports(){
         $sql = "SELECT DISTINCT(user_id)
                 FROM grand_report_blobs
-                WHERE user_id NOT IN (SELECT user_id FROM grand_sop)";
+                WHERE user_id NOT IN (SELECT user_id FROM grand_sop) AND rp_section LIKE 'OT_EULA'";
         $data = DBFunctions::execSQL($sql);
 	if(count($data)>0){
 	    foreach($data as $user){
@@ -267,6 +269,9 @@ class SOP extends BackboneModel{
 	}
 	return $pdf;
     }
+    function getPersonalityStats(){
+	return unserialize($this->personality_stats);
+    }
   /**
    * getContent Gets the SOP Content
    * @return mixed
@@ -297,6 +302,15 @@ class SOP extends BackboneModel{
 	    $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
 	}
 	return $string;
+    }
+
+    function getContentToSend(){
+        $content = $this->getContent();
+        $string = "";
+        foreach($content as $question => $answer){
+            $string = $string.$answer;
+        }
+        return $string;
     }
 
     function getReviewers(){
@@ -365,7 +379,7 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getReadabilityScore(){
-	$content = $this->getContentString();
+	$content = $this->getContentToSend();
 	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         //$content = str_replace(' ', '-', $content);
         $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
@@ -447,9 +461,7 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getSentimentScore(){
-        // $content = $this->content;
-        // $content = str_replace(' ', '-', $content);
-	$content = $this->getContentString();
+	$content = $this->getContentToSend();
 	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
         $content = str_replace('-', ' ', $content);
@@ -497,9 +509,8 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getEmotionsScore(){
-	$content = $this->getContentString();
+	$content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/emotions";
-	$content = "hello testing";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
         $curl_header = array('Content-Type: application/json');
@@ -542,6 +553,55 @@ class SOP extends BackboneModel{
 
         return $result;
     }
+
+  /**
+   * getEmotionsScore Gets the SOP Emotion Score
+   * @return mixed|string
+   */
+    function getPersonalityScore(){
+        $content = $this->getContentToSend();
+        $curl_url = "http://162.246.157.115/tasha/personality";
+        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+        $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
+        $content = str_replace('-', ' ', $content);
+        $curl_post_fields_array = array('content'=> $content);
+        $curl_post_fields = json_encode($curl_post_fields_array);
+        $curl_header = array('Content-Type: application/json');
+        $curl_array = array(
+            CURLOPT_URL => $curl_url,
+            CURLOPT_HTTPHEADER => $curl_header,
+            CURLOPT_POSTFIELDS =>$curl_post_fields,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_USERPWD => "cmput401:tasha"
+        );
+        $curl = curl_init();
+        curl_setopt_array($curl, $curl_array);
+	print_r($curl_array);
+        $data = curl_exec($curl);
+        $result = '';
+        if ($error = curl_error($curl)){
+            $result = $error;
+        }
+        curl_close($curl);
+        if(empty($error)){
+            $result = $data;
+        }
+        $result = json_decode($result, true);
+
+        $sql = "UPDATE grand_sop
+                SET personality_stats='".serialize($result)."'
+                WHERE id={$this->id};";
+
+        $status = DBFunctions::execSQL($sql,true);
+        if($status){
+            DBFunctions::commit();
+        }
+
+        return $result;
+    }
+
 
   /**
    * getSyntaxErrorCount Gets the SOP syntax error count
@@ -668,7 +728,7 @@ class SOP extends BackboneModel{
     } 
 
     function getReadabilityTest(){
-        $content = $this->getContentString();
+        $content = $this->getContentToSend();
         $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         //$content = str_replace(' ', '-', $content);
         $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);

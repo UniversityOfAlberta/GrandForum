@@ -128,35 +128,30 @@ class ConvertPdfAPI extends API{
         return $data;
     }
 
-    function save_pdf_data($contents,$user){
-        $sql = "UPDATE grand_sop
-                SET pdf_data='".serialize($contents)."'
-                WHERE user_id=100;";
-
-        $status = DBFunctions::execSQL($sql,true);
-        if($status){
-            DBFunctions::commit();
-        }	
-	return $status;
-    }
-
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
-        $userId = $user->getId();
+        $userId = $_POST['id'];
 	$tmpfile = $_FILES['file_field']['tmp_name'];
 	$contents = file_get_contents($tmpfile);
         $data = $this->extract_pdf_data($contents);
 	$sdata = serialize($data);
         $sql = "UPDATE grand_sop
                 SET pdf_data='$sdata'
-                WHERE user_id=100;";
+                WHERE user_id=$userId;";
        $status = DBFunctions::execSQL($sql,true);
 
-	//$status = $this->save_pdf_data($data, $userId);
-	//return $status;
-//	print_r(unserialize(serialize($data)));
         DBFunctions::commit();
+                echo <<<EOF
+                <html>
+                    <head>
+                        <script type='text/javascript'>
+				parent.ccvUploaded([], "Pdf Uploaded");
+                        </script>
+                    </head>
+                </html>
+EOF;
+                exit;
 
     }
 
