@@ -175,12 +175,12 @@ BibliographyEditView = Backbone.View.extend({
     
         // Advanced groups
 	    [{
-		    name: 'advanced',
+		    name: 'editors',
 		    pull: true,
 		    put: true
 	    },
 	    {
-		    name: 'advanced',
+		    name: 'editors',
 		    pull: true,
 		    put: true
 	    }].forEach(function (groupOpts, i) {
@@ -259,12 +259,12 @@ BibliographyEditView = Backbone.View.extend({
     
         // Advanced groups
 	    [{
-		    name: 'advanced',
+		    name: 'products',
 		    pull: true,
 		    put: true
 	    },
 	    {
-		    name: 'advanced',
+		    name: 'products',
 		    pull: true,
 		    put: true
 	    }].forEach(function (groupOpts, i) {
