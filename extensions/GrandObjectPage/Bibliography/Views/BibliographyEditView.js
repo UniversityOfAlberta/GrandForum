@@ -74,9 +74,10 @@ BibliographyEditView = Backbone.View.extend({
                 
                 $("#editProduct").hide();
                 $("#deleteProduct").hide();
+                $("#preview").fadeIn(100);
                 $("#preview").css('left', $(e.currentTarget).position().left + $(e.currentTarget).outerWidth() + 30 - $("#preview").width()/4);
                 $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2);
-                $("#preview").show();
+                
                 var widthAfter = $(document).width();
                 var heightAfter = $(document).height();
                 
