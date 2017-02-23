@@ -12,6 +12,7 @@ Bibliography = Backbone.Model.extend({
             description: "",
             url: "",
             person: null,
+            editors: null,
             products: null
         };
     }

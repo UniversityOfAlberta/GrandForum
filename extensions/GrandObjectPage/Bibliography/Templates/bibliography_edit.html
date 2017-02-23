@@ -4,6 +4,36 @@
     <%= HTML.TextBox(this, 'title', {size: '50'}) %><br /><br />
     <b>Description:</b><br />
     <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %><br />
+    <h2>Editors</h2>
+    <div id="editors" class="edit">
+        <div class="sortable-widget">
+            <div class="sortable-search">
+                <div>
+                    <input type="text" placeholder="Search Available Editors..." />
+                </div>
+            </div>
+            <div class="sortable-container">
+                <div class="sortable-left">
+                    <div class="sortable-header">Editors in Bibliography</div>
+                    <div class="sortable-list">
+                        <ul id="sortable1">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sortable-container">
+                <div class="sortable-right">
+                    <div class="sortable-header">Available Editors</div>
+                    <div class="sortable-list">
+                        <ul id="sortable2">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <h2><%= productsTerm.pluralize() %></h2>
 <div id="products" class="edit">

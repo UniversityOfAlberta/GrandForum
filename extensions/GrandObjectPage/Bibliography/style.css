@@ -21,6 +21,12 @@
     max-width: 800px;
 }
 
+#editors.edit {
+    height: 290px;
+    width: 100%;
+    max-width: 500px;
+}
+
 .sortable-widget {
     display: none;
 }
@@ -82,11 +88,20 @@
     overflow-x: hidden;
 }
 
+#editors .sortable-list {
+    max-height: 190px;
+}
+
 .sortable-container ul {
     margin: 0;
     max-height: 304px;
     height: 304px;
     width: 100%;
+}
+
+#editors .sortable-container ul {
+    max-height: 190px;
+    height: 190px;
 }
 
 .sortable-container li {
@@ -98,6 +113,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #555555;
 }
 
 .sortable-container li:hover {

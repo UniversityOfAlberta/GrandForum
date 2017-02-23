@@ -4,6 +4,7 @@ BibliographyEditView = Backbone.View.extend({
     timeout: null,
     productView: null,
     spinner: null,
+    allPeople: null,
 
     initialize: function(){
         this.model.fetch({
@@ -22,7 +23,12 @@ BibliographyEditView = Backbone.View.extend({
         this.allProducts = new Products();
         this.allProducts.category = 'Publication';
         this.allProducts.fetch();
+        
+        this.allPeople = new People();
+        this.allPeople.fetch();
+        
         this.listenTo(this.allProducts, "sync", this.renderProductsWidget);
+        this.listenTo(this.allPeople, "sync", this.renderEditorsWidget);
         $(document).mousedown(this.hidePreview);
     },
     
@@ -91,6 +97,32 @@ BibliographyEditView = Backbone.View.extend({
         }, this), 50);
     },
     
+    renderEditorsWidget: function(){
+        var left = _.pluck(this.model.get('editors'), 'name');
+        var right = _.difference(this.allPeople.pluck('name'), left);
+        var html = HTML.Switcheroo(this, 'editors.name', {name: 'editor',
+                                                          'left': left,
+                                                          'right': right
+                                                          });
+        this.$("#editors").html(html);
+        createSwitcheroos();
+    },
+    
+    renderEditors: function(){
+        if(this.allPeople != null && this.allPeople.length > 0){
+            this.renderEditorsWidget();
+        }
+        else{
+            this.allPeople = new People();
+            this.allPeople.fetch();
+            this.allPeople.bind('sync', function(){
+                if(this.allPeople.length > 0){
+                    this.renderEditorsWidget();
+                }
+            }, this);
+        }
+    },
+    
     hidePreview: function(e){
         if(this.timeout != null){
             clearTimeout(this.timeout);
@@ -104,43 +136,40 @@ BibliographyEditView = Backbone.View.extend({
     events: {
         "click #saveBibliography": "saveBibliography",
         "click #cancel": "cancel",
-        "mouseover .sortable-list li": "previewProduct",
-        "mouseout .sortable-list li": "hidePreview"
+        "mouseover #products .sortable-list li": "previewProduct",
+        "mouseout #products .sortable-list li": "hidePreview"
     },
     
-    renderProductsWidget: function(){
+    renderEditorsWidget: function(){
         var model = this.model;
         if(headerColor != "#333333"){
             // Headers were changed, use this color
-            this.$(".sortable-header").css("background", headerColor);
+            this.$("#editors .sortable-header").css("background", headerColor);
         }
         else{
             // Otherwise use the highlight color
-            this.$(".sortable-header").css("background", highlightColor);
+            this.$("#editors .sortable-header").css("background", highlightColor);
         }
-        
-        if(this.allProducts.length == 0){
-            this.spin = spinner("products", 20, 40, 10, 6, '#888');
+
+        if(this.allPeople.length == 0){
             return;
         }
-        this.spin();
-        var products = this.model.get('products');
-        this.$(".sortable-widget").show();
+
+        var editors = this.model.get('editors');
+        this.$("#editors .sortable-widget").show();
         
         // Left Side (Current)
-        _.each(products, $.proxy(function(id){
-            var product = this.allProducts.findWhere({id: id.toString()});
-            if(product != null){
-                var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
-                this.$("#sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+        _.each(editors, $.proxy(function(e){
+            var editor = this.allPeople.findWhere({id: e.id.toString()});
+            if(editor != null){
+                this.$("#editors #sortable1").append("<li data-id='" + editor.get('id') + "'>" + editor.get('fullName') + "</li>");
             }
         }, this));
         
         //Right Side (Available)
-        this.allProducts.each($.proxy(function(product){
-            var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
-            if(!_.contains(products, parseInt(product.get('id')))){
-                this.$("#sortable2").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+        this.allPeople.each($.proxy(function(editor){
+            if(!_.contains(_.pluck(editors, 'id'), editor.get('id'))){
+                this.$("#editors #sortable2").append("<li data-id='" + editor.get('id') + "'>" + editor.get('fullName') + "</li>");
             }
         }, this));
     
@@ -155,7 +184,91 @@ BibliographyEditView = Backbone.View.extend({
 		    pull: true,
 		    put: true
 	    }].forEach(function (groupOpts, i) {
-		    Sortable.create(byId('sortable' + (i + 1)), {
+		    Sortable.create($("#editors #sortable" + (i + 1))[0], {
+			    sort: (i != 1),
+			    group: groupOpts,
+			    animation: 150,
+			    onSort: function (e) {
+                    if($(e.target).attr('id') == 'sortable1'){
+                        var ids = new Array();
+                        $("li:visible", $(e.target)).each(function(i, el){
+                            ids.push(parseInt($(el).attr('data-id')));
+                        });
+                        model.set('editors', ids);
+                    }
+                }
+		    });
+	    });
+	    
+	    var changeFn = function(){
+	        var value = this.$("#editors .sortable-search input").val().trim();
+	        var lower = value.toLowerCase();
+	        var showElements = new Array();
+	        var hideElements = new Array();
+	        $("#editors #sortable2 li").each(function(i, el){
+	            if($(el).text().toLowerCase().indexOf(lower) !== -1 || value == ""){
+	                showElements.push(el);
+	            }
+	            else{
+	                hideElements.push(el);
+	            }
+	        });
+	        $(showElements).show();
+	        $(hideElements).hide();
+	    };
+	    
+	    this.$("#editors .sortable-search input").change($.proxy(changeFn, this));
+	    this.$("#editors .sortable-search input").keyup($.proxy(changeFn, this));
+    },
+    
+    renderProductsWidget: function(){
+        var model = this.model;
+        if(headerColor != "#333333"){
+            // Headers were changed, use this color
+            this.$("#products .sortable-header").css("background", headerColor);
+        }
+        else{
+            // Otherwise use the highlight color
+            this.$("#products .sortable-header").css("background", highlightColor);
+        }
+        
+        if(this.allProducts.length == 0){
+            this.spin = spinner("products", 20, 40, 10, 6, '#888');
+            return;
+        }
+        this.spin();
+        var products = this.model.get('products');
+        this.$("#products .sortable-widget").show();
+        
+        // Left Side (Current)
+        _.each(products, $.proxy(function(id){
+            var product = this.allProducts.findWhere({id: id.toString()});
+            if(product != null){
+                var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
+                this.$("#products #sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+            }
+        }, this));
+        
+        //Right Side (Available)
+        this.allProducts.each($.proxy(function(product){
+            var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
+            if(!_.contains(products, parseInt(product.get('id')))){
+                this.$("#products #sortable2").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
+            }
+        }, this));
+    
+        // Advanced groups
+	    [{
+		    name: 'advanced',
+		    pull: true,
+		    put: true
+	    },
+	    {
+		    name: 'advanced',
+		    pull: true,
+		    put: true
+	    }].forEach(function (groupOpts, i) {
+		    Sortable.create($("#products #sortable" + (i + 1))[0], {
 			    sort: (i != 1),
 			    group: groupOpts,
 			    animation: 150,
@@ -172,11 +285,11 @@ BibliographyEditView = Backbone.View.extend({
 	    });
 	    
 	    var changeFn = function(){
-	        var value = this.$(".sortable-search input").val().trim();
+	        var value = this.$("#products .sortable-search input").val().trim();
 	        var lower = value.toLowerCase();
 	        var showElements = new Array();
 	        var hideElements = new Array();
-	        $("#sortable2 li").each(function(i, el){
+	        $("#products #sortable2 li").each(function(i, el){
 	            if($(el).text().toLowerCase().indexOf(lower) !== -1 || value == ""){
 	                showElements.push(el);
 	            }
@@ -188,13 +301,14 @@ BibliographyEditView = Backbone.View.extend({
 	        $(hideElements).hide();
 	    };
 	    
-	    this.$(".sortable-search input").change($.proxy(changeFn, this));
-	    this.$(".sortable-search input").keyup($.proxy(changeFn, this));
+	    this.$("#products .sortable-search input").change($.proxy(changeFn, this));
+	    this.$("#products .sortable-search input").keyup($.proxy(changeFn, this));
     },
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProductsWidget();
+        this.renderEditorsWidget();
         return this.$el;
     }
 

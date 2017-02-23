@@ -12,6 +12,7 @@ class Bibliography extends BackboneModel{
     var $title = "";
     var $description = "";
     var $person = null;
+    var $editors = array();
     var $products = array();
     
     /**
@@ -39,6 +40,7 @@ class Bibliography extends BackboneModel{
             $this->title = $data[0]['title'];
             $this->description = $data[0]['description'];
             $this->person = Person::newFromId($data[0]['person_id']);
+            $this->editors = unserialize($data[0]['editors']);
             $this->products = unserialize($data[0]['products']);
         }
     }
@@ -64,6 +66,14 @@ class Bibliography extends BackboneModel{
         return $this->person;
     }
     
+    function getEditors(){
+        $editors = array();
+        foreach($this->editors as $editor){
+            $editors[] = Person::newFromId($editor);
+        }
+        return $editors;
+    }
+    
     function getProducts(){
         $products = array();
         foreach($this->products as $product){
@@ -77,6 +87,7 @@ class Bibliography extends BackboneModel{
                             array('title' => $this->title,
                                   'description' => $this->description,
                                   'person_id' => $this->getPerson()->getId(),
+                                  'editors' => serialize($this->editors),
                                   'products' => serialize($this->products)));
         $this->id = DBFunctions::insertId();
         return $this;
@@ -86,6 +97,7 @@ class Bibliography extends BackboneModel{
         DBFunctions::update('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,
+                                  'editors' => serialize($this->editors),
                                   'products' => serialize($this->products)),
                             array('id' => EQ($this->getId())));
         return $this;
@@ -100,6 +112,13 @@ class Bibliography extends BackboneModel{
     
     function toArray(){
         $person = $this->getPerson();
+        $editors = array();
+        foreach($this->getEditors() as $editor){
+            $editors[] = array('id' => $editor->getId(),
+                               'name' => $editor->getNameForProduct(),
+                               'fullname' => $editor->getNameForForms(),
+                               'url' => $editor->getUrl());
+        }
         $data = array(
             'id' => $this->getId(),
             'title' => $this->getTitle(),
@@ -109,6 +128,7 @@ class Bibliography extends BackboneModel{
                               'name' => $person->getNameForProduct(),
                               'fullname' => $person->getNameForForms(),
                               'url' => $person->getUrl()),
+            'editors' => $editors,
             'products' => $this->products
         );
         return $data;
