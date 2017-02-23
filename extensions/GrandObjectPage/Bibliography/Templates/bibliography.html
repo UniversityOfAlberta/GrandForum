@@ -1,12 +1,14 @@
 <div>
     <%= nl2br(striphtml(description)) %>
 </div>
-<h2>Editors</h2>
-<ul>
-<% _.each(editors, function(editor){ %>
-    <li><a href="<%= editor.url %>"><%= editor.fullname %></a></li>
-<% }) %>
-</ul>
+<% if(editors.length > 0){ %>
+    <h2>Editors</h2>
+    <ul>
+    <% _.each(editors, function(editor){ %>
+        <li><a href="<%= editor.url %>"><%= editor.fullname %></a></li>
+    <% }) %>
+    </ul>
+<% } %>
 <h2><%= productsTerm.pluralize() %></h2>
 <div id="products">
     <ol>
