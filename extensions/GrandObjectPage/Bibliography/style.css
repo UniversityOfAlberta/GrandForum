@@ -97,6 +97,7 @@
     max-height: 304px;
     height: 304px;
     width: 100%;
+    background: #EEEEEE;
 }
 
 #editors .sortable-container ul {
