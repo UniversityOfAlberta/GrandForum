@@ -34,7 +34,7 @@ BibliographyView = Backbone.View.extend({
             });
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
-                    this.$('#products').append("<p>" + product.get('citation') + "</p>");
+                    this.$('#products ol').append("<li>" + product.get('citation') + "<br /><div style='width:100%;text-align:right;'>&nbsp;" + product.get('tags').join(", ") + "</div></li>");
                 }, this));
                 $(".pdfnodisplay").remove();
             }, this));
