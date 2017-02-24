@@ -340,7 +340,12 @@ class SOP extends BackboneModel{
 	    if($data[0]['data'] == 'Yes'){
 		return "Admit";
 	    }
-	    return "Not Admit";
+	    elseif($data[0]['data'] == 'No'){
+	        return "Not Admit";
+	    }
+	    else{
+		return "Undecided";
+	    }
 	}
 	return "Undecided";
 
@@ -461,10 +466,10 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getSentimentScore(){
-	$content = $this->getContentToSend();
-	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
-        $content = str_replace('-', ' ', $content);
+        $content = $this->getContentToSend();
+        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+        //$content = str_replace(' ', '-', $content);
+        $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
         $curl_url = "http://162.246.157.115/tasha/sentiment";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -500,6 +505,7 @@ class SOP extends BackboneModel{
         if($status){
             DBFunctions::commit();
         }
+        print_r($result);
 
         return $result;
     }
@@ -509,7 +515,10 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getEmotionsScore(){
-	$content = $this->getContentToSend();
+        $content = $this->getContentToSend();
+        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+        //$content = str_replace(' ', '-', $content);
+        $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
         $curl_url = "http://162.246.157.115/tasha/emotions";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -560,6 +569,9 @@ class SOP extends BackboneModel{
    */
     function getPersonalityScore(){
         $content = $this->getContentToSend();
+        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+        //$content = str_replace(' ', '-', $content);
+        $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
         $curl_url = "http://162.246.157.115/tasha/personality";
         $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
