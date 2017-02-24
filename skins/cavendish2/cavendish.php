@@ -756,7 +756,10 @@ class CavendishTemplate2 extends QuickTemplate {
                 // $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
 	            if($me->isRoleAtLeast(Manager)){
                     $GLOBALS['tabs']['Review'] = TabUtils::createTab("Review","$wgServer$wgScriptPath/index.php/Special:Sops");
-		        } 
+		        }
+		    if($me->isRoleAtLeast(Admin)){
+                    $GLOBALS['tabs']['Upload Pdf'] = TabUtils::createTab("Upload PDF","$wgServer$wgScriptPath/index.php/Special:PdfConversion");
+		    } 
 	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
 	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
             ?>
