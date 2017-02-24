@@ -81,7 +81,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q11" type="RadioReportItem" blobItem="Q11" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}">
+        <ReportItem id="q13" type="RadioReportItem" blobItem="Q11" blobType="BLOB_TEXT" options="Yes|No|Undecided" blobSubItem="{$project_id}">
             <![CDATA[
                 <h3>Suggest Admission?</h3>
                 {$item}
