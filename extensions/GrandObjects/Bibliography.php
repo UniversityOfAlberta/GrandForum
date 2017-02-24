@@ -107,6 +107,11 @@ class Bibliography extends BackboneModel{
     }
     
     function create(){
+        foreach($this->editors as $key => $editor){
+            if(is_object($editor)){
+                $this->editors[$key] = $editor->id;
+            }
+        }
         DBFunctions::insert('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,
@@ -118,6 +123,11 @@ class Bibliography extends BackboneModel{
     }
     
     function update(){
+        foreach($this->editors as $key => $editor){
+            if(is_object($editor)){
+                $this->editors[$key] = $editor->id;
+            }
+        }
         DBFunctions::update('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,
