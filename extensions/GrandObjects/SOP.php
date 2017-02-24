@@ -316,15 +316,18 @@ class SOP extends BackboneModel{
     }
 
     function getReviewers(){
-        $sql = "SELECT DISTINCT(user_id)
+        $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section LIKE 'OT_REVIEW'
+		AND rp_item LIKE 'Q13'
 		AND rp_subitem =".$this->id;
         $data = DBFunctions::execSQL($sql);
 	$reviewers = array();
         if(count($data)>0){
             foreach($data as $user){
-                $reviewers[] = $user['user_id'];
+		if($user['data'] != ''){
+                    $reviewers[] = $user['user_id'];
+		}
             }
         }
 	return $reviewers;
@@ -345,12 +348,8 @@ class SOP extends BackboneModel{
 	    elseif($data[0]['data'] == 'No'){
 	        return "Not Admit";
 	    }
-	    else{
-		return "Undecided";
-	    }
-	}
+	}	
 	return "Undecided";
-
    }
 
   /**
