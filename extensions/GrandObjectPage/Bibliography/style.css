@@ -22,7 +22,7 @@
 }
 
 #editors.edit {
-    height: 290px;
+    height: 235px;
     width: 100%;
     max-width: 500px;
 }
@@ -77,9 +77,9 @@
 .sortable-header {
     color: white;
     text-align: center;
-    font-size: 18px;
-    line-height: 18px;
-    padding: 10px;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 8px 10px;
 }
 
 .sortable-list {
@@ -94,22 +94,22 @@
 
 .sortable-container ul {
     margin: 0;
-    max-height: 304px;
-    height: 304px;
+    max-height: 280px;
+    height: 280px;
     width: 100%;
     background: #EEEEEE;
 }
 
 #editors .sortable-container ul {
-    max-height: 190px;
-    height: 190px;
+    max-height: 168px;
+    height: 168px;
 }
 
 .sortable-container li {
     display: block;
     background: #EEEEEE;
     margin: 0;
-    padding: 10px;
+    padding: 5px 10px;
     cursor: move;
     white-space: nowrap;
     overflow: hidden;
