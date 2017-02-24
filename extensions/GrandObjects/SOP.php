@@ -259,6 +259,7 @@ class SOP extends BackboneModel{
     }
     function getPdfAsHtml(){
 	$pdf = $this->getPdf();
+	if(isset($pdf['Referees'])){
         $refs = $pdf['Referees'];
 	$i = 0;
 	if(is_array($refs)){
@@ -266,6 +267,7 @@ class SOP extends BackboneModel{
             	$pdf['Referees'][$i]['responses'] = nl2br($ref['responses']);
 	    	$i++;
             }
+	}
 	}
 	return $pdf;
     }
