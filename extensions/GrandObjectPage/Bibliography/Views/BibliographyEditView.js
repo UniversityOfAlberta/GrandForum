@@ -22,6 +22,7 @@ BibliographyEditView = Backbone.View.extend({
         
         this.allProducts = new Products();
         this.allProducts.category = 'Publication';
+        this.allProducts.grand = 'grand';
         this.allProducts.fetch();
         
         this.allPeople = new People();
