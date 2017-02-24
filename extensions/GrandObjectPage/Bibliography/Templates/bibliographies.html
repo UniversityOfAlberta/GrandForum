@@ -1,0 +1,26 @@
+<table id="bibliographies" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="25%">Title</th>
+            <th width="24%">Editors</th>
+            <th width="50%">Description</th>
+            <th width="1%">#<%= productsTerm.pluralize() %></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(bib){ %>
+            <tr>
+                <td><a href="<%= bib.get('url') %>"><%= bib.get('title') %></a></td>
+                <td>
+                    <%= bib.get('editorsHTML') %>
+                </td>
+                <td>
+                    <div style="max-height:75px; overflow-y: auto;"><%= bib.get('description') %></div>
+                </td>
+                <td align="right">
+                    <%= bib.get('products').length %>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

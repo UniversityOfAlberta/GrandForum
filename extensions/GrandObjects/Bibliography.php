@@ -33,6 +33,20 @@ class Bibliography extends BackboneModel{
         self::$cache[$bib->id] = &$bib;
         return $bib;
     }
+    
+    /**
+     * Returns all of the Bibliographies
+     * @return array All of the Bibliographies
+     */
+    static function getAllBibliographies(){
+        $data = DBFunctions::select(array('grand_bibliography'),
+                                    array('id'));
+        $bibs = array();
+        foreach($data as $row){
+            $bibs[] = Bibliography::newFromId($row['id']);
+        }
+        return $bibs;
+    }
  
     function Bibliography($data){
         if(count($data) > 0){

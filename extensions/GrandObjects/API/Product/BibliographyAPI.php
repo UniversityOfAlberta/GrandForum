@@ -12,6 +12,10 @@ class BibliographyAPI extends RESTAPI {
             $bibs = new Collection($person->getBibliographies());
             return $bibs->toJSON();
         }
+        else{
+            $bibs = new Collection(Bibliography::getAllBibliographies());
+            return $bibs->toJSON();
+        }
     }
     
     function doPOST(){

@@ -17,14 +17,23 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "": "showBibliographies",
         "new": "newBibliography",
         ":id": "showBibliography",
         ":id/edit": "editBibliography"
     }
+    
 });
 
 // Initiate the router
 var pageRouter = new PageRouter;
+
+pageRouter.on('route:showBibliographies', function (id) {
+    // Get A single Bibliography
+    var bib = new Bibliographies();
+    this.closeCurrentView();
+    this.currentView = new BibliographiesView({el: $("#currentView"), model: bib});
+});
 
 pageRouter.on('route:newBibliography', function(){
     // Create New Bibliography

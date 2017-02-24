@@ -26,7 +26,12 @@ Bibliographies = Backbone.Collection.extend({
     person: null,
 
     url: function(){
-        return 'index.php?action=api.bibliography/person/' + this.person;
+        if(this.person == null){
+            return 'index.php?action=api.bibliography';
+        }
+        else{
+            return 'index.php?action=api.bibliography/person/' + this.person;
+        }
     }
 
 });
