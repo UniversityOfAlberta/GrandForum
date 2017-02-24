@@ -24,7 +24,8 @@ SopsEditView = Backbone.View.extend({
         "click #check_disgust" : "check_disgust",
         "click #check_fear" : "check_fear",
         "click #check_joy" : "check_joy",
-        "click #check_readingease" : "check_readingease"
+        "click #check_readingease" : "check_readingease",
+	"click #check_personality" : "check_personality"
 
     },
     check_joy: function(){                $('#joy_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
@@ -63,6 +64,15 @@ SopsEditView = Backbone.View.extend({
                         }});
 
     },
+    check_personality: function(){
+        $('#personality_stats').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
+                            'OK': function () {
+                                $(this).dialog('close')
+                            }
+                        }});
+
+    },
+
     check_sentiment_score: function(){        $('#sentiment_score_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
                             'OK': function () {
                                 $(this).dialog('close')
@@ -157,6 +167,7 @@ SopsEditView = Backbone.View.extend({
 
     render: function(){
       	var self = this;
+	console.log(self.model);
         main.set('title', self.model.get('author').name);
         var moveAnnotatorFilter = setInterval(function(){
             if(($('.annotator-filter').length)>0){
@@ -278,6 +289,41 @@ SopsEditView = Backbone.View.extend({
 	    }
 	});
 	/** ----------------------------------------------------------------------------------------------  **/
+/**TEST**/
+var w = 80,h = 80;
+//Data
+var d = [
+		  [
+                        {axis:"Conscientiousness",value:self.model.get('conscientiousness')},
+			{axis:"Openness",value:self.model.get('openness')},
+			{axis:"Agreeableness",value:self.model.get('agreeableness')},
+			{axis:"Neuroticism",value:self.model.get('neurotism')},
+                        {axis:"Extraversion",value:self.model.get('extraversion')},
+		  ]
+		];
+
+//Options for the Radar chart, other than default
+var mycfg = {
+  w: w,
+  h: h,
+  maxValue: 1,
+  levels: 4,
+  ExtraWidthX: 400
+}
+
+//Call function to draw the Radar chart
+//Will expect that data is in %'s
+
+             var intervalId = setInterval(function(){
+                if($('#chart').is(':visible')){
+			RadarChart.draw("#chart", d, mycfg);
+                clearInterval(intervalId);
+                intervalId = null;
+                }
+                
+             }, 100)
+/**TEST**/
+
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
 		$(document).ready(function () {
