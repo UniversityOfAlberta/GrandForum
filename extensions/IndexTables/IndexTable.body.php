@@ -56,6 +56,7 @@ class IndexTable {
         
         $selected = ($wgTitle->getText() == "Products" || 
                      $wgTitle->getText() == "Multimedia" ||
+                     $wgTitle->getText() == "BibliographyPage" ||
                      $wgTitle->getNsText() == "Multimedia") ? "selected" : "";
         $productsSubTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue("productsTerm")));
         $structure = Product::structure();
@@ -67,6 +68,9 @@ class IndexTable {
         }
         if(Material::countByCategory() > 0){
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
+        }
+        if(Bibliography::count() > 0){
+            $productsSubTab['dropdown'][] = TabUtils::createSubTab("Bibliographies", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage", "$selected");
         }
         $tabs['Main']['subtabs'][] = $productsSubTab;
         

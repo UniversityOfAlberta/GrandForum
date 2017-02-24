@@ -269,6 +269,13 @@ class Paper extends BackboneModel{
                 }
                 else{
                     $p = Project::newFromHistoricName($project);
+                    if($p == null || $p->getId() == 0){
+                        $p = Project::newFromId($project); // Try Id
+                    }
+                    if($p == null){
+                        // Fail!
+                        return array();
+                    }
                 }
                 if(!$p->clear){
                     $preds = $p->getPreds();

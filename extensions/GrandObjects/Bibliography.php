@@ -47,6 +47,16 @@ class Bibliography extends BackboneModel{
         }
         return $bibs;
     }
+    
+    /**
+     * Returns how many Bibliographies there are
+     * @return int How many Bibliographies there are
+     */
+    static function count(){
+        $data = DBFunctions::select(array('grand_bibliography'),
+                                    array('id'));
+        return count($data);
+    }
  
     function Bibliography($data){
         if(count($data) > 0){
