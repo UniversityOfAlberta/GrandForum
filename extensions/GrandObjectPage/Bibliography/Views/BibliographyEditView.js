@@ -22,7 +22,6 @@ BibliographyEditView = Backbone.View.extend({
         
         this.allProducts = new Products();
         this.allProducts.category = 'Publication';
-        this.allProducts.grand = 'grand';
         this.allProducts.fetch();
         
         this.allPeople = new People();
@@ -238,6 +237,7 @@ BibliographyEditView = Backbone.View.extend({
             return;
         }
         this.spin();
+        this.allProducts = new Products(this.allProducts.where({access: "Public"}));
         var products = this.model.get('products');
         this.$("#products .sortable-widget").show();
         
