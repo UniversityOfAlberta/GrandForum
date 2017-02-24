@@ -186,6 +186,20 @@ class SOP extends BackboneModel{
 			       'url' => $person->getUrl(),
 			       'decision'=>$this->getAdmitResult($id));
 	}
+	$personality = $this->getPersonalityStats();
+        $openness = 0;
+        $conscientiousness = 0;
+        $extraversion = 0;
+        $agreeableness = 0;
+        $neurotism = 0;
+
+	if(isset($personality['personality'])){
+             $openness = $personality['personality'][0]['percentile'];
+             $conscientiousness = $personality['personality'][1]['percentile'];
+             $extraversion = $personality['personality'][2]['percentile'];
+             $agreeableness = $personality['personality'][3]['percentile'];
+             $neurotism = $personality['personality'][4]['percentile'];
+	}
             $json
                 = array('id' => $this->getId(),
                         'content' => $this->getContent(),
@@ -197,6 +211,11 @@ class SOP extends BackboneModel{
 			'reviewers' => $reviewers,
 			'sentiment_val' => round($this->sentiment_val,2),
 			'sentiment_type' => $this->sentiment_type,
+			'openness' => $openness,
+			'conscientiousness' => $conscientiousness,
+			'extraversion' => $extraversion,
+			'agreeableness' => $agreeableness,
+			'neurotism' => $neurotism,
 			'readability_score' => number_format($this->readability_score,2,'.',','),
                         'reading_ease' => number_format($this->reading_ease,2,'.',','),
 
