@@ -22,7 +22,7 @@ class BibliographyAPI extends RESTAPI {
         $bib = new Bibliography(array());
         $bib->title = $this->POST('title');
         $bib->description = $this->POST('description');
-        $bib->person = Person::newFromId($this->POST('person')->id);
+        $bib->person = Person::newFromWgUser();
         $bib->editors = $this->POST('editors');
         $bib->products = $this->POST('products');
         $bib->create();
