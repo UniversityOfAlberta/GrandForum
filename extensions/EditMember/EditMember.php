@@ -779,6 +779,7 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                                         array('created' => EQ(0),
                                               '`ignore`' => EQ(0)));
         }
+        $forms = array();
         foreach($rows as $row){
             $otherData = unserialize($row['other']);
             if(isset($otherData['thesisTitle'])){
@@ -857,8 +858,7 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                     $comments[$key] = $proj->getName();
                 }
             }
-            $wgOut->addHTML("<td align='left'>{$diff}</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
+            $formHTML = "<form action='$wgServer$wgScriptPath/index.php/Special:EditMember?action=view&sub' method='post'>
                             <input type='hidden' name='current_role' value='{$row['current_role']}' />
                             <input type='hidden' name='role' value='{$row['role']}' />
                             <input type='hidden' name='role_projects' value='{$row['role_projects']}' />
@@ -867,13 +867,20 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                             <input type='hidden' name='user' value='{$row['user']}' />
                             <input type='hidden' name='requesting_user' value='{$row['requesting_user']}' />
                             <input type='hidden' name='type' value='{$row['type']}' />
-                            <input type='hidden' name='id' value='{$row['id']}' />");
+                            <input type='hidden' name='id' value='{$row['id']}' />";
             if(isset($otherData['thesisTitle'])){
-                $wgOut->addHTML("<input type='hidden' name='thesis' value='{$otherData['thesisId']}' />");
+                $formHTML .= "<input type='hidden' name='thesis' value='{$otherData['thesisId']}' />";
             }
             else if(isset($otherData['where'])){
-                $wgOut->addHTML("<input type='hidden' name='where' value='{$otherData['where']}' />");
+                $formHTML .= "<input type='hidden' name='where' value='{$otherData['where']}' />";
             }
+            $formHTML .= "  <input id='{$row['id']}_accept' type='submit' name='submit' value='Accept' />
+                            <input id='{$row['id']}_ignore' type='submit' name='submit' value='Ignore' />
+                          </form>";
+            $forms[] = $formHTML;
+                            
+            $wgOut->addHTML("<td align='left'>{$diff}</td> <td align='left'>".str_replace(" ::", "<br />", implode("::", $comments))."</td> <td align='left'>".$other."</td> <td align='left'>{$row['type']}</td>");
+            
             if($history){
                 if($row['created']){
                     $wgOut->addHTML("<td>Accepted</td>");
@@ -883,13 +890,12 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                 }
             }
             else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' onclick=\"return confirm('Are you sure you want to accept the request?');\" /></td> <td><input type='submit' name='submit' value='Ignore' onclick=\"return confirm('Are you sure you want to ignore the request?');\" /></td>");
+                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' onclick=\"if(confirm('Are you sure you want to accept the request?')){ $('#{$row['id']}_accept').click(); }\" /></td> <td><input type='submit' name='submit' value='Ignore' onclick=\"if(confirm('Are you sure you want to ignore the request?')){ $('#{$row['id']}_ignore').click(); }\" /></td>");
             }
-            $wgOut->addHTML("
-                        </form>
-                    </tr>");
+            $wgOut->addHTML("</tr>");
         }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>
+        $wgOut->addHTML("</tbody></table><div style='display: none;'>".implode("", $forms)."</div>
+        <script type='text/javascript'>
                                             $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");

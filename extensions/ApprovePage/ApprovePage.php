@@ -38,22 +38,26 @@ class ApprovePage extends SpecialPage{
                         </tr></thead><tbody>\n");
    //for loop adding here 
         $requests = Wiki::getAllUnapprovedPages();
+        $forms = array();
         foreach($requests as $request){
             $date = wfTimestamp(TS_DB, $request->getArticle()->getTimestamp());
             $title = str_replace("<", "&lt;", str_replace(">", "&gt;", $request->getTitle()));
             $req_user = $request->getNewestAuthor();
-            $wgOut->addHTML("<tr><form action='$wgServer$wgScriptPath/index.php/Special:ApprovePage?action=view' method='post'>
+            $forms[] = "<form action='$wgServer$wgScriptPath/index.php/Special:ApprovePage?action=view' method='post'>
+                <input type='hidden' name='id' value='{$request->getId()}' />
+                <input id='{$request->getId()}_accept' type='submit' name='submit' value='Accept' />
+            </form>";
+            $wgOut->addHTML("<tr>
                         <td align='left'>
                             <a target='_blank' href='{$req_user->getUrl()}'><b>{$req_user->getName()}</b></a>
                         </td>");
             $wgOut->addHTML("<td>{$date}</td>");
-            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$title}</a></td>
-                             <input type='hidden' name='id' value='{$request->getId()}' />");
-            $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /></td>");
-            $wgOut->addHTML("</form>
-                    </tr>");
+            $wgOut->addHTML("<td align='left'><a target='_blank' href='{$request->getUrl()}'>{$title}</a></td>");
+            $wgOut->addHTML("<td><input type='button' name='submit' value='Accept' onclick='$(\"#{$request->getId()}_accept\").click()' /></td>");
+            $wgOut->addHTML("</tr>");
         }
-        $wgOut->addHTML("</tbody></table><script type='text/javascript'>
+        $wgOut->addHTML("</tbody></table><div style='display:none;'>".implode("", $forms)."</div>
+        <script type='text/javascript'>
                                             $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
