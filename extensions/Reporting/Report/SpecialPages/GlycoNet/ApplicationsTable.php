@@ -227,7 +227,8 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "Project Report"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
