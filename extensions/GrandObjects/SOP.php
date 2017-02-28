@@ -311,16 +311,14 @@ class SOP extends BackboneModel{
     function getContent($asString=false){
         if($this->questions == null){
 	        $data = DBFunctions::select(array('grand_report_blobs'),
-                                        array('*'),
-					                    array('user_id' => EQ($this->getUser())));
+                                        array('rp_item', 'data'),
+					                    array('user_id' => EQ($this->getUser()),
+					                          'rp_type' => EQ('RP_OT'),
+					                          'rp_section' => EQ('OT_QUESTIONS')));
 	        $questions = array();
             if(count($data) >0){
-                $i = 1;
                 foreach($data as $sopId){
-                    if($sopId['rp_item'] != "EULA"){
-                 	    $questions[$sopId['rp_item']] = $sopId['data'];
-                    }
-	                $i++;
+                 	$questions[$sopId['rp_item']] = $sopId['data'];
                 }
             }
             $this->questions = $questions;
