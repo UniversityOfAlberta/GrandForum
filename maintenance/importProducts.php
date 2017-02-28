@@ -23,8 +23,7 @@ foreach($rows as $row){
         $product = new Product(array());
         $product->date = $date;
         foreach($members as $member){
-            $person = new Person(array());
-            $person->name = $member;
+            $person = Person::newFromName($member);
             $product->authors[] = $person;
         }
         $product->access = $visibility;
