@@ -450,7 +450,7 @@ function ShibUserLoadFromSession($user, &$result)
 	}
         $sql = "SELECT user_id
                 FROM mw_user
-                WHERE CONVERT(user_name USING latin1) LIKE '$shib_UN'";
+                WHERE LOWER(CONVERT(user_name USING latin1)) = LOWER('".DBFunctions::escape($shib_UN)."')";
         $data = DBFunctions::execSQL($sql); 
 	//Is the user already in the database?
 	if (count($data) > 0)

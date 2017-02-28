@@ -6,9 +6,11 @@
 class SOP extends BackboneModel{
     
     static $cache = array();
+    static $idsCache = array();
     
     var $id;
     var $content;
+    var $questions;
     var $user_id;
     var $date_created;
     
@@ -53,10 +55,16 @@ class SOP extends BackboneModel{
    * @return $sop SOP object
    */
     static function newFromId($id){
-        $data = DBFunctions::select(array('grand_sop'),
-                                    array('*'),
-                                    array('id' => EQ($id)));
+        if(isset(self::$cache[$id])){
+            return self::$cache[$id];
+        }
+        self::generateCache();
+        $data = array();
+        if(isset(self::$idsCache[$id])){
+            $data[] = self::$idsCache[$id];
+        }
         $sop = new SOP($data);
+        $cache[$id] = $sop;
         return $sop;
     }
 
@@ -70,9 +78,9 @@ class SOP extends BackboneModel{
             $this->id = $row['id'];
             $this->content = $row['content'];
             $this->user_id = $row['user_id'];
-	    $this->date_created = $row['date_created'];
+            $this->date_created = $row['date_created'];
 
-	    $this->sentiment_val = $row['sentiment_val'];
+            $this->sentiment_val = $row['sentiment_val'];
             $this->sentiment_type = $row['sentiment_type'];
             $this->personality_stats = $row['personality_stats'];
             $emotions_array = unserialize($row['emotion_stats']);
@@ -82,7 +90,7 @@ class SOP extends BackboneModel{
             $this->joy_score = $emotions_array['joy'];
             $this->sadness_score = $emotions_array['sadness'];            
 
-	    $this->readability_score = $row['readability_score'];
+            $this->readability_score = $row['readability_score'];
             $this->reading_ease = $row["reading_ease"];
             $this->ari_grade = $row["ari_grade"];
             $this->ari_age = $row["ari_age"];
@@ -101,9 +109,20 @@ class SOP extends BackboneModel{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-	    $this->pdf = $row['pdf_data'];
+            $this->pdf = $row['pdf_data'];
         }
-	$this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
+        $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
+    }
+    
+    static function generateCache(){
+        if(empty(self::$idsCache)){
+            $data = DBFunctions::select(array('grand_sop'),
+                                        array('*'),
+                                        array());
+            foreach($data as $row){
+                self::$idsCache[$row['id']] = $row;
+            }
+        }
     }
 
     /**
@@ -155,78 +174,77 @@ class SOP extends BackboneModel{
    * @return array
    */
     function toArray(){
-            global $wgUser;
-            if(!$wgUser->isLoggedIn()){
-                        return array();
-            }
+        global $wgUser;
+        if(!$wgUser->isLoggedIn()){
+            return array();
+        }
+        
         $user = Person::newFromId($this->getUser());
-        $author = array('id'=> $user->getId(),
+        $author = array('id' => $user->getId(),
                         'name' => $user->getNameForForms(),
                         'url' => $user->getUrl());
-	$reviewers = array();
-	foreach($this->getReviewers() as $id){
-	    $person = Person::newFromId($id);
-	    $reviewers[] = array('id'=> $person->getId(),
-			       'name' => $person->getNameForForms(),
-			       'url' => $person->getUrl(),
-			       'decision'=>$this->getAdmitResult($id));
-	}
-	$personality = $this->getPersonalityStats();
+        $reviewers = array();
+        foreach($this->getReviewers() as $id){
+            $person = Person::newFromId($id);
+            $reviewers[] = array('id' => $person->getId(),
+                                 'name' => $person->getNameForForms(),
+                                 'url' => $person->getUrl(),
+                                 'decision' => $this->getAdmitResult($id));
+        }
+        $personality = $this->getPersonalityStats();
         $openness = 0;
         $conscientiousness = 0;
         $extraversion = 0;
         $agreeableness = 0;
         $neurotism = 0;
 
-	if(isset($personality['personality'])){
+        if(isset($personality['personality'])){
              $openness = $personality['personality'][0]['percentile'];
              $conscientiousness = $personality['personality'][1]['percentile'];
              $extraversion = $personality['personality'][2]['percentile'];
              $agreeableness = $personality['personality'][3]['percentile'];
              $neurotism = $personality['personality'][4]['percentile'];
-	}
-            $json
-                = array('id' => $this->getId(),
-                        'content' => $this->getContent(),
-			'content_string' => $this->getContentString(),
-                        'user_id' => $this->getUser(),
-                        'date_created' => $this->getDateCreated(),
-			'url' => $this->getUrl(),
-			'author' => $author,
-			'reviewers' => $reviewers,
-			'sentiment_val' => round($this->sentiment_val,2),
-			'sentiment_type' => $this->sentiment_type,
-			'openness' => $openness,
-			'conscientiousness' => $conscientiousness,
-			'extraversion' => $extraversion,
-			'agreeableness' => $agreeableness,
-			'neurotism' => $neurotism,
-			'readability_score' => number_format($this->readability_score,2,'.',','),
-                        'reading_ease' => number_format($this->reading_ease,2,'.',','),
-
-		        'ari_grade' => number_format($this->ari_grade,2,'.',','),
-		        'ari_age' => number_format($this->ari_age,2,'.',','),
-		        'colemanliau_grade' => number_format($this->colemanliau_grade,2,'.',','),
-		        'colemanliau_age' => number_format($this->colemanliau_age,2,'.',','),
-			'dalechall_index' => number_format($this->dalechall_index,2,'.',','),
-		        'dalechall_grade' => number_format($this->dalechall_grade,2,'.',','),
-		        'dalechall_age' => number_format($this->dalechall_age,2,'.',','),
-		        'fleschkincaid_grade' => number_format($this->fleschkincaid_grade,2,'.',','),
-		        'fleschkincaid_age' => number_format($this->fleschkincaid_age,2,'.',','),
-		        'smog_grade' => number_format($this->smog_grade,2,'.',','),
-		        'smog_age' => number_format($this->smog_age,2,'.',','),
-			'anger_score' => number_format($this->anger_score,2,'.',','),
-                        'disgust_score' => number_format($this->disgust_score,2,'.',','),
-                        'fear_score' => number_format($this->fear_score,2,'.',','),
-                        'joy_score' => number_format($this->joy_score,2,'.',','),
-			'errors' => $this->errors,
-			'sentlen_ave' => number_format($this->sentlen_ave,2,'.',','),
-			'wordletter_ave' => number_format($this->wordletter_ave,2,'.',','),
-			'min_age' => number_format($this->min_age,2,'.',','),
-			'word_count' => $this->word_count,
-			'annotations' => $this->annotations,
-			'pdf_data' => $this->getPdfAsHtml());
-            return $json;
+        }
+        $json = array('id' => $this->getId(),
+                      'content' => $this->getContent(),
+                      'content_string' => $this->getContent(true),
+                      'user_id' => $this->getUser(),
+                      'date_created' => $this->getDateCreated(),
+                      'url' => $this->getUrl(),
+                      'author' => $author,
+                      'reviewers' => $reviewers,
+                      'sentiment_val' => round($this->sentiment_val,2),
+                      'sentiment_type' => $this->sentiment_type,
+                      'openness' => $openness,
+                      'conscientiousness' => $conscientiousness,
+                      'extraversion' => $extraversion,
+                      'agreeableness' => $agreeableness,
+                      'neurotism' => $neurotism,
+                      'readability_score' => number_format($this->readability_score,2,'.',','),
+                      'reading_ease' => number_format($this->reading_ease,2,'.',','),
+                      'ari_grade' => number_format($this->ari_grade,2,'.',','),
+                      'ari_age' => number_format($this->ari_age,2,'.',','),
+                      'colemanliau_grade' => number_format($this->colemanliau_grade,2,'.',','),
+                      'colemanliau_age' => number_format($this->colemanliau_age,2,'.',','),
+                      'dalechall_index' => number_format($this->dalechall_index,2,'.',','),
+                      'dalechall_grade' => number_format($this->dalechall_grade,2,'.',','),
+                      'dalechall_age' => number_format($this->dalechall_age,2,'.',','),
+                      'fleschkincaid_grade' => number_format($this->fleschkincaid_grade,2,'.',','),
+                      'fleschkincaid_age' => number_format($this->fleschkincaid_age,2,'.',','),
+                      'smog_grade' => number_format($this->smog_grade,2,'.',','),
+                      'smog_age' => number_format($this->smog_age,2,'.',','),
+                      'anger_score' => number_format($this->anger_score,2,'.',','),
+                      'disgust_score' => number_format($this->disgust_score,2,'.',','),
+                      'fear_score' => number_format($this->fear_score,2,'.',','),
+                      'joy_score' => number_format($this->joy_score,2,'.',','),
+                      'errors' => $this->errors,
+                      'sentlen_ave' => number_format($this->sentlen_ave,2,'.',','),
+                      'wordletter_ave' => number_format($this->wordletter_ave,2,'.',','),
+                      'min_age' => number_format($this->min_age,2,'.',','),
+                      'word_count' => $this->word_count,
+                      'annotations' => $this->annotations,
+                      'pdf_data' => $this->getPdf(true));
+        return $json;
     }
 
   /**
@@ -258,31 +276,24 @@ class SOP extends BackboneModel{
         return $this->id;
     }
 
-   /**
-    * returns array that was taken from PDF upload
-    * @return $pdf array
-    */
-    function getPdf(){
-	return unserialize($this->pdf);
-    }
-
-   /**
-    * returns array that was taken from PDF upload but with new lines changed to <br />
-    * @return $pdf array
-    */
-    function getPdfAsHtml(){
-	$pdf = $this->getPdf();
-	if(isset($pdf['Referees'])){
-        $refs = $pdf['Referees'];
-	$i = 0;
-	if(is_array($refs)){
-            foreach($refs as $ref){
-            	$pdf['Referees'][$i]['responses'] = nl2br($ref['responses']);
-	    	$i++;
-            }
-	}
-	}
-	return $pdf;
+    /**
+     * Returns information taken from PDF uploaded as an array
+     * @param bool $asHtml if response should replace new lines with <br />
+     * @return $pdf the array of information previously parsed from PDF upload
+     */
+    function getPdf($asHtml=false){
+	    $pdf = unserialize($this->pdf);
+	    if($asHtml && isset($pdf['Referees'])){
+                $refs = $pdf['Referees'];
+                $i = 0;
+                if(is_array($refs)){
+                    foreach($refs as $ref){
+                        $pdf['Referees'][$i]['responses'] = nl2br($ref['responses']);
+                        $i++;
+                    }
+                }
+	    }
+	    return $pdf;
     }
 
    /**
@@ -290,43 +301,39 @@ class SOP extends BackboneModel{
     * @return array
     */
     function getPersonalityStats(){
-	return unserialize($this->personality_stats);
+	    return unserialize($this->personality_stats);
     }
 
   /**
    * getContent Gets the SOP Content
    * @return array with answers to questions
    */
-    function getContent(){
-	$data = DBFunctions::select(array('grand_report_blobs'),
+    function getContent($asString=false){
+        if($this->questions == null){
+	        $data = DBFunctions::select(array('grand_report_blobs'),
                                         array('*'),
-					array('user_id' => EQ($this->getUser())));
-        //}
-	$questions = array();
-        if(count($data) >0){
-	    $i = 1;
-            foreach($data as $sopId){
-		if($sopId['rp_item'] != "EULA"){
-	 	    $questions[$sopId['rp_item']] = $sopId['data'];
-		}
-		$i++;
+					                    array('user_id' => EQ($this->getUser())));
+	        $questions = array();
+            if(count($data) >0){
+                $i = 1;
+                foreach($data as $sopId){
+                    if($sopId['rp_item'] != "EULA"){
+                 	    $questions[$sopId['rp_item']] = $sopId['data'];
+                    }
+	                $i++;
+                }
             }
+            $this->questions = $questions;
         }
-	$this->content = $questions;
+	    $this->content = $this->questions;
+	    if($asString){
+             $string = "";
+             foreach($this->content as $question => $answer){
+                $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
+             }
+             return $string;
+	    }
         return $this->content;
-    }
-
-   /**
-    * returns content of SOP in html format.
-    * @return $string string version of all answers with key and answer separated by <br />
-    */
-    function getContentString(){
-	$content = $this->getContent();
-	$string = "";
-	foreach($content as $question => $answer){
-	    $string = $string."<b>". $question."</b>"."<br /><br />".$answer."<br /><br />";
-	}
-	return $string;
     }
 
    /**
@@ -354,50 +361,49 @@ class SOP extends BackboneModel{
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
                 WHERE rp_section LIKE 'OT_REVIEW'
-		AND rp_item LIKE 'Q13'
-		AND rp_subitem =".$this->id;
+		        AND rp_item LIKE 'Q13'
+		        AND rp_subitem =".$this->id;
         $data = DBFunctions::execSQL($sql);
-	$reviewers = array();
+	    $reviewers = array();
         if(count($data)>0){
             foreach($data as $user){
-		if($user['data'] != ''){
+		        if($user['data'] != ''){
                     $reviewers[] = $user['user_id'];
-		}
+		        }
             }
         }
-	return $reviewers;
-   }
+	    return $reviewers;
+    }
 
    /**
     * returns string if SOP was suggested to be admitted or not by the user specified in argument.
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
-   function getAdmitResult($user){
-	$sql = "SELECT data 
-		FROM grand_report_blobs
-		WHERE rp_section LIKE 'OT_REVIEW'
-		AND rp_item LIKE 'Q13'
-		AND proj_id =".$this->getId()."
-		AND user_id =".$user;
-	$data = DBFunctions::execSQL($sql);
+    function getAdmitResult($user){
+        $sql = "SELECT data 
+		        FROM grand_report_blobs
+		        WHERE rp_section LIKE 'OT_REVIEW'
+		        AND rp_item LIKE 'Q13'
+		        AND proj_id =".$this->getId()."
+		        AND user_id =".$user;
+	    $data = DBFunctions::execSQL($sql);
         if(count($data)>0){
-	    if($data[0]['data'] == 'Yes'){
-		return "Admit";
-	    }
-	    if($data[0]['data'] == 'No'){
-	         return "Not Admit";
-	    }
-	}	
-	return "Undecided";
-
-   }
+	        if($data[0]['data'] == 'Yes'){
+                return "Admit";
+	        }
+	        if($data[0]['data'] == 'No'){
+                return "Not Admit";
+	        }
+	    }	
+        return "Undecided";
+    }
 
   /**
    * getUser Gets the the SOP User id
    * @return mixed
    */
     function getUser(){
-	return $this->user_id;
+	    return $this->user_id;
     }
 
   /**
@@ -405,7 +411,7 @@ class SOP extends BackboneModel{
    * @return mixed
    */
     function getDateCreated(){
-	return $this->date_created;
+	    return $this->date_created;
     }
 
     /**
@@ -425,10 +431,10 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getReadabilityScore(){
-	$content = $this->getContentToSend();
+	    $content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/readability_score";
         $curl_post_fields_array = array('content'=>$content);
-	$curl_post_fields = json_encode($curl_post_fields_array);
+	    $curl_post_fields = json_encode($curl_post_fields_array);
         $curl_header = array('Content-Type: application/json');
         $curl_array = array(
             CURLOPT_URL => $curl_url,
@@ -450,53 +456,53 @@ class SOP extends BackboneModel{
         if(empty($error)){
             $result = $data;
         }
-	$result = json_decode($result, true);
+	    $result = json_decode($result, true);
 
-	$ari_grade = $result["ari"]["us_grade"];
-	$ari_age = $result["ari"]["min_age"];
-	$colemanliau_grade = $result["colemanliau"]["us_grade"];
-	$colemanliau_age = $result["colemanliau"]["min_age"];
-	$dalechall_index = $result["dalechall"]["readingindex"];
-	$dalechall_grade = $result["dalechall"]["us_grade"];
-	$dalechall_age = $result["dalechall"]["min_age"];
-	$fleschkincaid_grade = $result["fleschkincaid"]["us_grade"];
-	$fleschkincaid_age = $result["fleschkincaid"]["min_age"];
-	$smog_grade = $result["smog"]["us_grade"];
-	$smog_age = $result["smog"]["min_age"];
+	    $ari_grade = $result["ari"]["us_grade"];
+	    $ari_age = $result["ari"]["min_age"];
+	    $colemanliau_grade = $result["colemanliau"]["us_grade"];
+	    $colemanliau_age = $result["colemanliau"]["min_age"];
+	    $dalechall_index = $result["dalechall"]["readingindex"];
+	    $dalechall_grade = $result["dalechall"]["us_grade"];
+	    $dalechall_age = $result["dalechall"]["min_age"];
+	    $fleschkincaid_grade = $result["fleschkincaid"]["us_grade"];
+	    $fleschkincaid_age = $result["fleschkincaid"]["min_age"];
+	    $smog_grade = $result["smog"]["us_grade"];
+	    $smog_age = $result["smog"]["min_age"];
 
         $readability_score
             = ($ari_grade + $colemanliau_grade + $dalechall_grade +
                $fleschkincaid_grade + $smog_grade)
               / 5;
-	$min_age
+        $min_age
             = ($ari_age + $colemanliau_age + $dalechall_age +
                $fleschkincaid_age + $smog_age)
               / 5;
 
-	$reading_ease = $result["flesch"]["reading_ease"];
+	    $reading_ease = $result["flesch"]["reading_ease"];
  
         $word_count = $result["flesch"]["scores"]["word_count"];
-	$sentlen_ave = $result["dalechall"]["scores"]["sentlen_average"];
-	$wordletter_ave = $result["dalechall"]["scores"]["wordlen_average"];
+	    $sentlen_ave = $result["dalechall"]["scores"]["sentlen_average"];
+	    $wordletter_ave = $result["dalechall"]["scores"]["wordlen_average"];
 
-	$sql = "UPDATE grand_sop
-		SET readability_score=$readability_score, min_age=$min_age, 
-                    reading_ease=$reading_ease, ari_grade=$ari_grade,
-                    ari_age=$ari_age, colemanliau_grade=$colemanliau_grade,
-                    colemanliau_age=$colemanliau_age, dalechall_index=$dalechall_index,
-                    dalechall_grade=$dalechall_grade, dalechall_age=$dalechall_age,
-                    fleschkincaid_grade=$fleschkincaid_grade,
-                    fleschkincaid_age=$fleschkincaid_grade,
-                    smog_grade=$smog_grade, smog_age=$smog_age,
-                    word_count=$word_count, sentlen_ave=$sentlen_ave,
-                    wordletter_ave=$wordletter_ave
-	        WHERE id={$this->id};";
-	$status = DBFunctions::execSQL($sql,true);
-            if($status){
-                DBFunctions::commit();
-            }
+	    $sql = "UPDATE grand_sop
+		    SET readability_score=$readability_score, min_age=$min_age, 
+                        reading_ease=$reading_ease, ari_grade=$ari_grade,
+                        ari_age=$ari_age, colemanliau_grade=$colemanliau_grade,
+                        colemanliau_age=$colemanliau_age, dalechall_index=$dalechall_index,
+                        dalechall_grade=$dalechall_grade, dalechall_age=$dalechall_age,
+                        fleschkincaid_grade=$fleschkincaid_grade,
+                        fleschkincaid_age=$fleschkincaid_grade,
+                        smog_grade=$smog_grade, smog_age=$smog_age,
+                        word_count=$word_count, sentlen_ave=$sentlen_ave,
+                        wordletter_ave=$wordletter_ave
+	            WHERE id={$this->id};";
+	    $status = DBFunctions::execSQL($sql,true);
+        if($status){
+            DBFunctions::commit();
+        }
 
-	return $result;
+	    return $result;
     }
 
   /**
@@ -504,8 +510,8 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getSentimentScore(){
-	$content = $this->getContentToSend();
-	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
+	    $content = $this->getContentToSend();
+	    $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         $curl_url = "http://162.246.157.115/tasha/sentiment";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -550,7 +556,7 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getEmotionsScore(){
-	$content = $this->getContentToSend();
+	    $content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/emotions";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -576,7 +582,7 @@ class SOP extends BackboneModel{
             $result = $data;
         }
         $result = json_decode($result, true);
-	$emotions_array = array();
+	    $emotions_array = array();
         $emotions_array['anger'] = $result['docEmotions']['anger'];
         $emotions_array['disgust'] = $result['docEmotions']['disgust'];
         $emotions_array['fear'] = $result['docEmotions']['fear'];
@@ -618,7 +624,7 @@ class SOP extends BackboneModel{
         );
         $curl = curl_init();
         curl_setopt_array($curl, $curl_array);
-	print_r($curl_array);
+	    print_r($curl_array);
         $data = curl_exec($curl);
         $result = '';
         if ($error = curl_error($curl)){
@@ -648,7 +654,7 @@ class SOP extends BackboneModel{
    * @return mixed|string
    */
     function getSyntaxErrorCount(){
-        $content = $this->getContentString();
+        $content = $this->getContentToSend();
         $curl_url = "http://162.246.157.115/tasha/syntac_error";
         $curl_post_fields_array = array('content'=> $content, 'ftype'=>'html');
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -674,7 +680,7 @@ class SOP extends BackboneModel{
             $result = $data;
         }
         $result = json_decode($result, true);
-	$errors = $result['errors'];	
+	    $errors = $result['errors'];	
         $sql = "UPDATE grand_sop
                 SET errors=$errors
                 WHERE id={$this->id};";
@@ -690,11 +696,11 @@ class SOP extends BackboneModel{
    * @return SOP
    */
     function updateStatistics(){
-//	$this->getSyntaxErrorCount();
-	$this->getReadabilityScore();
-	$this->getSentimentScore();
-	$this->getEmotionsScore();
-	return SOP::newFromId($this->id);
+    //	$this->getSyntaxErrorCount();
+	    $this->getReadabilityScore();
+	    $this->getSentimentScore();
+	    $this->getEmotionsScore();
+	    return SOP::newFromId($this->id);
     }
 }
 
