@@ -3,9 +3,6 @@
 /**
  * @package GrandObjects
  */
-define('PREFIX', "data:,");
-define('LENGTH', 2000 - strlen(PREFIX)); # Internet Explorer 2KB URI limit (http://support.microsoft.com/kb/208427)
-
 class SOP extends BackboneModel{
     
     static $cache = array();
@@ -14,11 +11,20 @@ class SOP extends BackboneModel{
     var $content;
     var $user_id;
     var $date_created;
+    
+    /* watson values */
     var $sentiment_val;
     var $sentiment_type;
+    var $anger_score;
+    var $disgust_score;
+    var $fear_score;
+    var $joy_score;
+    var $sadness_score;
+    var $personality_stats = array();
+
+    /* readability scores */
     var $readability_score;
     var $reading_ease;
-
     var $ari_grade;
     var $ari_age;
     var $colemanliau_grade;
@@ -30,26 +36,21 @@ class SOP extends BackboneModel{
     var $fleschkincaid_age;
     var $smog_grade;
     var $smog_age;
-    var $anger_score;
-    var $disgust_score;
-    var $fear_score;
-    var $joy_score;
-    var $sadness_score;
-
     var $errors;
     var $sentlen_ave;
     var $wordletter_ave;
     var $min_age;
     var $word_count;
+
+    /* other */
     var $annotations = array();	
     var $pdf;    
-    var $personality_stats;
 
 
   /**
-   * newFromId Creates a new SOP object from a given id
+   * newFromId Returns an SOP object from a given id
    * @param $id
-   * @return SOP
+   * @return $sop SOP object
    */
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_sop'),
@@ -70,11 +71,19 @@ class SOP extends BackboneModel{
             $this->content = $row['content'];
             $this->user_id = $row['user_id'];
 	    $this->date_created = $row['date_created'];
+
 	    $this->sentiment_val = $row['sentiment_val'];
             $this->sentiment_type = $row['sentiment_type'];
-            $this->readability_score = $row['readability_score'];
-            $this->reading_ease = $row["reading_ease"];
+            $this->personality_stats = $row['personality_stats'];
+            $emotions_array = unserialize($row['emotion_stats']);
+            $this->anger_score = $emotions_array['anger'];
+            $this->disgust_score = $emotions_array['disgust'];
+            $this->fear_score = $emotions_array['fear'];
+            $this->joy_score = $emotions_array['joy'];
+            $this->sadness_score = $emotions_array['sadness'];            
 
+	    $this->readability_score = $row['readability_score'];
+            $this->reading_ease = $row["reading_ease"];
             $this->ari_grade = $row["ari_grade"];
             $this->ari_age = $row["ari_age"];
             $this->colemanliau_grade = $row["colemanliau_grade"];
@@ -86,20 +95,13 @@ class SOP extends BackboneModel{
             $this->fleschkincaid_age = $row["fleschkincaid_age"];
             $this->smog_grade = $row["smog_grade"];
             $this->smog_age = $row["smog_age"];
-
             $this->errors = $row['errors'];
             $this->sentlen_ave = $row['sentlen_ave'];
             $this->wordletter_ave = $row['wordletter_ave'];
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
+
 	    $this->pdf = $row['pdf_data'];
-	    $this->personality_stats = $row['personality_stats'];
-            $emotions_array = unserialize($row['emotion_stats']);
-	    $this->anger_score = $emotions_array['anger'];
-            $this->disgust_score = $emotions_array['disgust'];
-            $this->fear_score = $emotions_array['fear'];
-            $this->joy_score = $emotions_array['joy'];
-            $this->sadness_score = $emotions_array['sadness'];
         }
 	$this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
     }
@@ -124,21 +126,6 @@ class SOP extends BackboneModel{
         }
         return $sops;
     }
-
-   static function createSoPFromReports(){
-        $sql = "SELECT DISTINCT(user_id)
-                FROM grand_report_blobs
-                WHERE user_id NOT IN (SELECT user_id FROM grand_sop) AND rp_section LIKE 'OT_EULA'";
-        $data = DBFunctions::execSQL($sql);
-	if(count($data)>0){
-	    foreach($data as $user){
-		$user_id = $user['user_id'];
-		$sop = new SOP(array());
-		$sop->user_id = $user_id;
-		$sop->create();
-	    }
-	}
-   }
 
   /**
    *
@@ -167,8 +154,6 @@ class SOP extends BackboneModel{
    * toArray Converts SOP object to array
    * @return array
    */
-
-
     function toArray(){
             global $wgUser;
             if(!$wgUser->isLoggedIn()){
@@ -273,9 +258,18 @@ class SOP extends BackboneModel{
         return $this->id;
     }
 
+   /**
+    * returns array that was taken from PDF upload
+    * @return $pdf array
+    */
     function getPdf(){
 	return unserialize($this->pdf);
     }
+
+   /**
+    * returns array that was taken from PDF upload but with new lines changed to <br />
+    * @return $pdf array
+    */
     function getPdfAsHtml(){
 	$pdf = $this->getPdf();
 	if(isset($pdf['Referees'])){
@@ -290,12 +284,18 @@ class SOP extends BackboneModel{
 	}
 	return $pdf;
     }
+
+   /**
+    * returns array that is returned from Watson personality analysis
+    * @return array
+    */
     function getPersonalityStats(){
 	return unserialize($this->personality_stats);
     }
+
   /**
    * getContent Gets the SOP Content
-   * @return mixed
+   * @return array with answers to questions
    */
     function getContent(){
 	$data = DBFunctions::select(array('grand_report_blobs'),
@@ -316,6 +316,10 @@ class SOP extends BackboneModel{
         return $this->content;
     }
 
+   /**
+    * returns content of SOP in html format.
+    * @return $string string version of all answers with key and answer separated by <br />
+    */
     function getContentString(){
 	$content = $this->getContent();
 	$string = "";
@@ -325,15 +329,27 @@ class SOP extends BackboneModel{
 	return $string;
     }
 
+   /**
+    * returns content of SOP only with answers of user to send for analysis, also filtered to be able to
+    * send as JSON object.
+    * @return $string string version of all answers to be sent as string through http response.
+    */
     function getContentToSend(){
         $content = $this->getContent();
         $string = "";
         foreach($content as $question => $answer){
             $string = $string.$answer;
         }
+        $string = utf8_encode(htmlspecialchars_decode($string, ENT_QUOTES));
+        $string = preg_replace('/[^A-Za-z.,\']/', ' ',$string);
         return $string;
     }
 
+   /**
+    * returns an array of the faculty staff that have finished reviewing this SOP.
+    * this checks only if the last question was answered which is 'admit or not admit?'
+    * @return $reviewers array of the id of reviewers who have finished reviewing SOP.
+    */
     function getReviewers(){
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
@@ -352,6 +368,10 @@ class SOP extends BackboneModel{
 	return $reviewers;
    }
 
+   /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
    function getAdmitResult($user){
 	$sql = "SELECT data 
 		FROM grand_report_blobs
@@ -401,14 +421,11 @@ class SOP extends BackboneModel{
     }
 
   /**
-   * getReadabilityScore Get readablility score for the SOP
+   * getReadabilityScore Updates and returns readablility score for the SOP
    * @return mixed|string
    */
     function getReadabilityScore(){
 	$content = $this->getContentToSend();
-	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        //$content = str_replace(' ', '-', $content);
-        $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
         $curl_url = "http://162.246.157.115/tasha/readability_score";
         $curl_post_fields_array = array('content'=>$content);
 	$curl_post_fields = json_encode($curl_post_fields_array);
@@ -489,8 +506,6 @@ class SOP extends BackboneModel{
     function getSentimentScore(){
 	$content = $this->getContentToSend();
 	$content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
-        $content = str_replace('-', ' ', $content);
         $curl_url = "http://162.246.157.115/tasha/sentiment";
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -589,7 +604,6 @@ class SOP extends BackboneModel{
         $curl_url = "http://162.246.157.115/tasha/personality";
         $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
         $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
-        $content = str_replace('-', ' ', $content);
         $curl_post_fields_array = array('content'=> $content);
         $curl_post_fields = json_encode($curl_post_fields_array);
         $curl_header = array('Content-Type: application/json');
@@ -635,9 +649,6 @@ class SOP extends BackboneModel{
    */
     function getSyntaxErrorCount(){
         $content = $this->getContentString();
-        $content = str_replace(' ', '-', $content);
-        $content = preg_replace('/[^A-Za-z0-9\-]/', ' ', $content);
-        $content = str_replace('-', ' ', $content);
         $curl_url = "http://162.246.157.115/tasha/syntac_error";
         $curl_post_fields_array = array('content'=> $content, 'ftype'=>'html');
         $curl_post_fields = json_encode($curl_post_fields_array);
@@ -672,149 +683,19 @@ class SOP extends BackboneModel{
             DBFunctions::commit();
         }
 
-        return $result;
     }
 
   /**
-   * getSyntaxErrors Gets the the sop syntax errors
-   * @param bool $encode
-   * @return mixed|string
-   */
-    function getSyntaxErrors($encode=false){
-        $content = $this->getContentString();
-        $content = preg_replace('/[^A-Za-z.,\']/', ' ',utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES)));
-        $curl_url = "http://162.246.157.115/checkDocument";
-        $curl_post_fields_array = array('data'=> $content);
-	$fields_string = "";
-	foreach($curl_post_fields_array as $key=>$value) { 
-		$fields_string .= $key.'='.$value.'&'; 
-	}
-	rtrim($fields_string, '&');
-        $curl_header = array('Content-type: application/x-www-form-urlencoded');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$fields_string,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-	if($encode){
-		return $this->encode_css($result);
-	}
-        return $result;
-    }
-
-   function getErrorsTest($encode=false){
-	$content = $this->getContentString();
-	$curl_url = "http://162.246.157.115/checkDocument";
-        $curl_post_fields_array = array('data'=> $content);
-        $fields_string = "";
-        foreach($curl_post_fields_array as $key=>$value) {
-                $fields_string .= $key.'='.$value.'&';
-        }
-        rtrim($fields_string, '&');
-        $curl_header = array('Content-type: application/x-www-form-urlencoded');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$fields_string,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        if($encode){
-            echo $this->encode_css($result);
-        }
-	return $result;
-    } 
-
-    function getReadabilityTest(){
-        $content = $this->getContentToSend();
-        $content = utf8_encode(htmlspecialchars_decode($content, ENT_QUOTES));
-        //$content = str_replace(' ', '-', $content);
-        $content = preg_replace('/[^A-Za-z.,\']/', ' ',$content);
-        $curl_url = "http://162.246.157.115/tasha/readability_score";
-        $curl_post_fields_array = array('content'=>$content);
-        $curl_post_fields = json_encode($curl_post_fields_array);
-        $curl_header = array('Content-Type: application/json');
-        $curl_array = array(
-            CURLOPT_URL => $curl_url,
-            CURLOPT_HTTPHEADER => $curl_header,
-            CURLOPT_POSTFIELDS =>$curl_post_fields,
-            CURLOPT_RETURNTRANSFER =>true,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "cmput401:tasha"
-        );
-        $curl = curl_init();
-        curl_setopt_array($curl, $curl_array);
-        $data = curl_exec($curl);
-        $result = '';
-        if ($error = curl_error($curl)){
-            $result = $error;
-        }
-        curl_close($curl);
-        if(empty($error)){
-            $result = $data;
-        }
-        $result = json_decode($result, true);
-
-        $ari_grade = $result["ari"]["us_grade"];
-	return $ari_grade;
-    }
-
-  /**
-   * updateStatistics Updates the SOP statistics
+   * updateStatistics Updates all the SOP statistics
    * @return SOP
    */
     function updateStatistics(){
-	$this->getSyntaxErrorCount();
+//	$this->getSyntaxErrorCount();
 	$this->getReadabilityScore();
 	$this->getSentimentScore();
 	$this->getEmotionsScore();
 	return SOP::newFromId($this->id);
     }
-
-  /**
-   * encode_css Encodes CSS for SOP
-   * @param $string
-   * @return string
-   */
-    private function encode_css($string) {
-	$quoted = rawurlencode($string);
-	$out = "";
-	for ($i = 0, $n = 0; $i < strlen($quoted); $i += LENGTH, $n++) {
-		$out .= "#c" . $n . "{background:url(" . PREFIX . substr($quoted, $i, LENGTH) . ");}\n";
-	}
-	return $out;
-    }
-
-    
 }
 
 ?>
