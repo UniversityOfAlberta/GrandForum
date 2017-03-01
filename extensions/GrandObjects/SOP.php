@@ -310,16 +310,14 @@ class SOP extends BackboneModel{
    */
     function getContent($asString=false){
         if($this->questions == null){
-	        $data = DBFunctions::select(array('grand_report_blobs'),
-                                        array('rp_item', 'data'),
-					                    array('user_id' => EQ($this->getUser()),
-					                          'rp_type' => EQ('RP_OT'),
-					                          'rp_section' => EQ('OT_QUESTIONS')));
-	        $questions = array();
-            if(count($data) >0){
-                foreach($data as $sopId){
-                 	$questions[$sopId['rp_item']] = $sopId['data'];
-                }
+            $qs = array('Q1', 'Q2', 'Q3', 'Q4', 'Q5');
+            $questions = array();
+            $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $this->getUser(), 0);
+            foreach($qs as $q){
+                $blob_address = ReportBlob::create_address('RP_OT', 'OT_QUESTIONS', $q, 0);
+	            $blob->load($blob_address);
+	            $data = $blob->getData();
+	            $questions[$q] = $data;
             }
             $this->questions = $questions;
         }
@@ -358,8 +356,8 @@ class SOP extends BackboneModel{
     function getReviewers(){
         $sql = "SELECT DISTINCT(user_id), data
                 FROM grand_report_blobs
-                WHERE rp_section LIKE 'OT_REVIEW'
-		        AND rp_item LIKE 'Q13'
+                WHERE rp_section = 'OT_REVIEW'
+		        AND rp_item = 'Q13'
 		        AND rp_subitem =".$this->id;
         $data = DBFunctions::execSQL($sql);
 	    $reviewers = array();
@@ -378,21 +376,17 @@ class SOP extends BackboneModel{
     * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
     */
     function getAdmitResult($user){
-        $sql = "SELECT data 
-		        FROM grand_report_blobs
-		        WHERE rp_section LIKE 'OT_REVIEW'
-		        AND rp_item LIKE 'Q13'
-		        AND proj_id =".$this->getId()."
-		        AND user_id =".$user;
-	    $data = DBFunctions::execSQL($sql);
-        if(count($data)>0){
-	        if($data[0]['data'] == 'Yes'){
-                return "Admit";
-	        }
-	        if($data[0]['data'] == 'No'){
-                return "Not Admit";
-	        }
-	    }	
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, $user, $this->getId());
+	    $blob_address = ReportBlob::create_address('RP_OTT', 'OT_REVIEW', 'Q13', $this->getId());
+	    $blob->load($blob_address);
+	    $data = $blob->getData();
+
+        if($data == 'Yes'){
+            return "Admit";
+        }
+        if($data == 'No'){
+            return "Not Admit";
+        }
         return "Undecided";
     }
 
