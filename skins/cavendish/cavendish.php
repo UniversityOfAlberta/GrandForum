@@ -130,6 +130,7 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
         <script language="javascript" type="text/javascript" src="https://maps.google.com/maps/api/js?&libraries=places"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/scale.raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/autosave.js"></script>
@@ -1054,39 +1055,47 @@ $(function(){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-        $title = "Frequently Asked Questions";
-        if($wgLang->getCode() == "fr"){
-            $title = "Questions Fréquemment Posées";
-        }
-        $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
-        if($me->isRoleAtLeast(MANAGER)){
-            $GLOBALS['toolbox']['People']['links'][9999] = TabUtils::createToolboxLink("Reset Password", "$wgServer$wgScriptPath/index.php/Special:PasswordReset");
-        }
-		$person = Person::newFromId($wgUser->getId());
-		/*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
-            $title = "Other Tools";
+            $title = "Frequently Asked Questions";
             if($wgLang->getCode() == "fr"){
-                $title = "Autres Outils";
+                $title = "Questions Fréquemment Posées";
             }
-            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-        }*/
-		global $toolbox;
-	        $i = 0;
-        $title = "Take a Poll";
-        if($wgLang->getCode() == "fr"){
-            $title = "Prendre un Sondage";
-        }
+            $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/FAQ");
+            if($me->isRoleAtLeast(MANAGER)){
+                $GLOBALS['toolbox']['People']['links'][9999] = TabUtils::createToolboxLink("Reset Password", "$wgServer$wgScriptPath/index.php/Special:PasswordReset");
+            }
+		    $person = Person::newFromId($wgUser->getId());
+		    /*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
+                $title = "Other Tools";
+                if($wgLang->getCode() == "fr"){
+                    $title = "Autres Outils";
+                }
+                $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+            }*/
+		    global $toolbox;
+	            $i = 0;
+            $title = "Take a Poll";
+            if($wgLang->getCode() == "fr"){
+                $title = "Prendre un Sondage";
+            }
 
-                $poll_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyPolls"));
-        $title = "Helpful Resources";
-        if($wgLang->getCode() == "fr"){
-            $title = "Ressources utiles";
-        }
+            $poll_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyPolls"));
+            $title = "Helpful Resources";
+            if($wgLang->getCode() == "fr"){
+                $title = "Ressources utiles";
+            }
 
-                $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
+            $resources_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:HelpfulResources"));
+            
+            $title = "Who supplies/pays for Mifegymiso?";
+            if($wgLang->getCode() == "fr"){
+                $title = "Qui fournit/paie Mifegymiso?";
+            }
 
-                array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$resources_tab);
+            $whosupplies_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:WhoSupplies"));
+
+            array_splice($GLOBALS['toolbox']['Other']['links'],2,0,$whosupplies_tab);
+            array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$poll_tab);
+            array_splice($GLOBALS['toolbox']['Other']['links'],0,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
