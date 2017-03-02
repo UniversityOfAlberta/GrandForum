@@ -29,15 +29,15 @@ class HQPEpicTab extends AbstractEditableTab {
             return "";
         }
         $position = strtolower($this->person->getPosition());
-        if($this->person->isSubRole("Affiliate HQP") || ($position == "undergraduate student" && $this->person->isSubRole("Alumni HQP"))){
-            $this->generateAffiliate();
-        }
-        else if($this->person->isSubRole("WP/CC Funded HQP") || 
-               ($this->person->isSubRole("Alumni HQP") && $position != "undergraduate student" &&
-                                                          $position != "graduate student - doctoral" &&
-                                                          $position != "graduate student - master's" &&
-                                                          $position != "post-doctoral fellow")){
+        if($this->person->isSubRole("WP/CC Funded HQP") || 
+          ($this->person->isSubRole("Alumni HQP") && $position != "undergraduate student" &&
+                                                     $position != "graduate student - doctoral" &&
+                                                     $position != "graduate student - master's" &&
+                                                     $position != "post-doctoral fellow")){
             $this->generateWPCC();
+        }
+        else if($this->person->isSubRole("Affiliate HQP") || ($position == "undergraduate student" && $this->person->isSubRole("Alumni HQP"))){
+            $this->generateAffiliate();
         }
         else if($position == "graduate student - doctoral"){
             $this->generatePhD();
