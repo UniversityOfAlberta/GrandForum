@@ -1,5 +1,6 @@
 <?php
 $wgHooks['ToolboxLinks'][] = 'Sops::createToolboxLinks';
+$wgHooks['SubLevelTabs'][] = 'Sops::createSubTabs';
 BackbonePage::register('Sops', 'Sops', 'network-tools', dirname(__FILE__));
 
 /**
@@ -57,6 +58,19 @@ class Sops extends BackbonePage {
     */
     function getModels(){
         return array('Backbone/*');
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        $person = Person::newFromWgUser();
+        $url = "$wgServer$wgScriptPath/index.php/Special:Sops";
+
+        if(self::userCanExecute($wgUser)){
+            $selected = @($wgTitle->getText() == "Sops") ? "selected" : false;
+            $tabs["Review"]['subtabs'][] = TabUtils::createSubTab("SOP Review", "{$url}", $selected);
+        }
+        
+        return true;
     }
 
     /**
