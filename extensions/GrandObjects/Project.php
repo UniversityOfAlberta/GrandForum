@@ -727,16 +727,18 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL){
-                if($person->leadershipOf($this)){
+            if($person->getId() != 0){
+                if($filter == PL){
+                    if($person->leadershipOf($this)){
+                        $people[$person->getId()] = $person;
+                    }
+                }
+                else if(($filter == null || 
+                         ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
+                         ($person->isRole($filter, $this) && !$person->leadershipOf($this))) && 
+                        !$person->isRole(ADMIN)){
                     $people[$person->getId()] = $person;
                 }
-            }
-            else if(($filter == null || 
-                     ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
-                     ($person->isRole($filter, $this) && !$person->leadershipOf($this))) && 
-                    !$person->isRole(ADMIN)){
-                $people[$person->getId()] = $person;
             }
         }
         return $people;
@@ -783,15 +785,17 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL){
-                if($person->leadershipOf($this)){
+            if($person->getId() != 0){
+                if($filter == PL){
+                    if($person->leadershipOf($this)){
+                        $people[$person->getId()] = $person;
+                    }
+                }
+                else if(($filter == null || 
+                         ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                        ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                     $people[$person->getId()] = $person;
                 }
-            }
-            else if(($filter == null || 
-                     ($person->isRoleDuring($filter, $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
-                    ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
-                $people[$person->getId()] = $person;
             }
         }
         return $people;
@@ -819,15 +823,17 @@ EOF;
         foreach($data as $row){
             $id = $row['user_id'];
             $person = Person::newFromId($id);
-            if($filter == PL){
-                if($person->leadershipOf($this)){
+            if($person->getId() != 0){
+                if($filter == PL){
+                    if($person->leadershipOf($this)){
+                        $people[$person->getId()] = $person;
+                    }
+                }
+                else if(($filter == null || 
+                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
+                        ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                     $people[$person->getId()] = $person;
                 }
-            }
-            else if(($filter == null || 
-                     ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
-                    ($includeManager || !$person->isRoleOn(MANAGER, $date))){
-                $people[$person->getId()] = $person;
             }
         }
         return $people;
