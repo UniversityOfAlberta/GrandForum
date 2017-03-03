@@ -1015,7 +1015,9 @@ if ( isset($pdf) ) {
      * @param string $pdfStr The pdf string
      */
     function stream($pdfStr){
+        $len = strlen($pdfStr);
         header("Content-Type: application/pdf");
+        header("Content-Length: $len");
         echo $pdfStr;
         exit;
     }

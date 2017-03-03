@@ -72,7 +72,8 @@ BibliographyEditView = Backbone.View.extend({
             var product = new Product({id: id});
             this.productView = new ProductView({el: $("#preview"), model: product});
             this.productView.listenTo(product, "sync", $.proxy(function(){
-                main.set('title', this.model.get('title'));
+                // Reset to original title (not the Product's)
+                main.set('title', this.model.get('title')); 
                 this.productView.$el.prepend("<h1>" + product.get('title') + "</h1>");
                 
                 var widthBefore = $(document).width();

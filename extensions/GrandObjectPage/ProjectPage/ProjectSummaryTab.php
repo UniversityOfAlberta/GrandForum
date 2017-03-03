@@ -27,11 +27,11 @@ class ProjectSummaryTab extends AbstractTab {
             $phaseDates = $config->getValue('projectPhaseDates');
             $start = substr($phaseDates[1], 0, 10);
             $end = date('Y-m-d');
-            if(isset($_POST['start']) && isset($_POST['end'])){
-                $start = $_POST['start'];
-                $end = $_POST['end'];
+            if(isset($_GET['start']) && isset($_GET['end'])){
+                $start = $_GET['start'];
+                $end = $_GET['end'];
             }
-            if(isset($_POST['download'])){
+            if(isset($_GET['download'])){
                 $_GET['generatePDF'] = true;
                 $dashboard = new DashboardTable(PROJECT_REPORT_PRODUCTIVITY_STRUCTURE, $project, $start, $end);
                 $html = "<h1>{$project->getName()} Dashboard Summary ($start - $end)</h1>";
@@ -40,7 +40,8 @@ class ProjectSummaryTab extends AbstractTab {
                 $html .= $dashboard->renderForPDF(false, true);
                 PDFGenerator::generate("{$project->getName()} Dashboard Summary", $html, "", null, null, false, null, true);
             }
-            $this->html .= "<form method='post' action='?tab=summary#'>
+            $this->html .= "<form method='get' action='?tab=summary'>
+                <input type='hidden' name='tab' value='summary' />
                 <table>
                     <tr>
                         <th>Start Date</th><th>End Date</th><th></th>
