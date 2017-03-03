@@ -38,6 +38,7 @@ class ProjectSummaryTab extends AbstractTab {
                 $html .= $dashboard->renderForPDF(true, false);
                 $html .= "<div class='pagebreak'></div>";
                 $html .= $dashboard->renderForPDF(false, true);
+                header('Content-Disposition: inline; filename="Dashboard.pdf"');
                 PDFGenerator::generate("{$project->getName()} Dashboard Summary", $html, "", null, null, false, null, true);
             }
             $this->html .= "<form method='get' action='?tab=summary'>
