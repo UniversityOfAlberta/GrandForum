@@ -174,6 +174,7 @@ class ApplicationsTable extends SpecialPage{
             }
         }
         $tabbedPage = new TabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

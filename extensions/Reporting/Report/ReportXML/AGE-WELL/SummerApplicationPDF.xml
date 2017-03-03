@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2016 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" disabled="false">
+<Report name="AGE-WELL EPIC Summer Institute, 2017 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
                 <div style="float:left;">
                     <h4 style='font-size:1.5em;'>
-                        AGE-WELL EPIC Summer Institute, 2016</h4>
-                        <h4>Co-Creating Possibilities: Living Well With Dementia
+                        AGE-WELL EPIC Summer Institute, 2017</h4>
+                        <h4>Co-Creating Possibilities: Physical Fitness to Avoid Frailty
                     </h4>
                 </div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -108,19 +108,19 @@
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Living Well With Dementia.”  How would attending the summer institute help you build capacity?</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Physical Fitness to Avoid Frailty.”</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="career" type="TextareaReportItem" blobItem="CAREER">
             <![CDATA[
-                <p><b>Provide an overview of your proposed career path</b></p>
+                <p><b>Provide an overview of your proposed career path. How would attending the summer institute help you build capacity? </b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY">
             <![CDATA[
-                <p><b>What would you bring to a transdisciplinary team trying to create a solution/technology for older adults living with dementia?  Please include any special skills or experience with participatory research, business, plans, intellectual property, prototyping, programming languages etc.</b></p>
+                <p><b>What would you bring to a transdisciplinary team trying to create a solution that facilitates physical fitness and healthy aging to avoid frailty?  Please include any special skills or experience with participatory research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
