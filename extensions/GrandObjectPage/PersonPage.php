@@ -111,10 +111,8 @@ class PersonPage {
 
                 $tabbedPage = new TabbedPage("person");
                 
-                $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                if($me->isRoleAtLeast(STAFF)){
-                    //$tabbedPage->addTab(new PersonSOPTab($person, $visibility));
-                }
+                //$tabbedPage->addTab(new PersonProfileTab($person, $visibility));
+                $tabbedPage->addTab(new PersonGSMSTab($person, $visibility));
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                 }

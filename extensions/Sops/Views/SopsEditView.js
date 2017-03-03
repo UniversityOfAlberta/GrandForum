@@ -323,7 +323,7 @@ var mycfg = {
                 
              }, 100)
 /**TEST**/
-
+	console.log(this.model);
         var mod = _.extend(this.model.toJSON());
         this.el.innerHTML = this.template(mod);
 		$(document).ready(function () {

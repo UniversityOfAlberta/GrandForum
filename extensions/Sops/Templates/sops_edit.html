@@ -12,10 +12,71 @@ th {
     border-left: 1px solid #878787;
     border-right: 1px solid #878787;
 }
+table.profile{
+    margin: 0;
+    clear: both;
+    width: 100%;
+    border-color: #C8C8C8;
+    border-width: 1px 0;
+    border-style: solid;
+    margin-top: 2px;
+    margin-bottom: 0;
+    color: #222;
+}
+table.profile thead tr{
+    background: #E3E3E3;
+    border-bottom: 1px solid #C8C8C8;
+}
+table.profile thead th {
+    padding: 5px 18px 5px 10px;
+    border: 0px solid #AAAAAA;
+    border-top: 2px;
+    border-top-color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #C8C8C8;
+}
+
+table.profile tr td{
+background-color: #F7F7F7;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #C8C8C8;
+    padding: 3px 10px;
+    border-bottom: 0;
+}
+
 
 </style>
 
-<div id="accordion" style="width:100%">
+<table class='profile' frame="box" rules="all">
+    <thead>
+	<th>GPA (60 Credits)</th>
+	<th>GPA / credits (Best)</th>
+        <th>Failures/Withdrawals</th>
+        <th>Anatomy</th>
+        <th>Statistics</th>
+        <th>Degree</th>
+        <th>Institution</th>
+        <th>Notes</th>
+    </thead>
+    <tr>
+	<td align=right><%= gsms.gpa60 %></td>
+	<td align=right><%= gsms.gpafull %>/<%= gsms.gpafull_credits %></td>
+        <td align=right><%= gsms.failures %></td>
+        <td><%= gsms.anatomy %></td>
+        <td><%= gsms.stats %></td>
+        <td><%= gsms.degree %></td>
+        <td><%= gsms.institution %></td>
+        <td><%= gsms.notes %></td>
+
+    </tr>
+    
+</table>
+<div id="accordion" style="width:100%;margin-top:10px;">
     	<div>
     		<h3><a href="#">From FGSR</a></h3>
     			<div>

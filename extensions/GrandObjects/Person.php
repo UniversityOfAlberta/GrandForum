@@ -4560,11 +4560,40 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_sop'),
                                     array('id'),
                                     array('user_id' => EQ($this->getId())));
-        if(count($data)>0){
+        if(count($data) > 0){
             $sop_id = $data[0]['id'];
-	    return SOP::newFromId($sop_id);
+            return SOP::newFromId($sop_id);
         }
-	return "";
+        return "";
+    }
+    
+    function getGSMS(){
+        $gsms = array('gpa60' => "",
+                      'gpafull' => "",
+                      'gpafull_credits' => "",
+                      'notes' => "",
+                      'anatomy' => "",
+                      'stats' => "",
+                      'degree' => "",
+                      'institution' => "",
+                      'failures' => "");
+        $data = DBFunctions::select(array('grand_person_gsms'),
+                                    array('gpa60',
+                                          'gpafull',
+                                          'gpafull_credits',
+                                          'notes',
+                                          'anatomy',
+                                          'stats',
+                                          'degree',
+                                          'institution',
+                                          'failures'),
+                                    array('user_id' => EQ($this->getId())));
+        if(count($data) > 0){
+            foreach($data[0] as $key => $val){
+                $gsms[$key] = str_replace("'", "&#39;", $val);
+            }
+        }
+        return $gsms;
     }
 }
 ?>

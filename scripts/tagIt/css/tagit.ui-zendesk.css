@@ -9,16 +9,16 @@ ul.tagit {
     background: inherit;
 }
 ul.tagit li.tagit-choice {
-    border: 1px solid #A284AC;
+    border: 1px solid #888888;
 
     background: none;
-    background-color: #F3EBF5;
+    background-color: #EEEEEE;
 
     font-weight: bold;
 }
 
 ul.tagit li.tagit-choice .tagit-label:not(a) {
-    color: #795F80;
+    color: #555;
     font-weight: bold !important;
 }
 ul.tagit li.tagit-choice a.tagit-close {
@@ -39,8 +39,8 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     font-weight:bold !important;
 }
 ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
-    background-color: #EADDED;
-    border-color: #987AA1;
+    background-color: #DDDDDD;
+    border-color: #888888;
 }
 ul.tagit li.tagit-choice a.tagLabel:hover,
 ul.tagit li.tagit-choice a.tagit-close .text-icon:hover {
