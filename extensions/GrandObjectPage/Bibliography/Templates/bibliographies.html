@@ -1,3 +1,6 @@
+<% if(me.isLoggedIn()){ %>
+    <a href="#/new" class="button" id="add">Add Bibliography</a><br /><br />
+<% } %>
 <table id="bibliographies" frame="box" rules="all">
     <thead>
         <tr>
@@ -24,3 +27,4 @@
         <% }) %>
     </tbody>
 </table>
+<div id="editDialog" title="New Bibliography"></div>

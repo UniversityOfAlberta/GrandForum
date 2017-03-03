@@ -66,9 +66,11 @@
         </div>
     </div>
 </div>
-<div style="width:180px;display:inline-block;">
-    <button id="saveBibliography"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography</button><span class="throbber" style="display:none;"></span>
-</div>
-<div style="width:180px;display:inline-block;">
-    <button id="cancel">Cancel</button>
-</div>
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id="saveBibliography"><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Bibliography</button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
+<% } %>

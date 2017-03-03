@@ -6,13 +6,12 @@ BibliographiesView = Backbone.View.extend({
         this.template = _.template($('#bibliographies_template').html());
         main.set('title', 'Bibliographies');
     },
-    
+       
     events: {
-        
+        "click #add": "addBibliography"
     },
     
     render: function(){
-        
         this.model.each(function(bib){
             var editors = new Array();
             _.each(bib.get('editors'), function(editor){
@@ -24,6 +23,7 @@ BibliographiesView = Backbone.View.extend({
         this.$("table#bibliographies").DataTable({
             "autoWidth": true
         });
+
         return this.$el;
     }
 
