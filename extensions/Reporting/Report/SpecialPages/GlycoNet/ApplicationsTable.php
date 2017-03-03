@@ -155,6 +155,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2016, "2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
