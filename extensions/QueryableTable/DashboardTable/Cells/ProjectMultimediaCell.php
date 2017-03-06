@@ -22,7 +22,7 @@
             }
             if(isset($params[2])){
                 $project = $table->obj;
-                $person = Person::newFromId($params[2]);
+                $person = Person::newFromName($params[2]);
                 if($person != null && $person->getName() != null){
                     $this->obj = $person;
                     $multimedia = $project->getMultimedia();
