@@ -31,15 +31,19 @@ class ProjectSummaryTab extends AbstractTab {
                 $start = $_GET['start'];
                 $end = $_GET['end'];
             }
+            if(isset($_GET['submit']) || isset($_GET['download'])){
+                $dashboard = new DashboardTable(PROJECT_REPORT_PRODUCTIVITY_STRUCTURE, $project, $start, $end);
+                $contributions = new DashboardTable(PROJECT_CONTRIBUTION_STRUCTURE, $project, $start, $end);
+                $dashboard = $dashboard->copy()->join($contributions->copy()->select(HEAD, array("Contributions")));
+            }
             if(isset($_GET['download'])){
                 $_GET['generatePDF'] = true;
-                $dashboard = new DashboardTable(PROJECT_REPORT_PRODUCTIVITY_STRUCTURE, $project, $start, $end);
-                $html = "<h1>{$project->getName()} Dashboard Summary ($start - $end)</h1>";
+                $html = "<h1>{$project->getName()} Summary ($start - $end)</h1>";
                 $html .= $dashboard->renderForPDF(true, false);
                 $html .= "<div class='pagebreak'></div>";
                 $html .= $dashboard->renderForPDF(false, true);
                 header('Content-Disposition: inline; filename="Dashboard.pdf"');
-                PDFGenerator::generate("{$project->getName()} Dashboard Summary", $html, "", null, null, false, null, true);
+                PDFGenerator::generate("{$project->getName()} Summary", $html, "", null, null, false, null, true);
             }
             $this->html .= "<form method='get' action='?tab=summary'>
                 <input type='hidden' name='tab' value='summary' />
@@ -74,8 +78,9 @@ class ProjectSummaryTab extends AbstractTab {
                     'buttonImageOnly': true
                 });
             </script>";
-            $dashboard = new DashboardTable(PROJECT_REPORT_PRODUCTIVITY_STRUCTURE, $project, $start, $end);
-            $this->html .= $dashboard->render(false, false);
+            if(isset($_GET['submit'])){
+                $this->html .= $dashboard->render(false, false);
+            }
             $this->html .= "</form>";
         }
     }

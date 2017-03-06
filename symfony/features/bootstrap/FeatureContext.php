@@ -4,7 +4,7 @@ require_once("../config/Config.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
 
 exec(sprintf("%s > %s 2>&1 & echo $! >> %s", 
-             "phantomjs --webdriver=8643", 
+             "phantomjs --webdriver=8643 --ignore-ssl-errors=true", 
              "phantomjs.log", 
              "phantomjs.pid"));
 
