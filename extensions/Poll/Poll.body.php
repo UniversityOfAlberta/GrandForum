@@ -65,8 +65,8 @@ class PollView {
 						$this->sendEmails();
 					}
 					
-					$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
-					$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
+					//$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
+					//$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
 				
 					if($notVotedYet){
 						$embed = "";

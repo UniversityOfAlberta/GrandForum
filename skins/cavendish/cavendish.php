@@ -1078,7 +1078,7 @@ $(function(){
                 $title = "Prendre un Sondage";
             }
 
-            $poll_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:MyPolls"));
+            $poll_tab = array(TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php?action=viewPoll&id=random"));
             $title = "Helpful Resources";
             if($wgLang->getCode() == "fr"){
                 $title = "Ressources utiles";
