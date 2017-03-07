@@ -502,3 +502,11 @@ function sanitizeInput($str){
     $str = str_replace("/", "&#x2F;", $str);
     return $str;
 }
+
+// http://stackoverflow.com/questions/3028491/php-weeks-between-2-dates
+function datediffInWeeks($date1, $date2){
+    if($date1 > $date2) return datediffInWeeks($date2, $date1);
+    $first = DateTime::createFromFormat('Y-m-d', $date1);
+    $second = DateTime::createFromFormat('Y-m-d', $date2);
+    return floor($first->diff($second)->days/7);
+}

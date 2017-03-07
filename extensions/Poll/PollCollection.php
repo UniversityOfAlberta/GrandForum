@@ -51,7 +51,7 @@ class PollCollection {
 	}
 
 	static function getRandom(){
-            $weekNumber = date("W");
+	        $weekNumber = datediffInWeeks('2000-01-01', date('Y-m-d'));
             $seedNumber = srand($weekNumber);
 	        $randomNumber = rand();
             $data = DBFunctions::select(array('grand_poll_collection'),
