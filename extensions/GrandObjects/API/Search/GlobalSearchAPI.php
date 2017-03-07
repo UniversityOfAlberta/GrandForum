@@ -218,6 +218,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // get http header for cookies
                 curl_setopt($ch, CURLOPT_HEADER, 0);
