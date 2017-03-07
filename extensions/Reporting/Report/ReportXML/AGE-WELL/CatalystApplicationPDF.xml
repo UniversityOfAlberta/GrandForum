@@ -90,7 +90,7 @@
                     {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="vib" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY_OTHER">
+        <ReportItem id="vib" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY_OTHER" optional="true">
             <![CDATA[
                     <b>If you have selected “Other” and think that the proposed project falls outside of AGE-WELL’s current WP structure, please provide a justification for this:</b>
                     {$item}
