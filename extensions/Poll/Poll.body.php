@@ -65,6 +65,7 @@ class PollView {
 						$this->sendEmails();
 					}
 					
+					$wgOut->addHTML("<h2>Weekly Poll</h2>");
 					//$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
 					//$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
 				
@@ -91,7 +92,7 @@ class PollView {
 						}
 					}
 					if($notVotedYet){
-						$wgOut->addHTML("<input type='submit' name='submit' value='Submit' />");
+						$wgOut->addHTML("<br /><input type='submit' name='submit' value='Submit' />");
 						$wgOut->addHTML("</form>");
 					}
 					else if($isOwner){
