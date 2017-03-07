@@ -26,7 +26,7 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <ul>
                     <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/5/5e/Patients_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>Consent Form</a> & <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
-                    <li>Awaiting the <a href='https://www.cadth.ca/about-cadth/what-we-do/products-services/cdr' target='_blank'>Canadian Agency for Drugs and Technologies in Health</a> (CADTH) Common Drug Review of Mifegymiso®, scheduled for March 2017. Approval may impact insurance coverage and provincial and territorial formularies (i.e list publically-funded drugs for individuals who qualify and/or do not have private insurance, for example, individuals on social assistance).</li>
+                    <li>Awaiting the <a href='https://www.cadth.ca/mifepristone-and-misoprostol' target='_blank'>Canadian Agency for Drugs and Technologies in Health</a> (CADTH) Common Drug Review of Mifegymiso®, scheduled for March 2017. Approval may impact insurance coverage and provincial and territorial formularies (i.e list publically-funded drugs for individuals who qualify and/or do not have private insurance, for example, individuals on social assistance).</li>
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -45,7 +45,7 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <ul>
                     <li>As reported in the media, Mifegymiso®, ~ $300/dose (Oct. 7th, 2016) <a href='http://edmontonjournal.com/news/politics/paula-simons-access-to-abortion-drug-one-step-closer-for-alberta-women' target='_blank'>read more</a></li>
-                    <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Calgary (Feb. 24th, 2017)</li>
+                    <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Calgary</li>
                     <li>As reported in the media, Calgary’s Kensington Clinic is providing Mifegymiso® for free, <a href='https://www.thestar.com/opinion/commentary/2017/03/06/abortion-pill-rollout-deeply-flawed-mallick.html' target='_blank'>read more</a></li>
                 </ul>
             </div>
@@ -80,14 +80,14 @@ class WhoSupplies extends SpecialPage{
             <h2 id='NL'>Newfoundland and Labrador</h2>
             <div>
                 <ul>
-                    <li>As reported in the media, Canadian distributor Celopharma as not reported shipments here to date (Jan. 28th, 2017) <a href='http://www.cbc.ca/news/canada/newfoundland-labrador/abortion-drug-not-available-1.2662032' target='_blank'>read more</a></li>
+                    <li>As reported in the media, Canadian distributor Celopharma has not reported shipments here to date (Jan. 28th, 2017) <a href='http://www.cbc.ca/news/canada/newfoundland-labrador/abortion-drug-not-available-1.2662032' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
             <h2 id='NT'>Northwest Territories</h2>
             <div>
                 <ul>
-                    <li>As of Jan. 28, 2017, Canadian distributor Celopharma as not reported shipments here to date</li>
+                    <li>As of Jan. 28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
             </div>
             
@@ -101,7 +101,7 @@ class WhoSupplies extends SpecialPage{
             <h2 id='NU'>Nunavut</h2>
             <div>
                 <ul>
-                    <li>As of Jan. 28, 2017, Canadian distributor Celopharma as not reported shipments here to date</li>
+                    <li>As of Jan. 28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
             </div>
             
@@ -130,7 +130,7 @@ class WhoSupplies extends SpecialPage{
             <h2 id='SK'>Saskatchewan</h2>
             <div>
                 <ul>
-                    <li>As of Jan. 28, 2017, Canadian distributor Celopharma as not reported shipments here to date</li>
+                    <li>As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, <a href='As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, read more' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
