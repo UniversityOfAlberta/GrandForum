@@ -53,7 +53,7 @@ class WhoSupplies extends SpecialPage{
             <h2 id='BC'>British Columbia</h2>
             <div>
                 <ul>
-                    <li>Both the College of Physicians and Surgeons of BC and the College of Pharmacists of BC  have provided guidance to their members on dispensing mifepristone</li>
+                    <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
                     <li>In private clinics, individuals must pay out of pocket, ~$300 per package </li>
                     <li>Celopharma advised women to bring signed consent to pharmacy, with prescription- Not applicable in BC! <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>read more</a></li>
                     <li>Mifegymiso® is being considered for possible coverage under the <a href='http://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/mifepristone-misoprostol-3509-info.pdf' target='_blank'>B.C. PharmaCare Program</a> (Feb. 14th, 2017)</li>
