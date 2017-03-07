@@ -865,7 +865,8 @@ class Person extends BackboneModel {
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
-                      'url' => $this->getUrl());
+                      'url' => $this->getUrl(),
+                      'candidate' => ($this->isCandidate() == 1));
         return $json;
     }
     

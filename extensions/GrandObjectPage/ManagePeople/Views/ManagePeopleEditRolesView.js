@@ -83,7 +83,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     addRows: function(){
         this.roles.each($.proxy(function(role, i){
             if(this.roleViews[i] == null){
-                var view = new ManagePeopleEditRolesRowView({model: role});
+                var view = new ManagePeopleEditRolesRowView({person: this.person, model: role});
                 this.$("#role_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -108,8 +108,10 @@ ManagePeopleEditRolesView = Backbone.View.extend({
 ManagePeopleEditRolesRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    person: null,
     
-    initialize: function(){
+    initialize: function(options){
+        this.person = options.person;
         this.listenTo(this.model, "change", this.update);
         this.listenTo(this.model, "change:projects", this.renderProjects);
         this.template = _.template($('#edit_roles_row_template').html());

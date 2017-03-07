@@ -152,7 +152,8 @@ Person = Backbone.Model.extend({
         department: '',
         publicProfile: '',
         privateProfile: '',
-        url: ''
+        url: '',
+        candidate: false
     }
 });
 
@@ -161,6 +162,8 @@ Person = Backbone.Model.extend({
  */
 People = Backbone.Collection.extend({
     model: Person,
+    
+    roles: undefined,
     
     url: function(){
         if(this.roles == undefined){

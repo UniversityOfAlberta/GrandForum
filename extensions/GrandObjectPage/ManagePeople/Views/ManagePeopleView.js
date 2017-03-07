@@ -8,6 +8,7 @@ ManagePeopleView = Backbone.View.extend({
 
     initialize: function(){
         this.allPeople = new People();
+        this.allPeople.roles = ['all'];
         this.allPeople.fetch();
         this.template = _.template($('#manage_people_template').html());
         this.listenTo(this.model, "sync", function(){

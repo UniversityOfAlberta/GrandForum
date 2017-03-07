@@ -49,7 +49,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	                    click: $.proxy(function(e){
 	                        this.editRoles.addRole();
 	                    }, this), 
-	                    disabled: (allowedRoles.length == 0),
+	                    disabled: (allowedRoles.length == 0 || (this.model.get('candidate') && _.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length == 0)),
 	                    style: "float: left;"
 	                },
 	                "Save": $.proxy(function(e){

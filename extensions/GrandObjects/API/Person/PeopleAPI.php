@@ -12,7 +12,14 @@ class PeopleAPI extends RESTAPI {
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
-                $people = Person::getAllPeople($role);
+                if($role == 'all'){
+                    // Get All people (including candidates)
+                    $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
+                }
+                else{
+                    // Get the specific role
+                    $people = Person::getAllPeople($role);
+                }
                 foreach($people as $person){
                     if($university == ""){
                         $finalPeople[$person->getReversedName()] = $person;
