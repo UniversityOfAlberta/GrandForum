@@ -130,7 +130,7 @@ class WhoSupplies extends SpecialPage{
             <h2 id='SK'>Saskatchewan</h2>
             <div>
                 <ul>
-                    <li>As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, <a href='As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, read more' target='_blank'>read more</a></li>
+                    <li>As reported in the media on March 6th, 2017, Mifegymiso® has been shipped to Saskatoon, <a href='http://globalnews.ca/news/3291520/abortion-pill-mifegymiso-starts-to-arrive-in-saskatchewan/' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
