@@ -164,13 +164,6 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="description" name="Knowledge and Technology Exchange and Exploitation" blobSection="CAT_DESC" type="EditableReportSection">
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
     <ReportSection id="description" name="Training Potential" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px">
             <![CDATA[

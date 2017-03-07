@@ -21,7 +21,7 @@
                     <li>Objectives</li>
                     <li>Description</li>
                     <li>Itinerary</li>
-                    <li>Graphical abstract (a single image, uploaded as a PDF document)</li>
+                    <li>Figures & Schemes (a single image, uploaded as a PDF document)</li>
                     <li>Budget</li>
                 </ul>
                 </p>
@@ -114,7 +114,7 @@
         </ReportItem>
         <ReportItem id="graphical" type="Upload" blobItem="GRAPHICAL" fileSize="2" mimeType="application/pdf">
             <![CDATA[
-                <h3>Graphical Abstract</h3>
+                <h3>Figures & Schemes</h3>
                 <p>A single image; to be used for advertising, as a PDF</p>
                 {$item}
             ]]>

@@ -19,7 +19,7 @@
                 <ul>
                     <li>A completed cover page.</li>
                     <li>A project summary (0.5 pages or less).</li>
-                    <li>A graphical abstract (0.5 pages or less).</li>
+                    <li>Figures & Schemes (0.5 pages or less).</li>
                     <li>A proposal (5 pages, not including pictures and references)</li>
                     <li>A section on knowledge and technology exchange and exploitation including potential commercialization (0.5 pages)</li>
                     <li>A section on training potential (0.5 pages)</li>
@@ -127,7 +127,7 @@
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="PROP_DESC_SUMMARY" rich="true" height="300px">
             <![CDATA[
                 <h2>Project Description</h2>
-                <p>Summary (maximum half page) plus graphical abstract</p>
+                <p>Summary (maximum half page) plus figures & schemes</p>
                 {$item}
             ]]>
         </ReportItem>

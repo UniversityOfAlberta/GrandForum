@@ -125,7 +125,7 @@
         </ReportItem>
         <ReportItem id="graphical" type="Upload" blobItem="GRAPHICAL" fileSize="2" mimeType="application/pdf">
             <![CDATA[
-                <h3>Graphical Abstract</h3>
+                <h3>Figures & Schemes</h3>
                 <p>A single image, as a PDF; to be used for advertising</p>
                 {$item}
             ]]>

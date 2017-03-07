@@ -47,6 +47,14 @@
                 </tr>
             ]]>
         </ReportItem>
+        <ReportItem id="date" type="Calendar" blobType="BLOB_TEXT" blobItem="DATE">
+            <![CDATA[
+                <tr>
+                    <td valign='top'><b>Proposed Presentation Date:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="audience" type="Integer" blobItem="AUDIENCE" min="0" max="10000" size="5">
             <![CDATA[
                 <tr>

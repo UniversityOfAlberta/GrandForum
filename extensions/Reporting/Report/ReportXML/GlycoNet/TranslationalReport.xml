@@ -251,7 +251,7 @@
 
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h2>Graphical Abstract</h2>
+                <h2>Figures & Schemes</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -259,13 +259,6 @@
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
             <![CDATA[
                 <h2>Project Proposal (7000 words maximum)</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
-            <![CDATA[
-                <h2>Knowledge and Technology Exchange and Exploitation</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -384,6 +377,23 @@
     <ReportSection id="commercial" name="Commercialization" blobSection="CAT_COMM" tooltip="Commercialization Plan" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
             <![CDATA[
+                <b>Commercialization Plan Guidelines:</b>
+                <ul>
+                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution.</li>
+                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch</li>
+                    <li>The plan should address the following items:
+                        <ul>
+                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
+                            <li>Market</li>
+                            <li>Barriers</li>
+                            <li>Commercialization Opportunity</li>
+                            <li>Competitive Advantage over other Technologies</li>
+                            <li>Business Expertise</li>
+                            <li>Commercialization Strategy</li>
+                            <li>Timelines</li>
+                        </ul>
+                    </li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>

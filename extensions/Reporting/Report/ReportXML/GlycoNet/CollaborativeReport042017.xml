@@ -233,8 +233,8 @@
 
         <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h2>Graphical Abstract</h2>
-                <p>Upload a PDF document containing your application's graphical abstract</p>
+                <h2>Figures & Schemes</h2>
+                <p>Upload a PDF document containing your application's figures & schemes</p>
                 {$item}
             ]]>
         </ReportItem>
