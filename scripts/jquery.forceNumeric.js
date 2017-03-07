@@ -64,13 +64,18 @@ jQuery.fn.forceNumeric = function (options) {
             $(this).keyup(function(e){
                 validateMax(e.target);
             });
+            $(this).change(function(e){
+                validateMax(e.target);
+            });
             validateMax(this);
         }
         if(options.min != ""){
             $(this).keyup(function(e){
                 validateMin(e.target);
             });
-            
+            $(this).change(function(e){
+                validateMax(e.target);
+            });
             validateMin(this);
         }
         if(!(regex.test($(this).val()))){
