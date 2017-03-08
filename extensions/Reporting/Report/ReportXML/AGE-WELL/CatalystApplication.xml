@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Catalyst Program Application" reportType="RP_CAT" pdfType="RPTP_CAT" pdfFiles="CatalystApplicationPDF" ajax="true" disabled="false">
+<Report name="AGE-WELL Catalyst Program Application" reportType="RP_CAT" pdfType="RPTP_CAT" allowIdProjects="true" pdfFiles="CatalystApplicationPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="description" permissions="rw" />
