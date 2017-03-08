@@ -58,7 +58,7 @@ class WhoSupplies extends SpecialPage{
                     <li>Celopharma advised women to bring signed consent to pharmacy, with prescription- Not applicable in BC! <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>read more</a></li>
                     <li>Mifegymiso® is being considered for possible coverage under the <a href='http://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/mifepristone-misoprostol-3509-info.pdf' target='_blank'>B.C. PharmaCare Program</a> (Feb. 14th, 2017)</li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Vancouver</li>
-                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf'>read more</a></li>
+                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
@@ -111,7 +111,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>Distributor in Ontario via Celopharma or wholesaler, McKesson <a href='https://www.mckesson.ca/mckesson-pharmaceutical' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Toronto and Ottawa</li>
-                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf'>read more</a></li>
+                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
