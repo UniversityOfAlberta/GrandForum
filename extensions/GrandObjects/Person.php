@@ -2137,6 +2137,7 @@ class Person extends BackboneModel {
         }
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
+            $this->roles = array();
             if(isset(self::$rolesCache[$this->id])){
                 foreach(self::$rolesCache[$this->id] as $row){
                     $this->roles[] = new Role(array(0 => $row));
