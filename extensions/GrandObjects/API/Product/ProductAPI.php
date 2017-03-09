@@ -34,13 +34,22 @@ class ProductAPI extends RESTAPI {
             if($this->getParam('category') != "" && 
                $this->getParam('projectId') != "" &&
                $this->getParam('grand') != ""){
-                $papers = Paper::getAllPapers($this->getParam('projectId'), 
+                $projectId = explode(",", $this->getParam('projectId'));
+                $papers = array();
+                foreach($projectId as $pId){
+                    $ps = Paper::getAllPapers($pId, 
                                               $this->getParam('category'), 
                                               $this->getParam('grand'),
                                               true,
                                               'Public',
                                               $start,
                                               $count);
+                    foreach($ps as $p){
+                        $papers["{$p->getType()}_{$p->getTitle()}"] = $p;
+                    }
+                }
+                ksort($papers);
+                $papers = array_values($papers);
             }
             else{
                 $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
