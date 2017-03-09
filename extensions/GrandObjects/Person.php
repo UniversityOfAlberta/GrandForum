@@ -2153,6 +2153,9 @@ class Person extends BackboneModel {
                                                            'comment' => '')));
             }
         }
+        else if($this->id == null){
+            $this->roles = array();
+        }
         return $this->roles;
     }
     
