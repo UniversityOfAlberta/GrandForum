@@ -289,6 +289,7 @@ abstract class AbstractReportItem {
     }
     
     private function stripBlob($value){
+        $value = str_replace(" </p>", "</p>", $value); // TinyMCE sometimes adds this
         $value = trim(htmlentities($value, null, 'utf-8', false));
         $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
         return $value;
