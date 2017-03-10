@@ -57,7 +57,7 @@ PostView = Backbone.View.extend({
         var model = this.model;
         if($('#tinyMCEUpload').length == 0){
             $('body').append("<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>" +
-                             "<form id='tinyMCEUploadForm' action='$wgServer$wgScriptPath/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden;position:absolute;left:-1000px;'>" +
+                             "<form id='tinyMCEUploadForm' action='" + wgServer + wgScriptPath + "/index.php?action=tinyMCEUpload' target='tinyMCEUpload' method='post' enctype='multipart/form-data' style='width:0px;height:0;overflow:hidden;position:absolute;left:-1000px;z-index:10000;'>" +
                                  "<input name='image' type='file' accept='image/*,.pdf'>" +
                              "</form>");
             $('#tinyMCEUploadForm input').change(function(){
@@ -78,6 +78,7 @@ PostView = Backbone.View.extend({
                     'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                 ],
                 file_browser_callback: function(field_name, url, type, win) {
+                    console.log($('#tinyMCEUploadForm input'));
                     if(type=='image') $('#tinyMCEUploadForm input').click();
                 },
                 paste_data_images: true,
