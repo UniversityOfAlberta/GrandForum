@@ -12,7 +12,7 @@ class MyThreads extends BackbonePage {
         global $config;
         $me = Person::newFromWgUser();
         if($config->getValue('networkName') == "GlycoNet"){
-            return ($me->isRole(HQP) || $me->isRoleAtLeast(STAFF));
+            return ($me->isRole(HQP) || $me->isRoleAtLeast(STAFF) || $me->isBoardMod());
         }
         return $me->isRoleAtLeast(HQP);
     }

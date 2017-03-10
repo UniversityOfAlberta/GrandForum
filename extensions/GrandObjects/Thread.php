@@ -181,25 +181,23 @@ class Thread extends BackboneModel {
                 $users[] = $user->name;
             }
         }
-        if($me->isRoleAtLeast(AR)){
-            DBFunctions::begin();
-            $status = DBFunctions::insert('grand_threads',
-                                          array('board_id' => $this->board_id,
-                                                'stickied' => $this->stickied,
-                                                'user_id' => $this->user_id,
-                                                'users' => serialize($users),
-                                                'roles' => serialize($this->roles),
-                                                'title' => $this->title), true);
-            $data = DBFunctions::select(array('grand_threads'),
-                                        array('id'),
-                                        array('board_id' => $this->board_id,
-                                              'user_id' =>$this->user_id,
-                                              'title' => $this->title),
-                                        array('date_created'=>'desc'));
-            if($status){
-                DBFunctions::commit();
-                return Thread::newFromId($data[0]['id']);
-            }
+        DBFunctions::begin();
+        $status = DBFunctions::insert('grand_threads',
+                                      array('board_id' => $this->board_id,
+                                            'stickied' => $this->stickied,
+                                            'user_id' => $this->user_id,
+                                            'users' => serialize($users),
+                                            'roles' => serialize($this->roles),
+                                            'title' => $this->title), true);
+        $data = DBFunctions::select(array('grand_threads'),
+                                    array('id'),
+                                    array('board_id' => $this->board_id,
+                                          'user_id' =>$this->user_id,
+                                          'title' => $this->title),
+                                    array('date_created'=>'desc'));
+        if($status){
+            DBFunctions::commit();
+            return Thread::newFromId($data[0]['id']);
         }
         return false;
     }
@@ -218,7 +216,7 @@ class Thread extends BackboneModel {
                 $users[] = $user->name;
             }
         }
-        if($me->isRoleAtLeast(ADMIN) || $me->getId() == $this->user_id){
+        if($this->canEdit() || $me->getId() == $this->user_id){
             $status = DBFunctions::update('grand_threads',
                                           array('board_id' => $this->board_id,
                                                 'stickied' => $this->stickied,
@@ -238,7 +236,7 @@ class Thread extends BackboneModel {
 
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+        if($this->canEdit() || ($me->getId() == $this->user_id)){
             DBFunctions::begin();
             $status = DBFunctions::delete('grand_threads',
                                           array('id' => EQ($this->rev_id)));
@@ -261,6 +259,7 @@ class Thread extends BackboneModel {
         }
         if($me->isLoggedIn() && ($me->getId() === $this->getThreadOwner()->getId() ||
                                  $me->isRoleAtLeast(MANAGER) ||
+                                 $me->isBoardMod() ||
                                  in_array($this->getId(), $ids) ||
                                  in_array($this->getRole(), $me->getAllowedRoles()) ||
                                  $this->getRole() == "")){
@@ -272,7 +271,7 @@ class Thread extends BackboneModel {
     function canEdit(){
         $me = Person::newFromWgUser();
         $bool = false;
-        if($me->isLoggedIn() && in_array($this->getRole(), $me->getAllowedRoles())){
+        if($me->isLoggedIn() && in_array($this->getRole(), $me->getAllowedRoles()) || $me->isBoardMod()){
             $bool = true;
         }
         return true;
