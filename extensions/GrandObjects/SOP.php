@@ -181,7 +181,7 @@ class SOP extends BackboneModel{
         
         $user = Person::newFromId($this->getUser());
         $author = array('id' => $user->getId(),
-                        'name' => $user->getNameForForms(),
+                        'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS();
         $reviewers = array();
