@@ -15,6 +15,7 @@ class ToggleHeaderReportItemSet extends ReportItemSet {
         $changeColor = $this->getAttr('changeColor', "false");
         $title = $this->getAttr('title', "");
         $disabled = $this->getAttr('disabled', 'false');
+        $sop = $this->getAttr('sop', 'false');
 
         if(strtolower($changeColor) == "true"){
             $this->addChangeColorScript();
@@ -26,10 +27,15 @@ class ToggleHeaderReportItemSet extends ReportItemSet {
             $onclick = "";
             $disabled_class = "disabled_bg";
         }
+	if($sop == 'true'){
+	            $wgOut->addHTML("<div class='toggleHeader {$disabled_class}' onClick='{$onclick}' id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_headDiv'><h$level id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_head' style='margin:0;padding:0;color:#969696 !important;font-weight:normal;'>{$title}</h$level><span style='position:absolute; right:10px; top:4px;font-size:10px;'><i>[Show/Hide]</i></span></div>
+                        <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}' class='toggleDiv_{$this->projectId}' style='display:none;'>");
 
+	}
+	else{
         $wgOut->addHTML("<div class='toggleHeader {$disabled_class}' onClick='{$onclick}' id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_headDiv'><h$level id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_head' style='margin:0;padding:0;color:#000000;font-weight:normal;'>{$title}</h$level><span style='position:absolute; right:10px; top:4px;font-size:10px;'><i>[Show/Hide]</i></span></div>
                         <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}' class='toggleDiv_{$this->projectId}' style='display:none;'>");
-        
+        }
         foreach($this->items as $item){
             $item->render();
         }

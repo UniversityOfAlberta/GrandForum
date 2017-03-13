@@ -73,7 +73,13 @@ class RadioReportItem extends AbstractReportItem {
         if($this->getBlobValue() == ""){
             $output = "<input type='hidden' name='{$this->getPostId()}' value='' />".$output; 
         }
-        $output = $this->processCData("<div>{$output}</div>");
+	$sop = $this->getAttr('sopBlob', False);
+	if($sop == "true"){
+	     $output = $this->processCData("{$output}");
+	}
+	else{
+             $output = $this->processCData("<div>{$output}</div>");
+	}
 		$wgOut->addHTML($output);
 	}
 	

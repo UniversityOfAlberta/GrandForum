@@ -162,6 +162,9 @@ EOF;
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
                 if($person->getSop()){
                     $sop_url = $person->getSop()->getUrl();
+		    if(!$this->canEdit()){
+			$this->html .= "<br /><br />";
+		    }
                     $this->html .= "<a class='button' href='$sop_url'>Review</a>";
                 }
             }
@@ -170,7 +173,7 @@ EOF;
     
     function canEdit(){
         $me = Person::newFromWgUser();
-        return ($me->isRoleAtLeast(STAFF));
+        return ($me->isRoleAtLeast(ADMIN));
     }
     
 }
