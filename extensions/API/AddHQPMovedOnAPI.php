@@ -41,7 +41,7 @@ class AddHQPMovedOnAPI extends API{
 		        $isSupervisor = true;
 		    }
 		}
-		if($me->isRoleAtLeast(STAFF) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
+		if($me->isRoleAtLeast(STAFF) || $me->isRole(PS) || count($me->leadership()) > 0 || $isSupervisor || $me->getId() == $person->getId()){
 		    if($_POST['effective_date'] == ""){
 		        $_POST['effective_date'] = EQ(COL('CURRENT_TIMESTAMP'));
 		    }
