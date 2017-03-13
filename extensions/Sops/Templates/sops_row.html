@@ -2,29 +2,28 @@
    <b><a href="<%= url %>" id="sop<%= id %>"><%= author.name %></a></b><br />
    <%=date_created %>   
 </td>
-<td align="right" style="white-space: nowrap;">
-<%= word_count %>
+<td align="right" style="white-space: nowrap;" id='GPA60'>
+    <%= gsms.gpa60 %>
 </td>
-<td align="right" style="white-space: nowrap;">
-<%= reading_ease %> (of 100)
+<td align="right" style="white-space: nowrap;" id='GPABest'>
+    <% if(gsms.gpafull != ''){ %>
+    <%= gsms.gpafull %>/<%= gsms.gpafull_credits %>
+    <% } %>
 </td>
-<td style="white-space: nowrap;">
-<%= sentiment_type %> (<%= sentiment_val %>)
+<td id='anatomy'>
+    <%= gsms.anatomy %>
 </td>
-<td>
-    <%if(pdf_data.Education != undefined){ %>
-         <%= pdf_data.Education[0].degree%>/<%= pdf_data.Education[0].institution%>
-    <%}else{%>
-    <%}%>
+<td id='stats'>
+    <%= gsms.stats %>
 </td>
-<td style="white-space: nowrap;">
-
-    <%if(pdf_data.Referees != undefined){ %>
-        <% for(var i=0; i < pdf_data.Referees.length;i++){ %>
-                <%= pdf_data.Referees[i].name %><br />
-        <%}%>
-    <%}else{%>
-    <%}%>
+<td id='degree'>
+    <%= gsms.degree %><br /><%= gsms.institution %>
+</td>
+<td id='failures_withdrawals'>
+    <%= gsms.failures %>
+</td>
+<td style="white-space: nowrap;" id='notes'>
+    <%= gsms.notes %>
 </td>
 <td style="white-space: nowrap;">
 <% for(var i=0; i < reviewers.length;i++){ %>

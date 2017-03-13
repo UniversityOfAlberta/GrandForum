@@ -183,6 +183,7 @@ class SOP extends BackboneModel{
         $author = array('id' => $user->getId(),
                         'name' => $user->getNameForForms(),
                         'url' => $user->getUrl());
+        $gsms = $user->getGSMS();
         $reviewers = array();
         foreach($this->getReviewers() as $id){
             $person = Person::newFromId($id);
@@ -212,6 +213,7 @@ class SOP extends BackboneModel{
                       'date_created' => $this->getDateCreated(),
                       'url' => $this->getUrl(),
                       'author' => $author,
+		      'gsms' => $gsms,
                       'reviewers' => $reviewers,
                       'sentiment_val' => round($this->sentiment_val,2),
                       'sentiment_type' => $this->sentiment_type,
