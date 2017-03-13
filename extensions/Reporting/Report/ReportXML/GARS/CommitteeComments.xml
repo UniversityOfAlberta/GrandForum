@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Committee Review" reportType="RP_COM" pdfType="RPTP_COM" pdfFiles="OTComPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="Manager">
+            <SectionPermission id="review student" permissions="r" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="r" />
+        </Role>
+        <Role role="Admin">
+            <SectionPermission id="review student" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="review student" tooltip="Student Review" name="Review Student" blobSection="OT_COM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="js" type="StaticReportItem">
+            <![CDATA[
+            <script type='text/javascript'>
+            $('#aboveTabs').hide();
+            $('#reportTabs').hide();
+            $('#reportHeader').hide();
+            $('#reportBody').css('min-height',0);
+            </script>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Admin)}">
+            <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q12" rich="true" limit="150" blobSubItem="{$project_id}">
+                <![CDATA[
+                {$item}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!contains({$user_full_roles}, Admin)}">
+            <ReportItem id="comment_unedit" type="StaticReportItem">
+                <![CDATA[
+                {getText(RP_COM,OT_COM,Q12,{$project_id},{$user_id},{$project_id})}
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Instructions>
+            <![CDATA[
+            
+            ]]>
+        </Instructions>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+    
+</Report>
