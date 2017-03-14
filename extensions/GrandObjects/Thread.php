@@ -192,7 +192,6 @@ class Thread extends BackboneModel {
         if($status){
             $id = DBFunctions::insertId();
             DBFunctions::commit();
-            
             return Thread::newFromId($id);
         }
         return false;

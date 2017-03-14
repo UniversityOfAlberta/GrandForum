@@ -77,7 +77,7 @@ class Project extends BackboneModel {
                 // This project has a history
                 $project = Project::newFromHistoricId($data[0]['id']);
             }
-            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
                 $project = new Project($data);
             }
             else{
@@ -139,7 +139,7 @@ class Project extends BackboneModel {
                 self::$cache[$name] = &$project;
                 return $project;
             }
-            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
                 $project = new Project($data);
             }
             else{
@@ -204,7 +204,7 @@ class Project extends BackboneModel {
                 self::$cache[$name] = &$project;
                 return $project;
             }
-            else if($me->isLoggedIn() || $data[0]['status'] != 'Proposed'){
+            else if(($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed'){
                 $project = new Project($data);
             }
             else{
@@ -242,7 +242,7 @@ class Project extends BackboneModel {
                 $sqlExtra
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0 && ($me->isLoggedIn() || $data[0]['status'] != 'Proposed')){
+        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed')){
             $project = new Project($data);
             $project->evolutionId = $evolutionId;
             self::$cache[$id.'_'.$evolutionId] = $project;
@@ -272,7 +272,7 @@ class Project extends BackboneModel {
                 AND s.evolution_id = e.id
                 ORDER BY e.id DESC LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if (DBFunctions::getNRows() > 0 && ($me->isLoggedIn() || $data[0]['status'] != 'Proposed')){
+        if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || $data[0]['status'] != 'Proposed')){
             $project = new Project($data);
             self::$cache['h_'.$name] = &$project;
             return $project;
@@ -301,7 +301,7 @@ class Project extends BackboneModel {
             foreach($data as $row){
                 $project = Project::newFromId($row['id']);
                 if($project != null && $project->getName() != ""){
-                    if(!isset($projects[$project->name]) && !$project->isDeleted() && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
+                    if(!isset($projects[$project->name]) && !$project->isDeleted() && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
                         $projects[$project->getName()] = $project;
                     }
                 }
@@ -334,7 +334,7 @@ class Project extends BackboneModel {
                         substr($project->effectiveDate, 0, 10) >= $endDate || 
                         (substr($project->effectiveDate, 0, 10) <= $endDate && substr($project->effectiveDate, 0, 10) >= $startDate)) ||
                        !$project->deleted){
-                        if(substr($project->getCreated(), 0, 10) <= $endDate && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
+                        if(substr($project->getCreated(), 0, 10) <= $endDate && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
                             $projects[$project->getName()] = $project;
                         }
                     }
@@ -363,7 +363,7 @@ class Project extends BackboneModel {
         foreach($data as $row){
             $project = Project::newFromHistoricName($row['name']);
             if($project != null && $project->getName() != ""){
-                if(!isset($projects[$project->name]) && ($me->isLoggedIn() || $project->getStatus() != 'Proposed')){
+                if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
                     $projects[$project->getName()] = $project;
                 }
             }
