@@ -10,6 +10,10 @@
         $contents = file_get_contents("pdfs/$file");
         $api = new ConvertPdfAPI();
         $data = $api->extract_pdf_data($contents);
+        
+        $data['first_name'] = explode(" ", $data['first_name']);
+        $data['first_name'] = @$data['first_name'][0];
+        
         echo $data['first_name']." ".$data['last_name'];
         $person = Person::newFromNameLike($data['first_name']." ".$data['last_name']);
         if($person->getId() != 0){
