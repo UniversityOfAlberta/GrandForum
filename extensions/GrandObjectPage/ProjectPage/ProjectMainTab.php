@@ -17,44 +17,6 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromId($wgUser->getId());
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         
-        if($me->isLoggedIn() && 
-           !$project->isDeleted() && 
-           !$project->isSubProject() && 
-           !$edit && 
-           !$me->isMemberOf($project) &&
-           $me->isRoleAtLeast(NI)){
-            // Show a 'Join' button if this person isn't a member of the project, but is logged in
-            $this->html .= "<a class='button' onClick=\"$('#joinForm').slideDown();$(this).remove();\">Join</a>
-            <script type='text/javascript'>
-                function submitJoinRequest(){
-                    var project = '{$project->getName()}';
-                    var reason = $('textarea[name=reason]').val();
-                    var data = {
-                        project: project,
-                        reason: reason
-                    };
-                    $('#joinButton').prop('disabled', true);
-                    $.post('{$wgServer}{$wgScriptPath}/index.php?action=api.addProjectJoinRequest', data, function(response){
-                        clearSuccess();
-                        clearError();
-                        _.each(response.messages, function(m){addSuccess(m);});
-                        _.each(response.errors, function(e){addError(e);});
-                        $('#joinButton').prop('disabled', false);
-                        $('#joinButton').prop('disable', true);
-                        $('#joinForm').slideUp();
-                    });
-                }
-            </script>
-            <div id='joinForm' style='display:none;'>
-                <fieldset>
-                    <legend>Join Request Form</legend>
-                    By pressing the join button you can request to join {$project->getName()}.  The request needs to be accepted by the Network Manager so please enter in your reason for wanting to join below:
-                    <textarea name='reason' style='height:100px;'></textarea>
-                    <a id='joinButton' class='button' onClick='submitJoinRequest()'>Submit Join Request</a>
-                </fieldset>
-            </div>";
-        }
-        
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
