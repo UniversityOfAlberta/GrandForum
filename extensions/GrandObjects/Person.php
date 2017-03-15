@@ -4095,6 +4095,7 @@ class Person extends BackboneModel {
                 $project = Project::newFromId($row['project_id']);
                 $projects[$project->getName()] = $project;
             }
+            ksort($projects);
         }
         return $projects;
     }
