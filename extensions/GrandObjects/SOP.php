@@ -290,7 +290,7 @@ class SOP extends BackboneModel{
                 $i = 0;
                 if(is_array($refs)){
                     foreach($refs as $ref){
-                        $pdf['Referees'][$i]['responses'] = nl2br($ref['responses']);
+                        $pdf['Referees'][$i]['responses'] = @nl2br($ref['responses']);
                         $i++;
                     }
                 }
