@@ -238,9 +238,6 @@ if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
 // Whether or not to show custom deprication notices
 define("DEBUG", true);
 
-//Define the switch to prevent any editing by Users to indicate the end of reporting period.
-define("FROZEN", false);
-
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       PS => 1,

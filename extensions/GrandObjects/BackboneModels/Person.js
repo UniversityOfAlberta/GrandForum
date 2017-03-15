@@ -146,6 +146,8 @@ Person = Backbone.Model.extend({
         photo: wgServer + wgScriptPath + '/skins/face.png',
         cachedPhoto: wgServer + wgScriptPath + '/skins/face.png',
         twitter: '',
+        website: '',
+        linkedin: '',
         university: '',
         position: '',
         roles: new Array(),

@@ -25,18 +25,16 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
 }
 
 function addUserWebsite($name, $website){
-    $_POST['user_name'] = $name;
-    $_POST['website'] = $website;
-    APIRequest::doAction('UserWebsite', true);
+    $person = Person::newFromName($name);
+    $person->website = $website;
+    $person->update();
 }
 
 function addUserProfile($name, $profile){
-    $_POST['user_name'] = $name;
-    $_POST['profile'] = $profile;
-    $_POST['type'] = 'public';
-    APIRequest::doAction('UserProfile', true);
-    $_POST['type'] = 'private';
-    APIRequest::doAction('UserProfile', true);
+    $person = Person::newFromName($name);
+    $person->publicProfile = $profile;
+    $person->privateProfile = $profile;
+    $person->update();
 }
 
 function addUserRole($name, $role){

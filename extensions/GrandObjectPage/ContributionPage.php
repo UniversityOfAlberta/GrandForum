@@ -37,11 +37,8 @@ class ContributionPage {
                 }
                 
                 $create = isset($_GET['create']);
-                $create = ( $create && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 $edit = (isset($_GET['edit']) || $create);
-                $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 $post = (isset($_POST['submit']) && ($_POST['submit'] == "Save $name" || $_POST['submit'] == "Create $name"));
-                $post = ( $post && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
                 if(($contribution->getId() != null) || $create){
                     TabUtils::clearActions();
                     if($post){
@@ -654,9 +651,7 @@ class ContributionPage {
                             $wgOut->addHTML("<input type='submit' name='submit' value='Save Contribution' />");
                             $wgOut->addHTML("</form>");
                         }
-                        else if( (!FROZEN || $me->isRoleAtLeast(STAFF))){
-                            $wgOut->addHTML("<input type='button' name='edit' value='Edit Contribution' onClick='document.location=\"{$contribution->getUrl()}?edit\";' />");
-                        }
+                        $wgOut->addHTML("<input type='button' name='edit' value='Edit Contribution' onClick='document.location=\"{$contribution->getUrl()}?edit\";' />");
                     }
                     $wgOut->output();
                     $wgOut->disable();

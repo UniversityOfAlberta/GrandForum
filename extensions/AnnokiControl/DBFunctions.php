@@ -140,7 +140,7 @@ class DBFunctions {
 	    if(isExtensionEnabled('Impersonate')){
 	     	$supervisesImpersonee = checkSupervisesImpersonee();
 	    }
-	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
+	    return !($wgImpersonating && !$supervisesImpersonee);
 	}
 	
 	static function escape($string){

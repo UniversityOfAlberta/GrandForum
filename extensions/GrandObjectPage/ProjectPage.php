@@ -69,9 +69,6 @@ class ProjectPage {
                 $_POST['submit'] = "Edit Main";
             }
 
-            $isLead = ($isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-            $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-
             $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace

@@ -77,20 +77,20 @@ class PersonProfileTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return ($this->visibility['isMe'] || 
-                $this->visibility['isSupervisor']);
+        $me = Person::newFromWgUser();
+        return (($this->visibility['isMe'] || 
+                 $this->visibility['isSupervisor']) &&
+                $me->isAllowedToEdit($this->person));
     }
     
     function handleEdit(){
         $this->handleContactEdit();
         $_POST['user_name'] = $this->person->getName();
-        $_POST['type'] = "public";
-        $_POST['profile'] = $_POST['public_profile'];
-        $_POST['profile'] = $_POST['profile'];
-        APIRequest::doAction('UserProfile', true);
-        $_POST['type'] = "private";
-        $_POST['profile'] = $_POST['private_profile'];
-        APIRequest::doAction('UserProfile', true);
+        
+        $this->person->publicProfile = $_POST['public_profile'];
+        $this->person->privateProfile = $_POST['private_profile'];
+        $this->person->update();
+        
         if(isset($_POST['role_title'])){
             foreach($this->person->getRoles() as $role){
                 if(isset($_POST['role_title'][$role->getId()])){
@@ -173,34 +173,27 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
-            $_POST['twitter'] = @$_POST['twitter'];
             $_POST['phone'] = @$_POST['phone'];
-            $_POST['website'] = @$_POST['website'];
-            $_POST['nationality'] = @$_POST['nationality'];
-            $_POST['stakeholder'] = @$_POST['stakeholder'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
             $_POST['title'] = @$_POST['title'];
-            $_POST['gender'] = @$_POST['gender'];
 
             $api = new UserUniversityAPI();
             $api->processParams(array());
             $api->doAction(true);
-
             $api = new UserPhoneAPI();
             $api->doAction(true);
-            $api = new UserTwitterAccountAPI();
-            $api->doAction(true);
-            $api = new UserWebsiteAPI();
-            $api->doAction(true);
-            $api = new UserNationalityAPI();
-            $api->doAction(true);
-            $api = new UserStakeholderAPI();
-            $api->doAction(true);
+            
+            $this->person->gender = @$_POST['gender'];
+            $this->person->twitter = @$_POST['twitter'];
+            $this->person->website = @$_POST['website'];
+            $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->nationality = @$_POST['nationality'];
+            $this->person->stakeholder = @$_POST['stakeholder'];
+            $this->person->update();
+
             $api = new UserEmailAPI();
-            $api->doAction(true);
-            $api = new UserGenderAPI();
             $api->doAction(true);
         }
         
@@ -482,8 +475,12 @@ EOF;
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Website URL:</b></td>
+                                <td align='right'><b>Website Url:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>LinkedIn Url:</b></td>
+                                <td><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>Twitter Account:</b></td>

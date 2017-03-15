@@ -19,13 +19,6 @@ function getUserMode($action, $page){
             echo json_encode($json);
             exit;
         }
-        else if(FROZEN && !$me->isRoleAtLeast(STAFF)){
-            $json = array('mode' => 'frozen',
-                          'message' => "The Forum is currently not available for edits during the RMC review-and-deliberation period.");
-            header('Content-Type: application/json');
-            echo json_encode($json);
-            exit;
-        }
         else if($wgImpersonating){
             $json = array('mode' => 'impersonating',
                           'message' => getImpersonatingMessage());

@@ -85,13 +85,10 @@ class PersonPage {
                         break;
                     }
                 }
-                $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
-                $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
-                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
-                $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
                 
+                $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
-                $post = ( $post && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
+
                 $wgOut->clearHTML();
                 
                 //Adding support for GET['edit']

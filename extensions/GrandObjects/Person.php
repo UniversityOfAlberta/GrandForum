@@ -29,6 +29,7 @@ class Person extends BackboneModel {
     var $photo;
     var $twitter;
     var $website;
+    var $linkedin;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -295,6 +296,7 @@ class Person extends BackboneModel {
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
+                                              'user_linkedin',
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
@@ -803,6 +805,7 @@ class Person extends BackboneModel {
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
+            $this->linkedin = @$data[0]['user_linkedin'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
@@ -857,6 +860,7 @@ class Person extends BackboneModel {
                       'stakeholder' => $this->getStakeholder(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
+                      'linkedin' => $this->getLinkedIn(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
@@ -900,6 +904,7 @@ class Person extends BackboneModel {
             $status = DBFunctions::update('mw_user', 
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
+                                          'user_linkedin' => $this->getLinkedIn(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
@@ -921,15 +926,7 @@ class Person extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        foreach($this->getSupervisors() as $supervisor){
-            if($supervisor->getId() == $me->getId()){
-                $isSupervisor = true;
-                break;
-            }
-        }
-        if($me->getId() == $this->getId() ||
-           $me->isRoleAtLeast(MANAGER) ||
-           $isSupervisor){
+        if($me->isAllowedToEdit($this)){
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
@@ -942,6 +939,7 @@ class Person extends BackboneModel {
                                           //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
+                                          'user_linkedin' => $this->getLinkedIn(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
@@ -983,32 +981,41 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
+        if($this->isMe()){
+            // User is themselves
+            return true;
+        }
         if($this->isRoleAtLeast(STAFF)){
+            // User is at least Staff
             return true;
         }
         if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
+            // User is NI, therefore can edit anyone who is not in a committee or higher
             return true;
         }
         if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
-        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+        if(($this->isThemeCoordinator() || $this->isThemeLeader()) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Theme Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
         if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
+            // User is in a committee or higher, therefore can edit anyone who is not at least Staff
             return true;
         }
-        return false;
-        if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && $person->isRoleAtLeast(COMMITTEE)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
-            ($this->isRoleAtLeast(COMMITTEE) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
-           )){
-            return false;
+        if($this->relatedTo($person, SUPERVISES)){
+            // User supervises the Person
+            return true;
         }
-        return true;
+        foreach($person->getCreators() as $creator){
+            if($creator->getId() == $this->getId()){
+                // User created the Person
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -1320,6 +1327,17 @@ class Person extends BackboneModel {
             $this->website = 'http://'.$this->website;
         }
         return $this->website;
+    }
+    
+    /**
+     * Returns the url of this Person's website
+     * @return string The url of this Person's website
+     */
+    function getLinkedIn(){
+        if (preg_match("#https?://#", $this->linkedin) === 0) {
+            $this->linkedin = 'http://'.$this->linkedin;
+        }
+        return $this->linkedin;
     }
     
     /**

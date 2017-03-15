@@ -30,6 +30,12 @@
                     <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
                 </tr>
             <% } %>
+            <% if(linkedin != "" && linkedin != "http://"){ %>
+                <tr>
+                    <td width="100">LinkedIn&nbsp;</td>
+                    <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(linkedin).hostname %></a></td>
+                </tr>
+            <% } %>
             <% if(phone != "" && phone != "http://"){ %>
                 <tr>
                     <td width="100">Phone Number&nbsp;</td>
