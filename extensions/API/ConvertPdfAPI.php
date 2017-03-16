@@ -143,27 +143,58 @@ class ConvertPdfAPI extends API{
     function doAction($noEcho=false){
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromId($wgUser->getId());
-        $userId = $_POST['id'];
-        $tmpfile = $_FILES['file_field']['tmp_name'];
-        $contents = file_get_contents($tmpfile);
-        $data = $this->extract_pdf_data($contents);
-        $sdata = serialize($data);
-        $status = DBFunctions::update('grand_sop',
-                                      array('pdf_data' => $sdata),
-                                      array('user_id' => EQ($userId)));
-
+        
+        $tmpfiles = $_FILES['file_field']['tmp_name'];
+        if(!is_array($tmpfiles)){
+            $tmpfiles = array($tmpfiles);
+        }
+        
+        $success = array();
+        $errors = array();
+        foreach($tmpfiles as $tmpfile){
+            $contents = file_get_contents($tmpfile);
+            $data = $this->extract_pdf_data($contents);
+            
+            $data['first_name'] = explode(" ", $data['first_name']);
+            $data['first_name'] = @$data['first_name'][0];
+            
+            if(isset($_POST['id'])){
+                $userId = $_POST['id'];
+            }
+            else{
+                $person = Person::newFromNameLike($data['first_name']." ".$data['last_name']);
+                $userId = $person->getId();
+            }
+            
+            if($userId != 0){
+                // Person Found
+                $person = Person::newFromId($userId);
+                $sdata = serialize($data);
+                $success[] = "PDF for <b>{$person->getNameForForms()}</b> uploaded";
+                DBFunctions::update('grand_sop',
+                                    array('pdf_data' => $sdata),
+                                    array('user_id' => EQ($userId)));
+            }
+            else{
+                // Person not found
+                $errors[] = "PDF for {$data['first_name']} {$data['last_name']}";
+            }
+        }
+        
+        $success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
+        $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
+        
         DBFunctions::commit();
                 echo <<<EOF
                 <html>
                     <head>
                         <script type='text/javascript'>
-                            parent.ccvUploaded([], "Pdf Uploaded");
+                            parent.ccvUploaded("$success", "$errors");
                         </script>
                     </head>
                 </html>
 EOF;
-                exit;
-
+        exit;
     }
 
    function isLoginRequired(){
