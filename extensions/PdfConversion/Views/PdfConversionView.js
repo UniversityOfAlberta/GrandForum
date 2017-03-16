@@ -21,13 +21,15 @@ PdfConversionView = Backbone.View.extend({
         var button = $("#upload");
         button.prop("disabled", true);
         this.$(".throbber").show();
-        ccvUploaded = $.proxy(function(response, error){
+        ccvUploaded = $.proxy(function(success, errors){
             // Purposefully global so that iframe can access
                 clearAllMessages();
-                var success = new Array();
-                var warning = new Array();
-                    success.push("Personal Information was updated");
-                    addSuccess(success.join("<br />"));
+                if(success != ""){
+                    addSuccess(success);
+                }
+                if(errors != ""){
+                    addError(errors);
+                }
                 button.prop("disabled", false);
             this.$(".throbber").hide();
         }, this);
