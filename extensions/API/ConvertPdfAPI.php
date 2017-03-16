@@ -170,14 +170,14 @@ class ConvertPdfAPI extends API{
                 // Person Found
                 $person = Person::newFromId($userId);
                 $sdata = serialize($data);
-                $success[] = "PDF for <b>{$person->getNameForForms()}</b> uploaded";
+                $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
                 DBFunctions::update('grand_sop',
                                     array('pdf_data' => $sdata),
                                     array('user_id' => EQ($userId)));
             }
             else{
                 // Person not found
-                $errors[] = "PDF for {$data['first_name']} {$data['last_name']}";
+                $errors[] = "<b>{$data['first_name']} {$data['last_name']}</b> failed";
             }
         }
         
