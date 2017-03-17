@@ -52,8 +52,10 @@ class ReferAColleague extends SpecialPage{
                         <li>The College of Family Physicians Canada (CFPC)</li>
                         <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
                         <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>The National Institute of Public Health of Quebec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced physician medical abortion providers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers. We encourage you to explore the CAPS-CPCA online community today!</p>
+                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced physician medical abortion providers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers.</p>
+                    <p>We encourage you to explore the CAPS-CPCA online community today!</p>
                     <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
                 case "Pharmacist":
@@ -64,8 +66,10 @@ class ReferAColleague extends SpecialPage{
                         <li>The College of Family Physicians Canada (CFPC)</li>
                         <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
                         <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>The National Institute of Public Health of Quebec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced pharmacist medical abortion dispensers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers. We encourage you to explore the CAPS-CPCA online community today!</p>
+                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced pharmacist medical abortion dispensers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers.</p>
+                    <p>We encourage you to explore the CAPS-CPCA online community today!</p>
                     <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
                 case "Facility Staff":
@@ -76,8 +80,10 @@ class ReferAColleague extends SpecialPage{
                         <li>The College of Family Physicians Canada (CFPC)</li>
                         <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
                         <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>The National Institute of Public Health of Quebec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for facility staff  like you, who support physician and pharmacist medical abortion providers and dispensers across the country.  Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response and “Find a pharmacy” that stocks mifepristone.  Specifically for facility staff, we are always adding materials under our Helpful Resources tab which we hope you will take advantage of.  We encourage you to explore the CAPS-CPCA online community today!</p>
+                    <p>The CAPS-CPCA online platform provides resources for facility staff  like you, who support physician and pharmacist medical abortion providers and dispensers across the country.  Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response and “Find a pharmacy” that stocks mifepristone.  Specifically for facility staff, we are always adding materials under our Helpful Resources tab which we hope you will take advantage of.</p>
+                    <p>We encourage you to explore the CAPS-CPCA online community today!</p>
                     <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
             }
@@ -85,40 +91,61 @@ class ReferAColleague extends SpecialPage{
         else if($_POST['language_field'] == "fr"){
             switch($_POST['role_field']){
                 case "Physician":
-                    return "<p>Hello {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
-                            <p>Welcome to The Canadian Abortion Providers Support (CAPS-CPCA) online community platform!  You are receiving this email because a colleague of yours has referred you.</p>
-<p>CAPS-CPCA is hosted by Contraception Access Research Team-Groupe de recherche sur l’accessibilité à la contraception (CART-GRAC) at the University of British Columbia (UBC) and is partnered with:</p>
+                    return "<p>Bonjour {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
+                            <p>Bienvenue sur la plate-forme en ligne de la Communauté de pratique canadienne sur l’avortement (CAPS-CPCA)! Vous recevez ce courriel parce qu'un de vos collègues a suggéré de vous écrire.</p>
+<p>CAPS-CPCA est hébergée par le Groupe de recherche sur l’avortement et la contraception (CART-GRAC) situé sur la plateforme Internet de l'Université de la Colombie-Britannique (UBC). La CPCA est associée avec:</p>
                     <ul>
-                        <li>The College of Family Physicians Canada (CFPC)</li>
-                        <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
-                        <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>Le Collège des médecins de famille du Canada (CMFC)</li>
+                        <li>La Société des obstétriciens et gynécologues du Canada (SOGC),</li>
+                        <li>L'Association des pharmaciens du Canada (APhC)</li>
+                        <li>L’Institut national de santé publique du Québec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced physician medical abortion providers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers. We encourage you to explore the CAPS-CPCA online community today!</p>
-                    <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
+                    <p>La plate-forme en ligne CAPS-CPCA fournit des ressources pour les médecins offrant déjà l’avortement médical et ceux souhaitant offrir ce service dans le futur, comme vous. Notre site web propose des ressources d'information comme des lignes directrices de pratique, de la littérature scientifique sur l’avortement médical, des ressources sur l'avortement médical pour les femmes, ainsi que des ressources de soutien interactives telles que:</p>
+                    <ul>
+                        <li>'Demandez à un expert' (réponse rapide à des questions que vous vous posez),</li>
+                        <li>'Localiser une pharmacie' qui distribue la mifépristone/misoprostol,</li>
+                        <li>une plate-forme de communication confidentielle pour les professionnels certifiés dans la prescription et la distribution de la mifépristone (pharmacien-ne-s, médecins et leurs équipes).</li>
+                    </ul>
+                    <p>Nous vous encourageons à explorer la communauté en ligne CAPS-CPCA dès aujourd'hui!</p>
+                    <p>Pour en savoir plus, s'il vous plaît visitez: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
                 case "Pharmacist":
-                    return "<p>Hello {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
-                    <p>Welcome to The Canadian Abortion Providers Support (CAPS-CPCA) online community platform!  You are receiving this email because a colleague of yours has referred you.</p>
-                    <p>CAPS-CPCA is hosted by Contraception Access Research Team-Groupe de recherche sur l’accessibilité à la contraception (CART-GRAC) at the University of British Columbia (UBC) and is partnered with:</p>
+                    return "<p>Bonjour {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
+                            <p>Bienvenue sur la plate-forme en ligne de la Communauté de pratique canadienne sur l’avortement (CAPS-CPCA)! Vous recevez ce courriel parce qu'un de vos collègues a suggéré de vous écrire.</p>
+<p>CAPS-CPCA est hébergée par le Groupe de recherche sur l’avortement et la contraception (CART-GRAC) situé sur la plateforme Internet de l'Université de la Colombie-Britannique (UBC). La CPCA est associée avec:</p>
                     <ul>
-                        <li>The College of Family Physicians Canada (CFPC)</li>
-                        <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
-                        <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>Le Collège des médecins de famille du Canada (CMFC)</li>
+                        <li>La Société des obstétriciens et gynécologues du Canada (SOGC),</li>
+                        <li>L'Association des pharmaciens du Canada (APhC)</li>
+                        <li>L’Institut national de santé publique du Québec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for potential AND experienced pharmacist medical abortion dispensers, like yourself. Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources “Ask an expert” rapid response, “Find a pharmacy” that stocks mifepristone, and a confidential communication platform for mifepristone providers. We encourage you to explore the CAPS-CPCA online community today!</p>
-                    <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
+                    <p>La plate-forme en ligne CAPS-CPCA fournit des ressources pour les pharmaciens distribuant déjà la combinaison thérapeutique mifépristone-misoprostol et ceux souhaitant offrir ce service dans le futur, comme vous.  Notre site web propose des ressources d'information comme des lignes directrices de pratique, de la littérature scientifique sur l’avortement médical, des ressources sur l'avortement médical pour les femmes, ainsi que des ressources de soutien interactives telles que:</p>
+                    <ul>
+                        <li>'Demandez à un expert' (réponse rapide à des questions que vous vous posez),</li>
+                        <li>'Localiser une pharmacie' qui distribue la mifépristone/misoprostol,</li>
+                        <li>une plate-forme de communication confidentielle pour les professionnels certifiés dans la prescription et la distribution de la mifépristone (pharmacien-ne-s, médecins et leurs équipes).</li>
+                    </ul>
+                    <p>Nous vous encourageons à explorer la communauté en ligne CAPS-CPCA dès aujourd'hui!</p>
+                    <p>Pour en savoir plus, s'il vous plaît visitez: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
                 case "Facility Staff":
-                    return "<p>Hello {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
-                    <p>Welcome to The Canadian Abortion Providers Support (CAPS-CPCA) online community platform! You are receiving this email because a colleague of yours has referred you.</p>
-                    <p>CAPS-CPCA is hosted by Contraception Access Research Team-Groupe de recherche sur l’accessibilité à la contraception (CART-GRAC) at the University of British Columbia (UBC) and is partnered with:</p>
+                    return "<p>Bonjour {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
+                            <p>Bienvenue sur la plate-forme en ligne de la Communauté de pratique canadienne sur l’avortement (CAPS-CPCA)! Vous recevez ce courriel parce qu'un de vos collègues a suggéré de vous écrire.</p>
+<p>CAPS-CPCA est hébergée par le Groupe de recherche sur l’avortement et la contraception (CART-GRAC) situé sur la plateforme Internet de l'Université de la Colombie-Britannique (UBC). La CPCA est associée avec:</p>
                     <ul>
-                        <li>The College of Family Physicians Canada (CFPC)</li>
-                        <li>The Society of Obstetricians and Gynaecologists of Canada (SOGC),</li>
-                        <li>The Canadian Pharmacists Association (CPhA)</li>
+                        <li>Le Collège des médecins de famille du Canada (CMFC)</li>
+                        <li>La Société des obstétriciens et gynécologues du Canada (SOGC),</li>
+                        <li>L'Association des pharmaciens du Canada (APhC)</li>
+                        <li>L’Institut national de santé publique du Québec (INSPQ)</li>
                     </ul>
-                    <p>The CAPS-CPCA online platform provides resources for facility staff  like you, who support physician and pharmacist medical abortion providers and dispensers across the country.  Our website offers informative resources like clinical practice guidelines, current literature and patient resources for medical abortion, as well as interactive and supportive resources like “Ask an expert” rapid response and “Find a pharmacy” that stocks mifepristone.  Specifically for facility staff, we are always adding materials under our Helpful Resources tab which we hope you will take advantage of.  We encourage you to explore the CAPS-CPCA online community today!</p>
-                    <p>To find out more, please join our website: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
+                    <p>La plate-forme en ligne CAPS-CPCA offre des ressources pour le personnel clinique qui travaille en collaboration avec les médecins et les pharmaciens impliqués dans les services d’avortement médical au Canada. Notre site web propose des ressources informationnelles comme des lignes directrices de pratique, de la littérature scientifique sur l’avortement médical, de l’information sur l'avortement médical pour les femmes, ainsi que des ressources de soutien interactives telles que:</p>
+                    <ul>
+                        <li>'Demandez à un expert' (réponse rapide à des questions que vous vous posez),</li>
+                        <li>'Localiser une pharmacie' qui distribue la mifépristone/misoprostol,</li>
+                    </ul>
+                    <p>De plus, sous l’onglet 'Ressources utiles', nous ajoutons régulièrement du matériel informatif pouvant être utile aux autres membres de votre établissement.</p>
+                    <p>Nous vous encourageons à explorer la communauté en ligne CAPS-CPCA dès aujourd'hui!</p>
+                    <p>Pour en savoir plus, s'il vous plaît visitez: <a href='$wgServer$wgScriptPath'>CAPS CPCA Forum</a></p>";
                     break;
             }
         }
