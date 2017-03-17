@@ -67,6 +67,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media, Mifegymiso® will not be coming to Manitoba for a few more months <a href='http://www.cbc.ca/news/canada/manitoba/mifegymiso-abortion-pill-not-in-manitoba-1.3967489' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Winnipeg</li>
+                    <li>As reported in the media on March 9th, 2017, Winnipeg Regional Health Authority has confirmed Mifegymiso® is now available at Health Sciences Centre's Women's Hospital, but patients must pay $350, <a href='http://www.cbc.ca/beta/news/canada/manitoba/abortion-pill-available-at-hsc-in-winnipeg-but-patients-will-pay-1.4016440' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
@@ -112,6 +113,7 @@ class WhoSupplies extends SpecialPage{
                     <li>Distributor in Ontario via Celopharma or wholesaler, McKesson <a href='https://www.mckesson.ca/mckesson-pharmaceutical' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Toronto and Ottawa</li>
                     <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
+                    <li>As reported in the media on March 13th, 2017, Mifegymiso® is only dispensed by one physician in Ottawa and costs more than $400, <a href='http://www.cbc.ca/news/canada/ottawa/abortion-pill-planned-parenthood-ottawa-1.4017833?cmp=rss' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
