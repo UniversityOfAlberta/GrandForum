@@ -48,13 +48,15 @@ class NCETable extends SpecialPage {
         
         $startYear = $config->getValue("projectPhaseDates");
         $startYear = substr($startYear[1], 0, 4);
+        $endYear = date('Y') - 1;
         
         $tabbedPage = new TabbedPage("tabs_nserc");
         
-        if($startYear != YEAR){
-            $tabbedPage->addTab(new NSERCRangeTab($startYear, YEAR));
+        
+        if($startYear != $endYear){
+            $tabbedPage->addTab(new NSERCRangeTab($startYear, $endYear));
         }
-        for($year = YEAR+1; $year >= $startYear; $year--){
+        for($year = $endYear+1; $year >= $startYear; $year--){
             $tabbedPage->addTab(new NSERCTab($year));
         }
         
