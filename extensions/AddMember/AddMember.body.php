@@ -32,6 +32,7 @@ class UserCreate {
         DBFunctions::commit();
         DBFunctions::begin();
         
+        $roleId = null;
         if(isset($_POST['wpUserType'])){
             if($_POST['wpUserType'] != ""){
                 foreach($_POST['wpUserType'] as $role){
@@ -46,6 +47,7 @@ class UserCreate {
                                         array('user_id' => $id,
                                               'role' => $role,
                                               'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                    $roleId = DBFunctions::insertId();
                 }
             }
         }
@@ -62,6 +64,13 @@ class UserCreate {
                                         array('user_id' => $id,
                                               'project_id' => $project->getId(),
                                               'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                    if(is_array($_POST['wpUserType']) && count($_POST['wpUserType']) == 1 && $roleId != null){
+                        // Only associate the role with the project if there is only one role
+                        DBFunctions::insert('grand_role_projects',
+                                            array('role_id' => $roleId,
+                                                  'project_id' => $project->getId()));
+                    }
+                    Cache::delete("project{$project->getId()}_people");
                 }
             }
         }
