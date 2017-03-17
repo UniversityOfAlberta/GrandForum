@@ -71,6 +71,7 @@ class UserCreate {
                                                   'project_id' => $project->getId()));
                     }
                     Cache::delete("project{$project->getId()}_people");
+                    Cache::delete("project{$project->getId()}_peopleDuring", true);
                 }
             }
         }
