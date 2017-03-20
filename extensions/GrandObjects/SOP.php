@@ -120,6 +120,7 @@ class SOP extends BackboneModel{
                                         array('*'),
                                         array());
             foreach($data as $row){
+                unset($row['pdf_contents']);
                 self::$idsCache[$row['id']] = $row;
             }
         }
