@@ -260,7 +260,7 @@ SopsEditView = Backbone.View.extend({
                 },
                 showEditPermissionsCheckbox: false,
                 showViewPermissionsCheckbox: false,
-                user: me.get('fullName'), // 'me.id' -> logged in user id
+                user: me.get('name'), // 'me.id' -> logged in user id
                 userId: function (user) {
                   if (user && user.id) {
                     return user.id;
@@ -269,7 +269,7 @@ SopsEditView = Backbone.View.extend({
                 },
                 userString: function (user) {
                   if (user && user.name) {
-                    return user.name;
+                    return user;
                   }
                   return user;
                 }

@@ -135,6 +135,8 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserProfile', 'UserProfileAPI');
 		$this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
 		$this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
+                $this->addAction('User Accounts', 'getUserPdf', 'UserPdfAPI');
+
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', 'AddContributionAPI');

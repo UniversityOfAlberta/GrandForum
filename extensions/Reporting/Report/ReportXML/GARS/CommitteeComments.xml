@@ -16,24 +16,62 @@
         <ReportItem id="js" type="StaticReportItem">
             <![CDATA[
             <script type='text/javascript'>
-            $('#aboveTabs').hide();
-            $('#reportTabs').hide();
-            $('#reportHeader').hide();
-            $('#reportBody').css('min-height',0);
+            	$('#aboveTabs').hide();
+            	$('#reportTabs').hide();
+            	$('#reportHeader').hide();
+            	$('#reportBody').css('min-height',0);
+
+            	$(document).ready(function () {
+                    $('input[value=\'Waitlist\']').click(function () {
+                        $('#waitlist_num').show();
+                    });
+                    $('input[value=\'Admit\']').click(function () {
+                        $('#waitlist_num').hide();
+                    });
+                    $('input[value=\'Reject\']').click(function () {
+                        $('#waitlist_num').hide();
+                    });
+
+                });
+
+
+
+                var intervalId = setInterval(function(){
+                    if ($('#waitlist_num').is(':visible') && $('[value=Waitlist]').attr('checked') != 'checked'){
+	                $('#waitlist_num').hide();
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                }, 100);
             </script>
             ]]>
         </ReportItem>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Admin)}">
-            <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q12" rich="true" limit="150" blobSubItem="{$project_id}">
-                <![CDATA[
-                {$item}
-                ]]>
+                <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                    <![CDATA[
+                    <tr><td><span 'style=font:size 14px;'><h3>Final Decision:</h3></span></td><td>
+                        {$item}</td></tr><br /><br />
+                    ]]>
+                </ReportItem>
+	        <ReportItem id="wait_num" personId="0" type="IntegerReportItem" min="0" width="50px" blobItem="Q3" blobSubItem="{$project_id}">
+        	    <![CDATA[
+                	<span id='waitlist_num'><b>Waitlist number:</b> {$item}</span>
+           	    ]]>
+        	</ReportItem>
+            	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
+                    <![CDATA[
+			<span 'style=font:size 14px;'><h3>Comments:</h3></span>
+                	{$item}
+                    ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!contains({$user_full_roles}, Admin)}">
             <ReportItem id="comment_unedit" type="StaticReportItem">
                 <![CDATA[
-                {getText(RP_COM,OT_COM,Q12,{$project_id},{$user_id},{$project_id})}
+		Decision:<br />
+                {getText(RP_COM,OT_COM,Q1,{$project_id},0,{$project_id})}<br /><br />
+		Comments:<br />
+                {getText(RP_COM,OT_COM,Q2,{$project_id},0,{$project_id})}
                 ]]>
             </ReportItem>
         </ReportItemSet>

@@ -693,10 +693,8 @@ class CavendishTemplate2 extends QuickTemplate {
                 }
                 echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
             }
-            echo "</div>";
             if($wgUser->isLoggedIn()){
-                echo "<div class='login highlightsBackground2'>";
-                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; width:26px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+                echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; font-size:13px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' />{$p->getNameForForms()}</a> <span style='font-size:20px;font-weight: lighter;color: rgba(255, 255, 255, 0.17);'>|</span>";
                 if(!$wgImpersonating && !$wgDelegating){
                     $logout = $this->data['personal_urls']['logout'];
                     $getStr = "";
@@ -756,7 +754,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 // $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
                 // $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
 	            if($me->isRoleAtLeast(Manager)){
-                    $GLOBALS['tabs']['Review'] = TabUtils::createTab("Review","$wgServer$wgScriptPath/index.php/Special:Sops");
+                    $GLOBALS['tabs']['Review'] = TabUtils::createTab("Overview","$wgServer$wgScriptPath/index.php/Special:Sops");
 		        }
 		    if($me->isRoleAtLeast(Admin)){
                     $GLOBALS['tabs']['Upload Pdf'] = TabUtils::createTab("Upload PDF","$wgServer$wgScriptPath/index.php/Special:PdfConversion");

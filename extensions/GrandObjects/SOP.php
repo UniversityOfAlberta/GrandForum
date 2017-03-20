@@ -184,6 +184,18 @@ class SOP extends BackboneModel{
                         'name' => $user->getReversedName(),
                         'url' => $user->getUrl());
         $gsms = $user->getGSMS();
+	$nationality = array();
+        $nationality[] = ($gsms['indigenous'] == "Yes") ? "Indigenous" : "";
+        $nationality[] = ($gsms['canadian'] == "Yes") ? "Canadian" : "";
+        $nationality[] = ($gsms['saskatchewan'] == "Yes") ? "Saskatchewan" : "";
+        $nationality[] = ($gsms['international'] == "Yes") ? "International" : "";
+
+	$nationality_note = "";
+	foreach($nationality as $note){
+	    if($note != ""){
+		$nationality_note .= $note.',<br />';
+	    }
+	}
         $reviewers = array();
         foreach($this->getReviewers() as $id){
             $person = Person::newFromId($id);
@@ -214,6 +226,8 @@ class SOP extends BackboneModel{
                       'url' => $this->getUrl(),
                       'author' => $author,
 		      'gsms' => $gsms,
+		      'admit' => $this->getFinalAdmit(),
+		      'nationality_note' => $nationality_note,
                       'reviewers' => $reviewers,
                       'sentiment_val' => round($this->sentiment_val,2),
                       'sentiment_type' => $this->sentiment_type,
@@ -245,7 +259,9 @@ class SOP extends BackboneModel{
                       'min_age' => number_format($this->min_age,2,'.',','),
                       'word_count' => $this->word_count,
                       'annotations' => $this->annotations,
-                      'pdf_data' => $this->getPdf(true));
+                      'pdf_data' => $this->getPdf(true),
+		      'gsms_data' => $this->checkGSMS(),
+		      'gsms_url' => $this->getGSMSUrl());
         return $json;
     }
 
@@ -387,9 +403,42 @@ class SOP extends BackboneModel{
             return "Admit";
         }
         if($data == 'No'){
-            return "Not Admit";
+            return "Reject";
         }
         return "Undecided";
+    }
+
+
+   /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getAnnotations(){
+	$annotations = array();
+	foreach($this->annotations as $annotation){
+
+	}
+	return $annotations;
+    }
+
+   /**
+    * returns string if SOP was suggested to be admitted or not by the user specified in argument.
+    * @return $string either 'Admit', 'Not Admit' or 'Undecided' based on answer of PDF report.
+    */
+    function getFinalAdmit(){
+        $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+        $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q1', $this->getId());
+        $blob->load($blob_address);
+        $data = $blob->getData();
+	if($data == "Waitlist"){
+	    $number = 1;
+	    $blob = new ReportBlob(BLOB_TEXT, REPORTING_YEAR, 0, $this->getId());
+            $blob_address = ReportBlob::create_address('RP_COM', 'OT_COM', 'Q3', $this->getId());
+            $blob->load($blob_address);
+            $number = $blob->getData();
+	    return $data.' '.$number;
+	}	
+        return $data;
     }
 
   /**
@@ -695,6 +744,24 @@ class SOP extends BackboneModel{
 	    $this->getSentimentScore();
 	    $this->getEmotionsScore();
 	    return SOP::newFromId($this->id);
+    }
+
+    function checkGSMS(){
+	$person = Person::newFromId($this->user_id);
+	$url = $person->getGSMSPdfUrl();
+	if($url != ""){
+	    return true;
+	}
+	return false;
+    }
+
+    function getGSMSUrl(){
+	if($this->checkGSMS()){
+        $person = Person::newFromId($this->user_id);
+        $url = $person->getGSMSPdfUrl();
+	return $url;
+	}
+	return "";
     }
 }
 

@@ -35,8 +35,11 @@ SopsView = Backbone.View.extend({
     },
 
     events: {
-	"keyup .filter_option": "filterAll",
-        "change .filter_option" : "filterAll",
+	"keyup #nameInput": "filterAll",
+	"keyup #reviewerNameInput": "filterAll",
+	"keyup #referenceNameInput": "filterAll",
+        "change #sentimentType" : "filterAll",
+	"change #admitType" : "filterAll",
 	"click input[type=checkbox]": "filterAll",
 	"click #clearFiltersButton" : "clearFilters",
 
@@ -45,15 +48,12 @@ SopsView = Backbone.View.extend({
     filterAll: function(){
 	console.log('filtered');
 	this.showAllRows();
-	this.filterDegreeName();
-	this.filterInstitutionName();
-	this.filterGPA();
-	this.filterAnatomyType();
-	this.filterStatsType();
-	this.filterAdmitType();
-	this.filterFinalAdmitType();
+	this.filterStudentName();
+	this.filterReviewerName();
+	this.filterReferenceName();
+	this.filterSentimentType();
+    	this.filterAdmitType();
 	this.filterByTags();
-	this.filterByNationality();
     },
 
     checkFilters: function(){
@@ -91,88 +91,35 @@ SopsView = Backbone.View.extend({
         }
     },
 
-    filterByRowExact: function(row,input){
-        if(input){
-            $('#listTable > tbody > tr').each(function(){
-                if(!($(this).find('td').eq(row).text().toUpperCase() == (input))){
-                        $(this).hide();
-                }
-            });
-        }
-    },
-
-    filterByRange: function(index, min, max){
-        if(min){
-            $('#listTable > tbody > tr').each(function(){
-		console.log(parseFloat($(this).find('td').eq(index).text())>= min);
-                if(!(parseFloat($(this).find('td').eq(index).text()) >= min && parseFloat($(this).find('td').eq(index).text()) <= max)){
-                        $(this).hide();
-                }
-            });
-        }
-    },
-
     filterStudentName: function(){
 	input = $('#nameInput').val().toUpperCase();
 	this.filterByRow(0,input);
     },
 
-    filterDegreeName: function(){
-        input = $('#degreeInput').val().toUpperCase();
-        this.filterByRow(8,input);
-    },
-
-    filterInstitutionName: function(){
-        input = $('#InstitutionNameInput').val().toUpperCase();
-        this.filterByRow(8,input);
-    },
-
     filterReviewerName: function(){
         input = $('#reviewerNameInput').val().toUpperCase();
-        this.filterByRow(11,input);
-    },
-
-    filterGPA: function(){
-        var minInput = $('#referenceNameInputMin').val();
-        var maxInput = $('#referenceNameInputMax').val();
-        if (!minInput){
-            minInput = 0;
-        }
-        if (!maxInput){
-            maxInput = 4;
-        }
-	this.filterByRange(2,minInput,maxInput);
-    },
-
-    filterAnatomyType: function(){
-        input = $('#anatomyType').val().toUpperCase();
         this.filterByRow(6,input);
     },
 
-    filterStatsType: function(){
-        input = $('#statsType').val().toUpperCase();
-        this.filterByRow(7,input);
+    filterReferenceName: function(){
+        input = $('#referenceNameInput').val().toUpperCase();
+        this.filterByRow(5,input);
     },
 
-    filterNationalType: function(){
-        input = $('#nationalType').val().toUpperCase();
-        this.filterByRow(9,input);
+    filterSentimentType: function(){
+        input = $('#sentimentType').val().toUpperCase();
+        this.filterByRow(3,input);
     },
 
     filterAdmitType: function(){
         input = $('#admitType').val().toUpperCase();
-        this.filterByRow(11,input);
-    },
-
-    filterFinalAdmitType: function(){
-        input = $('#finalAdmitType').val().toUpperCase();
-        this.filterByRow(13,input);
+        this.filterByRow(6,input);
     },
 
     filterByTags: function(){
             $('#listTable > tbody > tr').each(function(){
 		var show = false;
-                var tags = $(this).find('td').eq(12).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
+                var tags = $(this).find('td').eq(7).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
 		for(j = 0; j < tags.length; j++){
 		    var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
 		    if($('#'+tag).is(':checked')){
@@ -185,26 +132,6 @@ SopsView = Backbone.View.extend({
 		    	$(this).hide();
 		    }
 		}
-            });
-   },
-
-    filterByNationality: function(){
-            $('#listTable > tbody > tr').each(function(){
-                var show = false;
-                var tags = $(this).find('td').eq(9).text().split(",");
-		console.log(tags);
-                for(j = 0; j < tags.length; j++){
-                    var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
-                    if($('#'+tag).is(':checked')){
-                        show = true;
-                        break;
-                    }
-                }
-                if($('#indigenous').is(':checked') || $('#canadian').is(':checked') || $('#saskatchewan').is(':checked') || $('#international').is(':checked')){
-                    if(!show){
-                        $(this).hide();
-                    }
-                }
             });
    },
 
