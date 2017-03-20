@@ -46,11 +46,12 @@ body.page-Main_Page h1.firstHeading { display:none; }
         padding-top: 5px;
         padding-right: 10px;
         position: absolute;
-        right: 138px;
+        right: 4px;
         left: 524px;
         top: 0px;
         height: 37px;
         text-align: right;
+	border-bottom-right-radius: 10px;
     }
 
     #topheader .settings a {
@@ -61,7 +62,7 @@ body.page-Main_Page h1.firstHeading { display:none; }
         padding-right: 10px;
         margin-top:-1px;
         text-align: center;
-        color: #234b6d;
+        /*color: #234b6d;*/
     }
     
     #topheader .settings a:hover {

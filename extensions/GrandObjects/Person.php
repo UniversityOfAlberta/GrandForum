@@ -4566,7 +4566,31 @@ class Person extends BackboneModel {
         }
         return "";
     }
-    
+    /**
+     * Returns Sop object of person
+     * @return Sop SoP object of person
+   **/
+    function getGSMSPdfUrl(){
+
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('pdf_contents', 'pdf_data'),
+                                    array('user_id' => EQ($this->getId())));
+        if(count($data) > 0){
+            $pdf_data = $data[0]['pdf_data'];
+	    if($pdf_data != ""){
+        	global $wgServer, $wgScriptPath;
+        	return "{$wgServer}{$wgScriptPath}/index.php?action=api.getUserPdf&last=true&user=".$this->getId();
+	    }
+	
+        }
+        return "";
+    }
+
+
+    /**
+     * Returns GSMS information of person
+     * @return array gsms array of person
+   **/    
     function getGSMS(){
         $gsms = array('gpa60' => "",
                       'gpafull' => "",
@@ -4576,7 +4600,15 @@ class Person extends BackboneModel {
                       'stats' => "",
                       'degree' => "",
                       'institution' => "",
-                      'failures' => "");
+                      'failures' => "",
+		      'withdrawals' => "",
+		      'canadian' => "",
+		      'international' => "",
+		      'indigenous' => "",
+		      'saskatchewan' => "",
+		      'gpafull2' => "",
+		      'gpafull_credits2' => "",
+		      'degrees' => array());
         $data = DBFunctions::select(array('grand_person_gsms'),
                                     array('gpa60',
                                           'gpafull',
@@ -4586,11 +4618,29 @@ class Person extends BackboneModel {
                                           'stats',
                                           'degree',
                                           'institution',
-                                          'failures'),
+                                          'failures',
+					  'withdrawals',
+                      			  'canadian',
+                      			  'international',
+                      			  'indigenous',
+                      			  'saskatchewan',
+                      			  'gpafull2',
+                      			  'gpafull_credits2',
+                      			  'degrees'),
                                     array('user_id' => EQ($this->getId())));
         if(count($data) > 0){
             foreach($data[0] as $key => $val){
-                $gsms[$key] = str_replace("'", "&#39;", $val);
+		if($key == 'degrees'){
+		    if($val == ''){
+			$gsms[$key] = array();
+		    }
+		    else{
+                    	$gsms[$key] = unserialize(str_replace("'", "&#39;", $val));
+		    }
+		}
+		else{
+                    $gsms[$key] = str_replace("'", "&#39;", $val);
+		}
             }
         }
         return $gsms;

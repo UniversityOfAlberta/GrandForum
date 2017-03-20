@@ -465,7 +465,8 @@ EOF;
             $me = Person::newFromWgUser();
             if($person->isRole(CI) && $me->isRoleAtLeast(MANAGER)){
 		if($person->getSop()){
-                    $sop_url = $person->getSop()->getUrl();                $this->html .= "<a class='button' href='$sop_url'>Review</a>";
+                    $sop_url = $person->getSop()->getUrl();                
+		    $this->html .= "<a class='button' href='$sop_url'>Review</a>";
 		}
             }
         }

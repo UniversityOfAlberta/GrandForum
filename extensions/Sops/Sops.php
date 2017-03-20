@@ -67,7 +67,7 @@ class Sops extends BackbonePage {
 
         if(self::userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "Sops") ? "selected" : false;
-            $tabs["Review"]['subtabs'][] = TabUtils::createSubTab("SOP Review", "{$url}", $selected);
+            $tabs["Review"]['subtabs'][] = TabUtils::createSubTab("Applicant Review", "{$url}", $selected);
         }
         
         return true;

@@ -56,21 +56,29 @@ table.profile tr td{
     <thead>
         <th>GPA (60 Credits)</th>
         <th>GPA / credits (Best)</th>
-        <th>Failures/Withdrawals</th>
+        <th>GPA2 / credits (Best)</th>
+        <th>Fails</th>
+	<th>Withdrawals</th>
         <th>Anatomy</th>
         <th>Statistics</th>
-        <th>Degree</th>
-        <th>Institution</th>
-        <th>Notes</th>
+        <th style='white-space:nowrap;width:30px'>Degree / Institution</th>
+	<th>Nationality Notes</th>
+        <th style='width:350px'>Notes</th>
     </thead>
     <tr>
         <td align=right><%= gsms.gpa60 %></td>
         <td align=right><%= gsms.gpafull %>/<%= gsms.gpafull_credits %></td>
+        <td align=right><%= gsms.gpafull2 %>/<%= gsms.gpafull_credits2 %></td>
         <td align=right><%= gsms.failures %></td>
+        <td align=right><%= gsms.withdrawals %></td>
         <td><%= gsms.anatomy %></td>
-        <td><%= gsms.stats %></td>
-        <td><%= gsms.degree %></td>
-        <td><%= gsms.institution %></td>
+        <td style='white-space:nowrap;'><%= gsms.stats %></td>
+	<td style="width:30px">
+	<% for(var i=0; i < gsms.degrees.length;i++){ %>
+	    <b><%= gsms.degrees[i].degree %></b> (<%= gsms.degrees[i].institution %>)<br />
+	<% } %>
+	</td>
+	<td><%= nationality_note %></td>
         <td><%= gsms.notes %></td>
         
     </tr>
@@ -84,7 +92,7 @@ table.profile tr td{
             <b>Degree:</b> <%= pdf_data.Education[0].degree%><br />
             <b>Institution:</b> <%= pdf_data.Education[0].institution%><br /><br />
             <%}else{%>
-            <b>No Education Information Available</b><br /><br />
+            <b></b><br /><br />
             <%}%>
             <%if(pdf_data.Referees != undefined){ %>
             <table class="style1">
@@ -115,7 +123,7 @@ table.profile tr td{
         </div>
     </div>
     <div>
-        <h3><a href="#">SoP</a></h3>
+        <h3><a href="#">Statement of Purpose</a></h3>
         <div id="sop_acc" style="padding-top:20px">
             <div style="padding-top:30px">
 		<div style="float: right; padding-right: 150px;">
@@ -137,8 +145,10 @@ table.profile tr td{
                                     <div id='readabilty_index' title='Readability Index' style='display:none;font-size:1em;'>
                                         <p>The automated readability index (ARI) is a readability test for
                                         English texts, designed to gauge the understandability of a text.</p>
+					<p>It uses two ratios representing word difficulty (number of letters per word) and sentence difficulty (number of words per sentence).</p>
+					<p>Formula :  4.71(characters/words) + 0.5(words/sentences) - 21.43</p>
                                         <p>The higher the score, the higher the grade level. </p>
-                                        <p>Score ranges between 1(worst)-14(best).</p>
+                                        <p>Scores higher than 12 depict 'College' level writing.</p>
                                     </div>
                                 </td>
                                 <td align="right" class="style1"><%= ari_grade %></td>
@@ -152,8 +162,9 @@ table.profile tr td{
                                     <div id='coleman_index' title='Coleman-Liau Index' style='display:none'>
                                         <p>The Coleman–Liau index is a readability test designed by Meri Coleman and T. L. Liau to gauge the understandability of a text.</p>
                                         <p>Its output approximates the U.S. grade level thought necessary to comprehend the text.<p>
-                                        <p>The higher the score, the higher the grade level. </p>
-                                        <p>Score ranges between 1(worst)-14(best).</p>
+                                        <p>Formula: 0.0588*(average number of letters/100 words) - 0.296*(average number of sentences/100 words) - 15.8
+					<p>The higher the score, the higher the grade level. </p>
+                                        <p>Scores higher than 12 depict college-level writing.</p>
                                     </div>
                                 </td>
                                 <td align="right" class="style1"><%= colemanliau_grade %></td>
@@ -166,8 +177,10 @@ table.profile tr td{
                                     </div>
                                     <div id='dalechall_index' title='Dalechall Index' style='display:none'>
                                         <p>The Dale–Chall readability formula is a readability test that provides a numeric gauge of the comprehension difficulty that readers come upon when reading a text. It uses a list of 3000 words that groups of fourth-grade American students could reliably understand, considering any word not on that list to be difficult.</p>
+					<p>Formula: 0.1579*(difficult words/words * 100) + 0.0496*(words/sentences)</p>
                                         <p>The higher the score, the higher the grade level. </p>
-                                        <p>Score ranges between 1(worst)-10(best).</p>
+                                        <p>Score ranges between 1(worst)-10+(best)</p>
+                                        <p>Score higher than 10 depict College Graduate writing</p>
                                     </div>
                                 </td>
                                 <td align="right" class="style1"><%= dalechall_grade %></td>
@@ -180,8 +193,9 @@ table.profile tr td{
                                     </div>
                                     <div id='flesch_index' title='Flesch-Kincaid Index' style='display:none'>
                                         <p>The Flesch–Kincaid readability tests are readability tests designed to indicate how difficult a reading passage in English is to understand.</p>
+					<p>Formula: 0.39(total words/total sentences) + 11.8(total syllables/total words) - 15.59
                                         <p>The higher the score, the higher the grade level</p>
-                                        <p>Due to the formula's construction, the score does not have an upper bound.
+                                        <p>A grade level than 12 depicts college level writing.
                                         
                                         The lowest grade level score in theory is −3.40</p>
                                     </div>
@@ -212,6 +226,7 @@ table.profile tr td{
                     </span>
                     <div id='readingease_index' title='Flesch Reading Ease' style='display:none'>
                         <p>In the Flesch reading-ease test, higher scores indicate material that is easier to read; lower numbers mark passages that are more difficult to read. </p>
+			<p>Formula: 206.835 - 1.015(total words/total sentences) - 84.6(total syllables/total words)</p>
                         <p>Score ranges between 0(hardest to read)-100(easiest to read)</p>
                     </div></p>
                     <p>Dalechall Readability Index: <%= dalechall_index %>
@@ -220,15 +235,17 @@ table.profile tr td{
                     </span>
                     <div id='dalechall_reading_index' title='Dalechall Readabilty Index' style='display:none'>
                         <p>The Dale–Chall readability formula is a readability test that provides a numeric gauge of the comprehension difficulty that readers come upon when reading a text. It uses a list of 3000 words that groups of fourth-grade American students could reliably understand, considering any word not on that list to be difficult.</p>
+			<p>Formula: 0.1579 * (difficult words/words *100) + 0.0496(words/sentences)</p>
                         <p>The higher the score, the higher the grade level. </p>
-                        <p>Score ranges between 1(worst)-10(best).</p>
+                        <p>Score ranges between 1(worst)-10+(best).</p>
+			<p>Grades higher than 10 depict college graduate writing.</p>
                     </div></p>
                     <p>Sentiment Type: <%= sentiment_type %>
                     <span style='text-align:right; font-size:0.7em;'>
                         <a href='#!' id='check_sentiment'>[?]</a>
                     </span>
                     <div id='sentiment_index' title='Sentiment' style='display:none'>
-                        <p>Sentiment analysis gives an idea of whether the text uses mostly positive language, negative language, or neutral language.</p><p>This is a score analysis of sentiment</p>
+                        <p>Sentiment analysis gives an idea of whether the text uses mostly positive language, negative language, or neutral language.</p><p>This is the sentiment value</p>
                     </div></p>
                     <p>Sentiment Score: <%= sentiment_val %>
                     <span style='text-align:right; font-size:0.7em;'>

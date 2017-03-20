@@ -32,7 +32,7 @@ class SOP_Annotation {
                                     array('id' => EQ($id)));
         if(count($data)>0){
             $person = Person::newFromId($data[0]["user_id"]);
-            $data[0]["user"] = $person->getRealName();
+            $data[0]["user"] = $person->getName();
         }
         $sop = new SOP_Annotation($data);
         return $sop;
@@ -85,7 +85,7 @@ class SOP_Annotation {
         $sops = array();
         $data = null;
         $me = Person::newFromWgUser();
-        $sql = "SELECT sa.*, mu.user_real_name
+        $sql = "SELECT sa.*, mu.user_name
                     FROM grand_sop_annotation sa, mw_user mu WHERE sa.user_id = mu.user_id";
                     //WHERE sa.user_id = u.user_id";
         //if($me->isRoleAtLeast(MANAGER)){
@@ -106,7 +106,7 @@ class SOP_Annotation {
             foreach($data as $sop_data){
 //		            $sop = SOP_Annotation::newFromId($sop_data['id']);
 //                $sops[] = $sop;
-		            $sop_data["user"] = $sop_data["user_real_name"];
+		            $sop_data["user"] = $sop_data["user_name"];
                 $sop = new SOP_Annotation(array($sop_data));
                 $sops[] = $sop;
             }

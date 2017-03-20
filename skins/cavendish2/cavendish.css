@@ -1508,6 +1508,14 @@ select span.noshow {
     vertical-align: middle;
 }
 
+.pdf_gif {
+    width: 15px;
+    height:15px;
+    background: url('../pdf.gif');
+    display: inline-block;
+    vertical-align: middle;
+}
+
 /* MailingList */
 
 .thread-message {
@@ -1833,6 +1841,25 @@ th {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+
+table.gsms td{
+    text-align:left;
+    padding-right:10px;
+    vertical-align:top;
+}
+
+table.gsms .num{
+    text-align:right !important;
+
+}
+
+table.gsms th{
+    text-align:left;
+    padding-right:30px;
+    padding-bottom:30px;
+    font-size:18px;
+}
+
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
 .popup .show {

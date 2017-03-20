@@ -167,13 +167,22 @@ class ConvertPdfAPI extends API{
             }
             
             if($userId != 0){
+		$content_parsed = mysql_real_escape_string($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
                 $sdata = serialize($data);
                 $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
+		
                 DBFunctions::update('grand_sop',
                                     array('pdf_data' => $sdata),
                                     array('user_id' => EQ($userId)));
+		$sql = "update grand_sop 
+			set pdf_contents = '$content_parsed'
+			where user_id = '$userId'";
+		$data = DBFunctions::execSQL($sql, true);
+		if($data){
+			DBFunctions::commit();
+		}
             }
             else{
                 // Person not found

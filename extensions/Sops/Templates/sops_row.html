@@ -1,28 +1,45 @@
-<td align="center" >
-   <b><a href="<%= url %>" id="sop<%= id %>"><%= author.name %></a></b><br />
+<td align="center" style="width:30px">
+   <b><a href="<%= url %>" id="sop<%= id %>" target="_blank"><%= author.name %></a></b><br />
    <%=date_created %>   
+</td>
+<td>
+   <% if(gsms_data){ %>
+   <a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a>
+    <% } %>
 </td>
 <td align="right" style="white-space: nowrap;" id='GPA60'>
     <%= gsms.gpa60 %>
 </td>
 <td align="right" style="white-space: nowrap;" id='GPABest'>
-    <% if(gsms.gpafull != ''){ %>
-    <%= gsms.gpafull %>/<%= gsms.gpafull_credits %>
+    <% if(gsms.gpafull != '' && (gsms.gpafull != 0 && gsms.gpafull_credits!= 0)){ %>
+    <%= gsms.gpafull %>/<%= gsms.gpafull_credits %><br />
+    <% } %>
+    <% if(gsms.gpafull2 != '' && (gsms.gpafull2 != 0 && gsms.gpafull_credits2!= 0)){ %>
+    <%= gsms.gpafull2 %>/<%= gsms.gpafull_credits2 %>
     <% } %>
 </td>
-<td id='anatomy'>
-    <%= gsms.anatomy %>
-</td>
-<td id='stats'>
-    <%= gsms.stats %>
-</td>
-<td id='degree'>
-    <%= gsms.degree %><br /><%= gsms.institution %>
-</td>
-<td id='failures_withdrawals'>
+<td id='failures_withdrawals' align='right'>
     <%= gsms.failures %>
 </td>
-<td style="white-space: nowrap;" id='notes'>
+<td id='failures_failures' align='right'>
+    <%= gsms.withdrawals %>
+</td>
+<td id='anatomy' style="white-space: nowrap;">
+    <%= gsms.anatomy %>
+</td>
+<td id='stats' style="white-space: nowrap;">
+    <%= gsms.stats %>
+</td>
+<td id='degree' style="width:30px">
+<% for(var i=0; i < gsms.degrees.length;i++){ %>
+
+    <b><%= gsms.degrees[i].degree %></b> (<%= gsms.degrees[i].institution %>)<br />
+<% } %>
+</td>
+<td style="white-space: nowrap;" id='nationality_notes'>
+<%= nationality_note %>
+</td>
+<td style="width:300px" id='notes'>
     <%= gsms.notes %>
 </td>
 <td style="white-space: nowrap;">
@@ -31,6 +48,9 @@
 
 <% } %>
 </td>
-<td style="">
+<td style="width:200px">
     <span id="span<%= id %>"></span>
+</td>
+<td>
+    <%= admit %>
 </td>
