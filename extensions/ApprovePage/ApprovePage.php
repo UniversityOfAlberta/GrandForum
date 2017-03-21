@@ -29,7 +29,7 @@ class ApprovePage extends SpecialPage{
     
     function generateViewHTML($wgOut){
         global $wgScriptPath, $wgServer, $config, $wgEnableEmail;
-        $wgOut->addHTML("<table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+        $wgOut->addHTML("<table id='requests' style='background:#ffffff;width:100%;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>Timestamp</th>
@@ -58,8 +58,8 @@ class ApprovePage extends SpecialPage{
         }
         $wgOut->addHTML("</tbody></table><div style='display:none;'>".implode("", $forms)."</div>
         <script type='text/javascript'>
-                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
-                                            $('#requests').css('display', 'table');
+                                            $('#requests').dataTable({'autoWidth': true, 'scrollX': true}).fnSort([[2,'desc']]);
+                                            $('#requests').show();
                                          </script>");
     }
     
