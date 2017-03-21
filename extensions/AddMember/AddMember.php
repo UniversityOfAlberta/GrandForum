@@ -144,7 +144,7 @@ class AddMember extends SpecialPage{
         }
         if($history){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />
-                        <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+                        <table id='requests' style='background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>User Name</th>
                             <th>Timestamp</th>
@@ -158,7 +158,7 @@ class AddMember extends SpecialPage{
         }
         else{
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view&history=true'>View History</a><br /><br />
-                        <table id='requests' style='display:none;background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+                        <table id='requests' style='background:#ffffff;text-align:center;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>User Name</th>
                             <th>Timestamp</th>
@@ -276,8 +276,8 @@ class AddMember extends SpecialPage{
             $wgOut->addHTML("</tr>");
         }
         $wgOut->addHTML("</tbody></table><div style='display:none;'>".implode("", $forms)."</div><script type='text/javascript'>
-                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[1,'desc']]);
-                                            $('#requests').css('display', 'table');
+                                            $('#requests').dataTable({'scrollX': true}).fnSort([[1,'desc']]);
+                                            $('#requests').show();
                                          </script>");
     }
     
