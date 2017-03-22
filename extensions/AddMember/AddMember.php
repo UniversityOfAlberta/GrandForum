@@ -249,6 +249,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpCollectComments' value='".str_replace("'", "&#39;", @$extras['collect_comments'])."' />
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />
                             <input id='{$request->getId()}_promote' type='submit' name='submit' value='Promote' />
+                            <input id='{$request->getId()}_ignore' type='submit' name='submit' value='Ignore' />
                             <input id='{$request->getId()}_accept' type='submit' name='submit' value='Accept' />
                         </form>";
             $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>{$refHTML}</td>
@@ -265,12 +266,12 @@ class AddMember extends SpecialPage{
             }
             else{
                 if(!$request->isCreated()){
-                    $wgOut->addHTML("<td><input type='button' value='Accept' onclick=\"if(confirm('Are you sure you want to accept the request?')){ $('#{$request->getId()}_accept').click(); }\" /><br /><input type='submit' name='submit' value='Ignore' onclick=\"return confirm('Are you sure you want to ignore the request?');\" /></td>");
+                    $wgOut->addHTML("<td><a class='button' onclick=\"if(confirm('Are you sure you want to accept the request?')){ $('#{$request->getId()}_accept').click(); }\">Accept</a><br /><a class='button' onclick=\"if(confirm('Are you sure you want to ignore the request?')){ $('#{$request->getId()}_ignore').click(); }\">Ignore</a></td>");
                     $wgOut->addHTML("<td></td>");
                 }
                 else{
                     $wgOut->addHTML("<td></td>");
-                    $wgOut->addHTML("<td><input type='button' value='Promote' onclick=\"if(confirm('Are you sure you want to promote this user?')){ $('#{$request->getId()}_promote').click(); }\" /></td>");
+                    $wgOut->addHTML("<td><a class='button' onclick=\"if(confirm('Are you sure you want to promote this user?')){ $('#{$request->getId()}_promote').click(); }\">Promote</a></td>");
                 }
             }
             $wgOut->addHTML("</tr>");
