@@ -29,7 +29,7 @@ class PersonGSMSTab extends AbstractEditableTab {
                     var person = new Person({$this->person->toJSON()});
                     var card = new LargePersonCardView({el: $("#card"), model: person});
                     card.render();
-		    $('.ui-state-default').hide();
+		            $('.ui-state-default').hide();
                 });
             </script>
 EOF;
@@ -189,7 +189,7 @@ EOF;
         $statsNo  = ($gsms['stats'] == "No")  ? "checked" : "";
         $statsInProgress  = ($gsms['stats'] == "In-Progress")  ? "checked" : "";
 
-        
+        $this->html .= "<h1 style='margin:0;padding:0;'>{$this->person->getNameForForms()}</h1>";
         $this->html .= "<table id='gsms_bio'>";
         
         $this->html .= "<tr>";
@@ -218,11 +218,11 @@ EOF;
         $this->html .= "<td class='label'>Nationality Notes:</td>";
         $this->html .= "<td>";
         $this->html .= "<input name='indigenous' type='checkbox' value='Yes' $indigenousYes /> Indigenous<br />";
-	$this->html .= "<input name='canadian' type='checkbox' value='Yes' $canadianYes /> Canadian<br />";
+        $this->html .= "<input name='canadian' type='checkbox' value='Yes' $canadianYes /> Canadian<br />";
         $this->html .= "<input name='saskatchewan' type='checkbox' value='Yes' $saskatchewanYes /> Saskatchewan<br />";
         $this->html .= "<input name='international' type='checkbox' value='Yes' $internationalYes /> International";
         $this->html .= "</td>";
-	
+
         $this->html .= "<tr rowspan=2>";
         $this->html .= "</tr>";
 
@@ -251,49 +251,52 @@ EOF;
         $this->html .= "<td><input name='withdrawals' type='number' step='1' min='0' value='{$gsms['withdrawals']}' /></td>";
         $this->html .= "</tr>";
 
-	if(count($gsms_degrees) ==0){
+        if(count($gsms_degrees) ==0){
             $this->html .= "<tr id='degree_row0'>";
             $this->html .= "<td class='label'>Degree/Institution:</td>";
             $this->html .= "<td><input class='degree_button_plus' name='0' type='button' value='+'></td>";
             $this->html .= "</tr>";
-	}
+        }
 
-	$i = 1;
+        $i = 1;
         foreach($gsms_degrees as $degree){
             $this->html .= "<tr id='degree_row$i'>";
             $this->html .= "<td class='label'>Degree/Institution:</td>";
             $this->html .= "<td><input name='degree$i' class='degree' type='text' value='{$degree['degree']}' />/<input name='institution$i' class='institution' type='text' value='{$degree['institution']}' /><input class='degree_button_minus' name='$i' type='button' value='-'><input class='degree_button_plus' name='$i' type='button' value='+'></td>";
             $this->html .= "</tr>";
-	$i = $i + 1;
-	}
+            $i = $i + 1;
+        }
 
         $this->html .= "</table>";
         
         $this->html .= "<script type='text/javascript'>
 
+                $(document).ready(function(){
+                    $('.ui-state-default').hide();
+                });
+
                 $(document).on('click', '.degree_button_plus', function(){
                     var row_num = this.name;
-		    if(row_num ==0){
+                    if(row_num ==0){
                         $('#degree_row'+row_num).remove();
-		    }
+                    }
                     var i = $(\"[class='degree']\").size()+1;
-		    for(i; i<100; i++){
-			var new_i = $(\"[name='degree\"+i+\"']\").size();
-			if(new_i ==0){
-				break;
-			}
-		    }
+                    for(i; i<100; i++){
+                        var new_i = $(\"[name='degree\"+i+\"']\").size();
+                        if(new_i ==0){
+                            break;
+                        }
+                    }
                     $('#gsms_bio > tbody:last-child').append(\"<tr id='degree_row\"+i+\"'><td class='label'>Degree/Institution:</td><td><input name='degree\"+i+\"' class='degree' type='text' value=''>/<input name='institution\"+i+\"' class='institution' type='text' value=''><input class='degree_button_minus' name='\"+i+\"' type='button' value='-'><input class='degree_button_plus' name='\"+i+\"' type='button' value='+'></td></tr>\");
                 });
 
                 $(document).on('click', '.degree_button_minus', function(){
-			var row_num = this.name;
-                	$('#degree_row'+row_num).remove();
-			var i = $(\"[class='degree']\").size();
-			if(i == 0){
-                    	    $('#gsms_bio > tbody:last-child').append(\"<tr id='degree_row\"+i+\"'><td class='label'>Degree/Institution:</td><td><input class='degree_button_plus' name='0' type='button' value='+'></td></tr>\");
-			}
-
+                    var row_num = this.name;
+                    $('#degree_row'+row_num).remove();
+                    var i = $(\"[class='degree']\").size();
+                    if(i == 0){
+                        $('#gsms_bio > tbody:last-child').append(\"<tr id='degree_row\"+i+\"'><td class='label'>Degree/Institution:</td><td><input class='degree_button_plus' name='0' type='button' value='+'></td></tr>\");
+                    }
                 });
         </script>";
         return $this->html;
