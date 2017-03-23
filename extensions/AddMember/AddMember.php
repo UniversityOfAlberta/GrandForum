@@ -252,7 +252,7 @@ class AddMember extends SpecialPage{
                             <input id='{$request->getId()}_ignore' type='submit' name='submit' value='Ignore' />
                             <input id='{$request->getId()}_accept' type='submit' name='submit' value='Accept' />
                         </form>";
-            $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>{$refHTML}</td>
+            $wgOut->addHTML("<td align='left'>{$refHTML}</td>
                         <td>{$file_name}</td>
 			            <td align='left'>".implode("<br />", $other)."</td>
 			                ");
