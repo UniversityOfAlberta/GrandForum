@@ -358,7 +358,7 @@ class Contribution extends BackboneModel {
                     if($p != null && $p->getLevel() == null && $row['level'] != null){
                         $p->level = $row['level'];
                     }
-                    $id = md5(serialize($p));
+                    $id = $p->getOrganization();
                     $this->type[$id] = $row['type'];
                     
                     if($row['type'] == 'caki'){
@@ -411,7 +411,7 @@ class Contribution extends BackboneModel {
     // Returns the type of Contribution for the given Partner
     function getTypeFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->type[$id])){
             return $this->type[$id];
         }
@@ -431,7 +431,7 @@ class Contribution extends BackboneModel {
     // Returns the Human Readable type of Contribution for the given Partner
     function getHumanReadableTypeFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->type[$id];
         $type = "";
         switch($type0){
@@ -479,7 +479,7 @@ class Contribution extends BackboneModel {
     // Returns the sub-type of Contribution for the given Partner
     function getSubTypeFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->subtype[$id])){
             return $this->subtype[$id];
         }
@@ -499,7 +499,7 @@ class Contribution extends BackboneModel {
     // Returns the Human Readable sub-type of Contribution for the given Partner
     function getHumanReadableSubTypeFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         $type0 = @$this->subtype[$id];
         $type = "";
         switch($type0){
@@ -541,17 +541,17 @@ class Contribution extends BackboneModel {
     }
     
     function getContactFor($partner){
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         return @$this->contact[$id];
     }
     
     function getIndustryFor($partner){
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         return @$this->industry[$id];
     }
     
     function getLevelFor($partner){
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         return @$this->level[$id];
     }
     
@@ -602,7 +602,7 @@ class Contribution extends BackboneModel {
     // Returns the cash value for the given Partner
     function getCashFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->cash[$id])){
             return $this->cash[$id];
         }
@@ -618,7 +618,7 @@ class Contribution extends BackboneModel {
     // Returns the in kind value for the given Partner
     function getKindFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->kind[$id])){
             return $this->kind[$id];
         }
@@ -628,7 +628,7 @@ class Contribution extends BackboneModel {
     // Returns whether or not the amount this partner contributed was inferred or not
     function getUnknownFor($partner){
         $this->getPartners();
-        $id = md5(serialize($partner));
+        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->unknown[$id])){
             return ($this->unknown[$id] == 1);
         }
