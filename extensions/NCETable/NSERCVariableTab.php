@@ -167,7 +167,7 @@ EOF;
         <script type="text/javascript">
         $(document).ready(function(){
             $('#contributionsTable').dataTable({
-                //'aLengthMenu': [[-1], ['All']],
+                'aLengthMenu': [[100,-1], [100,'All']],
                 'iDisplayLength': 100,
                 'bFilter': true,
                 'aaSorting': [[0,'asc']],
@@ -179,16 +179,18 @@ EOF;
         <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <thead>
         <tr>
-            <th width="27%">Name</th>
-            <th width="10%">Partners</th>
-            <th width="5%">Types</th>
-            <th width="15%">Related Members</th>
-            <th width="15%">Related Projects</th>
-            <th width="5%">Start</th>
-            <th width="5%">End</th>
-            <th width="6%" align='right'>Cash</th>
-            <th width="6%" align='right'>In-Kind</th>
-            <th width="6%" align='right'>Total</th>
+            <th>Name</th>
+            <th style='width:200px;'>Description</th>
+            <th>Partners</th>
+            <th>Types</th>
+            <th>Related Members</th>
+            <th>Related Projects</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Updated</th>
+            <th align='right'>Cash</th>
+            <th align='right'>In-Kind</th>
+            <th align='right'>Total</th>
         </tr>
         </thead>
         <tbody>
@@ -206,6 +208,7 @@ EOF;
             $name_plain = $contr->getName();
             $url = $contr->getUrl();
             $name = "<a href='{$url}'>{$name_plain}</a>";
+            $description = nl2br($contr->getDescription());
             $total = $contr->getTotal();
             $cash = $contr->getCash();
             $kind = $contr->getKind();
@@ -278,6 +281,7 @@ EOF;
 
                 $project_names[] = "<a href='{$p_url}'>{$p_name}</a>";
             }
+            $date = substr($contr->getDate(), 0, 10);
             $start = substr($contr->getStartDate(), 0, 10);
             $end = substr($contr->getEndDate(), 0, 10);
             $project_names = implode(', ', $project_names);
@@ -294,12 +298,14 @@ EOF;
                 $html .=<<<EOF
                     <tr>
                         <td><span class="contribution_descr" title="{$descr}">{$name}</span></td>
+                        <td><div style='max-height:60px;overflow-y:auto;'>{$description}</div></td>
                         <td>{$partner_names}</td>
                         <td>{$subType_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
                         <td align='center'>{$start}</td>
                         <td align='center'>{$end}</td>
+                        <td align='center'>{$date}</td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$cash}</a></td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$kind}</a></td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$total}</a>
@@ -316,7 +322,7 @@ EOF;
         $html .= "</tbody>
         <tfoot>
             <tr>
-                <th colspan='7'></th>
+                <th colspan='9'></th>
                 <th>$".number_format($totalCash, 2)."</th>
                 <th>$".number_format($totalKind, 2)."</th>
                 <th>$".number_format($totalTotal, 2)."</th>
@@ -325,7 +331,7 @@ EOF;
         $dialog_js .=<<<EOF
             </script>
 EOF;
-        $this->html .= $html .  $dialog_js ;   
+        $this->html .= $html .  $dialog_js;   
     }
     
     function showContributionsByProjectTable(){
@@ -335,10 +341,12 @@ EOF;
                             <thead>
                                 <th>Project Name</th>
                                 <th>Contribution</th>
-                                <th>Partner</th>
-                                <th>Type</th>
+                                <th style='width:200px;'>Description</th>
                                 <th>Start</th>
                                 <th>End</th>
+                                <th>Updated</th>
+                                <th>Partner</th>
+                                <th>Type</th>
                                 <th>Cash</th>
                                 <th>In-Kind</th>
                                 <th>Sub-Total</th>
@@ -353,17 +361,20 @@ EOF;
                 foreach($contributions as $contribution){
                     $partners = $contribution->getPartners();
                     $nRows = max(1, count($partners));
-                    $this->html .= "<tr>
-                                        <td rowspan='$nRows'>{$project->getName()}</td>
-                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>";
                     $start = substr($contribution->getStartDate(), 0, 10);
                     $end = substr($contribution->getEndDate(), 0, 10);
+                    $date = substr($contribution->getDate(), 0, 10);
+                    $this->html .= "<tr>
+                                        <td rowspan='$nRows'>{$project->getName()}</td>
+                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>
+                                        <td rowspan='$nRows'><div style='max-height:60px;overflow-y:auto;'>".nl2br($contribution->getDescription())."</div></td>
+                                        <td rowspan='$nRows' align='center'>$start</td>
+                                        <td rowspan='$nRows' align='center'>$end</th>
+                                        <td rowspan='$nRows' align='center'>$date</td>";
                     if(count($partners) > 0){
                         foreach($partners as $i => $partner){
                             $this->html .= "<td>{$partner->organization}</td>
                                             <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
-                                            <td align='center'>$start</td>
-                                            <td align='center'>$end</th>
                                             <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
@@ -380,8 +391,7 @@ EOF;
                     }
                     else{
                         $this->html .= "<td></td>
-                                        <td align='center'>$start</td>
-                                        <td align='center'>$end</th>
+                                        <td></td>
                                         <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
                                         <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
                                         <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
