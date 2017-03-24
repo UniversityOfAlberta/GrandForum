@@ -184,7 +184,8 @@ EOF;
             <th width="5%">Types</th>
             <th width="15%">Related Members</th>
             <th width="15%">Related Projects</th>
-            <th width="10%">Updated</th>
+            <th width="5%">Start</th>
+            <th width="5%">End</th>
             <th width="6%" align='right'>Cash</th>
             <th width="6%" align='right'>In-Kind</th>
             <th width="6%" align='right'>Total</th>
@@ -277,7 +278,8 @@ EOF;
 
                 $project_names[] = "<a href='{$p_url}'>{$p_name}</a>";
             }
-            $date = substr($contr->getDate(), 0, 10);
+            $start = substr($contr->getStartDate(), 0, 10);
+            $end = substr($contr->getEndDate(), 0, 10);
             $project_names = implode(', ', $project_names);
             if(!empty($total) && (!empty($people_names) || !empty($project_names))){
                 $totalTotal += $total;
@@ -296,8 +298,8 @@ EOF;
                         <td>{$subType_names}</td>
                         <td>{$people_names}</td>
                         <td>{$project_names}</td>
-                        
-                        <td>{$date}</td>
+                        <td align='center'>{$start}</td>
+                        <td align='center'>{$end}</td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$cash}</a></td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$kind}</a></td>
                         <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$total}</a>
@@ -314,7 +316,7 @@ EOF;
         $html .= "</tbody>
         <tfoot>
             <tr>
-                <th colspan='6'></th>
+                <th colspan='7'></th>
                 <th>$".number_format($totalCash, 2)."</th>
                 <th>$".number_format($totalKind, 2)."</th>
                 <th>$".number_format($totalTotal, 2)."</th>
@@ -335,6 +337,8 @@ EOF;
                                 <th>Contribution</th>
                                 <th>Partner</th>
                                 <th>Type</th>
+                                <th>Start</th>
+                                <th>End</th>
                                 <th>Cash</th>
                                 <th>In-Kind</th>
                                 <th>Sub-Total</th>
@@ -352,10 +356,14 @@ EOF;
                     $this->html .= "<tr>
                                         <td rowspan='$nRows'>{$project->getName()}</td>
                                         <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>";
+                    $start = substr($contribution->getStartDate(), 0, 10);
+                    $end = substr($contribution->getEndDate(), 0, 10);
                     if(count($partners) > 0){
                         foreach($partners as $i => $partner){
                             $this->html .= "<td>{$partner->organization}</td>
                                             <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
+                                            <td align='center'>$start</td>
+                                            <td align='center'>$end</th>
                                             <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
                                             <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
@@ -372,6 +380,8 @@ EOF;
                     }
                     else{
                         $this->html .= "<td></td>
+                                        <td align='center'>$start</td>
+                                        <td align='center'>$end</th>
                                         <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
                                         <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
                                         <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
