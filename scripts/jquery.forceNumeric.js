@@ -1,34 +1,86 @@
 jQuery.fn.forceNumeric = function (options) {
-    
+    if(_.isUndefined(options.min)){
+        options.min = "";
+    }
+    if(_.isUndefined(options.max)){
+        options.max = "";
+    }
+    if(_.isUndefined(options.decimals)){
+        options.decimals = 0;
+    }
+    var regex = new RegExp('^[0-9,]*\.?[0-9]{0,' + options.decimals + '}$');
      return this.each(function () {
+        var lastValue = $(this).val();
+        
         var validateMax = function(target){
             if($(target).val() == ""){
+                lastValue = options.min;
                 return;
             }
-            $(target).val(Math.min(options.max, $(target).val().replace(/,/g, '')));
+            if(!(regex.test('' + $(target).val() + ''))){
+                $(target).val(lastValue);
+                return;
+            }
+            var minVal = Math.min(options.max, $(target).val().replace(/,/g, ''));
+            
+            if(_.isNaN(minVal)){
+                $(target).val(lastValue);
+                return;
+            }
+            if($(target).val() != minVal){
+                $(target).val(minVal);
+            }
+            if(options.includeCommas == true){
+                $(target).val($(target).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            }
+            lastValue = $(target).val();
         }
         
         var validateMin = function(target){
             if($(target).val() == ""){
+                lastValue = options.min;
                 return;
             }
-            $(target).val(Math.max(options.min, $(target).val().replace(/,/g, '')));
+            if(!(regex.test('' + $(target).val() + ''))){
+                $(target).val(lastValue);
+                return;
+            }
+            var maxVal = Math.max(options.min, $(target).val().replace(/,/g, ''));
+            
+            if(_.isNaN(maxVal)){
+                $(target).val(lastValue);
+                return;
+            }
+            if($(target).val() != maxVal){
+                $(target).val(maxVal);
+            }
+            if(options.includeCommas == true){
+                $(target).val($(target).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            }
+            lastValue = $(target).val();
         }
         
-        if(options.max != undefined && options.max != ""){
+        if(options.max != ""){
             $(this).keyup(function(e){
+                validateMax(e.target);
+            });
+            $(this).change(function(e){
                 validateMax(e.target);
             });
             validateMax(this);
         }
-        if(options.min != undefined && options.min != ""){
+        if(options.min != ""){
             $(this).keyup(function(e){
                 validateMin(e.target);
             });
+            $(this).change(function(e){
+                validateMax(e.target);
+            });
             validateMin(this);
         }
-        if(!(/^[0-9]+$/.test($(this).val()))){
-            $(this).val("");
+        if(!(regex.test($(this).val()))){
+            $(this).val(options.min);
+            lastValue = options.min;
         }
         $(this).keydown(function (e) {
              var key = e.which || e.keyCode;

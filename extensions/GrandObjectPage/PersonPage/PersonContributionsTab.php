@@ -55,7 +55,7 @@ class PersonContributionsTab extends AbstractTab {
 	     continue;
 	}
 	    $string .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
-				<td>{$partners[0]->getOrganization()}</td>
+				<td></td>
 				<td style='white-space:nowrap;'>".time2date($contribution->getStartDate(), "Y-m-d")."</td>
 				<td style='white-space:nowrap;'>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
 				 <td align=right>$".number_format($contribution->getTotal())."</td></tr>";}
@@ -71,17 +71,21 @@ class PersonContributionsTab extends AbstractTab {
         $contributions = $this->person->getContributions();
            $string = "<table id='contributions_table2' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Name</th>
-                        <th style='white-space:nowrap;'>Sponsor</th>
+                        <th style='white-space:nowrap;'>Agency</th>
                         <th style='white-space:nowrap;'>Start Date</th>
                         <th style='white-space:nowrap;'>End Date</th>
                         <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
         foreach($contributions as $contribution){
-        $partners = $contribution->getPartners();
-        if($contribution->project_id == ""){
-             continue;
-        }
+            $partners = $contribution->getPartners();
+            $organizations = array();
+            foreach($partners as $partner){
+                $organizations[] = $partner->getOrganization();
+            }
+            if($contribution->project_id == ""){
+                 continue;
+            }
             $string .= "<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
-                                <td>{$partners[0]->getOrganization()}</td>
+                                <td>".implode(",", $organizations)."</td>
                                 <td style='white-space:nowrap;'>".time2date($contribution->getStartDate(), "Y-m-d")."</td>
                                 <td style='white-space:nowrap;'>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
                                  <td align=right>$".number_format($contribution->getTotal())."</td></tr>";}

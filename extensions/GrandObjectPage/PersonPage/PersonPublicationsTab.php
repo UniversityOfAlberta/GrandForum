@@ -6,7 +6,8 @@ class PersonPublicationsTab extends AbstractTab {
     var $visibility;
 
     function PersonPublicationsTab($person, $visibility){
-        parent::AbstractTab("Publications");
+        global $config;
+        parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -29,7 +30,7 @@ class PersonPublicationsTab extends AbstractTab {
             $string = "<table id='personPubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th><th>Scopus Citations</th>
+                        <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -54,7 +55,6 @@ class PersonPublicationsTab extends AbstractTab {
                 $string  .= "<td align=center>{$paper->getCategory()}</td>";
                 $string  .= "<td align=center>{$paper->getType()}</td>";
 		$string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td align=right>{$paper->getTotalCitationCount()}</td>";
 
                 $string .= "</tr>";
             }

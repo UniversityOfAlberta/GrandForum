@@ -78,7 +78,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 	console.log(this.universities.toJSON());
         this.universities.each($.proxy(function(university, i){
             if(this.universityViews[i] == null){
-                var view = new ManagePeopleEditUniversitiesRowView({model: university});
+                var view = new ManagePeopleEditUniversitiesRowView({model: university, person: this.person});
                 this.$("#university_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -103,8 +103,10 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    person: null,
     
-    initialize: function(){
+    initialize: function(options){
+        this.person = options.person;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
     },
@@ -140,7 +142,12 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=position]").css('max-width', '200px').css('width', '200px');
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
-        this.$("[name=position]").combobox();
+        if(!(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
+             _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0)){
+            this.$("[name=position]").css('max-width', '200px').css('width', '200px');
+            this.$("[name=position]").combobox();
+        }
+        this.update();
         return this.$el;
     }, 
     

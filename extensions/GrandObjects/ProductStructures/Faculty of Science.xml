@@ -485,7 +485,7 @@
             <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
-        <Presentation type="Invited Presentation" status="">
+        <Presentation type="Conference Presentation" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
@@ -493,7 +493,7 @@
             </data>
         </Presentation>
         
-        <Presentation type="Media Interview" status="">
+        <Presentation type="Media Interview" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
                 <field label="Media Organization" type="String">media_organization</field>

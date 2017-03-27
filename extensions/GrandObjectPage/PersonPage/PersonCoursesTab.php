@@ -31,10 +31,14 @@ class PersonCoursesTab extends AbstractTab {
 	    $this->html .= "<td>{$course->catalog}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";
 	    $this->html .= "<td style='white-space:nowrap;'>";
-	    if(isset($courseEval['evals'])){
+	    if(isset($courseEval['evaluation'])){
+		$month = $course->getStartMonth();
+		$year = $course->getStartYear();
+		$term = $course->getTermUsingStartMonth($month);
                 $this->html .= "<a href='#!' onclick='$(\"#dialog{$course->id}\").dialog({width:\"1100px\",position: { my: \"center\", at: \"center\", of: window }})'>Course Evaluation</a>
-                                <div id='dialog{$course->id}' title='Course Evaluation for {$course->subject} {$course->catalog}' style='display:none;'>";
-	        $this->html .= "<table class='dashboard wikitable'><thead>
+                                <div id='dialog{$course->id}' title='Course Evaluation for {$course->subject} {$course->catalog} {$term} {$year}' style='display:none;'>";
+	        $this->html .= "Processed on <i>{$courseEval['month']} {$courseEval['day']}, {$courseEval['year']}</i>
+				<br /><br /><table class='dashboard wikitable'><thead>
 				    <tr>
 					<th rowspan=2>Question</th>
 					<th rowspan=2>Strongly Disagree</th>
@@ -52,20 +56,20 @@ class PersonCoursesTab extends AbstractTab {
 				    </tr>
 				    </thead>
 				    <tbody>";
-	   	foreach($courseEval['evals'] as $question){
+	   	foreach($courseEval['evaluation'] as $question){
 				    $this->html .= "<tr>
-							<td style='white-space:nowrap;>{$question['Question']}</td>
-							<td align=center>{$question['Strongly Disagree']}</td>
-							<td align=center>{$question['Disagree']}</td>
-							<td align=center>{$question['Neither D or A']}</td>
-		                                        <td align=center>{$question['Agree']}</td>
-                		                        <td align=center>{$question['Strongly Agree']}</td>
-                                		        <td align=center>{$question['Median']}</td>
-                                       			<td align=center>{$question['Tukey Fence']}</td>
+							<td style='white-space:nowrap;'>{$question['question']}</td>
+							<td align=center>{$question['strongly disagree']}</td>
+							<td align=center>{$question['disagree']}</td>
+							<td align=center>{$question['neither d or a']}</td>
+		                                        <td align=center>{$question['agree']}</td>
+                		                        <td align=center>{$question['strongly agree']}</td>
+                                		        <td align=center>{$question['median']}</td>
+                                       			<td align=center>{$question['tukey fence']}</td>
 							<td align=center>{$question['25%']}</td>
 							<td align=center>{$question['50%']}</td>
 							<td align=center>{$question['75%']}</td>
-						    </tr>";
+						    </tr> ";
 
 		}
 	        $this->html .= "</tbody></table></div>";

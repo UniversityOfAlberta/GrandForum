@@ -33,10 +33,7 @@ class Collection {
         return $array;
     }
     
-    /**
-     * @return mixed Returns a jsonified version of this Collection
-     */
-    function toJSON(){
+    function toArray(){
         $json = array();
         if(count($this->objects) > 0){
             if($this->objects[0] instanceof BackboneModel){
@@ -50,7 +47,14 @@ class Collection {
                 }
             }
         }
-        return json_encode($json);
+        return $json;
+    }
+    
+    /**
+     * @return mixed Returns a jsonified version of this Collection
+     */
+    function toJSON(){
+        return json_encode($this->toArray());
     }
 
 }

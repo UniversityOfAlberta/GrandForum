@@ -2,7 +2,23 @@
     <table>
         <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
         <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
-        <tr><td align="right"><b>Position:</b></td><td><%= HTML.Select(this, 'position', {options: allPositions}) %></td></tr>
+        <tr><td align="right"><b>Position:</b></td><td>
+        <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
+              _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
+            <%= HTML.Select(this, 'position', {options: ["Other", 
+                                                         "Graduate Student - Master's", 
+                                                         "Graduate Student - Doctoral", 
+                                                         "Post-Doctoral Fellow", 
+                                                         "Research Associate", 
+                                                         "Research Assistant", 
+                                                         "Technician",
+                                                         "Professional End User",
+                                                         "Summer Student", 
+                                                         "Undergraduate Student"]}) %>
+        <% } else { %>
+            <%= HTML.Select(this, 'position', {options: allPositions}) %>
+        <% } %>
+        </td></tr>
     </table>
 </td>
 <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>

@@ -115,6 +115,7 @@ class APIRequest{
             $this->addAction('Products', 'importGradDb', new ImportGradDbAPI());
 	    $this->addAction('Products', 'uploadGrantXls', new UploadGrantXlsAPI());	
 	    $this->addAction('Products', 'uploadEvals', new UploadCourseEvalsAPI());
+            $this->addAction('Products', 'UploadCourses', new UploadCoursesAPI());
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', new CreateUserAPI());
 		$this->addAction('User Accounts', 'addUserRequest', new RequestUserAPI());
@@ -135,7 +136,8 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserProfile', new UserProfileAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
-		
+                $this->addAction('User Accounts', 'updateGoogleScholarCitations', new UpdateGoogleScholarCitationsAPI());
+
 		//POST
 		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
 		$this->addAction('Contributions', 'updateContribution', new AddContributionAPI());

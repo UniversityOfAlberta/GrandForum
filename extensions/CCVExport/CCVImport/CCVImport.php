@@ -1,6 +1,6 @@
 <?php
-
-BackbonePage::register('CCVImport', 'CCV Import', 'network-tools', dirname(__FILE__));
+$wgHooks['ToolboxLinks'][] = 'CCVImport::createToolboxLinks';
+BackbonePage::register('CCVImport', 'Import FoS Data', 'network-tools', dirname(__FILE__));
 
 class CCVImport extends BackbonePage {
     
@@ -21,7 +21,8 @@ class CCVImport extends BackbonePage {
 		     "eval_import",
 		     "grad_import",
 		     "grant_import",
-		     "tab"
+		     "course_import",
+		     "tab",
 		     );
     }
     
@@ -33,13 +34,23 @@ class CCVImport extends BackbonePage {
 		     "EvalImportView",
 		     "GradImportView",
 		     "GrantImportView",
-		     "TabView"
+		     "CourseFileImportView",
+		     "TabView",
 		     );
     }
     
     function getModels(){
         return array("CCVImportModel");
     }
+
+    static function createToolboxLinks(&$toolbox){
+        global $wgServer, $wgScriptPath, $wgUser;
+        if(self::userCanExecute($wgUser)){
+            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Import FoS Data", "$wgServer$wgScriptPath/index.php/Special:CCVImport");
+        }
+        return true;
+    }
+
 
 }
 

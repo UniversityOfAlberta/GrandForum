@@ -96,6 +96,7 @@ class PersonCitationsTab extends AbstractTab {
     }
 
     function getGsStats(){
+	global $wgServer, $wgScriptPath, $wgTitle;
      	$metric = $this->person->getGsMetric();
 	$html = "";
 	if($metric != ""){
@@ -114,6 +115,24 @@ class PersonCitationsTab extends AbstractTab {
 
 	}
 	else{ $html .= "<strong>No Google Scholar Statistics Available</strong>";}
+            $_POST['id'] = $this->person->getId();
+	    $html .= "<br /><br /><input type='button' id='GsUpdate' value='Update GS Stats'></input>
+
+			<script>
+
+
+			    $(document).ready(function(){ 
+				$('#GsUpdate').click(function(e){
+				e.preventDefault();
+				$.ajax({type:'POST',
+					url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
+					data: {id:".$this->person->getId()."},
+					success:function(result){
+							location.reload();
+					}});
+				});
+			});
+				</script>";	
 	return $html;
     }
 }

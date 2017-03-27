@@ -8,6 +8,16 @@ dateTimeHelpers = {
     }
 }
 
+function number_format(n, c, t){
+    var c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = ".", 
+    t = t == undefined ? "," : t, 
+    s = n < 0 ? "-" : "", 
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
 function parseUrl(url) {
     var parser = document.createElement('a'),
         searchObject = {},
@@ -75,7 +85,11 @@ HTML.Value = function(view, attr){
     if(attr.indexOf('.') != -1){
         var index = attr.indexOf('.');
         var data = view.model.get(attr.substr(0, index));
-        return data[attr.substr(index+1)];
+        var ret = data[attr.substr(index+1)];
+        if(ret == undefined){
+            ret = "";
+        }
+        return ret;
     }
     else{
         return view.model.get(attr);
@@ -84,6 +98,7 @@ HTML.Value = function(view, attr){
 
 HTML.TextBox = function(view, attr, options){
     var el = HTML.Element("<input type='text' />", options);
+    $(el).attr('type', 'text');
     $(el).attr('name', HTML.Name(attr));
     $(el).attr('value', HTML.Value(view, attr));
     var events = view.events;
@@ -150,9 +165,10 @@ HTML.CheckBox = function(view, attr, options){
 
 HTML.Radio = function(view, attr, options){
     var el = HTML.Element("<span>");
+    var val = HTML.Value(view, attr);
     _.each(options.options, function(opt){
         var checked = "";
-        if(HTML.Value(view, attr) == opt){
+        if(val == opt){
             checked = "checked='checked'"
         }
         $(el).append("<p><input type='radio' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " />" + opt + "</p>");
@@ -177,7 +193,8 @@ HTML.Radio = function(view, attr, options){
 HTML.DatePicker = function(view, attr, options){
     var el = HTML.Element("<input type='datepicker' />", options);
     $(el).attr('name', HTML.Name(attr));
-    $(el).attr('value', HTML.Value(view, attr).substr(0, 10));
+
+    $(el).attr('value', HTML.Value(view, attr));
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         view.model.set(attr, $(e.target).val());
@@ -199,18 +216,66 @@ HTML.Select = function(view, attr, options){
     var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";
-        if(val.split(":")[0] == opt){
+        if(val.split(":")[0] == opt || (typeof opt == 'object' && val.split(":")[0] == opt.value)){
             selected = "selected='selected'";
             foundSelected = true;
         }
-        $(el).append("<option " + selected + ">" + opt + "</option>");
+        if(typeof opt == 'object'){
+            $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+        }
+        else{
+            $(el).append("<option " + selected + ">" + opt + "</option>");
+        }
     });
+
     if(!foundSelected){
         $(el).append("<option selected>" + val.split(":")[0] + "</option>");
     }
+
     var events = view.events;
     view.events['change select[name=' + HTML.Name(attr) + ']'] = function(e){
-        view.model.set(attr, $(e.target).val());
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            data[attr.substr(index+1)] = $(e.target).val();
+            view.model.set(attr.substr(0, index), _.clone(data));
+        }
+        else{
+            view.model.set(attr, $(e.target).val());
+        }
+    };
+    view.delegateEvents(events);
+    $(el).wrap('div');
+    return $(el).parent().html();
+}
+
+HTML.File = function(view, attr, options){
+    var el = HTML.Element("<input type='file' />", options);
+    $(el).attr('type', 'file');
+    $(el).attr('name', HTML.Name(attr));
+    $(el).attr('value', HTML.Value(view, attr));
+    var events = view.events;
+    view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.addEventListener("load", $.proxy(function() {
+            var fileObj = {
+                filename: file.name,
+                type: file.type,
+                data: reader.result
+            };
+            fileObj.filename = file.name;
+            if(attr.indexOf('.') != -1){
+                var index = attr.indexOf('.');
+                var data = view.model.get(attr.substr(0, index));
+                data[attr.substr(index+1)] = fileObj;
+                view.model.set(attr.substr(0, index), _.clone(data));
+            }
+            else{
+                view.model.set(attr, fileObj);
+            }
+        }, this));
+        reader.readAsDataURL(file);
     };
     view.delegateEvents(events);
     $(el).wrap('div');
@@ -237,7 +302,7 @@ HTML.MiscAutoComplete = function(view, attr, options){
         });
     };
     var events = view.events;
-    view.events['change input[name=' + HTML.Name(attr) + ']'] = evt;
+    events['change input[name=' + HTML.Name(attr) + ']'] = evt;
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
             source: options.misc,
@@ -252,6 +317,7 @@ HTML.TagIt = function(view, attr, options){
     var tagit = new TagIt(options);
     var tagitView = new TagItView({model: tagit});
     var el = tagitView.render();
+    $("input", el).attr('id', 'tagit_' + attr);
     
     var index = attr.indexOf('.');
     var subName = attr.substr(index+1);
@@ -264,15 +330,18 @@ HTML.TagIt = function(view, attr, options){
     var events = view.events;
     view.events['change input[name=' + HTML.Name(attr) + ']'] = function(e){
         var current = tagitView.tagit("assignedTags");
-        var newItems = Array();
+        var newItems = new Array();
         for(cId in current){
             var c = current[cId];
-            var tuple = {};
-            tuple[subName] = c;
-            newItems.push(tuple);
+            newItems.push(c);
         }
         var field = attr.substr(0, index);
-        eval("view.model.set({" + field + ": newItems}, {silent:true});");
+        if(attr.indexOf('.') != -1){
+            view.model.set(attr.substr(0, index), _.clone(newItems), {silent: true});
+        }
+        else{                
+            view.model.set(attr, _.clone(newItems), {silent: true});
+        }
     };
     view.delegateEvents(events);
     return el;
@@ -297,7 +366,12 @@ HTML.Switcheroo = function(view, attr, options){
             var c = current[cId];
             var tuple = {};
             tuple[subName] = c;
-            newItems.push(tuple);
+            if(options.objs != undefined && options.objs[c] != undefined){
+                newItems.push(options.objs[c]);
+            }
+            else{
+                newItems.push(tuple);
+            }
         }
         var field = attr.substr(0, index);
         eval("view.model.set({" + field + ": newItems}, {silent:true});");

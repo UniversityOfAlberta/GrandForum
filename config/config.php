@@ -24,7 +24,7 @@
     $config->setValue("dbName", "ualberta_fec");
     
     // DB Test Name
-    $config->setValue("dbTestName", "grand_behat");
+    $config->setValue("dbTestName", "ualberta_behat");
     
     // DB User
     $config->setValue("dbUser", "dwt");
@@ -73,7 +73,7 @@
     $config->setValue("adminProjects", "Crosscutting Activities");
     
     // The terminology to use for "Products"
-    $config->setValue("productsTerm", "Product");
+    $config->setValue("productsTerm", "Output");
     
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", false);
@@ -107,7 +107,7 @@
         //'Twitter',
        // 'MailingList',
         //'FeatureRequest',
-        //'AddMember',
+        'AddMember',
 	'AddHqp',
         //'EditMember',
         //'HQPRegister',
@@ -168,7 +168,7 @@
     $config->setConst("PROJECT_PHASE", 1);
      
     // The current cycle year
-    $config->setConst("YEAR", 2015);
+    $config->setConst("YEAR", 2016);
     // Start of internal reporting cycle (Used for range queries)
     $config->setConst("CYCLE_START_MONTH", '-00-00');
     $config->setConst("CYCLE_START", $config->getConst('YEAR').$config->getConst('CYCLE_START_MONTH'));

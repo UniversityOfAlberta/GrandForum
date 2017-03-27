@@ -400,5 +400,31 @@
             return date("Y-m-d", $date);
         }
 
+	function getStartMonth(){
+            $date = strtotime("01 January 1900 +{$this->startDate} days");
+            return date("M", $date);
+	}
+
+	function getStartYear(){
+            $date = strtotime("01 January 1900 +{$this->startDate} days");
+            return date("Y", $date);
+
+	}
+
+        function getTermUsingStartMonth($month){
+            if($month == "Sep"){
+                return "Fall";
+            }
+            elseif($month == "Jan"){
+                return "Winter";
+            }
+            elseif($month == "Apr"){
+                return "Spring";
+            }
+            else{
+                return "Summer";
+            }
+        }
+
     }
 ?>

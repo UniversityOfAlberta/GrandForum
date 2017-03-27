@@ -7,12 +7,16 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		$reportname = $this->getReport()->name;
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
+		$deptGet = "";
 		if($this->getReport()->project != null){
 		    $projectGet = "&project={$this->getReport()->project->getName()}";
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
+        }
+        if(isset($_GET['dept'])){
+            $deptGet = "&dept={$_GET['dept']}";
         }
 		if(!$wgImpersonating || checkSupervisesImpersonee()){
 		    $wgOut->addHTML("<script type='text/javascript'>
@@ -42,7 +46,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
+		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$deptGet}{$year}&generatePDF', 
 		                        success : function(data){
                                         //var data = jQuery.parseJSON(response);
                                         for(index in data){
@@ -112,7 +116,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            function submitReport(button){
 		                $('#submitButton').prop('disabled', true);
 		                $('#submit_throbber').css('display', 'inline-block');
-		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&tok=' + $(button).val() ,function(data){
+		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$deptGet}{$year}&submitReport&tok=' + $(button).val() ,function(data){
 		                    updateEvalReport();
 		                    $('#submitButton').removeAttr('disabled');
 		                    $('#submit_throbber').css('display', 'none');
@@ -120,7 +124,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            }
 		            
 		            function updateEvalReport(){
-		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&getPDF' ,function(data){
+		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$deptGet}{$year}&getPDF' ,function(data){
 	                        if(data.length > 0){
 	                            var val = data[0];
 	                            if(typeof val != 'undefined'){

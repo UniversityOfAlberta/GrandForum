@@ -44,6 +44,9 @@ class EditableReportSection extends AbstractReportSection {
         if($this->getParent()->project != null){
             $action .= "&project=".urlencode($this->getParent()->project->getName());
         }
+        if(isset($_GET['dept'])){
+            $action .= "&dept={$_GET['dept']}";
+        }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";

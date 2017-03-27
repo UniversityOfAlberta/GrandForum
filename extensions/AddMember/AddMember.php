@@ -12,12 +12,7 @@ autoload_register('AddMember/Validations');
 class AddMember extends SpecialPage{
 
     function AddMember() {
-        if(FROZEN){
-            parent::__construct("AddMember", STAFF.'+', true);
-        }
-        else{
-            parent::__construct("AddMember", NI.'+', true);
-        }
+        parent::__construct("AddMember", ADMIN.'+', true);
     }
 
     function execute($par){
@@ -366,7 +361,7 @@ class AddMember extends SpecialPage{
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(ADMIN)){
             $toolbox['People']['links'][-1] = TabUtils::createToolboxLink("Add Member", "$wgServer$wgScriptPath/index.php/Special:AddMember");
         }
         return true;

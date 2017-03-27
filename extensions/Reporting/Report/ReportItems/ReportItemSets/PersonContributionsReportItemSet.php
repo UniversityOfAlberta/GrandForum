@@ -1,11 +1,15 @@
 <?php
+
 class PersonContributionsReportItemSet extends ReportItemSet {
+    
     function getData(){
         $phase = $this->getAttr("phase");
         $data = array();
         $person = Person::newFromId($this->personId);
-	$contributions = $person->getContributions();
-	if(is_array($contributions)){
+        $start = $this->getAttr('start', REPORTING_CYCLE_START);
+        $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        $contributions = $person->getContributionsBetween($start, $end);
+        if(is_array($contributions)){
             foreach($contributions as $contribution){
                 $tuple = self::createTuple();
                 $tuple['project_id'] = $contribution->id;
@@ -14,5 +18,7 @@ class PersonContributionsReportItemSet extends ReportItemSet {
         }
         return $data;
     }
+
 }
+
 ?>

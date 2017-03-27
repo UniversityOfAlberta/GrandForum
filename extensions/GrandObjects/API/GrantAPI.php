@@ -1,0 +1,66 @@
+<?php
+
+class GrantAPI extends RESTAPI {
+    
+    function doGET(){
+        $id = $this->getParam('id');
+        if($id != ""){
+            $grant = Grant::newFromId($id);
+            return $grant->toJSON();
+        }
+        else{
+            $grants = Collection(Grant::getAllGrants());
+            return $grants->toJSON();
+        }
+    }
+    
+    function doPOST(){
+        $grant = new Grant();
+        $grant->user_id = $this->POST('user_id');
+        $grant->project_id = $this->POST('project_id');
+        $grant->total = $this->POST('total');
+        $grant->funds_before = $this->POST('funds_before');
+        $grant->funds_after = $this->POST('funds_after');
+        $grant->speed_code = $this->POST('speed_code');
+        $grant->title = $this->POST('title');
+        $grant->description = $this->POST('description');
+        $grant->request = $this->POST('request');
+        $grant->start_date = $this->POST('start_date');
+        $grant->end_date = $this->POST('end_date');
+        $grant->create();
+        return $grant->toJSON();
+    }
+    
+    function doPUT(){
+        $id = $this->getParam('id');
+        if($id != ""){
+            $grant = Grant::newFromId($id);
+            $grant->project_id = $this->POST('project_id');
+            $grant->total = $this->POST('total');
+            $grant->funds_before = $this->POST('funds_before');
+            $grant->funds_after = $this->POST('funds_after');
+            $grant->speed_code = $this->POST('speed_code');
+            $grant->title = $this->POST('title');
+            $grant->description = $this->POST('description');
+            $grant->request = $this->POST('request');
+            $grant->start_date = $this->POST('start_date');
+            $grant->end_date = $this->POST('end_date');
+            $grant->update();
+            return $grant->toJSON();
+        }
+        return $this->doGET();
+    }
+    
+    function doDELETE(){
+        $id = $this->getParam('id');
+        if($id != ""){
+            $grant = Grant::newFromId($id);
+            $grant->delete();
+            return $grant->toJSON();
+        }
+        return $this->doGET();
+    }
+	
+}
+
+?>

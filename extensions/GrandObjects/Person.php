@@ -726,7 +726,7 @@ class Person extends BackboneModel {
                         continue;
                     }
                     if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(ISAC)){
+                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
                             if($idOnly){
                                 $people[] = $row;
                             }
@@ -1368,10 +1368,10 @@ class Person extends BackboneModel {
     function getUrl(){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
+        if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI)) && (!isset($_GET['embed']) || $_GET['embed'] == 'false')){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}";
         }
-        else if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(ISAC)) && isset($_GET['embed'])){
+        else if($this->id > 0 && ($me->isLoggedIn() || $this->isRoleAtLeast(NI)) && isset($_GET['embed'])){
             return "{$wgServer}{$wgScriptPath}/index.php/{$this->getType()}:{$this->getName()}?embed";
         }
         return "";
@@ -2782,6 +2782,25 @@ class Person extends BackboneModel {
         $contribs = array();
         foreach($this->getContributions() as $contrib){
             if($contrib->getStartYear() <= $year && $contrib->getEndYear() >= $year){
+                $contribs[] = $contrib;
+            }
+        }
+        return $contribs;
+    }
+    
+    /**
+     * Returns the Contributions this Person has made during the given start and end dates
+     * @param string $start The start date of the Contribution
+     * @param string $end The start date of the Contribution
+     * @return array The Contribution this Person has made
+     */
+    function getContributionsBetween($start, $end){
+        $contribs = array();
+        foreach($this->getContributions() as $contrib){
+            $contribStart = $contrib->getStartDate();
+            $contribEnd = $contrib->getEndDate();
+            if(($start <= $contribStart && $end >= $contribStart) ||
+               ($start >= $contribStart && $end <= $contribEnd)){
                 $contribs[] = $contrib;
             }
         }
@@ -4343,18 +4362,32 @@ class Person extends BackboneModel {
     }
 
     function getCourses(){
-	$courses = Course::getUserCourses($this->id);
-	return $courses;
+        $courses = Course::getUserCourses($this->id);
+        return $courses;
+    }
+    
+    function getCoursesDuring($start, $end){
+        $during = array();
+        $courses = Course::getUserCourses($this->id);
+        foreach($courses as $course){
+            $courseStart = $course->getStartDate();
+            $courseEnd = $course->getEndDate();
+            if(($start <= $courseStart && $end >= $courseStart) ||
+               ($start >= $courseStart && $end <= $courseEnd)){
+                  $during[] = $course;
+            }
+        }
+        return $during;
     }
 
     function getMetric(){
-	$metric = Metric::getUserMetric($this->id);
-	return $metric;
+        $metric = Metric::getUserMetric($this->id);
+        return $metric;
     }
     
     function getGsMetric(){
-	$gsMetric = GsMetric::getUserMetric($this->id);
-	return $gsMetric;
+        $gsMetric = GsMetric::getUserMetric($this->id);
+        return $gsMetric;
     }
 
 /**

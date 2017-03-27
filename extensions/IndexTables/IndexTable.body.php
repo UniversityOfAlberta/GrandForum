@@ -78,18 +78,18 @@ class IndexTable {
         $selected = ($wgTitle->getText() == "ALL Grants" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Grants", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Grants", "$selected");
         if($wgUser->isLoggedIn()){
-	    $tabs['Main']['subtabs'][] = $grantSubTab;
-	}
+            //$tabs['Main']['subtabs'][] = $grantSubTab;
+        }
         $selected = ($wgTitle->getText() == "ALL Courses" && str_replace('_',' ',$wgTitle->getNSText()) == $config->getValue('networkName')) ? "selected" : "";
         $grantSubTab = TabUtils::createSubTab("Courses", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Courses", "$selected");
         if($wgUser->isLoggedIn()){
-	    $tabs['Main']['subtabs'][] = $grantSubTab;
+            //$tabs['Main']['subtabs'][] = $grantSubTab;
         }
-	if(Material::countByCategory() > 0){
+	    if(Material::countByCategory() > 0){
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Multimedia", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Multimedia", "$selected");
         }
         if($wgUser->isLoggedIn()){
-            $tabs['Main']['subtabs'][] = $productsSubTab;
+            //$tabs['Main']['subtabs'][] = $productsSubTab;
         }
         $themesColl = new Collection(Theme::getAllThemes());
         $themeAcronyms = $themesColl->pluck('getAcronym()');

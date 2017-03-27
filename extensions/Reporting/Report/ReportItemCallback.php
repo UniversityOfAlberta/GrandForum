@@ -25,32 +25,34 @@ class ReportItemCallback {
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             // Courses
-	    "course_term" => "getCourseTerm",
-	    "course_subject" => "getCourseSubject",
-	    "course_number" => "getCourseNumber",
-	    "course_comp" => "getCourseComp",
-	    "course_section" => "getCourseSection",
-	    "course_enroll" => "getCourseEnroll",    
-	    "course_enroll_percent" => "getCourseEnrollPercent",
-	    // Student Relation
-	    "hqp_name" => "getHqpName",
-	    "hqp_position" => "getHqpPosition",
-	    "hqp_awards" => "getHqpAwards",
-	    "user_hqp_role" => "getUserHqpRole",
-	    "hqp_start_date" => "getHqpStartDate",
-	    "hqp_end_date" => "getHqpEndDate",
-	    "hqp_status" => "getHqpStatus",
-	    // Contributions
+            "course_term" => "getCourseTerm",
+            "course_start" => "getCourseStart",
+            "course_end" => "getCourseEnd",
+            "course_subject" => "getCourseSubject",
+            "course_number" => "getCourseNumber",
+            "course_comp" => "getCourseComp",
+            "course_section" => "getCourseSection",
+            "course_enroll" => "getCourseEnroll",    
+            "course_enroll_percent" => "getCourseEnrollPercent",
+            // Student Relation
+            "hqp_name" => "getHqpName",
+            "hqp_position" => "getHqpPosition",
+            "hqp_awards" => "getHqpAwards",
+            "user_hqp_role" => "getUserHqpRole",
+            "hqp_start_date" => "getHqpStartDate",
+            "hqp_end_date" => "getHqpEndDate",
+            "hqp_status" => "getHqpStatus",
+            // Contributions
             "contribution_scope" => "getContributionScope",
-	    "contribution_agency" => "getContributionAgency",
-	    "contribution_program" => "getContributionProgram",
-	    "contribution_start_date" => "getContributionStartDate",
-	    "contribution_end_date" => "getContributionEndDate",
-	    "contribution_yearly" => "getContributionYearly",
-	    "contribution_total" => "getContributionTotal",
-	    "contribution_recipients" => "getContributionRecipients",
+            "contribution_agency" => "getContributionAgency",
+            "contribution_program" => "getContributionProgram",
+            "contribution_start_date" => "getContributionStartDate",
+            "contribution_end_date" => "getContributionEndDate",
+            "contribution_yearly" => "getContributionYearly",
+            "contribution_total" => "getContributionTotal",
+            "contribution_recipients" => "getContributionRecipients",
             "contribution_pis" => "getContributionPIs",
-	    // Milestones
+            // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
             "milestone_oldtitle" => "getMilestoneOldTitle",
@@ -122,16 +124,18 @@ class ReportItemCallback {
             "user_mtg_firstnations" => "getUserMTGFirstNations",
             "user_mtg_socialproblems" => "getUserMTGSocialProblems",
             "user_mtg_other" => "getUserMTGOther",
-	    "user_product_count" => "getUserProductCount",
-	    "user_grad_count" => "getUserGradCount",
-	    "user_fellow_count" => "getUserFellowCount",
-	    "user_contribution_count" => "getUserContributionCount",
+            "user_product_count" => "getUserProductCount",
+            "user_grad_count" => "getUserGradCount",
+            "user_fellow_count" => "getUserFellowCount",
+            "user_tech_count" => "getUserTechCount",
+            "user_ugrad_count" => "getUserUgradCount",
+            "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
-	    "user_phd_year" => "getUserPhdYear",
-	    "user_appointment_year" => "getUserAppointmentYear",
-	    "getUserPublicationCount" => "getUserPublicationCount",
-	    "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
-	    // Champions
+            "user_phd_year" => "getUserPhdYear",
+            "user_appointment_year" => "getUserAppointmentYear",
+            "getUserPublicationCount" => "getUserPublicationCount",
+            "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
+            // Champions
             "champ_org" => "getChampOrg",
             "champ_title" => "getChampTitle",
             "champ_subtitle" => "getChampSubTitle",
@@ -151,7 +155,7 @@ class ReportItemCallback {
             "spl_subprojects" => "getSPLSubProjects",
             // ISAC
             "isac_comment" => "getISACComment",
-	    "chair_id" => "getChairId",
+            "chair_id" => "getChairId",
             // SAB
             "sab_strength" => "getSABStrength",
             "sab_weakness" => "getSABWeakness",
@@ -168,9 +172,11 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
-	    "product_citation" => "getProductCitation",
-	    //Presentations
-	    "presentation_invited" => "getPresentationInvited",
+            "product_citation" => "getProductCitation",
+            //Presentations
+            "presentation_title" => "getPresentationTitle",
+            "presentation_type" => "getPresentationType",
+            "presentation_invited" => "getPresentationInvited",
             "presentation_refereed" => "getPresentationRefereed",
             "presentation_organization" => "getPresentationOrganization",
             "presentation_country" => "getPresentationCountry",
@@ -180,7 +186,7 @@ class ReportItemCallback {
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
-	    "GET" => "getGet",
+            "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
@@ -484,37 +490,19 @@ class ReportItemCallback {
 	}
     }
 
-    function getHqpGradCount(){
-        $person = Person::newFromId($this->reportItem->personId);
-	$count = 0;
-	$gradTerm = array('msc student', 'phd student', 'phd', 'msc');
-	$relations = $person->getHQP();
-	foreach($relations as $relation){
-	    $uni = $relation->getUniversity();
-	    if(in_array(strtolower($uni['position']),$gradTerm)){
-		$count++;
-	    }
-	}
-	return ($count);
-    }
-
-    function getHqpPostDoctoralFellowCount(){
-	$person = Person::newFromId($this->reportItem->personId);
-        $count = 0;
-        $gradTerm = array('pdf','postdoctoral fellow', 'post-doctoral fellow', 'ra', 'research associate');
-        $relations = $person->getHQP();
-        foreach($relations as $relation){
-            $uni = $relation->getUniversity();
-            if(in_array(strtolower($uni['position']),$gradTerm)){
-                $count++;
-            }
-        }
-        return ($count);
-    }
-
     function getCourseTerm(){
-	$course = Course::newFromId($this->reportItem->projectId);
-	return $course->term_string;
+	    $course = Course::newFromId($this->reportItem->projectId);
+	    return $course->term_string;
+    }
+    
+    function getCourseStart(){
+	    $course = Course::newFromId($this->reportItem->projectId);
+	    return $course->getStartDate();
+    }
+    
+    function getCourseEnd(){
+	    $course = Course::newFromId($this->reportItem->projectId);
+	    return $course->getEndDate();
     }
 
     function getCourseSubject(){
@@ -1710,38 +1698,56 @@ class ReportItemCallback {
     }
    
     function getProductCitation(){
-	$product = Paper::newFromId($this->reportItem->productId);
-	return $product->getProperCitation(true, true, false);
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getProperCitation(true, true, false);
+    }
+
+    function getPresentationTitle(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getTitle();
+    }
+    
+    function getPresentationType(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getType();
     }
 
     function getPresentationInvited(){
         $product = Paper::newFromId($this->reportItem->productId);
-	$product = $product->getPresentationInfo();
-	return $product->invited;
+        $status = $product->getStatus();
+        if($status == "Invited"){
+            return "Yes";
+        }
+        return "No";
     }
+    
     function getPresentationDuration(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getPresentationInfo();
-        return $product->duration;
+        return @$product->duration;
     }
+    
     function getPresentationRefereed(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getPresentationInfo();
-        return $product->refereed;
+        return @$product->refereed;
     }
+    
     function getPresentationOrganization(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
-        return $product['organization'];
+        return @$product['organizing_body'];
     }
+    
     function getPresentationCountry(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
-        return $product['location'];
+        return @$product['location'];
     }
+    
     function getPresentationDate(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->date;
+        return @$product->date;
     }
 
     function getWgUserId(){
@@ -1993,29 +1999,54 @@ class ReportItemCallback {
 
     function getUserProductCount(){
         $person = Person::newFromId($this->reportItem->personId);
-	$products = $person->getPapersAuthored('all', REPORTING_CYCLE_START, REPORTING_CYCLE_END_ACTUAL, true);
+        $products = $person->getPapersAuthored('all', ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30", true);
         $products = $person->getPapers("all", false, 'both', true, "Public");
-	return count($products);
+        return count($products);
     }
 
     function getUserGradCount(){
-	$person = Person::newFromId($this->reportItem->personId);
-	$relations = $person->getRelations("Supervises", REPORTING_CYCLE_START, REPORTING_CYCLE_END);
-	$count = 0;
-	foreach($relations as $relation){
-	    if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc"))){
-		$count++;
-	    }
-	}
-	return $count;
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($relations as $relation){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc","phd student", "msc student", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
+                
+                $count++;
+            }
+        }
+        return $count;
     }
 
     function getUserFellowCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelations("Supervises", REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","ra"))){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","ra","post-doctoral fellow", "research/technical assistant"))){
+                $count++;
+            }
+        }
+        return $count;
+    }
+    
+    function getUserTechCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($relations as $relation){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("technician", "professional end user"))){
+                $count++;
+            }
+        }
+        return $count;
+    }
+    
+    function getUserUgradCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($relations as $relation){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("ugrad", "undergraduate student"))){
                 $count++;
             }
         }
@@ -2024,25 +2055,25 @@ class ReportItemCallback {
 
     function getUserContributionCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $contributions = $person->getContributionsDuring(REPORTING_CYCLE_START);
+        $contributions = $person->getContributionsBetween(($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
         return count($contributions);
     }
 
     function getUserContributionCashTotal(){
         $person = Person::newFromId($this->reportItem->personId);
-        $contributions = $person->getContributionsDuring(REPORTING_CYCLE_START);
-	$total = 0;
-	foreach($contributions as $contribution){
-	     $total += $contribution->getTotal();
-	}
-	return number_format($total);
+        $contributions = $person->getContributionsBetween(($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $total = 0;
+        foreach($contributions as $contribution){
+            $total += $contribution->getTotal();
+        }
+        return number_format($total);
     }
 
     function getUserPhdYear(){
         $person = Person::newFromId($this->reportItem->personId);
-	$fecInfo = $person->getFecPersonalInfo();
-	$phd_year_array = explode("-", $fecInfo->dateOfPhd);
-	return $phd_year_array[0];
+        $fecInfo = $person->getFecPersonalInfo();
+        $phd_year_array = explode("-", $fecInfo->dateOfPhd);
+        return $phd_year_array[0];
     }
 
     function getUserAppointmentYear(){

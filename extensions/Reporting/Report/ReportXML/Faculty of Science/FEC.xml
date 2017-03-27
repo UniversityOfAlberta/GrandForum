@@ -12,7 +12,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="information" tooltip="Information" name="Information" title="Information" blobSection="FEC_INFORMATION" type="EditableReportSection">
+    <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
             	<table class='wikitable'>
@@ -33,8 +33,10 @@
         </ReportItem>
         <ReportItem id="gradCount" type="StaticReportItem">
             <![CDATA[
-            	<tr><td><b>Graduate Students(Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+            	<tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
                 <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
+                <tr><td style='width:350px;'><b>Technicians:</b></td><td>{$user_tech_count}</tr></td>
+                <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
 	    	</table>
 	    ]]>
 	</ReportItem>
@@ -64,11 +66,11 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="courses" tooltip="Courses" name="Courses" title="Courses" blobSection="FEC_COURSES" type="EditableReportSection">
+    <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
 	<ReportItem id="coursesheader" type="StaticReportItem">
 	    <![CDATA[
 		<h2>Courses</h2>
-		<table class='wikitable' style='width:100%;'><thead><tr><th>Term</th>
+		<table class='wikitable' style='width:100%;'><thead><tr><th>Dates</th>
 		<th>Subject</th>
 		<th>Number</th>
 		<th>Comp.</th>
@@ -77,11 +79,11 @@
 		<th>%</th></tr></thead><tbody>
 	    ]]>
 	</ReportItem>
-	<ReportItemSet id="courses" type="PersonCoursesReportItemSet">
+	<ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
 	     <ReportItem id="row" type="StaticReportItem">
 	     	<![CDATA[
 
-	             <tr><td align='center'>{$course_term}</td>
+	             <tr><td align='center'>{$course_start} - {$course_end}</td>
 	             <td align='center'>{$course_subject}</td>
                      <td align='center'>{$course_number}</td>
                      <td align='center'>{$course_comp}</td>
@@ -103,10 +105,9 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="students" tooltip="Students" name="Students" title="Students" blobSection="FEC_STUDENTS" type="EditableReportSection">
+    <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="EditableReportSection">
     	<ReportItem id="studentsheader" type="StaticReportItem">
     	    <![CDATA[
-    	    	<h2>Students</h2>
     	    	<table class='wikitable' style='width:100%'><thead><tr>
     	    	    <th>Name</th>
     	    	    <th>Resp</th>
@@ -117,7 +118,7 @@
     	    	    <th>Status</th></tr></thead><tbody>
     	    ]]>
     	 </ReportItem>
-    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet">
+    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
     	     <ReportItem id="row" type="StaticReportItem">
     	         <![CDATA[
     	         	<tr><td>{$hqp_name}</td>
@@ -136,15 +137,14 @@
     	     ]]>
          </ReportItem>
     </ReportSection>
-    <ReportSection id="publications" tooltip="Publications" name="Publications" title="Publications"  blobSection="FEC_PRODUCTS" type="EditableReportSection">
+    <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="Outputs"  blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
 		<h2>Publications</h2>
-		<table class='wikitable' style='width:100%'><thead><tr>
-		<th>Refereed Type Authors Title Venue Accepted Published Pg. Eds. Vol. Issue Place Publisher DOI URL</th></tr></thead><tbody>
+		<table class='wikitable' style='width:100%'><tbody>
 	    ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-01-01" end="{$this_year}-12-31">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
 	    <ReportItem id="row" type="StaticReportItem">
 	         <![CDATA[
 		     <tr><td>{$product_citation}</td></tr>
@@ -159,26 +159,29 @@
         <ReportItem id="presentationheader" type="StaticReportItem">
 	    <![CDATA[
                 <h2>Presentations</h2>
-                <table class ='wikitable' style='width:100%'><thead>
-                	<th>Category</th>
-                	<th>Invited</th>
-                	<th>Refereed</th>
-                	<th>Organization</th>
-                	<th>Country</th>
-                	<th>Date</th>
-                	<th>Minutes</th></thead><tbody>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                        	<th>Type</th>
+                        	<th>Invited</th>
+                        	<th>Organization</th>
+                        	<th>Location</th>
+                        	<th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{subtract({$this_year},1)}-01-01" end="{$this_year}-12-31">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <tr><td align='center'>Presentation</td>
+                    <tr><td align='center'>{$presentation_title}</td>
+                    	<td align='center'>{$presentation_type}</td>
                     	<td align='center'>{$presentation_invited}</td>
-                    	<td align='center'>{$presentation_refereed}</td>
                     	<td>{$presentation_organization}</td>
                     	<td align='center'>{$presentation_country}</td>
                     	<td style='white-space:nowrap;'>{$presentation_date}</td>
-                    	<td align='center'>{$presentation_duration}</td>
                     	</tr>
                 ]]>
             </ReportItem>
@@ -189,12 +192,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="grants" tooltip="Research Grants" name="Research Grants" title="Research Grants" blobSection="FEC_GRANTS" type="EditableReportSection">
+    <ReportSection id="grants" tooltip="Funding and Awards" name="Funding and Awards" title="Funding and Awards" blobSection="FEC_GRANTS" type="EditableReportSection">
         <ReportItem id ="grantsheader" type="StaticReportItem">
             <![CDATA[
-		<h2>Grants</h2>
 		<table class='wikitable' style='width:100%'><thead><tr>
-		<th>Scope</th>
 		<th>Agency</th>
 		<th>Program</th>
 		<th>Starts</th>
@@ -205,11 +206,10 @@
 		<th>Co-recipients</th></tr></thead><tbody>
 	    ]]>
 	</ReportItem> 
-	<ReportItemSet id="grants" type="PersonContributionsReportItemSet">
+	<ReportItemSet id="grants" type="PersonContributionsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
 	    <ReportItem id="row" type="StaticReportItem">
 	        <![CDATA[
 	            <tr>
-	            	<td>{$contribution_scope}</td>
 	            	<td>{$contribution_agency}</td>
 	            	<td>{$contribution_program}</td>
 	            	<td>{$contribution_start_date}</td>
@@ -287,12 +287,10 @@
             	    No Chair Recommendation Available.
             	</div>
                 <div id='chair_comments' style="visibility:hidden;">
-                    <table class='dashboard wikitable'><thead>
-                    <tr><th><Section</th>
-                    <th>Comment</th></tr></thead><tbody>
+                    <table class='dashboard wikitable'>
+                    <tbody>
                     <tr><td>Teaching Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
                     <tr><td>Research Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RESEARCH_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td colspan='2' align center> Service/Committees Evaluations</td></tr>
                     <tr><td>Departmental</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_DEPARTMENTAL,{$user_id},{$chair_id},0)}</td></tr>
                     <tr><td>Faculty</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</td></tr>
                     <tr><td>University</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</td></tr>

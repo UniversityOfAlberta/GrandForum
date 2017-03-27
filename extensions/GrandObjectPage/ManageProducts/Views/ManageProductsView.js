@@ -386,6 +386,7 @@ ManageProductsView = Backbone.View.extend({
     },
     
     render: function(){
+	console.log(this.model);
         this.$el.empty();
         $(document).click($.proxy(function(e){
             var popup = $("div.popupBox:visible").not(":animated").first();

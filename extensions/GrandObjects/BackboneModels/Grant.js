@@ -1,0 +1,32 @@
+Grant = Backbone.Model.extend({
+
+    initialize: function(){
+        
+    },
+
+    urlRoot: 'index.php?action=api.grant',
+    
+    defaults: {
+        id: null,
+        user_id: '',
+        project_id: '',
+        sponsor: '',
+        total: 0,
+        funds_before: 0,
+        funds_after: 0,
+        speed_code: '',
+        title: '',
+        description: '',
+        request: '',
+        start_date: '',
+        end_date: '',
+        url: ''
+    }
+    
+});
+
+Grants = Backbone.Collection.extend({
+    model: Grant,
+    
+    url: 'index.php?action=api.grant'
+});

@@ -343,11 +343,13 @@
     	$mf[] = $student;
     }
     print_r($mf);
-  /*  $person = Person::newFromNameLike('Eleni Stroulia');
+    $person = Person::newFromNameLike('Eleni Stroulia');
     $url = file_get_contents('https://graddb.cs.ualberta.ca/Prod/login.cgi?oracle.login=stroulia&oracle.password=Bella1Alex2');
+    print_r(count(explode("\n", $url)));
     $regex = '/option value\=\"(.+?)\"\>/';
     preg_match_all($regex, $url, $Array);
     $students = $Array[1];
+    print_r($students);
     $parsed_array = array();
     foreach($students as $student){
 	$data = array();
@@ -397,7 +399,7 @@
     }
     foreach($parsed_array as $student){
       //  enterData($student,$person, false);
-      print_r($student);
+        $mf[] = $student;
     }
-*/
+    print_r($mf);
 ?> 

@@ -11,6 +11,9 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
         }
+        if(isset($_GET['sop_id'])){
+            $projectGet = "&sop_id={$_GET['sop_id']}";
+        }
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -54,6 +57,9 @@ class UploadReportItem extends AbstractReportItem {
         $projectGet = "";
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
+        }
+        if(isset($_GET['sop_id'])){
+            $projectGet = "&sop_id={$_GET['sop_id']}";
         }
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){

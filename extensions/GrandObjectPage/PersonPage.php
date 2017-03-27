@@ -123,7 +123,7 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-		if($wgUser->isLoggedIn() && $person->isRole(NI)){
+		if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP)){
 		    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
                 }
                if($wgUser->isLoggedIn() && $person->isRole(NI)){

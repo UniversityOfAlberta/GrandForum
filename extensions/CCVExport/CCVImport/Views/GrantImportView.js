@@ -34,21 +34,13 @@ GrantImportView = Backbone.View.extend({
                 var warning = new Array();
                 var nCreated = response.created.length;
                 var nError = response.error.length;
-                var nFunding = (response.funding != undefined) ? response.funding.length : 0;
-                var fundingFail = (response.fundingFail != undefined) ? response.fundingFail : 0;
                 if(nCreated > 0){
-                    success.push("<b>" + nCreated + "</b> products were created");
-                }
-                if(nFunding > 0){
-                    success.push("<b>" + nFunding + "</b> Funding Contributions were created/updated");
-                }
-                if(fundingFail > 0){
-                    warning.push("<b>" + fundingFail + "</b> Funding Contributions failed to import");
+                    success.push("<b>" + nCreated + "</b> grants were created");
                 }
                 if(success.length > 0){
                     addSuccess(success.join("<br />"));
                 }
-                else if (nError == 0){
+                else if(nError == 0){
                     warning.push("Nothing was imported");
                 }
                 // Show errors/warnings/info
@@ -56,7 +48,7 @@ GrantImportView = Backbone.View.extend({
                     addWarning(warning.join("<br />"));
                 }
                 if(nError > 0){
-                    addInfo("<b>" + nError + "</b> products were ignored (probably duplicates)");
+                    addInfo("<b>" + nError + "</b> grants were ignored (probably duplicates)");
                 }
                 button.prop("disabled", false);
             }

@@ -1,208 +1,202 @@
 <?php
-    class UploadGrantXlsAPI extends API{
-	var $grants = array();
-	function processParams($params){
-	    //TODO
-	}
 
-	function formatDate($date){
-            $array = explode("/", $date);
-            return "{$array[2]}-{$array[0]}-{$array[1]} 00:00:00";
-    	}
+class UploadGrantXlsAPI extends API{
+        
+    var $grants = array();
+    
+    function processParams($params){
+        //TODO
+    }
 
-	function setGrantInfo($xls_content, $xls2_content){
-            $data = $xls_content;
-            $flag = false;
-            $grantArray1 = array();
-            $linecount = 1;
-            $array = array();
-            foreach($data as $lines){
-                if (preg_match('/Grants Life Cycle/', $lines) && $linecount >5){
-                    $flag = true;
-                    $count = 0;
-                    $row = array();
-            	}
-           	elseif($linecount ==5){
-              	    preg_match_all('/\<th\>(.+?)\<\/th\>/',$lines, $array);
-                    unset($array[1][0]);
-            	}
-            	if($flag){
-               	    $row[$array[1][$count+1]] = str_replace(array("<td>","</td>"), "",trim($lines));
-                    $count++;
-                    if($count > 10){
-                 	$flag = false;
-                  	$grantArray1[] = $row;
-              	    }
-            	}	
-            	$linecount++;
-	    }
-      	    $data = $xls2_content;
-            $flag = false;
-            $linecount = 1;
-            $array = array();
-            $projectId = "";
-            $grantArray2 = array();
-            $ELEMENTS = array("Project ID", "Sponsor", "Holder", "Award Begin Date", "Role");
-            foreach($data as $lines){
-                if (preg_match('/Grants Life Cycle/', $lines) && $linecount >5){
-                    $flag = true;
-                    $count = 0;
-                    $row = array();
-                }	
-                elseif($linecount ==5){
-                    preg_match_all('/\<th\>(.+?)\<\/th\>/',$lines, $array);
-                    unset($array[1][0]);
+    function formatDate($date){
+        $array = explode("/", $date);
+        return "{$array[2]}-{$array[0]}-{$array[1]} 00:00:00";
+    }
+
+    function setGrantInfo($xls_content, $xls2_content, $person){
+        // xls_content = overview
+        // xls2_content = details
+        
+        $grants = array();
+        
+        $headers  = array();
+        $headers2 = array();
+        foreach($xls_content as $rowN => $row){
+            $row2 = $xls2_content[$rowN];
+            if(implode("", $row) == "" && implode("", $row2) == ""){
+                continue; // Empty Row
+            }
+            if(count($headers) == 0){
+                foreach($row as $colN => $col){
+                     $headers[] = $col;
                 }
-                if($flag){
-                    if(in_array($array[1][$count+1], $ELEMENTS)){
-               	        $row[$array[1][$count+1]] = str_replace(array("<td>","</td>"), "",trim($lines));
+                foreach($row2 as $colN => $col){
+                    $headers2[] = $col;
+                }
+            }
+            else{
+                $grant = new Grant(array());
+                foreach($row as $colN => $col){
+                    $head = $headers[$colN];
+                    switch($head){
+                        case "Project ID":
+                            $grant->project_id = $col;
+                            break;
+                        case "Award End Date":
+                            $grant->end_date = date('Y-m-d', strtotime($col));
+                            break;
+                        case "Total Award":
+                            $grant->total = floatval(str_replace("$", "", str_replace(",", "", $col)));
+                            break;
+                        case "Funds Available Before Commitments":
+                            $grant->funds_before = floatval(str_replace("$", "", str_replace(",", "", $col)));
+                            break;
+                        case "Funds Available After Commitments":
+                            $grant->funds_after = floatval(str_replace("$", "", str_replace(",", "", $col)));
+                            break;
+                        case "Speed Code":
+                            $grant->speed_code = $col;
+                            break;
+                        case "Title":
+                            $grant->title = $col;
+                            break;
+                        case "Description":
+                            $grant->description = $col;
+                            break;
+                        case "Request":
+                            $grant->request = $col;
+                            break;
                     }
-                    $count++;
-                    if($count > 17){
-                        $flag = false;
-                        $grantArray2[] = $row;
+                }
+                foreach($row2 as $colN => $col){
+                    $head = $headers2[$colN];
+                    switch($head){
+                        case "Sponsor":
+                            $grant->sponsor = $col;
+                            break;
+                        case "Award Begin Date":
+                            $grant->start_date = date('Y-m-d', strtotime($col));
+                            break;
                     }
                 }
-                $linecount++;
-	    }
-    	    $finalarray = array();
-    	    foreach($grantArray1 as $element){
-        	foreach($grantArray2 as $element2){
-           	    if($element['Project ID'] == $element2['Project ID']){
-               		$finalarray[] = array_merge($element2, $element);
-               		break;
-           	    }
-        	}
-    	    }
-	    $this->grants = $finalarray;
-	    return $this->grants[0]['Total Award'];
-	}
-
-	function createGrantInfo($person, $grants){
-	    $success = array();
-	    foreach($grants as $grant){
-		$grant['Award Begin Date'] = $this->formatDate($grant['Award Begin Date']);		
-		$grant['Award End Date'] = $this->formatDate($grant['Award End Date']);
-		$contribution = new Contribution(array());
-		$contribution->name = $grant['Description'];
-		$contribution->project_id = $grant['Project ID'];
-		$contribution->description = $grant['Title'];
-		$contribution->start_date = $grant['Award Begin Date'];
-		$contribution->end_date = $grant['Award End Date'];
-	        if($grant['Role'] == "Principal Investigator"){
-		    $contribution->pi = $person->getId();
-		}
-		$contribution->people = array($person->getId());
-		$partner = new Partner(array());
-		$partner->organization = $grant['Sponsor'];
-		$contribution->partners = array($partner);
-		$id = md5(serialize($partner));
-		$contribution->type = array("$id"=>'cash');
-		$contribution->subtype = array("$id"=>'cash');
-		$contribution->cash = array("$id"=>str_replace(array(',','$','.'), "", $grant['Total Award']));
-		$contribution->kind = array("$id"=>0);
-		$contribution->unknown = array("$id"=>0);
-		$status = $contribution->create();
-		if($status){
-		    DBFunctions::commit();
-		    $success[] = $status;
-		}
-	    }
-	   return $success;
-	}
-
-	function checkXlsFile($xls){
-            $data = explode("\n", file_get_contents($xls['tmp_name']));
-            $flag = false;
-            $grantArray1 = array();
-            $linecount = 1;
-            $array = array();
-            foreach($data as $lines){
-                if (preg_match('/Grants Life Cycle/', $lines) && $linecount >5){
-                    $flag = true;
-                    $count = 0;
-                    $row = array();
+                if(!Grant::newFromProjectId($grant->getProjectId())->exists()){
+                    $grant->user_id = $person->getId();
+                    $grant->create();
+                    $grants[] = $grant;
                 }
-                elseif($linecount ==5){
-                    preg_match_all('/\<th\>(.+?)\<\/th\>/',$lines, $array);
-                    unset($array[1][0]);
+            }
+        }
+        return $grants;
+    }
+
+    function checkXlsFile($xls){
+        $data = explode("\n", file_get_contents($xls['tmp_name']));
+        $flag = false;
+        $grantArray1 = array();
+        $linecount = 1;
+        $array = array();
+        foreach($data as $lines){
+            if (preg_match('/Grants Life Cycle/', $lines) && $linecount >5){
+                $flag = true;
+                $count = 0;
+                $row = array();
+            }
+            elseif($linecount == 5){
+                preg_match_all('/\<th\>(.+?)\<\/th\>/',$lines, $array);
+                unset($array[1][0]);
+            }
+            if($flag){
+                $row[$array[1][$count+1]] = str_replace(array("<td>","</td>"), "",trim($lines));
+                $count++;
+                if($count > 10){
+                    $flag = false;
+                    $grantArray1[] = $row;
                 }
-                if($flag){
-                    $row[$array[1][$count+1]] = str_replace(array("<td>","</td>"), "",trim($lines));
-                    $count++;
-                    if($count > 10){
-                        $flag = false;
-                        $grantArray1[] = $row;
-                    }
-                }   
+            }   
             $linecount++;
-            }
-            if(isset($grantArray1[0]['Percent Spent'])){
-		return true;
-            }
-	    return false;
-	}
+        }
+        if(isset($grantArray1[0]['Percent Spent'])){
+            return true;
+        }
+        return false;
+    }
+    
+    function readXLS($file){
+        $dir = dirname(__FILE__);
+        require_once($dir . '/../../Classes/PHPExcel/IOFactory.php');
+        
+        $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+        $class = get_class($objReader);
+        if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007" && $class != "PHPExcel_Reader_HTML"){
+            return false;
+        }
+        $objReader->setReadDataOnly(true);
+        $obj = $objReader->load($file);
+        $obj->setActiveSheetIndex(0);
+        $cells = $obj->getActiveSheet()->toArray();
+        
+        return $cells;
+    }
 
-	function doAction($noEcho=false){
-	    global $wgMessage;
-	    $me = Person::newFromWgUser();
-	    if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
-	   	$person = Person::newFromId($_POST['id']);
-	    }
-	    else{
-		$person = $me;
-	    }
-	    $xls = $_FILES['grant'];
-	    $xls2 = $_FILES['grant2'];
-	    if((isset($xls['type']) && isset($xls2['type'])) &&
-	        $xls['type'] == "application/vnd.ms-excel" &&
-                $xls2['type'] == "application/vnd.ms-excel" &&
-	        $xls['size'] > 0 &&
-	        $xls2['size'] > 0){
-                $error = "";
-                $json = array('created' => array(),
+    function doAction($noEcho=false){
+        global $wgMessage;
+        $me = Person::newFromWgUser();
+        if(isset($_POST['id']) && $me->isRoleAtLeast(MANAGER)){
+            $person = Person::newFromId($_POST['id']);
+        }
+        else{
+            $person = $me;
+        }
+        $xls = $_FILES['grant'];
+        $xls2 = $_FILES['grant2'];
+        if((isset($xls['type']) && isset($xls2['type'])) &&
+            ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream") &&
+            ($xls2['type'] == "application/vnd.ms-excel" || $xls2['type'] == "application/octet-stream") &&
+            $xls['size'] > 0 &&
+            $xls2['size'] > 0){
+            $error = "";
+            $json = array('created' => array(),
                           'error' => array());
-		if($this->checkXlsFile($xls)){
-		    $xls = $_FILES['grant2'];
-		    $xls2 = $_FILES['grant'];
-		}
-                $xls_content = explode("\n", file_get_contents($xls['tmp_name']));
-		$xls2_content = explode("\n", file_get_contents($xls2['tmp_name']));
-		$this->setGrantInfo($xls_content, $xls2_content);
-		if(count($this->grants) >0){
-		    $funding = $this->grants;
-		    $json['funding'] = $this->createGrantInfo($person, $this->grants);
-		    $json['fundingFail'] = count($funding) - count($json['funding']);
-		}
-                $obj = json_encode($json);
+            if($this->checkXlsFile($xls)){
+                $xls = $_FILES['grant2'];
+                $xls2 = $_FILES['grant'];
+            }
+            
+            $xls_cells  = $this->readXLS($xls['tmp_name']);
+            $xls2_cells = $this->readXLS($xls2['tmp_name']);
 
-		echo <<<EOF
-            	<html>
+            $grants = new Collection($this->setGrantInfo($xls_cells, $xls2_cells, $person));
+            $json['created'] = $grants->toArray();
+            $json = json_encode($json);
+            
+            echo <<<EOF
+                <html>
                     <head>
-                    	<script type='text/javascript'>
-                                            parent.ccvUploaded($obj, "$error");
-                    	</script>
+                        <script type='text/javascript'>
+                            parent.ccvUploaded($json, "$error");
+                        </script>
                     </head>
-            	</html>
+                </html>
 EOF;
-            	exit;
-	    }
-	    else{
+            exit;
+        }
+        else{
             echo <<<EOF
             <html>
                 <head>
                     <script type='text/javascript'>
-                                            parent.ccvUploaded([], "The uploaded files were not in .xls format");
+                        parent.ccvUploaded([], "The uploaded files were not in .xls format");
                     </script>
                 </head>
             </html>
 EOF;
-	    exit;
-	    }
-	}	
-	
-	function isLoginRequired(){
-	    return true;
-	}
+            exit;
+        }
     }
+
+    function isLoginRequired(){
+        return true;
+    }
+
+}
 ?>

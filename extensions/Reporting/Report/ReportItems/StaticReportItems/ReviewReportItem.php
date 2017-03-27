@@ -6,12 +6,16 @@ class ReviewReportItem extends StaticReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
 		$project = $this->getReport()->project;
 		$projectGet = "";
+		$deptGet = "";
 		if($project != null){
 		    $projectGet = "&project={$project->getName()}";
 		}
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
+        }
+        if(isset($_GET['dept'])){
+            $deptGet = "&dept={$_GET['dept']}";
         }
 		$html = "<script type='text/javascript'>
 		    function hideProgress(){
@@ -25,7 +29,7 @@ class ReviewReportItem extends StaticReportItem {
                 $('#reportMain > div').height(pixels);
             }
 		</script>
-		<span id='loading' style='float:left;'><img src='../skins/Throbber.gif' />&nbsp;Loading...</span><iframe id='previewFrame' frameborder='0' style='position:relative;left:0;width:100%;height:100%;border:0;border-width:0;' src='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF&preview&dpi=96'></iframe>";
+		<span id='loading' style='float:left;'><img src='../skins/Throbber.gif' />&nbsp;Loading...</span><iframe id='previewFrame' frameborder='0' style='position:relative;left:0;width:100%;height:100%;border:0;border-width:0;' src='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$deptGet}{$year}&generatePDF&preview&dpi=96'></iframe>";
 		$wgOut->addHTML($this->processCData($html));
 	}
 	

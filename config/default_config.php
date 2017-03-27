@@ -110,6 +110,7 @@
         'AddMember',
         //'AddHqp',
 	'EditMember',
+	'ManagePeople',
         //'HQPRegister',
         'Poll',
         'QueryableTable',
