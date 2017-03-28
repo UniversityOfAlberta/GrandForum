@@ -137,6 +137,8 @@ class ReportItemCallback {
             "user_ugrad_count" => "getUserUgradCount",
             "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
+            "user_grant_count" => "getUserGrantCount",
+            "user_grant_total" => "getUserGrantTotal",
             "user_phd_year" => "getUserPhdYear",
             "user_appointment_year" => "getUserAppointmentYear",
             "getUserPublicationCount" => "getUserPublicationCount",
@@ -2097,6 +2099,22 @@ class ReportItemCallback {
             $total += $contribution->getTotal();
         }
         return number_format($total);
+    }
+    
+    function getUserGrantCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $grants = $person->getGrantsBetween(($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        return count($grants);
+    }
+
+    function getUserGrantTotal(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $grants = $person->getGrantsBetween(($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $total = 0;
+        foreach($grants as $grant){
+            $total += $grant->getTotal();
+        }
+        return number_format($total, 2);
     }
 
     function getUserPhdYear(){

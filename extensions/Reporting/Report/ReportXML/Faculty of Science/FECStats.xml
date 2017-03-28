@@ -77,8 +77,8 @@
 		            <td align=right>{$user_product_count}</td>
 		            <td align=right>{$user_grad_count}</td>
 		            <td align=right>{$user_fellow_count}</td>
-		            <td align=right>{$user_contribution_count}</td>
-		            <td align=right>${$user_contribution_cash_total}</td>
+		            <td align=right>{$user_grant_count}</td>
+		            <td align=right>${$user_grant_total}</td>
 		            <td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RECOMMENDATIONS_INCREMENT,{$user_id},{$chair_id},0)}</td>
 		            <td></td>
 		            <td></td></tr>
