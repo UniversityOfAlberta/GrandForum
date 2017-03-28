@@ -90,8 +90,13 @@ table.profile tr td{
         <div>
             <%if(pdf_data.Education != undefined){ %>
             <b>Degree:</b> <%= pdf_data.Education[0].degree%><br />
-            <b>Institution:</b> <%= pdf_data.Education[0].institution%><br /><br />
+            <b>Institution:</b>
+		 <%= pdf_data.Education[0].institution%><br /><br />
             <%}else{%>
+ 
+  <% if(gsms_data){ %>
+   <b>PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
+    <% } %>
             <b></b><br /><br />
             <%}%>
             <%if(pdf_data.Referees != undefined){ %>
