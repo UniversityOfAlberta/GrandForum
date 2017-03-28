@@ -2836,7 +2836,10 @@ class Person extends BackboneModel {
                                         array('id'),
                                         array('user_id' => EQ($this->getId())));
             foreach($data as $row){
-                $this->grants[] = Grant::newFromId($row['id']);
+                $grant = Grant::newFromId($row['id']);
+                if($grant != null && $grant->getId() != 0){
+                    $this->grants[] = $grant;
+                }
             }
         }
         return $this->grants;

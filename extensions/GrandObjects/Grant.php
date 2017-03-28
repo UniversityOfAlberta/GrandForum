@@ -37,27 +37,33 @@ class Grant extends BackboneModel {
         $data = DBFunctions::select(array('grand_grants'),
                                     array('*'));
         foreach($data as $row){
-            $grants[] = new Grant(array($row));
+            $grant = new Grant(array($row));
+            if($grant != null && $grant->getId() != 0){
+                $grants[] = $grant;
+            }
         }
         return $grants;
     }
     
     function Grant($data){
+        $me = Person::newFromWgUser();
         if(count($data) > 0){
             $row = $data[0];
-            $this->id = $row['id'];
-            $this->user_id = $row['user_id'];
-            $this->project_id = $row['project_id'];
-            $this->sponsor = $row['sponsor'];
-            $this->total = $row['total'];
-            $this->funds_before = $row['funds_before'];
-            $this->funds_after = $row['funds_after'];
-            $this->speed_code = $row['speed_code'];
-            $this->title = $row['title'];
-            $this->description = $row['description'];
-            $this->request = $row['request'];
-            $this->start_date = $row['start_date'];
-            $this->end_date = $row['end_date'];
+            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(ISAC)){
+                $this->id = $row['id'];
+                $this->user_id = $row['user_id'];
+                $this->project_id = $row['project_id'];
+                $this->sponsor = $row['sponsor'];
+                $this->total = $row['total'];
+                $this->funds_before = $row['funds_before'];
+                $this->funds_after = $row['funds_after'];
+                $this->speed_code = $row['speed_code'];
+                $this->title = $row['title'];
+                $this->description = $row['description'];
+                $this->request = $row['request'];
+                $this->start_date = $row['start_date'];
+                $this->end_date = $row['end_date'];
+            }
         }
     }
     

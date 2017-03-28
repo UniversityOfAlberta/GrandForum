@@ -3,7 +3,11 @@ GrantView = Backbone.View.extend({
     person: null,
 
     initialize: function(){
-        this.model.fetch();
+        this.model.fetch({
+            error: $.proxy(function(e){
+                this.$el.html("This Grant does not exist");
+            }, this)
+        });
         this.listenTo(this.model, 'change', $.proxy(function(){
             this.person = new Person({id: this.model.get('user_id')});
             var xhr = this.person.fetch();

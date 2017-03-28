@@ -6,6 +6,9 @@ class GrantAPI extends RESTAPI {
         $id = $this->getParam('id');
         if($id != ""){
             $grant = Grant::newFromId($id);
+            if($grant == null || $grant->getId() == 0){
+                $this->throwError("This Grant does not exist");
+            }
             return $grant->toJSON();
         }
         else{
@@ -35,6 +38,9 @@ class GrantAPI extends RESTAPI {
         $id = $this->getParam('id');
         if($id != ""){
             $grant = Grant::newFromId($id);
+            if($grant == null || $grant->getId() == 0){
+                $this->throwError("This Grant does not exist");
+            }
             $grant->project_id = $this->POST('project_id');
             $grant->total = $this->POST('total');
             $grant->funds_before = $this->POST('funds_before');
@@ -55,6 +61,9 @@ class GrantAPI extends RESTAPI {
         $id = $this->getParam('id');
         if($id != ""){
             $grant = Grant::newFromId($id);
+            if($grant == null || $grant->getId() == 0){
+                $this->throwError("This Grant does not exist");
+            }
             $grant->delete();
             return $grant->toJSON();
         }

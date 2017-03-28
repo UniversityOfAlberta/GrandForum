@@ -3,7 +3,11 @@ EditGrantView = Backbone.View.extend({
     person: null,
 
     initialize: function(){
-        this.model.fetch();
+        this.model.fetch({
+            error: $.proxy(function(e){
+                this.$el.html("This Grant does not exist");
+            }, this)
+        });
         this.listenTo(this.model, "change:title", function(){
             main.set('title', this.model.get('title'));
         });
