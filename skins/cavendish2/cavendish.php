@@ -712,7 +712,6 @@ class CavendishTemplate2 extends QuickTemplate {
                     $logout['href'] .= urlencode($getStr);
                     echo "<a id='status_logout' name='arrow_right_16x16' class='changeImg' style='font-size: 13px;line-height:32px;display:inline-block;width:74px;cursor: pointer;' title='Logout' href='{$logout['href']}'><span>Logout</span>&nbsp;&nbsp;&nbsp;<span style='color:white;font-size:28px;vertical-align: middle;display: inline-block; width:18px;text-decoration:none;'>&#12297;</span></a>";
                 }
-                echo "</div>";
             }
             if(!TESTING && $wgScriptPath != "" && !DEMO){
                 exec("git rev-parse HEAD", $output);
@@ -736,6 +735,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 $wgMessage->addInfo($config->getValue('globalMessage'));
             }
         ?>
+        </div>
     </div>
     <div id="outerHeader" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
         <div id="sideToggle" class="highlightsBackground0">
