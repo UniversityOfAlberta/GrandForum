@@ -69,8 +69,8 @@ class Report extends AbstractReport{
         }*/
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') || 
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport042017")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport042017", $selected);
+            //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport042017")) ? "selected" : false;
+            //$tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport042017", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
