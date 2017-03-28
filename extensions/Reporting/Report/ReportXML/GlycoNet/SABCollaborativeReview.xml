@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Catalyst Review" reportType="RP_SAB_COLLAB_REVIEW" ajax="true" disabled="false">
+<Report name="SAB Collaborative Review" reportType="RP_SAB_COLLAB_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -29,8 +29,8 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport042017" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -41,7 +41,7 @@
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>

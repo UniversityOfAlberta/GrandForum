@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_REPORT" pdfType="RPTP_SAB_COLLAB_REPORT" pdfFiles="SABCollaborativeReportPDF" personId="0" ajax="true" disabled="false">
+<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_REPORT" pdfType="RPTP_SAB_COLLAB_REPORT" pdfFiles="SABCollaborativeReportPDF" personId="0" ajax="true" disabled="false" year="2017">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SD">
             <SectionPermission id="materials" permissions="rw" />
@@ -38,8 +38,8 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport042017" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -72,8 +72,8 @@
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
-                        <td title="{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
-                            {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
+                        <td title="{getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
+                            {getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
                         </td>
                 ]]>
             </ReportItem>
@@ -121,7 +121,7 @@
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
             <ReportItemSet id="if" type="IfReportItemSet" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative">
                         <ReportItem id="review" type="StaticReportItem">
                             <![CDATA[
