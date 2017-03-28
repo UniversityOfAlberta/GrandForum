@@ -5,6 +5,7 @@ class UserUniversityAPI extends API{
     function UserUniversityAPI(){
         $this->addPOST("university", false, "The name of the university", "University of Alberta");
         $this->addPOST("department", false, "The department the user is in", "Computing Science");
+        $this->addPOST("researchArea", false, "The research area of the user", "Software Engineering");
         $this->addPOST("title", false, "The title of the user (ie. Professor)", "Professor");
     }
 
@@ -12,6 +13,9 @@ class UserUniversityAPI extends API{
         $_POST['university'] = @$_POST['university'];
         if(!isset($_POST['department'])){
             $_POST['department'] = "";
+        }
+        if(!isset($_POST['researchArea'])){
+            $_POST['researchArea'] = "";
         }
         if(!isset($_POST['title'])){
             $_POST['title'] = "";
@@ -63,6 +67,7 @@ class UserUniversityAPI extends API{
                                     array('id',
                                           'university_id', 
                                           'department',
+                                          'research_area',
                                           'position_id'),
                                     array('user_id' => EQ($person->getId())),
                                     array('id' => 'DESC'),
@@ -73,6 +78,7 @@ class UserUniversityAPI extends API{
             $last_id = $row['id'];
             if($row['university_id'] == $_POST['university'] &&
                $row['department'] == $_POST['department'] &&
+               $row['research_area'] == $_POST['researchArea'] &&
                $row['position_id'] == $_POST['title']){
                if(!$noEcho){
                     echo "No Change in University Information\n";
@@ -91,6 +97,7 @@ class UserUniversityAPI extends API{
                                     array('user_id' => $person->getId(),
                                           'university_id' => $_POST['university'],
                                           'department' => $_POST['department'],
+                                          'research_area' => $_POST['researchArea'],
                                           'position_id' => $_POST['title'],
                                           'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
                 if(!$noEcho){
@@ -104,6 +111,7 @@ class UserUniversityAPI extends API{
                                 array('user_id' => $person->getId(),
                                       'university_id' => $_POST['university'],
                                       'department' => $_POST['department'],
+                                      'research_area' => $_POST['researchArea'],
                                       'position_id' => $_POST['title'],
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             if(!$noEcho){

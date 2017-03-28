@@ -73,42 +73,42 @@ class PersonGradStudentsTab extends AbstractTab {
 			    $check = array('name'=>$hqp_name, 'role'=>$role);
 			     //TODO: CHECK HERE FOR BOTH STUFF
 			    foreach($students as $student){
-				if($student['name'] == $check['name'] && $student['role'] == $check['role']){
-				    $repeat_check = true;
-				    continue;
- 			    	}
+                    if($student['name'] == $check['name'] && $student['role'] == $check['role']){
+                        $repeat_check = true;
+                        continue;
+                    }
 			    }
 			    if(!$repeat_check){
 			        $students[] = $check;
 			    }
 			    else{
-				continue;
+                    continue;
 			    }
-                            $start_date = substr($r->getStartDate(), 0, 10);
-                            $end_date = substr($r->getEndDate(), 0, 10);
-                            $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
-                            $position = $hqp->getUniversity();
+                $start_date = substr($r->getStartDate(), 0, 10);
+                $end_date = substr($r->getEndDate(), 0, 10);
+                $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
+                $position = $hqp->getUniversity();
 			    $research_area = $position['research_area'];
-                            $position = $position['position'];
+                $position = $position['position'];
 			    if($role == "Supervises"){
-				$role= "Supervisor";
+                    $role= "Supervisor";
 			    }
 			    else{
-				continue;
+                    continue;
 			    }
 			    $names = array();
                             $rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
-			    foreach($rel as $rels){
-				if(count($rel) == 1){
-				   break;
-				}
-				$names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
-			    } 
+                foreach($rel as $rels){
+                    if(count($rel) == 1){
+                       break;
+                    }
+                    $names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
+                } 
                             $html .= 
                             "<tr>
 				<td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getNameForForms()}</a></td>
-                             	<td>$position</td>
-			        <td style='white-space: nowrap;'>$start_date</td>
+                <td>$position</td>
+                <td style='white-space: nowrap;'>$start_date</td>
 				<td style='white-space: nowrap;'>$end_date</td>
 				<td>$research_area</td>
 				<td></td><td>".implode(", ",$names)."</td>

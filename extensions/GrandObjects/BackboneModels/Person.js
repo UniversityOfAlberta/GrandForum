@@ -97,7 +97,11 @@ Person = Backbone.Model.extend({
             university.push(this.get('position'));
         }
         if(this.get('department') != ''){
-            university.push(this.get('department'));
+            var dept = this.get('department');
+            if(this.get('researchArea') != ''){
+                dept += "&nbsp;(" + this.get('researchArea') + ")";
+            }
+            university.push(dept);
         }
         if(this.get('university') != ''){
             university.push(this.get('university'));
@@ -119,14 +123,15 @@ Person = Backbone.Model.extend({
         photo: wgServer + wgScriptPath + '/skins/face.png',
         cachedPhoto: wgServer + wgScriptPath + '/skins/face.png',
         twitter: '',
-	website: '',
-	ldap: '',
-	googleScholar: '',
-	sciverseId: '',
+        website: '',
+        ldap: '',
+        googleScholar: '',
+        sciverseId: '',
         university: '',
         position: '',
         roles: new Array(),
         department: '',
+        researchArea: '',
         publicProfile: '',
         privateProfile: '',
         url: ''
@@ -305,6 +310,7 @@ PersonUniversity = RelationModel.extend({
         univeristy: "",
         department: "",
         position: "",
+        researchArea: "",
         personUniversityId: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: ""

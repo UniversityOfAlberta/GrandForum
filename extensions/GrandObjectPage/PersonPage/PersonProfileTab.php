@@ -185,12 +185,13 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['phone'] = @$_POST['phone'];
             $_POST['website'] = @$_POST['website'];
             $_POST['ldap'] = @$_POST['ldap'];
-	    $_POST['googleScholarUrl'] = @$_POST['googleScholarUrl'];
-	    $_POST['sciverseId'] = @$_POST['sciverseId'];
-	    $_POST['nationality'] = @$_POST['nationality'];
+            $_POST['googleScholarUrl'] = @$_POST['googleScholarUrl'];
+            $_POST['sciverseId'] = @$_POST['sciverseId'];
+            $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
             $_POST['department'] = @$_POST['department'];
+            $_POST['researchArea'] = @$_POST['researchArea'];
             $_POST['title'] = @$_POST['title'];
             $_POST['gender'] = @$_POST['gender'];
 
@@ -206,11 +207,11 @@ class PersonProfileTab extends AbstractEditableTab {
             $api->doAction(true);
             $api = new UserLdapAPI();
             $api->doAction(true);
-	    $api = new UserGoogleScholarAPI();
-	    $api->doAction(true);
-	    $api = new UserSciverseAPI();
-	    $api->doAction(true);
-	    $api = new UserNationalityAPI();
+            $api = new UserGoogleScholarAPI();
+            $api->doAction(true);
+            $api = new UserSciverseAPI();
+            $api->doAction(true);
+            $api = new UserNationalityAPI();
             $api->doAction(true);
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -583,9 +584,11 @@ EOF;
         }
         $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
         $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
+        $areaCombo = new ComboBox('researchArea', "Research Area", $university['research_area'], $departments);
         $titleCombo->attr('style', 'max-width: 250px;');
         $orgCombo->attr('style', 'max-width: 250px;');
         $deptCombo->attr('style', 'max-width: 250px;');
+        $areaCombo->attr('style', 'max-width: 250px;');
         $this->html .= "<tr>
                             <td align='right'><b>Title:</b></td>
                             <td>{$titleCombo->render()}</td>
@@ -611,6 +614,10 @@ EOF;
                         <tr>
                             <td align='right'><b>Department:</b></td>
                             <td>{$deptCombo->render()}</td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Research Area:</b></td>
+                            <td>{$areaCombo->render()}</td>
                         </tr>";
         $this->html .= "</table>";
     }

@@ -305,6 +305,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         $university_id = "";
         $position_id = "";
         $department = $this->POST('department');
+        $researchArea = $this->POST('researchArea');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
         
@@ -324,6 +325,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
                                   'department' => $department,
+                                  'research_area' => $researchArea,
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,
                                   'end_date' => $end_date));
@@ -381,6 +383,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         $university_id = "";
         $position_id = "";
         $department = $this->POST('department');
+        $researchArea = $this->POST('researchArea');
         $start_date = $this->POST('startDate');
         $end_date = $this->POST('endDate');
         
@@ -400,6 +403,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
                                   'department' => $department,
+                                  'research_area' => $researchArea,
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,
                                   'end_date' => $end_date),

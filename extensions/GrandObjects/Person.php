@@ -57,6 +57,7 @@ class Person extends BackboneModel {
     var $grants;
     var $multimedia;
     var $aliases = false;
+    var $roleHistory;
     var $budgets = array();
     var $leadershipCache = array();
     var $themesCache = array();
@@ -436,7 +437,7 @@ class Person extends BackboneModel {
                               "department" => $row['department'],
                               "position"   => $row['position'],
                               "date"       => $row['end_date'],
-			      "research_area" => $row['research_area']);
+                              "research_area" => $row['research_area']);
                 }
             }
         }
@@ -894,14 +895,15 @@ class Person extends BackboneModel {
                       'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
-		      'ldap' => $this->getLdap(),
-		      'googleScholarId' => $this->getGoogleScholar(),
-		      'sciverseId' => $this->getSciverseId(),
+                      'ldap' => $this->getLdap(),
+                      'googleScholarId' => $this->getGoogleScholar(),
+                      'sciverseId' => $this->getSciverseId(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
                       'position' => $this->getPosition(),
+                      'researchArea' => $this->getResearchArea(),
                       'roles' => $roles,
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
@@ -1826,6 +1828,15 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns the name of the Department that this Person is at
+     * @return string The name of the Department
+     */
+    function getResearchArea(){
+        $university = $this->getUniversity();
+        return (isset($university['research_area'])) ? $university['research_area'] : "";
+    }
+    
+    /**
      * Returns the name of the Position/Title that this Person is
      * @return string The name of the Postion/Title
      */
@@ -1942,6 +1953,7 @@ class Person extends BackboneModel {
                 $array[] = array("university" => $row['university_name'],
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
+                                 "researchArea" => $row['research_area'],
                                  "start" => $row['start_date'],
                                  "end" => $row['end_date']);
             }
@@ -2090,10 +2102,14 @@ class Person extends BackboneModel {
         if($history !== false && $this->id != null){
             $this->roles = array();
             if($history === true){
-                $data = DBFunctions::select(array('grand_roles'),
-                                            array('*'),
-                                            array('user_id' => $this->id),
-                                            array('end_date' => 'DESC'));
+                if($this->roleHistory === null){
+                    $data = DBFunctions::select(array('grand_roles'),
+                                                array('*'),
+                                                array('user_id' => $this->id),
+                                                array('end_date' => 'DESC'));
+                    $this->roleHistory = $data;
+                }
+                $data = $this->roleHistory;
             }
             else{
                 $sql = "SELECT *
@@ -2113,6 +2129,7 @@ class Person extends BackboneModel {
         }
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
+            $this->roles = array();
             if(isset(self::$rolesCache[$this->id])){
                 foreach(self::$rolesCache[$this->id] as $row){
                     $this->roles[] = new Role(array(0 => $row));
@@ -2127,6 +2144,9 @@ class Person extends BackboneModel {
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));
             }
+        }
+        else if($this->id == null){
+            $this->roles = array();
         }
         return $this->roles;
     }
@@ -2450,7 +2470,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                           'grand_universities' => 'u',
                                           'grand_positions' => 'p'),
-                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.research_area', 'uu.start_date', 'uu.end_date'),
                                     array('uu.user_id' => EQ($this->id),
                                           'u.university_id' => EQ(COL('uu.university_id')),
                                           'p.position_id' => EQ(COL('uu.position_id'))),
@@ -2462,6 +2482,7 @@ class Person extends BackboneModel {
                 'personId' => $this->getId(),
                 'department' => $row['department'],
                 'position' => $row['position'],
+                'researchArea' => $row['research_area'],
                 'startDate' => $row['start_date'],
                 'endDate' => $row['end_date']
             );

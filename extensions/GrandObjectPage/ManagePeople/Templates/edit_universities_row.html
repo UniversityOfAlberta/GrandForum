@@ -2,6 +2,7 @@
     <table>
         <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
         <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
+        <tr><td align="right"><b>Research Area:</b></td><td><%= HTML.Select(this, 'researchArea', {options: allDepartments}) %></td></tr>
         <tr><td align="right"><b>Position:</b></td><td>
         <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
               _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
