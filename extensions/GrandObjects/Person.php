@@ -54,6 +54,7 @@ class Person extends BackboneModel {
     var $hqps;
     var $historyHqps;
     var $contributions;
+    var $grants;
     var $multimedia;
     var $aliases = false;
     var $budgets = array();
@@ -2805,6 +2806,42 @@ class Person extends BackboneModel {
             }
         }
         return $contribs;
+    }
+    
+    function getGrants(){
+        if($this->grants == null){
+            $this->grants = array();
+            $data = DBFunctions::select(array('grand_grants'),
+                                        array('id'),
+                                        array('user_id' => EQ($this->getId())));
+            foreach($data as $row){
+                $this->grants[] = Grant::newFromId($row['id']);
+            }
+        }
+        return $this->grants;
+    }
+    
+    function getGrantsDuring($year){
+        $grants = array();
+        foreach($this->getGrants() as $grant){
+            if($grant->getStartYear() <= $year && $grant->getEndYear() >= $year){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
+    }
+    
+    function getGrantsBetween($start, $end){
+        $grants = array();
+        foreach($this->getGrants() as $grant){
+            $grantStart = $grant->getStartDate();
+            $grantEnd = $grant->getEndDate();
+            if(($start <= $grantStart && $end >= $grantStart) ||
+               ($start >= $grantStart && $end <= $grantEnd)){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
     }
     
     /**

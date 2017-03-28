@@ -177,8 +177,8 @@ class Grant extends BackboneModel {
             'title' => $this->title,
             'description' => $this->description,
             'request' => $this->request,
-            'start_date' => substr($this->start_date, 0, 10),
-            'end_date' => substr($this->end_date, 0, 10),
+            'start_date' => time2date($this->getStartDate(), "Y-m-d"),
+            'end_date' => time2date($this->getEndDate(), "Y-m-d"),
             'url' => $this->getUrl()
         );
         return $json;

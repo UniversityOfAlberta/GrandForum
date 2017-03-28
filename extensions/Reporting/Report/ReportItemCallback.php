@@ -52,6 +52,12 @@ class ReportItemCallback {
             "contribution_total" => "getContributionTotal",
             "contribution_recipients" => "getContributionRecipients",
             "contribution_pis" => "getContributionPIs",
+            // Grants
+            "grant_title" => "getGrantTitle",
+            "grant_sponsor" => "getGrantSponsor",
+            "grant_start_date" => "getGrantStartDate",
+            "grant_end_date" => "getGrantEndDate",
+            "grant_total" => "getGrantTotal",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -621,6 +627,30 @@ class ReportItemCallback {
         return implode(",",$string_names);
     }
  
+    function getGrantTitle(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return $grant->getTitle();
+    }
+    
+    function getGrantSponsor(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return $grant->getSponsor();
+    }
+    
+    function getGrantStartDate(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return time2date($grant->getStartDate(), "Y-m-d");
+    }
+    
+    function getGrantEndDate(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return time2date($grant->getEndDate(), "Y-m-d");
+    }
+    
+    function getGrantTotal(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return number_format($grant->getTotal(), 2);
+    }
 
     function getMilestoneId(){
         return $this->reportItem->milestoneId;

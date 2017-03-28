@@ -123,40 +123,41 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-		if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP)){
-		    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
+                if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP)){
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
                 }
-               if($wgUser->isLoggedIn() && $person->isRole(NI)){
-	    	    $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
-		}
-               if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
- 		    $tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
-                }
-               if($wgUser->isLoggedIn() && $person->isRole(NI)){
-		    $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
-		}
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
-		    $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility));
+                    $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
-		if($config->getValue('projectsEnabled')){
-		     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                    $tabbedPage->addTab(new PersonGrantsTab($person, $visibility));
+                    //$tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
                 }
-		//$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-		if($config->getValue('projectsEnabled')){
-		    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-		}
+                if($wgUser->isLoggedIn() && $person->isRole(NI)){
+                    $tabbedPage->addTab(new PersonCoursesTab($person,$visibility));
+                }
+                if($wgUser->isLoggedIn() && $person->isRole(NI)){
+                    $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility));
+                }
+                if($config->getValue('projectsEnabled')){
+                    $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
+                }
+                //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
+                if($config->getValue('projectsEnabled')){
+                    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
+                }
                 /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
                     $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
                 }*/
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }
-		if($config->getValue('networkName') != 'Faculty of Science'){
+                if($config->getValue('networkName') != 'Faculty of Science'){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-		}
+                }
                 //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
                 $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
-		$tabbedPage->showPage();
+                $tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);
                 $wgOut->output();

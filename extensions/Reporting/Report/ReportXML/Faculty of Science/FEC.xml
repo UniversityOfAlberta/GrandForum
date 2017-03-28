@@ -195,29 +195,28 @@
     <ReportSection id="grants" tooltip="Funding and Awards" name="Funding and Awards" title="Funding and Awards" blobSection="FEC_GRANTS" type="EditableReportSection">
         <ReportItem id ="grantsheader" type="StaticReportItem">
             <![CDATA[
-		<table class='wikitable' style='width:100%'><thead><tr>
-		<th>Agency</th>
-		<th>Program</th>
-		<th>Starts</th>
-		<th>Ends</th>
-		<th>$Yearly</th>
-		<th>$Total</th>
-		<th>PI</th>
-		<th>Co-recipients</th></tr></thead><tbody>
+		<table class='wikitable' style='width:100%'>
+		    <thead>
+		        <tr>
+		            <th>Title</th>
+		            <th>Sponsor</th>
+		            <th>Starts</th>
+		            <th>Ends</th>
+		            <th>$Total</th>
+		        </tr>
+		    </thead>
+		    <tbody>
 	    ]]>
 	</ReportItem> 
 	<ReportItemSet id="grants" type="PersonContributionsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
 	    <ReportItem id="row" type="StaticReportItem">
 	        <![CDATA[
 	            <tr>
-	            	<td>{$contribution_agency}</td>
-	            	<td>{$contribution_program}</td>
-	            	<td>{$contribution_start_date}</td>
-	            	<td>{$contribution_end_date}</td>
-	            	<td>${$contribution_yearly}</td>
-	            	<td>${$contribution_total}</td>
-	            	<td>{$contribution_pis}</td>
-	            	<td>{$contribution_recipients}</td>
+	            	<td>{$grant_title}</td>
+	            	<td>{$grant_sponsor}</td>
+	            	<td align="center">{$grant_start_date}</td>
+	            	<td align="center">{$grant_end_date}</td>
+	            	<td align="right">${$grant_total}</td>
 	            </tr>
 	        ]]>
 	    </ReportItem>

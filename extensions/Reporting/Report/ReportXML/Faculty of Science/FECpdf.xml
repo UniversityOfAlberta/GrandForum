@@ -180,16 +180,16 @@
          </ReportItem>
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-		<h2>Publications</h2>
-		<table class='wikitable' style='width:100%'><tbody>
-	    ]]>
+                <h2>Publications</h2>
+                <table class='wikitable' style='width:100%'><tbody>
+            ]]>
         </ReportItem>
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-	    <ReportItem id="row" type="StaticReportItem">
-	         <![CDATA[
-		     <tr><td>{$product_citation}</td></tr>
-		 ]]>
-	    </ReportItem>
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td>{$product_citation}</td></tr>
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
@@ -197,17 +197,17 @@
             ]]>
         </ReportItem>
         <ReportItem id="presentationheader" type="StaticReportItem">
-	    <![CDATA[
+            <![CDATA[
                 <h2>Presentations</h2>
                 <table class='one' style='width:100%'>
                     <thead>
                         <tr>
                             <th>Title</th>
-                        	<th>Type</th>
-                        	<th>Invited</th>
-                        	<th>Organization</th>
-                        	<th>Location</th>
-                        	<th>Date</th>
+                            <th>Type</th>
+                            <th>Invited</th>
+                            <th>Organization</th>
+                            <th>Location</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
             ]]>
@@ -216,12 +216,12 @@
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center' class="b">{$presentation_title}</td>
-                    	<td align='center' class="b">{$presentation_type}</td>
-                    	<td align='center' class="b">{$presentation_invited}</td>
-                    	<td class="b">{$presentation_organization}</td>
-                    	<td align='center' class="b">{$presentation_country}</td>
-                    	<td align='center' style='white-space:nowrap;' class="b">{$presentation_date}</td>
-                    	</tr>
+                        <td align='center' class="b">{$presentation_type}</td>
+                        <td align='center' class="b">{$presentation_invited}</td>
+                        <td class="b">{$presentation_organization}</td>
+                        <td align='center' class="b">{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;' class="b">{$presentation_date}</td>
+                        </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -232,53 +232,52 @@
         </ReportItem>
         <ReportItem id ="grantsheader" type="StaticReportItem">
             <![CDATA[
-		<h2>Research Grants and Contracts</h2>
-		<table class='one'><thead><tr>
-		<th>Agency</th>
-		<th>Program</th>
-		<th>Starts</th>
-		<th>Ends</th>
-		<th>$Yearly</th>
-		<th>$Total</th>
-		<th>PI</th>
-		<th>Co-recipients</th></tr></thead><tbody>
-	    ]]>
-	</ReportItem> 
-	<ReportItemSet id="grants" type="PersonContributionsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-	    <ReportItem id="row" type="StaticReportItem">
-	        <![CDATA[
-	            <tr>
-	            	<td class='b' align='center'>{$contribution_agency}</td>
-	            	<td class='b' align='center'>{$contribution_program}</td>
-	            	<td class='b' align='center' style='white-space:nowrap;'>{$contribution_start_date}</td>
-	            	<td class='b' align='center' style='white-space:nowrap;'>{$contribution_end_date}</td>
-	            	<td class='b' align='right'>${$contribution_yearly}</td>
-	            	<td class='b' align='right'>${$contribution_total}</td>
-	            	<td class='b'>{$contribution_pis}</td>
-	            	<td class='b'>{$contribution_recipients}</td>
-	            </tr>
-	        ]]>
-	    </ReportItem>
-	</ReportItemSet>
-	<ReportItem id="grantsfooter" type="StaticReportItem">
-	    <![CDATA[
-	        </tbody></table>
-	    ]]>
-	</ReportItem>
-	<ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels=
-	"Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true" blobSection="FEC_GRANTS">
-	    <![CDATA[
-	        <h2>Awards Received</h2>{$item}
-	    ]]>
-	</ReportItem>
+                <h2>Research Grants and Contracts</h2>
+                <table class='one'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td class='b' align='center'>{$grant_title}</td>
+                        <td class='b' align='center'>{$grant_sponsor}</td>
+                        <td class='b' align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                        <td class='b' align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                        <td class='b' align='right'>${$grant_total}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels=
+        "Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true" blobSection="FEC_GRANTS">
+            <![CDATA[
+                <h2>Awards Received</h2>{$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
             <![CDATA[
-            	<h2>Supplementary Professional Activities</h2>{$item}
+                <h2>Supplementary Professional Activities</h2>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="serviceOutreachDepartmental" type="TextareaReportItem" blobItem="FEC_INFO_DEPARTMENTAL" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
             <![CDATA[
-            	<h2>Service/Committees/Outreach</h2><b>Departmental</b><div>{$item}</div><br>
+                <h2>Service/Committees/Outreach</h2><b>Departmental</b><div>{$item}</div><br>
             ]]>
         </ReportItem>
         <ReportItem id="serviceOutreachFaculty" type="TextareaReportItem" blobItem="FEC_INFO_FACULTY" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">

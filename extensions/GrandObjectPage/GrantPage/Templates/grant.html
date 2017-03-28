@@ -4,20 +4,44 @@
 <table>
     <tr>
         <td class="label">User:</td>
-        <td colspan="3"><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+        <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
+    <% if(sponsor != ""){ %>
     <tr>
         <td class="label">Sponsor:</td>
-        <td colspan="3"><%= sponsor %></td>
+        <td><%= sponsor %></td>
     </tr>
+    <% } %>
+    <% if(start_date != ""){ %>
     <tr>
         <td class="label">Start Date:</td>
-        <td colspan="3"><%= start_date.substring(0, 10) %></td>
+        <td><%= start_date.substring(0, 10) %></td>
     </tr>
-    <tr>
-        <td class="label">End Date:</td>
-        <td colspan="3"><%= end_date.substring(0, 10) %></td>
-    </tr>
+    <% } %>
+    <% if(end_date != ""){ %>
+        <tr>
+            <td class="label">End Date:</td>
+            <td><%= end_date.substring(0, 10) %></td>
+        </tr>
+    <% } %>
+    <% if(project_id != ""){ %>
+        <tr>
+            <td class="label">Project ID:</td>
+            <td><%= project_id %></td>
+        </tr>
+    <% } %>
+    <% if(speed_code != ""){ %>
+        <tr>
+            <td class="label">Speed Code:</td>
+            <td><%= speed_code %></td>
+        </tr>
+    <% } %>
+    <% if(request != ""){ %>
+        <tr>
+            <td class="label">Request:</td>
+            <td><%= request %></td>
+        </tr>
+    <% } %>
 </table>
 <table class="wikitable" rules="all" frame="box">
     <tr>
