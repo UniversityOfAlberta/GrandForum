@@ -69,6 +69,22 @@ class SOP extends BackboneModel{
     }
 
   /**
+   * newFromId Returns an SOP object from a given id
+   * @param $id
+   * @return $sop SOP object
+   */
+    static function newFromUserId($id){
+        $data = DBFunctions::select(array('grand_sop'),
+                                    array('id'),
+                                    array('user_id' => EQ($id)));
+	if(count($data)>0){
+	    $sop = SOP::newFromId($data[0]['id']);
+	    return $sop;
+	}
+	return false;
+    }
+
+  /**
    * SOP constructor.
    * @param $data
    */
@@ -117,33 +133,7 @@ class SOP extends BackboneModel{
     static function generateCache(){
         if(empty(self::$idsCache)){
             $data = DBFunctions::select(array('grand_sop'),
-                                        array('id',
-                                              'user_id',
-                                              'content',
-                                              'date_created',
-                                              'sentiment_val',
-                                              'sentiment_type',
-                                              'readability_score',
-                                              'reading_ease',
-                                              'ari_grade',
-                                              'ari_age',
-                                              'colemanliau_grade',
-                                              'colemanliau_age',
-                                              'dalechall_index',
-                                              'dalechall_grade',
-                                              'dalechall_age',
-                                              'fleschkincaid_grade',
-                                              'fleschkincaid_age',
-                                              'smog_grade',
-                                              'smog_age',
-                                              'errors',
-                                              'sentlen_ave',
-                                              'wordletter_ave',
-                                              'min_age',
-                                              'word_count',
-                                              'emotion_stats',
-                                              'pdf_data',
-                                              'personality_stats'),
+                                        array('*'),
                                         array());
             foreach($data as $row){
                 unset($row['pdf_contents']);
@@ -694,7 +684,6 @@ class SOP extends BackboneModel{
         );
         $curl = curl_init();
         curl_setopt_array($curl, $curl_array);
-	    print_r($curl_array);
         $data = curl_exec($curl);
         $result = '';
         if ($error = curl_error($curl)){
@@ -770,6 +759,7 @@ class SOP extends BackboneModel{
 	    $this->getReadabilityScore();
 	    $this->getSentimentScore();
 	    $this->getEmotionsScore();
+	    $this->getPersonalityScore();
 	    return SOP::newFromId($this->id);
     }
 
