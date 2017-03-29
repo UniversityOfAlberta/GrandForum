@@ -50,11 +50,11 @@ class AddContributionAPI extends API{
             $_POST['partners'][] = array("name" => $name, "id" => $id);
         }
 
-	$keywords = explode(",", $_POST['keywords']);
-	$_POST['keywords'] = array();
-	foreach($keywords as $keyword){
-	    $POST['keywords'][] = $keyword;
-	}
+        $keywords = explode(",", $_POST['keywords']);
+        $_POST['keywords'] = array();
+        foreach($keywords as $keyword){
+            $POST['keywords'][] = $keyword;
+        }
     }
 
     function doAction($noEcho=false){
@@ -82,15 +82,15 @@ class AddContributionAPI extends API{
             $keywords = explode(",", $_POST['keywords']);
             $keyArray = array();
             foreach($keywords as $keyword){
-           	 $keyArray[] = $keyword;
+                $keyArray[] = $keyword;
             } 
-	    $_POST['keywords'] = $keyArray;
-	    DBFunctions::insert('grand_contributions',
+            $_POST['keywords'] = $keyArray;
+            DBFunctions::insert('grand_contributions',
                                 array('id' => $_POST['id'],
                                       'name' => $_POST['title'],
                                       'users' => serialize($_POST['users']),
                                       'description' => $_POST['description'],
-				      'keywords' => serialize($_POST['keywords']),
+                                      'keywords' => serialize($_POST['keywords']),
                                       'access_id' => $_POST['access_id'],
                                       'start_date' => $_POST['start_date'],
                                       'end_date' => $_POST['end_date']));
@@ -180,13 +180,18 @@ class AddContributionAPI extends API{
                 $id = $data[0]['id'];
             }
             $_POST['access_id'] = (isset($_POST['access_id'])) ? $_POST['access_id'] : 0;
-                
+            $keywords = explode(",", $_POST['keywords']);
+            $keyArray = array();
+            foreach($keywords as $keyword){
+                $keyArray[] = $keyword;
+            } 
+            $_POST['keywords'] = $keyArray;
             DBFunctions::insert('grand_contributions',
                                 array('id' => $id + 1,
                                       'name' => $_POST['title'],
                                       'users' => serialize($_POST['users']),
                                       'description' => $_POST['description'],
-				      'keywords' => serialize($_POST['keywords']),
+                                      'keywords' => serialize($_POST['keywords']),
                                       'access_id' => $_POST['access_id'],
                                       'start_date' => $_POST['start_date'],
                                       'end_date' => $_POST['end_date']));
@@ -224,6 +229,7 @@ class AddContributionAPI extends API{
                 }
             }
         }
+        DBFunctions::commit();
     }
     
     function isLoginRequired(){

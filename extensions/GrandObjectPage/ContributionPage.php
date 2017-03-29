@@ -130,7 +130,6 @@ class ContributionPage {
                     if($edit){
                         $other_types = Contribution::getAllOtherSubTypes();
                         
-                        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
                                     $('form[name=contribution]').submit(function(){
@@ -306,7 +305,7 @@ class ContributionPage {
                                     updateTotal();
                                 }
                             </script>");
-			        }
+                    }
                     
                     if($edit){
                         if(isset($_POST['title'])){
@@ -349,7 +348,13 @@ class ContributionPage {
                         }
                         if($edit){
                             if(isset($_POST['users'])){
-                                $personNames = str_replace(" ", ".", $_POST['users']);
+                                foreach($_POST['users'] as $key => $id){
+                                    if(is_numeric($id)){
+                                        $p = Person::newFromId($id);
+                                        $_POST['users'][$key] = $p->getNameForForms();
+                                    }
+                                }
+                                $personNames = $_POST['users'];
                             }
                             $allPeople = Person::getAllPeople('all');
                             foreach($allPeople as $person){
@@ -387,26 +392,23 @@ class ContributionPage {
                     if($edit){
                         $description = isset($_POST['description']) ? $_POST['description'] : $contribution->getDescription();
                         $wgOut->addHTML("<textarea style='height:175px; width:650px;' name='description'>$description</textarea>");
-			$keywords = $contribution->getKeywords();
-			$words = implode(",",$keywords);
-			$wgOut->addScript("<script type='text/javascript'><link href='http://aehlke.github.io/tag-it/css/jquery.tagit.css' rel='stylesheet' type='text/css'>
-                                           <link href='http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css' rel='stylesheet' type='text/css'>
-                                           <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' type='text/javascript' charset='utf-8'></script>
-                                           <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js' type='text/javascript' charset='utf-8'></script>
-                                           <script src='http://aehlke.github.io/tag-it/js/tag-it.js' type='text/javascript' charset='utf-8'></script>
-                                           <script>                          
-                                           $(function(){
-                                                $('#words').tagit({
-                                                                     singleField: true,
-                                                                     removeConfirmation: true
-                                                                    });
-                                           });
-                                           </script></script>");
+                        $keywords = $contribution->getKeywords();
+                        $words = implode(",",$keywords);
+                        $wgOut->addScript("<script type='text/javascript'>                     
+                                   $(function(){
+                                        $('#words').tagit({
+                                                            singleField: true,
+                                                            removeConfirmation: true
+                                                          });
+                                   });
+                               </script>");
 
-			   $wgOut->addHTML("<table>
-                                    <tr><td><b>Keywords:</b></td><td><input type='text' id='words' name='keywords' value='$words'></td></tr>
-					");
-		    }
+                        $wgOut->addHTML("<table>
+                                            <tr>
+                                                <td><b>Keywords:</b></td>
+                                                <td><input type='text' id='words' name='keywords' value='$words'></td>
+                                            </tr>");
+                    }
                     else{
                         $wgOut->addWikiText($contribution->getDescription());
                     }
@@ -589,12 +591,12 @@ class ContributionPage {
                         $wgOut->addHTML($projList->render());
                         if(count($projs) > 0){
                             foreach($projs as $project){
-	                            // Add any deleted projects so that they remain as part of this project
-	                            if($project->deleted){
-	                                $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");
-	                            }
-	                        }
-	                    }
+                                // Add any deleted projects so that they remain as part of this project
+                                if($project->deleted){
+                                    $wgOut->addHTML("<input style='display:none;' type='checkbox' name='projects[]' value='{$project->getName()}' checked='checked' />");
+                                }
+                            }
+                        }
                     }
                     else{
                         $projectList = array();
