@@ -130,7 +130,6 @@ class ContributionPage {
                     if($edit){
                         $other_types = Contribution::getAllOtherSubTypes();
                         
-                        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/scripts/switcheroo.js'></script>");
                         $wgOut->addScript("<script type='text/javascript'>
                                 $(document).ready(function(){
                                     $('form[name=contribution]').submit(function(){
@@ -380,7 +379,13 @@ class ContributionPage {
                         }
                         if($edit){
                             if(isset($_POST['users'])){
-                                $personNames = str_replace(" ", ".", $_POST['users']);
+                                foreach($_POST['users'] as $key => $id){
+                                    if(is_numeric($id)){
+                                        $p = Person::newFromId($id);
+                                        $_POST['users'][$key] = $p->getNameForForms();
+                                    }
+                                }
+                                $personNames = $_POST['users'];
                             }
                             $allPeople = Person::getAllPeople('all');
                             foreach($allPeople as $person){
