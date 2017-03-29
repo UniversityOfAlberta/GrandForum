@@ -16,7 +16,7 @@ class EmailList extends SpecialPage{
     function execute($par){
         global $wgOut;
         
-        $people = array_merge(Person::getAllPeople(), Person::getAllCandidates());
+        $people = Person::getAllCandidates();
         $wgOut->addHTML("<table id='people' rules='all' frame='box'>
             <thead>
                 <tr>
