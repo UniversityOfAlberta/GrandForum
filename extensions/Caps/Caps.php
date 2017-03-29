@@ -6,5 +6,6 @@
     require_once("PharmacyMap/PharmacyMap.php");
     require_once("Refer/ReferAColleague.php");
     require_once("WhoSupplies/WhoSupplies.php");
+    require_once("EmailList/EmailList.php");
     
 ?>
