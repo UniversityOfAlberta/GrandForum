@@ -18,6 +18,7 @@ class Milestone {
     var $identifier;
     var $activity;
     var $milestone_id;
+    var $order;
     var $parent;
     var $project;
     var $leader;
@@ -98,6 +99,7 @@ class Milestone {
             $this->identifier = $data['0']['identifier'];
             $this->activity_id = $data['0']['activity_id'];
             $this->milestone_id = $data[0]['milestone_id'];
+            $this->order = $data[0]['order'];
             $this->title = $data[0]['title'];
             if(isset($data[1])){
                 $this->parent = $data[1]['id'];
@@ -161,6 +163,14 @@ class Milestone {
      */
     function getMilestoneId(){
         return $this->milestone_id;
+    }
+    
+    /**
+     * Returns the order of this Milestone
+     * @return integer The order of this Milestone
+     */
+    function getOrder(){
+        return $this->order();
     }
 
     /**

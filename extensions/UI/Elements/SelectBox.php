@@ -3,6 +3,7 @@
 class SelectBox extends UIElement {
 
     var $options = array();
+    var $forceKey = false;
     
     function SelectBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
@@ -19,7 +20,7 @@ class SelectBox extends UIElement {
                 $selectedFound = true;
             }
             $value = $option;
-            if(is_string($key)){
+            if(is_string($key) || $this->forceKey){
                 $value = $key;
             }
             $value = sanitizeInput($value);

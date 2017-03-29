@@ -5,6 +5,7 @@ class Activity {
     var $id;
     var $name;
     var $project;
+    var $order;
     
     /**
      * Returns the Activity with the given id
@@ -13,7 +14,7 @@ class Activity {
      */
     function newFromId($id){
         $data = DBFunctions::select(array('grand_activities'),
-                                    array('id', 'name', 'project_id'),
+                                    array('*'),
                                     array('id' => EQ($id)));
         return new Activity($data);
     }
@@ -27,13 +28,13 @@ class Activity {
     function newFromName($name, $projectId=""){
         if($projectId != ""){
             $data = DBFunctions::select(array('grand_activities'),
-                                        array('id', 'name', 'project_id'),
+                                        array('*'),
                                         array('name' => EQ($name),
                                               'project_id' => EQ($projectId)));
         }
         else{
             $data = DBFunctions::select(array('grand_activities'),
-                                        array('id', 'name', 'project_id'),
+                                        array('*'),
                                         array('name' => EQ($name)));
         }
         return new Activity($data);
@@ -48,6 +49,7 @@ class Activity {
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];
             $this->project = Project::newFromId($data[0]['project_id']);
+            $this->order = $data[0]['order'];
         }
     }
     
@@ -73,6 +75,14 @@ class Activity {
      */
     function getProject(){
         return $this->project;
+    }
+    
+    /**
+     * Returns the order of this Activity
+     * @return integer The order of this Activity
+     */
+    function getOrder(){
+        return $this->order;
     }
     
 }

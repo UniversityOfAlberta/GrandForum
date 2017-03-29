@@ -1383,7 +1383,9 @@ EOF;
         $activities = array();
         $data = DBFunctions::select(array('grand_activities'),
                                     array('id'),
-                                    array('project_id' => $this->getId()));
+                                    array('project_id' => $this->getId()),
+                                    array('`order`' => 'ASC',
+                                          'id' => 'ASC'));
         foreach($data as $row){
             $activities[] = Activity::newFromId($row['id']);
         }
@@ -1417,7 +1419,7 @@ EOF;
             $sql .= "\nAND start_date > end_date
                      AND status != 'Abandoned' AND status != 'Closed'";
         }
-        $sql .= "\nORDER BY activity_id, milestone_id";
+        $sql .= "\nORDER BY `order`, activity_id, milestone_id";
         $data = DBFunctions::execSQL($sql);
         
         foreach($data as $row){
@@ -1458,7 +1460,7 @@ EOF;
                 FROM grand_milestones
                 WHERE project_id = '{$this->id}'
                 AND status IN ('Abandoned','Closed') 
-                ORDER BY activity_id, projected_end_date";
+                ORDER BY `order`, activity_id, projected_end_date";
         
         $data = DBFunctions::execSQL($sql);
         foreach($data as $row){

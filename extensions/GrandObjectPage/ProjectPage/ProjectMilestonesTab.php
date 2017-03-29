@@ -82,10 +82,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if(isset($_POST['new_milestone_activity']) && isset($_POST['new_milestone_title']) &&
            $_POST['new_milestone_activity'] != "" && $_POST['new_milestone_title'] != "" && 
            $this->canEditMilestone(null)){
-            
+            $activity = Activity::newFromId($_POST['new_milestone_activity']);
             $_POST['leader'] = "";
-            $_POST['activity'] = $_POST['new_milestone_activity'];
-            $_POST['activity_id'] = "";
+            $_POST['activity'] = $activity->getName();
+            $_POST['activity_id'] = $_POST['new_milestone_activity'];
             $_POST['milestone'] = "";
             $_POST['title'] = $_POST['new_milestone_title'];
             $_POST['new_title'] = $_POST['new_milestone_title'];
@@ -215,6 +215,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $activityNames[$activity->getId()] = $activity->getName();
             }
             $activityBox = new SelectBox("new_milestone_activity", "new_milestone_activity", "", $activityNames);
+            $activityBox->forceKey= true;
             $activityText = $activityBox->render();
             if($this->canEditMilestone(null)){
                 $this->html .= "<div title='Add Activity' id='addActivityDialog' style='display:none;'>
