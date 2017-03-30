@@ -170,7 +170,7 @@ class Milestone {
      * @return integer The order of this Milestone
      */
     function getOrder(){
-        return $this->order();
+        return $this->order;
     }
 
     /**

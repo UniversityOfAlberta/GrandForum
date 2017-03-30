@@ -186,9 +186,11 @@ class ProjectMilestoneAPI extends API{
         $rows = DBFunctions::execSQL($sql);
         if(count($rows) > 0 && $this->update){
             $milestoneId = $rows[0]['milestone_id'];
+            $m = Milestone::newFromId($milestoneId);
             DBFunctions::insert('grand_milestones',
 		                        array('activity_id'         => $activityId,
 		                              'milestone_id'        => $milestoneId,
+		                              '`order`'             => $m->getOrder(),
 		                              'project_id'          => $project->getId(),
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['new_title'],
