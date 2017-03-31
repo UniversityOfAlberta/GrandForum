@@ -35,7 +35,7 @@ GrantView = Backbone.View.extend({
             this.$("#contributions").empty();
             _.each(this.model.get('contributions'), $.proxy(function(cId){
                 var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-                this.$("#contributions").append("<li>" + contribution.name + "</li>");
+                this.$("#contributions").append("<li><a href='" + wgServer + wgScriptPath + "/index.php/Contribution:" + contribution.id + "'>" + contribution.name + "</a></li>");
             }, this));
         }
     },

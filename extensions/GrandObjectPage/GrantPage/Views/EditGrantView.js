@@ -1,6 +1,7 @@
 EditGrantView = Backbone.View.extend({
 
     person: null,
+    timeout: null,
     allContributions: null,
 
     initialize: function(){
@@ -49,8 +50,48 @@ EditGrantView = Backbone.View.extend({
         });
     },
     
+    previewContribution: function(e){
+        if(this.timeout != null){
+            clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout($.proxy(function(){
+            var id = $(e.currentTarget).attr('data-id');
+            $.get(wgServer + wgScriptPath + "/index.php/Contribution:" + id, $.proxy(function(response){
+                var widthBefore = $(document).width();
+                var heightBefore = $(document).height();
+
+                $("#preview").html($("#bodyContent", response).html());
+
+                $("input[name=edit]").hide();
+
+                $("#preview").fadeIn(100);
+                $("#preview").css('left', $(e.currentTarget).position().left + $(e.currentTarget).outerWidth() + 30 - $("#preview").width()/4);
+                $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2);
+                
+                var widthAfter = $(document).width();
+                var heightAfter = $(document).height();
+                
+                if(widthAfter != widthBefore){
+                    $("#preview").css('left', $(e.currentTarget).position().left + $(e.currentTarget).outerWidth() + 30 - $("#preview").width()/4 - (widthAfter - widthBefore + 5));
+                }
+                if(heightAfter != heightBefore){
+                    $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2 - (heightAfter - heightBefore + 5));
+                }
+            }, this));
+        }, this), 50);
+    },
+    
+    hidePreview: function(e){
+        if(this.timeout != null){
+            clearTimeout(this.timeout);
+        }
+        $("#preview").hide();
+    },
+    
     events: {
-        "click #save": "save"
+        "click #save": "save",
+        "mouseover #contributions .sortable-list li": "previewContribution",
+        "mouseout #contributions .sortable-list li": "hidePreview"
     },
     
     renderContributionsWidget: function(){
