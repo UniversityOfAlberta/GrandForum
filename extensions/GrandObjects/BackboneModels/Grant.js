@@ -20,7 +20,8 @@ Grant = Backbone.Model.extend({
         request: '',
         start_date: '',
         end_date: '',
-        url: ''
+        url: '',
+        contributions: null
     }
     
 });

@@ -15,17 +15,17 @@
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-            	<table class='wikitable'>
-            	<tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
+                <table class='wikitable'>
+                <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
                 <tr><td><b>Rank:</b></td><td>{$user_level}</td></tr>
                 <tr><td><b>Department</b></td><td>{$user_dept}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" default="{$user_phd_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
-	    <![CDATA[
-		<tr><td><b>Year of PhD:</b></td><td>{$item}</td></tr>
-	    ]]>
-	</ReportItem>
+            <![CDATA[
+                <tr><td><b>Year of PhD:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" default="{$user_appointment_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
              <![CDATA[
                  <tr><td><b>Year of Appointment:&nbsp;</b></td><td>{$item}</td></tr>
@@ -33,32 +33,32 @@
         </ReportItem>
         <ReportItem id="gradCount" type="StaticReportItem">
             <![CDATA[
-            	<tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
+                <tr><td><b>Graduate Students (Supervised or Co-supervised):</b></td><td>{$user_grad_count}</td></tr>
                 <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</tr></td>
                 <tr><td style='width:350px;'><b>Technicians:</b></td><td>{$user_tech_count}</tr></td>
                 <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</tr></td>
-	    	</table>
-	    ]]>
-	</ReportItem>
-	<ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
-	    <![CDATA[
-	    	<h2>Responsibilities Variation</h2>
-	    	Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
-	    	<div style='margin-left:25px;'>{$item}</div>
-	    ]]>
-	</ReportItem>
-	<ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
-	    <![CDATA[
-		<h2>Leaves</h2>
-		{$item}
-	    ]]>
-	</ReportItem>
-	<ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
-	    <![CDATA[
-		<h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
-		{$item}
-	    ]]>
-	</ReportItem>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                <h2>Responsibilities Variation</h2>
+                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
+                <div style='margin-left:25px;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
+            <![CDATA[
+                <h2>Leaves</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
                 <h2>Teaching Development And Innovation</h2>
@@ -67,36 +67,34 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
-	<ReportItem id="coursesheader" type="StaticReportItem">
-	    <![CDATA[
-		<h2>Courses</h2>
-		<table class='wikitable' style='width:100%;'><thead><tr><th>Dates</th>
-		<th>Subject</th>
-		<th>Number</th>
-		<th>Comp.</th>
-		<th>Section</th>
-		<th>Enroll.</th>
-		<th>%</th></tr></thead><tbody>
-	    ]]>
-	</ReportItem>
-	<ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-	     <ReportItem id="row" type="StaticReportItem">
-	     	<![CDATA[
-
-	             <tr><td align='center'>{$course_start} - {$course_end}</td>
-	             <td align='center'>{$course_subject}</td>
+        <ReportItem id="coursesheader" type="StaticReportItem">
+            <![CDATA[
+                <h2>Courses</h2>
+                <table class='wikitable' style='width:100%;'><thead><tr><th>Dates</th>
+                <th>Subject</th>
+                <th>Number</th>
+                <th>Comp.</th>
+                <th>Section</th>
+                <th>Enroll.</th>
+                <th>%</th></tr></thead><tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                 <tr><td align='center'>{$course_start} - {$course_end}</td>
+                     <td align='center'>{$course_subject}</td>
                      <td align='center'>{$course_number}</td>
                      <td align='center'>{$course_comp}</td>
                      <td align='center'>{$course_section}</td>
                      <td align='center'>{$course_enroll}</td>
-	             <td align='center'>{$course_enroll_percent}</td></tr>                         
-
-            	]]>
-	     </ReportItem>
-	</ReportItemSet>
-	<ReportItem id="coursesfooter" type="StaticReportItem">
-	    <![CDATA[
-	    	</tbody></table>
+                    <td align='center'>{$course_enroll_percent}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="coursesfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
             ]]>
         </ReportItem>
         <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_TEXT" rich="true" optional="true">
@@ -106,50 +104,50 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="EditableReportSection">
-    	<ReportItem id="studentsheader" type="StaticReportItem">
-    	    <![CDATA[
-    	    	<table class='wikitable' style='width:100%'><thead><tr>
-    	    	    <th>Name</th>
-    	    	    <th>Resp</th>
-    	    	    <th>Awards</th>
-    	    	    <th>Role</th>
-    	    	    <th>Start Date</th>
-    	    	    <th>End Date</th>
-    	    	    <th>Status</th></tr></thead><tbody>
-    	    ]]>
-    	 </ReportItem>
-    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-    	     <ReportItem id="row" type="StaticReportItem">
-    	         <![CDATA[
-    	         	<tr><td>{$hqp_name}</td>
-    	         	<td>{$hqp_position}</td>
-    	         	<td>{$hqp_awards}</td>
-    	         	<td>{$user_hqp_role}</td>
-    	         	<td>{$hqp_start_date}</td>
-    	         	<td>{$hqp_end_date}</td>
-    	         	<td>{$hqp_status}</td></tr>
-    	         ]]>
-    	     </ReportItem>
-    	 </ReportItemSet>
-    	 <ReportItem id="studentsfooter" type="StaticReportItem">
-    	     <![CDATA[
-    	         </tbody></table>
-    	     ]]>
-         </ReportItem>
+        <ReportItem id="studentsheader" type="StaticReportItem">
+            <![CDATA[
+                <table class='wikitable' style='width:100%'><thead><tr>
+                    <th>Name</th>
+                    <th>Resp</th>
+                    <th>Awards</th>
+                    <th>Role</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th></tr></thead><tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td>{$hqp_name}</td>
+                    <td>{$hqp_position}</td>
+                    <td>{$hqp_awards}</td>
+                    <td>{$user_hqp_role}</td>
+                    <td>{$hqp_start_date}</td>
+                    <td>{$hqp_end_date}</td>
+                    <td>{$hqp_status}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="studentsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="Outputs"  blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-		<h2>Publications</h2>
-		<table class='wikitable' style='width:100%'><tbody>
-	    ]]>
+                <h2>Publications</h2>
+                <table class='wikitable' style='width:100%'><tbody>
+            ]]>
         </ReportItem>
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-	    <ReportItem id="row" type="StaticReportItem">
-	         <![CDATA[
-		     <tr><td>{$product_citation}</td></tr>
-		 ]]>
-	    </ReportItem>
+        <ReportItem id="row" type="StaticReportItem">
+            <![CDATA[
+                <tr><td>{$product_citation}</td></tr>
+            ]]>
+        </ReportItem>
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
@@ -157,18 +155,18 @@
             ]]>
         </ReportItem>
         <ReportItem id="presentationheader" type="StaticReportItem">
-	    <![CDATA[
+            <![CDATA[
                 <h2>Presentations</h2>
                 <table class ='wikitable' style='width:100%'>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                        	<th>Type</th>
-                        	<th>Invited</th>
-                        	<th>Organization</th>
-                        	<th>Location</th>
-                        	<th>Date</th>
-                        </tr>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Invited</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
                     </thead>
                     <tbody>
             ]]>
@@ -177,12 +175,12 @@
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
-                    	<td align='center'>{$presentation_type}</td>
-                    	<td align='center'>{$presentation_invited}</td>
-                    	<td>{$presentation_organization}</td>
-                    	<td align='center'>{$presentation_country}</td>
-                    	<td style='white-space:nowrap;'>{$presentation_date}</td>
-                    	</tr>
+                        <td align='center'>{$presentation_type}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td style='white-space:nowrap;'>{$presentation_date}</td>
+                    </tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
@@ -195,52 +193,52 @@
     <ReportSection id="grants" tooltip="Funding and Awards" name="Funding and Awards" title="Funding and Awards" blobSection="FEC_GRANTS" type="EditableReportSection">
         <ReportItem id ="grantsheader" type="StaticReportItem">
             <![CDATA[
-		<table class='wikitable' style='width:100%'>
-		    <thead>
-		        <tr>
-		            <th>Title</th>
-		            <th>Sponsor</th>
-		            <th>Starts</th>
-		            <th>Ends</th>
-		            <th>$Total</th>
-		        </tr>
-		    </thead>
-		    <tbody>
-	    ]]>
-	</ReportItem> 
-	<ReportItemSet id="grants" type="PersonContributionsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
-	    <ReportItem id="row" type="StaticReportItem">
-	        <![CDATA[
-	            <tr>
-	            	<td>{$grant_title}</td>
-	            	<td>{$grant_sponsor}</td>
-	            	<td align="center">{$grant_start_date}</td>
-	            	<td align="center">{$grant_end_date}</td>
-	            	<td align="right">${$grant_total}</td>
-	            </tr>
-	        ]]>
-	    </ReportItem>
-	</ReportItemSet>
-	<ReportItem id="grantsfooter" type="StaticReportItem">
-	    <![CDATA[
-	        </tbody></table>
-	    ]]>
-	</ReportItem>
-	<ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels="Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true">
-	    <![CDATA[
-	        <h2>Awards Received</h2>{$item}
-	    ]]>
-	</ReportItem>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sponsor</th>
+                            <th>Starts</th>
+                            <th>Ends</th>
+                            <th>$Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem> 
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr>
+                        <td>{$grant_title}</td>
+                        <td>{$grant_sponsor}</td>
+                        <td align="center">{$grant_start_date}</td>
+                        <td align="center">{$grant_end_date}</td>
+                        <td align="right">${$grant_total}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="grantsfooter" type="StaticReportItem">
+            <![CDATA[
+                </tbody></table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels="Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true">
+            <![CDATA[
+                <h2>Awards Received</h2>{$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-            	<h2>Supplementary Professional Activities</h2>{$item}
+                <h2>Supplementary Professional Activities</h2>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="serviceOutreachDepartmental" type="TextareaReportItem" blobItem="FEC_INFO_DEPARTMENTAL" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-            	<h2>Service/Committees/Outreach</h2><b>Departmental</b>{$item}
+                <h2>Service/Committees/Outreach</h2><b>Departmental</b>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="serviceOutreachFaculty" type="TextareaReportItem" blobItem="FEC_INFO_FACULTY" blobType="BLOB_TEXT" rich="true" optional="true">
@@ -269,22 +267,22 @@
         </ReportItem>
         <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-            	<h2>Additional Data</h2>{$item}
+                <h2>Additional Data</h2>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-            	<h2>Footnotes</h2>{$item}
+                <h2>Footnotes</h2>{$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
         <ReportItem id="chairTable" type="StaticReportItem">
             <![CDATA[
-            	<p id='comment_p'></p>
-            	<div id='chair_comments_none' style=visibility:hidden;">
-            	    No Chair Recommendation Available.
-            	</div>
+                <p id='comment_p'></p>
+                <div id='chair_comments_none' style=visibility:hidden;">
+                    No Chair Recommendation Available.
+                </div>
                 <div id='chair_comments' style="visibility:hidden;">
                     <table class='dashboard wikitable'>
                     <tbody>
@@ -308,9 +306,9 @@
                         intervalId = null;
                     }
                     else if($('#comment_p').is(':visible') && $('#fec_comments').is(':empty')){
-			document.getElementById('chair_comments_none').style.visibility = 'visible';
-			clearInterval(intervalId);
-			intervalId = null;
+                        document.getElementById('chair_comments_none').style.visibility = 'visible';
+                        clearInterval(intervalId);
+                        intervalId = null;
                     }
                 }, 100);
                 </script>

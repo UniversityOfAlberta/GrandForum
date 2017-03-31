@@ -1,6 +1,7 @@
 GrantView = Backbone.View.extend({
 
     person: null,
+    allContributions: null,
 
     initialize: function(){
         this.model.fetch({
@@ -13,6 +14,11 @@ GrantView = Backbone.View.extend({
             var xhr = this.person.fetch();
             $.when(xhr).then(this.render);
         }, this));
+        
+        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
+            this.allContributions = response;
+        }, this));
+        
         this.template = _.template($('#grant_template').html());
     },
     
@@ -23,10 +29,21 @@ GrantView = Backbone.View.extend({
     events: {
         "click #edit": "edit"
     },
+    
+    renderContributions: function(){
+        if(this.allContributions.length != null && this.model.get('contributions').length > 0){
+            this.$("#contributions").empty();
+            _.each(this.model.get('contributions'), $.proxy(function(cId){
+                var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
+                this.$("#contributions").append("<li>" + contribution.name + "</li>");
+            }, this));
+        }
+    },
 
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderContributions();
         return this.$el;
     }
 

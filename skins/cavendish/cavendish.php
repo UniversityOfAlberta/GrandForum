@@ -117,6 +117,7 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tinymce/jquery.tinymce.min.js"></script>
         
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/js/tag-it.min.js"></script>
+        <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/sortable.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
@@ -250,6 +251,7 @@ class CavendishTemplate extends QuickTemplate {
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
+		    headerColor = "<?php echo $config->getValue('headerColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
 		
 		    function isExtensionEnabled(ext){

@@ -15,6 +15,7 @@ class Grant extends BackboneModel {
     var $request;
     var $start_date;
     var $end_date;
+    var $contributions = null;
     
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_grants'),
@@ -124,6 +125,19 @@ class Grant extends BackboneModel {
         return "$wgServer$wgScriptPath/index.php/Special:GrantPage#/{$this->getId()}";
     }
     
+    function getContributions(){
+        if($this->contributions == null){
+            $this->contributions = array();
+            $data = DBFunctions::select(array('grand_grant_contributions'),
+                                        array('contribution_id'),
+                                        array('grant_id' => EQ($this->getId())));
+            foreach($data as $row){
+                $this->contributions[] = $row['contribution_id'];
+            }
+        }
+        return $this->contributions;
+    }
+    
     function create(){
         DBFunctions::insert('grand_grants',
                             array('user_id' => $this->user_id,
@@ -138,8 +152,16 @@ class Grant extends BackboneModel {
                                   'request' => $this->request,
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
-        DBFunctions::commit();
         $this->id = DBFunctions::insertId();
+        DBFunctions::delete('grand_grant_contributions',
+                            array('grant_id' => EQ($this->getId())));
+        foreach($this->getContributions() as $contribution){
+            DBFunctions::insert('grand_grant_contributions',
+                                array('grant_id' => $this->getId(),
+                                      'contribution_id' => $contribution));
+        }
+        DBFunctions::commit();
+        
         return $this;
     }
     
@@ -158,6 +180,13 @@ class Grant extends BackboneModel {
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date),
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_grant_contributions',
+                            array('grant_id' => EQ($this->getId())));
+        foreach($this->getContributions() as $contribution){
+            DBFunctions::insert('grand_grant_contributions',
+                                array('grant_id' => $this->getId(),
+                                      'contribution_id' => $contribution));
+        }
         DBFunctions::commit();
         return $this;
     }
@@ -165,6 +194,8 @@ class Grant extends BackboneModel {
     function delete(){
         DBFunctions::delete('grand_grants',
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_grant_contributions',
+                            array('grant_id' => EQ($this->id)));
         DBFunctions::commit();
         $this->id = null;
         return $this;
@@ -185,7 +216,8 @@ class Grant extends BackboneModel {
             'request' => $this->request,
             'start_date' => time2date($this->getStartDate(), "Y-m-d"),
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
+            'contributions' => $this->getContributions()
         );
         return $json;
     }
