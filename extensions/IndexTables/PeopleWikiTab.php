@@ -328,7 +328,12 @@ class PeopleWikiTab extends AbstractTab {
                                     'frText' => 'Association Médicale Canadienne'),
                               array('img'    => 'Canadian4.jpg',
                                     'en'     => 'http://www.pharmacists.ca/',
-                                    'enText' => 'Canadian Pharmacists Association')
+                                    'enText' => 'Canadian Pharmacists Association'),
+                              array('img'    => "Canadian5_{$wgLang->getCode()}.png",
+                                    'en'     => 'https://www.sexualhealthandrights.ca/',
+                                    'fr'     => 'https://www.sexualhealthandrights.ca/fr/',
+                                    'enText' => 'Charitable Organization- Action Canada for Sexual Health & Rights',
+                                    'frText' => 'Organisation caritative - Action Canada pour la santé & les droits sexuels')
             );
             
             $american = array(array('img'    => 'American2.png',
