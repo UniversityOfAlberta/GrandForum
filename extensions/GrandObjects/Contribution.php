@@ -47,8 +47,8 @@ class Contribution {
                 WHERE id = '$id'
                 AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).")
                 ORDER BY rev_id DESC LIMIT 1";
-	$data = DBFunctions::execSQL($sql);
-	$contribution = new Contribution($data);
+        $data = DBFunctions::execSQL($sql);
+        $contribution = new Contribution($data);
         self::$cache["id$id"] = &$contribution;
         return $contribution;
     }
@@ -92,9 +92,9 @@ class Contribution {
             $this->id = $data[0]['id'];
             $this->rev_id = $data[0]['rev_id'];
             $this->project_id = $data[0]['project_id'];
-	    $this->name = $data[0]['name'];
+            $this->name = $data[0]['name'];
             $this->pi = unserialize($data[0]['pi']);
-	    $this->piWaiting = true;
+            $this->piWaiting = true;
             $this->people = unserialize($data[0]['users']);
             $this->peopleWaiting = true; // Lazyness
             $this->projects = array();
@@ -108,8 +108,8 @@ class Contribution {
             $this->unknown = array();
             $this->description = $data[0]['description'];
             $this->keywords = unserialize($data[0]['keywords']);
-	    $this->scope = $data[0]['scope'];
-	    $this->access_id = $data[0]['access_id'];
+            $this->scope = $data[0]['scope'];
+            $this->access_id = $data[0]['access_id'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
             $this->date = $data[0]['change_date'];
@@ -195,7 +195,7 @@ class Contribution {
                 FROM(SELECT id, name, rev_id
                      FROM `grand_contributions`
                      WHERE name LIKE '%' 
-                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER)|| $me->isRole(ISAC) || $me->isRole(RMC)).") \n";
+                     AND (access_id = '{$me->getId()}' OR access_id = '0' OR ".intval($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC)).") \n";
 	    foreach($splitPhrase as $word){
 	        $sql .= "AND name LIKE '%$word%'\n";
 	    }
@@ -206,7 +206,7 @@ class Contribution {
 	    $contributions = array();
 	    foreach($data as $row){
 	        $contribution = Contribution::newFromId($row['id']);
-	        $isMe = false;
+	        $isMe = ($me->isRoleAtLeast(MANAGER) || $me->isRole(ISAC) || $me->isRole(RMC));
 	        foreach($contribution->getPeople() as $person){
 	            if($person == $me->getName() || ($person instanceof Person && $person->getId() == $me->getId())){
 	                $isMe = true;
@@ -337,6 +337,20 @@ class Contribution {
             $this->peopleWaiting = false;
         }
         return $this->people;
+    }
+    
+    function getGrants(){
+        $grants = array();
+        $data = DBFunctions::select(array('grand_grant_contributions'),
+                                    array('grant_id'),
+                                    array('contribution_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $grant = Grant::newFromId($this->getId());
+            if($grant != null && $grant->getId() != 0){
+                $grants[] = $grant;
+            }
+        }
+        return $grants;
     }
 
     function getPIs(){

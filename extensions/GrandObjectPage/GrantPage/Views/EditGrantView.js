@@ -60,7 +60,10 @@ EditGrantView = Backbone.View.extend({
                 var widthBefore = $(document).width();
                 var heightBefore = $(document).height();
 
-                $("#preview").html($("#bodyContent", response).html());
+                var view = $("#bodyContent", response);
+                $("#footer", view).remove();
+
+                $("#preview").html(view.html());
 
                 $("input[name=edit]").hide();
 

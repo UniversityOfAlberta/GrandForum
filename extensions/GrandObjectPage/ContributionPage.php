@@ -453,6 +453,18 @@ class ContributionPage {
                     }
                     $wgOut->addHTML("</table>");
                     
+                    if(!$edit){
+                        $wgOut->addWikiText("== Grants ==
+                                             __NOEDITSECTION__\n");
+                        $grants = $contribution->getGrants();
+                        if(count($grants) > 0){
+                            $wgOut->addHTML("<ul>");
+                            foreach($grants as $grant){
+                                $wgOut->addHTML("<li><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a></li>");
+                            }
+                            $wgOut->addHTML("</ul>");
+                        }
+                    }
                     
                     $wgOut->addWikiText("== Partners ==
                                          __NOEDITSECTION__\n");
