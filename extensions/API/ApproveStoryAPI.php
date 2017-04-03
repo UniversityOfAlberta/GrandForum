@@ -15,7 +15,7 @@ class ApproveStoryAPI extends API{
             $story = Story::newFromId($_POST['id']);
             DBFunctions::update('grand_user_stories',
                                 array('approved' => 1),
-                                array('rev_id' => EQ(COL($_POST['id']))));
+                                array('rev_id' => EQ(COL($story->getRevId()))));
             Notification::addNotification(null, $story->getUser(), "Story Approved", "Your story \"{$story->getTitle()}\" was approved", $story->getUrl(), true);
         }
     }
