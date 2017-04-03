@@ -195,7 +195,7 @@ class Story extends BackboneModel{
 	//this should be updated eventually when revisions of a story can be made
 	function update(){
             $me = Person::newFromWgUser();
-            if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user && $this->getApproved() == false)){
+            if($me->isRoleAtLeast(MANAGER) || ($me->getId() == $this->user && $this->getApproved() == false)){
                 $status = DBFunctions::update('grand_user_stories',
                                               array('id' => $this->getId(),
                                                     'user_id' => $this->user,
@@ -214,7 +214,7 @@ class Story extends BackboneModel{
 
 	function delete(){
             $me = Person::newFromWgUser();
-            if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user && $this->getApproved() == false)){
+            if($me->isRoleAtLeast(MANAGER) || ($me->getId() == $this->user && $this->getApproved() == false)){
                 DBFunctions::begin();
                 $status = DBFunctions::delete('grand_user_stories',
                                               array('rev_id' => EQ($this->rev_id)));
