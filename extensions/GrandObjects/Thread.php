@@ -223,7 +223,7 @@ class Thread extends BackboneModel{
                     $users[] = $user->name;
                 }
             }
-            if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+            if($me->isRoleAtLeast(MANAGER) || ($me->getId() == $this->user_id)){
                 $status = DBFunctions::update('grand_threads',
                                               array('users'=>serialize($users),
                                                     'user_id' => $this->user_id,
@@ -241,7 +241,7 @@ class Thread extends BackboneModel{
 
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(ADMIN) || ($me->getId() == $this->user_id)){
+        if($me->isRoleAtLeast(MANAGER) || ($me->getId() == $this->user_id)){
             DBFunctions::begin();
             $status = DBFunctions::delete('grand_threads',
                                           array('id' => EQ($this->id)));
