@@ -31,6 +31,17 @@ class Story extends BackboneModel{
      	* @param id $id The id of the Paper
      	* @return Story The Story with the given id
      	*/	
+	static function newFromRevId($id){
+	    $story = new Story(array());
+	    $data = DBFunctions::select(array('grand_user_stories'),
+	                                array('*'),
+	                                array('rev_id' => $id));
+	    if(count($data)>0){
+	    	$story = new Story($data);
+	    }
+	    return $story;
+	}
+	
 	static function newFromId($id){
 	    $story = new Story(array());
 	    $data = DBFunctions::select(array('grand_user_stories'),
@@ -68,7 +79,7 @@ class Story extends BackboneModel{
 	    }
             if(count($data) >0){
                 foreach($data as $storyId){
-                    $stories[] = Story::newFromId($storyId['rev_id']);
+                    $stories[] = Story::newFromRevId($storyId['rev_id']);
                 }
             }
             return $stories;
@@ -85,7 +96,7 @@ class Story extends BackboneModel{
                                         array("rev_id"),
                                         array("approved"=>EQ(COL(0))));
             foreach($data as $row){
-                $stories[] = Story::newFromId($row['rev_id']);
+                $stories[] = Story::newFromRevId($row['rev_id']);
             }
 
             return $stories;

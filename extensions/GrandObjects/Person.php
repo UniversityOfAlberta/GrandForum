@@ -3738,7 +3738,7 @@ class Person extends BackboneModel {
 				    array('user_id' => EQ(COL($this->getId()))));
 	}
 	foreach($data as $row){
-	    $stories[] = Story::newFromId($row['rev_id']);
+	    $stories[] = Story::newFromRevId($row['rev_id']);
 	}
 	return $stories;
     }
