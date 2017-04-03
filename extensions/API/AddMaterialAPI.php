@@ -253,10 +253,10 @@ class AddMaterialAPI extends API{
 	            $_POST['mediaLocal'] = str_replace("player.vimeo.com/video/", "", $media);
 	            $_POST['mediaLocal'] = str_replace("vimeo.com/", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = str_replace("http://", "", $_POST['mediaLocal']);
+	            $_POST['mediaLocal'] = str_replace("https://", "", $_POST['mediaLocal']);
 	            $_POST['mediaLocal'] = str_replace("www.", "", $_POST['mediaLocal']);
-	            $_POST['type'] = "vimeo";
 	            if(!$this->typeSet){
-	                $_POST['type'] = "youtube";
+	                $_POST['type'] = "vimeo";
 	            }
 	        }
 	    }
