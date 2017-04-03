@@ -46,7 +46,8 @@ class Story extends BackboneModel{
 	    $story = new Story(array());
 	    $data = DBFunctions::select(array('grand_user_stories'),
 	                                array('*'),
-	                                array('rev_id' => $id));
+	                                array('id' => $id),
+	                                array('rev_id' => 'DESC'));
 	    if(count($data)>0){
 	    	$story = new Story($data);
 	    }
