@@ -190,7 +190,7 @@
         </ReportItem>
         <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE">
             <![CDATA[
-                <li><b>Who are your key audience(s)?</b>
+                <li><b>What are your knowledge mobilization goals?</b>
                     {$item}
                 </li>
             ]]>

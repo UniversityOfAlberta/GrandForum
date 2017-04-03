@@ -277,7 +277,7 @@
         </ReportItem>
         <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE" optional="true">
             <![CDATA[
-                <li><b>Who are your key audience(s)?</b>
+                <li><b>What are your knowledge mobilization goals?</b>
                     <ul class='small'>
                         <li>Describe how knowledge mobilization will move beyond "traditional" academic dissemination activities, i.e. beyond research publications and conferences. Do you want to inform people about a new product or practice? Do you want to change behaviors of end-users or clinicians? Do you want to contribute to policy change?</li>
                     </ul>
