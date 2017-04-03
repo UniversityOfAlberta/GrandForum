@@ -237,6 +237,7 @@ class Person extends BackboneModel {
      */
     static function cleanName($name){
         $name = preg_replace("/\(.*\)/", "", $name);
+        $name = preg_replace('/\s+/', ' ',$name);
         $name = str_replace("'", "", $name);
         $name = str_replace(".", "", $name);
         $name = str_replace("*", "", $name);
