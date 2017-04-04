@@ -16,11 +16,13 @@ class PdfConversion extends BackbonePage {
     }
     
     function getTemplates(){
-        return array("pdf_conversion");
+        return array("pdf_conversion",
+		     "reviewer_assignment");
     }
     
     function getViews(){
-        return array("PdfConversionView");
+        return array("PdfConversionView",
+		     "ReviewerAssignmentView");
     }
     
     function getModels(){

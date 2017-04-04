@@ -97,7 +97,7 @@
                             {$item}</td></tr>
                         ]]>
                 </ReportItem>
-                <ReportItem id="q13" type="RadioReportItem" blobItem="Q13" blobType="BLOB_TEXT" options="Yes|No|Undecided" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <ReportItem id="q13" type="RadioReportItem" blobItem="Q13" blobType="BLOB_TEXT" options="Yes|No|Undecided|Special Consideration" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Suggest Admission?:</h3></span></td><td>
                         {$item}</td></tr>
@@ -143,10 +143,11 @@
                         {getText(RP_OTT,OT_REVIEW,Q10,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td><span 'style=font-size: 14px;'><h3>Special considerations that make this application compelling (e.g. Holds a graduate degree, has publications from undergrad or grad work, undergrad thesis, a student athlete in training/competition or a student in a co-op/work term program who maintained a strong GPA):</h3></span></td><td>
                         {getText(RP_OTT,OT_REVIEW,Q11,{$project_id},{$user_id},{$project_id})}</td></tr>
+                        <tr><td><span 'style=font-size: 14px;'><h3>Suggest Admission?:</h3></span></td><td>
+                        {getText(RP_OTT,OT_REVIEW,Q13,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td colspan=2><span 'style=font-size: 14px;'><h3>Justification for Recommendation:</h3></span>
                         {getText(RP_OTT,OT_REVIEW,Q12,{$project_id},{$user_id},{$project_id})}</td></tr>
-                        <tr><td><span 'style=font-size: 14px;'><h3>Suggest Admission?:</h3></span></td><td>
-                        {getText(RP_OTT,OT_REVIEW,Q13,{$project_id},{$user_id},{$project_id})}</td></tr></table>
+			</table>
                         ]]>
                     </ReportItem>
                     
