@@ -97,7 +97,7 @@
                             {$item}</td></tr>
                         ]]>
                 </ReportItem>
-                <ReportItem id="q13" type="RadioReportItem" blobItem="Q13" blobType="BLOB_TEXT" options="Yes|No|Undecided" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <ReportItem id="q13" type="RadioReportItem" blobItem="Q13" blobType="BLOB_TEXT" options="Yes|No|Undecided|Special Consideration" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td><span 'style=font:size 14px;'><h3>Suggest Admission?:</h3></span></td><td>
                         {$item}</td></tr>
