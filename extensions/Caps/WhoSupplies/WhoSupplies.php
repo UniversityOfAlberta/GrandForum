@@ -76,6 +76,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media, Student Health Plans covering: St Thomas University, $5 co-pay (Feb. 13th, 2017) <a href='https://www.lifesitenews.com/news/for-just-a-5-co-pay-abortion-drug-will-be-available-to-students-at-st.-thom' target='_blank'>read more</a></li>
                     <li>As reported in the media, Mifepristone is not making inroads into New Brunswick; only 14 physicians have registered for the medical abortion training (Feb. 27th, 2017) <a href='http://www.cbc.ca/news/canada/new-brunswick/mifegymiso-canada-health-doctors-1.4000643' target='_blank'>read more</a></li>
+                    <li>As reported in the media, New Brunswick is the first province to provide universal coverage for mifepristone (April 4th, 2017), <a href='http://www.country94.ca/news/889242830/new-brunswick-women-have-access-abortion-pill' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
