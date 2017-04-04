@@ -167,26 +167,35 @@ class ConvertPdfAPI extends API{
             }
             
             if($userId != 0){
-		$content_parsed = mysql_real_escape_string($contents);
+                $content_parsed = mysql_real_escape_string($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
                 $sdata = serialize($data);
-                $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
-		
-                DBFunctions::update('grand_sop',
-                                    array('pdf_data' => $sdata),
-                                    array('user_id' => EQ($userId)));
-		$sql = "update grand_sop 
-			set pdf_contents = '$content_parsed'
-			where user_id = '$userId'";
-		$data = DBFunctions::execSQL($sql, true);
-		if($data){
-			DBFunctions::commit();
-		}
+                
+		        if(count(DBFunctions::select(array('grand_sop'),
+		                                     array('user_id'),
+		                                     array('user_id' => EQ($userId)))) > 0){
+		            $success[] = "<b>{$person->getNameForForms()}</b> uploaded";
+                    DBFunctions::update('grand_sop',
+                                        array('pdf_data' => $sdata),
+                                        array('user_id' => EQ($userId)));
+            
+                    $sql = "update grand_sop 
+	                    set pdf_contents = '$content_parsed'
+	                    where user_id = '$userId'";
+                    $data = DBFunctions::execSQL($sql, true);
+                    if($data){
+	                    DBFunctions::commit();
+                    }
+                }
+                else{
+                    // SOP Not Found
+                    $errors[] = "<b>{$person->getNameForForms()}</b> failed. User exists, but application not submitted.  Might be a duplicate accout.";
+                }
             }
             else{
                 // Person not found
-                $errors[] = "<b>{$data['first_name']} {$data['last_name']}</b> failed";
+                $errors[] = "<b>{$data['first_name']} {$data['last_name']}</b> failed.  User not found.";
             }
         }
         
