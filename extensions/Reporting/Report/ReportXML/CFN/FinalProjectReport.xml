@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Final Project Report" reportType="RP_FINAL_PROJECT" pdfFiles="FinalProjectReportPDF" ajax="true" personId="0">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+        <Role role="PL">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="research" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PI">
+        <Role role="PI">
             <SectionPermission id="information" permissions="" />
             <SectionPermission id="milestones" permissions="" />
             <SectionPermission id="research" permissions="" />
@@ -31,7 +31,7 @@
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
-        <Project start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" deleted="false" />
+        <Project deleted="false" />
     </Permissions>
     <ReportSection id="information" tooltip="1. Project and Team Information" name="Project Information" title="1. Project and Team Information" blobSection="FINAL_INFORMATION" type="EditableReportSection">
         <ReportItem id="information" type="StaticReportItem">
