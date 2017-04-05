@@ -167,7 +167,7 @@ class ApplicationsTable extends SpecialPage{
             $summerHQPs = $this->hqps;
         }
         else{
-            foreach($hthis->qps as $hqp){
+            foreach($this->hqps as $hqp){
                 if($me->isEvaluatorOf($hqp, 'RP_SUMMER', 2015, "Person")){
                     $summerHQPs[] = $hqp;
                 }
