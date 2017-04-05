@@ -45,8 +45,6 @@ class ApplicationsTable extends SpecialPage{
         $this->hqps = array_merge($this->fullHQPs,
                                   Person::getAllCandidates(HQP));
                                   
-        
-        
         $this->wps = Theme::getAllThemes();
         
         $this->ccs = array();
@@ -108,7 +106,7 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
         }
-        else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0)){
+        else if($program == "summer" && ($me->isRole(RMC) || $me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0)){
             $this->generateSummer();
         }
         else if($program == "wp" && $me->isRoleAtLeast(SD)){
@@ -163,7 +161,7 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $me = Person::newFromWgUser();
         $summerHQPs = array();
-        if($me->isRoleAtLeast(SD)){
+        if($me->isRoleAtLeast(SD) || $me->isRole(RMC)){
             $summerHQPs = $this->hqps;
         }
         else{
