@@ -26,7 +26,8 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")));
+        // 1521 = Euson.Yeung
+        return ($person->isRole(RMC) || $person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) || $person->getId() == 1521);
     }
 
     function execute($par){
@@ -161,7 +162,8 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $me = Person::newFromWgUser();
         $summerHQPs = array();
-        if($me->isRoleAtLeast(SD) || $me->isRole(RMC)){
+        // 1521 = Euson.Yeung
+        if($me->isRoleAtLeast(SD) || $me->isRole(RMC) || $me->getId() == 1521){
             $summerHQPs = $this->hqps;
         }
         else{
