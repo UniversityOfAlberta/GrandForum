@@ -7,5 +7,6 @@
     require_once("Refer/ReferAColleague.php");
     require_once("WhoSupplies/WhoSupplies.php");
     require_once("EmailList/EmailList.php");
+    require_once("LatestNews/LatestNews.php");
     
 ?>
