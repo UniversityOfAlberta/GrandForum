@@ -20,6 +20,7 @@ class LatestNews extends SpecialPage{
                                         array($wgLang->getCode() => 'pdf'),
                                         array('id' => $_GET['getPDF']));
             echo $data[0]['pdf'];
+            exit;
         }
         // Actually Show the content
         
@@ -28,8 +29,8 @@ class LatestNews extends SpecialPage{
                                     array(),
                                     array('date' => 'DESC'));
         if(isset($data[0])){
-            $wgOut->addHTML("<iframe src='https://docs.google.com/gview?url={$wgServer}{$wgScriptPath}/index.php/Special:LatestNews%3FgetPDF={$data[0]['id']}&embedded=true' style='width:718px; height:700px; frameborder='0'></iframe>");
-            $wgOut->addHTML("<iframe src='?getPDF={$data[0]['id']}' width='100%' height='500px' frameborder='0'></iframe>");
+            $wgOut->addHTML("<iframe src='https://docs.google.com/gview?url={$wgServer}{$wgScriptPath}/index.php/Special:LatestNews?getPDF={$data[0]['id']}&embedded=true' style='width:718px; height:700px; frameborder='0'></iframe>");
+            //$wgOut->addHTML("<iframe src='?getPDF={$data[0]['id']}' width='100%' height='500px' frameborder='0'></iframe>");
         }
         
     }
