@@ -26,8 +26,7 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        // 1521 = Euson.Yeung
-        return ($person->isRole(RMC) || $person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) || $person->getId() == 1521);
+        return ($person->isRoleAtLeast(SD) || count($person->getEvaluates('RP_SUMMER', 2015, "Person")) || $person->getName() == "Euson.Yeung" || $person->getName() == "Susan.Jaglal");
     }
 
     function execute($par){
@@ -107,7 +106,7 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
         }
-        else if($program == "summer" && ($me->isRole(RMC) || $me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0)){
+        else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0) || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $this->generateSummer();
         }
         else if($program == "wp" && $me->isRoleAtLeast(SD)){
@@ -163,7 +162,7 @@ class ApplicationsTable extends SpecialPage{
         $me = Person::newFromWgUser();
         $summerHQPs = array();
         // 1521 = Euson.Yeung
-        if($me->isRoleAtLeast(SD) || $me->isRole(RMC) || $me->getId() == 1521){
+        if($me->isRoleAtLeast(SD) || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $summerHQPs = $this->hqps;
         }
         else{
