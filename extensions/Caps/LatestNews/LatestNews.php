@@ -20,11 +20,11 @@ class LatestNews extends SpecialPage{
     
     static function getPDF($action){
         global $wgLang;
-        if($action == 'getPDF' && isset($_GET['pdf'])){
+        if($action == 'getPDF' && isset($_GET['pdf']) && isset($_GET['lang'])){
             // Download the PDF
             header('Content-Type: application/pdf');
             $data = DBFunctions::select(array('grand_latest_news'),
-                                        array($wgLang->getCode() => 'pdf'),
+                                        array($_GET['lang'] => 'pdf'),
                                         array('id' => $_GET['pdf']));
             echo $data[0]['pdf'];
             exit;
@@ -91,7 +91,7 @@ class LatestNews extends SpecialPage{
                                     array('date' => 'DESC', 'id' => 'DESC'));
         if(isset($data[0])){
             $pdfId = (isset($_GET['pdf'])) ? $_GET['pdf'] : $data[0]['id'];
-            $wgOut->addHTML("<iframe src='https://docs.google.com/viewer?url=$wgServer$wgScriptPath/index.php?action=getPDF%26pdf={$pdfId}&embedded=true' width='800px' height='610px' frameborder='0'></iframe>");
+            $wgOut->addHTML("<iframe src='https://docs.google.com/viewer?url=$wgServer$wgScriptPath/index.php?action=getPDF%26pdf={$pdfId}%26lang={$wgLang->getCode()}&embedded=true' width='800px' height='610px' frameborder='0'></iframe>");
             if(count($data) > 1){
                 if($wgLang->getCode() == 'en'){
                     $header = "Previous News";
