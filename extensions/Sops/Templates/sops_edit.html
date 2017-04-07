@@ -48,8 +48,6 @@ table.profile tr td{
     padding: 3px 10px;
     border-bottom: 0;
 }
-
-
     </style>
 
 <table class='profile' frame="box" rules="all">
@@ -129,7 +127,16 @@ table.profile tr td{
 		<div style="float: right; padding-right: 150px;">
 			Legend: <span style='color:green'>Grammar Issue</span> | <span style='color:red'>Spelling Mistake</span> | <span style='color:blue'>Styling Issue</span> | <span style='background: rgba(255,255,10,0.3);'>Comment</span>
 		</div><br />
-                <div style="float: left; width: 200px; margin-right:10px;">
+		<div id="sop_statistics2" style="float: left; height:300px; width: 10px; margin-right:10px; padding-left:10px; padding-right:10px; border-left:1px solid #bebebe;cursor:e-resize">
+		    <span style="float:right;color:#aaaaaa;" id="show_stats">>
+                    </span><br /><br />
+		    <div style="transform:rotate(90deg);">STATISTICS</div>
+			<br /><br />
+		</div>
+                <div id="sop_statistics" style="float: left; width:0%; margin-right:10px; background-color:#f7f7f7; padding-left:10px;padding-right:10px;border-left:3px solid #878787;display:none;">
+		    <span style="float:right;color:#aaaaaa;cursor:w-resize" id="hide_stats"><
+		    </span><br /><br />
+		    <b>Text Analysis</b><br /><br />
                     <table class="style1">
                         <tbody>
                             <tr class="style1">
@@ -338,7 +345,7 @@ table.profile tr td{
                     <p>Spelling Errors: <span id='spelling_errors'></span></p>
                     <p>Style Suggestions: <span id='style_errors'></span></p>
                 </div>
-                <div style="float: left; width:80%;border: 1px solid black; border-collapse: collapse;" id="sop_div">
+                <div style="float: left; width:90%;border: 1px solid black; border-collapse: collapse;" id="sop_div">
                     <div id="sopItem" style="padding-top:20px">
                         <%= content_string %>
                     </div>
@@ -349,7 +356,7 @@ table.profile tr td{
     <div>
         <h3><a href="#">Review</a></h3>
         <div>
-            <iframe style="width:100%;height:2500px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
+            <iframe style="width:100%;height:7500px;border:0px;" src="<%= wgServer %><%= wgScriptPath %>/index.php/Special:Report?report=OTViewReview&project=Sop:<%= id %>&embed"></iframe>
         </div>
     </div>
     <div>

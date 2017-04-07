@@ -25,7 +25,10 @@ SopsEditView = Backbone.View.extend({
         "click #check_fear" : "check_fear",
         "click #check_joy" : "check_joy",
         "click #check_readingease" : "check_readingease",
-	"click #check_personality" : "check_personality"
+	"click #check_personality" : "check_personality",
+	"click #hide_stats": "hide_stats",
+        "click #sop_statistics2": "show_stats"
+
 
     },
     check_joy: function(){                $('#joy_index').dialog({width:'500px',position:{my: 'center', at:'center', of: window},modal:true,resizable:false,     buttons: {
@@ -163,6 +166,20 @@ SopsEditView = Backbone.View.extend({
                             }
                         }});
 
+    },
+
+    hide_stats: function(){
+        $('#sop_statistics').animate({width:'0%'});
+	$("#sop_statistics").hide();
+	$("#sop_statistics2").show();
+	$('#sop_div').animate({width:'95%'});
+    },
+
+    show_stats: function(){
+        $("#sop_statistics2").hide();
+        $('#sop_div').animate({width:'80%'});
+	$('#sop_statistics').animate({width:'15%'});
+	$('#sop_statistics').show();
     },
 
     render: function(){
