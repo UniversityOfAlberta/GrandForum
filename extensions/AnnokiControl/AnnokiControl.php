@@ -195,7 +195,7 @@ function orderSpecialPages(&$aSpecialPages){
              $key == "Allmessages" || $key == "Statistics" ||
              $key == "Version" || $key == "Recentchanges" ||
              $key == "Recentchangeslinked" || $key == "Tags" ||
-             $key == "CreateAccount" || $key == 'Sops')){
+             $key == "CreateAccount" || $key == 'Sops' || $key == 'PdfConversion')){
             unset($aSpecialPages[$key]);
             continue;
         }

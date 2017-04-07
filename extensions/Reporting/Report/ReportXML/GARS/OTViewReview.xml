@@ -223,7 +223,7 @@
                         {getText(RP_OTT,OT_REVIEW,Q13,{$project_id},{$user_id},{$project_id})}</td></tr>
                         <tr><td colspan=2><span 'style=font-size: 14px;'><h3>Justification for Recommendation:</h3></span>
                         {getText(RP_OTT,OT_REVIEW,Q12,{$project_id},{$user_id},{$project_id})}</td></tr>
-			</table>
+                        </table>
                         ]]>
                     </ReportItem>
                     

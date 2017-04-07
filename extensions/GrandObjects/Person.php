@@ -4635,7 +4635,7 @@ class Person extends BackboneModel {
 			$gsms[$key] = array();
 		    }
 		    else{
-                    	$gsms[$key] = unserialize(str_replace("'", "&#39;", $val));
+                    	$gsms[$key] = unserialize($val);
 		    }
 		}
 		else{
