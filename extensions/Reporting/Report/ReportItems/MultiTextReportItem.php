@@ -94,6 +94,9 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "checkbox"){
+                            $item .= @"\"<td align='center'><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='1' /></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
@@ -230,6 +233,10 @@ EOF;
                     }
                     else if(strtolower(@$types[$j]) == "integer"){
                         $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
+                    }
+                    else if(strtolower(@$types[$j]) == "checkbox"){
+                        $checked = (isset($value[$index]) && $value[$index] == "1") ? "checked" : "";
+                        $item .= @"<td align='center'><input type='checkbox' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='1' $checked /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
@@ -407,6 +414,13 @@ EOF;
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else if(strtolower(@$types[$j]) == "checkbox"){
+                            $check = "";
+                            if(isset($value[$index]) && $value[$index] == "1"){
+                                $check = "&#10003;";
+                            }
+                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";

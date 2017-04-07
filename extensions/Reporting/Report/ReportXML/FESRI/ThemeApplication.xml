@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Future Energy Systems Instructions for Theme Work Plans" ajax="true" disabled="false" reportType="RP_THEME_APPLICATION" pdfType="RPTP_THEME_APPLICATION" pdfFiles="ThemeApplication" year="2017">
+    <Permissions>
+        <Role role="NI-Candidate">
+
+        </Role>
+        <Role role="NI">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="Instructions" name="Instructions" type="ReportSection" renderpdf="false">
+        <ReportItem id="background" type="StaticReportItem">
+            <![CDATA[
+                <p>Based on input received at the Champions Workshop and discussions within the Research Advisory Committee, here are instructions for submitting theme-based work plans. Please submit these no later than February 27. The Research Advisory Committee will then provide feedback on the plans with the explicit goal of helping meet the overall goals of Future Energy Systems.</p>
+                <p>Based on their assessment of the potential of making a strong contribution to the theme, the Theme Champions are expected to include projects, in consultation with individual researchers, associated with their theme.  Champions are also encouraged to look for individuals associated with other themes to find opportunities for inter-theme work projects.</p>
+                <p>Following that feedback and review of the revised theme work plan, it will be necessary for individuals within each theme who will be receiving money to enter into a funding agreement with Future Energy Systems.   These agreements will include project-specific information needed for project management, as well as commitments from the researchers to provide information to Future Energy Systems in order to track and report on key indicators of the research.</p>
+                <h3>Nominal Allocations For Each Theme</h3>
+                <p>At the Champions Workshop it was requested that Future Energy Systems provide a nominal allocation for each of the themes to assist in formulating a work plan.  Based on a combination of the amount of funds coming from NSERC and SSHRC, the existing scale of activities in each theme, and the potential for growth over seven years, the base amounts are provided in Table 1:</p>
+
+                <div>Table 1:  Base Allocations over the 84 months of Future Energy Systems</div>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th width='250px'>System Role</th>
+                        <th width='250px'>Theme</th>
+                    </tr>
+                    <tr>
+                        <td rowspan='5' align='center'>Source - Low Carbon</td>
+                        <td align='center'>Biomass</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Geothermal</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Grids and Storage</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Wind</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Solar</td>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>Sources - Heavy Oil</td>
+                        <td align='center'>Reservoirs</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Non-Aqueous Recovery</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Partial Upgrading</td>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>Social - Economic - Implementation</td>
+                        <td align='center'>Energy Humanities</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Communities and Aboriginal</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>System Wide</td>
+                    </tr>
+                    <tr>
+                        <td rowspan='3' align='center'>Environmental</td>
+                        <td align='center'>Carbon CUS</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Land / Water</td>
+                    </tr>
+                    <tr>
+                        <td align='center'>Non-Electric Infrastructure</td>
+                    </tr>
+                </table>
+                <p>The work plan to be provided at this stage is to be based on these amounts. Each theme should also provide two appendices that would describe how the work plan would be altered if the allocation were two-times and four-times these base amounts.</p>
+                <h3>Overall Structure of Theme Work Plan</h3>
+                <p>The headings to be used for the Work Plan are as follows.  Details of the expected content under these headings are expanded upon in sections D to O below.</p>
+                <ol>
+                    <li>Theme Overview (2/3 page maximum)</li>
+                    <li>List of Project Titles and PIs/Co-PIs (1/3 page maximum)</li>
+                    <li>Projects within Theme
+                        <ol type='a'>
+                            <li>Project 1 (2 page maximum)
+                                <ol type='i'>
+                                    <li>Objectives / Anticipated Outcomes</li>
+                                    <li>Team Members / Roles / Intra-Theme and Cross-Theme Integration</li>
+                                    <li>External Partners / Collaborators and Their Roles</li>
+                                    <li>Activities / Scheduling</li>
+                                    <li>Resources Needed / Budgeting</li>
+                                    <li>Key Decision Point</li>
+                                </ol>
+                            </li>
+                            <li>Project 2 (2 page maximum) – same subsections as Project 1</li>
+                            <li>Project X, where X is a maximum of 5 (2 page maximum)</li>
+                        </ol>
+                    </li>
+                    <li>Theme Budget (1/2 page maximum)</li>
+                    <li>Need for Hires in Theme (1/2 page maximum)</li>
+                    <li>Appendix A – The Abridged Two-Times Work Plan (1 page maximum)</li>
+                    <li>Appendix B – The Abridged Four-Times Work Plan (1 page maximum)</li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="overview" tooltip="Theme Overview (2/3 page maximum)" name="Overview" title="Theme Overview (2/3 page maximum)" type="EditableReportSection" blobSection="OVERVIEW">
+        <ReportItem id="overview" type="Textarea" blobItem="OVERVIEW" rich="true">
+            <![CDATA[
+                <p>Provide a title that is more descriptive than the ones we have been using, and relates to the activities or outcomes of the theme work plan. This title will be the first version that will be shared publically on our website.</p>
+                <p>The material included in this section is a refinement of what was presented at the Champions Workshop. This should capture the potential of the theme, how it fits into the energy systems, and the knowledge gaps or big questions that need to be answered.</p>
+                <p>Against the wide breadth of each theme, identify the key gaps/questions that UAlberta can contribute to in the period of time available. In practical terms, the theme needs to focus on and build off existing/proven strengths/records in the areas or methodologies associated with the various projects.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="projects" tooltip="List of Project Titles and PIs/Co-PIs (1/3 page maximum)" name="Projects" title="List of Project Titles and PIs/Co-PIs (1/3 page maximum)" type="EditableReportSection" blobSection="PROJECTS">
+        <ReportItem id="projects" type="MultiText" blobType="BLOB_ARRAY" blobItem="PROJECTS" multiple="true" max="5" labels="Title|PI/Co-PIs|Department" types="Text|Textarea|Text">
+            <![CDATA[
+                <h3>Provide a summary table of the various projects to be described in the following sections.</h3>
+                {$item}
+                <small>Co-PI driven projects are encouraged; interdisciplinary where warranted.
+Chose titles that will make sense to the public.</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" rich="true">
+            <![CDATA[
+                <h3>Provide comments on how these projects address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="objectives" tooltip="Project Objectives / Anticipated Outcomes" name="Objectives" title="Project Objectives / Anticipated Outcomes" type="EditableReportSection" blobSection="OBJECTIVES">
+        <ReportItem id="shortterm" type="Textarea" blobItem="SHORT_TERM" rich="true">
+            <![CDATA[
+                <p>These are work plans not proposals; you are not selling anything, so keep objectives and outcomes reasonable and achievable.</p>
+                <h3>List the short-term project objectives (realizable in a three year time frame).</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="longterm" type="Textarea" blobItem="LONG_TERM" rich="true">
+            <![CDATA[
+                <h3>List the longer-term project objectives (realizable in seven years).</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true">
+            <![CDATA[
+                <h3>List anticipated outcomes.</h3>
+                <small>(Outcomes are defined here as things that make impacts outside academia, and may include changes of policy, protection of new technology/IP, launching of a start-up.)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="team" tooltip="Project Team Members / Roles / Intra- and Cross-Theme Integration" name="Team Members" title="Project Team Members / Roles / Intra- and Cross-Theme Integration" type="EditableReportSection" blobSection="TEAM">
+        <ReportItem id="team" type="MultiText" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" labels="Team Member|Role" types="Text|Textarea">
+            <![CDATA[
+                <h3>Summary table of the various UAlberta academics involved in the work</h3>
+                <small>Only involve people who bring relevant expertise to the project and have a strong track record in the area.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" rich="true">
+            <![CDATA[
+                <h3>Provide comments on how these individuals, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partners" tooltip="Project External Partners Collaborators and Their Roles" name="Partners" title="Project External Partners Collaborators and Their Roles" type="EditableReportSection" blobSection="PARTNERS">
+        <ReportItem id="team" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" multiple="true" labels="Team Member|Organization|Role" types="Text|Text|Textarea">
+            <![CDATA[
+                <h3>Summary table of potential external partners/collaborators involved in the work</h3>
+                <small>Only involve people who bring relevant expertise to the project and have a strong track record in the area.
+                    <ul>
+                        <li>Partnership with NAIT is valued if appropriate.</li>
+                        <li>Partnership with UCalgary is valued if appropriate.</li>
+                        <li>Partnership with Canadian industry is valued if appropriate.</li>
+                        <li>Partnership with communities is valued if appropriate.</li>
+                        <li>Partnership with international organizations is valued if appropriate.</li>
+                        <li>Money can be transferred through a sub-grant to Canadian-based researchers (including NAIT).</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments1" type="Textarea" blobItem="COMMENTS1" rich="true">
+            <![CDATA[
+                <h3>Provide brief comments on how these individuals, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cash" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" multiple="true" labels="Potential / Existing Funder|Year1|Year2|Year3|Year4|Year5|Year6|Year7" types="Text|Integer|Integer|Integer|Integer|Integer|Integer|Integer" sizes="|60|60|60|60|60|60|60">
+            <![CDATA[
+                <h3>Provide the magnitude of cash expected from external funders.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments2" type="Textarea" blobItem="COMMENTS2" rich="true">
+            <![CDATA[
+                <h3>Provide brief comments on the level of confidence that these cash resources will be realized.</h3>
+                <small>Again, these are work plans not proposals; you are not selling anything, so keep objectives and outcomes reasonable and achievable.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments3" type="Textarea" blobItem="COMMENTS3" rich="true">
+            <![CDATA[
+                <h3>Provide brief comments on potential / existing in-kind resources from partners that are need for project.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="activities" tooltip="I. Project Activities / Scheduling" name="Activities" title="Project Activities / Scheduling" type="EditableReportSection" blobSection="ACTIVITIES">
+        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true" labels="HQP|Description of Activitity|Year1|Year2|Year3|Year4|Year5|Year6|Year7" types="Text|Textarea|Checkbox|Checkbox|Checkbox|Checkbox|Checkbox|Checkbox|Checkbox">
+            <![CDATA[
+                <p>Build your activities around HQP to achieve stated objectives and outcomes.  The potential categories of HQP to plan activities around are undergraduates (UG), Masters (MSc / MA), Doctoral (PhD), Post-Doctoral (PDF), and Research Associates and Assistants (RA).</p>
+                {$item}
+                <p>Take the first three years seriously in planning and recognize that the last four years come with considerable uncertainty. These work plans will get updated annually and allow for what was vague to become clear.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budgeting" tooltip="Project Resources Needed / Budgeting" name="Budgeting" title="Project Resources Needed / Budgeting" type="EditableReportSection" blobSection="BUDGETING">
+        <ReportItem type="Static">
+            <![CDATA[
+                <p>To have a common basis for budgeting, please use the following nominal amounts for the <b>different HQP compensation-related expenses</b>:
+                    <ul>
+                        <li>UG: $8k for 4-month placement</li>
+                        <li>MSc / MA: $24k/year</li>
+                        <li>PhD: $26k/year</li>
+                        <li>PDF/RA: $55k/year</li>
+                    </ul>
+                </p>
+                <p>The Direct Cost of Research includes the possibility of having compensation-related expenses for technicians and administrative assistance.  Currently, these positions are not considered applicable at the project-level, but more appropriate at the theme-level.  See section L for the inclusion of these resources.</p>
+                <p>The other expenses may be project/theme specific, but for budgeting scale these expenses with the different HQP and the academics associated with the project work plan.  The line items allowed are Travel and Subsistence, Supplies, Computers and Electronic Communications, Dissemination of Results and Networking, and Services and miscellaneous expenses.</p>
+                <h3>Summary of Line Item Expenses associated with <u>each type</u> of HQP and Academics involved</h3>
+                <table class='wikitable' rules='all' frame='box'>
+                    <tr>
+                        <th>Type</th>
+                        <th>Travel and<br />Subsistence</th>
+                        <th>Supplies</th>
+                        <th>Computers and<br />Communications</th>
+                        <th>Dissemination<br />and Networking</th>
+                        <th>Services</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_1" type="Integer" size="4" blobItem="1_1">
+            <![CDATA[
+                <tr>
+                <td>Summer</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_2" type="Integer" size="4" blobItem="1_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_3" type="Integer" size="4" blobItem="1_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_4" type="Integer" size="4" blobItem="1_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_5" type="Integer" size="4" blobItem="1_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_1" type="Integer" size="4" blobItem="2_1">
+            <![CDATA[
+                <tr>
+                <td>MSc/MA</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_2" type="Integer" size="4" blobItem="2_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_3" type="Integer" size="4" blobItem="2_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_4" type="Integer" size="4" blobItem="2_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_5" type="Integer" size="4" blobItem="2_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_1" type="Integer" size="4" blobItem="3_1">
+            <![CDATA[
+                <tr>
+                <td>PhD</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_2" type="Integer" size="4" blobItem="3_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_3" type="Integer" size="4" blobItem="3_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_4" type="Integer" size="4" blobItem="3_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_5" type="Integer" size="4" blobItem="3_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4_1" type="Integer" size="4" blobItem="4_1">
+            <![CDATA[
+                <tr>
+                <td>PDF/RA</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4_2" type="Integer" size="4" blobItem="4_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4_3" type="Integer" size="4" blobItem="4_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4_4" type="Integer" size="4" blobItem="4_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4_5" type="Integer" size="4" blobItem="4_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5_1" type="Integer" size="4" blobItem="5_1">
+            <![CDATA[
+                <tr>
+                <td>Academic</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5_2" type="Integer" size="4" blobItem="5_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5_3" type="Integer" size="4" blobItem="5_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5_4" type="Integer" size="4" blobItem="5_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5_5" type="Integer" size="4" blobItem="5_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="equipment" type="MultiText" blobItem="EQUIPMENT" labels="Equipment|Year1|Year2|Year3|Year4|Year5|Year6|Year7" types="Text|Integer|Integer|Integer|Integer|Integer|Integer|Integer" sizes="|60|60|60|60|60|60|60" multiple="true">
+            <![CDATA[
+                <h3>List the equipment required, and the estimated year it will be required.</h3>
+                <small>No single piece of equipment can exceed $300,000</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                <p>Add all these expenses together to get a project budget.  For each year, multiple the number of each type of HQP by their compensation-related expenses, and then sum these together to generate that year’s line item for the project.  Perform similarly calculations for all other yearly line items, but include the projected expenses for all the academics involved in the project.</p>
+                <h3>Summary Project Budget</h3>
+                <small>These line items are those specific for our reporting.<br />
+Keep numbers in thousands of dollars.</small>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Direct Costs</th>
+                        <th>Year1</th>
+                        <th>Year2</th>
+                        <th>Year3</th>
+                        <th>Year4</th>
+                        <th>Year5</th>
+                        <th>Year6</th>
+                        <th>Year7</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_1" type="Integer" size="4" blobItem="1a_1">
+            <![CDATA[
+                <tr>
+                <td>Compensation Related</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_2" type="Integer" size="4" blobItem="1a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_3" type="Integer" size="4" blobItem="1a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_4" type="Integer" size="4" blobItem="1a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_5" type="Integer" size="4" blobItem="1a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_6" type="Integer" size="4" blobItem="1a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_7" type="Integer" size="4" blobItem="1a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_1" type="Integer" size="4" blobItem="2a_1">
+            <![CDATA[
+                <tr>
+                <td>Travel and Subsistence</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_2" type="Integer" size="4" blobItem="2a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_3" type="Integer" size="4" blobItem="2a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_4" type="Integer" size="4" blobItem="2a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_5" type="Integer" size="4" blobItem="2a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_6" type="Integer" size="4" blobItem="2a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_7" type="Integer" size="4" blobItem="2a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_1" type="Integer" size="4" blobItem="3a_1">
+            <![CDATA[
+                <tr>
+                <td>Equipment and Supplies</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_2" type="Integer" size="4" blobItem="3a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_3" type="Integer" size="4" blobItem="3a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_4" type="Integer" size="4" blobItem="3a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_5" type="Integer" size="4" blobItem="3a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_6" type="Integer" size="4" blobItem="3a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_7" type="Integer" size="4" blobItem="3a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_1" type="Integer" size="4" blobItem="4a_1">
+            <![CDATA[
+                <tr>
+                <td>Computers and Electronic Communications</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_2" type="Integer" size="4" blobItem="4a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_3" type="Integer" size="4" blobItem="4a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_4" type="Integer" size="4" blobItem="4a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_5" type="Integer" size="4" blobItem="4a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_6" type="Integer" size="4" blobItem="4a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_7" type="Integer" size="4" blobItem="4a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_1" type="Integer" size="4" blobItem="5a_1">
+            <![CDATA[
+                <tr>
+                <td>Dissemination and Networking</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_2" type="Integer" size="4" blobItem="5a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_3" type="Integer" size="4" blobItem="5a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_4" type="Integer" size="4" blobItem="5a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_5" type="Integer" size="4" blobItem="5a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_6" type="Integer" size="4" blobItem="5a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_7" type="Integer" size="4" blobItem="5a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_1" type="Integer" size="4" blobItem="6a_1">
+            <![CDATA[
+                <tr>
+                <td>Services</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_2" type="Integer" size="4" blobItem="6a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_3" type="Integer" size="4" blobItem="6a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_4" type="Integer" size="4" blobItem="6a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_5" type="Integer" size="4" blobItem="6a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_6" type="Integer" size="4" blobItem="6a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_7" type="Integer" size="4" blobItem="6a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_1" type="Integer" size="4" blobItem="7a_1">
+            <![CDATA[
+                <tr>
+                <td align='right'>Total Expenditures</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_2" type="Integer" size="4" blobItem="7a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_3" type="Integer" size="4" blobItem="7a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_4" type="Integer" size="4" blobItem="7a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_5" type="Integer" size="4" blobItem="7a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_6" type="Integer" size="4" blobItem="7a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_7" type="Integer" size="4" blobItem="7a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_1" type="Integer" size="4" blobItem="8a_1">
+            <![CDATA[
+                <tr>
+                <td>External Cash Revenues</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_2" type="Integer" size="4" blobItem="8a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_3" type="Integer" size="4" blobItem="8a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_4" type="Integer" size="4" blobItem="8a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_5" type="Integer" size="4" blobItem="8a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_6" type="Integer" size="4" blobItem="8a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_7" type="Integer" size="4" blobItem="8a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_1" type="Integer" size="4" blobItem="9a_1">
+            <![CDATA[
+                <tr>
+                <td>Request from Future Energy System</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_2" type="Integer" size="4" blobItem="9a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_3" type="Integer" size="4" blobItem="9a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_4" type="Integer" size="4" blobItem="9a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_5" type="Integer" size="4" blobItem="9a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_6" type="Integer" size="4" blobItem="9a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_7" type="Integer" size="4" blobItem="9a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="decision" tooltip="Project Key Decision Point" title="Project Key Decision Point" name="Decision Point" blobSection="DECISION" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="decision" type="Textarea" blobItem="DECISION" rich="true">
+            <![CDATA[
+                <p>Identify the first key decisions point, in context to the planned activities, that this project will face after which there is the potential for a dramatic change in direction or scope.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="themebudget" tooltip="Theme Budget (1/2 page maximum)" name="Theme Budget" title="L. Theme Budget (1/2 page maximum)" type="EditableReportSection" blobSection="THEME_BUDGET">
+        <ReportItem type="Static">
+            <![CDATA[
+                <p>To have a common basis for budgeting, please use the following nominal amounts for compensation-related expenses:
+                    <ul>
+                        <li>Technician: $65k/year</li>
+                        <li>Administrative Assistant: $50k/year</li>
+                    </ul>
+                </p>
+                <p>Declare the level of these support personnel in terms of Not Required, Half Time, or Full Time.</p>
+                <h3>Summary of Line Item Expenses associated with <u>each type</u> of HQP and Academics involved</h3>
+                <table class='wikitable' rules='all' frame='box'>
+                    <tr>
+                        <th>Type</th>
+                        <th>Travel and<br />Subsistence</th>
+                        <th>Supplies</th>
+                        <th>Computers and<br />Communications</th>
+                        <th>Dissemination<br />and Networking</th>
+                        <th>Services</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_1" type="Integer" size="4" blobItem="1_1">
+            <![CDATA[
+                <tr>
+                <td>Technician</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_2" type="Integer" size="4" blobItem="1_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_3" type="Integer" size="4" blobItem="1_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_4" type="Integer" size="4" blobItem="1_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_5" type="Integer" size="4" blobItem="1_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_1" type="Integer" size="4" blobItem="2_1">
+            <![CDATA[
+                <tr>
+                <td>Administrative</td>
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_2" type="Integer" size="4" blobItem="2_2">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_3" type="Integer" size="4" blobItem="2_3">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_4" type="Integer" size="4" blobItem="2_4">
+            <![CDATA[
+                <td>${$item}k/year</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_5" type="Integer" size="4" blobItem="2_5">
+            <![CDATA[
+                <td>${$item}k/year</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                <p>Provide a table that sums the project budgets, as well as technician and administrative personnel costs, into a theme budget.</p>
+                <h3>Summary Theme Budget</h3>
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Direct Costs</th>
+                        <th>Year1</th>
+                        <th>Year2</th>
+                        <th>Year3</th>
+                        <th>Year4</th>
+                        <th>Year5</th>
+                        <th>Year6</th>
+                        <th>Year7</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_1" type="Integer" size="4" blobItem="1a_1">
+            <![CDATA[
+                <tr>
+                <td>Compensation Related</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_2" type="Integer" size="4" blobItem="1a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_3" type="Integer" size="4" blobItem="1a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_4" type="Integer" size="4" blobItem="1a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_5" type="Integer" size="4" blobItem="1a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_6" type="Integer" size="4" blobItem="1a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="1a_7" type="Integer" size="4" blobItem="1a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_1" type="Integer" size="4" blobItem="2a_1">
+            <![CDATA[
+                <tr>
+                <td>Travel and Subsistence</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_2" type="Integer" size="4" blobItem="2a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_3" type="Integer" size="4" blobItem="2a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_4" type="Integer" size="4" blobItem="2a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_5" type="Integer" size="4" blobItem="2a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_6" type="Integer" size="4" blobItem="2a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2a_7" type="Integer" size="4" blobItem="2a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_1" type="Integer" size="4" blobItem="3a_1">
+            <![CDATA[
+                <tr>
+                <td>Equipment and Supplies</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_2" type="Integer" size="4" blobItem="3a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_3" type="Integer" size="4" blobItem="3a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_4" type="Integer" size="4" blobItem="3a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_5" type="Integer" size="4" blobItem="3a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_6" type="Integer" size="4" blobItem="3a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a_7" type="Integer" size="4" blobItem="3a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_1" type="Integer" size="4" blobItem="4a_1">
+            <![CDATA[
+                <tr>
+                <td>Computers and Electronic Communications</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_2" type="Integer" size="4" blobItem="4a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_3" type="Integer" size="4" blobItem="4a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_4" type="Integer" size="4" blobItem="4a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_5" type="Integer" size="4" blobItem="4a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_6" type="Integer" size="4" blobItem="4a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a_7" type="Integer" size="4" blobItem="4a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_1" type="Integer" size="4" blobItem="5a_1">
+            <![CDATA[
+                <tr>
+                <td>Dissemination and Networking</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_2" type="Integer" size="4" blobItem="5a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_3" type="Integer" size="4" blobItem="5a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_4" type="Integer" size="4" blobItem="5a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_5" type="Integer" size="4" blobItem="5a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_6" type="Integer" size="4" blobItem="5a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a_7" type="Integer" size="4" blobItem="5a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_1" type="Integer" size="4" blobItem="6a_1">
+            <![CDATA[
+                <tr>
+                <td>Services</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_2" type="Integer" size="4" blobItem="6a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_3" type="Integer" size="4" blobItem="6a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_4" type="Integer" size="4" blobItem="6a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_5" type="Integer" size="4" blobItem="6a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_6" type="Integer" size="4" blobItem="6a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a_7" type="Integer" size="4" blobItem="6a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_1" type="Integer" size="4" blobItem="7a_1">
+            <![CDATA[
+                <tr>
+                <td align='right'>Total Expenditures</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_2" type="Integer" size="4" blobItem="7a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_3" type="Integer" size="4" blobItem="7a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_4" type="Integer" size="4" blobItem="7a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_5" type="Integer" size="4" blobItem="7a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_6" type="Integer" size="4" blobItem="7a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a_7" type="Integer" size="4" blobItem="7a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_1" type="Integer" size="4" blobItem="8a_1">
+            <![CDATA[
+                <tr>
+                <td>External Cash Revenues</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_2" type="Integer" size="4" blobItem="8a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_3" type="Integer" size="4" blobItem="8a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_4" type="Integer" size="4" blobItem="8a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_5" type="Integer" size="4" blobItem="8a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_6" type="Integer" size="4" blobItem="8a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a_7" type="Integer" size="4" blobItem="8a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_1" type="Integer" size="4" blobItem="9a_1">
+            <![CDATA[
+                <tr>
+                <td>Request from Future Energy System</td>
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_2" type="Integer" size="4" blobItem="9a_2">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_3" type="Integer" size="4" blobItem="9a_3">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_4" type="Integer" size="4" blobItem="9a_4">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_5" type="Integer" size="4" blobItem="9a_5">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_6" type="Integer" size="4" blobItem="9a_6">
+            <![CDATA[
+                <td>${$item}k</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a_7" type="Integer" size="4" blobItem="9a_7">
+            <![CDATA[
+                <td>${$item}k</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="hires" type="EditableReportSection" tooltip="Need for Hires in Theme (1/2 page maximum)" title="Need for Hires in Theme (1/2 page maximum)" name="Need for Hires" blobSection="HIRES">
+        <ReportItem id="hires" type="Textarea" blobItem="HIRES" rich="true">
+            <![CDATA[
+                <p>Provide a list of academic characteristics or competencies that would benefit the theme. For now, we only have commitment from Engineering, Science, and ALES to create new positions, but do not let that restrict your thoughts in this area.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="2work_plan" type="EditableReportSection" tooltip="Appendix A - The Abridged Two-Times Work Plan (1 page maximum)" title="Appendix A - The Abridged Two-Times Work Plan (1 page maximum)" name="Appendix A" blobSection="2WORK_PLAN">
+        <ReportItem id="hires" type="Textarea" blobItem="WORK_PLAN" rich="true">
+            <![CDATA[
+                <p>If the targeted allocation was two-times greater than the base case, describe how the following three parts of the work plan would change from the <b>base case</b>.</p>
+                <ul>
+                    <li>Theme Overview in terms of what UAlberta could contribute</li>
+                    <li>List of Project Titles and PIs/Co-PIs</li>
+                    <li>Project Objectives / Anticipated Outcomes</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="4work_plan" type="EditableReportSection" tooltip="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" title="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" name="Appendix B" blobSection="4WORK_PLAN">
+        <ReportItem id="hires" type="Textarea" blobItem="WORK_PLAN" rich="true">
+            <![CDATA[
+                <p>If the targeted allocation was four-times greater than the base case, describe how the following three parts of the work plan would change from the <b>two-times case</b>.</p>
+                <ul>
+                    <li>Theme Overview in terms of what UAlberta could contribute</li>
+                    <li>List of Project Titles and PIs/Co-PIs</li>
+                    <li>Project Objectives / Anticipated Outcomes</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>
