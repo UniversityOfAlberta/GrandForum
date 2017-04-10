@@ -40,9 +40,12 @@ function addUserProfile($name, $profile){
 function addUserRole($name, $role){
     Person::$cache = array();
     Person::$namesCache = array();
-    $_POST['user'] = $name;
-    $_POST['role'] = $role;
-    APIRequest::doAction('AddRole', true);
+    $person = Person::newFromName($name);
+    $r = new Role(array());
+    $r->user = $person->getId();
+    $r->role = $role;
+    $r->startDate = date('Y-m-d 00:00:00');
+    $r->create();
 }
 
 function addUserUniversity($name, $university, $department, $title){
