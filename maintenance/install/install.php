@@ -57,10 +57,37 @@ function addUserUniversity($name, $university, $department, $title){
     APIRequest::doAction('UserUniversity', true);
 }
 
-function addUserProject($name, $project){
+function addUserProject($name, $project, $role){
     $_POST['user'] = $name;
     $_POST['role'] = $project;
+    $person = Person::newFromName($name);
+    $proj = Project::newFromName($project);
+    DBFunctions::delete('mw_user_groups',
+                        array('ug_user' => $person->getId(),
+                              'ug_group' => $project));
     APIRequest::doAction('AddProjectMember', true);
+    if($role != ""){
+        $data = DBFunctions::select(array('grand_roles'),
+                                    array('id'),
+                                    array('user_id' => $person->getId(),
+                                          'role' => $role));
+        if(count($data) > 0){
+            $id = $data[0]['id'];
+            $r = Role::newFromId($id);
+            $r->getProjects();
+            $r->projects[] = $proj;
+            $r->update();
+        }
+        else{
+            $r = new Role(array());
+            $r->user = $person->getId();
+            $r->role = $role;
+            $r->projects = array($proj);
+            $r->startDate = date('Y-m-d 00:00:00');
+            $r->create();
+        }
+        Role::$projectCache = null;
+    }
 }
 
 function addProjectLeader($name, $project, $coLead='False', $manager='False'){
@@ -220,7 +247,9 @@ if(file_exists("people.csv")){
                 Person::$idsCache = array();
                 Person::$rolesCache = array();
                 addUserUniversity($username, $university, $department, $title);
-                addUserRole($username, $role);
+                if($role != ""){
+                    addUserRole($username, $role);
+                }
                 addUserWebsite($username, $website);
                 addUserProfile($username, $profile);
             }
@@ -306,8 +335,9 @@ if(file_exists("project_members.csv")){
             if(count($cells) > 1){
                 $username = $cells[0];
                 $project = $cells[1];
+                $role = $cells[2];
                 if($project != ""){
-                    addUserProject($username, $project);
+                    addUserProject($username, $project, $role);
                 }
             }
         }
