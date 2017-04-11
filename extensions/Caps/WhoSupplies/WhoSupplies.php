@@ -25,7 +25,7 @@ class WhoSupplies extends SpecialPage{
             <h2>National Regulations</h2>
             <div>
                 <ul>
-                    <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/5/5e/Patients_mifegymisopatientconsentforme11_29_16.pdf' target='_blank'>Consent Form</a> & <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
+                    <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
                     <li>Awaiting the <a href='https://www.cadth.ca/mifepristone-and-misoprostol' target='_blank'>Canadian Agency for Drugs and Technologies in Health</a> (CADTH) Common Drug Review of Mifegymiso®, scheduled for March 2017. Approval may impact insurance coverage and provincial and territorial formularies (i.e list publically-funded drugs for individuals who qualify and/or do not have private insurance, for example, individuals on social assistance).</li>
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
@@ -38,6 +38,8 @@ class WhoSupplies extends SpecialPage{
                             <li>Greenshield: in review</li>
                         </ol>
                     </li>
+                    <li>There is no longer any requirement for a health care professional to witness a person taking either of the drugs in Mifegymiso, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=2'>read more</a></li>
+                    <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                 </ul>
             </div>
 
@@ -46,7 +48,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media, Mifegymiso®, ~ $300/dose (Oct. 7th, 2016) <a href='http://edmontonjournal.com/news/politics/paula-simons-access-to-abortion-drug-one-step-closer-for-alberta-women' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Calgary</li>
-                    <li>As reported in the media, Calgary’s Kensington Clinic is providing Mifegymiso® for free, <a href='https://www.thestar.com/opinion/commentary/2017/03/06/abortion-pill-rollout-deeply-flawed-mallick.html' target='_blank'>read more</a></li>
+                    <li>As reported in the media on March 6th 2017, Calgary’s Kensington Clinic is providing Mifegymiso® for free, <a href='https://www.thestar.com/opinion/commentary/2017/03/06/abortion-pill-rollout-deeply-flawed-mallick.html' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
@@ -76,7 +78,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>As reported in the media, Student Health Plans covering: St Thomas University, $5 co-pay (Feb. 13th, 2017) <a href='https://www.lifesitenews.com/news/for-just-a-5-co-pay-abortion-drug-will-be-available-to-students-at-st.-thom' target='_blank'>read more</a></li>
                     <li>As reported in the media, Mifepristone is not making inroads into New Brunswick; only 14 physicians have registered for the medical abortion training (Feb. 27th, 2017) <a href='http://www.cbc.ca/news/canada/new-brunswick/mifegymiso-canada-health-doctors-1.4000643' target='_blank'>read more</a></li>
-                    <li>As reported in the media, New Brunswick is the first province to provide universal coverage for mifepristone (April 4th, 2017), <a href='http://www.country94.ca/news/889242830/new-brunswick-women-have-access-abortion-pill' target='_blank'>read more</a></li>
+                    <li>As reported in the media, New Brunswick is the first province to provide universal coverage for mifepristone (April 4th, 2017), <a href='http://www.cbc.ca/news/canada/new-brunswick/abortion-pill-new-brunswick-1.4054517' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
@@ -114,7 +116,6 @@ class WhoSupplies extends SpecialPage{
                     <li>Distributor in Ontario via Celopharma or wholesaler, McKesson <a href='https://www.mckesson.ca/mckesson-pharmaceutical' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Toronto and Ottawa</li>
                     <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
-                    <li>As reported in the media on March 13th, 2017, Mifegymiso® is only dispensed by one physician in Ottawa and costs more than $400, <a href='http://www.cbc.ca/news/canada/ottawa/abortion-pill-planned-parenthood-ottawa-1.4017833?cmp=rss' target='_blank'>read more</a></li>
                 </ul>
             </div>
             
