@@ -23,7 +23,7 @@ $_projects;
 class NCETable extends SpecialPage {
 
     function __construct() {
-        SpecialPage::__construct("NCETable", MANAGER.'+', true, 'runNCETable');
+        SpecialPage::__construct("NCETable", STAFF.'+', true, 'runNCETable');
     }
     
     static function show(){
@@ -66,7 +66,7 @@ class NCETable extends SpecialPage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
         $person = Person::newFromWgUser($wgUser);
-        if($person->isRoleAtLeast(MANAGER)){
+        if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "NCETable") ? "selected" : false;
             array_splice($tabs["Manager"]['subtabs'], 0, 0, array(TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/Special:NCETable", $selected)));
         }
