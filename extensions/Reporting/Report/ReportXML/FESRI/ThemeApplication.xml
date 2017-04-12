@@ -169,7 +169,7 @@ Chose titles that will make sense to the public.</small>
                 </ReportItem>
                 
                 <!-- Project External Partners Collaborators and Their Roles -->
-                <ReportItem id="team" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" blobSubItem="{getExtra(id)}" multiple="true" labels="Team Member|Organization|Role" types="Text|Text|Textarea">
+                <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" blobSubItem="{getExtra(id)}" multiple="true" labels="Team Member|Organization|Role" types="Text|Text|Textarea">
                     <![CDATA[
                         <h2>Project External Partners Collaborators and Their Roles</h2>
                         <h3>Summary table of potential external partners/collaborators involved in the work</h3>
