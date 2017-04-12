@@ -57,10 +57,10 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>Both the <a href='https://www.cpsbc.ca/for-physicians/college-connector/2016-V04-06/01' target='_blank'>College of Physicians and Surgeons of BC</a> and the <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>College of Pharmacists of BC</a> have provided guidance to their members on dispensing mifepristone</li>
                     <li>In private clinics, individuals must pay out of pocket, ~$300 per package </li>
-                    <li>Celopharma advised women to bring signed consent to pharmacy, with prescription- Not applicable in BC! <a href='http://www.bcpharmacists.org/mifegymiso' target='_blank'>read more</a></li>
                     <li>Mifegymiso® is being considered for possible coverage under the <a href='http://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/mifepristone-misoprostol-3509-info.pdf' target='_blank'>B.C. PharmaCare Program</a> (Feb. 14th, 2017)</li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Vancouver</li>
                     <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
+                    <li>As of April 11th, 2017, in addition to Vancouver, Celopharma has shipped mifepristone to Burnaby, Cranbrook, Golden, Kamloops, Prince George, Whistler and Victoria</li>
                 </ul>
             </div>
             
@@ -85,7 +85,7 @@ class WhoSupplies extends SpecialPage{
             <h2 id='NL'>Newfoundland and Labrador</h2>
             <div>
                 <ul>
-                    <li>As reported in the media, Canadian distributor Celopharma has not reported shipments here to date (Jan. 28th, 2017) <a href='http://www.cbc.ca/news/canada/newfoundland-labrador/abortion-drug-not-available-1.2662032' target='_blank'>read more</a></li>
+                    <li>As of April 11th, 2017, Celopharma has shipped mifepristone to St. John’s</li>
                 </ul>
             </div>
             
@@ -116,6 +116,7 @@ class WhoSupplies extends SpecialPage{
                     <li>Distributor in Ontario via Celopharma or wholesaler, McKesson <a href='https://www.mckesson.ca/mckesson-pharmaceutical' target='_blank'>read more</a></li>
                     <li>As of Feb. 24, 2017, Celopharma has shipped mifepristone to clinics in Toronto and Ottawa</li>
                     <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
+                    <li>As of April 11th, 2017, in addition to Toronto and Ottawa, Celopharma has shipped mifepristone to Kingston</li>
                 </ul>
             </div>
             
