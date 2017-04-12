@@ -1591,13 +1591,18 @@ class ReportItemCallback {
         $projectId = $this->reportItem->projectId;
         $productId = $this->reportItem->productId;
         $milestoneId = $this->reportItem->milestoneId;
+        $extra = $this->reportItem->extra;
         $set = $this->reportItem->getSet();
+        while($set instanceof ToggleHeaderReportItemSet){
+            $set = $set->getSet();
+        }
         $i = 1;
         foreach($set->getData() as $item){
             if($item['milestone_id'] == $milestoneId &&
                $item['project_id'] == $projectId &&
                $item['person_id'] == $personId &&
-               $item['product_id'] == $productId){
+               $item['product_id'] == $productId &&
+               md5(serialize($item['extra'])) == md5(serialize($extra))){
                 return $i;
             }
             $i++;
@@ -1651,7 +1656,7 @@ class ReportItemCallback {
         else{
             $array = $blb->getData();
             $value = @$array[$index];
-            if(is_array($value)){
+            if(is_array($value) && $delim != ""){
                 return @implode($delim, $value);
             }
             return $value;

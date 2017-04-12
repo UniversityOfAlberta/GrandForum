@@ -623,7 +623,7 @@ class ReportXMLParser {
             if(isset($attributes->id)){
                 $item->setId("{$attributes->id}");
             }
-            else{
+            else if(!($item instanceof StaticReportItem)){
                 $this->errors[] = "ReportItem does not contain an id";
             }
             if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){

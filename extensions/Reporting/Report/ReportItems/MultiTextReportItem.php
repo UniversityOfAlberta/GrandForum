@@ -91,6 +91,9 @@ EOF;
                             $combobox = new ComboBox("{$this->getPostId()}[\" + i + \"][$index]", "Project Leader", '', $names);
                             $item .= "\"<td align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
                         }
+                        else if(strtolower(@$types[$j]) == "random"){
+                            $item .= @"\"<td align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='\" + _.random(1000000000) + \"' /></td>\" + \n";
+                        }
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= @"\"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='' /></td>\" + \n";
                         }
@@ -197,6 +200,9 @@ EOF;
             if(count($labels) > 0 && $labels[0] != ""){
                 $item .= "<tr>";
                 foreach($labels as $j => $label){
+                    if(strtolower(@$types[$j]) == "random"){
+                        continue;
+                    }
                     $item .= @"<th style='width:{$sizes[$j]}px;'>{$label}</th>";
                 }
                 if($multiple){
@@ -230,6 +236,9 @@ EOF;
                         asort($names);
                         $combobox = new ComboBox("{$this->getPostId()}[$i][$index]", "Project Leader", $value[$index], $names);
                         $item .= "<td align='$align'>".$combobox->render()."</td>";
+                    }
+                    else if(strtolower(@$types[$j]) == "random"){
+                        $item .= @"<td align='$align' style='display:none;'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "integer"){
                         $item .= @"<td align='$align'><input type='text' class='numeric' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='{$value[$index]}' /></td>";
@@ -378,7 +387,10 @@ EOF;
                         if(strtolower($showCount) == 'true' || strtolower($showBullets) == 'true'){
                             $item .= "<th style='width:1px;'>&nbsp;</th>";
                         }
-                        foreach($labels as $label){
+                        foreach($labels as $j => $label){
+                            if(strtolower(@$types[$j]) == "random"){
+                                continue;
+                            }
                             $item .= "<th align='center'>{$label}</th>";
                         }
                         $item .= "</tr>";
@@ -411,6 +423,9 @@ EOF;
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox") !== false){
                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else if(strtolower(@$types[$j]) == "random"){
+                            //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
