@@ -157,7 +157,10 @@ class SOP extends BackboneModel{
         if(count($data) >0){
             foreach($data as $sopId){
                 $sop = SOP::newFromId($sopId['id']);
-                $sops[] = $sop;
+                $person = Person::newFromId($sop->getUser());
+                if($person != null && $person->getName() != ""){
+                    $sops[] = $sop;
+                }
             }
         }
         return $sops;
