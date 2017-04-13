@@ -115,7 +115,7 @@ class PeopleTableTab extends AbstractTab {
                 }
                 $this->html .= "</tr>";
         }
-        $this->html .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'iDisplayLength': 100, 'autoWidth':false});</script>";
+        $this->html .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'aLengthMenu': [[100,-1], [100,'All']], 'iDisplayLength': 100, 'autoWidth':false});</script>";
         return $this->html;
     }
     
