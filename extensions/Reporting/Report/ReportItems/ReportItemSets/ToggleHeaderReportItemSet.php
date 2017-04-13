@@ -19,16 +19,18 @@ class ToggleHeaderReportItemSet extends ReportItemSet {
         if(strtolower($changeColor) == "true"){
             $this->addChangeColorScript();
         }
+
+        $extra = md5(serialize($this->extra));
         
-        $onclick = "$(\"#{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}\").slideToggle(200);";
+        $onclick = "$(\"#{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_{$extra}\").slideToggle(200);";
         $disabled_class = "";
         if($disabled == "true"){
             $onclick = "";
             $disabled_class = "disabled_bg";
         }
 
-        $wgOut->addHTML("<div class='toggleHeader {$disabled_class}' onClick='{$onclick}' id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_headDiv'><h$level id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_head' style='margin:0;padding:0;color:#000000;font-weight:normal;'>{$title}</h$level><span style='position:absolute; right:10px; top:4px;font-size:10px;'><i>[Show/Hide]</i></span></div>
-                        <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}' class='toggleDiv_{$this->projectId}' style='display:none;'>");
+        $wgOut->addHTML("<div class='toggleHeader {$disabled_class}' onClick='{$onclick}' id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_{$extra}_headDiv'><h$level id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_{$extra}_head' style='margin:0;padding:0;color:#000000;font-weight:normal;'>{$title}</h$level><span style='position:absolute; right:10px; top:4px;font-size:10px;'><i>[Show/Hide]</i></span></div>
+                        <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}_{$extra}' class='toggleDiv_{$this->projectId}' style='display:none;'>");
         
         foreach($this->items as $item){
             $item->render();
