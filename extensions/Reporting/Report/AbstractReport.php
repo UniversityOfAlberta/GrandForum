@@ -674,6 +674,9 @@ abstract class AbstractReport extends SpecialPage {
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
+                        else if($perm['perm']['role'] == EVALUATOR && $me->isEvaluator($this->year)){
+                            $rResult = true;
+                        }
                         else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
