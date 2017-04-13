@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Future Energy Systems Instructions for Theme Work Plans" ajax="true" disabled="false" reportType="RP_THEME_APPLICATION" pdfType="RPTP_THEME_APPLICATION" pdfFiles="ThemeApplication" year="2017">
+<Report name="Future Energy Systems Instructions for Theme Work Plans" ajax="true" disabled="false" reportType="RP_THEME_APPLICATION" pdfType="RPTP_THEME_APPLICATION" pdfFiles="ThemeProposal" year="2017">
     <Permissions>
         <Role role="NI-Candidate">
 
@@ -126,7 +126,7 @@ Chose titles that will make sense to the public.</small>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="project_applications" tooltip="Project Applications" name="Project Applications" title="Project Applications" type="EditableReportSection" blobSection="PROJECT_APPLICATIONS">
+    <ReportSection id="project_applications" tooltip="Project Proposals" name="Project Proposals" title="Project Proposals" type="EditableReportSection" blobSection="PROJECT_APPLICATIONS">
         <ReportItemSet id="projects" type="Array" array="{getArray(RP_THEME_APPLICATION, PROJECTS, PROJECTS, 0, {$user_id}, 0, projects,)}">
             <ReportItemSet id="header" type="ToggleHeader" title="{getExtra(title)}">
                 <!-- Project Objectives / Anticipated Outcomes -->
@@ -1877,7 +1877,7 @@ Keep numbers in thousands of dollars.</small>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="4work_plan" type="EditableReportSection" tooltip="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" title="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" name="Appendix B" blobSection="4WORK_PLAN">
+    <ReportSection id="4work_plan" type="EditableReportSection" tooltip="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" title="Appendix B - The Abridged Four-Times Work Plan (1 page maximum)" name="Appendix B" blobSection="4WORK_PLAN" pagebreak="false">
         <ReportItem id="hires" type="Textarea" blobItem="WORK_PLAN" rich="true">
             <![CDATA[
                 <p>If the targeted allocation was four-times greater than the base case, describe how the following three parts of the work plan would change from the <b>two-times case</b>.</p>
