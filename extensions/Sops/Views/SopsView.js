@@ -166,13 +166,13 @@ SopsView = Backbone.View.extend({
 
     filterFinalAdmitType: function(){
         input = $('#finalAdmitType').val().toUpperCase();
-        this.filterByRow(13,input);
+        this.filterByRow(14,input);
     },
 
     filterByTags: function(){
             $('#listTable > tbody > tr').each(function(){
 		var show = false;
-                var tags = $(this).find('td').eq(12).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
+                var tags = $(this).find('td').eq(13).text().replace(/<\/?[^>]+(>|$)/g, "").split(",");
 		for(j = 0; j < tags.length; j++){
 		    var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
 		    if($('#'+tag).is(':checked')){
