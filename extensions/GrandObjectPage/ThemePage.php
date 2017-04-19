@@ -56,7 +56,7 @@ class ThemePage {
             if($theme != null && $theme->getAcronym() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle($theme->getName());
+                $wgOut->setPageTitle("{$theme->getName()} ({$theme->getAcronym()})");
                 
                 $visibility = array();
                 
