@@ -2065,6 +2065,17 @@ class Person extends BackboneModel {
                 }
             }
         }
+        if($maxRole == INACTIVE){
+            if($this->isProjectLeader()){
+                return PL;
+            }
+            if($this->isThemeLeader()){
+                return TL;
+            }
+            if($this->isThemeCoordinator()){
+                return TC;
+            }
+        }
         return $maxRole;
     }
     
