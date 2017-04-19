@@ -263,11 +263,11 @@ select[size]:focus {
 
 .showMore > #showMoreResults {
     cursor: pointer;
-    color: $hl;
+    color: $hl !important;
 }
 
 .showMore > #showMoreResults:hover {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 
 /* JQuery UI */
