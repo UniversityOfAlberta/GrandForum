@@ -35,6 +35,9 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->html .= "<table>
                             $title";
+        if($project->getType() != "Administrative"){
+            $this->showChallenge();
+        }
         if($config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
@@ -51,9 +54,6 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
         $this->html .= "</table>";
-        if($project->getType() != "Administrative"){
-            $this->showChallenge();
-        }
 
         $this->showPeople();
         //$this->showChampions();
@@ -108,8 +108,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        
-        $this->html .= "<h2><span class='mw-headline'>{$config->getValue("projectThemes")}</span></h2>";
+        $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenge = $this->project->getChallenge();
         
         $challenges = Theme::getAllThemes($this->project->getPhase());
@@ -118,7 +117,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $cid = $chlg->getId();
             $cname = $chlg->getAcronym();
             $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
-            $chlg_opts .= "<option value='{$cid}' {$selected}>{$cname}</option>";
+            $chlg_opts .= "<option value='{$cid}' {$selected}>{$chlg->getAcronym()}</option>";
         }
         if($edit){
             $this->html .=<<<EOF
@@ -126,8 +125,9 @@ class ProjectMainTab extends AbstractEditableTab {
 EOF;
         }
         else{
-            $this->html .= "<h4>{$challenge->getAcronym()}</h4>";
-        }   
+            $this->html .= "{$challenge->getName()} ({$challenge->getAcronym()})";
+        }
+        $this->html .= "</td></tr>";
     }
 
     function showPeople(){
