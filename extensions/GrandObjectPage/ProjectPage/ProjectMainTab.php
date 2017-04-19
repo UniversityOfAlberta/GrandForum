@@ -168,7 +168,14 @@ EOF;
         
         $people = $project->getAllPeople($role);
         if(count($people) > 0){
-            $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
+            if($role == PL && count($people) == 1){
+                // There is normally just 1 PL, so only use singlular
+                $this->html .= "<h2><span class='mw-headline'>".ucwords($config->getValue('roleDefs', $role))."</span></h2>";
+            }
+            else{
+                // Other roles will normally have multiple people, but also pluralize if there is more than one PL
+                $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
+            }
         }
         $this->html .= "<ul>";
         foreach($people as $p){
