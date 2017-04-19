@@ -33,10 +33,10 @@ class Report extends AbstractReport {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if($person->isLoggedIn()){
+        /*if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeProposal")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Theme Proposal", "{$url}ThemeProposal", $selected);
-        }
+        }*/
         return true;
     }
     
