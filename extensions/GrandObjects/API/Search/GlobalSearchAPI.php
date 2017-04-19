@@ -121,6 +121,9 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $projects = Project::getAllProjectsDuring('0000','9999', true);
                 foreach($projects as $project){
+                    if($project->getStatus() == "Proposed" && !$me->isRoleAtLeast(STAFF)){
+                        continue;
+                    }
                     $pName = unaccentChars(str_replace(".", " ", $project->getName()));
                     $pFullName = unaccentChars(str_replace(".", " ", $project->getFullName()));
                     $names = array_merge(explode(" ", unaccentChars($pName)),
