@@ -125,7 +125,12 @@ class BudgetReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/highlights.css.php' type='text/css' />
                     <script type='text/javascript'>
                         function load_page() {
-                            parent.alertsize{$this->getPostId()}($(\"#bodyContent\").height()+38);
+                            var interval = setInterval(function(){
+                                parent.alertsize{$this->getPostId()}($(\"#bodyContent\").height()+38);
+                                if($(\"#bodyContent\").height() > 0){
+                                    clearInterval(interval);
+                                }
+                            }, 100);
                         }
                     </script>
                     <style type='text/css'>

@@ -53,10 +53,80 @@ define('AGEWELL_NI_BUDGET_STRUCTURE', 7);
 define('TECH_WORKSHOP_STRUCTURE', 8);
 define('REGIONAL_MEETING_STRUCTURE', 9);
 define('TVN_CATALYST_STRUCTURE', 10);
+define('FES_PROJECT_BUDGET_STRUCTURE', 11);
+define('FES_THEME_BUDGET_STRUCTURE', 12);
 
 $budgetStructures = array();
 
 $budgetStructures[NETWORK_BUDGET_STRUCTURE] = array(array());
+
+$budgetStructures[FES_PROJECT_BUDGET_STRUCTURE] = 
+    array(array(HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY)
+    );
+    
+$budgetStructures[FES_THEME_BUDGET_STRUCTURE] = 
+    array(array(HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD,       HEAD),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(HEAD2_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY)
+    );
 
 $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
     array(array(HEAD1,      READ,            NA,          NA,          NA,          BLANK,  BLANK,  BLANK,      BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK,       BLANK),

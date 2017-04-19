@@ -11,6 +11,8 @@ behat/screenshots
 behat/vendor
 Photos/*.jpg
 images/*
+Classes/dompdf/lib/fonts/log.htm
+Classes/dompdf/lib/fonts/*.afm.php
 extensions/Cache/cache/
 Path.php
 Credentials.php
