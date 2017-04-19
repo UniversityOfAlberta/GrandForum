@@ -44,7 +44,7 @@ class PersonProjectTab extends AbstractTab {
 				    foreach($project->getSubProjects() as $subproject){
 				        if($person->isMemberOf($subproject)){
 				            $role = $person->getRoleOn($subproject);
-				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a> ({$role})";
+				            $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getFullName()} ({$subproject->getName()})</a> ({$role})";
 				        }
 				    }
 				    $subprojects = "";
@@ -52,7 +52,7 @@ class PersonProjectTab extends AbstractTab {
 				        $subprojects = "<ul><li>".implode("</li><li>", $subprojs)."</li></ul>";
 				    }
 				    $role = $person->getRoleOn($project);
-				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getName()}</a> ({$role}) $subprojects</li>";
+				    $projs[] = "<li><a href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a> ({$role}) $subprojects</li>";
 				}
 			}
 			if(count($projs) > 0){
@@ -90,13 +90,19 @@ class PersonProjectTab extends AbstractTab {
                 continue;
             }
             $theme = $project->getChallenge();
-            $themes[$theme->getAcronym()] = $theme;
+            if($theme->getAcronym() != ""){
+                $themes[$theme->getAcronym()] = $theme;
+            }
         }
         foreach($leadThemes as $theme){
-            $themes[$theme->getAcronym()] = $theme;
+            if($theme->getAcronym() != ""){
+                $themes[$theme->getAcronym()] = $theme;
+            }
         }
         foreach($coordThemes as $theme){
-            $themes[$theme->getAcronym()] = $theme;
+            if($theme->getAcronym() != ""){
+                $themes[$theme->getAcronym()] = $theme;
+            }
         }
         if(count($themes) > 0){
             $themeNames = array();
@@ -108,7 +114,7 @@ class PersonProjectTab extends AbstractTab {
                 else if(isset($coordThemes[$theme->getId()])){
                     $lead = " (coord)";
                 }
-                $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>{$lead}</li>";
+                $themeNames[] = "<li><a href='{$theme->getUrl()}'>{$theme->getName()} ({$theme->getAcronym()})</a>{$lead}</li>";
             }
             $this->html .= "<h3>".Inflect::pluralize($config->getValue('projectThemes'))."</h3>";
             $this->html .= "<ul>".implode("\n", $themeNames)."</ul>";
