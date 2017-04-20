@@ -223,7 +223,8 @@ class IndexTable {
                     <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 if($type != "Administrative"){
-                    $wgOut->addHTML("<td align='center'>{$proj->getChallenge()->getAcronym()}</td>");
+                    $text = ($proj->getChallenge()->getAcronym() != "") ? "<a href='{$proj->getChallenge()->getUrl()}'>{$proj->getChallenge()->getName()} ({$proj->getChallenge()->getAcronym()})</a>" : "";
+                    $wgOut->addHTML("<td align='center'>{$text}</td>");
                 }
                 if($idHeader){
                     $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
