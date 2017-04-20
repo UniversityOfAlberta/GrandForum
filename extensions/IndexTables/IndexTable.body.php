@@ -14,6 +14,33 @@ class IndexTable {
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         $aliases = $config->getValue('roleAliases');
+        
+        $themesColl = new Collection(Theme::getAllThemes());
+        $themeAcronyms = $themesColl->pluck('getAcronym()');
+        $themeNames = $themesColl->pluck('getName()');
+        $themes = array();
+        foreach($themeAcronyms as $id => $acronym){
+            $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
+        }
+        
+        if(Project::areThereAdminProjects()){
+            $project = Project::newFromHistoricName($wgTitle->getNSText());
+            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
+                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
+                                                                "$selected");
+        }
+        
+        if(count($themes) > 0){
+            $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
+                         ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
+                         array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
+            
+            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                "$selected");
+        }
+        
         if($config->getValue('projectsEnabled')){
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
             $selected = ((($project != null && $project->getType() != "Administrative") || $wgTitle->getText() == "Projects") && 
@@ -73,33 +100,6 @@ class IndexTable {
             $productsSubTab['dropdown'][] = TabUtils::createSubTab("Bibliographies", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage", "$selected");
         }
         $tabs['Main']['subtabs'][] = $productsSubTab;
-        
-       
-        $themesColl = new Collection(Theme::getAllThemes());
-        $themeAcronyms = $themesColl->pluck('getAcronym()');
-        $themeNames = $themesColl->pluck('getName()');
-        $themes = array();
-        foreach($themeAcronyms as $id => $acronym){
-            $themes[] = $themeAcronyms[$id].' - '.$themeNames[$id];
-        }
-        
-        if(Project::areThereAdminProjects()){
-            $project = Project::newFromHistoricName($wgTitle->getNSText());
-            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
-                                                                "$selected");
-        }
-        
-        if(count($themes) > 0){
-            $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                         ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
-                         array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
-            
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$selected");
-        }
         
         /*if(Wiki::newFromTitle("{$config->getValue('networkName')}_Conferences")->exists()){
             $selected = ($wgTitle->getNSText() == "Conference" || $wgTitle->getText() == "{$config->getValue('networkName')} Conferences") ? "selected" : "";
