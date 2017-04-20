@@ -224,7 +224,7 @@ class IndexTable {
                     <td align='left'>{$proj->getFullName()}</td>");
                 if($type != "Administrative"){
                     $text = ($proj->getChallenge()->getAcronym() != "") ? "<a href='{$proj->getChallenge()->getUrl()}'>{$proj->getChallenge()->getName()} ({$proj->getChallenge()->getAcronym()})</a>" : "";
-                    $wgOut->addHTML("<td align='center'>{$text}</td>");
+                    $wgOut->addHTML("<td align='left'>{$text}</td>");
                 }
                 if($idHeader){
                     $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
