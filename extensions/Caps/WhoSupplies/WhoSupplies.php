@@ -26,7 +26,6 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <ul>
                     <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
-                    <li>Awaiting the <a href='https://www.cadth.ca/mifepristone-and-misoprostol' target='_blank'>Canadian Agency for Drugs and Technologies in Health</a> (CADTH) Common Drug Review of Mifegymiso®, scheduled for March 2017. Approval may impact insurance coverage and provincial and territorial formularies (i.e list publically-funded drugs for individuals who qualify and/or do not have private insurance, for example, individuals on social assistance).</li>
                     <li>As of March 4th, 2017, private insurance providers intent on Mifegymiso® coverage are:
                         <ol>
                             <li>Great West Life: Open coverage</li>
@@ -40,6 +39,8 @@ class WhoSupplies extends SpecialPage{
                     </li>
                     <li>There is no longer any requirement for a health care professional to witness a person taking either of the drugs in Mifegymiso, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=2'>read more</a></li>
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
+                    <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
+                    <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                 </ul>
             </div>
 
