@@ -2646,26 +2646,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the number of months an HQP has been a part of a project
-     * TODO: This need to be updated! (it was used for 2010)
-     * @param Project $project The Project the HQP was on
-     * @return string The number of months
-     */
-    function getHQPMonth($project){
-        $sql = "SELECT months 
-                FROM grand_hqp_months
-                WHERE user_id = '{$this->id}'
-                AND project_id = '{$project->getId()}'";
-        $data = DBFunctions::execSQL($sql);
-        if(isset($data[0]) && isset($data[0]['months'])){
-            return $data[0]['months'];
-        }
-        else{
-            return "Unknown";
-        }
-    }
-    
-    /**
      * Returns the Relationships this Person has between the given dates
      * @param string $type The type of Relationship
      * @param string $startRange The start date

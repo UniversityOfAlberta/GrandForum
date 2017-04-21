@@ -422,7 +422,8 @@ class ProjectVisualizationsTab extends AbstractTab {
             }
             
             $dates = array();
-            for($i=2010; $i <= YEAR; $i++){
+            $startDate = substr($project->getCreated(), 0, 4);
+            for($i=$startDate; $i <= YEAR; $i++){
                 if($i == YEAR){
                     $dates[] = array('date' => $i, 'checked' => 'checked');
                 }
