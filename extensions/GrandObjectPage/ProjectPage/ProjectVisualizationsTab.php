@@ -308,7 +308,8 @@ class ProjectVisualizationsTab extends AbstractTab {
             $people = $project->getAllPeople(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH);
             $sortedPeople = array();
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
+                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH) &&
+                   !$person->isRoleDuring(PL, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH, $project)){
                     unset($people[$key]);
                     continue;
                 }
