@@ -5,6 +5,7 @@ class MoneyCell extends Cell{
     var $table = null;
     var $totalX = -1;
     var $totalY = -1;
+    var $postText = "";
     
     function MoneyCell($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = '';
@@ -12,6 +13,9 @@ class MoneyCell extends Cell{
             if(isset($params[0]) && isset($params[1])){
                 $this->totalY = $params[0];
                 $this->totalX = $params[1];
+            }
+            else if(isset($params[0])){
+                $this->postText = $params[0];
             }
             $cellValue = str_replace(',', '', $cellValue);
             if(is_numeric($cellValue)){
@@ -49,7 +53,7 @@ class MoneyCell extends Cell{
                 }
             }
             if(is_numeric($this->value)){
-                $str .= "$".number_format($this->value);
+                $str .= "$".number_format($this->value).$this->postText;
             }
         }
         return $str;

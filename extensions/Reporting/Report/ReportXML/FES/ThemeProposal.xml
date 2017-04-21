@@ -232,7 +232,7 @@ Chose titles that will make sense to the public.</small>
                     ]]>
                 </ReportItem>
                 
-                <ReportItem id="budget_{getExtra(id)}" type="BudgetReportItem" blobItem="BUDGET" blobSubItem="{getExtra(id)}" blobType="BLOB_RAW" structure="FES_PROJECT_BUDGET_STRUCTURE">
+                <ReportItem id="budget_{getExtra(id)}" type="BudgetReportItem" blobItem="BUDGET" blobSubItem="{getExtra(id)}" blobType="BLOB_RAW" structure="FES_BUDGET_STRUCTURE">
                     <![CDATA[
                         {$item}
                     ]]>
