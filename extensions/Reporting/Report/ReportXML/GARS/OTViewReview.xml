@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="OTViewReview" reportType="RP_OTT" pdfType="RPTP_OTT" pdfFiles="OTViewReview" ajax="true" disabled="false">
     <Permissions>
-        <Role role="Manager">
-            <SectionPermission id="review student" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role role="Admin">
-            <SectionPermission id="review student" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
     </Permissions>
     <ReportSection id="review student" tooltip="Student Review" name="Review Student" blobSection="OT_REVIEW" type="EditableReportSection" pagebreak="false">
         <ReportItem id="js" type="StaticReportItem">
