@@ -161,7 +161,7 @@ SopsView = Backbone.View.extend({
 
     filterAdmitType: function(){
         input = $('#admitType').val().toUpperCase();
-        this.filterByRow(11,input);
+        this.filterByRow(12,input);
     },
 
     filterFinalAdmitType: function(){

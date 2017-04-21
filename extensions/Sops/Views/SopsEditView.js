@@ -292,7 +292,7 @@ SopsEditView = Backbone.View.extend({
                 }
               });
 
-        }, 4000);
+        }, 6000);
 	/** This part constantly updates the errors column. It needs to check for the ajax response from AtD **/
 	$( document ).ajaxComplete(function() {
 	    if($("#grammar_errors").text() == "0" || $("#grammar_errors").text() == ""){

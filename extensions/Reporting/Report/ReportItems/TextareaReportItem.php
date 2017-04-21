@@ -103,6 +103,7 @@ class TextareaReportItem extends AbstractReportItem {
         $height = $this->getAttr('height', '');
         $limit = $this->getLimit();
         $height = $this->calculateHeight($limit);
+	$height = "300px";
         $rich = strtolower($this->getAttr('rich', 'false'));
         $item = "";
         if($limit > 0){
