@@ -162,7 +162,12 @@ $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function(){
     return 
     array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
           array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
-          STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array_merge(array(PROJECT_PEOPLE,
+          STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
+                                                                      PROJECT_ROLES,
+                                                                      PROJECT_HQP),
+                                                                $projRow,
+                                                                array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
+          STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE,
                                                                       PROJECT_ROLES,
                                                                       PROJECT_HQP),
                                                                 $projRow,
