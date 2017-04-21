@@ -102,4 +102,4 @@ Feature: Project/Theme Leaders
         | user       | pass       | text                    |
         | "PL.User2" | "PL.Pass2" | "Phase 2 Project 3 (Phase2Project3)" |
         | "TL.User1" | "TL.Pass1" | "Theme 1 (Theme1) (lead)"         |
-        | "TC.User1" | "TC.Pass1" | "Theme 1 (Theme1) (lead)"        |
+        | "TC.User1" | "TC.Pass1" | "Theme 1 (Theme1) (coord)"        |
