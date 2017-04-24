@@ -255,6 +255,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             {$carryOver}";
                         }
                     }
+                    if($config->getValue('networkName') == "FES"){
+                        $justification = nl2br($justification);
+                        $this->html .= "<h3>Budget Justification</h3>
+                                        {$justification}";
+                    }
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
@@ -297,6 +302,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";
                     }
+                }
+                if($edit && $config->getValue('networkName') == "FES"){
+                    $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/FES_Project_Budget.xlsx'>Budget Template</a>";
+                    $this->html .= "<h3>Budget Justification</h3>
+                                    <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
                 }
                 $this->html .="</div>";
             }
