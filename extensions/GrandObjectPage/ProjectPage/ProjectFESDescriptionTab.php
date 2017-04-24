@@ -50,48 +50,46 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
         
         if(!$edit){
             $this->html .= "<h2>Project Objectives / Anticipated Outcomes</h2>
-                            <h3>List the short-term project objectives (realizable in a three year time frame)</h3>
+                            <h3>1. Short & Long Term Objectives</h3>
                             {$this->getBlobValue('SHORT_TERM')}
-                            <h3>List the longer-term project objectives (realizable in seven years)</h3>
-                            {$this->getBlobValue('LONG_TERM')}
-                            <h3>List anticipated outcomes</h3>
+                            <h3>2. Anticipated outcomes</h3>
                             {$this->getBlobValue('OUTCOMES')}
                             
                             <h2>Project Team Members / Roles / Intra- and Cross-Theme Integration</h2>
-                            <h3>Provide comments on how the project members, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits</h3>
+                            <h3>1. How the project members, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits</h3>
                             {$this->getBlobValue('COMMENTS')}
                             
                             <h2>Project External Partners Collaborators and Their Roles</h2>
-                            <h3>Provide brief comments on how the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
+                            <h3>1. How the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
                             {$this->getBlobValue('COMMENTS1')}
-                            <h3>Provide brief comments on the level of confidence that the project cash resources will be realized</h3>
+                            <h3>2. Level of confidence that the project cash resources will be realize</h3>
                             {$this->getBlobValue('COMMENTS2')}
-                            <h3>Provide brief comments on potential / existing in-kind resources from partners that are need for project</h3>
+                            <h3>3. Potential / existing in-kind resources from partners that are need for project</h3>
                             {$this->getBlobValue('COMMENTS3')}
                             <h2>Project Key Decision Point</h2>
+                            <h3>1. Project Key Decision Point</h3>
                             {$this->getBlobValue('DECISION')}";
         }
         else{
             $this->html .= "<h2>Project Objectives / Anticipated Outcomes</h2>
-                            <h3>List the short-term project objectives (realizable in a three year time frame)</h3>
+                            <h3>1. Short & Long Term Objectives</h3>
                             <textarea class='long_description' name='SHORT_TERM' style='height:200px;'>{$this->getBlobValue('SHORT_TERM')}</textarea>
-                            <h3>List the longer-term project objectives (realizable in seven years)</h3>
-                            <textarea class='long_description' name='LONG_TERM' style='height:200px;'>{$this->getBlobValue('LONG_TERM')}</textarea>
-                            <h3>List anticipated outcomes</h3>
+                            <h3>2. Anticipated Outcomes</h3>
                             <textarea class='long_description' name='OUTCOMES' style='height:200px;'>{$this->getBlobValue('OUTCOMES')}</textarea>
                             
                             <h2>Project Team Members / Roles / Intra- and Cross-Theme Integration</h2>
-                            <h3>Provide comments on how the project members, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits</h3>
+                            <h3>1. How the project members, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits</h3>
                             <textarea class='long_description' name='COMMENTS' style='height:200px;'>{$this->getBlobValue('COMMENTS')}</textarea>
                             
                             <h2>Project External Partners Collaborators and Their Roles</h2>
-                            <h3>Provide brief comments on how the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
+                            <h3>1. How the project partners, as a team, address a systemic approach to energy production and delivery, and/or cross-theme benefits.</h3>
                             <textarea class='long_description' name='COMMENTS1' style='height:200px;'>{$this->getBlobValue('COMMENTS1')}</textarea>
-                            <h3>Provide brief comments on the level of confidence that the project cash resources will be realized</h3>
+                            <h3>2. Level of confidence that the project cash resources will be realize</h3>
                             <textarea class='long_description' name='COMMENTS2' style='height:200px;'>{$this->getBlobValue('COMMENTS2')}</textarea>
-                            <h3>Provide brief comments on potential / existing in-kind resources from partners that are need for project</h3>
+                            <h3>3. Potential / existing in-kind resources from partners that are need for project</h3>
                             <textarea class='long_description' name='COMMENTS3' style='height:200px;'>{$this->getBlobValue('COMMENTS3')}</textarea>
                             <h2>Project Key Decision Point</h2>
+                            <h3>1. Project Key Decision Point</h3>
                             <textarea class='long_description' name='DECISION' style='height:200px;'>{$this->getBlobValue('DECISION')}</textarea>";
             $this->html .= "<script type='text/javascript'>
                 $('textarea.long_description').tinymce({
@@ -117,12 +115,8 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
         global $wgServer, $wgScriptPath;
         
         $data = "";
-        $personId = array_values($this->project->getLeaders(true));
-        if(!isset($personId[0])){
-            return "";
-        }
-        $personId = $personId[0];
-        $projectId = 0;
+        $personId = 0;
+        $projectId = $this->project->getId();
         
         if(!isset(self::$cache[$personId][$blobItem][$type][$section])){
         
