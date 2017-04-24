@@ -161,12 +161,8 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
         }
 
         $year = 0; // Don't have a year so that it remains the same each year
-        $personId = array_values($this->project->getLeaders(true));
-        if(!isset($personId[0])){
-            return;
-        }
-        $personId = $personId[0];
-        $projectId = 0;
+        $personId = 0
+        $projectId = $this->project->getId();
         
         $blb = new ReportBlob($type, $year, $personId, $projectId);
         $addr = ReportBlob::create_address('RP_PROJECT_APPLICATION', $section, $blobItem, 0);
