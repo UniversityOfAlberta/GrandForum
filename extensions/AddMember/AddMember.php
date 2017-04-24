@@ -278,6 +278,11 @@ class AddMember extends SpecialPage{
         $rolesRow->append($rolesLabel)->append($rolesField);
 
         $projects = Project::getAllProjects();
+        foreach($projects as $key => $project){
+            if($project->getStatus() == "Proposed"){
+                unset($projects[$key]);
+            }
+        }
         $universities = Person::getAllUniversities();
         $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         $departments = Person::getAllDepartments();
