@@ -161,7 +161,7 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
         }
 
         $year = 0; // Don't have a year so that it remains the same each year
-        $personId = 0
+        $personId = 0;
         $projectId = $this->project->getId();
         
         $blb = new ReportBlob($type, $year, $personId, $projectId);
