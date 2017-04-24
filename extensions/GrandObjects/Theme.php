@@ -258,7 +258,7 @@ class Theme {
         $return = array();
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            if($project->getChallenge()->getAcronym() == $this->getAcronym()){
+            if($project->getStatus() == "Active" && $project->getChallenge()->getAcronym() == $this->getAcronym()){
                 $return[$project->getName()] = $project;
             }
         }
