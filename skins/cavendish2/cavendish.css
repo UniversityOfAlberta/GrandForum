@@ -858,6 +858,20 @@ button.mce-close {
     border: 0px solid #888 !important;
 }
 
+.ui-dialog-content {
+    border-width: 0 1px 0 1px !important;
+    border-style: solid !important;
+    border-color: #AAA !important;
+}
+
+.ui-dialog-buttonpane {
+    border-width: 1px 1px 1px 1px !important;
+    border-style: solid !important;
+    border-color: #AAA !important;
+    margin: 0 !important;
+    border-radius: 0 0 10px 10px;
+}
+
 .ui-datepicker-calendar a.ui-state-default {
     background: #cccccc !important;
 }
@@ -1206,9 +1220,6 @@ td.budgetError {
 }
 
 /* jQuery dialogs */
-.ui-dialog{
-    border: 1px solid #ccc;
-}
 
 .ui-dialog-buttonpane {
     border-top: 1px solid #AAAAAA;

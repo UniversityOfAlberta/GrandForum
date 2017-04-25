@@ -212,7 +212,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $('#addActivity').click(function(){
                     $('#addActivityDialog').dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#schedule'));
@@ -230,7 +230,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $('#addMilestone').click(function(){
                     $('#addMilestoneDialog').dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Add Task': function(){
                                 $('#addFESMilestoneDialog').remove();
@@ -449,7 +449,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     var that = $(this);
                     $('.comment_dialog', $(this).parent()).dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Done': function(){
                                 $(this).dialog('close');

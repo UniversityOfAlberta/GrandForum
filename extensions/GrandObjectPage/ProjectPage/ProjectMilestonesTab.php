@@ -453,7 +453,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     var that = $(this);
                     $('.comment_dialog', $(this).parent()).dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Done': function(){
                                 $(this).dialog('close');
@@ -488,7 +488,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $('#addActivity').click(function(){
                     $('#addActivityDialog').dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#milestones'));
@@ -505,7 +505,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $('#addMilestone').click(function(){
                     $('#addMilestoneDialog').dialog({
                         width: 'auto',
-                        modal: true,
+                        resizable: false,
                         buttons: {
                             'Add Milestone': function(){
                                 $('#addFESMilestoneDialog').remove();
