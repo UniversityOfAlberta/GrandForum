@@ -1,0 +1,511 @@
+<?php
+
+class ProjectFESMilestonesTab extends ProjectMilestonesTab {
+
+    function ProjectFESMilestonesTab($project, $visibility){
+        parent::ProjectMilestonesTab($project, $visibility);
+        parent::AbstractTab("Schedule");
+        $this->nYears = 7;
+    }
+    
+    function handleEdit(){
+        global $config;
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $startMonth = substr($startDate, 5, 2);
+        //$startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
+        $me = Person::newFromWgUser();
+        $_POST['user_name'] = $me->getName();
+        $_POST['project'] = $this->project->getName();
+        foreach($_POST['milestone_activity'] as $activityId => $activity){
+            if(!isset($_POST['milestone_title'][$activityId])){
+                // Not created yet, to continue to next
+                continue;
+            }
+            foreach($_POST['milestone_title'][$activityId] as $milestoneId => $title){
+                $quarters = array();
+                if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
+                    foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
+                        foreach($qs as $qId => $q){
+                            $quarters[] = ($year).":$qId";
+                        }
+                    }
+                }
+                
+                if(isset($_POST['milestone_leader'])){
+                    $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                }
+                $_POST['activity'] = $activity;
+                $_POST['activity_id'] = $activityId;
+                $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                $_POST['new_title'] = $title;
+                $_POST['problem'] = "";
+                $_POST['description'] = @$_POST['milestone_description'][$activityId][$milestoneId];
+                $_POST['assessment'] = "";
+                $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
+                $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
+                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+                $_POST['quarters'] = implode(",", $quarters);
+                $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
+                $_POST['id'] = $milestoneId;
+                
+                $milestoneApi = new ProjectMilestoneAPI(true);
+                $milestoneApi->doAction(true);
+                
+                if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
+                   $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
+                    $milestone = Milestone::newFromId($milestoneId);
+                    if($this->canEditMilestone($milestone)){
+                        DBFunctions::update('grand_milestones',
+                                            array('status' => 'Deleted'),
+                                            array('id' => $milestone->getId()));
+                    }
+                }
+            }
+        }
+        
+        if(isset($_POST['new_activity_title']) && $_POST['new_activity_title'] != "" && $this->canEditMilestone(null)){
+            DBFunctions::insert('grand_activities',
+                                array('name' => $_POST['new_activity_title'],
+                                      'project_id' => $this->project->getId()));
+            
+            // Still show the edit interface
+            redirect("{$this->project->getUrl()}?tab=schedule&edit");
+        }
+        if(isset($_POST['new_milestone_activity']) && isset($_POST['new_milestone_title']) &&
+           $_POST['new_milestone_activity'] != "" && $_POST['new_milestone_title'] != "" && 
+           $this->canEditMilestone(null)){
+            $activity = Activity::newFromId($_POST['new_milestone_activity']);
+            if($_POST['new_milestone_activity'] == 0){
+                // Milestone needs to have an auto generated title
+                $ms = $this->project->getMilestones(true, true);
+                $id = 1;
+                if(count($ms) > 0){
+                    $last = $ms[count($ms)-1];
+                    preg_match("/MST([0-9]*)-.*/", $last->getTitle(), $matches);
+                    $id = @intval($matches[1]) + 1;
+                }
+                $id = str_pad($id, 2, "0", STR_PAD_LEFT);
+                $_POST['new_milestone_title'] = "MST{$id}-{$this->project->getName()}";
+            }
+            $_POST['leader'] = "";
+            $_POST['activity'] = $activity->getName();
+            $_POST['activity_id'] = $_POST['new_milestone_activity'];
+            $_POST['milestone'] = "";
+            $_POST['title'] = $_POST['new_milestone_title'];
+            $_POST['new_title'] = $_POST['new_milestone_title'];
+            $_POST['problem'] = "";
+            $_POST['description'] = "";
+            $_POST['assessment'] = "";
+            $_POST['status'] = "New";
+            $_POST['people'] = "";
+            $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+            $_POST['quarters'] = "";
+            $_POST['comment'] = "";
+            $_POST['id'] = "";
+            unset($_POST['id']);
+            unset($_POST['activity_id']);
+            $milestoneApi = new ProjectMilestoneAPI(false);
+            $milestoneApi->doAction(true);
+            
+            // Still show the edit interface 
+            redirect("{$this->project->getUrl()}?tab=schedule&edit");
+        }
+        Messages::addSuccess("'Schedule' updated successfully.");
+        redirect("{$this->project->getUrl()}?tab=schedule");
+    }
+    
+    function showYearsHeader(){
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        for($y=1; $y <= $this->nYears; $y++){
+            $year = $startYear+($y-1);
+            if($y < $this->nYears){
+                $this->html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
+            }
+            else {
+                $this->html .= "<th colspan='2' class='left_border'>FY".($y+1)."<br />Apr{$year} – Sep".($year)."</th>";
+            }
+        }
+    }
+    
+    function showQuartersHeader(){
+        for($y=1; $y <= $this->nYears; $y++){
+            if($y < $this->nYears){
+                $this->html .= "<th class='left_border'>Q1</th>
+                                <th>Q2</th>
+                                <th>Q3</th>
+                                <th>Q4</th>";
+            }
+            else {
+                $this->html .= "<th class='left_border'>Q1</th>
+                                <th>Q2</th>";
+            }
+        }
+    }
+    
+    function showQuartersCells($milestone, $activityId){
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $quarters = $milestone->getQuarters();
+        for($y=$startYear; $y < $startYear+$this->nYears; $y++){
+            $nQuarters = 4;
+            if($y == $this->nYears+$startYear-1){
+                $nQuarters = 2;
+            }
+            for($q=1;$q<=$nQuarters;$q++){
+                $class = ($q == 1) ? "class='left_border'" : "";
+                $color = @Milestone::$statuses[$milestone->getStatus()];
+
+                $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
+                $checkbox = "";
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                    $checked = "";
+                    if(isset($quarters[$y][$q])){
+                        $checked = "checked='checked'";
+                    }
+                    $single = "";
+                    if($activityId == 0){
+                        $single = "single";
+                    }
+                    $checkbox = "<input data-id='{$activityId}_{$milestone->getMilestoneId()}' class='milestone {$single}' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
+                }
+                if(isset($quarters[$y][$q])){
+                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                }
+                else{
+                    $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
+                }
+            }
+        }
+    }
+    
+    function generateBody(){
+        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+        parent::generateBody();
+        $this->addScript();
+        $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
+        $this->showFESMilestones();
+    }
+    
+    function generateEditBody(){
+        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+        parent::generateEditBody();
+        $this->addScript();
+        $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
+        $this->showFESMilestones();
+    }
+    
+    function addScript(){
+        global $wgServer, $wgScriptPath;
+        $this->html .= "<script type='text/javascript'>
+            $('.milestone_header').text('Task');
+            $('.milestones_note').remove();
+            $('.new_milestones_message').remove();
+            $('#addMilestone').text('Add Task');
+            $('#addMilestoneDialog').attr('title', 'Add Task');
+            $('.milestone_info1').text('If there any new tasks or activities, please contact the project leader.  If there are any changes to the tasks, leave comments by clicking the <img src=\'$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png\' /> icon.');
+            $('.milestone_info2').text('If a task was mistakenly added, then contact someone on staff to delete it.  If a task was planned, but was abandoned, then select the \'Abandoned\' status.');
+            
+            $('#addActivity').off('click');
+            $('#addActivity').click(function(){
+                    $('#addActivityDialog').dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Add Activity': function(){
+                                $(this).parent().prependTo($('#schedule'));
+                                $('input[value=\"Save Schedule\"]').click();
+                                $(this).dialog('close');
+                            },
+                            Cancel: function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                });
+            
+            $('#addMilestone').off('click');
+            $('#addMilestone').click(function(){
+                    $('#addMilestoneDialog').dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Add Task': function(){
+                                $('#addFESMilestoneDialog').remove();
+                                $(this).parent().prependTo($('#schedule'));
+                                $('input[value=\"Save Schedule\"]').click();
+                                $(this).dialog('close');
+                            },
+                            Cancel: function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                });
+        </script>";
+    }
+    
+    function showFESMilestones($pdf=false, $year=false){
+        global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+        $me = Person::newFromWgUser();
+        $project = $this->project;
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $startMonth = substr($startDate, 5, 2);
+        //$startYear = @substr($config->getValue('projectPhaseDates', $project->getPhase()), 0, 4);
+
+        if($year === false){
+            $milestones = $project->getMilestones(true, true);
+        }
+        else{
+            $milestones = $project->getMilestonesDuring(substr($year, 0, 4));
+        }
+        
+        $this->html .= "<style type='text/css' rel='stylesheet'>
+            .left_border {
+                border-left: 2px solid #555555;
+            }
+            
+            .top_border {
+                border-top: 2px solid #555555;
+            }
+            
+            #milestones_table input[type=text], #milestones_table select {
+                box-sizing: border-box;
+                margin: 0;
+                width: 100%;
+                height: 24px;
+            }
+        </style>";
+        $commentsHeader = "";
+        $statusHeader = "";
+        $statusColspan = 2;
+        if($this->visibility['edit'] == 1){
+            if($this->canEditMilestone(null)){
+                $this->html .= "<div title='Add Milestone' id='addFESMilestoneDialog' style='display:none;'>
+                                    <input type='hidden' name='new_milestone_activity' value='0' />
+                                    <table>
+                                        <tr>
+                                            <td align='right'><b>Title:</b></td>
+                                            <td><input type='text' name='new_milestone_title' value='' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <a class='button' id='addFESMilestone'>Add Milestone</a><br /><br />";
+            
+                $statusHeader = "<th>Status</th>";
+                if($me->isRoleAtLeast(STAFF)){
+                    $statusHeader .= "<th width='1%'>Delete?</td>";
+                }
+            }
+            else{
+                $statusHeader = "<th>Status</th>";
+            }
+            $statusColspan++;
+            if(!$this->canEditMilestone(null)){
+                $this->html .= "<p class='milestone_info1'>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
+            }
+            else {
+                $this->html .= "<p class='milestone_info2'>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
+            }
+        }
+        if(!$pdf){
+            $commentsHeader = "<th></th>";
+            $statusColspan++;
+        }
+        $this->html .= "<input type='hidden' name='milestone_activity[0]' value='' />
+                        <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
+        $this->html .= "<thead>
+                        <tr>
+                            <th colspan='2'></th>";
+        $this->showYearsHeader();
+        $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
+                        </tr>
+                        <tr>
+                            <th class='milestone_header'>Milestone</th>
+                            <th style='min-width:200px;width:25%;'>Description</th>";
+        $this->showQuartersHeader();
+        $this->html .= "<th class='left_border'>Leader</th>
+                            <th>Personnel</th>
+                            {$commentsHeader}
+                            {$statusHeader}
+                        </tr>
+                        </thead>
+                        <tbody>";
+        foreach($milestones as $key => $milestone){
+            $activityId = 0;
+            if($key == 0){
+                $this->html .= "<tr class='top_border'>";
+            }
+            else{
+                $this->html .= "<tr>";
+            }
+            if($this->visibility['edit'] == 1){
+                // Editing
+                $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
+                $milestoneDescription = str_replace(">", "&gt;", str_replace("<", "&lt;", $milestone->getDescription()));
+                $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
+                          <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
+                $description = "<div style='display:inline-block;width:100%;padding:1px;box-sizing:border-box;'><textarea style='width:100%;height:auto;resize: vertical;margin:0;' name='milestone_description[$activityId][{$milestone->getMilestoneId()}]'>{$milestoneDescription}</textarea></div>";
+                if($milestone->isNew()){
+                    $title .= "<b>$milestoneTitle</b>";
+                }
+                else{
+                    $title .= $milestoneTitle;
+                }
+            }
+            else{
+                // Viewing
+                $title = $milestone->getTitle();
+                $description = nl2br(str_replace(">", "&gt;", str_replace("<", "&lt;", $milestone->getDescription())));
+                $description = "<div style='max-height:75px;overflow-y: auto;'>{$description}</div>";
+                if($milestone->isNew()){
+                    $title = "<b>$title</b>";
+                }
+            }
+            $this->html .= "<td style='white-space:nowrap;'>{$title}</td>";
+            $this->html .= "<td>{$description}</td>";
+            $this->showQuartersCells($milestone, $activityId);
+            
+            $comment = str_replace("'", "&#39;", $milestone->getComment());
+            $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
+            $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
+            $leader = $milestone->getLeader();
+            $peopleText = $milestone->getPeopleText();
+            $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+            
+            if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                $members = $project->getAllPeople();
+                $peopleNames = array();
+                foreach($members as $person){
+                    $peopleNames[$person->getNameForForms()] = $person->getNameForForms();
+                }
+                if($this->canEditMilestone(null)){
+                    $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getNameForForms(), $peopleNames);
+                    $leaderText = $selectBox->render();
+                }
+                else{
+                    $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
+                }
+                $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
+                $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
+                $peopleText = "<input type='text' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
+            }
+            $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
+            $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
+            if(!$pdf){
+                $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
+            }
+            if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                $statuses = array();
+                foreach(Milestone::$statuses as $status => $color){
+                    $statuses[$status] = $status;
+                }
+                
+                $selectBox = new SelectBox("milestone_status[$activityId][{$milestone->getMilestoneId()}]", "status", $milestone->getStatus(), $statuses);
+                $statusText = $selectBox->render();
+                $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
+                if($me->isRoleAtLeast(STAFF)){
+                    $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
+                }
+            }
+            else if($this->visibility['edit'] && !$this->canEditMilestone($milestone)){
+                $this->html .= "<td id='status' class='left_comment' align='center'></td>";
+            }
+            $this->html .= "</tr>";
+        }
+        $this->html .= "</tbody>
+                        </table>";
+        if(!$pdf){
+            $this->html .= "<table style='float:right;'>";
+        }
+        else{
+            $this->html .= "<table>";
+        }
+        $this->html .= "<tr>
+                            <th>Legend</th>
+                        </tr>";
+        foreach(Milestone::$statuses as $status => $color){
+            $this->html .= "<tr>
+                                <td class='smallest'><div style='text-align:center;padding:1px 3px;background:{$color};border:1px solid #555555;white-space:nowrap;'>$status</div></td>
+                            </tr>";
+        }
+        $this->html .= "</table><br style='clear:both;' />";
+        if(!$pdf){
+            $this->html .= "<script type='text/javascript'>
+                var colors = ".json_encode(Milestone::$statuses).";
+                
+                $('#milestones_table td').qtip();
+                $('#milestones_table td.comment img').qtip({
+                    position: {
+                        my: 'topRight',
+                        at: 'bottomLeft'
+                    }
+                });
+                
+                $('#milestones_table div.comment').click(function(){
+                    var that = $(this);
+                    $('.comment_dialog', $(this).parent()).dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Done': function(){
+                                $(this).dialog('close');
+                            }
+                        },
+                        close: function(event, ui){
+                            $(this).parent().prependTo(that.parent());
+                        }
+                    });
+                });
+                
+                var changeColor = function(){
+                    var checked = $(this).is(':checked');
+                    if(checked){
+                        var status = $('td#status select', $(this).parent().parent()).val();
+                        var color = colors[status];
+                        $(this).parent().css('background', color);
+                    }
+                    else{
+                        $(this).parent().css('background', '#FFFFFF');
+                    }
+                };
+                
+                $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+                $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
+                $('#milestones_table td#status select').change(function(){
+                    var status = $(this).val();
+                    var color = colors[status];
+                    $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
+                });
+                
+                $('#addFESMilestone').click(function(){
+                    $('input[name=new_milestone_title]').val('New Milestone');
+                    $('input[value=\"Save Schedule\"]').click();
+                    /*$('#addFESMilestoneDialog').dialog({
+                        width: 'auto',
+                        buttons: {
+                            'Add Milestone': function(){
+                                $('#addMilestoneDialog').remove();
+                                $(this).parent().prependTo($('#schedule'));
+                                $('input[value=\"Save Schedule\"]').click();
+                                $(this).dialog('close');
+                            },
+                            Cancel: function(){
+                                $(this).dialog('close');
+                            }
+                        }
+                    });*/
+                });
+                
+                $('input.single').click(function(){
+                    var dataId = $(this).attr('data-id');
+                    $('input[data-id=' + dataId + ']').not(this).prop('checked', false);
+                    $('#milestones_table td input.milestone[type=checkbox]').change(changeColor);
+                    $('#milestones_table td input.milestone[type=checkbox]').each(changeColor);
+                });
+                
+            </script>";
+        }
+    }
+
+}

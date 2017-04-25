@@ -5,6 +5,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
 
     var $project;
     var $visibility;
+    var $nYears = 3;
 
     function ProjectMilestonesTab($project, $visibility){
         parent::AbstractTab("Milestones");
@@ -156,6 +157,49 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
     }
     
+    function showYearsHeader(){
+        for($y=1; $y <= $this->nYears; $y++){
+            $this->html .= "<th colspan='4' class='left_border'>Year {$y}</th>";
+        }
+    }
+    
+    function showQuartersHeader(){
+        for($y=1; $y <= $this->nYears; $y++){
+            $this->html .= "<th class='left_border'>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>";
+        }
+    }
+    
+    function showQuartersCells($milestone, $activityId){
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
+        $quarters = $milestone->getQuarters();
+        for($y=$startYear; $y < $startYear+$this->nYears; $y++){
+            for($q=1;$q<=4;$q++){
+                $class = ($q == 1) ? "class='left_border'" : "";
+                $color = @Milestone::$statuses[$milestone->getStatus()];
+
+                $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
+                $checkbox = "";
+                if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                    $checked = "";
+                    if(isset($quarters[$y][$q])){
+                        $checked = "checked='checked'";
+                    }
+                    $checkbox = "<input class='milestone' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
+                }
+                if(isset($quarters[$y][$q])){
+                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                }
+                else{
+                    $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
+                }
+            }
+        }
+    }
+    
     function showMilestones($pdf=false, $year=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
@@ -251,44 +295,32 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             }
             $statusColspan++;
             if(!$this->canEditMilestone(null)){
-                $this->html .= "<p>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
+                $this->html .= "<p class='milestone_info1'>If there any new milestones or activities, please contact the project leader.  If there are any changes to the milestones, leave comments by clicking the <img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' /> icon.</p>";
             }
             else {
-                $this->html .= "<p>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
+                $this->html .= "<p class='milestone_info2'>If a milestone was mistakenly added, then contact someone on staff to delete it.  If a milestone was planned, but was abandoned, then select the 'Abandoned' status.</p>";
             }
         }
         if(!$pdf){
             $commentsHeader = "<th></th>";
             $statusColspan++;
         }
-        $this->html .= "<p><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br />
-                            New Milestones have titles in bold.
+        $this->html .= "<p>
+                            <span class='milestones_note'><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br /></span>
+                            <span class='new_milestones_message'>New Milestones have titles in bold.</span>
                         </p>
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard' style='width:100%; border: 2px solid #555555;'>";
         $this->html .= "<thead>
                         <tr>
-                            <th colspan='2'></th>
-                            <th colspan='4' class='left_border'>Year 1</th>
-                            <th colspan='4' class='left_border'>Year 2</th>
-                            <th colspan='4' class='left_border'>Year 3</th>
-                            <th colspan='{$statusColspan}' class='left_border'></th>
+                            <th colspan='2'></th>";
+        $this->showYearsHeader();
+        $this->html .= "<th colspan='{$statusColspan}' class='left_border'></th>
                         </tr>
                         <tr>
                             <th>Activity</th>
-                            <th>Milestone</th>
-                            <th class='left_border'>Q1</th>
-                            <th>Q2</th>
-                            <th>Q3</th>
-                            <th>Q4</th>
-                            <th class='left_border'>Q1</th>
-                            <th>Q2</th>
-                            <th>Q3</th>
-                            <th>Q4</th>
-                            <th class='left_border'>Q1</th>
-                            <th>Q2</th>
-                            <th>Q3</th>
-                            <th>Q4</th>
-                            <th class='left_border'>Leader</th>
+                            <th class='milestone_header'>Milestone</th>";
+        $this->showQuartersHeader();
+        $this->html .= "<th class='left_border'>Leader</th>
                             <th>Personnel</th>
                             {$commentsHeader}
                             {$statusHeader}
@@ -338,29 +370,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     }
                 }
                 $this->html .= "<td>{$title}</td>";
-                $quarters = $milestone->getQuarters();
-                for($y=$startYear; $y < $startYear+3; $y++){
-                    for($q=1;$q<=4;$q++){
-                        $class = ($q == 1) ? "class='left_border'" : "";
-                        $color = @Milestone::$statuses[$milestone->getStatus()];
-
-                        $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
-                        $checkbox = "";
-                        if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
-                            $checked = "";
-                            if(isset($quarters[$y][$q])){
-                                $checked = "checked='checked'";
-                            }
-                            $checkbox = "<input class='milestone' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
-                        }
-                        if(isset($quarters[$y][$q])){
-                            $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$checkbox</td>";
-                        }
-                        else{
-                            $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
-                        }
-                    }
-                }
+                $this->showQuartersCells($milestone, $activityId);
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
                 $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
@@ -495,6 +505,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         width: 'auto',
                         buttons: {
                             'Add Milestone': function(){
+                                $('#addFESMilestoneDialog').remove();
                                 $(this).parent().prependTo($('#milestones'));
                                 $('input[value=\"Save Milestones\"]').click();
                                 $(this).dialog('close');

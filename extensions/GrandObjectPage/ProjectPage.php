@@ -102,8 +102,8 @@ class ProjectPage {
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
-                if($config->getValue('networkName') == "FES"){
-                    
+                if($config->getValue('networkName') == "FES" && $me->isRoleAtLeast(STAFF)){
+                    $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
                 else{
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));

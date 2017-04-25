@@ -172,7 +172,8 @@ class ProjectMilestoneAPI extends API{
 		       $milestone->quarters == $_POST['quarters'] &&
 		       $milestone->getStatus() == $_POST['status'] &&
 		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
-		       $milestone->getComment() == $_POST['comment']){
+		       $milestone->getComment() == $_POST['comment'] &&
+		       $milestone->getDescription() == $_POST['description']){
 		        return;   
 		   }
 		}
