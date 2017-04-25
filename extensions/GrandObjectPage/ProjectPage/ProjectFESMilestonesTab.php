@@ -212,6 +212,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $('#addActivity').click(function(){
                     $('#addActivityDialog').dialog({
                         width: 'auto',
+                        modal: true,
                         buttons: {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#schedule'));
@@ -229,6 +230,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $('#addMilestone').click(function(){
                     $('#addMilestoneDialog').dialog({
                         width: 'auto',
+                        modal: true,
                         buttons: {
                             'Add Task': function(){
                                 $('#addFESMilestoneDialog').remove();
@@ -447,6 +449,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     var that = $(this);
                     $('.comment_dialog', $(this).parent()).dialog({
                         width: 'auto',
+                        modal: true,
                         buttons: {
                             'Done': function(){
                                 $(this).dialog('close');
@@ -481,20 +484,6 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $('#addFESMilestone').click(function(){
                     $('input[name=new_milestone_title]').val('New Milestone');
                     $('input[value=\"Save Schedule\"]').click();
-                    /*$('#addFESMilestoneDialog').dialog({
-                        width: 'auto',
-                        buttons: {
-                            'Add Milestone': function(){
-                                $('#addMilestoneDialog').remove();
-                                $(this).parent().prependTo($('#schedule'));
-                                $('input[value=\"Save Schedule\"]').click();
-                                $(this).dialog('close');
-                            },
-                            Cancel: function(){
-                                $(this).dialog('close');
-                            }
-                        }
-                    });*/
                 });
                 
                 $('input.single').click(function(){
