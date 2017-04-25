@@ -216,8 +216,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         buttons: {
                             'Add Activity': function(){
                                 $(this).parent().prependTo($('#schedule'));
-                                $('input[value=\"Save Schedule\"]').click();
                                 $(this).dialog('close');
+                                $('input[value=\"Save Schedule\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
@@ -235,8 +235,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             'Add Task': function(){
                                 $('#addFESMilestoneDialog').remove();
                                 $(this).parent().prependTo($('#schedule'));
-                                $('input[value=\"Save Schedule\"]').click();
                                 $(this).dialog('close');
+                                $('input[value=\"Save Schedule\"]').click();
                             },
                             Cancel: function(){
                                 $(this).dialog('close');
