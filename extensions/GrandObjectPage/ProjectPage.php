@@ -103,9 +103,7 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
                 if($config->getValue('networkName') == "FES"){
-                    if($me->isRoleAtLeast(STAFF)){
-                        $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
-                    }
+                    $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
                 else{
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
