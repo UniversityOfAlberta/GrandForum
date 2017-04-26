@@ -440,6 +440,7 @@ EOF;
      */
     function showCCV($person, $visibility){
         global $wgUser, $wgServer, $wgScriptPath;
+        return;
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
             if(($person->isRole(NI)) && $me->getId() == $person->getId()){
