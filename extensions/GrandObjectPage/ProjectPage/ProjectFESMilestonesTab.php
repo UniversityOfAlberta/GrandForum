@@ -191,10 +191,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     
     function generateEditBody(){
         $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
-        parent::generateEditBody();
+        parent::generateBody();
         $this->addScript();
-        $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
+        $this->html .= "<hr style='clear:both;' /><h2 style='clear:both;'>Milestones</h2>";
         $this->showFESMilestones();
+        $this->html .= "<hr style='clear:both;' />";
     }
     
     function addScript(){
