@@ -41,7 +41,7 @@ class WhoSupplies extends SpecialPage{
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                     <li>On April 18th, 2017, the Common Drug Review (CDR) expert panel endorsed public coverage for Mifegymiso® in Canada, read more from the CDR <a href='https://www.cadth.ca/mifepristone-and-misoprostol-0' target='_blank'>here</a> and/or from the media <a href='http://www.theglobeandmail.com/news/national/expert-panel-endorses-public-coverage-for-abortion-pill-in-canada/article34757082/%20(April%2020th,%202017)' target='_blank'>here</a> (April 19th, 2017)</li>
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
-                    <li>The approval of Mifegymiso 'r' has exposed both the legal and practical deficiencies of Health Canada's drug review process. Read more on this analysis <a href='http://policyoptions.irpp.org/magazines/april-2017/regulatory-risk-mismanagement-and-the-abortion-pill/' target='_blank'>here</a> (April 25th, 2017)</li>
+                    <li>The approval of Mifegymiso® has exposed both the legal and practical deficiencies of Health Canada's drug review process. Read more on this analysis <a href='http://policyoptions.irpp.org/magazines/april-2017/regulatory-risk-mismanagement-and-the-abortion-pill/' target='_blank'>here</a> (April 25th, 2017)</li>
                 </ul>
             </div>
 
