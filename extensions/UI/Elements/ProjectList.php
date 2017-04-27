@@ -18,7 +18,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         $otherThemes = array();
         foreach($projects as $project){
             $theme = $project->getChallenge();
-            if($theme->getAcronym() == "Not Specified"){
+            if($theme->getAcronym() == "Not Specified" || $theme->getAcronym() == ""){
                 $otherThemes[] = $project;
             } else {
                 $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
