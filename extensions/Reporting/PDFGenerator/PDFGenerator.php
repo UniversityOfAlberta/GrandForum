@@ -708,7 +708,7 @@ EOF;
 		$head
 		$previewScript
 		</head>";
-		$headerName = $report->headerName;
+		$headerName = @$report->headerName;
 		if($headerName == ""){
             if($project != null){
                 if($project->getName() == ""){
