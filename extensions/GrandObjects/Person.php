@@ -4340,10 +4340,16 @@ class Person extends BackboneModel {
         foreach($data as $row){
             if($type != "Project" && 
                $type != "SAB" && $class != "Project"){
-                $subs[] = Person::newFromId($row['sub_id']);
+                $sub = Person::newFromId($row['sub_id']);
+                if($sub != null && $sub->getId() != 0){
+                    $subs[] = $sub;
+                }
             }
             else{
-                $subs[] = Project::newFromId($row['sub_id']);
+                $sub = Project::newFromId($row['sub_id']);
+                if($sub != null && $sub->getId() != 0){
+                    $subs[] = $sub;
+                }
             }
         }
         return $subs;
