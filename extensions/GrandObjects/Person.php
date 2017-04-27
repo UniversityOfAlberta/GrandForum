@@ -4376,13 +4376,13 @@ class Person extends BackboneModel {
         foreach($data as $row){
             if($row['type'] == "Project" || $row['type'] == "SAB" || $class == "Project"){
                 $project = Project::newFromId($row['sub_id']);
-                if($project != null){
+                if($project != null && $project->getId() != 0){
                     $subs[$project->getName()] = $project;
                 }
             }
             else{
                 $person = Person::newFromId($row['sub_id']);
-                if($person != null){
+                if($person != null && $person->getId() != 0){
                     $subs[$person->getReversedName()] = $person;
                 }
             }

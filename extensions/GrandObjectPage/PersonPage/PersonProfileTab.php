@@ -440,7 +440,7 @@ EOF;
      */
     function showCCV($person, $visibility){
         global $wgUser, $wgServer, $wgScriptPath;
-        return;
+        return; //FIXME: Disabled for now (won't import into Canadian CCV)
         if(isExtensionEnabled('CCVExport')){
             $me = Person::newFromWgUser();
             if(($person->isRole(NI)) && $me->getId() == $person->getId()){

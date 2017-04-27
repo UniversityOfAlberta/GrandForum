@@ -13,76 +13,97 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         $partialId = str_replace("_wpNS", "", $this->id);
         $html = "";
         $projects = $this->options;
-
-        $count = ceil(count($projects)/3);
-
-        $i = 0;
-        foreach($projects as $proj){
-            if($i == 0){
-                $html .= "<div style='display:inline-block;margin-right:75px;vertical-align:top;'>";
+        $otherThemes = 
+        $themes = array();
+        $otherThemes = array();
+        foreach($projects as $project){
+            $theme = $project->getChallenge();
+            if($theme->getAcronym() == "Not Specified"){
+                $otherThemes[] = $project;
+            } else {
+                $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
             }
-            $checked = "";
-            if(count($this->value) > 0){
-                foreach($this->value as $value){
-                    if($value == $proj->getName()){
-                        $checked = " checked";
-                        break;
-                    }
+        }
+        if(count($otherThemes) > 0){
+            if(count($themes) == 0){
+                $themes[""] = $otherThemes;
+            }
+            else{
+                $themes["Other"] = $otherThemes;
+            }
+        }
+        
+        foreach($themes as $theme => $projs){
+            $count = ceil(count($projs)/3);
+            $i = 0;
+            $html .= "<div><div style='height:25px;line-height:25px;'><b>{$theme}</b></div>";
+            foreach($projs as $key => $proj){
+                if($i == 0){
+                    $html .= "<div style='display:inline-block;margin-right:75px;vertical-align:top;'>";
                 }
-            }
-            $display = "none";
-            if($checked != ""){
-                $display = "block";
-            }
-            $already = "";
-            if($checked != ""){
-                $already = "already";
-            }
-            $html .= "<div>
-                        <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked />{$proj->getName()}";
-            if($checked != "" && $reasons !== false){
-                $html .="<div style='display:none; padding-left:30px;'>
-                            <fieldset><legend>Reasoning</legend>
-                                <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
-                                Additional Comments:<br />
-                                <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
-                            </fieldset>
-                         </div>";
-            }
-            $html .= "<div class='subprojects' style='margin-left:15px;display:$display;'>";
-            foreach($proj->getSubProjects() as $subProj){
-                $subchecked = "";
-                if(!$subProj->isDeleted()){
-                    if(count($this->value) > 0){
-                        foreach($this->value as $value){
-                            if($value == $subProj->getName()){
-                                $subchecked = " checked";
-                                break;
-                            }
+                $checked = "";
+                if(count($this->value) > 0){
+                    foreach($this->value as $value){
+                        if($value == $proj->getName()){
+                            $checked = " checked";
+                            break;
                         }
                     }
-                    $already = "";
-                    if($subchecked != ""){
-                        $already = "already";
-                    }
-                    $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked />{$subProj->getName()}";
-                    if($subchecked != "" && $reasons !== false){
-                        $html .= "<div style='display:none; padding-left:30px;'>
-                            <fieldset><legend>Reasoning</legend>
-                                <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
-                                Additional Comments:<br />
-                                <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
-                            </fieldset>
-                        </div>";
-                    }
-                    $html .= "<br />";
                 }
-            }
-            $html .= "</div></div>";
-            $i++;
-            if($i == $count){
-                $i=0;
-                $html .= "</div>";
+                $display = "none";
+                if($checked != ""){
+                    $display = "block";
+                }
+                $already = "";
+                if($checked != ""){
+                    $already = "already";
+                }
+                $html .= "<div>
+                            <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked />{$proj->getName()}";
+                if($checked != "" && $reasons !== false){
+                    $html .="<div style='display:none; padding-left:30px;'>
+                                <fieldset><legend>Reasoning</legend>
+                                    <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
+                                    Additional Comments:<br />
+                                    <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                </fieldset>
+                             </div>";
+                }
+                $html .= "<div class='subprojects' style='margin-left:15px;display:$display;'>";
+                foreach($proj->getSubProjects() as $subProj){
+                    $subchecked = "";
+                    if(!$subProj->isDeleted()){
+                        if(count($this->value) > 0){
+                            foreach($this->value as $value){
+                                if($value == $subProj->getName()){
+                                    $subchecked = " checked";
+                                    break;
+                                }
+                            }
+                        }
+                        $already = "";
+                        if($subchecked != ""){
+                            $already = "already";
+                        }
+                        $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked />{$subProj->getName()}";
+                        if($subchecked != "" && $reasons !== false){
+                            $html .= "<div style='display:none; padding-left:30px;'>
+                                <fieldset><legend>Reasoning</legend>
+                                    <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
+                                    Additional Comments:<br />
+                                    <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                </fieldset>
+                            </div>";
+                        }
+                        $html .= "<br />";
+                    }
+                }
+                $html .= "</div></div>";
+                $i++;
+                if($i == $count){
+                    $i=0;
+                    $html .= "</div>";
+                }
             }
         }
         if($i != 0){
