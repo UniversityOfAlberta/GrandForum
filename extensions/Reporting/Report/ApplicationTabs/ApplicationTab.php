@@ -39,6 +39,14 @@ class ApplicationTab extends AbstractTab {
         $rpId = (is_array($this->rp)) ? $this->rp[0] : $this->rp;
         $rpId .= $this->year;
         
+        $isPerson = true;
+        foreach($this->people as $person){
+            if(!($person instanceof Person)){
+                $isPerson = false;
+            }
+            break;
+        }
+        
         if(is_array($this->rp)){
             $report = array();
             foreach($this->rp as $rp){
@@ -61,7 +69,8 @@ class ApplicationTab extends AbstractTab {
         $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";
         $this->html .= "<thead>";
         if(is_array($report)){
-            $this->html .= "<tr><th></th>";
+            $colspan = ($isPerson) ? "1" : "2";
+            $this->html .= "<tr><th width='50%' colspan='$colspan'></th>";
             foreach($report as $rep){
                 $colspan = 2 + count($this->extraCols);
                 $this->html .= "<th colspan='$colspan'>{$rep->name}</th>";
@@ -69,7 +78,10 @@ class ApplicationTab extends AbstractTab {
             $this->html .= "</tr>";
         }
         $this->html .= "<tr>
-                            <th width='50%'>Name</th>";
+                            <th>Name</th>";
+        if(!$isPerson){
+            $this->html .= "<th>Leader</th>";
+        }
         if(is_array($report)){
             foreach($report as $rep){
                 $this->html .= "<th>Generation Date</th>
@@ -118,10 +130,20 @@ class ApplicationTab extends AbstractTab {
             if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 $pName = $person->getName();
                 if($person instanceof Theme){
-                    $pName = "{$person->getAcronym()}: {$person->getName()}";
+                    $pName = "{$person->getAcronym()}: {$person->getNameForForms()}";
                 }
                 $this->html .= "<tr>
                     <td>{$pName}</td>";
+                if($person instanceof Project){
+                    $leader = array_values($person->getLeaders());
+                    $leader = (isset($leader[0])) ? $leader[0] : null;
+                    if($leader != null){
+                        $this->html .= "<td>{$leader->getNameForForms()}</td>";
+                    }
+                    else{
+                        $this->html .= "<td></td>";
+                    }
+                }
                 if(is_array($report)){
                     foreach($report as $rep){
                         $pdf = $rep->getPDF();
