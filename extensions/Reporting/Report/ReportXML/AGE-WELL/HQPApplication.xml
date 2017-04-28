@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Award 2016" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2016">
+<Report name="Award 2017" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2017">
     <Permissions>
         <Role role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
@@ -22,12 +22,12 @@
                 <h3>About AGE-WELL</h3>
 <p>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging provide partial funding to highly qualified master’s, doctoral and postdoctoral candidates and provide them with access to training and mentorship opportunities through the AGE-WELL Network of Centres of Excellence. AGE-WELL aims to provide a unique training environment that exposes trainees to multi-disciplinary research environments and to its industry and community partners. AGE-WELL is committed to attracting, developing, and retaining outstanding Highly Qualified Personnel (HQP) in Canada.</p>
 
-<p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together using high-quality research to drive innovation and create technologies and services that benefit older adults. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
+<p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
 
 <h3>Eligibility</h3>
 <p>In order to be considered for AGE-WELL Awards, funding applicants must:</p>
 <ol>
-    <li>Receive financial support from additional sources: home department, supervisor research grants, and/or through government and agency scholarships or awards.</li> 
+    <li>Receive at least some financial support from additional sources: home department, supervisor research grants, and/or through government and agency scholarships or awards.</li> 
     <li>Participate full‐time in their respective program at a Canadian post-secondary institution.</li>
     <li>Be engaged in academic study/research aligned with the mission and vision of AGE-WELL.</li>
     <li>Applicants for doctoral awards are restricted to those entering the first or second year of their program.</li>
@@ -35,10 +35,10 @@
 
 <p><b>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs during 2016-2017 would be ineligible.</b></p>
 
-<h3>The Awards</h3>
+<h3>1. AGE-WELL Awards</h3>
 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees <u>must</u> demonstrate that they receive funding from a source other than AGE-WELL.</p>
 
-<p>We expect to offer the following awards in this 2016 call:</p>
+<p>We expect to offer the following awards in this 2017 call:</p>
 <ul>
     <li><b>3</b> Master’s level awards at $10,000 (1 year award)</li>
     <li><b>4</b> PhD level awards at $15,000 per year (2 year award)</li>
@@ -48,7 +48,7 @@
 
 <h3>Program Requirements</h3>
 <i>Training</i>
-<p>Funded trainees will be automatically enrolled in our EPIC training program <i>(Early Professionals, Inspired Careers)</i> and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
+<p>Funded trainees will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
 
 <i>Reporting</i>
 <p>As per NCE rules, funds must flow from AGE-WELL to the trainee’s primary supervisor at their institution.  Academic institutions receiving AGE-WELL funds in trust are expected to:</p>
@@ -60,7 +60,7 @@
 <p>AGE-WELL funded trainees will acknowledge the AGE-WELL Award program in their presentations, publications, and other knowledge translation activities related to research conducted during their funding period.  Funded trainees are required to use the AGE-WELL logo on their posters and other materials related to research conducted during their funding period.</p>
 
 <h3>Renewal</h3>
-<p>Funded doctoral and postdoctoral applicants may submit one-year renewal applications for a third year of doctoral funding and a second year of postdoctoral funding. Ongoing funding is dependent on performance and achieving milestones outlined in the original application. Funded trainees are expected to submit an annual report through the AGE-WELL Forum reporting system each year. This report is required whether or not the trainee is applying for renewal of funding.</p>
+<p>Funded doctoral and postdoctoral applicants may submit one-year renewal applications for a third year of doctoral funding and a second year of postdoctoral funding. Ongoing funding is dependent on performance and achieving milestones outlined in the original application. Funded trainees are expected to submit an annual report through the AGE-WELL Forum Research Portal reporting system each year. This report is required whether or not the trainee is applying for renewal of funding.</p>
 
 <h3>Admission Criteria</h3> 
 <p>All applications will be reviewed by a team of field experts using the following criteria:</p>
@@ -72,17 +72,47 @@
 <h3>Required Documents</h3>
 <p>Award applicants must submit the following:</p>
 <ol>
-    <li>Online Application Form; </li>
+    <li>Online Application Form;</li>
     <li>Two Confidential Letters of Support (one must be from your proposed supervisor)</li>
     <li>Formal evidence of enrolment in a Master’s or Doctoral program or Post‐Doctoral position;</li> 
-    <li>Formal evidence of awarded funding for 2016-17;</li>
+    <li>Formal evidence of awarded funding for 2017-18;</li>
     <li>Curriculum Vitae.</li>
 </ol>
 <h3>Important Dates</h3>
-Applications Open: June 13, 2016<br />
-Completed Applications Due: July 15, 2016<br />
-Results Available: August 15, 2016<br />
-Funding Commences: September 2016<br />
+Applications Open: 1 May, 2017<br />
+Completed Applications Due: 31 May, 2017<br />
+Results Available: 21 July, 2017<br />
+Funding Commences: September 2017 or January 2018<br />
+<h3>2. AGE-WELL Co-funded Awards</h3>
+<p>AGE-WELL has partnered with a number of community, industry, and post-secondary groups to further expand our collective impact and to build capacity among Canada’s young researchers.</p>
+
+<p>Applicants are asked to review eligibility and program information for each of the co-funded awards below and to indicate their interest in having their application also considered for a specific co-funded award. Unless otherwise indicated, eligibility, admission criteria, required documents, and funding commencement for AGE-WELL Co-funded Awards align with that of the AGE-WELL Awards.</p>
+
+<h3>AGE-WELL-NBHRF Awards</h3>
+<p>AGE-WELL NCE and the New Brunswick Health Research Foundation (NBHRF) are pleased to open the call for the 2017 AGE-WELL-NBHRF Funding Program.  Applicants must be based at a New Brunswick institution.</p>
+<p>We expect to offer the following awards in this 2017 call:</p>
+<ul>
+    <li>1 Master’s level award at $17,500 (1 year award)</li>
+    <li>1 PhD level award at $25,000 per year (2 year award)</li>
+    <li>1 Postdoctoral level award (PhD) at $40,000 (1 year award)</li>
+    <li>1 Postdoctoral level award (MD or Pharm. D) at $56,500 (2 year award)</li>
+</ul>
+<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<h3>AGE-WELL-UC BME Grad Awards</h3>
+<p>AGE-WELL and the University of Calgary’s Biomedical Engineering (BME) Graduate Program aim to support a greater number of salary awards to outstanding graduate students enrolled in the University of Calgary’s BME Graduate Program who wish to commence, pursue or sustain their research training or program in the technology and aging field.</p>
+<p>We expect to offer the following awards in this 2017 call:</p>
+<ul>
+    <li>1 Master’s level award at $10,000 (1 year award)</li>
+    <li>1 PhD level award at $15,000 per year (2 year award)</li>
+</ul>
+<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<h3>AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging</h3>
+<p>AGE-WELL NCE and Women’s Brain Health Initiative (WBHI) are pleased to open the call for the 2017 AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging.  The award is intended to enhance existing funding to a promising new scholar pursuing research in the field of women’s brain health.</p>
+<p>We expect to offer the following awards in this 2017 call:</p>
+<ul>
+    <li>1 Postdoctoral level award (PhD) at $20,000 (1 year award)</p>
+</ul>
+<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. Funds will flow from AGE-WELL to the trainee’s primary supervisor at their institution. This award is subject to the training and reporting requirements of the AGE-WELL Awards.  In addition, the successful applicant will also be required to complete a brief, 1 page report, detailing research findings and outputs from the award term.  Furthermore, the successful candidate will communicate their research findings through a lecture hosted by WBHI.</p>
         ]]>
         </ReportItem>
     </ReportSection>
@@ -121,9 +151,45 @@ Funding Commences: September 2016<br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="level" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($10,000)|PhD ($15,000, per year for 2 years)|Postdoctoral ($20,000)">
+        <ReportItem id="level" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($10,000)|PhD ($15,000, per year for 2 years)|Postdoctoral ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Funding Category:</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL Awards - <br />Funding Category</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000 per year for 2 years)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500 for 2 years)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="NBHRF_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_NBHRF_DESC" optional="true" height="100px">
+            <![CDATA[
+                <p><i>Please indicate your eligibility and desire to be considered for these awards</i></p>
+                {$item}
+                </td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UC BME Grad Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="BME_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BME_DESC" optional="true" height="100px">
+            <![CDATA[
+                <p><i>Please indicate your eligibility and desire to be considered for these awards</i></p>
+                {$item}
+                </td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-WBHI Post-Doctoral Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="WBHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_WBHI_DESC" optional="true" height="100px">
+            <![CDATA[
+                <p><i>Please indicate your eligibility and desire to be considered for this award</i></p>
+                {$item}
+                </td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="project" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROJ" width="180px">
@@ -354,7 +420,7 @@ Funding Commences: September 2016<br />
         </ReportItem>
         <ReportItem id="evidence" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <h2>Formal evidence of application or awarded funding for 2016-2017</h2>
+                <h2>Formal evidence of application or awarded funding for 2017-2018</h2>
                 <p>AGE-WELL Awards are intended to enhance existing funding support to promising new scholars. Applicants must receive financial support from additional sources.</p>
 
                 <p>You can use any of the following as formal evidence of application or awarded funding</p>
