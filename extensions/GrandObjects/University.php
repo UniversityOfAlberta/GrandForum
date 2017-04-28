@@ -107,7 +107,7 @@ ORDER BY `dist` ASC LIMIT 10";
     
     function create(){
             $me = Person::newFromWgUser();
-            if($me->isRoleAtLeast(AR)){
+            if($me->isRoleAtLeast(EXTERNAL)){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_universities',
                                               array('university_name' => $this->getName(),
