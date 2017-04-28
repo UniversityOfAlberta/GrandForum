@@ -40,7 +40,7 @@
     <li>Applicants for doctoral awards are restricted to those entering the first or second year of their program.</li>
 </ol>
 
-<p><b>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs during 2016-2017 would be ineligible.</b></p>
+<p><b>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs during 2017-2018 would be ineligible.</b></p>
 
 <h3>1. AGE-WELL Awards</h3>
 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees <u>must</u> demonstrate that they receive funding from a source other than AGE-WELL.</p>
@@ -160,43 +160,22 @@ Funding Commences: September 2017 or January 2018<br />
         
         <ReportItem id="level" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_LVL" orientation="vertical" options="Master's ($10,000)|PhD ($15,000, per year for 2 years)|Postdoctoral ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL Awards - <br />Funding Category</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:200px;'><b>AGE-WELL Awards - <br />Funding Category</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000 per year for 2 years)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500 for 2 years)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="NBHRF_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_NBHRF_DESC" optional="true" height="100px">
-            <![CDATA[
-                <p><i>Please indicate your eligibility and desire to be considered for these awards</i></p>
-                {$item}
-                </td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UC BME Grad Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="BME_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BME_DESC" optional="true" height="100px">
-            <![CDATA[
-                <p><i>Please indicate your eligibility and desire to be considered for these awards</i></p>
-                {$item}
-                </td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UC BME Grad Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-WBHI Post-Doctoral Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="WBHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_WBHI_DESC" optional="true" height="100px">
-            <![CDATA[
-                <p><i>Please indicate your eligibility and desire to be considered for this award</i></p>
-                {$item}
-                </td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-WBHI Post-Doctoral Award</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="project" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_PROJ" width="180px">
@@ -209,14 +188,9 @@ Funding Commences: September 2017 or January 2018<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords (maximum 6):</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September|January|Other:">
+        <ReportItem id="start" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START" orientation="vertical" options="September 2017|January 2018">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Start Date:</b></td><td style='padding-top:5px;padding-bottom:5px;'><div style='position:relative;'>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="start_other" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_START_OTH" width="150px" optional="true">
-            <![CDATA[
-                <div style='position:absolute;bottom:0;left:100px;'>{$item}</div></td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Start Date:</b></td><td style='padding-top:5px;padding-bottom:5px;'><div style='position:relative;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="tableFoot" type="StaticReportItem">
