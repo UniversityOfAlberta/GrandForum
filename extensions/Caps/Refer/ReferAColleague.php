@@ -10,7 +10,7 @@ $wgHooks['ToolboxLinks'][] = 'ReferAColleague::createToolboxLinks';
 class ReferAColleague extends SpecialPage{
 
     function ReferAColleague() {
-        parent::__construct("ReferAColleague", NI.'+', true);
+        parent::__construct("ReferAColleague", EXTERNAL.'+', true);
     }
 
     function execute($par){
@@ -239,7 +239,7 @@ class ReferAColleague extends SpecialPage{
 	    if($wgLang->getCode() == "fr"){
 	        $title = "Référer un Collègue";
 	    }
-        if($me->isRoleAtLeast(NI)){
+        if($me->isRoleAtLeast(EXTERNAL)){
             $toolbox['People']['links'][4] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:ReferAColleague");
         }
         return true;
