@@ -179,7 +179,12 @@ class ApplicationTab extends AbstractTab {
         $this->html .= "</tbody>
                         </table>";
         $this->html .= "<script type='text/javascript'>
-            $('#application_{$rpId}').dataTable({autoWidth: false});
+            $('#application_{$rpId}').dataTable({
+                autoWidth: false,
+                'columnDefs': [
+                    {'type': 'string', 'targets': 0 }
+                ]
+            });
         </script>";
     }
 }
