@@ -75,7 +75,7 @@ class StoriesAPI extends RESTAPI {
     
     function doGET(){
         $me = Person::newFromWgUser();
-        $stories = new Collection($me->getUserStories());
+        $stories = new Collection(Story::getAllUserStories());
         return $stories->toJSON();
     }
     

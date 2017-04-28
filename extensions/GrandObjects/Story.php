@@ -69,18 +69,21 @@ class Story extends BackboneModel{
         static function getAllUserStories(){
             $stories = array();
             $me = Person::newFromWgUser();
-	    if($me->isRoleAtLeast(MANAGER)){
+            if($me->isRoleAtLeast(MANAGER)){
             	$data = DBFunctions::select(array('grand_user_stories'),
-                	                    array('rev_id'));
-	    }
-	    else{
+                	                        array('rev_id'));
+            }
+            else{
                 $data = DBFunctions::select(array('grand_user_stories'),
                                             array('rev_id'),
-					    array('approved'=>EQ(COL(1))));
-	    }
+                                            array('approved'=>EQ(COL(1))));
+            }
             if(count($data) >0){
                 foreach($data as $storyId){
-                    $stories[] = Story::newFromRevId($storyId['rev_id']);
+                    $story = Story::newFromRevId($storyId['rev_id']);
+                    if($story->canView()){
+                        $stories[] = Story::newFromRevId($storyId['rev_id']);
+                    }
                 }
             }
             return $stories;

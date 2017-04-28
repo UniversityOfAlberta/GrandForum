@@ -3725,22 +3725,22 @@ class Person extends BackboneModel {
     }
 
     function getUserStories(){
-	global $wgUser;
+        global $wgUser;
         $me = Person::newFromWgUser();
-	$stories = array();
-	if($me->isRoleAtLeast(MANAGER)){
-	 $data = DBFunctions::select(array('grand_user_stories'),
-				       array('rev_id'));
-	}
-	else{	
-	$data = DBFunctions::select(array('grand_user_stories'),
-				    array('rev_id'),
-				    array('user_id' => EQ(COL($this->getId()))));
-	}
-	foreach($data as $row){
-	    $stories[] = Story::newFromRevId($row['rev_id']);
-	}
-	return $stories;
+        $stories = array();
+        if($me->isRoleAtLeast(MANAGER)){
+            $data = DBFunctions::select(array('grand_user_stories'),
+			                            array('rev_id'));
+        }
+        else{	
+            $data = DBFunctions::select(array('grand_user_stories'),
+                                        array('rev_id'),
+                                        array('user_id' => EQ(COL($this->getId()))));
+        }
+        foreach($data as $row){
+            $stories[] = Story::newFromRevId($row['rev_id']);
+        }
+        return $stories;
     }
     
     /**

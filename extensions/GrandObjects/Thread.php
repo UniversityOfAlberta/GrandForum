@@ -184,7 +184,7 @@ class Thread extends BackboneModel{
                     $users[] = $user->name;
                 }
             }
-            if($me->isRoleAtLeast(AR)){
+            if($me->isRoleAtLeast(EXTERNAL)){
                 DBFunctions::begin();
                 $status = DBFunctions::insert('grand_threads',
                                               array('user_id' => $this->user_id,
