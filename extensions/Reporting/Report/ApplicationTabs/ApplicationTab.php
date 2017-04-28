@@ -6,12 +6,14 @@ class ApplicationTab extends AbstractTab {
     var $people;
     var $year;
     var $extraCols;
+    var $showAllWithPDFs;
 
     function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array()){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
         $this->extraCols = $extraCols;
+        $this->showAllWithPDFs = false;
         $newPeople = array();
         foreach($people as $person){
             $newPeople[$person->getId()] = $person;
@@ -113,7 +115,7 @@ class ApplicationTab extends AbstractTab {
                 }
                 $first = $report;
             }
-            if($first->hasStarted()){
+            if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 $pName = $person->getName();
                 if($person instanceof Theme){
                     $pName = "{$person->getAcronym()}: {$person->getName()}";

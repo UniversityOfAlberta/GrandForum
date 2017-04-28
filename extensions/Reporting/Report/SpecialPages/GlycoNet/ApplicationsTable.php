@@ -69,6 +69,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=regional'>Regional</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=seminar'>Seminar</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Report</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Project Proposals</a>";
         }
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
@@ -111,6 +112,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "project" && $me->isRoleAtLeast(SD)){
             $this->generateProject();
+        }
+        else if($program == "proposals" && $me->isRoleAtLeast(SD)){
+            $this->generateProjectProposals();
         }
         return;
     }
@@ -230,6 +234,15 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "2015"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateProjectProposals(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tab = new ApplicationTab(array('RP_PROJECT_PROPOSAL_ZIP'), $this->projects, 2015, "2015");
+        $tab->showAllWithPDFs = true;
+        $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

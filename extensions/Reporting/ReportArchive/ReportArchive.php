@@ -59,29 +59,30 @@ class ReportArchive extends SpecialPage {
                 $pdf = $sto->fetch_pdf($tok, false);
                 $len = $sto->metadata('len_pdf');
                 $user_id = $sto->metadata('user_id');
+                $project_id = $sto->get_report_project_id();
                 $type = $sto->metadata('type');
                 $pdf_owner = Person::newFromId($user_id);
+                $pdf_project = Project::newFromId($project_id);
                 $pdf_owner_name = $pdf_owner->getName();
                 if ($pdf == false || $len == 0) {
                     $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");
                 }
                 else {
-                    $ext = "pdf";
-                    if($type == RPTP_NI_ZIP || $type == RPTP_PROJ_ZIP || $type == RPTP_HQP_ZIP){
-                        $ext = "zip";
-                    }
+                    $ext = (strstr($type, "_ZIP") !== false) ? "zip" : "pdf";
                     $tst = $sto->metadata('timestamp');
                     // Make timestamp usable in filename.
                     $tst = strtr($tst, array(':' => '', '-' => '', ' ' => '_'));
                     if($wgTitle->getText() == "ReportArchive"){
-                        if($type == RPTP_PROJ_ZIP){
-                            $name = "ProjectReports_{$tst}.zip";
-                        }
-                        else if($type == RPTP_NI_ZIP){
-                            $name = "NIReports_{$tst}.zip";
-                        }
-                        else if($type == RPTP_HQP_ZIP){
-                            $name = "HQPReports_{$tst}.zip";
+                        if($ext == "zip"){
+                            if($pdf_project != null && $pdf_project->getId() != 0){
+                                $name = "{$pdf_project->getName()}.zip";
+                            }
+                            else if($pdf_owner != null && $pdf_owner->getId() != 0){
+                                $name = "{$pdf_owner_name}.zip";
+                            }
+                            else{
+                                $name = "Report.zip";
+                            }
                         }
                         else{
                             $report = AbstractReport::newFromToken($tok, @$_GET['type']);
