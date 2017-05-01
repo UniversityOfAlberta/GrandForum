@@ -178,11 +178,17 @@ EOF;
                 if(!empty($org)){
                     $partners_array[] = $org;
                 }
-                $subType_array[] = $contr->getHumanReadableSubTypeFor($p);
                 
                 $tmp_type = $contr->getTypeFor($p);
                 $hrType = $contr->getHumanReadableTypeFor($p);
                 $hrSubType = $contr->getHumanReadableSubTypeFor($p);
+                
+                if($hrSubType != "None"){
+                    $subType_array[] = "{$hrType} ({$hrSubType})";
+                }
+                else{
+                    $subType_array[] = "{$hrType}";
+                }
 
                 if(!$contr->getUnknownFor($p)){
                     $tmp_cash = "\$".number_format($contr->getCashFor($p), 2);
