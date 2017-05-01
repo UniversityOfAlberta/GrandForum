@@ -6,7 +6,7 @@ class SelectReportItem extends AbstractReportItem {
 		global $wgOut;
         $options = $this->parseOptions();
         $value = $this->getBlobValue();
-        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
+        $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "";
         $items = array();
         $items[] = "<option value='' style='display:none;' disabled selected hidden>---</option>";
 		foreach($options as $key => $option){
@@ -18,7 +18,7 @@ class SelectReportItem extends AbstractReportItem {
 		    $items[] = "<option value='{$option}' $selected >{$option}</option>";
 		}
 
-        $output = "<select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";
+        $output = "<select style='text-overflow:ellipsis;width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";
         
         $output = $this->processCData("<div>{$output}</div>");
 		$wgOut->addHTML($output);

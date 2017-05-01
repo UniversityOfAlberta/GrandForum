@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2017 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfFiles="IFPApplication" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+            
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP-Candidate">
+            
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI-Candidate">
+            
+        </Role>
+    </Permissions>
+
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent to Apply" title="Intent to Apply">
+        <ReportItem id="level" type="Select" blobItem="LEVEL" options="Master's student|PhD student|Postdoctoral or working professional" width="300px">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td style='width:350px;' align="right"><b>Fellowship Funding Level:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant First Name:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant Last Name:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" type="Text" blobItem="DESIGNATIONS" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant Designations:</b><br /><small><i>(PhD, MNSc, MD, BA, etc.)</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="discipline" type="Select" blobItem="DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant Primary Discipline:</b><br /><small><i>please pick the ONE discipline that most closely relates to your current studies or employment</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="role" type="Text" blobItem="ROLE" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant Current Organization and Role:</b><br /><small><i>(If student or postdoc, Current Academic Institution and course of study. If working professional, Current Employer and title.)</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Applicant Email Address:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="gender" type="Select" blobItem="GENDER" options="Female|Male" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Gender:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="citizenship" type="Select" blobItem="CITIZENSHIP" options="Canadian|Permanent Resident" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Citizenship:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_first_name" type="Text" blobItem="SUP_FIRST_NAME" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor First Name:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_last_name" type="Text" blobItem="SUP_LAST_NAME" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Last Name:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_designations" type="Text" blobItem="SUP_DESIGNATIONS" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Designations:</b><br /><small><i>(PhD, MNSc, MD, BA, etc.)</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="discipline" type="Select" blobItem="DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Primary Discipline:</b><br /><small><i>please pick the ONE discipline that most closely relates to your supervisor’s current academic and/or clinical responsibilities</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_specialization" type="Text" blobItem="SUP_specialization" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>If a health profession, please list specialization:</b><br /><small><i>(Geriatrics, Palliative Care, Family Practice, Occupational Therapy, Physical Therapy, etc.)</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_role" type="Text" blobItem="SUP_ROLE" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Current Organization(s) and Title(s):</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_email" type="Text" blobItem="SUP_EMAIL" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Email:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_institution" type="Select" blobItem="SUP_INSTITUTION" options="CHUM (Centre Hospitalier de l'Université de Montréal)|Conestoga College|Dalhousie University|Fraser Health Authority|Hôpital Sacre-Coeur De Montréal|ICES (Institute for Clinical Evaluative Sciences)|Jewish General Hospital|Lakehead University|Laval University|Lawson Health Sciences Centre Research Inc.|McGill University|McMaster University|Mount Sinai Hospital|North York General Hospital|NSHA (Nova Scotia Health Authority)|OHRI (Ottawa Hospital Research Institute)|Queen's University|Research Institute of the MUHC (McGill University Health Centre)|Ryerson University|Saskatchewan Polytechnic|Simon Fraser University|St. Michael's Hospital|Sunnybrook Research Institute|Trillium Health Partners|Trinity Western University|Université du Québec à Montréal|University Health Network (UHN)|University of Alberta|University of British Columbia|University of Calgary|University of Guelph|University of Manitoba|University of Moncton|University of New Brunswick|University of Ontario Institute for Technology (UOIT)|University of Ottawa|University of Saskatchewan|University of Sherbrooke|University of Toronto|University of Victoria|University of Waterloo|University of Windsor|University of Winnipeg|Western University|York University" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Supervisor Host Institution that will receive and administer CFN funds:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup_institution_other" type="Text" blobItem="SUP_INSTITUTION_OTHER" width="292px" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Name of Host Institution if not listed above:</b><br /><small><i>(will require Network Agreement to be in place before funding – see Application Instructions)</i></small></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partner" type="Text" blobItem="PARTNER" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Partner Organization or Institution that will provide matching funds:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="292px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Research Project Lay Title:</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Select" blobItem="THEME" options="Improved end-of-life care/advance care planning|Improved acute/critical care|Optimization of community/residential care|Optimization of transitions of care" width="300px">
+            <![CDATA[
+                <tr>
+                    <td align="right"><b>Select the ONE CFN research theme your research most closely aligns with:</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

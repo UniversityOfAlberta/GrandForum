@@ -105,14 +105,14 @@ Funding Commences: September 2017 or January 2018<br />
     <li>1 Postdoctoral level award (MD or Pharm. D) at $56,500 (2 year award)</li>
 </ul>
 <p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
-<h3>AGE-WELL-UC BME Grad Awards</h3>
+<!--h3>AGE-WELL-UC BME Grad Awards</h3>
 <p>AGE-WELL and the University of Calgary’s Biomedical Engineering (BME) Graduate Program aim to support a greater number of salary awards to outstanding graduate students enrolled in the University of Calgary’s BME Graduate Program who wish to commence, pursue or sustain their research training or program in the technology and aging field.</p>
 <p>We expect to offer the following awards in this 2017 call:</p>
 <ul>
     <li>1 Master’s level award at $10,000 (1 year award)</li>
     <li>1 PhD level award at $15,000 per year (2 year award)</li>
 </ul>
-<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding will commence on 1 September 2017 or 1 January 2018 and is non-renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p-->
 <h3>AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging</h3>
 <p>AGE-WELL NCE and Women’s Brain Health Initiative (WBHI) are pleased to open the call for the 2017 AGE-WELL-WBHI Post-Doctoral Award in Women’s Brain Health, Technology and Aging.  The award is intended to enhance existing funding to a promising new scholar pursuing research in the field of women’s brain health.</p>
 <p>We expect to offer the following awards in this 2017 call:</p>
@@ -168,11 +168,11 @@ Funding Commences: September 2017 or January 2018<br />
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
+        <!--ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UC BME Grad Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-WBHI Post-Doctoral Award</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
