@@ -15,7 +15,7 @@
         </Role>
     </Permissions>
 
-    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent to Apply" title="Intent to Apply">
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent to Apply" title="Section 1 - Information about the Applicant and Supervisor">
         <ReportItem id="level" type="Select" blobItem="LEVEL" options="Master's student|PhD student|Postdoctoral or working professional" width="300px">
             <![CDATA[
                 <table>
@@ -188,6 +188,211 @@
         <ReportItem type="Static">
             <![CDATA[
                 </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant’s Research Project">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
+            <![CDATA[
+                <h3>Scientific Title of Research Project</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
+            <![CDATA[
+                <h3>Keywords</h3>
+                <small>Please provide up to a maximum of five (5) specific keywords or descriptive technical terms or methodologies that best describe the research – e.g. Medline Headings.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Lay Summary</h3>
+                <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for frail older Canadians.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_summary" type="Textarea" blobItem="SCI_SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>Scientific Summary</h3>
+                <small>Provide a <b><u>non-confidential scientific summary</u></b> of your research project, highlighting the hypothesis, project objectives, milestones and deliverables, and potential socioeconomic impact. (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="250">
+            <![CDATA[
+                <h3>Background and Research Question(s)</h3>
+                <small>State the research question(s). Clearly articulate the context, population and intervention. Provide a review of the literature that identifies the knowledge gap or rationale for the research. Where applicable, clearly state the underlying hypothesis.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="approach" type="Textarea" blobItem="APPROACH" rich="true" limit="250">
+            <![CDATA[
+                <h3>Methodological Approach</h3>
+                <small>Describe the methodological research approach, including study design, data collection, analysis plan, etc.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="relevance" type="Textarea" blobItem="RELEVANCE" rich="true" limit="250">
+            <![CDATA[
+                <h3>Project Relevance and Impact</h3>
+                <small>Describe why you feel the work you plan to carry out is important. Specifically, describe the relevance of your proposal to CFN strategic priorities and the fellowship program goals. Identify how this project will improve the care of frail older adults and support their families and caregivers.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No" descriptions="I expect that this research will require an ethics review.|I do not expect that this research will require an ethics review.">
+            <![CDATA[
+                <h3>Research Ethics</h3>
+                <small>If your research project involves biohazards, humans, human embryonic stem cells or animals, <b><u>and</u></b> you are selected for funding from CFN, certification of approval by the host institution certification committee must be obtained by your supervisor before funds will be released.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assessment" type="Radio" blobItem="ASSESSMENT" options="Yes|No">
+            <![CDATA[
+                <h3>Environmental Assessment</h3>
+                <small>Does any phase or part of the research project
+                    <ol type="a">
+                        <li>take place outside an office or laboratory, or</li>
+                        <li>involve an undertaking as described in part 1 of Appendix B of the Natural Science and Engineering Research Council of Canada (NSERC) Form 101?</li>
+                    </ol>
+                </small>
+                {$item}
+                <small>If you answered yes to this question, and you are selected for the fellowship program, your supervisor will be required to complete an Environmental Assessment Impact Statement and the Canadian Environmental Assessment Act Pre-Screening Checklist for review and approval by CFN before funds will be released</small>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Benefit" title="Section 3 - Interest and Benefit">
+        <ReportItem id="frailty" type="Textarea" blobItem="FRAILTY" rich="true" limit="50">
+            <![CDATA[
+                <p>Tell us how you believe you will benefit from each of the core IFP activities. Please review the activity descriptions in the Program Guidelines before completing the following sections.</p>
+                <h3>Frailty Assessment</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="citizen" type="Textarea" blobItem="CITIZEN" rich="true" limit="50">
+            <![CDATA[
+                <h3>Citizen Engagement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collaboration" type="Textarea" blobItem="COLLABORATION" rich="true" limit="50">
+            <![CDATA[
+                <h3>Interdisciplinary Collaboration</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="development" type="Textarea" blobItem="DEVELOPMENT" rich="true" limit="50">
+            <![CDATA[
+                <h3>Self-Directed Professional Development</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="100">
+            <![CDATA[
+                <h3>What value will you bring to your fellowship cohort, and specifically to an online collaborative project.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
+            <![CDATA[
+                <h3>Describe your career plan and how a CFN Fellowship will help you achieve your career goals.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Partnership Funding" title="Section 4 - Partnership Funding">
+        <ReportItem id="partners" type="MultiText" blobItem="PARTNERS" blobType="BLOB_ARRAY" labels="Partner Organization|Potential Conflict of Interest|$ Amount of cash contribution" types="Text|Radio(Yes,No)|Integer" multiple="true" sizes="200|75|50" optional="true">
+            <![CDATA[
+                <p><i><b>Please read the Program Guidelines and Application Instructions carefully before completing this section.</b></i></p>
+                <p>Identify all partners that have agreed to provide matching funds in cash for the fellowship award (50% cash from CFN; 50% cash from Applicant’s partner(s)). Partnership funds must be from NCE-eligible partner. Please consult your Supervisor’s host institution for details on NCE-eligible partners.</p>
+                <u>For each partner</u>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter" type="Upload" blobItem="LETTER" blobType="BLOB_RAW" fileSize="20" mimeType="application/zip">
+            <![CDATA[
+                <p>Attach a <b>.zip</b> containing PDF letters of support from each partner here, or the partner may send directly to CFN if desired. Please read the Program Guidelines and Application Instructions carefully before obtaining partner letters of support.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sources" type="MultiText" blobItem="SOURCES" blobType="BLOB_ARRAY" labels="Funding Source|Amount|Type (cash or in-kind)|Purpose|Status" types="Text|Integer|Select(---,Cash,In-Kind)|Textarea|Select(---,planning to apply for,in process of being applied for,about to be submitted,submitted,pending,other)" sizes="200|50" multiple="true" optional="true">
+            <![CDATA[
+                <p>Please identify all other sources of support that relate to the fellow during the entire period covered by the Fellowship (i.e.  September 2017 to August 2018 inclusive). Include fellowship or scholarship revenues, and research or other grants – no matter what the amount or status. Please read the Program Guidelines and Application Instructions carefully before completing this section.</p>
+                <u>For each funding source</u>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="sponsored" type="Radio" blobItem="SPONSORED" options="Yes|No">
+            <![CDATA[
+                <p>Do you want to be considered for any CFN corporate-sponsored fellowships that may be open during the competition? (See Program Guidelines)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cv" type="EditableReportSection" blobSection="CV" name="CV and Experience" title="Section 5 - Curriculum Vitae and Experience">
+        <ReportItem id="transcripts" type="MultiText" blobItem="TRANSCRIPTS" multiple="true" labels="Name of institution|Academic degree granted(or courses taken toward)" types="Text|Textarea" blobType="BLOB_ARRAY">
+            <![CDATA[
+                <h3>Transcripts</h3>
+                <p>Official transcripts must be provided for all post-secondary and clinical/medical school studies to-date. These original transcripts should be provided in a sealed envelope directly from the issuing institution. Please list the institutions from which we will receive your transcripts.</p>
+                <u>For each institution</u>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" fileSize="20" mimeType=".pdf">
+            <![CDATA[
+                <h3>Curriculum Vitae</h3>
+                <p>Please attach a PDF of the full Canadian Common CV (CCCV) in Academic CV format.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true" limit="250">
+            <![CDATA[
+                <h3>List any current/past professional employment and volunteer experience relevant to the fellowship.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
+            <![CDATA[
+                <h3>List any specialized training, conference attendance, collaborations, etc. relevant to fellowship (and outside of academic experience).</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="publications" type="Textarea" blobItem="PUBLICATIONS" rich="true" limit="250">
+            <![CDATA[
+                <h3>List selected publications and presentations that are most relevant to fellowship.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="distinctions" type="Textarea" blobItem="DISTINCTIONS" rich="true" limit="125">
+            <![CDATA[
+                <h3>List any distinctions or other relevant information not captured in the CCCV format or in the sections above.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="learning" type="EditableReportSection" blobSection="LEARNING" name="Learning Plan" title="Section 6 - Learning Plan">
+        <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Learning Outcome|Activity|Anticipated Completion" types="Text|Text|Select(---,6 months,12 months)" multiple="true">
+            <![CDATA[
+                <p><b><u>Please read the Program Guidelines and Application Instructions carefully before completing this section and discussing with your Supervisor.</u></b></p>
+                <p>The Learning Plan should be developed with your Supervisor and must be specifically approved online by your Supervisor. Progress reporting during the Fellowship by your supervisor will include this Learning Plan. List your desired learning outcomes and the activities you will undertake to achieve each outcome.</p>
+                <u>For each learning outcome</u>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" type="MultiText" blobItem="OUTCOMES" blobType="BLOB_ARRAY" labels="Learning Outcome|Proposed Activity (if known)" types="Text|Text" multiple="true">
+            <![CDATA[
+                <p>List any other outcomes that you believe you feel are needed for your professional development but that you feel you may not be able to obtain from the fellowship program. Please consult the Application Instructions for more details before you complete this section.</p>
+                <u>For each desired learning outcome</u>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure">
+        <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" sizes="200|||75|50" multiple="true">
+            <![CDATA[
+                <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 hours per week over a 12-month period to complete fellowship activities.</p>
+                <u>For each activity</u>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>

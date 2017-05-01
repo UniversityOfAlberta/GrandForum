@@ -103,6 +103,20 @@ EOF;
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
+                        else if(strstr(strtolower(@$types[$j]), "radio") !== false){
+                            if(!$isVertical){
+                                $align = "left";
+                            }
+                            $item .= @"\"<td align='$align'>";
+                            $matches = array();
+                            preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
+                            $matches = @explode(",", $matches[2]);
+                            foreach($matches as $match){
+                                $match = trim($match);
+                                $item .= "<div><input type='radio' name='{$this->getPostId()}[\" + i + \"][$index]' value='{$match}'> {$match}</div>";
+                            }
+                            $item .= "</td>\" + \n";
+                        }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                                 strstr(strtolower(@$types[$j]), "combobox") !== false){
                             if(!$isVertical){
@@ -249,6 +263,25 @@ EOF;
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "radio") !== false){
+                        if(!$isVertical){
+                            $align = "left";
+                        }
+                        $item .= @"<td align='$align'>";
+                        $matches = array();
+                        preg_match("/^(Radio)\((.*)\)$/i", $types[$j], $matches);
+                        $matches = @explode(",", $matches[2]);
+                        foreach($matches as $match){
+                            $match = trim($match);
+                            if($match == @$value[$index]){
+                                $item .= "<div><input type='radio' name='{$this->getPostId()}[$i][$index]' value='{$match}' checked> {$match}</div>";
+                            }
+                            else{
+                                $item .= "<div><input type='radio' name='{$this->getPostId()}[$i][$index]' value='{$match}'> {$match}</div>";
+                            }
+                        }
+                        $item .= "</td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
                             strstr(strtolower(@$types[$j]), "combobox") !== false){
@@ -421,7 +454,8 @@ EOF;
                         }
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                           strstr(strtolower(@$types[$j]), "combobox") !== false){
+                           strstr(strtolower(@$types[$j]), "combobox") !== false || 
+                           strstr(strtolower(@$types[$j]), "radio") !== false){
                            $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
