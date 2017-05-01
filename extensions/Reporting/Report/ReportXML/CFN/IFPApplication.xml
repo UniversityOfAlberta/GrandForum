@@ -113,7 +113,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="discipline" type="Select" blobItem="DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
+        <ReportItem id="sup_discipline" type="Select" blobItem="SUP_DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Primary Discipline:</b><br /><small><i>please pick the ONE discipline that most closely relates to your supervisor’s current academic and/or clinical responsibilities</i></small></td>
