@@ -112,7 +112,7 @@ class ApplicationsTable extends SpecialPage{
             $this->generateCatalyst();
         }
         else if($program == "award" && $me->isRoleAtLeast(SD)){
-            $this->generateCatalyst();
+            $this->generateAward();
         }
         else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal")){
             $this->generateSummer();
