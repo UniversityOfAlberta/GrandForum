@@ -43,8 +43,7 @@ class Report extends AbstractReport {
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate') ||
-           $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
-           $person->isRole(CHAMP)){
+           $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Award 2017", "{$url}HQPApplication", $selected);
         }
