@@ -264,7 +264,10 @@ abstract class PDFGenerator {
         }
         
         $html = "$dom";
-        if($person == null){
+        if($person == null || $person->getId() == 0){
+            $person = @$report->person;
+        }
+        if($person == null || $person->getId() == 0){
             $person = Person::newFromId($wgUser->getId());
         }
         ini_set("max_execution_time","500");
@@ -289,9 +292,14 @@ abstract class PDFGenerator {
                 }
                 
                 function load_page() {
-                    $(\"body\").width($(\"body\").width() - 50);
-                    parent.alertsize($(\"body\").height() + 50 + 38);
-                    $(\"body\").width('auto');
+                    var interval = setInterval(function(){
+                        if($(\"body\").height() > 0){
+                            $(\"body\").width($(\"body\").width() - 50);
+                            parent.alertsize($(\"body\").height() + 50 + 38);
+                            $(\"body\").width('auto');
+                            clearInterval(interval);
+                        }
+                    }, 33);
                 }
             </script>
             <script type='text/javascript'>

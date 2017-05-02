@@ -112,6 +112,14 @@ abstract class AbstractReport extends SpecialPage {
         $this->sectionPermissions = array();
         $this->topProjectOnly = $topProjectOnly;
         $this->pdfAllProjects = false;
+        if(isset($_GET['person'])){
+            $me = Person::newFromWgUser();
+            $person = Person::newFromId($_GET['person']);
+            if($me->relatedTo($person, SUPERVISES)){
+                // Just to be safer, only allow this functionally for supervisors
+                $personId = $_GET['person'];
+            }
+        }
         if($personId == -1){
             $this->person = Person::newFromId($wgUser->getId());
         }
@@ -677,6 +685,10 @@ abstract class AbstractReport extends SpecialPage {
                         else if($perm['perm']['role'] == EVALUATOR && $me->isEvaluator($this->year)){
                             $rResult = true;
                         }
+                        else if($perm['perm']['role'] == "Supervisor" && 
+                                (($me->getId() == $this->person->getId() && $me->isSupervisor()) || $me->relatedTo($this->person, SUPERVISES))){
+                            $rResult = true;
+                        }
                         else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
                             if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
                                 $rResult = true;
@@ -818,6 +830,17 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
         }
+        if(isset($this->sectionPermissions["Supervisor"]) && 
+           (($me->getId() == $this->person->getId() && $me->isSupervisor()) || $me->relatedTo($this->person, SUPERVISES))){
+            // Special case for supervisors
+            $found = true;
+            foreach($this->sectionPermissions["Supervisor"][$section->id] as $key => $perm){
+                $permissions[$key] = $perm;
+                if($key == "-"){
+                    return array();
+                }
+            }
+        }
         if($this->person->getId() == 0 &&
            $this->project != null){
             if(isset($this->sectionPermissions[$this->project->getName()][$section->id])){
@@ -852,7 +875,10 @@ abstract class AbstractReport extends SpecialPage {
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         session_write_close();
         $me = $person;
-        if($person == null){
+        if($person == null || $person->getId() == 0){
+            $person = $this->person;
+        }
+        if($person == null || $person->getId() == 0){
             $me = Person::newFromId($wgUser->getId());
         }
         $json = array();
