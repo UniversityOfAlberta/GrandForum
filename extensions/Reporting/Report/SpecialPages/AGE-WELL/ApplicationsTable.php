@@ -47,7 +47,7 @@ class ApplicationsTable extends SpecialPage{
                                   Person::getAllCandidates(HQP));
                                   
         $this->externals = array_merge(Person::getAllPeople(EXTERNAL),
-                                      Person::getAllCandidates(EXTERNAL));
+                                       Person::getAllCandidates(EXTERNAL));
                                   
         $this->wps = Theme::getAllThemes();
         
@@ -150,7 +150,7 @@ class ApplicationsTable extends SpecialPage{
     
     function generateCatalyst(){
         global $wgOut;
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', $this->nis, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', $this->nis, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -168,7 +168,7 @@ class ApplicationsTable extends SpecialPage{
     
     function generateAward(){
         global $wgOut;
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2017, "2017"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2016, "2016"));
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2015, "2015"));
@@ -189,7 +189,7 @@ class ApplicationsTable extends SpecialPage{
                 }
             }
         }
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -197,7 +197,7 @@ class ApplicationsTable extends SpecialPage{
     
     function generateWP(){
         global $wgOut;
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2015, "2015-16"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -205,14 +205,14 @@ class ApplicationsTable extends SpecialPage{
     
     function generateCC(){
         global $wgOut;
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2016, "2016-17"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateProject(){
         global $wgOut;
-        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

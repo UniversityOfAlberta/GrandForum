@@ -65,6 +65,16 @@ class ApplicationTab extends AbstractTab {
                 $report[] = new DummyReport($this->rp, $me, $proj1, $this->year);
             }
         }
+
+        // Set year of Report
+        if(is_array($report)){
+            foreach($report as $rep){
+                $rep->year = $this->year;
+            }
+        }
+        else{
+            $report->year = $this->year;
+        }
         
         $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";
         $this->html .= "<thead>";
