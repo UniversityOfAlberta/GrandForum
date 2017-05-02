@@ -15,6 +15,27 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="External">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="External-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="Collaborator">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="STAFF+">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
