@@ -16,6 +16,7 @@ class ApplicationsTable extends SpecialPage{
     var $nis;
     var $fullHQPs;
     var $hqps;
+    var $externals;
     var $wps;
     var $ccs;
     var $projects;
@@ -44,6 +45,9 @@ class ApplicationsTable extends SpecialPage{
         
         $this->hqps = array_merge($this->fullHQPs,
                                   Person::getAllCandidates(HQP));
+                                  
+        $this->externals = array_merge(Person::getAllPeople(EXTERNAL),
+                                      Person::getAllCandidates(EXTERNAL));
                                   
         $this->wps = Theme::getAllThemes();
         
@@ -78,6 +82,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cip'>CIP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cc'>CC</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
@@ -104,6 +109,9 @@ class ApplicationsTable extends SpecialPage{
             $this->generateAccess();
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
+            $this->generateCatalyst();
+        }
+        else if($program == "award" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
         }
         else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal")){
@@ -155,6 +163,15 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', $this->fullHQPs, 2017, "04-2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', $this->fullHQPs, 2017, "01-2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2016', $this->fullHQPs, 2016, "10-2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAward(){
+        global $wgOut;
+        $tabbedPage = new TabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_HQP_APPLICATION', array_merge($this->hqps, $this->externals), 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_HQP_APPLICATION', array_merge($this->hqps, $this->externals), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_HQP_APPLICATION', array_merge($this->hqps, $this->externals), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
