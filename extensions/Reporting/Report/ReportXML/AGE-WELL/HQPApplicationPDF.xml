@@ -54,12 +54,12 @@
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>
-        <!--ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
+        <ReportItem id="BME" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_BME" orientation="vertical" options="Master's ($10,000)|PhD ($15,000 per year for 2 years)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-UC BME Grad Awards</h4>
                 <p>{$item}</p><br />
             ]]>
-        </ReportItem-->
+        </ReportItem>
         <ReportItem id="WBHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_WBHI" orientation="vertical" options="Postdoctoral, PhD ($20,000)" optional="true">
             <![CDATA[
                 <h4>AGE-WELL-WBHI Post-Doctoral Award</h4>
