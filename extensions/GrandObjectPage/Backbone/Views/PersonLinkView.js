@@ -54,7 +54,7 @@ PersonLinkView = Backbone.View.extend({
         }
         this.$("a").mouseover($.proxy(this.showCard, this));
         this.$("a").mouseout($.proxy(this.hideCard, this));
-        $(window).unload($.proxy(function(){
+        $(window).on("unload", $.proxy(function(){
             // Make sure that cards hide when navigating away
             this.$(".card").hide();
         }, this));
