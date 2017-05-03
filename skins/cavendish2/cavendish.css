@@ -501,7 +501,7 @@ select[size] {
     background:blue;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     display:inline-block;
     font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px;
@@ -515,7 +515,7 @@ input[type=button], input[type=submit], .button, .button:visited, .ui-button, .b
     border-width: 0 !important;
 }
 
-button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
+:not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     font-family: Helvetica, Verdana, sans-serif !important;
     font-size:13px !important;
     white-space:nowrap;
@@ -527,7 +527,7 @@ button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     user-select: none;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
     background-color:#E8E8E8;
     font-family: Helvetica, Verdana, sans-serif;
     font-size:13px;

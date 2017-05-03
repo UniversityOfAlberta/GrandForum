@@ -37,6 +37,7 @@ class TextareaReportItem extends AbstractReportItem {
                     if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
                         readOnly = true;
                     }
+                    $('textarea[name={$this->getPostId()}]').show();
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
                         readonly: readOnly,
@@ -159,12 +160,14 @@ class TextareaReportItem extends AbstractReportItem {
 EOF;
         }
         $divHeight = "";
+        $hidden = "display:none;";
         if(strtolower($this->getAttr('rich', 'false')) != 'true'){
             $divHeight = "height:{$height};";
+            $hidden = "";
         }
         $item .= <<<EOF
             <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
-                <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};resize: vertical;margin:0;" 
+                <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};{$hidden}resize: vertical;margin:0;" 
                         name="{$this->getPostId()}">$value</textarea>
             </div>
 EOF;
