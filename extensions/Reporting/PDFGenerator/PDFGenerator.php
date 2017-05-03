@@ -311,7 +311,8 @@ abstract class PDFGenerator {
         }
         else{
             require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
-            $dompdf = new DOMPDF();
+            global $dompdfOptions;
+            $dompdf = new Dompdf\Dompdf($dompdfOptions);
         }
         
         $header = <<<EOF
@@ -735,12 +736,12 @@ EOF;
 
 if ( isset($pdf) ) {
 
-  $font = Font_Metrics::get_font("'.$config->getValue('pdfFont').'");
+  $font = $fontMetrics->getFont("'.$config->getValue('pdfFont').'");
   $size = "10";
   $size2 = 6;
   $color = array(0,0,0);
-  $text_height = Font_Metrics::get_font_height($font, $size);
-  $text_height2 = Font_Metrics::get_font_height($font, $size2);
+  $text_height = $fontMetrics->getFontHeight($font, $size);
+  $text_height2 = $fontMetrics->getFontHeight($font, $size2);
   
   $foot = $pdf->open_object();
   
@@ -764,8 +765,8 @@ if ( isset($pdf) ) {
   $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
   // Center the text
-  $nameWidth = Font_Metrics::get_text_width("'.utf8_encode($headerName).' ", $font, $size);
-  $width = Font_Metrics::get_text_width("Page 1 of 50", $font, $size2);
+  $nameWidth = $fontMetrics->getTextWidth("'.utf8_encode($headerName).' ", $font, $size);
+  $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
   
   $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
   $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
@@ -792,7 +793,7 @@ if ( isset($pdf) ) {
         //$pdfStr = $dompdf->output();
         $pdfStr = PDFGenerator::processChapters($dompdf, $name);
         unset($dompdf);
-        Image_Cache::clear();
+        Dompdf\Image\Cache::clear();
         $GLOBALS['footnotes'] = array();
         $GLOBALS["nFootnotesProcessed"] = 0;
         if(!$stream){
@@ -957,9 +958,9 @@ if ( isset($pdf) ) {
                             \$GLOBALS[\"footnotes\"][\$PAGE_NUM][".(FootnoteReportItem::$nFootnotes-1)."] = array(\"id\" => ".FootnoteReportItem::$nFootnotes.", \"note\" => \"{$note}\", \"processed\" => false);
                             \$php_code = '
                                 if(isset(\$GLOBALS[\"footnotes\"][\$PAGE_NUM])){
-                                    \$font = Font_Metrics::get_font(\"verdana\");
+                                    \$font = \$fontMetrics->getFont(\"verdana\");
                                     \$size = 6;
-                                    \$text_height = Font_Metrics::get_font_height(\$font, \$size);
+                                    \$text_height = \$fontMetrics->getFontHeight(\$font, \$size);
                                     \$color = array(0,0,0);
                                     \$w = \$pdf->get_width();
                                     \$h = \$pdf->get_height();
@@ -972,7 +973,7 @@ if ( isset($pdf) ) {
                                         \$id = \$footnote[\"id\"];
                                         \$note = \$footnote[\"note\"];
                                         \$xOffset = floor(\$key / 3);
-                                        \$text_width = Font_Metrics::get_text_width(\"[\$id] \$note\", \$font, \$size);
+                                        \$text_width = \$fontMetrics->getTextWidth(\"[\$id] \$note\", \$font, \$size);
                                         if(!isset(\$maxX[\$xOffset])){
                                             \$maxX[\$xOffset] = 0;
                                         }
