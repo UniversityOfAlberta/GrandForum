@@ -279,6 +279,7 @@ abstract class PDFGenerator {
         if($preview){
             $previewScript = "
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.min.js'></script>
+            <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.andSelf.js'></script>
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery-ui.min.js'></script>
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.qtip.min.js'></script>
             <link type='text/css' href='$wgServer$wgScriptPath/skins/cavendish/jquery.qtip.min.css' rel='Stylesheet' />
@@ -293,10 +294,11 @@ abstract class PDFGenerator {
                 
                 function load_page() {
                     var interval = setInterval(function(){
-                        if($(\"body\").height() > 0){
-                            $(\"body\").width($(\"body\").width() - 50);
-                            parent.alertsize($(\"body\").height() + 50 + 38);
-                            $(\"body\").width('auto');
+                        console.log(document.getElementsByTagName('body')[0].offsetHeight);
+                        if($(document).height() > 0){
+                            $('body').width($(document).width() - 50);
+                            parent.alertsize($(document).height() + 50 + 38);
+                            $('body').width('auto');
                             clearInterval(interval);
                         }
                     }, 33);

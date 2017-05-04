@@ -274,6 +274,8 @@ abstract class AbstractReportItem {
                        $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
                         if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
                             // Conflict in blob values
+                            //echo $this->stripBlob($_POST['oldData'][$this->getPostId()])."\n\n";
+                            //echo $this->stripBlob($this->getBlobValue());
                             return array(array('postId' => $this->getPostId(), 
                                                'value' => $this->stripBlob($this->getBlobValue()),
                                                'postValue' => $this->stripBlob($_POST[$this->getPostId()]),
@@ -291,6 +293,8 @@ abstract class AbstractReportItem {
     private function stripBlob($value){
         $value = str_replace(" </p>", "</p>", $value); // TinyMCE sometimes adds this
         $value = trim(htmlentities($value, null, 'utf-8', false));
+        $value = str_replace("⟨", "&lang;", $value);
+        $value = str_replace("⟩", "&rang;", $value);
         $value = preg_replace("~(&lt;)!--(.*?)--(&gt;)~s", "", $value);
         return $value;
     }
