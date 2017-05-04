@@ -10,9 +10,6 @@ if($extras['EvaluationTable']){
 if($extras['ReportStats']){
     require_once("ReportStats/ReportStats.php");
 }
-if($extras['CreatePDF']){
-    require_once("CreatePDF/CreatePDF.php");
-}
 if($extras['AdminVisualizations']){
     require_once("AdminVisualizations/AdminVisualizations.php");
 }

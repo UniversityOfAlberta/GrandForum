@@ -279,7 +279,7 @@ abstract class PDFGenerator {
         if($preview){
             $previewScript = "
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.min.js'></script>
-            <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.andSelf.js'></script>
+            <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.backwards.js'></script>
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery-ui.min.js'></script>
             <script type='text/javascript' src='$wgServer$wgScriptPath/scripts/jquery.qtip.min.js'></script>
             <link type='text/css' href='$wgServer$wgScriptPath/skins/cavendish/jquery.qtip.min.css' rel='Stylesheet' />
