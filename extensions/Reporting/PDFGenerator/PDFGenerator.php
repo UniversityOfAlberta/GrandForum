@@ -294,10 +294,9 @@ abstract class PDFGenerator {
                 
                 function load_page() {
                     var interval = setInterval(function(){
-                        console.log(document.getElementsByTagName('body')[0].offsetHeight);
                         if($(document).height() > 0){
                             $('body').width($(document).width() - 50);
-                            parent.alertsize($(document).height() + 50 + 38);
+                            parent.alertsize($(document).height());
                             $('body').width('auto');
                             clearInterval(interval);
                         }
