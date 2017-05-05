@@ -14,7 +14,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
         $project = $this->project;
-        $me = Person::newFromId($wgUser->getId());
+        $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
@@ -45,7 +45,13 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
         }
         if($config->getValue("projectStatus")){
-            $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+            if(!$edit || !$me->isRoleAtLeast(STAFF)){
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+            }
+            else{
+                $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+            }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
             $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
@@ -64,6 +70,7 @@ class ProjectMainTab extends AbstractEditableTab {
     
     function handleEdit(){
         global $wgOut, $wgMessage;
+        $me = Person::newFromWgUser();
         $_POST['project'] = $this->project->getName();
         $_POST['fullName'] = @$_POST['fullName'];
         $_POST['description'] = @$_POST['description'];
@@ -83,6 +90,14 @@ class ProjectMainTab extends AbstractEditableTab {
 
         if(isset($_POST['challenge_id'])){
             APIRequest::doAction('ProjectChallenge', true);
+        }
+        if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
+            DBFunctions::update('grand_project_status',
+                                array('status' => $_POST['status']),
+                                array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                      'project_id' => EQ($this->project->getId())));
+            Project::$cache = array();
+            $this->project = Project::newFromId($this->project->getId());
         }
         
         if(isset($_POST['acronym'])){

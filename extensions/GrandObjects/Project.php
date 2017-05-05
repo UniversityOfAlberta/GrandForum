@@ -654,7 +654,7 @@ EOF;
     
     // Returns whether or not this project had been deleted or not
     function isDeleted(){
-        if(strcmp($this->effectiveDate, date('Y-m-d H:i:s')) <= 0){
+        if($this->getStatus() == "Ended" || strcmp($this->effectiveDate, date('Y-m-d H:i:s')) <= 0){
             return $this->deleted;
         }
         return false;
