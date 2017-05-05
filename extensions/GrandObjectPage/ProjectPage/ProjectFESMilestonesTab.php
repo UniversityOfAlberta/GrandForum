@@ -23,6 +23,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 continue;
             }
             foreach($_POST['milestone_title'][$activityId] as $milestoneId => $title){
+                $milestone = Milestone::newFromId($milestoneId);
+                if(!$this->canEditMilestone($milestone)){
+                    // This person can't edit this milestone, try next one
+                    continue;
+                }
                 $quarters = array();
                 if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
                     foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
@@ -55,12 +60,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 
                 if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
                    $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
-                    $milestone = Milestone::newFromId($milestoneId);
-                    if($this->canEditMilestone($milestone)){
-                        DBFunctions::update('grand_milestones',
-                                            array('status' => 'Deleted'),
-                                            array('id' => $milestone->getId()));
-                    }
+                    DBFunctions::update('grand_milestones',
+                                        array('status' => 'Deleted'),
+                                        array('id' => $milestone->getId()));
                 }
             }
         }
@@ -343,7 +345,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             else{
                 $this->html .= "<tr>";
             }
-            if($this->visibility['edit'] == 1){
+            if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 // Editing
                 $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                 $milestoneDescription = str_replace(">", "&gt;", str_replace("<", "&lt;", $milestone->getDescription()));
