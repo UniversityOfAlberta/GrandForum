@@ -356,7 +356,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
-                    $title .= $milestoneTitle;
+                    if($milestone->isNew()){
+                        $title .= "<b>$milestoneTitle</b>";
+                    }
+                    else{
+                        $title .= $milestoneTitle;
+                    }
                 }
                 else{
                     $title = $milestone->getTitle();
