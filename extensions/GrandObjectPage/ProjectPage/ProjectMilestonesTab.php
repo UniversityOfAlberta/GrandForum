@@ -341,7 +341,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $this->html .= "<tr class='top_border'>
                                 <td rowspan='$count'>$activity</td>";
             if(count($milestones) == 0){
-                $this->html .= "<td colspan='".($statusColspan+1+(3*4))."'></td>";
+                $this->html .= "<td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
             }
             foreach($milestones as $key => $milestone){
                 if($key != 0){
