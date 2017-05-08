@@ -184,20 +184,26 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function generateBody(){
-        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
-        parent::generateBody();
-        $this->addScript();
-        $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
-        $this->showFESMilestones();
+        global $wgUser;
+        if($wgUser->isLoggedIn()){
+            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+            parent::generateBody();
+            $this->addScript();
+            $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
+            $this->showFESMilestones();
+        }
     }
     
     function generateEditBody(){
-        $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
-        parent::generateBody();
-        $this->addScript();
-        $this->html .= "<hr style='clear:both;' /><h2 style='clear:both;'>Milestones</h2>";
-        $this->showFESMilestones();
-        $this->html .= "<hr style='clear:both;' />";
+        global $wgUser;
+        if($wgUser->isLoggedIn()){
+            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+            parent::generateBody();
+            $this->addScript();
+            $this->html .= "<hr style='clear:both;' /><h2 style='clear:both;'>Milestones</h2>";
+            $this->showFESMilestones();
+            $this->html .= "<hr style='clear:both;' />";
+        }
     }
     
     function addScript(){

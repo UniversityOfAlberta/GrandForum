@@ -13,10 +13,10 @@ class ProjectDescriptionTab extends AbstractEditableTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $project = $this->project;
-        
-        $this->showDescription();
-        
+        if($wgUser->isLoggedIn()){
+            $project = $this->project;
+            $this->showDescription();
+        }
         return $this->html;
     }
     
