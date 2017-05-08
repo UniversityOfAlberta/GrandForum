@@ -114,6 +114,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function canEdit(){
         $me = Person::newFromWgUser();
+        if($this->project->isFeatureFrozen(FREEZE_MILESTONES)){
+            return false;
+        }
         if($me->isLoggedIn()){
             $milestones = $this->project->getMilestones(true);
             foreach($milestones as $milestone){
@@ -128,11 +131,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function canEditMilestone($milestone){
         $me = Person::newFromWgUser();
-        
         if($milestone != null && $milestone->getLeader()->getId() == $me->getId()){
             return true;
         }
-        
         return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
     }
     

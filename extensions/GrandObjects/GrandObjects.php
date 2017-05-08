@@ -1,15 +1,24 @@
 <?php
 // The purpose of this file is to simply include the other datastructures
 require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
+
+// Relations Constants
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("MENTORS", 'Mentors');
 
+// Freeze Constants
+define('FREEZE_DESCRIPTION', 'Description');
+define('FREEZE_MILESTONES', 'Schedule/Milestones');
+define('FREEZE_BUDGET', 'Budget');
+
+// Autoloads
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');
 autoload_register('GrandObjects/API/Person');
 autoload_register('GrandObjects/API/Role');
 autoload_register('GrandObjects/API/Project');
+autoload_register('GrandObjects/API/Freeze');
 autoload_register('GrandObjects/API/Product');
 autoload_register('GrandObjects/API/University');
 autoload_register('GrandObjects/API/Wiki');
@@ -53,6 +62,10 @@ $apiRequest->addAction('Hidden','project/:id/contributions', 'ProjectContributio
 $apiRequest->addAction('Hidden','project/:id/allocations', 'ProjectAllocationsAPI');
 $apiRequest->addAction('Hidden','project/:id/products', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','project/:id/products/:productId', 'ProjectProductAPI');
+
+// Freeze
+$apiRequest->addAction('Hidden','freeze', 'FreezeAPI');
+$apiRequest->addAction('Hidden','freeze/:id', 'FreezeAPI');
 
 // Product
 $apiRequest->addAction('Hidden','product', 'ProductAPI');
@@ -124,6 +137,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Freeze.js?".filemtime("extensions/GrandObjects/BackboneModels/Freeze.js")."'></script>\n";
     
     return true;
 }

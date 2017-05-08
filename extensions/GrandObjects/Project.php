@@ -560,6 +560,16 @@ EOF;
         return $this->bigbet;
     }
     
+    /**
+     * Returns whether or not the given feature is frozen
+     * @param string $feature The feature to check
+     * @returns boolean Whether or not the given feature is frozen
+     */
+    function isFeatureFrozen($feature){
+        $freeze = Freeze::newFromProjectFeature($this, $feature);
+        return ($freeze != null && $freeze->getId() != "");
+    }
+    
     // Returns the phase of this Project
     function getPhase(){
         return $this->phase;

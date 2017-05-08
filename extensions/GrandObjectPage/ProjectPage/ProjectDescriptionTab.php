@@ -42,7 +42,7 @@ class ProjectDescriptionTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return $this->project->userCanEdit();
+        return (!$this->project->isFeatureFrozen(FREEZE_DESCRIPTION) && $this->project->userCanEdit());
     }
     
     function showDescription(){

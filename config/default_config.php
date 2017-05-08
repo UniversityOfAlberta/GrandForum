@@ -146,7 +146,8 @@
         //'TravelForm',
         //'AdvancedSearch',
         'CCVExport',
-        'MyThreads'
+        'MyThreads',
+        'Freeze'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,

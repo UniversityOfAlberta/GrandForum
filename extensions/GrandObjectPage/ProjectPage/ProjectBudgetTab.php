@@ -126,7 +126,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return $this->visibility['isLead'];
+        return (!$this->project->isFeatureFrozen(FREEZE_DESCRIPTION) && $this->visibility['isLead']);
     }
     
     function generateBody(){

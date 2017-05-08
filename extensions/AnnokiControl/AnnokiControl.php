@@ -139,6 +139,9 @@ $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport',
 
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
+                                         
+$egAnnokiExtensions['Freeze'] = array('name' => 'Freeze',
+                                      'path' => "$IP/extensions/Freeze/Freeze.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

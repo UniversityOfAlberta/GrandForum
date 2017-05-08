@@ -1,0 +1,30 @@
+<table class="wikitable" rules="all" frame="box">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <% _.each(Freeze.features, function(feature){ %>
+                <th><%= feature %><br /><a style="cursor:pointer;" data-feature="<%= feature %>" class="check">Check All</a>&nbsp;|&nbsp;<a style="cursor:pointer;" data-feature="<%= feature %>" class="uncheck">Uncheck All</a></th>
+            <% }) %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.projects.each($.proxy(function(project){ %>
+        <tr>
+            <td><%= project.get('name') %></td>
+            <% _.each(Freeze.features, $.proxy(function(feature){ %>
+                <td align="center">
+                    <% if(this.model.findWhere({'projectId': project.get('id'), 'feature': feature}) != undefined){ %>
+                        <input data-id="<%= this.model.findWhere({'projectId': project.get('id'), 'feature': feature}).get('id') %>" 
+                               data-projectId="<%= project.get('id') %>" 
+                               data-feature="<%= feature %>" type="checkbox" checked />
+                    <% } else { %>
+                        <input data-projectId="<%= project.get('id') %>"
+                               data-feature="<%= feature %>" type="checkbox" />
+                    <% } %>
+                </td>
+            <% }, this)) %>
+        </tr>
+        <% }, this)) %> 
+    </tbody>
+</table>
+<button id="save">Save</button><span style="display:none;" class="throbber"></span>
