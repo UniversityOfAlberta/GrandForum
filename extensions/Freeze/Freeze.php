@@ -2,6 +2,8 @@
 
 BackbonePage::register('FreezePage', 'Freeze', 'network-tools', dirname(__FILE__));
 
+$wgHooks['SubLevelTabs'][] = 'FreezePage::createSubTabs';
+
 class FreezePage extends BackbonePage {
     
     function isListed(){
@@ -9,7 +11,8 @@ class FreezePage extends BackbonePage {
     }
     
     function userCanExecute($user){
-        return true;
+        $person = Person::newFromUser($user);
+	    return $person->isRoleAtLeast(STAFF);
     }
     
     function getTemplates(){
@@ -22,6 +25,16 @@ class FreezePage extends BackbonePage {
     
     function getModels(){
         return array();
+    }
+    
+    static function createSubTabs(&$tabs){
+	    global $wgServer, $wgScriptPath, $wgTitle;
+	    $person = Person::newFromWgUser();
+	    if($person->isRoleAtLeast(STAFF)){
+	        $selected = @($wgTitle->getText() == "FreezePage") ? "selected" : false;
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Project Freeze", "$wgServer$wgScriptPath/index.php/Special:FreezePage", $selected);
+	    }
+	    return true;
     }
 
 }
