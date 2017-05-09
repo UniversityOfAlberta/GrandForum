@@ -7,28 +7,25 @@ FreezeView = Backbone.View.extend({
         this.projects = new Projects();
         this.toDelete = new Freezes();
         
-        this.model.bind('sync', this.render, this);
-        this.projects.bind('sync', this.render, this);
-        
-        this.model.fetch();
-        this.projects.fetch();
+        $.when(this.model.fetch()).then($.proxy(function(){
+            return $.when(this.projects.fetch());
+        }, this)).then($.proxy(function(){
+            this.render();
+        }, this));
         
         this.template = _.template($("#freeze_template").html());
-        this.render();
     },
     
     checkAll: function(e){
         var element = e.currentTarget;
         var feature = $(element).attr('data-feature');
-        this.$("input[data-feature='" + feature + "']").prop("checked", true);
-        this.$("input[data-feature='" + feature + "']").trigger("change");
+        this.$("input[data-feature='" + feature + "']:not(:checked)").prop("checked", true).trigger("change");
     },
     
     uncheckAll: function(e){
         var element = e.currentTarget;
         var feature = $(element).attr('data-feature');
-        this.$("input[data-feature='" + feature + "']").prop("checked", false);
-        this.$("input[data-feature='" + feature + "']").trigger("change");
+        this.$("input[data-feature='" + feature + "']:checked").prop("checked", false).trigger("change");
     },
     
     update: function(e){
@@ -59,7 +56,7 @@ FreezeView = Backbone.View.extend({
         this.$("#save").prop("disabled", true);
         this.model.each(function(freeze){
             if(freeze.isNew()){
-                xhrs.push(freeze.save());
+                _.defer(function(){ xhrs.push(freeze.save()) });
             }
         });
         this.toDelete.each(function(freeze){
