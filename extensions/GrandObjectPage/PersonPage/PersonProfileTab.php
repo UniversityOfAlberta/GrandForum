@@ -71,7 +71,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->showEditPhoto($this->person, $this->visibility);
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
-        $this->html .= "</table>";
+        $this->html .= "</td></tr></table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
     }
@@ -600,7 +600,7 @@ EOF;
         $managePeople->loadHelpers();
         $managePeople->loadViews();
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
-        $this->html .= "<div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add University' />
+        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add University' />
         <script type='text/javascript'>
             var model = new Person({id: {$this->person->getId()}});
             var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
