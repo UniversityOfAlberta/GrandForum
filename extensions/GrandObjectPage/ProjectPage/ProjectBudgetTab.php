@@ -149,7 +149,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        if($me->isMemberOf($this->project)){
+        if($me->isMemberOf($this->project) || $this->visibility['isLead']){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#budgetAccordion').accordion({autoHeight: false,
