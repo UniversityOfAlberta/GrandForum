@@ -184,8 +184,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function generateBody(){
-        global $wgUser;
-        if($wgUser->isLoggedIn()){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             parent::generateBody();
             $this->addScript();
@@ -195,8 +195,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function generateEditBody(){
-        global $wgUser;
-        if($wgUser->isLoggedIn()){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             parent::generateBody();
             $this->addScript();

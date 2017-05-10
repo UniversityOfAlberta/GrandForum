@@ -146,11 +146,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
     function showBudget(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
-        $isLead = $this->visibility['isLead'];
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        if($isLead){
+        if($me->isMemberOf($this->project)){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#budgetAccordion').accordion({autoHeight: false,

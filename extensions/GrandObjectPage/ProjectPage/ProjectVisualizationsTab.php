@@ -12,9 +12,10 @@ class ProjectVisualizationsTab extends AbstractTab {
     }
 
     function generateBody(){
-        global $wgUser, $wgOut, $wgServer, $wgScriptPath;
+        global $wgOut, $wgServer, $wgScriptPath;
         $this->html = "";
-        if($wgUser->isLoggedIn()){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#projectVis').tabs({selected: 0});

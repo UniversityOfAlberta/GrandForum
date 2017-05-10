@@ -44,18 +44,18 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function generateBody(){
-        global $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
-            return;
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+            if(!$this->project->isSubProject()){
+                $this->showTopProducts($this->project, $this->visibility);
+            }
+            $this->showDashboard($this->project, $this->visibility);
+            $this->html .= "<script type='text/javascript'>
+            _.defer(function(){
+                $('input[value=\"Edit Dashboard\"]').css('display', 'none');
+            });</script>";
         }
-        if(!$this->project->isSubProject()){
-            $this->showTopProducts($this->project, $this->visibility);
-        }
-        $this->showDashboard($this->project, $this->visibility);
-        $this->html .= "<script type='text/javascript'>
-        _.defer(function(){
-            $('input[value=\"Edit Dashboard\"]').css('display', 'none');
-        });</script>";
         return $this->html;
     }
     

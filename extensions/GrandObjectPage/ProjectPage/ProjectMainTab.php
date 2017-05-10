@@ -234,7 +234,7 @@ EOF;
         }
         if($project->getType() == 'Administrative'){
             $researchProject = Project::newFromName($project->getName()." Research");
-            if($researchProject->getId() != 0){
+            if($researchProject != null && $researchProject->getId() != 0){
                 $this->html .= "<h2>Research Project</h2>";
                 $this->html .= "<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a><br />";
             }
