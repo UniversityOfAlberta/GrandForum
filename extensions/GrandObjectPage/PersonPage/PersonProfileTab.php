@@ -175,13 +175,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['user_name'] = $this->person->getName();
             $_POST['phone'] = @$_POST['phone'];
             $_POST['email'] = @$_POST['email'];
-            $_POST['university'] = @$_POST['university'];
-            $_POST['department'] = @$_POST['department'];
-            $_POST['title'] = @$_POST['title'];
 
-            $api = new UserUniversityAPI();
-            $api->processParams(array());
-            $api->doAction(true);
             $api = new UserPhoneAPI();
             $api->doAction(true);
             
@@ -515,7 +509,7 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser, $config;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
@@ -571,6 +565,7 @@ EOF;
                 </tr>";
             }
         }
+        
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>Email:</b></td>
@@ -581,54 +576,10 @@ EOF;
                             {$stakeholder}";
         
         $roles = $person->getRoles();
-        $universities = new Collection(University::getAllUniversities());
-        $uniNames = $universities->pluck('name');
-        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
-            $positions = array("Other", 
-                               "Graduate Student - Master's", 
-                               "Graduate Student - Doctoral", 
-                               "Post-Doctoral Fellow", 
-                               "Research Associate", 
-                               "Research Assistant", 
-                               "Technician",
-                               "Professional End User",
-                               "Summer Student", 
-                               "Undergraduate Student");
-        }
-        else{
-            $positions = Person::getAllPositions();
-        }
-        $myPosition = "";
-        foreach($positions as $key => $position){
-            if($university['position'] == $position){
-                $myPosition = $key;
-            }
-        }
-        if($myPosition == ""){
-            $positions[] = $university['position'];
-            $myPosition = count($positions) - 1;
-        }
-        $departments = Person::getAllDepartments();
-        $organizations = $uniNames;
-        sort($organizations);
-        if($person->isRole(HQP) && ($person->isRoleAtMost(HQP) || $person->isRole(PL))){
-            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
-        }
-        else{
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
-        }
-        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-        $titleCombo->attr('style', 'max-width: 250px;');
-        $orgCombo->attr('style', 'max-width: 250px;');
-        $deptCombo->attr('style', 'max-width: 250px;');
-        $this->html .= "<tr>
-                            <td align='right'><b>Title:</b></td>
-                            <td>{$titleCombo->render()}</td>
-                        </tr>";
+
         if($me->isRoleAtLeast(STAFF)){
             $this->html .= "<tr>
-                                <td></td>
+                                <td><b>Role Titles:</b></td>
                                 <td><table>";
             $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
             foreach($roles as $role){
@@ -640,15 +591,31 @@ EOF;
             }
             $this->html .= "</table></td></tr>";
         }
-        $this->html .= "<tr>
-                            <td align='right'><b>Institution:</b></td>
-                            <td>{$orgCombo->render()}</td>
-                        </tr>
-                        <tr>
-                            <td align='right'><b>Department:</b></td>
-                            <td>{$deptCombo->render()}</td>
-                        </tr>";
         $this->html .= "</table>";
+        
+        // Load the scripts for Manage People so that the University editing can be used
+        $managePeople = new ManagePeople();
+        $managePeople->loadTemplates();
+        $managePeople->loadModels();
+        $managePeople->loadHelpers();
+        $managePeople->loadViews();
+        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
+        $this->html .= "<div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add University' />
+        <script type='text/javascript'>
+            var model = new Person({id: {$this->person->getId()}});
+            var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
+            $('#addUniversity').click(function(){
+                view.addUniversity();
+            });
+            $('form').on('submit', function(e){
+                var requests = view.saveAll();
+                e.preventDefault();
+                $.when.apply($, requests).then(function(){
+                    $('form').off('submit');
+                    $('input[value=\"Save {$this->name}\"]').click();
+                });
+            });
+        </script>";
     }
     
 }
