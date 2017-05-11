@@ -446,8 +446,7 @@ product
 
     **GET**
         Returns a list of all Products in the Forum.
-        
-        .. note::
+
         Be aware that this request might fail if there are a large number of Products in the Forum.  Look to use one of the more restrictive API
     **POST**
         Creates a new Product
@@ -588,7 +587,7 @@ product/:id/projects/:projectId
 
     **:id**
         The id of the Product
-    **:projectId
+    **:projectId**
         The id of the Project
 
 **Actions**
@@ -597,3 +596,11 @@ product/:id/projects/:projectId
         Returns the specified Project-Product associated with this Product
     **DELETE**
         Remove the Project from this Product
+        
+product/tags
+-------------------------------
+
+**Actions**
+
+    **GET**
+        Returns a list of all Product tags
