@@ -307,4 +307,134 @@ role/:id
     **DELETE**
         Deletes the specified Role
         
+project
+-------
 
+**Actions**
+
+    **GET**
+        Returns a list of all Projects
+        
+project/:id
+-----------
+
+**Arguments**
+
+    **:id**
+        The id of the Project
+
+**Actions**
+
+    **GET**
+        Returns the specified Project
+        
+project/:id/members
+-------------------
+
+**Arguments**
+
+    **:id**
+        The id or name of the Project.
+
+**Actions**
+
+    **GET**
+        Returns a list of the People in the specified Project
+        
+project/:id/members/:role
+-------------------------
+
+**Arguments**
+
+    **:id**
+        The id or name of the Project
+    **:role**
+        The type of Role to filter by.  Multiple Roles can be specified if separated by commas.
+
+**Actions**
+
+    **GET**
+        Returns a list of the People in the specified Project
+        
+project/:id/contributions
+-------------------------
+
+**Arguments**
+
+    **:id**
+        The id or name of the Project
+
+**Actions**
+
+    **GET**
+        Returns a list Contributions associated with the specified Project
+        
+project/:id/allocations
+-----------------------
+
+**Arguments**
+
+    **:id**
+        The id or name of the Project
+
+**Actions**
+
+    **GET**
+        Returns the amount of allocations per year
+        
+project/:id/products
+--------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Project
+
+**Actions**
+
+    **GET**
+        Returns a simplified list of Products associated with the specified Project
+    **POST**
+        Associates a product with the specified Project
+        
+project/:id/products/:productId
+-------------------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Project
+    **::productId**
+        The id of the Product
+
+**Actions**
+
+    **GET**
+        Returns a simplified Product specified by the productId
+    **DELETE**
+        Removes the Project from the specified Product
+        
+freeze
+------
+
+**Actions**
+
+    **GET**
+        Returns a list of Frozen features
+    **POST**
+        Adds a new Frozen Project/Feature pair
+        
+freeze/:id
+----------
+
+**Arguments**
+
+    **:id**
+        The id of the Freeze feature
+
+**Actions**
+
+    **GET**
+        Returns the specified Frozen feature
+    **DELETE**
+        Removes the specified Frozen Project/Feature pair
