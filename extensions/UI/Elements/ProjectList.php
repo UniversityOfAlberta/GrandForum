@@ -107,9 +107,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
             }
             $html .= "</div>";
         }
-        if($i != 0){
-            $html .= "</div>";
-        }
+        $html .= "</div>";
         if(!$this->attr('expand')){
             $html .= "<script type='text/javascript'>
                 $('input.{$this->id}').change(function(){
