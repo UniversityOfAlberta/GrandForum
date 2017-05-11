@@ -7,11 +7,8 @@ The Forum features a REST API to fetch and update various objects.  The url form
 
 Most of the apis have some level of access control, so certain actions will not be allowed depending on the current user's role, or will return a subset of the full result.
 
-End Points
-----------
-
 person/:id
-~~~~~~~~~~
+----------
 
 **Arguments**
 
@@ -33,7 +30,7 @@ person/:id
         Deletes the Person
 
 person/:id/projects
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 **Arguments**
 
@@ -49,7 +46,7 @@ person/:id/projects
         Adds the Person to a Project
         
 person/:id/projects/:personProjectId
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
 **Arguments**
 
