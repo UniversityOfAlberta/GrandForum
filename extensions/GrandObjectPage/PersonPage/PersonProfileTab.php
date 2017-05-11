@@ -610,9 +610,13 @@ EOF;
             $('form').on('submit', function(e){
                 var requests = view.saveAll();
                 e.preventDefault();
+                $('input[value=\"Save {$this->name}\"]').prop('disabled', true);
                 $.when.apply($, requests).then(function(){
                     $('form').off('submit');
-                    $('input[value=\"Save {$this->name}\"]').click();
+                    $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
+                    _.delay(function(){
+                        $('input[value=\"Save {$this->name}\"]').click();
+                    }, 10);
                 });
             });
         </script>";
