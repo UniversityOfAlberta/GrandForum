@@ -110,9 +110,9 @@ class CreateUserAPI extends API{
                     $api->doAction(true);
                 
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
-                        $_POST['title'] = $_POST['position'];
-                        $api = new UserUniversityAPI();
-                        $api->doAction(true);
+                        $api = new PersonUniversitiesAPI();
+                        $api->params['id'] = $person->getId();
+                        $api->doPOST();
                     }
                     else{
                         $defaultUni = Person::getDefaultUniversity();

@@ -83,42 +83,34 @@ class Role extends BackboneModel {
 	                                        'role'       => $this->getRole(),
 	                                        'start_date' => $this->getStartDate(),
 	                                        'end_date'   => $this->getEndDate(),
-	                                        'comment'    => $this->getComment()),
-	                                  array('id' => EQ($this->getId())));
+	                                        'comment'    => $this->getComment()));
+	    $id = DBFunctions::insertId();
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
 	    if($status){
-            $data = DBFunctions::select(array('grand_roles'),
-                                        array('id'),
-                                        array('user_id' => EQ($this->user),
-                                              'role' => EQ($this->getRole())),
-                                        array('id' => 'DESC'));
-            if(count($data) > 0){
-                $id = $data[0]['id'];
-                $this->id = $id;
-                if(is_array($this->projects)){
-                    foreach($this->projects as $project){
-	                    $p = Project::newFromName($project->name);
-	                    DBFunctions::insert('grand_role_projects',
-	                                        array('role_id' => $this->getId(),
-	                                              'project_id' => $p->getId()));
-	                    if(!$this->getPerson()->isMemberOf($p)){
-	                        DBFunctions::insert('grand_project_members',
-	                                            array('user_id' => $this->getPerson()->getId(),
-	                                                  'project_id' => $p->getId(),
-	                                                  'start_date' => $this->getStartDate()));
-	                    }
-	                    Cache::delete("project{$p->getId()}_people*", true);
-	                }
-	            }
-	            Notification::addNotification($me, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
-                Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
-                $supervisors = $person->getSupervisors();
-                if(count($supervisors) > 0){
-                    foreach($supervisors as $supervisor){
-                        Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+            $this->id = $id;
+            if(is_array($this->projects)){
+                foreach($this->projects as $project){
+                    $p = Project::newFromName($project->name);
+                    DBFunctions::insert('grand_role_projects',
+                                        array('role_id' => $this->getId(),
+                                              'project_id' => $p->getId()));
+                    if(!$this->getPerson()->isMemberOf($p)){
+                        DBFunctions::insert('grand_project_members',
+                                            array('user_id' => $this->getPerson()->getId(),
+                                                  'project_id' => $p->getId(),
+                                                  'start_date' => $this->getStartDate()));
                     }
+                    Cache::delete("project{$p->getId()}_people*", true);
+                }
+            }
+            Notification::addNotification($me, Person::newFromId(0), "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+            Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
+            $supervisors = $person->getSupervisors();
+            if(count($supervisors) > 0){
+                foreach($supervisors as $supervisor){
+                    Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} <b>{$person->getNameForForms()}</b> assumes the role <b>{$this->getRole()}</b>", "{$person->getUrl()}");
                 }
             }
         }

@@ -91,16 +91,8 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,
                                   'end_date' => $end_date));
-                                  
-        
-        $data = DBFunctions::select(array('grand_user_university'),
-                                    array('id'),
-                                    array('user_id' => $person->getId()),
-                                    array('id' => 'DESC'),
-                                    array(1));
-        if(count($data) > 0){
-            $this->params['personUniversityId'] = $data[0]['id'];
-        }
+
+        $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         MailingList::subscribeAll($person);
         return $this->doGET();

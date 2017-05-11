@@ -48,13 +48,16 @@ function addUserRole($name, $role){
     $r->create();
 }
 
-function addUserUniversity($name, $university, $department, $title){
-    $_POST['user'] = $name;
-    $_POST['user_name'] = $name;
-    $_POST['university'] = $university;
-    $_POST['department'] = $department;
-    $_POST['title'] = $title;
-    APIRequest::doAction('UserUniversity', true);
+function addUserUniversity($name, $uni, $dept, $pos){
+    $person = Person::newFromName($name);
+    $_POST['university'] = $uni;
+    $_POST['department'] = $dept;
+    $_POST['position'] = $pos;
+    $_POST['startDate'] = '2010-01-01 00:00:00';
+    $_POST['endDate'] = '0000-00-00 00:00:00';
+    $api = new PersonUniversitiesAPI();
+    $api->params['id'] = $person->getId();
+    $api->doPOST();
 }
 
 function addUserProject($name, $project, $role){
