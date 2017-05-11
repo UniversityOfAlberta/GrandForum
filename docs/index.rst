@@ -45,10 +45,11 @@ Extension Documentation
 
 .. _api-docs:
 
-API Docs
+Code Docs
 --------
 
 .. toctree::
    :maxdepth: 2
 
-   API <http://grand.cs.ualberta.ca/docs/>
+   restapi
+   Code Docs <http://grand.cs.ualberta.ca/docs/>

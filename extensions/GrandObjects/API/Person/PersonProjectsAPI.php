@@ -42,17 +42,12 @@ class PersonProjectsAPI extends RESTAPI {
                                             'end_date'   => $this->POST('endDate'),
                                             'comment'    => $this->POST('comment')));
 
-        $data = DBFunctions::select(array('grand_project_members'),
-                                    array('id'),
-                                    array('project_id' => $project->getId(),
-                                          'user_id' => $person->getId()),
-                                    array('id' => 'DESC'),
-                                    array(1));
+        $id = DBFunctions::insertId();
+        $this->params['personProjectId'] = $id;
+        
         Notification::addNotification($me, Person::newFromId(0), "Project Membership Added", "Effective {$this->POST('startDate')} <b>{$person->getNameForForms()}</b> joins <b>{$project->getName()}</b>", "{$person->getUrl()}");
         Notification::addNotification($me, $person, "Project Membership Added", "Effective {$this->POST('startDate')} you join <b>{$project->getName()}</b>", "{$person->getUrl()}");
-        if(count($data) > 0){
-            $this->params['personProjectId'] = $data[0]['id'];
-        }
+
         Cache::delete("project{$project->getId()}_people*", true);
         $person->projects = null;
         MailingList::subscribeAll($person);
