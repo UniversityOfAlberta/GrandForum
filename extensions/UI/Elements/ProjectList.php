@@ -88,26 +88,28 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                         $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked />{$subProj->getName()}";
                         if($subchecked != "" && $reasons !== false){
                             $html .= "<div style='display:none; padding-left:30px;'>
-                                <fieldset><legend>Reasoning</legend>
-                                    <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
-                                    Additional Comments:<br />
-                                    <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
-                                </fieldset>
-                            </div>";
+                                        <fieldset><legend>Reasoning</legend>
+                                            <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$subProj->getName()}' name='{$partialId}_datepicker[{$subProj->getName()}]' /></p>
+                                            Additional Comments:<br />
+                                            <textarea name='{$partialId}_comment[{$subProj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                            </fieldset>
+                                      </div>";
                         }
                         $html .= "<br />";
                     }
                 }
                 $html .= "</div></div>";
                 $i++;
-                if($i == $count){
+                if($i == $count || $key == count($projs)-1){
                     $i=0;
                     $html .= "</div>";
                 }
             }
             $html .= "</div>";
         }
-        $html .= "</div>";
+        if($i != 0){
+            $html .= "</div>";
+        }
         if(!$this->attr('expand')){
             $html .= "<script type='text/javascript'>
                 $('input.{$this->id}').change(function(){
