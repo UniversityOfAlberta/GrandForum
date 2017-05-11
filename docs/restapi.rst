@@ -438,3 +438,162 @@ freeze/:id
         Returns the specified Frozen feature
     **DELETE**
         Removes the specified Frozen Project/Feature pair
+        
+product
+-------
+
+**Actions**
+
+    **GET**
+        Returns a list of all Products in the Forum.
+        
+        .. note::
+        Be aware that this request might fail if there are a large number of Products in the Forum.  Look to use one of the more restrictive API
+    **POST**
+        Creates a new Product
+        
+product/:projectId/:category/:grand
+-----------------------------------
+
+**Arguments**
+
+    **:projectId**
+        The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
+    **:category**
+        The category of the Product to filter by
+    **:grand**
+        Can be 'grand', 'nonGrand', or 'both'.  'grand'.
+        
+        **grand**
+            Include Products which are associated with at least 1 Project
+        **nonGrand**
+            Include Products which are not associated with any Projects
+        **both**
+            Include Products regardless of whether they are associated with any Projects
+
+**Actions**
+
+    **GET**
+        Returns a list of filtered Products in the Forum.
+        
+product/:projectId/:category/:grand/:start/:count
+-------------------------------------------------
+
+**Arguments**
+
+    **:projectId**
+        The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
+    **:category**
+        The category of the Product to filter by
+    **:grand**
+        Can be 'grand', 'nonGrand', or 'both'.  'grand'.
+        
+        **grand**
+            Include Products which are associated with at least 1 Project
+        **nonGrand**
+            Include Products which are not associated with any Projects
+        **both**
+            Include Products regardless of whether they are associated with any Projects
+    **:start**
+        The result index to start with (useful for pagination/getting the result over multile requests)
+    **:count**
+        The number of results to include in the result
+
+**Actions**
+
+    **GET**
+        Returns a list of filtered Products in the Forum.
+        
+product/:id
+-----------
+
+**Arguments**
+
+    **:id**
+        The id of the Product.  Multiple ids can be specified if separated by a comma.
+
+**Actions**
+
+    **GET**
+        Returns the specified Product(s)
+    **PUT**
+        Updates the specified Product
+    **DELETE**
+        Deletes the specified Product.  If the Product was 'private' the deletion will be permanent.
+        
+product/:id/citation
+--------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Product
+
+**Actions**
+
+    **GET**
+        Returns the citation of the Product
+        
+product/:id/authors
+-------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Product
+
+**Actions**
+
+    **GET**
+        Returns a simplified list of People who authored this Product
+    **POST**
+        Adds a Person as an author to the specified Product
+
+product/:id/authors/:personId
+-----------------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Product
+    **:personId**
+        The id of the author
+
+**Actions**
+
+    **GET**
+        Returns a simplified Person-Product
+    **DELETE**
+        Removes the Person from the author list of this Product
+        
+product/:id/projects
+--------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Product
+
+**Actions**
+
+    **GET**
+        Returns a list of Projects associated with this Product
+    **POST**
+        Associates a Project with this Product
+        
+product/:id/projects/:projectId
+-------------------------------
+
+**Arguments**
+
+    **:id**
+        The id of the Product
+    **:projectId
+        The id of the Project
+
+**Actions**
+
+    **GET**
+        Returns the specified Project-Product associated with this Product
+    **DELETE**
+        Remove the Project from this Product

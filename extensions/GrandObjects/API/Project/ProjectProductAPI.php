@@ -34,7 +34,7 @@ class ProjectProductAPI extends RESTAPI {
                     if($this->getParam('projectId') != null && $project->getId() == $this->getParam('projectId')){
                         return json_encode($array);
                     }
-                    else if($this->getParam('project') == null){
+                    else if($this->getParam('projectId') == null){
                         $json[] = $array;
                     }
                 }
