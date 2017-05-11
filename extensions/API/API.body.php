@@ -115,7 +115,6 @@ class APIRequest{
 	    $this->addAction('Products', 'uploadICS', 'UploadICSAPI');
 	    $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
 	    $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
-	    $this->addAction('Products', 'getPublicationSearch', 'PublicationSearchAPI');
 	
 		//POST
 		$this->addAction('User Accounts', 'addUserAccount', 'CreateUserAPI');
@@ -148,7 +147,6 @@ class APIRequest{
 		$this->addAction('Themes', 'getThemeInfo', 'ThemeInfoAPI');
 		
 		// HIDDENS
-		$this->addAction('Hidden', 'getJung', 'JungAPI');
 		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
 	}
