@@ -79,6 +79,8 @@ $apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductA
 $apiRequest->addAction('Hidden','product/:id/projects', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','product/:id/projects/:projectId', 'ProjectProductAPI');
 $apiRequest->addAction('Hidden','productDuplicates/:category/:title/:id', 'ProductDuplicatesAPI');
+
+// Bibliography
 $apiRequest->addAction('Hidden','bibliography', 'BibliographyAPI');
 $apiRequest->addAction('Hidden','bibliography/:id', 'BibliographyAPI');
 $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyAPI');

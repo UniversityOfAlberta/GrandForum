@@ -7,600 +7,731 @@ The Forum features a REST API to fetch and update various objects.  The url form
 
 Most of the apis have some level of access control, so certain actions will not be allowed depending on the current user's role, or will return a subset of the full result.
 
+People
+------
+
 person/:id
-----------
+~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person.  Multiple ids can be specified if separated by commas
+        **:id**
+            The id of the Person.  Multiple ids can be specified if separated by commas
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a Person, or an array of People if multiple ids are specified.
-    **POST**
-        Creates a new the Person
-    **PUT**
-        Updates the Person
-    **DELETE**
-        Deletes the Person
+        **GET**
+            Returns a Person, or an array of People if multiple ids are specified.
+        **POST**
+            Creates a new the Person
+        **PUT**
+            Updates the Person
+        **DELETE**
+            Deletes the Person
 
 person/:id/projects
--------------------
+~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns an array of Person-Projects
-    **POST**
-        Adds the Person to a Project
+        **GET**
+            Returns an array of Person-Projects
+        **POST**
+            Adds the Person to a Project
         
 person/:id/projects/:personProjectId
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
-    **:personProjectId**
-        The id of the Person-Project relationship
+        **:id**
+            The id of the Person
+        **:personProjectId**
+            The id of the Person-Project relationship
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Person-Project
-    **PUT**
-        Updates the specified Person-Project
-    **DELETE**
-        Deletes the specified Person-Project
+        **GET**
+            Returns the specified Person-Project
+        **PUT**
+            Updates the specified Person-Project
+        **DELETE**
+            Deletes the specified Person-Project
         
 person/:id/universities
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns all of the universities for the Person
-    **POST**
-        Adds the Person to a University
+        **GET**
+            Returns all of the universities for the Person
+        **POST**
+            Adds the Person to a University
         
 person/:id/universities/:personUniversityId
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
-    **:personUniversityId**
-        The id of the Person-University relationship
+        **:id**
+            The id of the Person
+        **:personUniversityId**
+            The id of the Person-University relationship
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Person-University
-    **PUT**
-        Updates the specified Person-University
-    **DELETE**
-        Deletes the specified Person-University
+        **GET**
+            Returns the specified Person-University
+        **PUT**
+            Updates the specified Person-University
+        **DELETE**
+            Deletes the specified Person-University
         
 person/:id/roles
-----------------
+~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified array of this Person's Roles
+        **GET**
+            Returns a simplified array of this Person's Roles
         
 person/:id/relations
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns all of the relationships for the Person
-    **POST**
-        Adds the Person to a Relationship
+        **GET**
+            Returns all of the relationships for the Person
+        **POST**
+            Adds the Person to a Relationship
         
 person/:id/relations/:relId
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
-    **:relId**
-        The id of the Relationship
+        **:id**
+            The id of the Person
+        **:relId**
+            The id of the Relationship
 
-**Actions**
+    **Actions**
 
-    **PUT**
-        Updates the specified Relationship
-    **DELETE**
-        Deletes the specified Relationship
+        **PUT**
+            Updates the specified Relationship
+        **DELETE**
+            Deletes the specified Relationship
         
 person/:id/products
--------------------
+~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of non-private Products authored by this Person
+        **GET**
+            Returns a list of non-private Products authored by this Person
         
 person/:id/products/private
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of private Products authored by this Person
+        **GET**
+            Returns a list of private Products authored by this Person
         
 person/:id/products/all
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all Products authored by this Person
+        **GET**
+            Returns a list of all Products authored by this Person
         
 person/:id/products/:productId
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
-    **:productId**
-        The id of the Product
+        **:id**
+            The id of the Person
+        **:productId**
+            The id of the Product
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the Person-Product
-    **POST**
-        Adds the Person to the given Product
-    **DELETE**
-        Removes the Person from the given Product
+        **GET**
+            Returns the Person-Product
+        **POST**
+            Adds the Person to the given Product
+        **DELETE**
+            Removes the Person from the given Product
         
 person/:id/contributions
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of contributions that involve this Person
+        **GET**
+            Returns a list of contributions that involve this Person
         
 person/:id/allocations
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the amount of allocations per year, per project
+        **GET**
+            Returns the amount of allocations per year, per project
         
 personRoleString/:id
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Person
+        **:id**
+            The id of the Person
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified string version of this Person's current roles
+        **GET**
+            Returns a simplified string version of this Person's current roles
         
 people
-------
+~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all People
+        **GET**
+            Returns a list of all People
         
 people/managed
---------------
+~~~~~~~~~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all People that the current user manages (either implicitely or explicitely)
+        **GET**
+            Returns a list of all People that the current user manages (either implicitely or explicitely)
         
 people/:role
-------------
+~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:role**
-        The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all People that belong to the specified Role(s)
+        **GET**
+            Returns a list of all People that belong to the specified Role(s)
         
 people/:role/:university
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:role**
-        The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
-    **:university**
-        The name of the University to filter by
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+        **:university**
+            The name of the University to filter by
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all People that belong to the specified Role(s), and are from the specified University
+        **GET**
+            Returns a list of all People that belong to the specified Role(s), and are from the specified University
+       
+Roles
+-----
         
 role
-----
+~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of roles that can be used by the Forum
-    **POST**
-        Adds a Person to a role
+        **GET**
+            Returns a list of roles that can be used by the Forum
+        **POST**
+            Adds a Person to a role
         
 role/:id
+~~~~~~~~
+
+    **Arguments**
+
+        **:id**
+            The id of the Role
+
+    **Actions**
+
+        **GET**
+            Returns the specified Role
+        **PUT**
+            Updates the specified Role
+        **DELETE**
+            Deletes the specified Role
+
+Projects
 --------
-
-**Arguments**
-
-    **:id**
-        The id of the Role
-
-**Actions**
-
-    **GET**
-        Returns the specified Role
-    **PUT**
-        Updates the specified Role
-    **DELETE**
-        Deletes the specified Role
-        
+  
 project
--------
+~~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all Projects
+        **GET**
+            Returns a list of all Projects
         
 project/:id
------------
+~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Project
+        **:id**
+            The id of the Project
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Project
+        **GET**
+            Returns the specified Project
         
 project/:id/members
--------------------
+~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id or name of the Project.
+        **:id**
+            The id or name of the Project.
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of the People in the specified Project
+        **GET**
+            Returns a list of the People in the specified Project
         
 project/:id/members/:role
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id or name of the Project
-    **:role**
-        The type of Role to filter by.  Multiple Roles can be specified if separated by commas.
+        **:id**
+            The id or name of the Project
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of the People in the specified Project
+        **GET**
+            Returns a list of the People in the specified Project
         
 project/:id/contributions
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id or name of the Project
+        **:id**
+            The id or name of the Project
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list Contributions associated with the specified Project
+        **GET**
+            Returns a list Contributions associated with the specified Project
         
 project/:id/allocations
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id or name of the Project
+        **:id**
+            The id or name of the Project
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the amount of allocations per year
+        **GET**
+            Returns the amount of allocations per year
         
 project/:id/products
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Project
+        **:id**
+            The id of the Project
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified list of Products associated with the specified Project
-    **POST**
-        Associates a product with the specified Project
+        **GET**
+            Returns a simplified list of Products associated with the specified Project
+        **POST**
+            Associates a product with the specified Project
         
 project/:id/products/:productId
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Project
-    **::productId**
-        The id of the Product
+        **:id**
+            The id of the Project
+        **::productId**
+            The id of the Product
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified Product specified by the productId
-    **DELETE**
-        Removes the Project from the specified Product
-        
-freeze
+        **GET**
+            Returns a simplified Product specified by the productId
+        **DELETE**
+            Removes the Project from the specified Product
+      
+Freeze
 ------
+  
+freeze
+~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of Frozen features
-    **POST**
-        Adds a new Frozen Project/Feature pair
+        **GET**
+            Returns a list of Frozen features
+        **POST**
+            Adds a new Frozen Project/Feature pair
         
 freeze/:id
-----------
+~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Freeze feature
+        **:id**
+            The id of the Freeze feature
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Frozen feature
-    **DELETE**
-        Removes the specified Frozen Project/Feature pair
-        
+        **GET**
+            Returns the specified Frozen feature
+        **DELETE**
+            Removes the specified Frozen Project/Feature pair
+
+Products
+--------
+     
 product
--------
+~~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all Products in the Forum.
+        **GET**
+            Returns a list of all Products in the Forum.
 
-        Be aware that this request might fail if there are a large number of Products in the Forum.  Look to use one of the more restrictive API
-    **POST**
-        Creates a new Product
+            Be aware that this request might fail if there are a large number of Products in the Forum.  Look to use one of the more restrictive API
+        **POST**
+            Creates a new Product
         
 product/:projectId/:category/:grand
------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:projectId**
-        The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
-    **:category**
-        The category of the Product to filter by
-    **:grand**
-        Can be 'grand', 'nonGrand', or 'both'.  'grand'.
-        
-        **grand**
-            Include Products which are associated with at least 1 Project
-        **nonGrand**
-            Include Products which are not associated with any Projects
-        **both**
-            Include Products regardless of whether they are associated with any Projects
+        **:projectId**
+            The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
+        **:category**
+            The category of the Product to filter by
+        **:grand**
+            Can be 'grand', 'nonGrand', or 'both'.  'grand'.
+            
+            **grand**
+                Include Products which are associated with at least 1 Project
+            **nonGrand**
+                Include Products which are not associated with any Projects
+            **both**
+                Include Products regardless of whether they are associated with any Projects
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of filtered Products in the Forum.
+        **GET**
+            Returns a list of filtered Products in the Forum.
         
 product/:projectId/:category/:grand/:start/:count
--------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:projectId**
-        The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
-    **:category**
-        The category of the Product to filter by
-    **:grand**
-        Can be 'grand', 'nonGrand', or 'both'.  'grand'.
-        
-        **grand**
-            Include Products which are associated with at least 1 Project
-        **nonGrand**
-            Include Products which are not associated with any Projects
-        **both**
-            Include Products regardless of whether they are associated with any Projects
-    **:start**
-        The result index to start with (useful for pagination/getting the result over multile requests)
-    **:count**
-        The number of results to include in the result
+        **:projectId**
+            The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
+        **:category**
+            The category of the Product to filter by
+        **:grand**
+            Can be 'grand', 'nonGrand', or 'both'.  'grand'.
+            
+            **grand**
+                Include Products which are associated with at least 1 Project
+            **nonGrand**
+                Include Products which are not associated with any Projects
+            **both**
+                Include Products regardless of whether they are associated with any Projects
+        **:start**
+            The result index to start with (useful for pagination/getting the result over multile requests)
+        **:count**
+            The number of results to include in the result
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of filtered Products in the Forum.
+        **GET**
+            Returns a list of filtered Products in the Forum.
         
 product/:id
------------
+~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product.  Multiple ids can be specified if separated by a comma.
+        **:id**
+            The id of the Product.  Multiple ids can be specified if separated by a comma.
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Product(s)
-    **PUT**
-        Updates the specified Product
-    **DELETE**
-        Deletes the specified Product.  If the Product was 'private' the deletion will be permanent.
+        **GET**
+            Returns the specified Product(s)
+        **PUT**
+            Updates the specified Product
+        **DELETE**
+            Deletes the specified Product.  If the Product was 'private' the deletion will be permanent.
         
 product/:id/citation
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product
+        **:id**
+            The id of the Product
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the citation of the Product
+        **GET**
+            Returns the citation of the Product
         
 product/:id/authors
--------------------
+~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product
+        **:id**
+            The id of the Product
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified list of People who authored this Product
-    **POST**
-        Adds a Person as an author to the specified Product
+        **GET**
+            Returns a simplified list of People who authored this Product
+        **POST**
+            Adds a Person as an author to the specified Product
 
 product/:id/authors/:personId
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product
-    **:personId**
-        The id of the author
+        **:id**
+            The id of the Product
+        **:personId**
+            The id of the author
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a simplified Person-Product
-    **DELETE**
-        Removes the Person from the author list of this Product
+        **GET**
+            Returns a simplified Person-Product
+        **DELETE**
+            Removes the Person from the author list of this Product
         
 product/:id/projects
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product
+        **:id**
+            The id of the Product
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of Projects associated with this Product
-    **POST**
-        Associates a Project with this Product
+        **GET**
+            Returns a list of Projects associated with this Product
+        **POST**
+            Associates a Project with this Product
         
 product/:id/projects/:projectId
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Arguments**
+    **Arguments**
 
-    **:id**
-        The id of the Product
-    **:projectId**
-        The id of the Project
+        **:id**
+            The id of the Product
+        **:projectId**
+            The id of the Project
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns the specified Project-Product associated with this Product
-    **DELETE**
-        Remove the Project from this Product
+        **GET**
+            Returns the specified Project-Product associated with this Product
+        **DELETE**
+            Remove the Project from this Product
         
 product/tags
--------------------------------
+~~~~~~~~~~~~
 
-**Actions**
+    **Actions**
 
-    **GET**
-        Returns a list of all Product tags
+        **GET**
+            Returns a list of all Product tags
+        
+productDuplicates/:category/:title/:id
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+
+        **:category**
+            The category of the Product
+        **:title**
+            The Title of the Product to check against
+        **:id**
+            The id of the Product to check duplicates against
+
+    **Actions**
+
+        **GET**
+            Returns a list of Products that might be duplicates of the specified Product
+        
+Bibliographies
+--------------
+
+bibliography
+~~~~~~~~~~~~
+
+    **Actions**
+
+        **GET**
+            Returns a list of all Bibliographies
+        **POST**
+            Creates a new Bibliography
+        
+bibliography/:id
+~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the Bibliography
+
+    **Actions**
+
+        **GET**
+            Returns the specified Bibliography
+        **PUT**
+            Updates the specified Bibliography
+        **DELETE**
+            Deletes the specified Bibliography
+        
+bibliography/person/:person_id
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:person_id**
+            The id of the Person that the Bibliographies belong to
+
+    **Actions**
+
+        **GET**
+            Returns a list of Bibliographies that belong to the specified Person
+            
+Universities
+------------
+
+university
+~~~~~~~~~~
+
+    **Actions**
+
+        **GET**
+            Returns a list of all Universities
+            
+university/:id
+~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the University
+
+    **Actions**
+
+        **GET**
+            Returns the specified University
+            
+Wiki Pages
+----------
+
+wikipage/:id
+~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the WikiPage
+
+    **Actions**
+
+        **GET**
+            Returns the specified WikiPage
+            
+wikipage/:namespace/:title
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:namespace**
+            The namespace of the WikiPage
+        **:id**
+            The title of the WikiPage
+
+    **Actions**
+
+        **GET**
+            Returns the specified WikiPage
+
