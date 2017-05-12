@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2017 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RPTP_IFP_APPLICATION" year="2017">
-    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent to Apply" title="Section 1 - Information about the Applicant and Supervisor">
-        <ReportItem id="level" type="Select" blobItem="LEVEL" options="Master's student|PhD student|Postdoctoral or working professional" width="300px">
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
+        <ReportItem id="number" type="Text" blobItem="NUMBER" witdh="292px">
             <![CDATA[
                 <table>
+                    <tr>
+                        <td style='width:350px;' align="right"><b>CFN File #:</b></td>
+                        <td valign="top">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="level" type="Select" blobItem="LEVEL" options="Master's student|PhD student|Postdoctoral or working professional" width="300px">
+            <![CDATA[
                 <tr>
-                    <td style='width:350px;' align="right"><b>Fellowship Funding Level:</b></td>
+                    <td align="right"><b>Fellowship Funding Level:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -29,7 +36,7 @@
         <ReportItem id="designations" type="Text" blobItem="DESIGNATIONS" width="292px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Applicant Designations:</b><br /><small><i>(PhD, MNSc, MD, BA, etc.)</i></small></td>
+                    <td align="right"><b>Applicant Designations:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -37,7 +44,7 @@
         <ReportItem id="discipline" type="Select" blobItem="DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Applicant Primary Discipline:</b><br /><small><i>please pick the ONE discipline that most closely relates to your current studies or employment</i></small></td>
+                    <td align="right"><b>Applicant Primary Discipline:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -45,7 +52,7 @@
         <ReportItem id="role" type="Text" blobItem="ROLE" width="292px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Applicant Current Organization and Role:</b><br /><small><i>(If student or postdoc, Current Academic Institution and course of study. If working professional, Current Employer and title.)</i></small></td>
+                    <td align="right"><b>Applicant Current Organization and Role:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -93,7 +100,7 @@
         <ReportItem id="sup_designations" type="Text" blobItem="SUP_DESIGNATIONS" width="292px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Supervisor Designations:</b><br /><small><i>(PhD, MNSc, MD, BA, etc.)</i></small></td>
+                    <td align="right"><b>Supervisor Designations:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -101,7 +108,7 @@
         <ReportItem id="sup_discipline" type="Select" blobItem="SUP_DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology" width="300px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Supervisor Primary Discipline:</b><br /><small><i>please pick the ONE discipline that most closely relates to your supervisor’s current academic and/or clinical responsibilities</i></small></td>
+                    <td align="right"><b>Supervisor Primary Discipline:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -109,7 +116,7 @@
         <ReportItem id="sup_specialization" type="Text" blobItem="SUP_specialization" width="292px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>If a health profession, please list specialization:</b><br /><small><i>(Geriatrics, Palliative Care, Family Practice, Occupational Therapy, Physical Therapy, etc.)</i></small></td>
+                    <td align="right"><b>If a health profession, please list specialization:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -141,7 +148,7 @@
         <ReportItem id="sup_institution_other" type="Text" blobItem="SUP_INSTITUTION_OTHER" width="292px" optional="true">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Name of Host Institution if not listed above:</b><br /><small><i>(will require Network Agreement to be in place before funding – see Application Instructions)</i></small></td>
+                    <td align="right"><b>Name of Host Institution if not listed above:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
