@@ -119,7 +119,6 @@ $apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', 'MailingLis
 
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI');
-$apiRequest->addAction('Hidden','virtu', 'VirtuAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;

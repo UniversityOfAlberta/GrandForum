@@ -282,7 +282,9 @@ people/:role/:university
 
         **GET**
             Returns a list of all People that belong to the specified Role(s), and are from the specified University
-       
+
+-----
+
 Roles
 -----
         
@@ -312,6 +314,8 @@ role/:id
             Updates the specified Role
         **DELETE**
             Deletes the specified Role
+
+-----
 
 Projects
 --------
@@ -422,7 +426,9 @@ project/:id/products/:productId
             Returns a simplified Product specified by the productId
         **DELETE**
             Removes the Project from the specified Product
-      
+
+-----
+
 Freeze
 ------
   
@@ -450,6 +456,8 @@ freeze/:id
             Returns the specified Frozen feature
         **DELETE**
             Removes the specified Frozen Project/Feature pair
+
+-----
 
 Products
 --------
@@ -636,7 +644,9 @@ productDuplicates/:category/:title/:id
 
         **GET**
             Returns a list of Products that might be duplicates of the specified Product
-        
+
+-----
+
 Bibliographies
 --------------
 
@@ -679,7 +689,9 @@ bibliography/person/:person_id
 
         **GET**
             Returns a list of Bibliographies that belong to the specified Person
-            
+
+-----
+
 Universities
 ------------
 
@@ -703,6 +715,8 @@ university/:id
 
         **GET**
             Returns the specified University
+          
+-----
             
 Wiki Pages
 ----------
@@ -735,3 +749,209 @@ wikipage/:namespace/:title
         **GET**
             Returns the specified WikiPage
 
+-----
+
+Message Boards
+--------------
+
+board/:id
+~~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the Board
+
+    **Actions**
+
+        **GET**
+            Returns the specified Board
+            
+boards
+~~~~~~
+
+    **Actions**
+
+        **GET**
+            Returns a list of all Boards
+            
+thread
+~~~~~~
+
+    **Actions**
+
+        **POST**
+            Creates a new Thread
+            
+thread/:id
+~~~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the Thread
+
+    **Actions**
+
+        **GET**
+            Returns the specified Thread
+        **PUT**
+            Updates the specified Thread
+        **DELETE**
+            Deletes the specified Thread
+            
+threads/:board
+~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:board**
+            The id of the Board
+
+    **Actions**
+
+        **GET**
+            Returns a list of all Threads which belong to the specified Board
+            
+threads/:board/:search
+~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:board**
+            The id of the Board
+        **:search**
+            A search string 
+
+    **Actions**
+
+        **GET**
+            Returns a list of all Threads which belong to the specified Board and match the specified search string based on a full text search
+            
+post
+~~~~
+
+    **Actions**
+
+        **POST**
+            Creates a new Post
+            
+post/:id
+~~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id of the Post
+
+    **Actions**
+
+        **GET**
+            Returns the specified Post
+        **PUT**
+            Updates the specified Post
+        **DELETE**
+            Deletes the specified Post
+            
+posts
+~~~~~
+
+    Not yet implemented
+   
+-----
+    
+PDFs
+----
+
+pdf/:id
+~~~~~~~
+
+    **Arguments**
+        
+        **:id**
+            The id (token) of the PDF
+
+    **Actions**
+
+        **GET**
+            Returns the specified PDF
+            
+-----
+
+Mailing Lists
+-------------
+
+mailingList
+~~~~~~~~~~~
+
+    **Actions**
+
+        **GET**
+            Returns a list of all MailingLists
+            
+mailingList/:listId
+~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:listId**
+            The id of the MailingList
+
+    **Actions**
+
+        **GET**
+            Returns the specified MailingList
+            
+mailingList/:listId/rules
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:listId**
+            The id of the MailingList
+
+    **Actions**
+
+        **GET**
+            Returns a list of the MailingListRules for the specified MailingList
+        **POST**
+            Creates a new MailingListRule for the specified MailingList
+            
+mailingList/:listId/rules/:ruleId
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:listId**
+            The id of the MailingList
+        **:ruleId**
+            The id of the MailingListRule
+
+    **Actions**
+
+        **GET**
+            Returns the specified MailingListRule
+        **PUT**
+            Updates the specified MailingListRule
+        **DELETE**
+            Deletes the specified MailingListRule
+
+-----
+
+Search
+------
+
+globalSearch/:group/:search
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        
+        **:group**
+            The type of search to do.  Can be 'people', 'experts', 'projects', 'products', or 'wikipage'
+        **:search**
+            The search string
+
+    **Actions**
+
+        **GET**
+            Returns a list of search results from the given search string
