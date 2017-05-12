@@ -14,12 +14,10 @@ person/:id
 ~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person.  Multiple ids can be specified if separated by commas
 
     **Actions**
-
         **GET**
             Returns a Person, or an array of People if multiple ids are specified.
         **POST**
@@ -33,12 +31,10 @@ person/:id/projects
 ~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns an array of Person-Projects
         **POST**
@@ -48,14 +44,12 @@ person/:id/projects/:personProjectId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
         **:personProjectId**
             The id of the Person-Project relationship
 
     **Actions**
-
         **GET**
             Returns the specified Person-Project
         **PUT**
@@ -67,12 +61,10 @@ person/:id/universities
 ~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns all of the universities for the Person
         **POST**
@@ -82,14 +74,12 @@ person/:id/universities/:personUniversityId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
         **:personUniversityId**
             The id of the Person-University relationship
 
     **Actions**
-
         **GET**
             Returns the specified Person-University
         **PUT**
@@ -101,12 +91,10 @@ person/:id/roles
 ~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a simplified array of this Person's Roles
         
@@ -114,12 +102,10 @@ person/:id/relations
 ~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns all of the relationships for the Person
         **POST**
@@ -129,14 +115,12 @@ person/:id/relations/:relId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
         **:relId**
             The id of the Relationship
 
     **Actions**
-
         **PUT**
             Updates the specified Relationship
         **DELETE**
@@ -146,12 +130,10 @@ person/:id/products
 ~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a list of non-private Products authored by this Person
         
@@ -159,12 +141,10 @@ person/:id/products/private
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a list of private Products authored by this Person
         
@@ -172,12 +152,10 @@ person/:id/products/all
 ~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a list of all Products authored by this Person
         
@@ -185,14 +163,12 @@ person/:id/products/:productId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
         **:productId**
             The id of the Product
 
     **Actions**
-
         **GET**
             Returns the Person-Product
         **POST**
@@ -204,12 +180,10 @@ person/:id/contributions
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a list of contributions that involve this Person
         
@@ -217,12 +191,10 @@ person/:id/allocations
 ~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns the amount of allocations per year, per project
         
@@ -230,12 +202,10 @@ personRoleString/:id
 ~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Person
 
     **Actions**
-
         **GET**
             Returns a simplified string version of this Person's current roles
         
@@ -243,7 +213,6 @@ people
 ~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all People
         
@@ -251,7 +220,6 @@ people/managed
 ~~~~~~~~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all People that the current user manages (either implicitely or explicitely)
         
@@ -259,12 +227,10 @@ people/:role
 ~~~~~~~~~~~~
 
     **Arguments**
-
         **:role**
             The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
 
     **Actions**
-
         **GET**
             Returns a list of all People that belong to the specified Role(s)
         
@@ -272,14 +238,12 @@ people/:role/:university
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:role**
             The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
         **:university**
             The name of the University to filter by
 
     **Actions**
-
         **GET**
             Returns a list of all People that belong to the specified Role(s), and are from the specified University
 
@@ -292,7 +256,6 @@ role
 ~~~~
 
     **Actions**
-
         **GET**
             Returns a list of roles that can be used by the Forum
         **POST**
@@ -302,12 +265,10 @@ role/:id
 ~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Role
 
     **Actions**
-
         **GET**
             Returns the specified Role
         **PUT**
@@ -324,7 +285,6 @@ project
 ~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Projects
         
@@ -332,12 +292,10 @@ project/:id
 ~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Project
 
     **Actions**
-
         **GET**
             Returns the specified Project
         
@@ -345,12 +303,10 @@ project/:id/members
 ~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id or name of the Project.
 
     **Actions**
-
         **GET**
             Returns a list of the People in the specified Project
         
@@ -358,14 +314,12 @@ project/:id/members/:role
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id or name of the Project
         **:role**
             The type of Role to filter by.  Multiple Roles can be specified if separated by commas.
 
     **Actions**
-
         **GET**
             Returns a list of the People in the specified Project
         
@@ -373,12 +327,10 @@ project/:id/contributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id or name of the Project
 
     **Actions**
-
         **GET**
             Returns a list Contributions associated with the specified Project
         
@@ -386,12 +338,10 @@ project/:id/allocations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id or name of the Project
 
     **Actions**
-
         **GET**
             Returns the amount of allocations per year
         
@@ -399,12 +349,10 @@ project/:id/products
 ~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Project
 
     **Actions**
-
         **GET**
             Returns a simplified list of Products associated with the specified Project
         **POST**
@@ -414,14 +362,12 @@ project/:id/products/:productId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Project
         **::productId**
             The id of the Product
 
     **Actions**
-
         **GET**
             Returns a simplified Product specified by the productId
         **DELETE**
@@ -436,7 +382,6 @@ freeze
 ~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of Frozen features
         **POST**
@@ -446,12 +391,10 @@ freeze/:id
 ~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Freeze feature
 
     **Actions**
-
         **GET**
             Returns the specified Frozen feature
         **DELETE**
@@ -466,7 +409,6 @@ product
 ~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Products in the Forum.
 
@@ -478,7 +420,6 @@ product/:projectId/:category/:grand
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:projectId**
             The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
         **:category**
@@ -494,7 +435,6 @@ product/:projectId/:category/:grand
                 Include Products regardless of whether they are associated with any Projects
 
     **Actions**
-
         **GET**
             Returns a list of filtered Products in the Forum.
         
@@ -502,7 +442,6 @@ product/:projectId/:category/:grand/:start/:count
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:projectId**
             The id of a Project to filter by.  Multiple ids can be specified if separated by a comma.
         **:category**
@@ -522,7 +461,6 @@ product/:projectId/:category/:grand/:start/:count
             The number of results to include in the result
 
     **Actions**
-
         **GET**
             Returns a list of filtered Products in the Forum.
         
@@ -530,12 +468,10 @@ product/:id
 ~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product.  Multiple ids can be specified if separated by a comma.
 
     **Actions**
-
         **GET**
             Returns the specified Product(s)
         **PUT**
@@ -547,12 +483,10 @@ product/:id/citation
 ~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product
 
     **Actions**
-
         **GET**
             Returns the citation of the Product
         
@@ -560,12 +494,10 @@ product/:id/authors
 ~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product
 
     **Actions**
-
         **GET**
             Returns a simplified list of People who authored this Product
         **POST**
@@ -575,14 +507,12 @@ product/:id/authors/:personId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product
         **:personId**
             The id of the author
 
     **Actions**
-
         **GET**
             Returns a simplified Person-Product
         **DELETE**
@@ -592,12 +522,10 @@ product/:id/projects
 ~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product
 
     **Actions**
-
         **GET**
             Returns a list of Projects associated with this Product
         **POST**
@@ -607,14 +535,12 @@ product/:id/projects/:projectId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:id**
             The id of the Product
         **:projectId**
             The id of the Project
 
     **Actions**
-
         **GET**
             Returns the specified Project-Product associated with this Product
         **DELETE**
@@ -624,7 +550,6 @@ product/tags
 ~~~~~~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Product tags
         
@@ -632,7 +557,6 @@ productDuplicates/:category/:title/:id
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-
         **:category**
             The category of the Product
         **:title**
@@ -641,7 +565,6 @@ productDuplicates/:category/:title/:id
             The id of the Product to check duplicates against
 
     **Actions**
-
         **GET**
             Returns a list of Products that might be duplicates of the specified Product
 
@@ -654,7 +577,6 @@ bibliography
 ~~~~~~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Bibliographies
         **POST**
@@ -664,12 +586,11 @@ bibliography/:id
 ~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
+       
         **:id**
             The id of the Bibliography
 
     **Actions**
-
         **GET**
             Returns the specified Bibliography
         **PUT**
@@ -681,12 +602,10 @@ bibliography/person/:person_id
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:person_id**
             The id of the Person that the Bibliographies belong to
 
     **Actions**
-
         **GET**
             Returns a list of Bibliographies that belong to the specified Person
 
@@ -699,7 +618,6 @@ university
 ~~~~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Universities
             
@@ -707,12 +625,10 @@ university/:id
 ~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id of the University
 
     **Actions**
-
         **GET**
             Returns the specified University
           
@@ -725,12 +641,10 @@ wikipage/:id
 ~~~~~~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id of the WikiPage
 
     **Actions**
-
         **GET**
             Returns the specified WikiPage
             
@@ -738,14 +652,12 @@ wikipage/:namespace/:title
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:namespace**
             The namespace of the WikiPage
         **:id**
             The title of the WikiPage
 
     **Actions**
-
         **GET**
             Returns the specified WikiPage
 
@@ -758,12 +670,10 @@ board/:id
 ~~~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id of the Board
 
     **Actions**
-
         **GET**
             Returns the specified Board
             
@@ -771,7 +681,6 @@ boards
 ~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all Boards
             
@@ -787,12 +696,10 @@ thread/:id
 ~~~~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id of the Thread
 
     **Actions**
-
         **GET**
             Returns the specified Thread
         **PUT**
@@ -804,12 +711,10 @@ threads/:board
 ~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:board**
             The id of the Board
 
     **Actions**
-
         **GET**
             Returns a list of all Threads which belong to the specified Board
             
@@ -817,14 +722,12 @@ threads/:board/:search
 ~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:board**
             The id of the Board
         **:search**
             A search string 
 
     **Actions**
-
         **GET**
             Returns a list of all Threads which belong to the specified Board and match the specified search string based on a full text search
             
@@ -832,7 +735,6 @@ post
 ~~~~
 
     **Actions**
-
         **POST**
             Creates a new Post
             
@@ -840,23 +742,16 @@ post/:id
 ~~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id of the Post
 
     **Actions**
-
         **GET**
             Returns the specified Post
         **PUT**
             Updates the specified Post
         **DELETE**
             Deletes the specified Post
-            
-posts
-~~~~~
-
-    Not yet implemented
    
 -----
     
@@ -867,12 +762,10 @@ pdf/:id
 ~~~~~~~
 
     **Arguments**
-        
         **:id**
             The id (token) of the PDF
 
     **Actions**
-
         **GET**
             Returns the specified PDF
             
@@ -885,7 +778,6 @@ mailingList
 ~~~~~~~~~~~
 
     **Actions**
-
         **GET**
             Returns a list of all MailingLists
             
@@ -893,12 +785,10 @@ mailingList/:listId
 ~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:listId**
             The id of the MailingList
 
     **Actions**
-
         **GET**
             Returns the specified MailingList
             
@@ -906,12 +796,10 @@ mailingList/:listId/rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:listId**
             The id of the MailingList
 
     **Actions**
-
         **GET**
             Returns a list of the MailingListRules for the specified MailingList
         **POST**
@@ -921,14 +809,12 @@ mailingList/:listId/rules/:ruleId
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:listId**
             The id of the MailingList
         **:ruleId**
             The id of the MailingListRule
 
     **Actions**
-
         **GET**
             Returns the specified MailingListRule
         **PUT**
@@ -945,13 +831,11 @@ globalSearch/:group/:search
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **Arguments**
-        
         **:group**
             The type of search to do.  Can be 'people', 'experts', 'projects', 'products', or 'wikipage'
         **:search**
             The search string
 
     **Actions**
-
         **GET**
             Returns a list of search results from the given search string
