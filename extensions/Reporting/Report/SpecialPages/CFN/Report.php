@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 require_once("ReportStatusTable.php");
+require_once("ApplicationsTable.php");
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
@@ -26,6 +27,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Applications"] = TabUtils::createTab("My Applications");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
         return true;
     }
@@ -46,6 +48,10 @@ class Report extends AbstractReport{
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Update)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
                 }
             }
+        }
+        if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2017Applicant")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
         }
         foreach($projects as $project){
             if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
@@ -95,6 +101,10 @@ class Report extends AbstractReport{
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPFinalReport")) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
                     }
+                }
+                if($hqp->isSubRole("IFP2017Applicant")){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
+                    $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
                 }
             }
         }
