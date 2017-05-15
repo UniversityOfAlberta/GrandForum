@@ -148,12 +148,12 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Appl/Sup Information" title="Section 1 - Information about the Applicant and Supervisor">
-        <ReportItem id="number" type="Text" blobItem="NUMBER" witdh="292px">
+        <ReportItem id="number" type="Text" blobItem="NUMBER" width="292px">
             <![CDATA[
                 <table>
                     <tr>
                         <td style='width:350px;' align="right"><b>CFN File #:</b></td>
-                        <td valign="top">{$item}</td>
+                        <td valign="top">{$value}</td>
             ]]>
         </ReportItem>
         <ReportItem id="level" type="Select" blobItem="LEVEL" options="Master's student|PhD student|Postdoctoral or working professional" width="300px">
@@ -168,7 +168,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Applicant First Name:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td valign="top">{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -176,7 +176,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Applicant Last Name:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td valign="top">{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -200,7 +200,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Applicant Current Organization and Role:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td valign="top">{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -232,7 +232,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor First Name:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td valign="top">{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -240,7 +240,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Last Name:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td valign="top">{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -288,15 +288,7 @@
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Host Institution that will receive and administer CFN funds:</b></td>
-                    <td>{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="sup_institution_other" type="Text" blobItem="SUP_INSTITUTION_OTHER" width="292px" optional="true">
-            <![CDATA[
-                <tr>
-                    <td align="right"><b>Name of Host Institution if not listed above:</b></td>
-                    <td valign="top">{$item}</td>
+                    <td>{$value}</td>
                 </tr>
             ]]>
         </ReportItem>
