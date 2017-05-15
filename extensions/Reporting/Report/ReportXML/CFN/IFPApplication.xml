@@ -284,7 +284,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_institution" type="Select" blobItem="SUP_INSTITUTION" options="CHUM (Centre Hospitalier de l'Université de Montréal)|Conestoga College|Dalhousie University|Fraser Health Authority|Hôpital Sacre-Coeur De Montréal|ICES (Institute for Clinical Evaluative Sciences)|Jewish General Hospital|Lakehead University|Laval University|Lawson Health Sciences Centre Research Inc.|McGill University|McMaster University|Mount Sinai Hospital|North York General Hospital|NSHA (Nova Scotia Health Authority)|OHRI (Ottawa Hospital Research Institute)|Queen's University|Research Institute of the MUHC (McGill University Health Centre)|Ryerson University|Saskatchewan Polytechnic|Simon Fraser University|St. Michael's Hospital|Sunnybrook Research Institute|Trillium Health Partners|Trinity Western University|Université du Québec à Montréal|University Health Network (UHN)|University of Alberta|University of British Columbia|University of Calgary|University of Guelph|University of Manitoba|University of Moncton|University of New Brunswick|University of Ontario Institute for Technology (UOIT)|University of Ottawa|University of Saskatchewan|University of Sherbrooke|University of Toronto|University of Victoria|University of Waterloo|University of Windsor|University of Winnipeg|Western University|York University" width="300px">
+        <ReportItem id="sup_institution" type="Text" blobItem="SUP_INSTITUTION"  width="292px">
             <![CDATA[
                 <tr>
                     <td align="right"><b>Supervisor Host Institution that will receive and administer CFN funds:</b></td>
@@ -330,13 +330,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant’s Research Project">
-        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
-            <![CDATA[
-                <h3>Scientific Title of Research Project</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+    <ReportSection id="project" type="EditableReportSection" blobSection="PROJECT" name="Research Project" title="Section 2 - Information about Applicant's Research Project">
         <ReportItem id="keywords" type="MultiText" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="5">
             <![CDATA[
                 <h3>Keywords</h3>
@@ -344,10 +338,16 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="250">
+        <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true" limit="150">
             <![CDATA[
                 <h3>Lay Summary</h3>
                 <small>Provide a <b><u>non-confidential summary in lay terms</u></b> of your research project. Ongoing feedback from lay members of our committees, patients and their families and support systems, indicates the importance of succinct, plain language descriptions of research, particularly in mobilizing research findings. We are looking for a brief description of the research, why you are conducting the research and how it may impact health care for frail older Canadians.  The summary should be written at a ninth-grade reading level (Flesch-Kinkaid scale). (Note: This summary will be evaluated by lay and scientific reviewers. For funded applicants, this summary may be used in media releases, communications and posted on the CFN website.)</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
+            <![CDATA[
+                <h3>Scientific Title of Research Project</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -401,56 +401,42 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="interest" type="EditableReportSection" blobSection="INTEREST" name="Interest and Benefit" title="Section 3 - Interest and Benefit">
-        <ReportItem id="frailty" type="Textarea" blobItem="FRAILTY" rich="true" limit="50">
+        <ReportItem id="expression" type="Textarea" blobItem="EXPRESSION" rich="true" limit="250">
             <![CDATA[
-                <p>Tell us how you believe you will benefit from each of the core IFP activities. Please review the activity descriptions in the Program Guidelines before completing the following sections.</p>
-                <h3>Frailty Assessment</h3>
+                <h3>Expression of Interest</h3>
+                <small>Please outline your interest in the CFN Interdisciplinary Fellowship Program. Describe how your academic, research, professional and/or practical skills, and your life experience will lead to your personal success in the fellowship program.</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="citizen" type="Textarea" blobItem="CITIZEN" rich="true" limit="50">
+        <ReportItem id="benefit" type="Textarea" blobItem="BENEFIT" rich="true" limit="250">
             <![CDATA[
-                <h3>Citizen Engagement</h3>
+                <h3>Benefit from Fellowship Participation</h3>
+                <small>Describe how you believe you will benefit from each of the IFP Learning Themes (Frailty Assessment, Citizen Engagement, Interdisciplinary Collaboration, and Self-Directed Professional Development) and related activities outlined in the Program Guidelines.</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="collaboration" type="Textarea" blobItem="COLLABORATION" rich="true" limit="50">
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="250">
             <![CDATA[
-                <h3>Interdisciplinary Collaboration</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="development" type="Textarea" blobItem="DEVELOPMENT" rich="true" limit="50">
-            <![CDATA[
-                <h3>Self-Directed Professional Development</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="100">
-            <![CDATA[
-                <h3>What value will you bring to your fellowship cohort, and specifically to an online collaborative project.</h3>
+                <h3>Value Brought to Fellowship</h3>
+                <small>Describe how your participation will benefit the fellowship program, the value you will bring to this fellowship cohort, and specifically how your participation will enhance an online collaborative project.</small>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="plan" type="Textarea" blobItem="PLAN" rich="true" limit="250">
             <![CDATA[
-                <h3>Describe your career plan and how a CFN Fellowship will help you achieve your career goals.</h3>
+                <h3>Career Aspirations</h3>
+                <small>Describe your career plan and how a CFN Fellowship will help you achieve your career goals.</small>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="partners" type="EditableReportSection" blobSection="PARTNERS" name="Partnership Funding" title="Section 4 - Partnership Funding">
-        <ReportItem id="partners" type="MultiText" blobItem="PARTNERS" blobType="BLOB_ARRAY" labels="Partner Organization|Potential Conflict of Interest|$ Amount of cash contribution" types="Text|Radio(Yes,No)|Integer" multiple="true" sizes="200|75|50" optional="true">
+        <ReportItem id="partners" type="MultiText" blobItem="PARTNERS" blobType="BLOB_ARRAY" labels="Partner Organization|Potential Conflict of Interest|$ Amount of cash contribution|Type of Contribution" types="Text|Radio(Yes,No)|Integer|Radio(Cash,In-Kind)" multiple="true" sizes="200|75|50|100" optional="true">
             <![CDATA[
                 <p><i><b>Please read the Program Guidelines and Application Instructions carefully before completing this section.</b></i></p>
                 <p>Identify all partners that have agreed to provide matching funds in cash for the fellowship award (50% cash from CFN; 50% cash from Applicant’s partner(s)). Partnership funds must be from NCE-eligible partner. Please consult your Supervisor’s host institution for details on NCE-eligible partners.</p>
+                <p>If you have other partnership cash contributions over and above the minimum required by the fellowship program, please include these in your application. You can also include eligible in-kind contributions from eligible sources that are contributing to your research associated with your fellowship.</p>
                 <u>For each partner</u>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="letter" type="Upload" blobItem="LETTER" blobType="BLOB_RAW" fileSize="20" mimeType="application/zip">
-            <![CDATA[
-                <p>Attach a <b>.zip</b> containing PDF letters of support from each partner here, or the partner may send directly to CFN if desired. Please read the Program Guidelines and Application Instructions carefully before obtaining partner letters of support.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -529,7 +515,8 @@
     <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure">
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" sizes="200|||75|50" multiple="true">
             <![CDATA[
-                <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 hours per week over a 12-month period to complete fellowship activities.</p>
+                <p>The CFN Interdisciplinary Fellowship Program is designed to be rigorous and challenging. It requires ongoing dedication, and a regular and substantial time commitment. Applicants should expect to spend 10 to 12 hours per week over a 12-month period to complete fellowship activities.</p>
+                <p>A corresponding commitment of approximately 2 to 3 hours per week is appropriate for a supervisor.  Applicants and Supervisors must list all known and anticipated activities in each category that are expected over the course of the Fellowship (September 2017 to August 2018).</p>
                 <u>For each activity</u>
                 {$item}
             ]]>

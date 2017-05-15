@@ -93,12 +93,23 @@ class RadioReportItem extends AbstractReportItem {
 	function renderForPDF(){
 	    global $wgOut;
 	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));
+	    $showDescription = strtolower($this->getAttr("showDescription"));
+        $options = $this->parseOptions();
+        $descriptions = explode("|", $this->getAttr('descriptions', ''));
 	    $val = $this->getBlobValue();
 	    if($attr == "true" && empty($val)){
 	        return "";
 	    }
 	    else if(empty($val)){
 	    	$val = "N/A";
+	    }
+	    
+	    if($showDescription == "true"){
+	        foreach($options as $i => $option){
+	            if($val == $option){
+	                $val .= @" - {$descriptions[$i]}";
+	            }
+	        }
 	    }
 
 	    $item = $this->processCData("<i>{$val}</i>");
