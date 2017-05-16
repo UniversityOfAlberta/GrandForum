@@ -43,7 +43,7 @@
         </Role>
     </Permissions>
     <ReportSection id="ifp_preview" type="ReportSection" name="IFP Application Review" title="IFP Application Review">
-        <ReportItemSet id="hqp" type="PersonSupervises" startDate="2017-01-01 00:00:00" endDate="2017-21-31 23:23:59">
+        <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
             <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                 <ReportItem id="report_review" type="ReviewReportItem" person="{$user_id}">
                     <![CDATA[{$item}]]>
@@ -52,7 +52,7 @@
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="supervisor" type="EditableReportSection" blobSection="SUPERVISOR" name="Supervisor Approval" title="Supervisor Approval">
-        <ReportItemSet id="hqp" type="PersonSupervises" startDate="{$this_year}-01-01 00:00:00" endDate="{$this_year}-21-31 23:23:59">
+        <ReportItemSet id="hqp" type="PersonRelatedTo" relation="Supervises">
             <ReportItemSet id="header" type="ToggleHeader" title="{$user_name}">
                 <ReportItem id="section1" type="Radio" blobItem="SECTION1" blobSubItem="{$user_id}" options="Approved|Not Approved">
                     <![CDATA[

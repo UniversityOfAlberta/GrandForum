@@ -37,6 +37,7 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         $hqps = $person->getHQP();
+        $students = $person->getPeopleRelatedTo(SUPERVISES);
         $projects = $person->getProjects();
         if($person->isRole(PL) && !$person->isRole(HQP)){
             foreach($person->leadership() as $project){
@@ -102,9 +103,16 @@ class Report extends AbstractReport{
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
                     }
                 }
-                if($hqp->isSubRole("IFP2017Applicant")){
+                
+            }
+        }
+        if(count($students) > 0){
+            $processedIFP2017 = false;
+            foreach($students as $student){
+                if(!$processedIFP2017 && $student->isSubRole("IFP2017Applicant")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
                     $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
+                    $processedIFP2017 = true;
                 }
             }
         }

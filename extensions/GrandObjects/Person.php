@@ -3276,6 +3276,22 @@ class Person extends BackboneModel {
         }
         return $members;
     }
+    
+    function getPeopleRelatedTo($type){
+        $people = array();
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('user2'),
+                                    array('user1' => EQ($this->id),
+                                          WHERE_AND('user1') => NEQ(COL('user2')),
+                                          WHERE_AND('type') => EQ($type)));
+        foreach($data as $row){
+            $person = Person::newFromId($row['user2']);
+            if($person != null && $person->getId() != 0){
+                $people[$person->getId()] = Person::newFromId($row['user2']);
+            }
+        }
+        return $people;
+    }
 
     /**
      * Returns this Person's HQP
@@ -3327,8 +3343,7 @@ class Person extends BackboneModel {
         $hqps = array();
         foreach($data as $row){
             $hqp = Person::newFromId($row['user2']);
-            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') || 
-               $hqp->isRoleDuring(HQP."-Candidate", '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
                 $hqps[] = $hqp;
             }
         }
@@ -3393,8 +3408,7 @@ class Person extends BackboneModel {
             $hqp = Person::newFromId($row['user2']);
             if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
                 $hqps_uniq_ids[] = $hqp->getId();
-                if(!$hqp->isRoleDuring(HQP, $startRange, $endRange) && 
-                   !$hqp->isRoleDuring(HQP."-Candidate", $startRange, $endRange)){
+                if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
                     continue;
                 }
                 $hqps[] = $hqp;
