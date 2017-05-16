@@ -3327,7 +3327,8 @@ class Person extends BackboneModel {
         $hqps = array();
         foreach($data as $row){
             $hqp = Person::newFromId($row['user2']);
-            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+            if($hqp->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') || 
+               $hqp->isRoleDuring(HQP."-Candidate", '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
                 $hqps[] = $hqp;
             }
         }
