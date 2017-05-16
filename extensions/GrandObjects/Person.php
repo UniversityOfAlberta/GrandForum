@@ -3393,7 +3393,8 @@ class Person extends BackboneModel {
             $hqp = Person::newFromId($row['user2']);
             if( !in_array($hqp->getId(), $hqps_uniq_ids) && $hqp->getId() != null){
                 $hqps_uniq_ids[] = $hqp->getId();
-                if(!$hqp->isRoleDuring(HQP, $startRange, $endRange)){
+                if(!$hqp->isRoleDuring(HQP, $startRange, $endRange) && 
+                   !$hqp->isRoleDuring(HQP."-Candidate", $startRange, $endRange)){
                     continue;
                 }
                 $hqps[] = $hqp;
