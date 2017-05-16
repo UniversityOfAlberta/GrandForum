@@ -119,26 +119,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sup_discipline" type="Select" blobItem="SUP_DISCIPLINE" options="Biostatistics/Health Informatics/Measurement/Psychometrics|Education|Engineering|Epidemiology/Life Sciences|Ethics/Law|Gerontology/Aging/Sociology|Health Demography/Geography|Health Economics|Health/Public Policy or Administration|Health Studies|Library &amp; Information Sciences|Medicine|Nursing|Nutrition|Pharmacy/Pharmacology|Rehabilitation|Respirology|Social Work/Counselling/Psychology/Theology">
+        <ReportItem id="sup_discipline" type="Text" blobItem="SUP_ROLE" width="292px">
             <![CDATA[
                 <tr>
-                    <td align="right"><b>Supervisor Primary Discipline:</b></td>
-                    <td valign="top">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="sup_specialization" type="Text" blobItem="SUP_specialization">
-            <![CDATA[
-                <tr>
-                    <td align="right"><b>If a health profession, please list specialization:</b></td>
-                    <td valign="top">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="sup_role" type="Text" blobItem="SUP_ROLE">
-            <![CDATA[
-                <tr>
-                    <td align="right"><b>Supervisor Current Organization(s) and Title(s):</b></td>
+                    <td align="right"><b>Supervisor Title, Department, Faculty:</b></td>
                     <td valign="top">{$item}</td>
                 </tr>
             ]]>
@@ -159,7 +143,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="partner" type="Text" blobItem="PARTNER">
+        <ReportItem id="partner" type="Text" blobItem="PARTNER" optional="true">
             <![CDATA[
                 <tr>
                     <td align="right"><b>Partner Organization or Institution that will provide matching funds:</b></td>
