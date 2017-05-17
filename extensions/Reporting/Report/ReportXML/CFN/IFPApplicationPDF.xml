@@ -328,8 +328,15 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure" pagebreak="false">
+    <ReportSection id="disclosure" type="EditableReportSection" blobSection="DISCLOSURE" name="Capacity Disclosure" title="Section 7 - Applicant and Supervisor Capacity Disclosure">
         <ReportItem id="plan" type="MultiText" blobItem="PLAN" blobType="BLOB_ARRAY" class="wikitable" labels="Activity|Participant|Type of Commitment|Expected Time Commitment (hours per month)|Duration (months)" types="Text|Select(---,Applicant,Supervisor)|Select(---,Non-Fellowship research commitment,Course Commitments,Professional Practice,Other Commitment)|Integer|Integer" multiple="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 8 - References" pagebreak="false">
+        <ReportItem id="references" type="MultiText" blobItem="REFERENCES" blobType="BLOB_ARRAY" class="wikitable smaller" labels="First Name|Surname|Designations|Organization|Title|Email Address|Applicant relationship to Reference|Why applicant feels Reference relevant to Fellowship application (50 words)" types="Text|Text|Text|Text|Text|Text|Text|Textarea" multiple="true" max="2">
             <![CDATA[
                 {$item}
             ]]>

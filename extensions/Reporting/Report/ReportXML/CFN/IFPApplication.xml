@@ -11,6 +11,8 @@
             <SectionPermission id="cv" permissions="rw" />
             <SectionPermission id="learning" permissions="rw" />
             <SectionPermission id="disclosure" permissions="rw" />
+            <SectionPermission id="references" permissions="rw" />
+            <SectionPermission id="sup_review" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -24,6 +26,8 @@
             <SectionPermission id="cv" permissions="rw" />
             <SectionPermission id="learning" permissions="rw" />
             <SectionPermission id="disclosure" permissions="rw" />
+            <SectionPermission id="references" permissions="rw" />
+            <SectionPermission id="sup_review" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -37,6 +41,7 @@
             <SectionPermission id="cv" permissions="-" />
             <SectionPermission id="learning" permissions="-" />
             <SectionPermission id="disclosure" permissions="-" />
+            <SectionPermission id="references" permissions="-" />
             <SectionPermission id="sup_review" permissions="-" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
@@ -139,6 +144,19 @@
                     ]]>
                 </ReportItem>
                 <ReportItem id="section7_comment" type="Textarea" blobItem="SECTION7_COMMENT" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>Comments for HQP:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="section8" type="Radio" blobItem="SECTION8" blobSubItem="{$user_id}" options="Approved|Not Approved">
+                    <![CDATA[
+                        <h3>Section 8 - References</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="section8_comment" type="Textarea" blobItem="SECTION8_COMMENT" blobSubItem="{$user_id}" optional="true">
                     <![CDATA[
                         <b>Comments for HQP:</b>
                         {$item}
@@ -498,6 +516,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="references" type="EditableReportSection" blobSection="REFERENCES" name="References" title="Section 8 - References">
+        <ReportItem id="references" type="MultiText" blobItem="REFERENCES" blobType="BLOB_ARRAY" labels="First Name|Surname|Designations|Organization|Title|Email Address|Applicant relationship to Reference|Why applicant feels Reference relevant to Fellowship application (50 words)" types="Text|Text|Text|Text|Text|Text|Text|Textarea" sizes="100|100|100|120|100|120|120|150" multiple="true" max="2">
+            <![CDATA[
+                <p>Please enter two references</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="sup_review" type="ReportSection" name="Supervisor Review" title="Supervisor Review">
         <ReportItem id="approvals" type="Static">
             <![CDATA[
@@ -528,6 +554,10 @@
                 <h3>Section 7 - Applicant and Supervisor Capacity Disclosure</h3>
                 <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},{$user_supervisor_id},0)}<br />
                 <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7_COMMENT,{$user_id},{$user_supervisor_id},0)}
+                
+                <h3>Section 8 - References</h3>
+                <b>Status:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},{$user_supervisor_id},0)}<br />
+                <b>Comments:</b> {getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8_COMMENT,{$user_id},{$user_supervisor_id},0)}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -543,7 +573,8 @@
                                                   {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},{$user_supervisor_id},0)},Approved)},
                                                   {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},{$user_supervisor_id},0)},Approved)},
                                                   {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},{$user_supervisor_id},0)},Approved)},
-                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},{$user_supervisor_id},0)},Approved)})}">
+                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},{$user_supervisor_id},0)},Approved)},
+                                                  {==({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},{$user_supervisor_id},0)},Approved)})}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         </ReportItemSet>
         <ReportItemSet id="if_not" type="If" if="{or({!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION1,{$user_id},{$user_supervisor_id},0)},Approved)},
@@ -552,7 +583,8 @@
                                                      {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION4,{$user_id},{$user_supervisor_id},0)},Approved)},
                                                      {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION5,{$user_id},{$user_supervisor_id},0)},Approved)},
                                                      {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION6,{$user_id},{$user_supervisor_id},0)},Approved)},
-                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},{$user_supervisor_id},0)},Approved)})}">
+                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION7,{$user_id},{$user_supervisor_id},0)},Approved)},
+                                                     {!=({getText(RP_IFP_APPLICATION,SUPERVISOR,SECTION8,{$user_id},{$user_supervisor_id},0)},Approved)})}">
             <ReportItem id="message" type="Static">
                 <![CDATA[
                     <div class="error">Your supervisor needs to approve your application before you are able to submit.</div>
