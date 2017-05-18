@@ -89,8 +89,10 @@ class ProjectMainTab extends AbstractEditableTab {
         }
 
         if(isset($_POST['challenge_id'])){
-            APIRequest::doAction('ProjectChallenge', true);
+            $theme = Theme::newFromId($_POST['challenge_id']);
+            $this->project->theme = $theme;
         }
+        $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
             DBFunctions::update('grand_project_status',
                                 array('status' => $_POST['status']),

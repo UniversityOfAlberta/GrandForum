@@ -461,7 +461,25 @@ class Project extends BackboneModel {
     }
     
     function update(){
-    
+        if($this->userCanEdit()){
+            // Updating Theme
+            $theme = $this->getChallenge();
+            if(count(DBFunctions::select(array('grand_project_challenges'),
+                                         array('id', 'challenge_id'),
+                                         array('project_id' => EQ($this->getId())))) == 0){
+                // Theme hasen't been added yet
+                DBFunctions::insert('grand_project_challenges',
+                                    array('project_id' => $this->getId(),
+                                          'challenge_id' => $theme->getId()));
+            }
+            else{
+                // Update the Theme
+                DBFunctions::update('grand_project_challenges',
+                                    array('challenge_id' => $theme->getId(),
+                                          'project_id' => $this->getId()));
+            }
+        }
+        return $this;
     }
     
     function delete(){
