@@ -43,6 +43,7 @@ class WhoSupplies extends SpecialPage{
                     <li>Click <a href='https://www.cadth.ca/sites/default/files/cdr/complete/SR0502_complete_Mifegymiso-Apr-20-17-e.pdf' target='_blank'>here</a> for the Canadian Agency for Drugs and Technologies in Health (CADTH) Common Drug Review of Mifegymiso, 'Final Recommendations and Reasons' report</li>
                     <li>The approval of Mifegymiso® has exposed both the legal and practical deficiencies of Health Canada's drug review process. Read more on this analysis <a href='http://policyoptions.irpp.org/magazines/april-2017/regulatory-risk-mismanagement-and-the-abortion-pill/' target='_blank'>here</a> (April 25th, 2017)</li>
                     <li>The NIHB is expected to publicly announce full coverage of Mifegymiso® for First Nations and Inuit women, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=12'>read more</a></li>
+                    <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso(R), <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
                 </ul>
             </div>
 
