@@ -103,14 +103,9 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         if(isset($_POST['acronym'])){
-            $_POST['new_acronym'] = str_replace(" ", "-", $_POST['acronym']);
-            $_POST['old_acronym'] = $this->project->getName();
-            $result = APIRequest::doAction('UpdateProjectAcronym', true);
-            if($result){
-                $this->project->name = $_POST['new_acronym'];
-                redirect($this->project->getUrl());
-                exit;
-            }
+            $this->project->name = str_replace(" ", "-", $_POST['acronym']);
+            $this->project->update();
+            redirect($this->project->getUrl());
         }
     }
     

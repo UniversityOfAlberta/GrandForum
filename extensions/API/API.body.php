@@ -136,11 +136,9 @@ class APIRequest{
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
 		$this->addAction('Projects', 'addProjectMember', 'AddProjectMemberAPI');
 		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');
-		$this->addAction('Projects', 'updateProjectAcronym', 'UpdateProjectAcronymAPI');
 		$this->addAction('Projects', 'updateProjectDescription', 'ProjectDescriptionAPI');
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
 		$this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
-		$this->addAction('Projects', 'deleteProjectMember', 'DeleteProjectMemberAPI');
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
 		//GET
 		$this->addAction('Themes', 'getThemeInfo', 'ThemeInfoAPI');

@@ -462,6 +462,14 @@ class Project extends BackboneModel {
     
     function update(){
         if($this->userCanEdit()){
+            // Updating Acronym
+            DBFunctions::update('grand_project',
+		                        array('name' => $this->getName()),
+		                        array('id' => $this->getId()));
+		    DBFunctions::update('mw_an_extranamespaces',
+		                        array('nsName' => str_replace(' ', '_', $this->getName())),
+		                        array('nsId' => $this->getId()));
+        
             // Updating Theme
             $theme = $this->getChallenge();
             if(count(DBFunctions::select(array('grand_project_challenges'),
