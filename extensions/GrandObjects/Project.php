@@ -483,8 +483,8 @@ class Project extends BackboneModel {
             else{
                 // Update the Theme
                 DBFunctions::update('grand_project_challenges',
-                                    array('challenge_id' => $theme->getId(),
-                                          'project_id' => $this->getId()));
+                                    array('challenge_id' => $theme->getId()),
+                                    array('project_id' => $this->getId()));
             }
         }
         return $this;
