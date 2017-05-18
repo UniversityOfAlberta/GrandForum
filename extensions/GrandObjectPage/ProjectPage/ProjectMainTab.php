@@ -104,7 +104,7 @@ class ProjectMainTab extends AbstractEditableTab {
         
         if(isset($_POST['acronym'])){
             if($this->project->getName() != $_POST['acronym']){
-                $this->project->name = $_POST['acronym']);
+                $this->project->name = $_POST['acronym'];
                 $this->project->update();
                 redirect($this->project->getUrl());
             }
