@@ -259,6 +259,7 @@
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
+    $config->setConst("PA",         "PA");
     $config->setConst("PL",         "PL");
     $config->setConst("APL",        "APL");
     $config->setConst("TL",         "TL");
@@ -283,6 +284,7 @@
         $config->getConst('CI')             => "Co-Investigator",
         $config->getConst('CHAMP')          => "Champion",
         $config->getConst('PARTNER')        => "Partner",
+        $config->getConst('PA')             => "Project Assistant",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('APL')            => "Admin Project Leader",
         $config->getConst('TL')             => "Theme Leader",

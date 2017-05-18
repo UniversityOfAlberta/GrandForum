@@ -124,7 +124,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     return true;
                 }
             }
-            return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
+            return $this->project->userCanEdit();
         }
         return false;
     }
@@ -134,7 +134,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if($milestone != null && $milestone->getLeader()->getId() == $me->getId()){
             return true;
         }
-        return ($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF));
+        return $this->project->userCanEdit();
     }
     
     function generateBody(){

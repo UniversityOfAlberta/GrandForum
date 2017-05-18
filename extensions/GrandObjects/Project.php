@@ -1068,11 +1068,13 @@ EOF;
              !$me->leadershipOf($this->getParent()) &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this)) ||
+             !$me->leadershipOf($this) &&
+             !$me->isRole(PA, $this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this)))){
+             !$me->leadershipOf($this) &&
+             !$me->isRole(PA, $this)))){
             return false;
         }
         return true;

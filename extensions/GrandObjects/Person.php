@@ -3987,7 +3987,7 @@ class Person extends BackboneModel {
      * @param string $type The type of leadership (depricated)
      * @return boolean Whether or not this Person is a leader of a given Project
      */
-    function leadershipOf($project, $type=null) {
+    function leadershipOf($project, $type=null){
         if($project instanceof Project ||
            $project instanceof Theme){
             $p = $project;
