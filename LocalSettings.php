@@ -241,13 +241,13 @@ define("DEBUG", true);
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
                       PS => 1,
-                      PA => 1, // Might eventually be merged with PS
                       EXTERNAL => 2,
                       NI => 5,
                       AR => 5,
                       CI => 6,
                       CHAMP => 7,
                       PARTNER => 7,
+                      PA => 8, // Might eventually be merged with PS
                       PL => 9,
                       'PL' => 9,
                       TL => 11,
