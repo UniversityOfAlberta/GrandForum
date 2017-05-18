@@ -125,7 +125,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenge = $this->project->getChallenge();
         
-        $challenges = Theme::getAllThemes($this->project->getPhase());
+        $challenges = Theme::getAllThemes();
         $chlg_opts = "<option value='0'>Not Specified</option>";
         foreach ($challenges as $chlg){
             $cid = $chlg->getId();
