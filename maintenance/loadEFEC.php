@@ -175,7 +175,7 @@
         $username = str_replace(" ", "", $username);
         $email = "";
         $person = new Person(array());
-        $person->name = $username;
+        $person->name = $realName;
         /*$person = Person::newFromName($username);
         if($person == null || $person->getId() == 0){
             // First create the user
