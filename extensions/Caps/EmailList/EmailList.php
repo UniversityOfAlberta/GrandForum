@@ -20,6 +20,7 @@ class EmailList extends SpecialPage{
         $wgOut->addHTML("<table id='people' rules='all' frame='box'>
             <thead>
                 <tr>
+                    <th>Registration Date</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Language</th>
@@ -31,6 +32,7 @@ class EmailList extends SpecialPage{
         foreach($people as $person){
             $certified = (!$person->isCandidate()) ? "Yes" : "No";
             $wgOut->addHTML("<tr>
+                    <td>".time2date($person->getRegistration(), "Y-m-d H:i:s")."</td>
                     <td>{$person->getNameForForms()}</td>
                     <td>{$person->getEmail()}</td>
                     <td>{$person->getUser()->getOption('language')}</td>
