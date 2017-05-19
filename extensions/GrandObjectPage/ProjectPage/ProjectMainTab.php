@@ -104,9 +104,19 @@ class ProjectMainTab extends AbstractEditableTab {
         
         if(isset($_POST['acronym'])){
             if($this->project->getName() != $_POST['acronym']){
-                $this->project->name = $_POST['acronym'];
-                $this->project->update();
-                redirect($this->project->getUrl());
+                $testProj = Project::newFromName($_POST['acronym']);
+                if($testProj != null && $testProj->getId() != 0){
+                    $wgMessage->addError("A project with the name '{$_POST['acronym']}' already exists");
+                }
+                if(!preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $_POST['acronym'])){
+                    $wgMessage->addError("The project acronym cannot contain any special characters");
+                }
+                else{
+                    $this->project->name = $_POST['acronym'];
+                    $this->project->update();
+                    $wgMessage->addSuccess("The project acronym was changed to '{$_POST['acronym']}'");
+                    redirect($this->project->getUrl());
+                }
             }
         }
     }

@@ -463,13 +463,23 @@ class Project extends BackboneModel {
     function update(){
         if($this->userCanEdit()){
             // Updating Acronym
-            DBFunctions::update('grand_project',
-		                        array('name' => $this->getName()),
-		                        array('id' => $this->getId()));
-		    DBFunctions::update('mw_an_extranamespaces',
-		                        array('nsName' => str_replace(' ', '_', $this->getName())),
-		                        array('nsId' => $this->getId()));
-        
+            $testProj = Project::newFromName($_POST['acronym']);
+            if(preg_match("/^[0-9À-Ÿa-zA-Z\-\. ]+$/", $this->name) &&
+               ($testProj == null || $testProj->getId() == 0)){
+                DBFunctions::update('grand_project',
+		                            array('name' => $this->getName()),
+		                            array('id' => $this->getId()));
+		        DBFunctions::update('mw_an_extranamespaces',
+		                            array('nsName' => str_replace(' ', '_', $this->getName())),
+		                            array('nsId' => $this->getId()));
+            }
+            else{
+                // Name isn't valid, revert
+                $data = DBFunctions::select(array('grand_project'),
+                                            array('name'),
+                                            array('id' => EQ($this->getId())));
+                $this->name = @$data[0]['name'];
+            }
             // Updating Theme
             $theme = $this->getChallenge();
             if(count(DBFunctions::select(array('grand_project_challenges'),
@@ -486,6 +496,8 @@ class Project extends BackboneModel {
                                     array('challenge_id' => $theme->getId()),
                                     array('project_id' => $this->getId()));
             }
+            Project::$cache = array();
+            Project::$projectCache = array();
         }
         return $this;
     }
