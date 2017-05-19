@@ -94,17 +94,26 @@ $wgExtensionCredits['specialpage'][] = array(
 				       );
 				       
 function permissionError(){
-    global $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+    global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgUser;
     if($wgTitle == null){
         // Depending on when this function is called, the title may not be created yet, so make an empty one
         $wgTitle = new Title();
     }
     wfRunHooks('BeforeDisplayNoArticleText', array(null));
-    $wgOut->setPageTitle("Permission error");
-    $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
-                     <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
-    $wgOut->output();
-    $wgOut->disable();
+    if($wgUser->isLoggedIn()){
+        $wgOut->setPageTitle("Permission error");
+        $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
+                         <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+        $wgOut->output();
+        $wgOut->disable();
+    }
+    else{
+        $wgOut->setPageTitle("Login Required");
+        $wgOut->addHTML("<p>To access this page, please log into the CAPS website.</p>
+                         <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
+        $wgOut->output();
+        $wgOut->disable();
+    }
     exit;
 }
 
