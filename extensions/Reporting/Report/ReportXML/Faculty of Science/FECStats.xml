@@ -30,7 +30,7 @@
 	        </tr></thead><tbody>
 	    ]]>
 	</ReportItem>
-	    <ReportItemSet id="professors" type="AllPeopleReportItemSet" sort_reversed="true" roles="Professor">
+	    <ReportItemSet id="professors" type="AllPeopleReportItemSet" sort_reversed="true" roles="Faculty">
 		    <ReportItem id="linkAR" type="PDFReportItem" reportType="FEC" class="" showIfNull="true" buttonName="{$user_reversed_name}">
 		    	<![CDATA[
 		    	   <tr><td>{$item}

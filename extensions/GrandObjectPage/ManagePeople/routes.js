@@ -27,7 +27,7 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'People Management');
+    main.set('title', 'HQP Management');
     this.closeCurrentView();
     var people = new People();
     people.roles = ['managed'];

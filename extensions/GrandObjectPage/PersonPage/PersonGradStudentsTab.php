@@ -6,7 +6,7 @@ class PersonGradStudentsTab extends AbstractTab {
     var $visibility;
 
     function PersonGradStudentsTab($person, $visibility){
-        parent::AbstractTab("Students");
+        parent::AbstractTab("HQP Supervision");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -59,8 +59,8 @@ class PersonGradStudentsTab extends AbstractTab {
 					        <th style='white-space: nowrap;'>Start Date</th>
 						<th style='white-space: nowrap;'>End Date</th>
 						<th style='white-space: nowrap;'>Research Area</th>
-						<th>Completion Milestones</th>
-						<th>Co-Supervisors & Committees</th>
+						<!--th>Completion Milestones</th>
+						<th>Co-Supervisors & Committees</th-->
 						<th>Role</th>
 				    </tr></thead><tbody>";
                         $relations = $person->getRelationsAll();
@@ -111,11 +111,11 @@ class PersonGradStudentsTab extends AbstractTab {
                 <td style='white-space: nowrap;'>$start_date</td>
 				<td style='white-space: nowrap;'>$end_date</td>
 				<td>$research_area</td>
-				<td></td><td>".implode(", ",$names)."</td>
+				<!--td></td><td>".implode(", ",$names)."</td-->
 				<td style='white-space: nowrap;'>$role</td>";
                             $html .= "</tr>";
                         }
-                        $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable()</script>";
+                        $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false})</script>";
                     	$html .= "</td></tr></table>";
 		    }
             }
@@ -124,7 +124,7 @@ class PersonGradStudentsTab extends AbstractTab {
         if($wgUser->isLoggedIn()){
             if(true){
                 if($visibility['isMe'] || $visibility['isSupervisor']){
-                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
+                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage Students' />";
                 }
                 else{
                     $html .= "This user has no relations";
@@ -153,8 +153,8 @@ class PersonGradStudentsTab extends AbstractTab {
                                                 <th style='white-space: nowrap;'>Start Date</th>
                                                 <th style='white-space: nowrap;'>End Date</th>
                                                 <th style='white-space: nowrap;'>Research Area</th>
-                                                <th>Completion Milestones</th>
-                                                <th>Co-Supervisors & Committees</th>
+                                                <!--th>Completion Milestones</th>
+                                                <th>Co-Supervisors & Committees</th-->
                                                 <th>Role</th>
                                     </tr></thead><tbody>";
                         $relations = $person->getRelationsAll();
@@ -194,11 +194,11 @@ class PersonGradStudentsTab extends AbstractTab {
                                 <td style='white-space: nowrap;'>$start_date</td>
                                 <td style='white-space: nowrap;'>$end_date</td>
                                 <td>$research_area</td>
-                                <td></td><td>".implode(", ",$names)."</td>
+                                <!--td></td><td>".implode(", ",$names)."</td-->
                                 <td style='white-space: nowrap;'>$role</td>";
                             $html .= "</tr>";
                         }
-                        $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable()</script>";
+                        $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false})</script>";
                         $html .= "</td></tr></table>";
                     }
             }
@@ -207,7 +207,7 @@ class PersonGradStudentsTab extends AbstractTab {
         if($wgUser->isLoggedIn()){
             if(true){
                 if($visibility['isMe'] || $visibility['isSupervisor']){
-                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:EditRelations\");' value='Edit Relations' />";
+                    $html .= "<input type='button' onClick='window.open(\"$wgServer$wgScriptPath/index.php/Special:ManagePeople\");' value='Manage Students' />";
                 }
                 else{
                     $html .= "This user has no relations";

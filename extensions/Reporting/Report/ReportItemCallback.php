@@ -42,6 +42,7 @@ class ReportItemCallback {
             "hqp_start_date" => "getHqpStartDate",
             "hqp_end_date" => "getHqpEndDate",
             "hqp_status" => "getHqpStatus",
+            "hqp_research_area" => "getHqpResearchArea",
             // Contributions
             "contribution_scope" => "getContributionScope",
             "contribution_agency" => "getContributionAgency",
@@ -473,10 +474,17 @@ class ReportItemCallback {
         $array = explode(" ", $relation->getStartDate());
 	return $array[0];
     }
+    
     function getHqpEndDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
-	$array = explode(" ", $relation->getEndDate());
+	    $array = explode(" ", $relation->getEndDate());
         return $array[0];
+    }
+    
+    function getHqpResearchArea(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+	    $hqp = $relation->getUser2();
+	    return $hqp->getResearchArea();
     }
 
     function getHqpStatus(){
@@ -500,7 +508,7 @@ class ReportItemCallback {
 
     function getCourseTerm(){
 	    $course = Course::newFromId($this->reportItem->projectId);
-	    return $course->term_string;
+	    return $course->getTerm();
     }
     
     function getCourseStart(){

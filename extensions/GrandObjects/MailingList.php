@@ -281,6 +281,9 @@ class MailingList extends BackboneModel {
      */
     static function subscribeAll($person){
         global $wgMessage;
+        if(php_sapi_name() == "cli") {
+            return;
+        }
         foreach(MailingList::getPersonListsByRules($person) as $list){
             MailingList::subscribe($list, $person);
         }
@@ -330,6 +333,9 @@ class MailingList extends BackboneModel {
      */
     static function unsubscribeAll($person){
         global $wgMessage;
+        if(php_sapi_name() == "cli") {
+            return;
+        }
         foreach(MailingList::getPersonListsByRules($person) as $list){
             MailingList::unsubscribe($list, $person);
         }

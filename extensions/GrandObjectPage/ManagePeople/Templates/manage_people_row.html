@@ -7,15 +7,17 @@
 <div id="relationsDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Relations">
     
 </div>
-<div id="universitiesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Universities">
+<div id="universitiesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Basic Info">
     
 </div>
-<td align="center">
-    <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
-</td>
-<td align="center">
-    <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
-</td>
+<% if(_.contains(allowedRoles, MANAGER)){ %>
+    <td align="center">
+        <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+    </td>
+    <td align="center">
+        <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+    </td>
+<% } %>
 <td align="center">
     <% if(me.get('id') != id){ %>
         <span id="editRelations" class="edit-icon" title="Edit Relations"></span>
@@ -25,5 +27,5 @@
     <span id="editUniversities" class="edit-icon" title="Edit Universities"></span>
 </td>
 <td style="border-left: 2px solid #AAAAAA;" align="left">
-    <a href="<%= url %>"><%= fullName %></a>
+    <a href="<%= url %>"><%= reversedName %></a>
 </td>

@@ -59,7 +59,13 @@ class IndexTable {
                 if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true))){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
                     !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                    $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                    if($role == AR){
+                        $roleTitle = "Faculty";
+                    }
+                    else{
+                        $roleTitle = Inflect::pluralize($role);
+                    }
+                    $peopleSubTab['dropdown'][] = TabUtils::createSubTab($roleTitle, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
                 }
             }
         }
@@ -400,8 +406,7 @@ EOF;
 	else{
 	   $ldapHeader = "<th style='white-space: nowrap; '>LDAP</th>";
 	}
-        $this->text .= "Below are all the current $table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
-		$this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
+        $this->text .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>

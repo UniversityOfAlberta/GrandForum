@@ -31,6 +31,7 @@ class Person extends BackboneModel {
     var $ldap;
     var $googleScholar;
     var $sciverseId;
+    var $orcId;
     var $publicProfile;
     var $privateProfile;
     var $realname;
@@ -239,7 +240,7 @@ class Person extends BackboneModel {
                 return self::$cache[$id];
             }
             $person = new Person($data);
-	    self::$cache[$alias] = &$person;
+	        self::$cache[$alias] = &$person;
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
             return $person;
@@ -286,7 +287,7 @@ class Person extends BackboneModel {
      */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
-            $phoneNumbers = array();
+            /*$phoneNumbers = array();
             $phoneData = DBFunctions::select(array('grand_user_telephone'),
                                              array('user_id',
                                                    'area_code', 
@@ -299,7 +300,7 @@ class Person extends BackboneModel {
                 else{
                     $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
                 }
-            }
+            }*/
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
                                               'user_name',
@@ -307,16 +308,17 @@ class Person extends BackboneModel {
                                               'first_name',
                                               'middle_name',
                                               'last_name',
-                                              'prev_first_name',
-                                              'prev_last_name',
-                                              'honorific',
-                                              'language',
+                                              //'prev_first_name',
+                                              //'prev_last_name',
+                                              //'honorific',
+                                              //'language',
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
-					      'ldap_url',
-					      'google_scholar_url',
-					      'sciverse_id',
+                                              'ldap_url',
+                                              'google_scholar_url',
+                                              'sciverse_id',
+                                              'orcid',
                                               'user_public_profile',
                                               'user_private_profile',
                                               'user_nationality',
@@ -324,9 +326,9 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
-                if(isset($phoneNumbers[$row['user_id']])){
+                /*if(isset($phoneNumbers[$row['user_id']])){
                     $row['phone'] = $phoneNumbers[$row['user_id']];
-                }
+                }*/
                 $exploded = explode(".", unaccentChars($row['user_name']));
                 
                 $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
@@ -548,7 +550,7 @@ class Person extends BackboneModel {
 	    else{
                 $status = DBFunctions::insert('grand_personal_fec_info',
                                     array('user_id' => $this->getId(),
-					  'date_of_phd' => $this->dateOfPhd,
+                                          'date_of_phd' => $this->dateOfPhd,
                                           'date_of_appointment' => $this->dateOfAppointment,
                                           'date_assistant' => $this->dateOfAssistant,
                                           'date_associate' => $this->dateOfAssociate,
@@ -847,21 +849,22 @@ class Person extends BackboneModel {
             $this->firstName = @$data[0]['first_name'];
             $this->lastName = @$data[0]['last_name'];
             $this->middleName = @$data[0]['middle_name'];
-            $this->prevFirstName = @$data[0]['prev_first_name'];
-            $this->prevLastName = @$data[0]['prev_last_name'];
-            $this->honorific = @$data[0]['honorific'];
-            $this->language = @$data[0]['language'];
+            //$this->prevFirstName = @$data[0]['prev_first_name'];
+            //$this->prevLastName = @$data[0]['prev_last_name'];
+            //$this->honorific = @$data[0]['honorific'];
+            //$this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];
-            $this->phone = @$data[0]['phone'];
+            //$this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
             $this->ldap = @$data[0]['ldap_url'];
-	    $this->googleScholar = @$data[0]['google_scholar_url'];
-	    $this->sciverseId = @$data[0]['sciverse_id'];
-	    $this->publicProfile = @$data[0]['user_public_profile'];
+            $this->googleScholar = @$data[0]['google_scholar_url'];
+            $this->sciverseId = @$data[0]['sciverse_id'];
+            $this->orcId = @$data[0]['orcid'];
+            $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->hqps = null;
             $this->historyHqps = null;
@@ -898,6 +901,7 @@ class Person extends BackboneModel {
                       'ldap' => $this->getLdap(),
                       'googleScholarId' => $this->getGoogleScholar(),
                       'sciverseId' => $this->getSciverseId(),
+                      'orcId' => $this->getOrcId(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
@@ -942,9 +946,10 @@ class Person extends BackboneModel {
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
-					  'google_scholar_url' => $this->getGoogleScholar(),
-					  'sciverse_id' => $this->getSciverseId(),
-					  'user_gender' => $this->getGender(),
+                                          'google_scholar_url' => $this->getGoogleScholar(),
+                                          'sciverse_id' => $this->getSciverseId(),
+                                          'orcid' => $this->getOrcId(),
+                                          'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -979,15 +984,16 @@ class Person extends BackboneModel {
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
-                                          'prev_first_name' => $this->getPrevFirstName(),
-                                          'prev_last_name' => $this->getPrevLastName(),
-                                          'honorific' => $this->getHonorific(),
-                                          'language' => $this->getCorrespondenceLanguage(),
+                                          //'prev_first_name' => $this->getPrevFirstName(),
+                                          //'prev_last_name' => $this->getPrevLastName(),
+                                          //'honorific' => $this->getHonorific(),
+                                          //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
-					  'ldap_url' => $this->getLdap(),
+                                          'ldap_url' => $this->getLdap(),
                                           'google_scholar_url' => $this->getGoogleScholar(),
                                           'sciverse_id' => $this->getSciverseId(),
+                                          'orcid' => $this->getOrcId(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1351,19 +1357,24 @@ class Person extends BackboneModel {
     }
 
     function getLdap(){
-	if (preg_match("#https?://#", $this->ldap) === 0){
-	    $this->ldap = 'http://'.$this->ldap;
-	}
-	return $this->ldap;
+        if (preg_match("#https?://#", $this->ldap) === 0){
+            $this->ldap = 'http://'.$this->ldap;
+        }
+        return $this->ldap;
     }
 
     function getGoogleScholar(){
-	return $this->googleScholar;
+        return $this->googleScholar;
     }
     
     function getSciverseId(){
-	return $this->sciverseId;
+        return $this->sciverseId;
     }
+    
+    function getOrcId(){
+        return $this->orcId;
+    }
+    
     /**
      * Returns the url of this Person's profile page
      * @return string The url of this Person's profile page
@@ -1842,7 +1853,7 @@ class Person extends BackboneModel {
      */
     function getPosition(){
         $university = $this->getUniversity();
-        return (isset($university['position'])) ? $university['position'] : "Unkown";
+        return (isset($university['position'])) ? $university['position'] : "Unknown";
     }    
     
     /**
@@ -2483,8 +2494,8 @@ class Person extends BackboneModel {
                 'department' => $row['department'],
                 'position' => $row['position'],
                 'researchArea' => $row['research_area'],
-                'startDate' => $row['start_date'],
-                'endDate' => $row['end_date']
+                'startDate' => substr($row['start_date'], 0, 10),
+                'endDate' => substr($row['end_date'], 0, 10)
             );
         }
         return $universities;

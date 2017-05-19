@@ -1,6 +1,6 @@
 <?php
 $wgHooks['ToolboxLinks'][] = 'CCVImport::createToolboxLinks';
-BackbonePage::register('CCVImport', 'Import FoS Data', 'network-tools', dirname(__FILE__));
+BackbonePage::register('CCVImport', 'Import UoA Data', 'network-tools', dirname(__FILE__));
 
 class CCVImport extends BackbonePage {
     
@@ -46,7 +46,7 @@ class CCVImport extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
         if(self::userCanExecute($wgUser)){
-            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Import FoS Data", "$wgServer$wgScriptPath/index.php/Special:CCVImport");
+            array_splice($toolbox['Products']['links'], 0, 0, array(TabUtils::createToolboxLink("Import UoA Data", "$wgServer$wgScriptPath/index.php/Special:CCVImport")));
         }
         return true;
     }

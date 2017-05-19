@@ -187,6 +187,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $_POST['ldap'] = @$_POST['ldap'];
             $_POST['googleScholarUrl'] = @$_POST['googleScholarUrl'];
             $_POST['sciverseId'] = @$_POST['sciverseId'];
+            $_POST['orcId'] = @$_POST['orcId'];
             $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
             $_POST['university'] = @$_POST['university'];
@@ -210,6 +211,8 @@ class PersonProfileTab extends AbstractEditableTab {
             $api = new UserGoogleScholarAPI();
             $api->doAction(true);
             $api = new UserSciverseAPI();
+            $api->doAction(true);
+            $api = new UserOrcIdAPI();
             $api->doAction(true);
             $api = new UserNationalityAPI();
             $api->doAction(true);
@@ -467,6 +470,10 @@ EOF;
                                 <td align='right'><b>Sciverse Id:</b></td>
                                 <td><input type='text' size='30' name='sciverseId' value='".str_replace("'", "&#39;", $person->getSciverseId())."' /></td>
                             </tr>";
+                $this->html .= "<tr>
+                                <td align='right'><b>ORCID:</b></td>
+                                <td><input type='text' size='30' name='orcId' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
+                            </tr>";
 	}
 	$this->html .=  "<tr>
                                 <td align='right'><b>Twitter Account:</b></td>
@@ -584,7 +591,7 @@ EOF;
         }
         $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
         $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-        $areaCombo = new ComboBox('researchArea', "Research Area", $university['research_area'], $departments);
+        $areaCombo = new ComboBox('researchArea', "Research Area", $university['research_area'], array_merge(array(""), $departments));
         $titleCombo->attr('style', 'max-width: 250px;');
         $orgCombo->attr('style', 'max-width: 250px;');
         $deptCombo->attr('style', 'max-width: 250px;');

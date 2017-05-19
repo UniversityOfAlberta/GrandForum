@@ -113,26 +113,26 @@
 	<ReportItem id="coursesheader" type="StaticReportItem">
 	    <![CDATA[
 		<h2>Courses</h2>
-		<table class="one"><thead><tr><th>Dates</th>
+		<table class="one"><thead><tr>
 		<th>Subject</th>
-		<th>Number</th>
+		<th>Term</th>
 		<th>Comp.</th>
 		<th>Section</th>
 		<th>Enroll.</th>
-		<th>%</th></tr></thead><tbody>
+		<!--th>%</th--></tr></thead><tbody>
 	    ]]>
 	</ReportItem>
 	<ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
 	     <ReportItem id="row" type="StaticReportItem">
 	     	<![CDATA[
 
-	             <tr><td class="b" align='center'>{$course_start} - {$course_end}</td>
-	             <td class="b" align='center'>{$course_subject}</td>
-                     <td class="b" align='center'>{$course_number}</td>
+	             <tr>
+	                <td class="b" align='center'>{$course_subject} {$course_number}</td>
+	                <td class="b" align='center'>{$course_term}</td>
                      <td class="b" align='center'>{$course_comp}</td>
                      <td class="b" align='center'>{$course_section}</td>
                      <td class="b" align='center'>{$course_enroll}</td>
-	             <td class="b" align='center'>{$course_enroll_percent}</td></tr>                         
+	             <!--td class="b" align='center'>{$course_enroll_percent}</td--></tr>                         
 
             	]]>
 	     </ReportItem>

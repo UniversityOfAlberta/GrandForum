@@ -62,8 +62,8 @@ class Role extends BackboneModel {
 	                  'fullName' => $this->getRoleFullName(),
 	                  'title' => $this->getTitle(),
 	                  'comment' => $this->getComment(),
-	                  'startDate' => $this->getStartDate(),
-	                  'endDate' => $this->getEndDate());
+	                  'startDate' => substr($this->getStartDate(), 0, 10),
+	                  'endDate' => substr($this->getEndDate(), 0, 10));
 	    return $json;
 	}
 	
@@ -76,27 +76,19 @@ class Role extends BackboneModel {
 	                                        'role'       => $this->getRole(),
 	                                        'start_date' => $this->getStartDate(),
 	                                        'end_date'   => $this->getEndDate(),
-	                                        'comment'    => $this->getComment()),
-	                                  array('id' => EQ($this->getId())));
+	                                        'comment'    => $this->getComment()));
+	    $id = DBFunctions::insertId();
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
 	    if($status){
-            $data = DBFunctions::select(array('grand_roles'),
-                                        array('id'),
-                                        array('user_id' => EQ($this->user),
-                                              'role' => EQ($this->getRole())),
-                                        array('id' => 'DESC'));
-            if(count($data) > 0){
-                $id = $data[0]['id'];
-                $this->id = $id;
-                Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
-                $supervisors = $person->getSupervisors();
-                if(count($supervisors) > 0){
-                    foreach($supervisors as $supervisor){
-                        Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} {$person->getReversedName()} assumes the role '{$this->getRole()}'", "{$person->getUrl()}");
-                    }
+            $this->id = $id;
+            Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
+            $supervisors = $person->getSupervisors();
+            if(count($supervisors) > 0){
+                foreach($supervisors as $supervisor){
+                    Notification::addNotification($me, $supervisor, "Role Added", "Effective {$this->getStartDate()} {$person->getReversedName()} assumes the role '{$this->getRole()}'", "{$person->getUrl()}");
                 }
             }
         }

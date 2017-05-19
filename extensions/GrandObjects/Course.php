@@ -410,21 +410,27 @@
             return date("Y", $date);
 
 	}
+	
+	function getTerm(){
+	    $year = $this->getStartYear();
+	    $term = $this->getTermUsingStartMonth($this->getStartMonth());
+	    return "$term $year";
+	}
 
-        function getTermUsingStartMonth($month){
-            if($month == "Sep"){
-                return "Fall";
-            }
-            elseif($month == "Jan"){
-                return "Winter";
-            }
-            elseif($month == "Apr"){
-                return "Spring";
-            }
-            else{
-                return "Summer";
-            }
+    function getTermUsingStartMonth($month){
+        if($month == "Sep"){
+            return "Fall";
         }
+        elseif($month == "Jan"){
+            return "Winter";
+        }
+        elseif($month == "Apr"){
+            return "Spring";
+        }
+        else{
+            return "Summer";
+        }
+    }
 
     }
 ?>

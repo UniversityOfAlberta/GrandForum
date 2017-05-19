@@ -77,7 +77,7 @@ class PersonGrantsTab extends AbstractTab {
                     <th style='white-space:nowrap;'>End Date</th>
                     <th style='white-space:nowrap;'>Total</th></tr></thead><tbody>";
         foreach($grants as $grant){
-            $string .= "<tr><td><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a></td>
+            $string .= "<tr><td><a href='{$grant->getUrl()}'>{$grant->getTitle()}</a><br />{$grant->getDescription()}</td>
                                 <td>{$grant->getSponsor()}</td>
                                 <td style='white-space:nowrap;'>".time2date($grant->getStartDate(), "Y-m-d")."</td>
                                 <td style='white-space:nowrap;'>".time2date($grant->getEndDate(), "Y-m-d")."</td>

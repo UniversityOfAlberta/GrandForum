@@ -45,7 +45,7 @@ class Notification{
 	
 	static function addNotification($creator, $user, $name, $message, $url, $mail=false){
 	    global $wgServer, $wgScriptPath, $wgImpersonating, $config;
-	    if($wgImpersonating){
+	    if($wgImpersonating || php_sapi_name() == "cli"){
 	        return;
 	    }
 	    if($wgScriptPath != ""){

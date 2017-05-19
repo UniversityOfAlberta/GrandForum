@@ -12,7 +12,7 @@
     $config->setValue("path", "/fos_test");
     
     // The domain for the Forum (used for things like mailing list addresses)
-    $config->setValue("domain", "iqst.ca");
+    $config->setValue("domain", "grand.cs.ualberta.ca");
     
     // DB Type (ie. mysql)
     $config->setValue("dbType", "mysql");
@@ -21,7 +21,7 @@
     $config->setValue("dbServer", "localhost");
     
     // DB Name
-    $config->setValue("dbName", "ualberta_fec");
+    $config->setValue("dbName", "ualberta_fec_new");
     
     // DB Test Name
     $config->setValue("dbTestName", "ualberta_behat");
@@ -108,7 +108,7 @@
        // 'MailingList',
         //'FeatureRequest',
         'AddMember',
-	'AddHqp',
+        'AddHqp',
         //'EditMember',
         //'HQPRegister',
         //'Poll',
@@ -218,16 +218,16 @@
      * TODO: These should probably be moved into the DB at some point
      */
     $config->setConst("INACTIVE",   "Inactive");
-    $config->setConst("HQP",        "Student");
+    $config->setConst("HQP",        "HQP");
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ISAC",       "Chair");
     $config->setConst("IAC",        "IAC");
     $config->setConst("CAC",        "CAC");
     $config->setConst("NCE",        "NCE Rep");
-    $config->setConst("NI",         "ProfessorNI");
-    $config->setConst("AR",         "Professor");
-    $config->setConst("CI",         "Professor");
+    $config->setConst("NI",         "FacultyNI");
+    $config->setConst("AR",         "Faculty");
+    $config->setConst("CI",         "Faculty");
     $config->setConst("PL",         "PL");
     $config->setConst("TL",         "WPL");
     $config->setConst("TC",         "WPC");
@@ -244,15 +244,15 @@
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
-        $config->getConst('HQP')            => "Student",
+        $config->getConst('HQP')            => "Highly Qualified Personnel",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ISAC')           => "Chair",
         $config->getConst('IAC')            => "Industry Advisory Committee",
         $config->getConst('CAC')            => "Consumer Advisory Committee",
         $config->getConst('NCE')            => "NCE Rep",
-        $config->getConst('NI')             => "Professor",
-        $config->getConst('AR')             => "Professor",
-        $config->getConst('CI')             => "Professor",
+        $config->getConst('NI')             => "Faculty",
+        $config->getConst('AR')             => "Faculty",
+        $config->getConst('CI')             => "Faculty",
         $config->getConst('CHAMP')          => "Collaborator",
         $config->getConst('PL')             => "Project Leader",
         $config->getConst('TL')             => "Workpackage Leader",
@@ -266,11 +266,12 @@
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));
+    
     $config->setValue("wgRoles", array(
         $config->getConst('HQP'), 
         //$config->getConst('EXTERNAL'), 
         //$config->getConst('AR'),
-	$config->getConst('CI'),
+        $config->getConst('CI'),
         //$config->getConst('CHAMP'),
         $config->getConst('ISAC'),
         //$config->getConst('IAC'),

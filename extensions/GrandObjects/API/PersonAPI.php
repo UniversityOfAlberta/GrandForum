@@ -19,7 +19,7 @@ class PersonAPI extends RESTAPI {
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
-	$person->ldap = $this->POST('ldap');
+        $person->ldap = $this->POST('ldap');
         $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
@@ -46,7 +46,7 @@ class PersonAPI extends RESTAPI {
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
-	$person->ldap = $this->POST('ldap');
+        $person->ldap = $this->POST('ldap');
         $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
@@ -330,15 +330,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'start_date' => $start_date,
                                   'end_date' => $end_date));
                                   
-        
-        $data = DBFunctions::select(array('grand_user_university'),
-                                    array('id'),
-                                    array('user_id' => $person->getId()),
-                                    array('id' => 'DESC'),
-                                    array(1));
-        if(count($data) > 0){
-            $this->params['personUniversityId'] = $data[0]['id'];
-        }
+        $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         MailingList::subscribeAll($person);
         return $this->doGET();

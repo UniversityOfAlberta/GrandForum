@@ -35,7 +35,7 @@
 	</ReportItem>
 	<ReportItemSet id="if_statement" type="IfReportItemSet" if="{and({==({GET(dept)}, {$user_dept})},
 								         {contains({$user_full_roles}, Chair)})}">
-	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor" sort_reversed="true" department="{GET(dept)}">
+	<ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Faculty" sort_reversed="true" department="{GET(dept)}">
 	    <ReportItemSet id="not_first" type="NotFirstReportItemSet">
 		    <ReportItem id="pagebreak" type="PageBreakReportItem">
 		        <![CDATA[
@@ -131,7 +131,7 @@
 	</ReportItemSet>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({!=({GET(dept)}, {$user_dept})},
         								{!contains({$user_full_roles},Chair)})}">
-                <ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Professor" sort_reversed="true" department="{GET(dept)}">
+                <ReportItemSet id="professors" type="AllPeopleReportItemSet" roles="Faculty" sort_reversed="true" department="{GET(dept)}">
                     <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
                         <ReportItem id="download" type="PDFReportItem" reportType="FEC" buttonName="Download PDF">
                             <![CDATA[

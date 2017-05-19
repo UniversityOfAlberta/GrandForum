@@ -111,7 +111,7 @@ class UserUniversityAPI extends API{
                                 array('user_id' => $person->getId(),
                                       'university_id' => $_POST['university'],
                                       'department' => $_POST['department'],
-                                      'research_area' => $_POST['researchArea'],
+                                      'research_area' => @$_POST['researchArea'],
                                       'position_id' => $_POST['title'],
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             if(!$noEcho){

@@ -19,7 +19,7 @@ class PersonCoursesTab extends AbstractTab {
         $courses = $this->person->getCourses();
         $this->html .= "<table id='courses_table' frame='box' rules='all'>
                         <thead><tr><th style='white-space:nowrap;'>Title</th>
-                        <th style='white-space:nowrap;'>Number</th>
+                        <th>Term</th>
                         <th style='white-space:nowrap;'>Catalog Description</th>
                         <th style='white-space:nowrap;'>USRIs</th>
                         <th style='white-space:nowrap;'>Start Date</th>
@@ -27,8 +27,8 @@ class PersonCoursesTab extends AbstractTab {
 	foreach($courses as $course){
 	    $courseEval = $this->person->getCourseEval($course->id);
 	    $this->html .= "<tr>";
-	    $this->html .= "<td>{$course->subject}</td>";
-	    $this->html .= "<td>{$course->catalog}</td>";
+	    $this->html .= "<td>{$course->subject} {$course->catalog}</td>";
+	    $this->html .= "<td>{$course->getTerm()}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";
 	    $this->html .= "<td style='white-space:nowrap;'>";
 	    if(isset($courseEval['evaluation'])){
@@ -84,7 +84,7 @@ class PersonCoursesTab extends AbstractTab {
 
 	}
         $this->html .= "</table></tbody><script type='text/javascript'>
-                        $('#courses_table').dataTable({'aaSorting':[[0, 'asc'],[1,'asc'],[4,'desc']]});
+                        $('#courses_table').dataTable({autoWidth: false, 'aaSorting':[[0, 'asc'],[1,'asc'],[4,'desc']]});
 			
 			
         </script>";

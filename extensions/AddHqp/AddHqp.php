@@ -36,7 +36,7 @@ class AddHqp extends SpecialPage{
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = HQP;
                 $sendEmail = "false";
-		$_POST['wpSendMail'] = "$sendEmail";
+                $_POST['wpSendMail'] = "$sendEmail";
                 $result = APIRequest::doAction('CreateUser', false);
 
                 if($result){
