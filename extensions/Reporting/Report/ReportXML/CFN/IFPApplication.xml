@@ -2,8 +2,8 @@
 <Report name="2017 Interdisciplinary Fellowship Program Application" reportType="RP_IFP_APPLICATION" pdfType="RP_IFP_APPLICATION" pdfFiles="IFPApplicationPDF" year="2017" ajax="true">
     <Permissions>
         <Role role="HQP" subType="IFP2017Applicant" start="2017-05-01" end="2017-05-31">
-            <SectionPermission id="ifp_preview" permissions="-" />
-            <SectionPermission id="supervisor" permissions="-" />
+            <SectionPermission id="ifp_preview" permissions="" />
+            <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
             <SectionPermission id="project" permissions="rw" />
             <SectionPermission id="interest" permissions="rw" />
@@ -17,8 +17,8 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="HQP-Candidate" subType="IFP2017Applicant" start="2017-05-01" end="2017-05-31">
-            <SectionPermission id="ifp_preview" permissions="-" />
-            <SectionPermission id="supervisor" permissions="-" />
+            <SectionPermission id="ifp_preview" permissions="" />
+            <SectionPermission id="supervisor" permissions="" />
             <SectionPermission id="intent" permissions="rw" />
             <SectionPermission id="project" permissions="rw" />
             <SectionPermission id="interest" permissions="rw" />
