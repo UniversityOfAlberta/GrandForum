@@ -8,22 +8,35 @@
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="doiDialog" style="display:none;" title="Add From DOI">
-    <p>You can import a single <%= productsTerm.toLowerCase() %> from a DOI (<a href="http://www.doi.org/" target="_blank">Digital Object Identifier</a>).  Please note that not all <%= productsTerm.pluralize().toLowerCase() %> will be able to be imported from doi.</p>
+    <p>You can import a single <%= productsTerm.toLowerCase() %> from a DOI (<a href="http://www.doi.org/" target="_blank">Digital Object Identifier</a>).  Please note that not all <%= productsTerm.pluralize().toLowerCase() %> will be able to be imported from doi.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
     <b>DOI:</b> <input type="text" width="20" name="doi" placeholder="10.1000/182" />
+    <br /><br /><input type="checkbox" id="doi_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="ccvDialog" style="display:none;" title="Upload Canadian CCV">
-    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the forum, so uploading the CCV a second time will generally not result in duplicate entries.</p>
+    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the forum, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
     <iframe name="fileUpload" style="display:none;"></iframe>
     <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="publications" value="true" />
         <input type="file" name="ccv" accept="application/xml" />
-    <form>
+        <br /><br /><input type="checkbox" id="ccv_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
+    </form>
+    <div class="throbber" style="float:right;display:none;"></div>
+</div>
+<div id="calendarDialog" style="display:none;" title="Upload ICS Calendar">
+    <p>You can upload a Calendar (in ICS format) using the form below.  Any events that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted events will not get added to the forum, and also gives you a chance to make changes to the event and associate it with projects before releasing it.</p>
+    <iframe name="icsUpload" style="display:none;"></iframe>
+    <form target="icsUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadICS" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="publications" value="true" />
+        <input type="file" name="ics" accept=".ics" />
+    </form>
     <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <div id="bibtexDialog" style="display:none;" title="Import BibTeX">
-    <p>You can import BibTeX references by pasting all your BibTeX references in the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.</p>
-    <textarea style="resize: none; height:300px; font-size: 11px; font-family: monospace;" name="bibtex"></textarea><div class="throbber" style="float:right;display:none;"></div>
+    <p>You can import BibTeX references by pasting all your BibTeX references in the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+    <textarea style="resize: none; height:300px; font-size: 11px; font-family: monospace;" name="bibtex"></textarea>
+    <br /><br /><input type="checkbox" id="bibtex_overwrite" name="overwrite" value="yes" style="vertical-align:middle;" /> <b>Overwrite existing <%= productsTerm.toLowerCase().pluralize() %>?</b>
+    <div class="throbber" style="float:right;display:none;"></div>
 </div>
 <p>
     This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase() %>.  <%= productsTerm.pluralize() %> will show up in this list if one of the following conditions is true.
@@ -44,23 +57,36 @@
     <button id="addFromDOIButton">Add From DOI</button>
     <button id="uploadCCVButton">Upload CCV</button>
     <button id="importBibTexButton">Import BibTeX</button>
+    <% if(productStructure.categories['Activity'] != undefined && 
+          productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
+        <button id="uploadCalendarButton">Import ICS Calendar</button>
+    <% } %>
+    <% if(_.contains(allowedRoles, MANAGER)){ %>
+        <span style="margin-left:30px;">
+        <% if(!this.model.all){ %>
+            <a class="button" href="#/all">Show All</a>
+        <% } else { %>
+            <a class="button" href="#">Show Only Mine</a>
+        <% } %>
+        </span>
+    <% } %>
 </p>
 <%= subview('addProduct') %>
-<table id="listTable" frame="box" rules="all">
+<table id="listTable" frame="box" rules="all" style="display:none;">
     <thead>
-        <tr>
-            <th class="angledTableHead"><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
+        <tr style="border-bottom: 1px solid #C8C8C8; border-top: 1px solid #C8C8C8;">
+            <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
             <% _.each(this.projects.models, function(p){ %>
                 <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
             <% }) %>
-            <th width="100%" colspan="7" style="border-left: 2px solid rgba(0,0,0,0);text-align: center;"><%= productsTerm %> Information</th>
+            <th width="100%" colspan="7"><%= productsTerm %> Information</th>
         </tr>
-        <tr style="border-bottom: 2px solid #AAAAAA;">
+        <tr style="border-bottom: 2px solid #C8C8C8;">
             <th width="40px"></th>
             <% _.each(this.projects.models, function(p){ %>
                 <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
             <% }) %>
-            <th width="1%" style="border-left: 2px solid #AAAAAA;">Edit</th>
+            <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
             <th width="1%">Private</th>
             <th width="3%" style="min-width: 70px;">Date</th>
             <th width="12%">Category</th>

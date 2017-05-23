@@ -18,7 +18,7 @@
         </div>
     </td>
 <% }) %>
-<td style="border-left: 2px solid #AAAAAA;" align="center">
+<td style="border-left: 2px solid #C8C8C8;" align="center">
     <span class="edit-icon" style="margin-right:3px;"></span><span class="delete-icon" style="margin-left:3px;"></span>
 </td>
 <td align="center">
@@ -36,14 +36,19 @@
 <td>
     <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
-<td style="<% if(!isMine) { %>background: #FFCC00; <% } %>">
+<td style="<% if(!isMine) { %>background: #ffd118; <% } %>">
     <% var names = new Array();
     _.each(authors, function(author){
-        if(author.id == ""){
-            names.push(author.name);
+        if(author.name != undefined){
+            if(author.id == "" || author.id == null){
+                names.push(author.name);
+            }
+            else{
+                names.push("<b>" + author.name + "</b>");
+            }
         }
         else{
-            names.push("<b>" + author.name + "</b>");
+            names.push(author.fullname.replace(/"/g, ''));
         }
     }) %>
     <%= names.join(',&nbsp;') %>

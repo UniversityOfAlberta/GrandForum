@@ -8,6 +8,10 @@ class ProductAPI extends RESTAPI {
             if($paper == null || $paper->getTitle() == ""){
                 $this->throwError("This product does not exist");
             }
+            if($this->getParam('citation') != ""){
+                header('Content-Type: text/plain');
+                return $paper->getProperCitation();
+            }
             return $paper->toJSON();
         }
         else if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) > 1){
@@ -30,13 +34,22 @@ class ProductAPI extends RESTAPI {
             if($this->getParam('category') != "" && 
                $this->getParam('projectId') != "" &&
                $this->getParam('grand') != ""){
-                $papers = Paper::getAllPapers($this->getParam('projectId'), 
+                $projectId = explode(",", $this->getParam('projectId'));
+                $papers = array();
+                foreach($projectId as $pId){
+                    $ps = Paper::getAllPapers($pId, 
                                               $this->getParam('category'), 
                                               $this->getParam('grand'),
                                               true,
                                               'Public',
                                               $start,
                                               $count);
+                    foreach($ps as $p){
+                        $papers["{$p->getType()}_{$p->getTitle()}"] = $p;
+                    }
+                }
+                ksort($papers);
+                $papers = array_values($papers);
             }
             else{
                 $papers = Paper::getAllPapers('all', 'all', 'both', true, 'Public', $start, $count);
@@ -57,10 +70,10 @@ class ProductAPI extends RESTAPI {
         $paper->type = $this->POST('type');
         $paper->description = $this->POST('description');
         $paper->date = $this->POST('date');
-	$paper->acceptance_date = $this->POST('acceptance_date');
-	$paper->acceptance_ratio_numerator = $this->POST('acceptance_ratio_numerator');
-	$paper->acceptance_ratio_denominator = $this->POST('acceptance_ratio_denominator');
-	$paper->ratio = $this->POST('ratio');
+        $paper->acceptance_date = $this->POST('acceptance_date');
+        $paper->acceptance_ratio_numerator = $this->POST('acceptance_ratio_numerator');
+        $paper->acceptance_ratio_denominator = $this->POST('acceptance_ratio_denominator');
+        $paper->ratio = $this->POST('ratio');
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
         $paper->projects = $this->POST('projects');

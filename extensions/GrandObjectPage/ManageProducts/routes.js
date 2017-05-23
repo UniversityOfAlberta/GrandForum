@@ -19,6 +19,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "all": "showAll",
         "*actions": "defaultRoute"
     }
 });
@@ -30,6 +31,15 @@ pageRouter.on('route:defaultRoute', function (actions) {
     main.set('title', productsTerm + ' Management');
     this.closeCurrentView();
     var products = me.getPrivateProducts();
+    products.all = false;
+    this.currentView = new ManageProductsView({el: $("#currentView"), model: products});
+});
+
+pageRouter.on('route:showAll', function (actions) {
+    main.set('title', productsTerm + ' Management');
+    this.closeCurrentView();
+    var products = me.getAdminProducts();
+    products.all = true;
     this.currentView = new ManageProductsView({el: $("#currentView"), model: products});
 });
 
