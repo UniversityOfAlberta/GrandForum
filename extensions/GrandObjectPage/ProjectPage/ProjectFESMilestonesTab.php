@@ -272,6 +272,23 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $milestones = $project->getMilestonesDuring(substr($year, 0, 4));
         }
         
+        $uofaMilestones = array();
+        $otherMilestones = array();
+        foreach($milestones as $milestone){
+            $leader = $milestone->getLeader();
+            $uni = "";
+            if($leader != null && $leader->getId() != 0){
+                $uni = $leader->getUni();
+            }
+            if($uni == "University of Alberta"){
+                $uofaMilestones[] = $milestone;
+            }
+            else{
+                $otherMilestones[] = $milestone;
+            }
+        }
+        $milestones = array_merge($uofaMilestones, $otherMilestones);
+        
         $this->html .= "<style type='text/css' rel='stylesheet'>
             .left_border {
                 border-left: 2px solid #555555;
@@ -383,7 +400,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
             $leader = $milestone->getLeader();
             $peopleText = $milestone->getPeopleText();
-            $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+            $uniText = "";
+            if($leader->getName() != "" && $leader->getUniversity() != null){
+                $uni = University::newFromName($leader->getUni());
+                $uniText = " ({$uni->getShortName()})";
+            }
+            $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>{$uniText}" : "";
             
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $members = $project->getAllPeople();
