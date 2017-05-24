@@ -946,13 +946,13 @@ class CavendishTemplate2 extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-                $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
-		$person = Person::newFromId($wgUser->getId());
-		$GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
-		global $toolbox;
-	    $i = 0;
-                array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
-                array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
+            $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
+		    $person = Person::newFromId($wgUser->getId());
+		    $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
+		    global $toolbox;
+	        $i = 0;
+            array_splice($GLOBALS['toolbox']['Other']['links'],1,0,$poll_tab);
+            array_splice($GLOBALS['toolbox']['Other']['links'],4,0,$resources_tab);
 	        foreach($toolbox as $key => $header){
 	            if(count($header['links']) > 0){
 	                $hr = ($i > 0) ? "" : "";
