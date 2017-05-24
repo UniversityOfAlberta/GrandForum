@@ -943,6 +943,7 @@ class CavendishTemplate2 extends QuickTemplate {
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
                 $GLOBALS['toolbox']['Other']['links'][9998] = TabUtils::createToolboxLink("Frequently Asked Questions", "$wgServer$wgScriptPath/index.php/Help:Contents");
