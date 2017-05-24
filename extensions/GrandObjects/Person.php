@@ -3556,7 +3556,7 @@ class Person extends BackboneModel {
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
-	$me = Person::newFromWgUser();
+        $me = Person::newFromWgUser();
         self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
@@ -3605,8 +3605,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-	return $papersArray;
-    
+        return $papersArray;
 	}
     
     /**
@@ -3620,7 +3619,7 @@ class Person extends BackboneModel {
      */
     function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
         global $config;
-	self::generateAuthorshipCache();
+        self::generateAuthorshipCache();
         $processed = array();
         $papersArray = array();
         $papers = array();
@@ -3727,6 +3726,28 @@ class Person extends BackboneModel {
             }
         }
         return $coauthors;
+    }
+    
+    /**
+     * Returns the ProductHistory entries for the optionally given year and type
+     * @param string $year The year of the ProductHistory
+     * @param string $type The type of ProductHistory
+     * @return array Returns the ProductHistory entries
+     */
+    function getProductHistories($year="%", $type="%"){
+        $histories = array();
+        $data = DBFunctions::select(array('grand_product_histories'),
+                                    array('id'),
+                                    array('user_id' => $this->getId(),
+                                          'year' => LIKE($year),
+                                          'type' => LIKE($type)));
+        foreach($data as $row){
+            $productHistory = ProductHistory::newFromId($row['id']);
+            if($productHistory != null && $productHistory->getId() != 0){
+                $histories[] = ProductHistory::newFromId($row['id']);
+            }
+        }
+        return $histories;
     }
     
     /**
@@ -4503,29 +4524,19 @@ class Person extends BackboneModel {
             $people[$person->getId()] = $person;
         }
         return array_values($people);
-     }
-
-     function getRoleFor($hqp){
-	$sql = "SELECT `type` FROM
-		grand_relations WHERE user1 = {$this->id}
-		AND user2 = {$hqp}";
-	$data = DBFunctions::execSQL($sql);
-	print_r($data);
-	return $data[0]['type'];
-	       
-     }
+    }
+     
     function getRelationsAll(){
-            $sql = "SELECT id, type
-                    FROM grand_relations
-                    WHERE user1 = '{$this->id}'
-                    ";
-	    $relations = array();
-            $data = DBFunctions::execSQL($sql);
-    	    foreach($data as $row){
-                $relations[] = Relationship::newFromId($row['id']);
-            }
-            return $relations; 	    
-     }
+        $sql = "SELECT id, type
+                FROM grand_relations
+                WHERE user1 = '{$this->id}'";
+        $relations = array();
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $row){
+            $relations[] = Relationship::newFromId($row['id']);
+        }
+        return $relations;
+    }
 
     /**
      * Returns a new Person from the given email (null if not found)
@@ -4534,36 +4545,36 @@ class Person extends BackboneModel {
      * @return Person The Person from the given email
      */
     static function newFromUniversityId($id){
-	$person = new Person(array());
+	    $person = new Person(array());
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
                                     array('university_id' => $id));
         if(count($data) > 0){
             return Person::newFromId($data[0]['user_id']);
         }
-	return $person;
+	    return $person;
     }
 
     function setUniversityId($id){
-	$status = DBFunctions::update('mw_user',
-                                    array('university_id' => $id),
-                                    array('user_name' => EQ($this->getName())));	
-	return $status;
+	    $status = DBFunctions::update('mw_user',
+                                      array('university_id' => $id),
+                                      array('user_name' => EQ($this->getName())));	
+	    return $status;
     }
 
-   function getCourseEval($course_id){
-	$me = Person::newFromWgUser();
-	if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
-	   $data = DBFunctions::select(array('grand_user_courses'),
-				    array('course_evals'),
-				    array('course_id' => $course_id,
-					  'user_id' => $this->getId()));
-	   if(count($data)>0){
-	    return unserialize($data[0]['course_evals']);
-	   }
-	}
-	return array();
-   }
+    function getCourseEval($course_id){
+        $me = Person::newFromWgUser();
+        if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
+	        $data = DBFunctions::select(array('grand_user_courses'),
+				                        array('course_evals'),
+				                        array('course_id' => $course_id,
+					                          'user_id' => $this->getId()));
+	        if(count($data)>0){
+	            return unserialize($data[0]['course_evals']);
+	        }
+	    }
+	    return array();
+    }
 
     /**
      * Returns whether or not this person was ever related to another Person through a given relationship

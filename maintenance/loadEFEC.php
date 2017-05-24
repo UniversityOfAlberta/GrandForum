@@ -62,6 +62,8 @@
                                             array('*'));
     $responsibility_authors = DBFunctions::select(array('bddEfec2_development.responsibility_coauthors'),
                                                   array('*'));
+    $histories = DBFunctions::select(array('bddEfec2_development.publication_histories'),
+                                     array('*'));
     
     $wgUser = User::newFromId(1);
     Person::$idsCache = array();
@@ -90,7 +92,7 @@
     $external_authors = $newExternals;
                                                   
     $iterationsSoFar = 0;
-    $nIterations = count($staff) + count($responsibilities) + count($publications);
+    $nIterations = count($staff) + count($responsibilities) + count($publications) + count($histories);
     
     // Adding Faculty Staff
     $staffIdMap = array();
@@ -320,6 +322,23 @@
         }
         
         $product->create();
+        show_status(++$iterationsSoFar, $nIterations);
+    }
+    
+    // Create Product Histories
+    DBFunctions::execSQL("TRUNCATE grand_product_histories", true);
+    foreach($histories as $history){
+        if(isset($staffIdMap[$history['faculty_staff_member_id']])){
+            $person = $staffIdMap[$history['faculty_staff_member_id']];
+            
+            DBFunctions::insert('grand_product_histories',
+                                array('user_id' => $person->getId(),
+                                      'year' => $history['year'],
+                                      'type' => $history['publication_type'],
+                                      'value' => $history['count'],
+                                      'created' => $history['created_at'],
+                                      'updated' => $history['updated_at']));
+        }
         show_status(++$iterationsSoFar, $nIterations);
     }
 
