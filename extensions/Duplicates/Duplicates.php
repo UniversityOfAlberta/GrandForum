@@ -1,6 +1,5 @@
 <?php
 
-
 require_once("AbstractDuplicatesHandler.php");
 require_once("DuplicatesTab.php");
 require_once("Handlers/ProductHandler.php");
