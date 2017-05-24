@@ -1,47 +1,20 @@
 <?php
-require_once('ProjectPage/ProjectVisualizationsTab.php');
+
 autoload_register('GrandObjectPage/ProjectPage');
 
-$projectPage = new ProjectPage();
-$wgHooks['ArticleViewHeader'][] = array($projectPage, 'processPage');
-$wgHooks['ParserBeforeInternalParse'][] = array($projectPage, 'processTheme');
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
+$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
 
+$wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
 
-    function processTheme($parser, $text, $state){
-        global $wgTitle;
-        $name = ($wgTitle != null) ? str_replace("_Talk", "", $wgTitle->getNsText()) : "";
-        $name = str_replace("_", " ", $name);
-        $title = ($wgTitle != null) ? $wgTitle->getText() : "";
-        if($name == ""){
-            // Namespace probably doesn't exist
-            $exploded = explode(":", $title);
-            $name = @$exploded[0];
-            $title = @$exploded[1];
-        }
-        $theme = Theme::newFromName($name);
-        if($theme != null && $theme->getAcronym() != "" && $title == "Information"){
-            $projects = $theme->getProjects();
-            $projectHTML = array();
-            foreach($projects as $project){
-                $url = str_replace(" ", "_", $project->getUrl());
-                $projectHTML[] = "[{$url} {$project->getName()}]";
-            }
-            if(count($projectHTML) > 0){
-                $text = str_replace("== Projects ==\n", "== Projects ==\n<ul><li>".implode("</li><li>", $projectHTML)."</li></ul>", $text);
-            }
-            else{
-                $text = str_replace("== Projects ==\n", "", $text);
-            }
-        }
-        return true;
-    }
-
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -51,21 +24,6 @@ class ProjectPage {
             $title = ($article != null) ? $article->getTitle()->getText() : "";
 
             $project = Project::newFromHistoricName($name);
-            
-            $wgOut->addScript("<script type='text/javascript'>
-                function stripAlphaChars(id){
-                    var str = $('#' + id).val();
-                    var out = new String(str); 
-                    out = out.replace(/[^0-9]/g, ''); 
-                    if(out > 100){
-                        out = 100;
-                    }
-                    else if(out < 0){
-                        out = 0;
-                    }
-                    $('#' + id).attr('value', out);
-                }
-            </script>");
             
             if($name == ""){
                 $split = explode(":", $name);
@@ -87,7 +45,7 @@ class ProjectPage {
                         !$me->isRoleAtLeast(STAFF) && 
                         !$me->isThemeLeaderOf($project) && 
                         !$me->isThemeCoordinatorOf($project) &&
-                        !$me->isRole(CF) && 
+                        !$me->isRole("CF") && 
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
@@ -111,16 +69,13 @@ class ProjectPage {
                 $_POST['submit'] = "Edit Main";
             }
 
-            $isLead = ($isLead && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-            $isMember = ($isMember && (!FROZEN || $me->isRoleAtLeast(STAFF)) );
-
             $edit = (isset($_POST['edit']) && $isLead);
             
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
-                $wgOut->setPageTitle($project->getFullName());
+                $wgOut->setPageTitle("{$project->getFullName()} ({$project->getName()})");
                 
                 $visibility = array();
                 if(!$project->isDeleted()){
@@ -136,21 +91,36 @@ class ProjectPage {
                 
                 $tabbedPage = new TabbedPage("project");
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
-                $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
+                if($config->getValue('projectLongDescription')){
+                    if($config->getValue('networkName') == "FES"){
+                        $tabbedPage->addTab(new ProjectFESDescriptionTab($project, $visibility));
+                    }
+                    else{
+                        $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
+                    }
+                }
                 if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }
-                if($project->getPhase() == 1){
+                if($config->getValue('networkName') == "FES"){
+                    $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
+                }
+                else{
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                if($project->getType() != 'Administrative'){
+                    $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
+                }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if($visibility['isLead'] && isExtensionEnabled('Reporting')){
+                    $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
+                }
                 $tabbedPage->showPage();
                 
                 $wgOut->output();
@@ -218,18 +188,24 @@ class ProjectPage {
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
         if($config->getValue('projectsEnabled')){
             $me = Person::newFromWgUser();
-            $projects = $me->getProjects();
-            
-            if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+            $myProjects = array();
+            foreach($me->getProjects() as $proj){
+                $myProjects[$proj->getName()] = $proj;
+            }
+            foreach($me->getThemeProjects() as $proj){
+                $myProjects[$proj->getName()] = $proj;
+            }
+            //$projects = array_merge($projects, $me->getThemeProjects());
+            if(!$wgUser->isLoggedIn() || count($myProjects) == 0 || $me->isRoleAtLeast(MANAGER)){
 		        return true;
 		    }
 
-            foreach($projects as $key => $project){
-                if($project->isSubProject()){
-                    unset($projects[$key]);
+            foreach($myProjects as $key => $project){
+                if($project->isSubProject() || $project->getStatus() != "Active"){
+                    unset($myProjects[$key]);
                 }
             }
-            $projects = array_values($projects);
+            $projects = array_values($myProjects);
             foreach($projects as $project){
                 $selected = (str_replace("_", " ", $wgTitle->getNSText()) == $project->getName()) ? "selected" : "";
                 $subtab = TabUtils::createSubTab($project->getName(), $project->getUrl(), $selected);

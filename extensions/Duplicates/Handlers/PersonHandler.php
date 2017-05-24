@@ -1,11 +1,13 @@
 <?php
 
-$personHandler = new PersonHandler('people');
-
 class PersonHandler extends AbstractDuplicatesHandler {
         
     function PersonHandler($id){
         $this->AbstractDuplicatesHandler($id);
+    }
+    
+    static function init(){
+        $personHandler = new PersonHandler('people');
     }
     
     function getArray(){

@@ -1,10 +1,5 @@
 <?php
 
-$structure = Product::structure();
-foreach($structure['categories'] as $key => $cat){
-    $publicationHandler = new ProductHandler(strtolower($key), $key);
-}
-
 function paper_lengthSort($a, $b){
     return (strlen($a->getTitle()) < strlen($b->getTitle()));
 }
@@ -14,6 +9,13 @@ class ProductHandler extends AbstractDuplicatesHandler {
     var $type;
     
     var $papers = null;
+    
+    static function init(){
+        $structure = Product::structure();
+        foreach($structure['categories'] as $catkey => $cat){
+            $publicationHandler = new ProductHandler(strtolower($catkey), $catkey);
+        }
+    }
         
     function ProductHandler($id, $type){
         $this->AbstractDuplicatesHandler($id);

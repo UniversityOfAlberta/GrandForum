@@ -102,7 +102,6 @@
         'Notification',
         'GrandObjectPage',
         'Cal',
-        'TempEd',
         //'TextReplace',
         //'Twitter',
        // 'MailingList',

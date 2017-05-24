@@ -2,9 +2,8 @@
 if(isExtensionEnabled("AddMember")){
      require_once("AddMember.php");
 }
-$userCreate = new UserCreate();
 
-$wgHooks['AddNewAccount'][] = array($userCreate, 'afterCreateUser');
+$wgHooks['AddNewAccount'][] = 'UserCreate::afterCreateUser';
 
 $notificationFunctions[] = 'UserCreate::createNotification';
 

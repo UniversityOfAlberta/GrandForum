@@ -181,6 +181,9 @@ EOF;
     }
 
     function getMyProductDuplicates(){
+        ProductHandler::init();
+	    MyProductHandler::init();
+	    PersonHandler::init();
         $handlers = AbstractDuplicatesHandler::$handlers;
         $structure = Product::structure();
         

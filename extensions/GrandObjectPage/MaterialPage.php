@@ -1,7 +1,5 @@
 <?php
-$materialPage = new MaterialPage();
-
-$wgHooks['ArticleViewHeader'][] = array($materialPage, 'processPage');
+$wgHooks['ArticleViewHeader'][] = 'MaterialPage::processPage';
 
 class MaterialPage {
 
@@ -237,6 +235,7 @@ class MaterialPage {
                 $wgOut->addHTML("<script type='text/javascript'>
                     $('input[name=date]').datepicker();
                     $('input[name=date]').datepicker('option', 'dateFormat', 'yy-mm-dd');
+                    $('input[name=date]').datepicker('setDate', '$date');
                     $('input[name=date]').keydown(function(){
                         return false;
                     });

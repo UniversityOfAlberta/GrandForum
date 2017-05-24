@@ -1,5 +1,4 @@
 <?php
-$wgHooks['UnknownAction'][] = 'PersonVisualTab::getSurveyData';
 
 class PersonVisualTab extends AbstractTab {
 

@@ -51,6 +51,11 @@ function LIKE($value){
     return "### LIKE {$value}";
 }
 
+function NOTLIKE($value){
+    $value = queryNumeric($value);
+    return "### NOT LIKE {$value}";
+}
+
 function DURING($values){
     $i = 0;
     $start = "";
@@ -131,8 +136,11 @@ class DBFunctions {
 	static function DBWritable(){
 	    global $wgImpersonating;
 	    $me = Person::newFromWGUser();
-	    $supervisesImpersonee = checkSupervisesImpersonee();
-	    return (!($wgImpersonating && !$supervisesImpersonee) && (!FROZEN || $me->isRoleAtLeast(MANAGER)));
+	    $supervisesImpersonee = false;
+	    if(isExtensionEnabled('Impersonate')){
+	     	$supervisesImpersonee = checkSupervisesImpersonee();
+	    }
+	    return !($wgImpersonating && !$supervisesImpersonee);
 	}
 	
 	static function escape($string){

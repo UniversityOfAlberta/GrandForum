@@ -3,9 +3,7 @@ autoload_register('Poll');
 require_once("MyPolls.php");
 require_once("CreatePoll.php");
 
-$poll = new PollView();
-
-$wgHooks['UnknownAction'][] = array($poll, 'viewPoll');
+$wgHooks['UnknownAction'][] = 'PollView::viewPoll';
 $notificationFunctions[] = 'PollView::createNotification';
 
 class PollView {
@@ -26,84 +24,91 @@ class PollView {
 			}
 		}	
 	}
+	
+	static function viewPoll($action, $article){
+	    if($action == "viewPoll"){
+	        $poll = new PollView();
+	        $poll->view();
+	        return false;
+	    }
+	    return true;
+	}
 
-	function viewPoll($action, $article){
+	function view(){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-		if($action == "viewPoll"){
-			$this->pollCollection = PollCollection::newFromId($_GET['id']);
-			if($this->pollCollection != null){
-				$groups = $wgUser->getGroups();
-				$found = false;
-				$found = $this->pollCollection->canUserViewPoll($wgUser);
-				$expired = $this->pollCollection->isPollExpired();
-				
-				if(!$found) {
-					// User is not allowed to view this poll
-					if($wgUser->isLoggedIn()){
-						$wgOut->setPageTitle("Poll Permissions Error");
-						$wgOut->addHTML("You are not allowed to view this poll");
-					}
-					else {
-						$wgOut->loginToUse();
-						$wgOut->output();
-						$wgOut->disable();
-					}
-					return false;
+		$this->pollCollection = PollCollection::newFromId($_GET['id']);
+		if($this->pollCollection != null){
+			$groups = $wgUser->getGroups();
+			$found = false;
+			$found = $this->pollCollection->canUserViewPoll($wgUser);
+			$expired = $this->pollCollection->isPollExpired();
+			
+			if(!$found) {
+				// User is not allowed to view this poll
+				if($wgUser->isLoggedIn()){
+					$wgOut->setPageTitle("Poll Permissions Error");
+					$wgOut->addHTML("You are not allowed to view this poll");
 				}
-				
-				$isOwner = ($wgUser->getId() == $this->pollCollection->author->getId() && $found);
-				if(!$expired){
-					$notVotedYet = (!$this->pollCollection->hasUserVoted($wgUser->getId()) && !(isset($_POST['submit']) && $this->allQuestionsAnswered()));
-					if($isOwner){
-						$this->sendEmails();
-					}
-					
-					$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
-					$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
-				
-					if($notVotedYet){
-						if(isset($_POST['submit'])){
-							$wgOut->addHTML("Not all questions were answered.<br />");
-						}
-						$wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}' method='post'>");
-					}
-					foreach($this->pollCollection->getPolls() as $poll){
-						if($isOwner){
-							// User is the owner of this poll, and is allowed to view the poll
-							// (We have to check this because the user could have been a part
-							// of a group when the poll was created, but might not be anymore)
-							$this->ownerViews($poll);
-						}
-						else if($found){
-							// User is allowed to view this poll
-							$this->voterViews($poll);
-						}
-					}
-					if($notVotedYet){
-						$wgOut->addHTML("<input type='submit' name='submit' value='Submit' />");
-						$wgOut->addHTML("</form>");
-					}
-					else if($isOwner){
-						$this->aggregateTable();
-					}
-				}
-				else{
-					$wgOut->setPageTitle("Poll is Expired");
-					$wgOut->addHTML("This poll is expired");
-					if($isOwner){
-						// Even though the poll is expired, the owner can still view the results of the poll, but cannot vote
-						foreach($this->pollCollection->getPolls() as $poll){
-							$this->ownerViews($poll);
-						}
-					}
+				else {
+					$wgOut->loginToUse();
+					$wgOut->output();
+					$wgOut->disable();
 				}
 				return false;
+			}
+			
+			$isOwner = ($wgUser->getId() == $this->pollCollection->author->getId() && $found);
+			if(!$expired){
+				$notVotedYet = (!$this->pollCollection->hasUserVoted($wgUser->getId()) && !(isset($_POST['submit']) && $this->allQuestionsAnswered()));
+				if($isOwner){
+					$this->sendEmails();
+				}
+				
+				$wgOut->addHTML("<b>Created By:</b> {$this->pollCollection->author->getName()}<br />");
+				$wgOut->addHTML("<b>Expires:</b> {$this->pollCollection->getExpirationDate()}<br />");
+			
+				if($notVotedYet){
+					if(isset($_POST['submit'])){
+						$wgOut->addHTML("Not all questions were answered.<br />");
+					}
+					$wgOut->addHTML("<form action='index.php?action=viewPoll&id={$this->pollCollection->id}' method='post'>");
+				}
+				foreach($this->pollCollection->getPolls() as $poll){
+					if($isOwner){
+						// User is the owner of this poll, and is allowed to view the poll
+						// (We have to check this because the user could have been a part
+						// of a group when the poll was created, but might not be anymore)
+						$this->ownerViews($poll);
+					}
+					else if($found){
+						// User is allowed to view this poll
+						$this->voterViews($poll);
+					}
+				}
+				if($notVotedYet){
+					$wgOut->addHTML("<input type='submit' name='submit' value='Submit' />");
+					$wgOut->addHTML("</form>");
+				}
+				else if($isOwner){
+					$this->aggregateTable();
+				}
 			}
 			else{
-				$wgOut->setPageTitle($this->pollCollection->name);
-				$wgOut->addHTML("There is no poll with this id");
-				return false;
+				$wgOut->setPageTitle("Poll is Expired");
+				$wgOut->addHTML("This poll is expired");
+				if($isOwner){
+					// Even though the poll is expired, the owner can still view the results of the poll, but cannot vote
+					foreach($this->pollCollection->getPolls() as $poll){
+						$this->ownerViews($poll);
+					}
+				}
 			}
+			return false;
+		}
+		else{
+			$wgOut->setPageTitle($this->pollCollection->name);
+			$wgOut->addHTML("There is no poll with this id");
+			return false;
 		}
 		return true;
 	}
