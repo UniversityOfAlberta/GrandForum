@@ -9,6 +9,7 @@
  * cleaner, as well as it might be able to execute the actions faster since it could do some query optimizations.
  */
 require_once("BudgetTypes.php");
+require_once("MultiBudget.php");
 
 class Budget extends QueryableTable{
     
@@ -30,8 +31,11 @@ class Budget extends QueryableTable{
                     self::CSVBudget($argv[1], $argv[2]);
                 }
                 else{
-                    self::Budget($argv[1], $argv[2]);
+                    self::Budget($argv[1], $argv[2], 0);
                 }
+                break;
+            case 4:
+                self::Budget($argv[1], $argv[2], $argv[3]);
                 break;
         }
     }
@@ -55,16 +59,16 @@ class Budget extends QueryableTable{
     }
     
     // Creates a new Budget instance with the given person ID, structure type, and data set
-    private function Budget($structure, $data){
+    private function Budget($structure, $data, $sheet=0){
         global $budgetStructures;
         $this->QueryableTable();
         if(is_array($structure)){
             $this->structure = $this->preprocessStructure($structure);
         }
         else{
-            $this->structure = $this->preprocessStructure($budgetStructures[$structure]);
+            $this->structure = @$this->preprocessStructure($budgetStructures[$structure]);
         }
-        if(!$this->readCells($data)){
+        if(!$this->readCells($data, $sheet)){
             // Some error happened when reading the data, try to recover
             $data = array();
             foreach($this->structure as $rowN => $row){
@@ -136,51 +140,59 @@ class Budget extends QueryableTable{
     }
     
     // Reads the cells in the budget based on the specified structure
-    private function readCells($data){
+    private function readCells($data, $sheet=0){
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
-        // 1. Create a temporary file and write the spreadsheet data into the file,
-        // so that PHPExcel can use it.
-        $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
-        if ($tmpn === false) {
-            // Failed to reserve a temporary file.
-            echo "Could not reserve temp file.";
-            return false;
-        }
-        $tmpf = fopen($tmpn, 'w');
-        if ($tmpf === false) {
-            "Could not create temp file.";
-            // TODO: log?
-            unlink($tmpn);
-            return false;
-        }
+        if(!($data instanceof PHPExcel)){
+            // 1. Create a temporary file and write the spreadsheet data into the file,
+            // so that PHPExcel can use it.
+            $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
+            if ($tmpn === false) {
+                // Failed to reserve a temporary file.
+                echo "Could not reserve temp file.";
+                return false;
+            }
+            $tmpf = fopen($tmpn, 'w');
+            if ($tmpf === false) {
+                "Could not create temp file.";
+                // TODO: log?
+                unlink($tmpn);
+                return false;
+            }
 
-        if (fwrite($tmpf, $data) === false) {
-            // TODO: log?
-            // Error writing to temporary file.
-            echo "Could not write to temp file.";
+            if (fwrite($tmpf, $data) === false) {
+                // TODO: log?
+                // Error writing to temporary file.
+                echo "Could not write to temp file.";
+                fclose($tmpf);
+                unlink($tmpn);
+                return false;
+            }
             fclose($tmpf);
-            unlink($tmpn);
-            return false;
         }
-        fclose($tmpf);
         
         // 2. Instantiate the file as a PHPExcel IO object.
         try {
-            $newStructure = array();
-            $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
-            $class = get_class($objReader);
+            if(!($data instanceof PHPExcel)){
+                $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
+                $class = get_class($objReader);
 
-            if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
-                return false;
+                if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
+                    return false;
+                }
+                $objReader->setReadDataOnly(true);
+                $obj = $objReader->load($tmpn);
+                $obj->setActiveSheetIndex($sheet);
             }
-            $objReader->setReadDataOnly(true);
-            $obj = $objReader->load($tmpn);
-            $obj->setActiveSheetIndex(0);
+            else{
+                $obj = $data;
+            }
             
-            $maxCol =$obj->getActiveSheet()->getHighestColumn();
-            $maxRow =$obj->getActiveSheet()->getHighestRow();
-            $cells = $obj->getActiveSheet()->toArray();
+            $sheet = $obj->getActiveSheet();
+            $maxCol = $sheet->getHighestColumn();
+            $maxRow = $sheet->getHighestRow();
+            $cells = $sheet->toArray(null, true, false); // Explicitely read only values not style (3rd arg)
+            
             if($this->structure == null){
                 // Create a fake structure so that it doesn't fail
                 $this->structure = array();
@@ -200,8 +212,6 @@ class Budget extends QueryableTable{
                     if(ord($maxCol) < $colN + 1){
                         break;
                     }
-                    //$newStructure[$rowN][$colN] = $this->structure[$rowN][$colN];
-                    //$origCellValue = $obj->getActiveSheet()->getCell((chr($colN + 65)).($rowN + 1))->getCalculatedValue();
                     $origCellValue = @$cells[$rowN][$colN];
                     $splitCell = explode("(", $cell);
                     $params = array();
@@ -209,9 +219,10 @@ class Budget extends QueryableTable{
                     if(count($splitCell) > 1){
                         $params = explode(',', str_replace(', ', ',', str_replace(')', '', $splitCell[1])));
                     }
-                    $origCellValue = utf8_encode($origCellValue);
-                    $origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
+                    //$origCellValue = utf8_encode($origCellValue);
+                    //$origCellValue = utf8_decode(preg_replace('/[^\x{0000}-\x{007F}]/', ' ', $origCellValue));
                     $origCellValue = preg_replace('/\s\s+/', ' ', $origCellValue);
+                    $origCellValue = trim($origCellValue);
                     $cellValue = $this->processCell($cell, $params, $origCellValue, $rowN, $colN);
                     if(!($cellValue instanceof NACell)){
                         $this->xls[$rowN][$colN] = $cellValue;
@@ -220,18 +231,22 @@ class Budget extends QueryableTable{
                 }
                 ++$rowN;
             }
-            //$this->structure = $newStructure;
-            $obj->disconnectWorksheets();
-            PHPExcel_Calculation::getInstance()->clearCalculationCache();
-            unset($objReader);
-            unset($obj);
+            if(!($data instanceof PHPExcel)){
+                $obj->disconnectWorksheets();
+                PHPExcel_Calculation::getInstance()->clearCalculationCache();
+                unset($objReader);
+                unset($obj);
+            }
         }
         catch (Exception $e) {
             // File is probably encrypted
+            $this->errors[0][] = "There was an error reading this worksheet";
             $this->structure = array();
             $this->xls = array();
         }
-        unlink($tmpn);
+        if(!($data instanceof PHPExcel)){
+            unlink($tmpn);
+        }
         return true;
     }
     
@@ -332,9 +347,9 @@ class Budget extends QueryableTable{
             foreach($tab->getElementsByTagName("td") as $td){
                 $td->removeAttribute('width');
                 $td->removeAttribute('nowrap');
-                if(strstr($td->getAttribute('class'), "explicitSpan") === false){
+                /*if(strstr($td->getAttribute('class'), "explicitSpan") === false){
                     $td->setAttribute('colspan', '1');
-                }
+                }*/
                 if(strstr($td->getAttribute('class'), "budgetError") === false && strstr($td->getAttribute('style'), "background") === false){
                     $td->setAttribute('style', $td->getAttribute('style').'background-color:#FFFFFF;');
                 }

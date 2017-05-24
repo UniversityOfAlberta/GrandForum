@@ -83,20 +83,28 @@ define('HQP_PRODUCTIVITY_STRUCTURE', 4);
 
 define('PROJECT_PUBLIC_STRUCTURE', 10);
 
-$productStructure = Product::structure();
-$categories = @array_keys($productStructure['categories']);
+function initDashboardGlobals(){
+    global $head, $persRow, $projRow;
+    if($head == null && $persRow == null && $projRow == null){
+        $productStructure = Product::structure();
+        $categories = @array_keys($productStructure['categories']);
 
-$head = array();
-$persRow = array();
-$projRow = array();
-foreach($categories as $category){
-    $head[] = HEAD."(".Inflect::pluralize($category).")";
-    $persRow[] = PERSON_PRODUCTS."(".$category.")";
-    $projRow[] = PROJECT_PRODUCTS."(".$category.")";
+        $head = array();
+        $persRow = array();
+        $projRow = array();
+        foreach($categories as $category){
+            $head[] = HEAD."(".Inflect::pluralize($category).")";
+            $persRow[] = PERSON_PRODUCTS."(".$category.")";
+            $projRow[] = PROJECT_PRODUCTS."(".$category.")";
+        }
+    }
 }
 
 $dashboardStructures = array();
-$dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
+$dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] = function(){
+    global $head, $persRow, $projRow;
+    initDashboardGlobals();
+    return
     array(array_merge(array(HEAD."(Projects)", HEAD."(HQP)"), $head, array(HEAD."(Multimedia)")),
           array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
@@ -105,8 +113,12 @@ $dashboardStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
                                                                  array(PERSON_MULTIMEDIA)),
           array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA)),
     );
+};
     
-$dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
+$dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] = function(){
+    global $head, $persRow, $projRow;
+    initDashboardGlobals();
+    return
     array(array_merge(array(HEAD."(Projects)", HEAD."(HQP)"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
           array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
@@ -115,8 +127,12 @@ $dashboardStructures[NI_PRIVATE_PROFILE_STRUCTURE] =
                                                                  array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
           array_merge(array(HEAD.'(Total:)', PERSON_HQP), $persRow, array(PERSON_MULTIMEDIA, PERSON_CONTRIBUTIONS)),
     );
+};
     
-$dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
+$dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] = function(){
+    global $head, $persRow, $projRow;
+    initDashboardGlobals();
+    return
     array(array_merge(array(HEAD."(Projects)", HEAD."(Supervisors)"), $head, array(HEAD."(Multimedia)")),
           array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
@@ -125,8 +141,12 @@ $dashboardStructures[HQP_PUBLIC_PROFILE_STRUCTURE] =
                                                                  array(PERSON_MULTIMEDIA)),
           array_merge(array(HEAD.'(Total:)', PERSON_SUPERVISORS), $persRow, array(PERSON_MULTIMEDIA)),
     );
+};
     
-$dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] =
+$dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] = function(){
+    global $head, $persRow, $projRow;
+    initDashboardGlobals();
+    return
     array(array_merge(array(HEAD."(Projects)"), $head, array(HEAD."(Multimedia)")),
           array_merge(array(HEAD.'(Total:)'), $persRow, array(PERSON_MULTIMEDIA)),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY) => array_merge(array(PERSON_PROJECTS,
@@ -135,8 +155,12 @@ $dashboardStructures[HQP_PRODUCTIVITY_STRUCTURE] =
                                                                  array(PERSON_MULTIMEDIA)),
           array_merge(array(HEAD.'(Total:)'), $persRow, array(PERSON_MULTIMEDIA)),
     );
+};
     
-$dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = 
+$dashboardStructures[PROJECT_PUBLIC_STRUCTURE] = function(){
+    global $head, $persRow, $projRow;
+    initDashboardGlobals();
+    return
     array(array_merge(array(HEAD."(People)", HEAD."(Roles)", HEAD."(".HQP.")"), $head, array(HEAD."(Multimedia)", HEAD."(Contributions)")),
           array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_ARRAY) => array_merge(array(PROJECT_PEOPLE,
@@ -146,5 +170,6 @@ $dashboardStructures[PROJECT_PUBLIC_STRUCTURE] =
                                                                 array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
           array_merge(array(HEAD.'(Total:)', PROJECT_ROLES, PROJECT_HQP), $projRow, array(PROJECT_MULTIMEDIA, PROJECT_CONTRIBUTIONS)),
     );
+};
 
 ?>
