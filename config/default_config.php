@@ -150,9 +150,7 @@
         'Freeze'
     ));
     
-    $config->setValue("reportingExtras", array('EvaluationTable'        => false,
-                                               'ReportStats'            => false,
-                                               'CreatePDF'              => false,
+    $config->setValue("reportingExtras", array('CreatePDF'              => false,
                                                'ReportArchive'          => false,
                                                'ReviewResults'          => false,
                                                'AdminVisualizations'    => false));
