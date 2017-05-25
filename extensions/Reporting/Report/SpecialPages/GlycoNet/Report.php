@@ -66,8 +66,8 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Catalyst", "{$url}CatalystReport", $selected);
             
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport042017")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport042017", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CollaborativeReport082017")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Collaborative", "{$url}CollaborativeReport082017", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
