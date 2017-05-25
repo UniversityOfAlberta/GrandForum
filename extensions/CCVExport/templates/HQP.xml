@@ -8,7 +8,7 @@
 			<field lov_id="3c504aafda28418ea439d8f92c28aef0" lov_name="Student Name"></field>
 			<field lov_id="e36ccf9a00a241dc942e608df32c8c84" lov_name="Student Institution"></field>
 			<field lov_id="bb322e0195b540779bf4bdb4f1a04210" lov_name="Student Canadian Residency Status"></field>
-			<field lov_id="5b8638e8646448dcb8edef2c21e01c87" lov_name="Study / Postdoctoral Level"></field>
+			<field lov_id="5b8638e8646448dcb8edef2c21e01c87" lov_name="Degree Type or Postdoctoral Status"></field>
 			<field lov_id="e5d331dca0fc4000992e43b695b2db21" lov_name="Student Degree Status"></field>
 			<field lov_id="3cf3d0de12f44222b941fdbf57ad51a6" lov_name="Student Degree Start Date"></field>
 			<field lov_id="8284dbdd03aa4277b7fca7662bd1758c" lov_name="Student Degree Received Date"></field>
