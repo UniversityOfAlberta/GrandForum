@@ -8,10 +8,11 @@ $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'network-tools';
 
 $degree_map = 
-  array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
-        'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
+  array('MSc Student'=>array("6bb179b92d1d46059bae10f6d21ea096","Master's Thesis"),
+        'PhD Student'=>array("971953ad86ca49f3b32ac5c7c2758a1b","Doctorate"),
         'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
-        'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));
+        'PostDoc'=>array("e0b26301c88d4be5a6f7143981c9b3bb","Post-doctorate"));
+
 
 function runCCVExport($par) {
     CCVExport::execute($par);
@@ -139,8 +140,7 @@ class CCVExport extends SpecialPage {
         $addr_map = simplexml_load_file($addr_file);
         $phone_map = simplexml_load_file($phone_file);
 
-        $all_products = $person->getPapers("Publication", false, "both");
-
+        $all_products = $person->getPapers("Publication", false, "both",true,"Public");
         $prod_sorted = array();
 
         foreach($all_products as $p){
@@ -258,10 +258,12 @@ class CCVExport extends SpecialPage {
                     break;
                 case "ee8beaea41f049d8bcfadfbfa89ac09e": // Title
                     $title = $person->getHonorific();
-                    $value = self::setChild($field, 'lov');
-                    self::setAttribute($value, 'id', self::getLovId("Title", $title, ""));
-                    self::setValue($value, self::getLovVal("Title", $title, ""));
-                    break;
+		    if($title != ''){
+                        $value = self::setChild($field, 'lov');
+                        self::setAttribute($value, 'id', self::getLovId("Title", $title, ""));
+                        self::setValue($value, self::getLovVal("Title", $title, ""));
+                    }    
+		    break;
                 case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
                     $gender = $person->getGender();
                     $value = self::setChild($field, 'lov');
@@ -270,9 +272,11 @@ class CCVExport extends SpecialPage {
                     break;
                 case "2b72a344523c467da0c896656b5290c0": // Correspondence language
                     $language = $person->getCorrespondenceLanguage();
-                    $value = self::setChild($field, 'lov');
-                    self::setAttribute($value, 'id', self::getLovId("Correspondance Language", $language, ""));
-                    self::setValue($value, self::getLovVal("Correspondance Language", $language, ""));
+		    if($language != ''){
+                        $value = self::setChild($field, 'lov');
+                        self::setAttribute($value, 'id', self::getLovId("Correspondance Language", $language, ""));
+                        self::setValue($value, self::getLovVal("Correspondance Language", $language, ""));
+		    }
                     break;
             }
         }
@@ -556,15 +560,15 @@ class CCVExport extends SpecialPage {
                 $field = $ccv_item->addChild("field");
                 $field->addAttribute('id', $item_id);
                 $field->addAttribute('label', $item_name);
-                $val = $field->addChild('lov');
                 $hqp_status = $hqp->getNationality();
                 if(!empty($hqp_status) && isset($status_map[$hqp_status])){
+                    $val = $field->addChild('lov');
                     $lov_id = $status_map[$hqp_status][0];
                     $val->addAttribute('id', $lov_id);
                     self::setValue($val, $status_map[$hqp_status][1]);
                 }
             }
-            else if($item_name == "Study / Postdoctoral Level"){
+            else if($item_name == "Degree Type or Postdoctoral Status"){
                 $uni = $hqp->getUniversity();
                 $hqp_pos = $uni['position'];
                 if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
