@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Catalyst Grant Application" reportType="RP_CATALYST" pdfType="RPTP_CATALYST" ajax="true" disabled="false" year="2017">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB_08_2017" pdfType="RPTP_COLLAB_08_2017" ajax="true" disabled="false" year="2017">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <ReportItem id="report_info_head" type="StaticReportItem">
             <![CDATA[
@@ -11,7 +11,7 @@
         <!-- Theme -->
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>Catalyst Grant Application</h4>
+                <h4 style='font-size:1.40em;'>Collaborative Team Grant Application</h4>
                 <br />
                 <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
                 <br />
@@ -110,7 +110,7 @@
         <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
             <![CDATA[
                 <p><b><u>Conflict of Interest</u></b></p>
-                <b>Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?</b>
+                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
                 {$item}
             ]]>
         </ReportItem>
@@ -118,7 +118,7 @@
         <!-- Conflict of Interest Multi -->
         <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" sizes="50%|50%" showHeader="false">
             <![CDATA[
-                <p><b>If Yes, please indicate which researcher and the relevant company</b></p>
+                <p>If Yes, please indicate which researcher and the relevant company.</p>
                 <div style='font-size: smaller;'>{$item}</div>
             ]]>
         </ReportItem>
@@ -127,7 +127,7 @@
         <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" sizes="100%" showHeader="false">
             <![CDATA[
                 <br />
-                <p><b>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</b></p>
+                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
                 <div style='font-size: smaller;'><i>{$item}</i></div>
             ]]>
         </ReportItem>
@@ -135,11 +135,11 @@
         <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
             <![CDATA[
                 <br />
-                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Catalyst grant</b></p>
+                <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Collaborative Team grant</b></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_CATALYST,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
+        <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
             <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
                 <![CDATA[
                     <p><b>Please provide a response to the previous reviews</b></p>
@@ -192,7 +192,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.ms-excel">
             <![CDATA[
                 {$item}
             ]]>
