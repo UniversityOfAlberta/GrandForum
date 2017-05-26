@@ -79,7 +79,7 @@ class ApplicationTab extends AbstractTab {
         $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";
         $this->html .= "<thead>";
         if(is_array($report)){
-            $colspan = ($isPerson) ? "1" : "2";
+            $colspan = ($isPerson) ? "2" : "2";
             $this->html .= "<tr><th width='50%' colspan='$colspan'></th>";
             foreach($report as $rep){
                 $colspan = 2 + count($this->extraCols);
@@ -91,6 +91,9 @@ class ApplicationTab extends AbstractTab {
                             <th>Name</th>";
         if(!$isPerson){
             $this->html .= "<th>Leader</th>";
+        }
+        else{
+            $this->html .= "<th>Email</th>";
         }
         if(is_array($report)){
             foreach($report as $rep){
@@ -144,6 +147,9 @@ class ApplicationTab extends AbstractTab {
                 }
                 $this->html .= "<tr>
                     <td>{$pName}</td>";
+                if($isPerson){
+                    $this->html .= "<td>{$person->getEmail()}</td>";
+                }
                 if($person instanceof Project){
                     $leader = array_values($person->getLeaders());
                     $leader = (isset($leader[0])) ? $leader[0] : null;
