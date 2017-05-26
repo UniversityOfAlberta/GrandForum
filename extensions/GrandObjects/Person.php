@@ -205,21 +205,21 @@ class Person extends BackboneModel {
      */
     static function newFromAlias($alias) {
         // Normalize the alias: trim, remove duplicate spaces / dots, and strip HTML.
-	$alias = preg_replace(
+        $alias = preg_replace(
                 array('/\s+/', '/\.+/', '/\s*\.+\s*/', '/<[^>]*>/'),
                 array(' ', '.', '. ', ''),
                 $alias);
         $alias = trim($alias);
-	
+
         if (array_key_exists($alias, self::$cache)) {
-	     return self::$cache[$alias];
+             return self::$cache[$alias];
         }
         else {
-	    self::generateNamesCache();
+            self::generateNamesCache();
             self::generateAliasCache();
             $aliases = self::$aliasCache;
             if(isset($aliases[$alias]) && isset(self::$idsCache[$aliases[$alias]])){
-	        $data = array(self::$idsCache[$aliases[$alias]]);
+                $data = array(self::$idsCache[$aliases[$alias]]);
             }
             else{
                 $data = array();
@@ -234,13 +234,13 @@ class Person extends BackboneModel {
             // Check again the cache, in case the alias is an alternate
             // for an already-instantiated user.
             $id = $data[0]['user_id'];
-	    if (array_key_exists($id, self::$cache)) {
+            if (array_key_exists($id, self::$cache)) {
                 // Mark this alias too.
                 self::$cache[$alias] = self::$cache[$id];
                 return self::$cache[$id];
             }
             $person = new Person($data);
-	        self::$cache[$alias] = &$person;
+            self::$cache[$alias] = &$person;
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
             return $person;
@@ -276,7 +276,7 @@ class Person extends BackboneModel {
                                               'u.user_id'),
                                         array('ua.user_id' => EQ(COL('u.user_id')),
                                               'u.deleted' => NEQ(1)));
-	    foreach($data as $row){
+            foreach($data as $row){
                 self::$aliasCache[$row['alias']] = $row['user_id'];
             }
         }
@@ -492,14 +492,14 @@ class Person extends BackboneModel {
     }
 
     function getFecPersonalInfo(){
-	$data = DBFunctions::select(array('grand_personal_fec_info'),
-				    array('*'),
-				    array('user_id' => EQ($this->getId())));
-	if(count($data) >0){
-	    $row = $data[0];
-  	    $this->dateOfPhd = $row['date_of_phd'];
-	    $this->dateOfAppointment = $row['date_of_appointment'];
-	    $this->dateOfAssistant = $row['date_assistant'];
+        $data = DBFunctions::select(array('grand_personal_fec_info'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->getId())));
+        if(count($data) >0){
+            $row = $data[0];
+            $this->dateOfPhd = $row['date_of_phd'];
+            $this->dateOfAppointment = $row['date_of_appointment'];
+            $this->dateOfAssistant = $row['date_assistant'];
             $this->dateOfAssociate = $row['date_associate'];
             $this->dateOfProfessor = $row['date_professor'];
             $this->dateOfTenure = $row['date_tenure'];
@@ -512,42 +512,42 @@ class Person extends BackboneModel {
             $this->dateFso2 = $row['date_fso2'];
             $this->dateFso3 = $row['date_fso3'];
             $this->dateFso4 = $row['date_fso4'];
-	}
-	return $this;
+        }
+        return $this;
     }
 
     function updateFecInfo(){
-	//TODO: This can be done in another file separate from this object. Did this to save time and should
-	//fix in the future
+        //TODO: This can be done in another file separate from this object. Did this to save time and should
+        //fix in the future
         $me = Person::newFromWgUser();
         if($me->getId() == $this->getId() || $me->isRoleAtLeast(MANAGER) || $isSupervisor){
             $fec = DBFunctions::select(array('grand_personal_fec_info'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->getId())));
-	    if(count($fec) > 0){ 
-	        $status = DBFunctions::update('grand_personal_fec_info', 
-                                    array('date_of_phd' => $this->dateOfPhd,
-                                          'date_of_appointment' => $this->dateOfAppointment,
-                                          'date_assistant' => $this->dateOfAssistant,
-                                          'date_associate' => $this->dateOfAssociate,
-                                          'date_professor' => $this->dateOfProfessor,
-                                          'date_tenure' => $this->dateOfTenure,
-                                          'date_retirement' => $this->dateOfRetirement,
-                                          'date_last_degree' => $this->dateOfLastDegree,
-                                          'last_degree' => $this->lastDegree,
-                                          'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                          'publication_history_books' => $this->publicationHistoryBooks,
-					  'publication_history_patents' => $this->publicationHistoryPatents,
-                                          'date_fso2' => $this->dateFso2,
-                                          'date_fso3' => $this->dateFso3,
-                                          'date_fso4' => $this->dateFso4),
-                                    array('user_id' => EQ($this->getId())));
-		if($status){
-		    DBFunctions::commit();
-		}
-	        return $status;
-	    }
-	    else{
+                                       array('*'),
+                                       array('user_id' => EQ($this->getId())));
+            if(count($fec) > 0){
+                $status = DBFunctions::update('grand_personal_fec_info', 
+                                        array('date_of_phd' => $this->dateOfPhd,
+                                              'date_of_appointment' => $this->dateOfAppointment,
+                                              'date_assistant' => $this->dateOfAssistant,
+                                              'date_associate' => $this->dateOfAssociate,
+                                              'date_professor' => $this->dateOfProfessor,
+                                              'date_tenure' => $this->dateOfTenure,
+                                              'date_retirement' => $this->dateOfRetirement,
+                                              'date_last_degree' => $this->dateOfLastDegree,
+                                              'last_degree' => $this->lastDegree,
+                                              'publication_history_refereed' => $this->publicationHistoryRefereed,
+                                              'publication_history_books' => $this->publicationHistoryBooks,
+                                              'publication_history_patents' => $this->publicationHistoryPatents,
+                                              'date_fso2' => $this->dateFso2,
+                                              'date_fso3' => $this->dateFso3,
+                                              'date_fso4' => $this->dateFso4),
+                                        array('user_id' => EQ($this->getId())));
+                if($status){
+                    DBFunctions::commit();
+                }
+                return $status;
+            }
+            else{
                 $status = DBFunctions::insert('grand_personal_fec_info',
                                     array('user_id' => $this->getId(),
                                           'date_of_phd' => $this->dateOfPhd,
@@ -570,7 +570,7 @@ class Person extends BackboneModel {
                     DBFunctions::commit();
                 }
                 return $status;
-	    }
+            }
         }
         return false;
     }
@@ -2790,7 +2790,7 @@ class Person extends BackboneModel {
                     FROM(SELECT id, name, rev_id
                     FROM grand_contributions
                     WHERE (users LIKE '%\"{$this->id}\"%'
-		           OR pi LIKE '%\"{$this->id}\"%')
+                    OR pi LIKE '%\"{$this->id}\"%')
                     AND (access_id = '{$this->id}' OR access_id = '0')
                     GROUP BY id, name, rev_id
                     ORDER BY id ASC, rev_id DESC) a
@@ -3584,7 +3584,7 @@ class Person extends BackboneModel {
             foreach($allPapers as $paper){
                 if(!isset($processed[$paper->getId()])){
                     $processed[$paper->getId()] = true;
-		    $papers[] = $paper->getId();
+                    $papers[] = $paper->getId();
                 }
             }
         }
@@ -3606,7 +3606,7 @@ class Person extends BackboneModel {
             }
         }
         return $papersArray;
-	}
+    }
     
     /**
      * Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
@@ -4227,13 +4227,13 @@ class Person extends BackboneModel {
                     AND year = '{$year}'";
             $data = DBFunctions::execSQL($sql);
             if(count($data) > 0){
-	            $this->isEvaluator[$year] = true;
-	        }
-	        else {
-	            $this->isEvaluator[$year] = false;
-	        }
-	    }
-	    return $this->isEvaluator[$year];
+                $this->isEvaluator[$year] = true;
+            }
+            else {
+                $this->isEvaluator[$year] = false;
+            }
+        }
+        return $this->isEvaluator[$year];
     }
     
     /**
@@ -4545,35 +4545,35 @@ class Person extends BackboneModel {
      * @return Person The Person from the given email
      */
     static function newFromUniversityId($id){
-	    $person = new Person(array());
+        $person = new Person(array());
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
                                     array('university_id' => $id));
         if(count($data) > 0){
             return Person::newFromId($data[0]['user_id']);
         }
-	    return $person;
+        return $person;
     }
 
     function setUniversityId($id){
-	    $status = DBFunctions::update('mw_user',
+        $status = DBFunctions::update('mw_user',
                                       array('university_id' => $id),
-                                      array('user_name' => EQ($this->getName())));	
-	    return $status;
+                                      array('user_name' => EQ($this->getName())));
+        return $status;
     }
 
     function getCourseEval($course_id){
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
-	        $data = DBFunctions::select(array('grand_user_courses'),
-				                        array('course_evals'),
-				                        array('course_id' => $course_id,
-					                          'user_id' => $this->getId()));
-	        if(count($data)>0){
-	            return unserialize($data[0]['course_evals']);
-	        }
-	    }
-	    return array();
+            $data = DBFunctions::select(array('grand_user_courses'),
+                                        array('course_evals'),
+                                        array('course_id' => $course_id,
+                                              'user_id' => $this->getId()));
+            if(count($data)>0){
+                return unserialize($data[0]['course_evals']);
+            }
+        }
+        return array();
     }
 
     /**
@@ -4590,8 +4590,8 @@ class Person extends BackboneModel {
                                         array('user1' => EQ($this->getId()),
                                               'user2' => EQ($person->getId()),
                                               'type' => EQ($relationship),
-					      'start_date' => EQ($start_date),
-					      'end_date' => EQ($end_date)));
+                                              'start_date' => EQ($start_date),
+                                              'end_date' => EQ($end_date)));
             return (count($data) > 0);
         }
         else{

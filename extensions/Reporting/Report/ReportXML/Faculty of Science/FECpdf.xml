@@ -18,20 +18,8 @@
             	<tr><td>Name:</td><td><b>{$user_name}</b></td></tr>
                 <tr><td>Rank:</td><td><b>{$user_level}</b></td></tr>
                 <tr><td>Department</td><td><b>{$user_dept}</b></td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="phd" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_PHD" blobType="BLOB_TEXT">
-	    <![CDATA[
-		<tr><td>Year of PhD:</td><td><b>{$item}</b></td></tr>
-	    ]]>
-	</ReportItem>
-        <ReportItem id="appointment" type="IntegerReportItem" min="0" max="{$this_year}" width="50px" blobItem="FEC_INFO_APPOINTMENT" blobType="BLOB_TEXT">
-             <![CDATA[
-                 <tr><td>Year of Appointment:&nbsp;</td><td><b>{$item}</b></td></tr>
-             ]]>
-        </ReportItem>
-        <ReportItem id="gradCount" type="StaticReportItem">
-            <![CDATA[
+                <tr><td>Year of PhD:</td><td><b>{$user_phd_year}</b></td></tr>
+                <tr><td>Year of Appointment:&nbsp;</td><td><b>{$user_appointment_year}</b></td></tr>
             	<tr><td>Graduate Students(Supervised or Co-supervised):</td><td><b>{$user_grad_count}</td></b></tr>
                 <tr><td style='width:350px;'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</td><td><b>{$user_fellow_count}</b></tr></td>
                 <tr><td style='width:350px;'>Technicians:</td><td><b>{$user_tech_count}</b></tr></td>

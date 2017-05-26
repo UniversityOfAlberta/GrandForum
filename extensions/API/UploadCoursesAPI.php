@@ -31,6 +31,10 @@
 	    $i = 0;
 	    $finalarray = array();
             foreach ($xls_array as $Row){
+		$checkRow = implode("",$Row);
+		if($checkRow == ""){
+		    continue;
+		}
                 if($i == 0){
                     $i++;
                     continue;

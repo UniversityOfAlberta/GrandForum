@@ -1214,17 +1214,39 @@ class ReportItemCallback {
     }
 
     function getUserPublicationCount($start_date,$end_date,$type='Publication'){
-	$person = Person::newFromId($this->reportItem->personId);
-	$products = $person->getPapersAuthored($type, $start_date, $end_date);
-	return count($products);
-    }
-
-    function getUserLifetimePublicationCount($type='all'){
+        $year = substr($end_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
-        $products = $person->getPapers($type, false, 'both', true, "Public");
+        switch($type){
+            default:
+            case "Publication":
+                $histories = $person->getProductHistories($year, "Refereed");
+                break;
+            case "Book":
+                $histories = $person->getProductHistories($year, "Book");
+                break;
+            case "Patent":
+                $histories = $person->getProductHistories($year, "Patent");
+                break;
+        }
+        
+        if(count($histories) > 0){
+            return $histories[0]->getValue();
+        }
+        $products = $person->getPapersAuthored($type, $start_date, $end_date);
         return count($products);
     }
 
+    function getUserLifetimePublicationCount($type='all'){
+        $phdYear = $this->getUserPhdYear();
+        $year = $this->reportItem->getReport()->year;
+        $person = Person::newFromId($this->reportItem->personId);
+        
+        $count = 0;
+        for($y=$phdYear; $y <= $year; $y++){
+            $count += $this->getUserPublicationCount(($y-1)."-07-01",($y)."-06-30",$type);
+        }
+        return $count;
+    }
     
     function getUserProjects(){
         $person = Person::newFromId($this->reportItem->personId);
