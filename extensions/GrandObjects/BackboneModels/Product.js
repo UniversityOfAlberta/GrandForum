@@ -102,10 +102,10 @@ Product = Backbone.Model.extend({
             type: "",
             description: "",
             date: Date.format(new Date(), 'yyyy-MM-dd'),
-	    acceptance_date: Date.format(new Date(), 'yyyy-MM-dd'),
-	    ratio: "",
-	    acceptance_ratio_numerator: "",
-	    acceptance_ratio_denominator: "",
+            acceptance_date: Date.format(new Date(), 'yyyy-MM-dd'),
+            ratio: "",
+            acceptance_ratio_numerator: "",
+            acceptance_ratio_denominator: "",
             url: "",
             status: "",
             data: {},
@@ -311,4 +311,41 @@ ProductProjects = RangeCollection.extend({
     newModel: function(){
         return new Projects();
     },
+});
+
+
+/**
+ * ProductHistory Model
+ */
+ProductHistory = Backbone.Model.extend({
+    
+    initialize: function(){
+    
+    },
+    
+    urlRoot: 'index.php?action=api.productHistories',
+    
+    defaults: {
+        id: null,
+        user_id: null,
+        type: "",
+        year: "",
+        value: ""
+    }
+    
+});
+
+/**
+ * ProductHistories Collection
+ */
+ProductHistories = Backbone.Collection.extend({
+    
+    model: ProductHistory,
+    
+    personId: null,
+    
+    url: function(){
+        return 'index.php?action=api.productHistories/person/' + this.personId;
+    },
+    
 });

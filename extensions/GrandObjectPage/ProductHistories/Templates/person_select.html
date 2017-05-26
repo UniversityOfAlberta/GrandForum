@@ -1,0 +1,6 @@
+<select id="personSelect" data-placeholder="Choose a Person...">
+    <option value="-1"></option>
+    <% _.each(models, function(person){ %>
+        <option value="<%= person.get('id') %>"><%= person.get('fullName') %></option>
+    <% }) %>
+</select>

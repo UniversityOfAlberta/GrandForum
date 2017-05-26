@@ -31,7 +31,7 @@ class ProductHistory extends BackboneModel {
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->year = $row['year'];
-                $this->type = $row['type'];
+                $this->type = ucwords($row['type']);
                 $this->value = $row['value'];
                 $this->created = $row['created'];
                 $this->updated = $row['updated'];

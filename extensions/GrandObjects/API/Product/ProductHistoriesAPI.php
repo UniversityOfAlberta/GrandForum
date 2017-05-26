@@ -10,7 +10,7 @@ class ProductHistoriesAPI extends RESTAPI {
             }
             return $productHistory->toJSON();
         }
-        else if($this->getParam('person') != "" && $this->getParam('personId') != ""){
+        else if($this->getParam('personId') != ""){
             $json = array();
             $person = Person::newFromId($this->getParam('personId'));
             if($person == null || $person->getId() == 0){
