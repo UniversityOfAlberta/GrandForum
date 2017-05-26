@@ -154,6 +154,10 @@
                                   'date_fso2' => $row['date_fso2'],
                                   'date_fso3' => $row['date_fso3'],
                                   'date_fso4' => $row['date_fso4']));
+                                  
+        DBFunctions::update('mw_user',
+                            array('employee_id' => $row['uid']),
+                            array('user_id' => EQ($person->getId())));
         
         // Update University Info
         addUserUniversity($person, "University of Alberta", ucwords($row['department']), ucwords($row['rank']), $row['date_of_appointment'], $row['date_retirement']);

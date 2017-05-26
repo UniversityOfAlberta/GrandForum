@@ -21,6 +21,7 @@ class Person extends BackboneModel {
 
     var $user = null;
     var $name;
+    var $employeeId;
     var $email;
     var $phone;
     var $nationality;
@@ -310,6 +311,7 @@ class Person extends BackboneModel {
                                               'last_name',
                                               //'prev_first_name',
                                               //'prev_last_name',
+                                              'employee_id',
                                               //'honorific',
                                               //'language',
                                               'user_email',
@@ -851,6 +853,7 @@ class Person extends BackboneModel {
             $this->middleName = @$data[0]['middle_name'];
             //$this->prevFirstName = @$data[0]['prev_first_name'];
             //$this->prevLastName = @$data[0]['prev_last_name'];
+            $this->employeeId = @$data[0]['employee_id'];
             //$this->honorific = @$data[0]['honorific'];
             //$this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];

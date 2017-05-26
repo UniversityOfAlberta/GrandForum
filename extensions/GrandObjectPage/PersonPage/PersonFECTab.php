@@ -23,7 +23,6 @@ class PersonFECTab extends AbstractEditableTab {
         $this->person->dateOfLastDegree = @$_POST['dateOfLastDegree'];
         $this->person->lastDegree = @str_replace("'", "&#39;", $_POST['lastDegree']);
         $this->person->updateFecInfo();
-        //redirect("{$this->person->getUrl()}?tab=fec-info");
     }
     
     function userCanView(){
