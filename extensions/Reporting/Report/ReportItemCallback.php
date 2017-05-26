@@ -1243,6 +1243,22 @@ class ReportItemCallback {
         
         $count = 0;
         for($y=$phdYear; $y <= $year; $y++){
+            switch($type){
+                default:
+                case "Publication":
+                    $previousCounts = $person->getProductHistories($y, "Previous Refereed");
+                    break;
+                case "Book":
+                    $previousCounts = $person->getProductHistories($y, "Previous Book");
+                    break;
+                case "Patent":
+                    $previousCounts = $person->getProductHistories($y, "Previous Patent");
+                    break;
+            }
+            if(count($previousCounts) > 0){
+                // Reset the count
+                $count = $previousCounts[0]->getValue();
+            }
             $count += $this->getUserPublicationCount(($y-1)."-07-01",($y)."-06-30",$type);
         }
         return $count;
