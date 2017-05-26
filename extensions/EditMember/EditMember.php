@@ -399,7 +399,7 @@ class EditMember extends SpecialPage{
                 // User does not have permission for this person
                 continue;           
             }
-            $wgOut->addHTML("<option class='".implode(" ", $projs)."' id='".str_replace(".", "", $person->getName())."'>".str_replace(".", " ", $person->getName())."</option>\n");
+            $wgOut->addHTML("<option class='".implode(" ", $projs)."' id='".str_replace(".", "", $person->getName())."' value=\"".str_replace(".", " ", $person->getName())."\">{$person->getNameForForms()}</option>\n");
         }
         $wgOut->addHTML("</select>
                 </td></tr>
