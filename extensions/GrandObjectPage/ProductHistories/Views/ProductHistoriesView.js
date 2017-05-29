@@ -50,15 +50,25 @@ PersonSelectView = Backbone.View.extend({
 
 HistoriesView = Backbone.View.extend({
 
+    views: {},
+
     initialize: function(){
         this.model.bind('sync', this.render, this);
-        this.model.bind('add', this.render, this);
-        this.model.bind('remove', this.render, this);
+        //this.model.bind('add', this.render, this);
+        this.model.bind('remove', this.removeHistory, this);
         this.template = _.template($("#histories_template").html());
     },
     
     addNewHistory: function(e){
-        this.model.add(new ProductHistory({user_id: this.model.personId, type: 'Refereed', value: 0, year: new Date().getFullYear()}));
+        var newProductHistory = new ProductHistory({user_id: this.model.personId, type: 'Refereed', value: 0, year: new Date().getFullYear()})
+        this.model.add(newProductHistory);
+        var view = new HistoryView({model: newProductHistory});
+        this.$("#histories").append(view.render());
+        this.views[newProductHistory.cid] = view;
+    },
+    
+    removeHistory: function(e){
+        this.views[e.cid].remove();
     },
     
     saveHistory: function(e){
@@ -83,9 +93,14 @@ HistoriesView = Backbone.View.extend({
     },
     
     updateHistories: function(){
+        _.each(this.views, function(v){
+            v.remove();
+        });
+        this.views = {};
         this.model.each($.proxy(function(productHistory){
             var view = new HistoryView({model: productHistory});
             this.$("#histories").append(view.render());
+            this.views[productHistory.cid] = view;
         }, this));
     },
     
