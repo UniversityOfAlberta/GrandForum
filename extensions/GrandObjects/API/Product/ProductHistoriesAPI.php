@@ -27,8 +27,10 @@ class ProductHistoriesAPI extends RESTAPI {
         $productHistory->year = $this->POST('year');
         $productHistory->type = $this->POST('type');
         $productHistory->value = $this->POST('value');
-        $productHistory->create();
-        // TODO: Handle Errors
+        $status = $productHistory->create();
+        if(is_string($status)){
+            $this->throwError($status);
+        }
         return $productHistory->toJSON();
     }
     
@@ -41,8 +43,10 @@ class ProductHistoriesAPI extends RESTAPI {
             $productHistory->year = $this->POST('year');
             $productHistory->type = $this->POST('type');
             $productHistory->value = $this->POST('value');
-            $productHistory->update();
-            // TODO: Handle errors
+            $status = $productHistory->update();
+            if(is_string($status)){
+                $this->throwError($status);
+            }
             return $productHistory->toJSON();
         }
     }

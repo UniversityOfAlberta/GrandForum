@@ -52,59 +52,34 @@ HistoriesView = Backbone.View.extend({
 
     initialize: function(){
         this.model.bind('sync', this.render, this);
+        this.model.bind('add', this.render, this);
+        this.model.bind('remove', this.render, this);
         this.template = _.template($("#histories_template").html());
     },
     
-    add: function(rule){
-        rule.bind('change', this.render, this);
-        this.render();
-    },
-    
-    remove: function(rule){
-        rule.unbind('change', this.render, this);
-        this.render();
-    },
-    
-    deleteHistory: function(e){
-        $(e.currentTarget).attr("disabled", true);
-        clearAllMessages();
-        var ruleId = $(e.currentTarget).parent().parent().attr('id');
-        var rule = this.model.rules.get(ruleId);
-        if(rule.isNew()){
-            rule.destroy();
-            return;
-        }
-        $.when(rule.destroy()).then($.proxy(function(){
-            addSuccess("Mailing List Rule Deleted");
-        }, this),$.proxy(function(){
-            addError("There was an error deleting the rule");
-            $(e.currentTarget).removeAttr("disabled");
-        }, this));
-    },
-    
     addNewHistory: function(e){
-        this.model.rules.push(new MailingListRule({listId: this.model.get('id')}));
+        this.model.add(new ProductHistory({user_id: this.model.personId, type: 'Refereed', value: 0, year: new Date().getFullYear()}));
     },
     
     saveHistory: function(e){
-        this.$("button#saveRules").attr("disabled", true);
+        this.$("button#saveHistory").attr("disabled", true);
         clearAllMessages();
         var ajax = Array();
-        this.model.rules.each(function(r){
-            ajax.push(r.save());
+        this.model.each(function(history){
+            ajax.push(history.save());
         });
         $.when.apply($, ajax).then($.proxy(function(){
-            addSuccess("Mailing List Rules Saved");
-            this.$("button#saveRules").removeAttr("disabled");
+            addSuccess("Product Histories Saved");
+            this.$("button#saveHistory").removeAttr("disabled");
         }, this),$.proxy(function(){
-            addError("There was an error saving the rules");
-            this.$("button#saveRules").removeAttr("disabled");
+            addError("There was an error saving the product histories");
+            this.$("button#saveHistory").removeAttr("disabled");
         }, this));
     },
     
     events: {
         "click button#addNewHistory": "addNewHistory",
-        "click button#saveRules": "saveRules"
+        "click button#saveHistory": "saveHistory"
     },
     
     updateHistories: function(){
@@ -133,6 +108,21 @@ HistoryView = Backbone.View.extend({
     
     initialize: function(){
         this.template = _.template($("#history_template").html());
+    },
+    
+    deleteHistory: function(e){
+        $(e.currentTarget).attr("disabled", true);
+        clearAllMessages();
+        if(this.model.isNew()){
+            this.model.destroy();
+            return;
+        }
+        $.when(this.model.destroy()).then($.proxy(function(){
+            addSuccess("Product History Rule Deleted");
+        }, this),$.proxy(function(){
+            addError("There was an error deleting the history");
+            $(e.currentTarget).removeAttr("disabled");
+        }, this));
     },
     
     events: {
