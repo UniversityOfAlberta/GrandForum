@@ -23,6 +23,7 @@ class EmailList extends SpecialPage{
                     <th>Registration Date</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Postal Code</th>
                     <th>Language</th>
                     <th>Role</th>
                     <th>Certified</th>
@@ -35,6 +36,7 @@ class EmailList extends SpecialPage{
                     <td>".time2date($person->getRegistration(), "Y-m-d H:i:s")."</td>
                     <td>{$person->getNameForForms()}</td>
                     <td>{$person->getEmail()}</td>
+                    <td>{$person->getPostalCode()}</td>
                     <td>{$person->getUser()->getOption('language')}</td>
                     <td>{$person->getType()}</td>
                     <td>{$certified}</td>
