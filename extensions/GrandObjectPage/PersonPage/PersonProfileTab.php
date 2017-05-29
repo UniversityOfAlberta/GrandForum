@@ -214,11 +214,12 @@ class PersonProfileTab extends AbstractEditableTab {
     function showTwitter($person, $visibility){
         $html = "";
         if($person->getTwitter() != ""){
+            $twitter = str_replace("@", "", $person->getTwitter());
             $html = <<<EOF
                 <br />
                 <div id='twitter' style='display: block; width: 100%; text-align: right; overflow: hidden; position:relative;'>
                     <div>
-                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$person->getTwitter()}" data-screen-name="{$person->getTwitter()}" data-widget-id="553303321864196097">Tweets by @{$person->getTwitter()}</a>
+                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$twitter}" data-screen-name="{$twitter}" data-widget-id="553303321864196097">Tweets by @{$twitter}</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </div>
                 </div>

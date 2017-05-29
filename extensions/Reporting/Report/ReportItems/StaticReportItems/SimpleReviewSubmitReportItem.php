@@ -64,7 +64,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#download_button_' + index).text(name + ' PDF');
                                                     }
                                                     else{
-                                                        $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                        $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                                         $('#generate_error').css('display', 'block');
                                                     }
                                                 }
@@ -73,7 +73,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		                                  },
 		                        error : function(response){
                                               // Error
-                                              $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                              $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                               $('#generate_error').css('display', 'block');
 		                                      $('#generateButton').removeAttr('disabled');
 		                                      $('#generate_throbber').css('display', 'none');
