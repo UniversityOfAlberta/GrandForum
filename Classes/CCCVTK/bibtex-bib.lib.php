@@ -224,7 +224,7 @@ class Bibliography // {{{
       "{\\'O}", "{\\`O}", "{\\^O}", "{\\\"O}", "{\\~O}", "{\\OE}", "{\\O}",
       "{\\'u}", "{\\`u}", "{\\^u}", "{\\\"u}",
       "{\\'U}", "{\\`U}", "{\\^U}", "{\\\"U}",
-      "{\\\"s}", "{!`}", "{?`}", "{\\&}", "{\\textquotesingle}"
+      "{\\\"s}", "{!`}", "{?`}", "{\\&}"
       );
     $patterns_innerbraces = array(
       "\\'{a}", "\\`{a}", "\\^{a}", "\\\"{a}", "\\~{a}", "\\a{a}", "\\a{e}",
@@ -241,7 +241,7 @@ class Bibliography // {{{
       "\\'{O}", "\\`{O}", "\\^{O}", "\\\"{O}", "\\~{O}", "\\O{E}", "\\{O}",
       "\\'{u}", "\\`{u}", "\\^{u}", "\\\"{u}",
       "\\'{U}", "\\`{U}", "\\^{U}", "\\\"{U}",
-      "\\\"s", "!`", "?`", "\\&", "\\{textquotesingle}"
+      "\\\"s", "!`", "?`", "\\&"
       );
     // Same thing without enclosing braces
     $patterns_nobraces = array(
@@ -259,7 +259,7 @@ class Bibliography // {{{
       "\\'O", "\\`O", "\\^O", "\\\"O", "\\~O", "\\OE", "\\O",
       "\\'u", "\\`u", "\\^u", "\\\"u",
       "\\'U", "\\`U", "\\^U", "\\\"U",
-      "\\\"s", "!`", "?`", "\\&", "\\textquotesingle"
+      "\\\"s", "!`", "?`", "\\&"
       );
     $replacements = array(
       "á", "à", "â", "ä", "ã", "å", "æ",
@@ -276,7 +276,7 @@ class Bibliography // {{{
       "Ó", "Ò", "Ô", "Ö", "Õ", "Œ", "Ø",
       "ú", "ù", "û", "ü",
       "Ú", "Ù", "Û", "Ü",
-      "ß", "¡", "¿", "&", "'");
+      "ß", "¡", "¿", "&");
     $out = str_replace($patterns_braces, $replacements, $out);
     $out = str_replace($patterns_innerbraces, $replacements, $out);
     $out = str_replace($patterns_nobraces, $replacements, $out);
@@ -379,7 +379,7 @@ class Bibliography // {{{
   private static function removeBraces($s) // {{{
   {
     $out = $s;
-    $out = str_replace(array("{", "}"), array("", ""), $out);
+    $out = trim(str_replace(array("{", "}"), array("", ""), $out), '"');
     return $out;
   } // }}}
   
@@ -409,29 +409,26 @@ class Bibliography // {{{
   private function parse($contents) // {{{
   {
     $entries = array();
-    preg_match_all('/@(\w+?)\{([^,]+?),(.*?)\n\s*?\}\s*?\n/ms', 
+    preg_match_all("/@(\\w+?)\\{([^,]+?),(.*?)\\n\\s*?\\}\\s*?\\n/ms", 
       $contents, $entries, PREG_SET_ORDER);
     foreach ($entries as $entry)
     {
       $bibtex_type = strtolower($entry[1]);
       $bibtex_name = $entry[2];
       $bibtex_contents = $entry[3].",\n"; // Newline added so that all entries are followed by one
-      preg_match_all('/(\w+?)\s*=\s*(\{(.*?)\}|(.*?)),/ms', 
+      preg_match_all('/(\w+?)\s*=\s*(\{(.*?)\}|(.*?)),\n/ms', 
         $bibtex_contents, $pairs, PREG_SET_ORDER);
       $params = array();
       foreach ($pairs as $pair)
       {
         $k = strtolower($pair[1]);
-        $v = $pair[3];
-        if(isset($pair[4])){
-            $v = $pair[4];
-        }
+        $v = $pair[2];
         $params["raw"][$k] = Bibliography::unspace($v); // We keep the original BibTeX string in the "raw" subarray
         $params[$k] = Bibliography::removeBraces(
           Bibliography::replaceAccents(Bibliography::unspace($v)));
       }
       $params["bibtex_type"] = $bibtex_type;
-      $this->m_entries[] = $params;
+      $this->m_entries[$bibtex_name] = $params;
     }
   } // }}}
   
