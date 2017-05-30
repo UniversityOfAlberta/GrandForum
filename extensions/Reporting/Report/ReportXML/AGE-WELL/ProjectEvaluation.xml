@@ -207,19 +207,19 @@
         </ReportItem>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m1a" blobItem="REV_1_5_M1A" type="Integer" size="3">
@@ -273,19 +273,19 @@
         </ReportItem>
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Journal Paper|Journal Abstract)}">
@@ -304,19 +304,19 @@
         </ReportItem>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Stakeholder and end-user driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m6" blobItem="REV_3_5_M6" type="Hidden" size="3" default="{add({getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Older Adult,Advisory Board)},{getNStakeholders({$this_year}-10-01, {$next_year}-09-30,Caregiver,Advisory Board)})}">
@@ -436,19 +436,19 @@
         </ReportItem>
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m1a" blobItem="PLAN_1_5_M1A" type="Integer" size="3">
@@ -502,19 +502,19 @@
         </ReportItem>
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
@@ -533,19 +533,19 @@
         </ReportItem>
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Stakeholder and end-user driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m6" blobItem="PLAN_3_5_M6" type="Integer" size="3">
@@ -682,19 +682,19 @@
         </ReportItem>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>National/Global Partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_5_m1" blobItem="REV_1_5_M1" type="Hidden" size="3" default="{project_n_partners({$this_year}-10-01, {$next_year}-09-30)}">
@@ -741,19 +741,19 @@
         </ReportItem>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Networking within AGE-WELL</b> (e.g. collaboration and production across the Network)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1" blobItem="REV_3_5_M1" type="Hidden" size="3" default="{project_n_connected_projects({$this_year}-10-01, {$next_year}-09-30)}">
@@ -797,19 +797,19 @@
         </ReportItem>
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>National/Global Partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_5_m1" blobItem="PLAN_1_5_M1" type="Integer" size="3">
@@ -856,19 +856,19 @@
         </ReportItem>
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Networking within AGE-WELL</b> (e.g. collaboration and production across the Network)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m1" blobItem="PLAN_3_5_M1" type="Integer" size="3">
@@ -924,19 +924,19 @@
         </ReportItem>
         <ReportItem id="rev_3_1" blobItem="REV_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Knowledge dissemination</b> (e.g. academic and non-academic dissemination activities)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_2" blobItem="REV_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_3" blobItem="REV_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Magazine/Newspaper Article|Print Media Interview)}">
@@ -982,19 +982,19 @@
         </ReportItem>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Product Development & IP Management</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
@@ -1037,19 +1037,19 @@
         </ReportItem>
         <ReportItem id="rev_2_1" blobItem="REV_2_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_2" blobItem="REV_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_3" blobItem="REV_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Activity, Start-Up)}">
@@ -1087,19 +1087,19 @@
         </ReportItem>
         <ReportItem id="plan_3_1" blobItem="PLAN_3_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Knowledge dissemination</b> (e.g. academic and non-academic dissemination activities)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_2" blobItem="PLAN_3_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_3" blobItem="PLAN_3_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_3_5_m1a" blobItem="PLAN_3_5_M1A" type="Integer" size="3">
@@ -1145,19 +1145,19 @@
         </ReportItem>
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Product Development & IP Management</b></td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m4" blobItem="PLAN_2_5_M4" type="Integer" size="3">
@@ -1200,19 +1200,19 @@
         </ReportItem>
         <ReportItem id="plan_2_1" blobItem="PLAN_2_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Establishment of a start-up company</b> (e.g. plans or progress made towards starting a company)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_2" blobItem="PLAN_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_3" blobItem="PLAN_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_2_5_m1" blobItem="PLAN_2_5_M1" type="Integer" size="3">
@@ -1262,19 +1262,19 @@
         </ReportItem>
         <ReportItem id="rev_1_1" blobItem="REV_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b> (e.g. involvement of HQP in the project and Network)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_2" blobItem="REV_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_3" blobItem="REV_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m1" blobItem="REV_1_6_M1" type="Hidden" size="3" default="{project_n_hqp({$this_year}-10-01, {$next_year}-09-30)}">
@@ -1341,19 +1341,19 @@
         </ReportItem>
         <ReportItem id="plan_1_1" blobItem="PLAN_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <tr>
+                <tr style='height:100%;'>
                 <td><b>Training our current cohort of HQP to build Canada’s capacity in this field</b> (e.g. involvement of HQP in the project and Network)</td>
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_2" blobItem="PLAN_1_2" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_3" blobItem="PLAN_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <td style='position:relative;'><div style='position:absolute; top:0; left:0; bottom:0; right: 0;'>{$item}</div></td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="plan_1_6_m1" blobItem="PLAN_1_6_M1" type="Integer" size="3">
