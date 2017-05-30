@@ -198,7 +198,7 @@ class PollView {
 			$this->resultsHTML($wgOut,$poll);
 		}
 		else if($submitted){
-			$option = Option::newFromId($_POST["choice{$poll->id}"]);
+			$option = $poll->getOption($_POST["choice{$poll->id}"]);
 			$option->addVote($wgUser->getId());
 			$this->resultsHTML($wgOut,$poll);
 		}
