@@ -3,9 +3,14 @@
     <Permissions>
         <Role role="INACTIVE+">
             <SectionPermission id="applications" permissions="rw" />
+            <SectionPermission id="summary" permissions="--" />
+        </Role>
+        <Role role="STAFF+">
+            <SectionPermission id="applications" permissions="rw" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="applications" tooltip="Applications" name="Applications" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="applications" tooltip="Applications" name="Applications" blobSection="APPLICATIONS" type="EditableReportSection">
         <!-- Application 3 -->
         <ReportItem id="instructions" type="Static">
             <![CDATA[
@@ -377,4 +382,15 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
+    <!--ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
+        <ReportItemSet id="people" type="AllPeople">
+            <ReportItemSet id="if" type="If" if="{!=({getText(RP_CONFERENCE_APPLICATIONS,)},)}">
+                <ReportItem id="test" type="Static">
+                    <![CDATA[
+                        {$user_name}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection-->
 </Report>
