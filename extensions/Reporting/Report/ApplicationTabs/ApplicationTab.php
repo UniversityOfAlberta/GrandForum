@@ -150,7 +150,7 @@ class ApplicationTab extends AbstractTab {
                 if($isPerson){
                     $this->html .= "<td>{$person->getEmail()}</td>";
                 }
-                if($person instanceof Project){
+                if($person instanceof Project || $person instanceof Theme){
                     $leader = array_values($person->getLeaders());
                     $leader = (isset($leader[0])) ? $leader[0] : null;
                     if($leader != null){
