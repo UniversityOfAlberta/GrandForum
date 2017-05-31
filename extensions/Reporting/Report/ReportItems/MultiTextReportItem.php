@@ -456,7 +456,7 @@ EOF;
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox") !== false || 
                            strstr(strtolower(@$types[$j]), "radio") !== false){
-                           $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                           $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
