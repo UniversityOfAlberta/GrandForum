@@ -38,7 +38,7 @@ class EmailList extends SpecialPage{
                     <td>{$person->getNameForForms()}</td>
                     <td>{$person->getEmail()}</td>
                     <td>{$person->getPostalCode()}</td>
-                    <td>{$person->getProvince()}</td>
+                    <td>{$person->getProvinceFromPostalCode()}</td>
                     <td>{$person->getUser()->getOption('language')}</td>
                     <td>{$person->getType()}</td>
                     <td>{$certified}</td>

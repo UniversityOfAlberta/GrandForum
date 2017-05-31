@@ -1347,7 +1347,7 @@ class Person extends BackboneModel {
      * @return string The province ID of this Person
      */
     function getProvince(){
-	$province = "";
+        $province = "";
         $data = DBFunctions::select(array('grand_provinces'),
                                     array('*'),
                                     array('id' => $this->province));
@@ -1355,7 +1355,43 @@ class Person extends BackboneModel {
             $province = $data[0]['province'];
         }
         return $province;
-
+    }
+    
+    function getProvinceFromPostalCode(){
+        $postal = strtoupper(substr(trim($this->getPostalCode()), 0, 1));
+        switch($postal){
+            case "A":
+                return "Newfoundland and Labrador";
+            case "B":
+                return "Nova Scotia";
+            case "C":
+                return "Prince Edward Island";
+            case "E":
+                return "New Brunswick";
+            case "G":
+            case "H":
+            case "J":
+                return "Quebec";
+            case "K":
+            case "L":
+            case "M":
+            case "N":
+            case "P":
+                return "Ontario";
+            case "R":
+                return "Manitoba";
+            case "S":
+                return "Saskatchewan";
+            case "T":
+                return "Alberta";
+            case "V":
+                return "British Columbia";
+            case "X":
+                return "Northwest Territories and Nunavut";
+            case "Y":
+                return "Yukon Territory";
+        }
+        return "";
     }
 
     /**
