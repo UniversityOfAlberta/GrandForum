@@ -374,16 +374,16 @@ class Project extends BackboneModel {
     }
     
     static function areThereDeletedProjects(){
-        $data = DBFunctions::select(array('grand_project_evolution'),
-                                    array('project_id'),
-                                    array('action' => EQ('DELETE')));
+        $data = $data = DBFunctions::select(array('grand_project_status'),
+                                            array('id'),
+                                            array('status' => EQ('Ended')));
         return (count($data) > 0);
     }
     
     static function areThereAdminProjects(){
         $data = $data = DBFunctions::select(array('grand_project_status'),
-                                    array('id'),
-                                    array('type' => EQ('Administrative')));
+                                            array('id'),
+                                            array('type' => EQ('Administrative')));
         return (count($data) > 0);
     }
     
