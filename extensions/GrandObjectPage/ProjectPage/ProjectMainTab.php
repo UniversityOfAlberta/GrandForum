@@ -190,7 +190,12 @@ EOF;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
         
-        $people = $project->getAllPeople($role);
+        if(!$project->isDeleted()){
+            $people = $project->getAllPeople($role);
+        }
+        else{
+            $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
+        }
         if(count($people) > 0){
             if($role == PL && count($people) == 1){
                 // There is normally just 1 PL, so only use singlular
