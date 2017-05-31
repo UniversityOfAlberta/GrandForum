@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2017">
+    <Permissions>
+        <Role role="INACTIVE+">
+            <SectionPermission id="applications" permissions="rw" />
+        </Role>
+    </Permissions>
     <ReportSection id="applications" tooltip="Applications" name="Applications" type="EditableReportSection" renderpdf="false">
         <!-- Application 3 -->
         <ReportItem id="instructions" type="Static">
