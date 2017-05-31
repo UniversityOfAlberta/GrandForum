@@ -132,11 +132,20 @@ class CreateUserAPI extends API{
                         $language = "fr";
                     }
                     $person->getUser()->setOption("language", $language);
+                    $provData = DBFunctions::select(array('grand_provinces'),
+                                                    array('id'),
+                                                    array('province' => EQ($_POST['wpProvince'])));
+                    $provinceId = isset($provData[0]['id']) ? $provData[0]['id'] : null;
+                    if($provinceId == null){
+                        DBFunctions::insert('grand_provinces',
+                                            array('province' => $_POST['wpProvince']));
+                        $provinceId = DBFunctions::insertId();
+                    }
                     DBFunctions::insert('grand_personal_caps_info',
                         array('user_id' => $person->id,
                               'postal_code' => $_POST['wpPostalCode'],
                               'city' => $_POST['wpCity'],
-                              'province' => $_POST['wpProvince'],
+                              'province' => $provinceId,
                               'specialty' => $_POST['wpSpecialty'],
                               'prior_abortion_service' => $provision,
                               'accept_referrals' => 0));

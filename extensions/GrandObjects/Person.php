@@ -1391,7 +1391,7 @@ class Person extends BackboneModel {
             case "Y":
                 return "Yukon Territory";
         }
-        return "";
+        return $this->getProvince();
     }
 
     /**
