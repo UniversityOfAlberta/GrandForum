@@ -143,7 +143,7 @@ class ApplicationTab extends AbstractTab {
             if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 $pName = $person->getName();
                 if($person instanceof Theme){
-                    $pName = "{$person->getAcronym()}: {$person->getNameForForms()}";
+                    $pName = "{$person->getAcronym()}: {$person->getName()}";
                 }
                 $this->html .= "<tr>
                     <td>{$pName}</td>";
