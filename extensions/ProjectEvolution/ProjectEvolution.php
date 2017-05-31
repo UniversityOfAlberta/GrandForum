@@ -23,7 +23,7 @@ class ProjectEvolution extends SpecialPage {
         global $wgOut;
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
-        $tabbedPage->addTab(new EvolveProjectTab());
+        //$tabbedPage->addTab(new EvolveProjectTab());
         $tabbedPage->addTab(new InactivateProjectTab());
         $tabbedPage->showPage();
         $wgOut->addHTML("<script type='text/javascript'>
