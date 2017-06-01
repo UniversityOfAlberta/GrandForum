@@ -1036,10 +1036,11 @@ EOF;
             foreach($preds as $pred){
                 foreach($pred->getLeaders($onlyid) as $leader){
                     if($onlyid){
-                        $ret[$leader] = $leader;
+                        $person = Person::newFromId($leader);
+                        $ret[$person->getReversedName()] = $leader;
                     }
                     else{
-                        $ret[$leader->getId()] = $leader;
+                        $ret[$leader->getReversedName()] = $leader;
                     }
                 }
             }
