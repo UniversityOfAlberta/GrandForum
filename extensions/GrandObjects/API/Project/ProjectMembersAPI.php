@@ -16,7 +16,12 @@ class ProjectMembersAPI extends RESTAPI {
                 $finalPeople = array();
                 foreach($exploded as $role){
                     $role = trim($role);
-                    $people = $project->getAllPeople($role);
+                    if(!$project->isDeleted()){
+                        $people = $project->getAllPeople($role);
+                    }
+                    else{
+                        $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
+                    }
                     foreach($people as $person){
                         $finalPeople[$person->getReversedName()] = $person;
                     }
