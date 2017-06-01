@@ -100,6 +100,13 @@ class MultiBudget {
         return $ret;
     }
     
+    function renderForPDF(){
+        if(count($this->budgets) > 0){
+            return $this->budgets[0]->renderForPDF();
+        }
+        return "";
+    }
+    
 }
 
 ?>

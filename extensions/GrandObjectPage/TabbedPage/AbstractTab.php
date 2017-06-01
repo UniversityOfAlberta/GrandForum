@@ -17,6 +17,14 @@ abstract class AbstractTab {
         return "";
     }
     
+    function canGeneratePDF(){
+        return false;
+    }
+    
+    function generatePDFBody(){
+        $this->generateBody();
+    }
+    
     abstract function generateBody();
 }
 

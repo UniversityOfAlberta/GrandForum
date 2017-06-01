@@ -129,12 +129,20 @@ class ProjectBudgetTab extends AbstractEditableTab {
         return (!$this->project->isFeatureFrozen(FREEZE_DESCRIPTION) && $this->visibility['isLead']);
     }
     
+    function canGeneratePDF(){
+        return true;
+    }
+    
+    function generatePDFBody(){
+        $this->showBudget(true);
+    }
+    
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
         $project = $this->project;
         $me = Person::newFromId($wgUser->getId());
         
-        $this->showBudget();
+        $this->showBudget(false);
         
         return $this->html;
     }
@@ -143,7 +151,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
         return $this->generateBody();
     }
 
-    function showBudget(){
+    function showBudget($renderForPDF=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
@@ -234,8 +242,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         if($total > $allocation && $allocation != ""){
                             $budget->errors[0][] = "Your total '$".number_format($total)."' is greater than the allocated amount of '$".number_format($allocation)."'.";
                         }
-                        $this->html .= $multiBudget->render();
-                        $this->html .= "<a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Budget.xlsx'>Download Budget</a><br />";
+                        if($renderForPDF){
+                            $this->html .= "<div style='font-size:0.5em;'>{$multiBudget->renderForPDF()}</div>";
+                        }
+                        else{
+                            $this->html .= $multiBudget->render();
+                        }
+                        $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_{$i}_Budget.xlsx'>Download Budget</a><br />";
                     }
                     else {
                         $this->html .= "No budget could be found for $i";

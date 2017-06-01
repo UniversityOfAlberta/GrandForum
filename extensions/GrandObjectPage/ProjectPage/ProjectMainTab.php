@@ -121,12 +121,20 @@ class ProjectMainTab extends AbstractEditableTab {
         }
     }
     
+    function generatePDFBody(){
+        $this->generateBody();
+    }
+    
     function generateEditBody(){
         $this->generateBody();
     }
     
     function canEdit(){
         return $this->project->userCanEdit();
+    }
+    
+    function canGeneratePDF(){
+        return true;
     }
 
     function showChallenge(){

@@ -35,12 +35,20 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
         @$this->saveBlobValue('DECISION', $_POST['DECISION']);
     }
     
+    function generatePDFBody(){
+        $this->generateBody();
+    }
+    
     function generateEditBody(){
         $this->generateBody();
     }
     
     function canEdit(){
         return (!$this->project->isFeatureFrozen(FREEZE_DESCRIPTION) && $this->project->userCanEdit());
+    }
+    
+    function canGeneratePDF(){
+        return true;
     }
     
     function showDescription(){

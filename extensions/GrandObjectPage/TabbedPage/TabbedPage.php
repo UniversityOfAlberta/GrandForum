@@ -76,6 +76,12 @@ class TabbedPage {
         $wgOut->addHTML("<div style='display:none;' id='{$this->id}'>");
         $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
+            if(isset($_GET['generatePDF'])){
+                if($tab->canGeneratePDF()){
+                    $tab->generatePDFBody();
+                }
+                continue;
+            }
             if($tab instanceof AbstractEditableTab){
                 if($tab->canEdit() && isset($_POST['edit'])){
                     $tab->generateEditBody();
@@ -96,6 +102,22 @@ class TabbedPage {
             if($tab->html != ""){
                 $wgOut->addHTML("<li><a href='#{$tab->id}'>{$tab->name}</a></li>");
             }
+        }
+        if(isset($_GET['generatePDF'])){
+            $pdfHtml = "<div style='font-size:150%;'>{$wgOut->getPageTitle()}</div><br />";
+            $firstTab = true;
+            foreach($this->tabs as $tab){
+                if($tab->html != ""){
+                    if(!$firstTab){
+                        $pdfHtml .= "<div style='page-break-after:always;'></div>";
+                    }
+                    $pdfHtml .= "<h1>{$tab->name}</h1>";
+                    $pdfHtml .= $tab->html;
+                    $firstTab = false;
+                }
+            }
+            PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", null, null, isset($_GET['preview']), null, true);
+            exit;
         }
         $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
         $i = 0;

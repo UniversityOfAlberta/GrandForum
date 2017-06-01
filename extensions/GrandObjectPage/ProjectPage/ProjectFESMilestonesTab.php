@@ -206,6 +206,21 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         }
     }
     
+    function generatePDFBody(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+            $this->html .= "<h2>Activity Schedule</h2>";
+            $this->showMilestones(true);
+            $this->html .= "<div style='page-break-after:always;'></div>";
+            $this->html .= "<h2>Milestones</h2>";
+            $this->showFESMilestones(true);
+        }
+    }
+
+    function canGeneratePDF(){
+        return true;
+    }
+    
     function addScript(){
         global $wgServer, $wgScriptPath;
         $this->html .= "<script type='text/javascript'>
