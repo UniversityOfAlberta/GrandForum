@@ -77,7 +77,7 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
                             {$this->getBlobValue('COMMENTS3')}
                             <h2>Project Key Decision Point</h2>
                             <h3>1. Project Key Decision Point</h3>
-                            <div>{$this->getBlobValue('DECISION')}";
+                            {$this->getBlobValue('DECISION')}";
         }
         else{
             $this->html .= "<h2>Project Objectives / Anticipated Outcomes</h2>
