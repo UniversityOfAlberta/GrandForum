@@ -774,6 +774,10 @@ if ( isset($pdf) ) {
 }
 </script>';
         $dateStr = date("Y-m-d H:i:s T", time());
+        $html = str_replace("line-height:inherit;", "", $html);
+        $html = str_replace("line-height: inherit;", "", $html);
+        $html = str_replace("line-height:inherit", "", $html);
+        $html = str_replace("line-height: inherit", "", $html);
         if($preview){
             $html = PDFGenerator::replaceSpecial($html);
             echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
