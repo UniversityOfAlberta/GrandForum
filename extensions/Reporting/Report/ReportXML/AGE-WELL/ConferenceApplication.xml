@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2017">
     <Permissions>
-        <Role role="INACTIVE+">
+        <Role role="HQP+">
             <SectionPermission id="applications" permissions="rw" />
-            <SectionPermission id="summary" permissions="--" />
-        </Role>
-        <Role role="STAFF+">
-            <SectionPermission id="applications" permissions="rw" />
-            <SectionPermission id="summary" permissions="--" />
         </Role>
     </Permissions>
     <ReportSection id="applications" tooltip="Applications" name="Applications" blobSection="APPLICATIONS" type="EditableReportSection">
@@ -382,5 +377,4 @@
             </ReportItem>
         </ReportItemSet>
     </ReportSection>
-    
 </Report>
