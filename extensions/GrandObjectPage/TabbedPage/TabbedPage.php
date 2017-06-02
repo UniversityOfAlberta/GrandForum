@@ -106,7 +106,15 @@ class TabbedPage {
         if(isset($_GET['generatePDF'])){
             $pdfHtml = "<div style='font-size:150%;'>{$wgOut->getPageTitle()}</div><br />";
             $firstTab = true;
+            $persObj = null;
+            $projObj = null;
             foreach($this->tabs as $tab){
+                if(isset($tab->project)){
+                    $projObj = $tab->project;
+                }
+                else if(isset($tab->person)){
+                    $persObj = $tab->person;
+                }
                 if($tab->html != ""){
                     if(!$firstTab){
                         $pdfHtml .= "<div style='page-break-after:always;'></div>";
@@ -116,7 +124,7 @@ class TabbedPage {
                     $firstTab = false;
                 }
             }
-            $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", null, null, isset($_GET['preview']), null, false);
+            $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false);
             $len = strlen($pdf['pdf']);
             $name = $wgOut->getPageTitle().".pdf";
             header("Content-Type: application/pdf");
