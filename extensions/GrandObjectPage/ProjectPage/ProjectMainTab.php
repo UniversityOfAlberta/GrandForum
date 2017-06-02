@@ -64,7 +64,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         //$this->showChampions();
         $this->showDescription();
-        if($me->isRoleAtLeast(STAFF)){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
             $this->html .= "<span class='pdfnodisplay'><a class='button' href='{$this->project->getUrl()}?generatePDF'>Download PDF</a></span>";
         }
         return $this->html;
