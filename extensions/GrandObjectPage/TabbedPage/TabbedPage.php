@@ -34,6 +34,7 @@ class TabbedPage {
     // Writes all of the html
     function showPage($init_tab = 0){
         global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
+        $me = Person::newFromWgUser();
         $active_tab = $init_tab;
         $activeTabIndex = "";
         $i = 0;
@@ -76,7 +77,7 @@ class TabbedPage {
         $wgOut->addHTML("<div style='display:none;' id='{$this->id}'>");
         $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
-            if(isset($_GET['generatePDF'])){
+            if(isset($_GET['generatePDF']) && $me->isLoggedIn()){
                 if($tab->canGeneratePDF()){
                     $tab->generatePDFBody();
                 }
@@ -103,7 +104,7 @@ class TabbedPage {
                 $wgOut->addHTML("<li><a href='#{$tab->id}'>{$tab->name}</a></li>");
             }
         }
-        if(isset($_GET['generatePDF'])){
+        if(isset($_GET['generatePDF']) && $me->isLoggedIn()){
             $pdfHtml = "<div style='font-size:150%;'>{$wgOut->getPageTitle()}</div><br />";
             $firstTab = true;
             $persObj = null;
