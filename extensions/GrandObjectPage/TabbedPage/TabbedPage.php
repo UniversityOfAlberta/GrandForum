@@ -109,12 +109,15 @@ class TabbedPage {
             $firstTab = true;
             $persObj = null;
             $projObj = null;
+            $fileName = "";
             foreach($this->tabs as $tab){
                 if(isset($tab->project)){
                     $projObj = $tab->project;
+                    $fileName = "{$projObj->getName()}.pdf";
                 }
                 else if(isset($tab->person)){
                     $persObj = $tab->person;
+                    $fileName = "{$pers->getName()}.pdf";
                 }
                 if($tab->html != ""){
                     if(!$firstTab){
@@ -129,10 +132,9 @@ class TabbedPage {
             $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false);
             if(!isset($_GET['preview'])){
                 $len = strlen($pdf['pdf']);
-                $name = $wgOut->getPageTitle().".pdf";
                 header("Content-Type: application/pdf");
                 header('Content-Length: ' . $len);
-                header('Content-Disposition: attachment; filename="'.$name.'"');
+                header('Content-Disposition: attachment; filename="'.$fileName.'"');
                 header('Cache-Control: private, max-age=0, must-revalidate');
                 header('Pragma: public');
                 ini_set('zlib.output_compression','0');
