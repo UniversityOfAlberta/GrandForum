@@ -64,7 +64,9 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->showPeople();
         //$this->showChampions();
         $this->showDescription();
-        
+        if($me->isRoleAtLeast(STAFF)){
+            $this->html .= "<a class='button' href='{$this->project->getUrl()}?generatePDF'>Generate PDF</a>";
+        }
         return $this->html;
     }
     

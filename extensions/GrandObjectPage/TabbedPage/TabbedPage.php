@@ -116,7 +116,16 @@ class TabbedPage {
                     $firstTab = false;
                 }
             }
-            PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", null, null, isset($_GET['preview']), null, true);
+            $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", null, null, isset($_GET['preview']), null, false);
+            $len = strlen($pdf['pdf']);
+            $name = $wgOut->getPageTitle().".pdf";
+            header("Content-Type: application/pdf");
+            header('Content-Length: ' . $len);
+            header('Content-Disposition: attachment; filename="'.$name.'"');
+            header('Cache-Control: private, max-age=0, must-revalidate');
+            header('Pragma: public');
+            ini_set('zlib.output_compression','0');
+            echo $pdf['pdf'];
             exit;
         }
         $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
