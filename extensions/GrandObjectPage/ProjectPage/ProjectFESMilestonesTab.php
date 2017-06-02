@@ -408,7 +408,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             $height = "";
             if($pdf){
-                $height = "height:".(DPI_CONSTANT*50)."px;";
+                $height = "height:".(DPI_CONSTANT*10)."px;";
             }
             $this->html .= "<td style='white-space:nowrap;{$height};'>{$title}</td>";
             $this->html .= "<td>{$description}</td>";
