@@ -248,6 +248,12 @@ abstract class PDFGenerator {
                 $nInfo = count($value);
                 break;
             }
+            if($div->getAttribute('class') == 'tinymce'){
+                $tables = $div->getElementsByTagName('table');
+                foreach($tables as $table){
+                    $table->setAttribute('width', "100%");
+                }
+            }
         }
         $nInfo = max(5, $nInfo);
         
