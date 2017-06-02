@@ -125,7 +125,7 @@ class TabbedPage {
                     $firstTab = false;
                 }
             }
-            $pdfHtml = "<img style='position: fixed; width:400px; bottom:0; right:175px; opacity: 1; z-index:-1;' src='{$wgServer}{$wgScriptPath}/skins/{$config->getValue('networkName')}_Logo.png' />{$pdfHtml}";
+            $pdfHtml = "<img style='position: fixed; height:75px; bottom:-75px; left:0; opacity: 1; z-index:-1;' src='{$wgServer}{$wgScriptPath}/skins/{$config->getValue('networkName')}_Logo.png' />{$pdfHtml}";
             $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false);
             if(!isset($_GET['preview'])){
                 $len = strlen($pdf['pdf']);
