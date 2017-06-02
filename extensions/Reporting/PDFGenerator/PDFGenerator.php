@@ -314,6 +314,14 @@ abstract class PDFGenerator {
             require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
             global $dompdfOptions;
             $dompdf = new Dompdf\Dompdf($dompdfOptions);
+            $context = stream_context_create(array( 
+                'ssl' => array( 
+                    'verify_peer' => FALSE, 
+                    'verify_peer_name' => FALSE,
+                    'allow_self_signed'=> TRUE
+                )
+            ));
+            $dompdf->setHttpContext($context);
         }
         
         $header = <<<EOF

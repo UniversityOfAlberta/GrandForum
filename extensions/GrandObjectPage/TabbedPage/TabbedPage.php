@@ -126,14 +126,16 @@ class TabbedPage {
             }
             $pdfHtml = "<img style='position: fixed; width:400px; bottom:0; right:175px; opacity: 1; z-index:-1;' src='{$wgServer}{$wgScriptPath}/skins/{$config->getValue('networkName')}_Logo.png' />{$pdfHtml}";
             $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false);
-            $len = strlen($pdf['pdf']);
-            $name = $wgOut->getPageTitle().".pdf";
-            header("Content-Type: application/pdf");
-            header('Content-Length: ' . $len);
-            header('Content-Disposition: attachment; filename="'.$name.'"');
-            header('Cache-Control: private, max-age=0, must-revalidate');
-            header('Pragma: public');
-            ini_set('zlib.output_compression','0');
+            if(!isset($_GET['preview'])){
+                $len = strlen($pdf['pdf']);
+                $name = $wgOut->getPageTitle().".pdf";
+                header("Content-Type: application/pdf");
+                header('Content-Length: ' . $len);
+                header('Content-Disposition: attachment; filename="'.$name.'"');
+                header('Cache-Control: private, max-age=0, must-revalidate');
+                header('Pragma: public');
+                ini_set('zlib.output_compression','0');
+            }
             echo $pdf['pdf'];
             exit;
         }
