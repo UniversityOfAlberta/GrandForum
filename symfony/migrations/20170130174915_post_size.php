@@ -24,7 +24,7 @@ class PostSize extends AbstractMigration
     public function up()
     {
         $table = $this->table('grand_posts');
-        $table->changeColumn('message', 'string', array('limit' => MysqlAdapter::TEXT_LONG))
+        $table->changeColumn('message', 'text', array('limit' => MysqlAdapter::TEXT_LONG))
               ->save();
     }
 

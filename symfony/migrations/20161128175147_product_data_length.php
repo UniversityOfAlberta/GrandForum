@@ -24,7 +24,7 @@ class ProductDataLength extends AbstractMigration
     public function up()
     {
         $table = $this->table('grand_products');
-        $table->changeColumn('data', 'string', array('limit' => MysqlAdapter::TEXT_MEDIUM))
+        $table->changeColumn('data', 'text', array('limit' => MysqlAdapter::TEXT_MEDIUM))
               ->save();
     }
 

@@ -25,7 +25,7 @@ class BibliographyTitle extends AbstractMigration
     {
         $table = $this->table("grand_bibliography");
         $table->addColumn('title', 'string', array('limit' => 1024, 'after' => 'id'))
-              ->addColumn('description', 'string', array('limit' => MysqlAdapter::TEXT_LONG, 'after' => 'title'))
+              ->addColumn('description', 'text', array('limit' => MysqlAdapter::TEXT_LONG, 'after' => 'title'))
               ->addIndex('title')
               ->save();
     }
