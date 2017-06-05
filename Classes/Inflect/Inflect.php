@@ -74,6 +74,7 @@ class Inflect
 	 * @var array
 	 */
     static $irregular = array(
+        'highly qualified person' => 'highly qualified personnel',
         'exceeds' => 'exceed',
         'contains' => 'contain',
         'has'    => 'have',

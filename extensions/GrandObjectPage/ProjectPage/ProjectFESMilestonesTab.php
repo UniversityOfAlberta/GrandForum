@@ -406,7 +406,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $title = "<b>$title</b>";
                 }
             }
-            $this->html .= "<td style='white-space:nowrap;'>{$title}</td>";
+            $height = "";
+            if($pdf){
+                $height = "height:".(DPI_CONSTANT*10)."px;";
+            }
+            $this->html .= "<td style='white-space:nowrap;{$height};'>{$title}</td>";
             $this->html .= "<td>{$description}</td>";
             $this->showQuartersCells($milestone, $activityId);
             

@@ -370,7 +370,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         $title = "<b>$title</b>";
                     }
                 }
-                $this->html .= "<td>{$title}</td>";
+                $height = "";
+                if($pdf){
+                    $height = "height:".(DPI_CONSTANT*10)."px;";
+                }
+                $this->html .= "<td style='$height'>{$title}</td>";
                 $this->showQuartersCells($milestone, $activityId);
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());

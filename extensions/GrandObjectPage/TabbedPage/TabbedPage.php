@@ -33,7 +33,8 @@ class TabbedPage {
     
     // Writes all of the html
     function showPage($init_tab = 0){
-        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
+        $me = Person::newFromWgUser();
         $active_tab = $init_tab;
         $activeTabIndex = "";
         $i = 0;
@@ -76,7 +77,7 @@ class TabbedPage {
         $wgOut->addHTML("<div style='display:none;' id='{$this->id}'>");
         $wgOut->addHTML("<ul>");
         foreach($this->tabs as $tab){
-            if(isset($_GET['generatePDF'])){
+            if(isset($_GET['generatePDF']) && $me->isLoggedIn()){
                 if($tab->canGeneratePDF()){
                     $tab->generatePDFBody();
                 }
@@ -103,10 +104,21 @@ class TabbedPage {
                 $wgOut->addHTML("<li><a href='#{$tab->id}'>{$tab->name}</a></li>");
             }
         }
-        if(isset($_GET['generatePDF'])){
+        if(isset($_GET['generatePDF']) && $me->isLoggedIn()){
             $pdfHtml = "<div style='font-size:150%;'>{$wgOut->getPageTitle()}</div><br />";
             $firstTab = true;
+            $persObj = null;
+            $projObj = null;
+            $fileName = "";
             foreach($this->tabs as $tab){
+                if(isset($tab->project)){
+                    $projObj = $tab->project;
+                    $fileName = "{$projObj->getName()}.pdf";
+                }
+                else if(isset($tab->person)){
+                    $persObj = $tab->person;
+                    $fileName = "{$pers->getName()}.pdf";
+                }
                 if($tab->html != ""){
                     if(!$firstTab){
                         $pdfHtml .= "<div style='page-break-after:always;'></div>";
@@ -116,7 +128,18 @@ class TabbedPage {
                     $firstTab = false;
                 }
             }
-            PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", null, null, isset($_GET['preview']), null, true);
+            $pdfHtml = "<img style='position: fixed; height:75px; bottom:-75px; left:0; opacity: 1; z-index:-1;' src='{$wgServer}{$wgScriptPath}/skins/{$config->getValue('networkName')}_Logo.png' />{$pdfHtml}";
+            $pdf = PDFGenerator::generate($wgOut->getPageTitle(), $pdfHtml, "", $persObj, $projObj, isset($_GET['preview']), null, false);
+            if(!isset($_GET['preview'])){
+                $len = strlen($pdf['pdf']);
+                header("Content-Type: application/pdf");
+                header('Content-Length: ' . $len);
+                header('Content-Disposition: attachment; filename="'.$fileName.'"');
+                header('Cache-Control: private, max-age=0, must-revalidate');
+                header('Pragma: public');
+                ini_set('zlib.output_compression','0');
+            }
+            echo $pdf['pdf'];
             exit;
         }
         $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");

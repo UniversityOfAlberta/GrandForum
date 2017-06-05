@@ -190,9 +190,9 @@ class Thread extends BackboneModel {
                                             'roles' => serialize($this->roles),
                                             'title' => $this->title), true);
         if($status){
-            $id = DBFunctions::insertId();
+            $this->id = DBFunctions::insertId();
             DBFunctions::commit();
-            return Thread::newFromId($id);
+            return $this;
         }
         return false;
     }
