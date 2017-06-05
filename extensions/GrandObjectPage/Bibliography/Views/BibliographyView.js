@@ -1,6 +1,7 @@
 BibliographyView = Backbone.View.extend({
 
     initialize: function(){
+        Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Bibliography does not exist");
@@ -8,6 +9,13 @@ BibliographyView = Backbone.View.extend({
         });
         this.model.bind('change', this.render, this);
         this.template = _.template($('#bibliography_template').html());
+    },
+
+    subviewCreators: {
+        "listComments": function(){
+            console.log("THREAD ID: " + this.model.get('thread_id'));
+            return new ThreadView({model: new Thread({id: this.model.get('thread_id')})});
+        }
     },
     
     editBibliography: function(){

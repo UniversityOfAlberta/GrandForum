@@ -25,6 +25,7 @@ class BibliographyAPI extends RESTAPI {
         $bib->person = Person::newFromWgUser();
         $bib->editors = $this->POST('editors');
         $bib->products = $this->POST('products');
+        $bib->thread_id = $this->POST('thread_id');
         $bib->create();
         return $bib->toJSON();
     }

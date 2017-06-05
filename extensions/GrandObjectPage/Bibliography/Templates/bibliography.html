@@ -17,4 +17,6 @@
 </div>
 <% if(me.isLoggedIn()){ %>
     <button id="editBibliography">Edit Bibliography</button>
+    <h3>Comments</h3>
+        <%= subview('listComments') %>
 <% } %>
