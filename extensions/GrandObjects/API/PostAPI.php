@@ -23,9 +23,11 @@ class PostAPI extends RESTAPI {
         $post->setUserId($me->getId());
         $post->setMessage($this->POST('message'));
         $post = $post->create();
-        $people = $thread->getUsers();
+        $people = array_merge(array($thread->getThreadOwner()), $thread->getUsers());
         foreach($people as $person){
-            Notification::addNotification($me,$person,"New post on thread '{$thread->getTitle()}'", "{$me->getNameForForms()} has added a new post to '{$thread->getTitle()}'", "{$thread->getUrl()}");
+            if($person->getId() != $me->getId()){
+                Notification::addNotification($me,$person,"New post on thread '{$thread->getTitle()}'", "A new post has been added to '{$thread->getTitle()}'", "{$thread->getUrl()}");
+            }
         }
         //add notification send here
         if($post === false){
