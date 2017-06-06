@@ -1479,7 +1479,7 @@ select span.noshow {
     display: none;
 }
 
-.projectIcon, .productIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
+.projectIcon, .productIcon, .bibliographyIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
     width: 15px;
     height:15px;
     display: inline-block;
@@ -1491,6 +1491,10 @@ select span.noshow {
 
 .productIcon {
     background: url('../product.gif');
+}
+
+.bibliographyIcon {
+    background: url('../bibliography.gif');
 }
 
 .wikiIcon {

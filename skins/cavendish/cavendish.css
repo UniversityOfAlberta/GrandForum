@@ -1501,7 +1501,7 @@ select span.noshow {
     cursor: pointer;
 }
 
-.projectIcon, .productIcon, .wikiIcon, .pdfIcon {
+.projectIcon, .productIcon, .bibliographyIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
     width: 15px;
     height:15px;
     display: inline-block;
@@ -1515,12 +1515,24 @@ select span.noshow {
     background: url('../product.gif');
 }
 
+.bibliographyIcon {
+    background: url('../bibliography.gif');
+}
+
 .wikiIcon {
     background: url('../wiki.gif');
 }
 
 .pdfIcon {
     background: url('../pdf.gif');
+}
+
+.threadIcon {
+    background: url('../thread.png');
+}
+
+.storyIcon {
+    background: url('../story.png');
 }
 
 .throbber {
