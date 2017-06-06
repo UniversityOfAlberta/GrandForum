@@ -823,6 +823,7 @@ if ( isset($pdf) ) {
         global $IP;
         $str = "";
         $attached = array();
+        $name = str_replace("\\", "", str_replace("/", "", $name));
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             $blob = new ReportBlob();
             $blob->loadFromMD5($pdf);
