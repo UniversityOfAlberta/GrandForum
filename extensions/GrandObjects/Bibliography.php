@@ -58,6 +58,38 @@ class Bibliography extends BackboneModel{
                                     array('id'));
         return count($data);
     }
+
+    /**
+     * Returns all the Bibliographies with the given ids
+     * @param array $ids The array of ids
+     * @return array The array of Bibliographies
+     */
+    static function getByIds($ids){
+        if(count($ids) == 0){
+            return array();
+        }
+        $bibs = array();
+        foreach($ids as $key => $id){
+            if(isset(self::$cache[$id])){
+                $bib = self::$cache[$id];
+                $bibs[$bib->getId()] = $bib;
+                unset($ids[$key]);
+            }
+        }
+        if(count($ids) > 0){
+            $me = Person::newFromWgUser();
+            $sql = "SELECT *
+                    FROM grand_bibliography
+                    WHERE id IN (".implode(",", $ids)."))";
+            $data = DBFunctions::execSQL($sql);
+            foreach($data as $row){
+                $bib = new Bibliography(array($row));
+                self::$cache[$bib->getId()] = $bib;
+                $bibs[$bib->getId()] = $bib;
+            }
+        }
+        return $bibs;
+    }
  
     function Bibliography($data){
         if(count($data) > 0){

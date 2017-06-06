@@ -216,6 +216,59 @@ class GlobalSearchAPI extends RESTAPI {
 	                $ids[] = intval($key);
 	            }
                 break;
+            case 'bibliographies':
+                $data = array();
+                $bibs = DBFunctions::select(array('grand_bibliography'),
+                                            array('title', 'description', 'id'));
+                Product::generateProductTagsCache();
+                foreach($bibs as $bibliography){
+                    $bTitle = unaccentChars($bibliography['title']);
+                    $bDescription = unaccentChars($bibliography['description']);
+                    $bib = Bibliography::newFromId($bibliography['id']);
+                    $products = $bib->getProducts();
+                    $pTags = array();
+                    
+                    foreach($products as $product){
+                        if(isset(Product::$productTagsCache[$product->getId()])){
+                            foreach(Product::$productTagsCache[$product->getId()] as $tag){
+                                $pTags[] = $tag;
+                            }
+                        }
+                    }
+
+                    $pTags = unaccentChars(implode(" ", $pTags));
+                    $names = array_merge(explode(" ", $bTitle),
+                                         explode(" ", $bDescription),
+                                         explode(" ", $pTags));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $name = preg_quote($name);
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $data[] = array('bib_id' => $bib->getId(),
+                                        'bib_title' => $bib->getTitle());
+                    }
+                }
+                $dataCollection = new Collection($data);
+                $results = array();
+                $bibs = Bibliography::getByIds($dataCollection->pluck('bib_id'));
+                
+                foreach($bibs as $bibliography){
+                    $percent = 0;
+                    similar_text(unaccentChars($bibliography->getTitle()), unaccentChars($origSearch), $percent);
+                    $results[$bibliography->getId()] = $percent;
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
+                break;
             case 'wikipage':
                 $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();

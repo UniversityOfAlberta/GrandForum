@@ -98,7 +98,7 @@ class APIRequest{
 		return true;
 	}
 	
-	function doAction($api, $param=false){
+	static function doAction($api, $param=false){
 	    global $apiPaths;
 	    $api = $api."API";
 	    $obj = new $api();

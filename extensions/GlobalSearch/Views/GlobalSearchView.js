@@ -109,6 +109,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         "productResults" : function(){
             return new ProductResultsView({parent: this, model: new GlobalSearch({group: 'products', search: ''})});
         },
+        "bibliographyResults" : function(){
+            return new BibliographyResultsView({parent: this, model: new GlobalSearch({group: 'bibliographies', search: ''})});
+        },
         "wikiResults" : function(){
             return new WikiResultsView({parent: this, model: new GlobalSearch({group: 'wikipage', search: ''})});
         },
@@ -412,6 +415,8 @@ PersonResultsView = ResultsView.extend({
 });
 
 ExpertResultsView = ResultsView.extend({
+    maxResults: 3,
+
     createCardView: function(model){
         return new SmallPersonCardView({model: model});
     },
@@ -454,6 +459,22 @@ ProductResultsView = ResultsView.extend({
     
     render: function(){
         this.$el.html(this.template({group: productsTerm.pluralize()}));
+    }
+});
+
+BibliographyResultsView = ResultsView.extend({
+    maxResults: 3,
+    
+    createCardView: function(model){
+        return new SmallBibliographyCardView({model: model});
+    },
+    
+    createModel: function(obj){
+        return new Bibliography({id: obj});
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Bibliographies"}));
     }
 });
 
