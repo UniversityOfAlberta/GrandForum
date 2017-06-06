@@ -308,6 +308,12 @@ BibliographyEditView = Backbone.View.extend({
     },
     
     render: function(){
+        if(this.model.isNew()){
+            main.set('title', 'New Bibliography');
+        }
+        else {
+            main.set('title', 'Edit Bibliography');
+        }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderProductsWidget();
         this.renderEditorsWidget();
