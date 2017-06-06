@@ -2,7 +2,9 @@
     <% if(me.get('id') == author.id || 
        _.where(me.toJSON().roles, {role: 'Manager'}).length > 0 || 
        _.where(me.toJSON().roles, {role: 'Admin'}).length > 0){ %>
-        <button id="EditThreadButton">Edit Thread</button> &nbsp; 
+    	<% if (!this.isComment) { %>
+        	<button id="EditThreadButton">Edit Thread</button> &nbsp; 
+       	<% } %>
     <% } %>
 </div>
 <br />

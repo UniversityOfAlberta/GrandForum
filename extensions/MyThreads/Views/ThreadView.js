@@ -1,7 +1,11 @@
 ThreadView = Backbone.View.extend({
     template: _.template($('#thread_template').html()),
+    isComment: false,
 
-    initialize: function(){
+    initialize: function(options){
+        if(options.isComment != undefined){
+            this.isComment = options.isComment;
+        }
         this.model.fetch({
             error: $.proxy(function(e){
                 this.$el.html("This Thread does not exist.");
@@ -28,7 +32,7 @@ ThreadView = Backbone.View.extend({
         _.each(models, function(p){
             var mod = new Post({'id':p});
             ajax.push(mod.fetch());
-            var row = new PostView({model: mod, parent: this});
+            var row = new PostView({model: mod, parent: this, isComment: this.isComment});
             this.$("#postRows").append(row.$el);
         });
         this.addNewRow();
@@ -40,14 +44,16 @@ ThreadView = Backbone.View.extend({
 
     addNewRow: function(){
         var newPost = new Post({'thread_id':this.model.id, 'user_id':me.id});
-        var row = new PostView({model: newPost, parent: this});
+        var row = new PostView({model: newPost, parent: this, isComment: this.isComment});
         this.$("#postRows").append(row.$el);
     },
 
     render: function(){
-        main.set('title', "<a href='" + wgServer + wgScriptPath + "/index.php/Special:MyThreads'>Message Boards</a> &gt; " + 
+        if (!this.isComment){
+            main.set('title', "<a href='" + wgServer + wgScriptPath + "/index.php/Special:MyThreads'>Message Boards</a> &gt; " + 
                           "<a href='" + this.model.get('board').url + "'>" + this.model.get('board').title + "</a> &gt; " + 
                           striphtml(this.model.get('title')));
+        }
         this.$el.empty();
         var data = this.model.toJSON();
         this.$el.html(this.template(data));

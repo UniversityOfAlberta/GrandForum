@@ -5,11 +5,15 @@ PostView = Backbone.View.extend({
     template: _.template($('#post_template').html()),
     isDialog: false,
     oldMessage: "",
+    isComment: false,
     
     initialize: function(options){
         this.parent = options.parent;
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
+        }
+        if(options.isComment != undefined){
+            this.isComment = options.isComment;
         }
         if(this.model.isNew()){
             this.render();
