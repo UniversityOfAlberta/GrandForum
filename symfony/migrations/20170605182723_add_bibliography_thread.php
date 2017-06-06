@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class MilestoneProblem extends AbstractMigration
+class AddBibliographyThread extends AbstractMigration
 {
     /**
      * Change Method.
@@ -22,11 +22,10 @@ class MilestoneProblem extends AbstractMigration
      */
     public function up()
     {
-        $milestones = $this->table('grand_milestones');
-        if(!$milestones->hasColumn('problem')){
-            $milestones->addColumn('problem', 'text', array('after' => 'status'))
-                       ->save();
-        }
+        $table = $this->table("grand_bibliography", array("id" => "id"));
+        $table->addColumn('thread_id', 'integer')
+              ->addIndex('thread_id')
+              ->save();
     }
 
     /**

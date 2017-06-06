@@ -14,6 +14,7 @@ class Bibliography extends BackboneModel{
     var $person = null;
     var $editors = array();
     var $products = array();
+    var $thread_id = null;
     
     /**
      * Returns a new Bibliography from the given id
@@ -66,6 +67,7 @@ class Bibliography extends BackboneModel{
             $this->person = Person::newFromId($data[0]['person_id']);
             $this->editors = unserialize($data[0]['editors']);
             $this->products = unserialize($data[0]['products']);
+            $this->thread_id = $data[0]['thread_id'];
         }
     }
     
@@ -105,6 +107,11 @@ class Bibliography extends BackboneModel{
         }
         return $products;
     }
+
+    function getThread(){
+        $thread = Thread::newFromId($this->thread_id);
+        return $thread;
+    }
     
     function create(){
         foreach($this->editors as $key => $editor){
@@ -112,12 +119,21 @@ class Bibliography extends BackboneModel{
                 $this->editors[$key] = $editor->id;
             }
         }
+
+        $thread = new Thread(array());
+        $thread->title = $this->getTitle() . " comments";
+        $thread->user_id = $this->getPerson()->getId();
+        $thread->board_id = 0;
+        $thread->roles = array("");
+        $thread->create();
+        $this->thread_id = $thread->getId();
         DBFunctions::insert('grand_bibliography',
                             array('title' => $this->title,
                                   'description' => $this->description,
                                   'person_id' => $this->getPerson()->getId(),
                                   'editors' => serialize($this->editors),
-                                  'products' => serialize($this->products)));
+                                  'products' => serialize($this->products),
+                                  'thread_id' => $this->thread_id));
         $this->id = DBFunctions::insertId();
         return $this;
     }
@@ -163,7 +179,8 @@ class Bibliography extends BackboneModel{
                               'fullname' => $person->getNameForForms(),
                               'url' => $person->getUrl()),
             'editors' => $editors,
-            'products' => $this->products
+            'products' => $this->products,
+            'thread_id' => $this->thread_id
         );
         return $data;
     }

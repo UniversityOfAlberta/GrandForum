@@ -26,7 +26,7 @@ class Bibliography extends AbstractMigration
         $table = $this->table("grand_bibliography", array("id" => "id"));
         if(!$table->exists()){
             $table->addColumn('person_id', 'integer')
-                  ->addColumn('products', 'string', array('limit' => MysqlAdapter::TEXT_LONG))
+                  ->addColumn('products', 'text', array('limit' => MysqlAdapter::TEXT_LONG))
                   ->addIndex('person_id')
                   ->create();
         }
