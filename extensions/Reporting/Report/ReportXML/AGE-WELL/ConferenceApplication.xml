@@ -333,11 +333,31 @@
                     </tr>
                 ]]>
             </ReportItem>
-            <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
+            <ReportItem id="4_project" type="Select" blobItem="4_PROJECT" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN|Other">
                 <![CDATA[
                     <tr>
                         <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
-                        <td>{$item}</td>
+                        <td><div id="4_project">{$item}</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="4_project_other" type="Text" blobItem="4_PROJECT_OTHER">
+                <![CDATA[
+                        <div id="4_project_other" style="display:none;">Other: {$item}</div>
+                        <script type="text/javascript">
+                            var project4_other_fn = function(){
+                                var value = $("#4_project option:selected").val();
+                                if(value == "Other"){
+                                    $("#4_project_other").show();
+                                }
+                                else{
+                                    $("#4_project_other").hide();
+                                }
+                            ;}
+                            
+                            $("#4_project").change(project4_other_fn);
+                            project4_other_fn();
+                        </script>
+                        </td>
                     </tr>
                 ]]>
             </ReportItem>

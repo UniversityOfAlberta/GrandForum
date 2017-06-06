@@ -328,7 +328,8 @@
                                             <b>Project/CC:</b>
                                         </td>
                                         <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT,0,{$user_id},0)}
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT,0,{$user_id},0)}<br />
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT_OTHER,0,{$user_id},0)}
                                         </td>
                                     </tr>
                                     <tr>
