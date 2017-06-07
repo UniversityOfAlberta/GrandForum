@@ -1,7 +1,7 @@
 <?php
 
 BackbonePage::register('BibliographyPage', 'BibliographyPage', 'network-tools', dirname(__FILE__));
-
+$wgHooks['ToolboxLinks'][] = 'BibliographyPage::createToolboxLinks';
 class BibliographyPage extends BackbonePage {
     
     function isListed(){
@@ -32,6 +32,15 @@ class BibliographyPage extends BackbonePage {
     
     function getModels(){
         return array('Backbone/*');
+    }
+
+    static function createToolboxLinks(&$toolbox){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(HQP)){
+            $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Add Bibliography", "$wgServer$wgScriptPath/index.php/Special:BibliographyPage#/new");
+        }
+        return true;
     }
 
 }
