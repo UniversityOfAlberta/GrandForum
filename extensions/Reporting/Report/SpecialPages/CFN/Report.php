@@ -142,9 +142,9 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
-        if(count($person->getEvaluates("IFP-ETC")) > 0){
+        if(count($person->getEvaluates("IFP-ETC", 2017)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2016 Review", "{$url}IFPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2017 Review", "{$url}IFPReview", $selected);
         }
         if(count($person->getEvaluates("CAT-SRC")) > 0 || count($person->getEvaluates("CAT-EX")) > 0 || count($person->getEvaluates("CAT-RMC")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReview")) ? "selected" : false;
