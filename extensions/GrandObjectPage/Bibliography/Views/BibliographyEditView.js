@@ -185,7 +185,7 @@ BibliographyEditView = Backbone.View.extend({
 		    pull: true,
 		    put: true
 	    }].forEach(function (groupOpts, i) {
-		    Sortable.create($("#editors #sortable" + (i + 1))[0], {
+		    $("#editors #sortable" + (i + 1))[0].Sortable = Sortable.create($("#editors #sortable" + (i + 1))[0], {
 			    sort: (i != 1),
 			    group: groupOpts,
 			    animation: 150,
@@ -270,7 +270,7 @@ BibliographyEditView = Backbone.View.extend({
 		    pull: true,
 		    put: true
 	    }].forEach(function (groupOpts, i) {
-		    Sortable.create($("#products #sortable" + (i + 1))[0], {
+		    $("#products #sortable" + (i + 1))[0].Sortable = Sortable.create($("#products #sortable" + (i + 1))[0], {
 			    sort: (i != 1),
 			    group: groupOpts,
 			    animation: 150,
