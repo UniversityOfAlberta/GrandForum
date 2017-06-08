@@ -24,7 +24,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
 
 function createProduct($title) {
     $_POST['category'] = 'Publication';
-    $_POST['type'] = 'Jounral Paper';
+    $_POST['type'] = 'Journal Paper';
     $_POST['title'] = $title;
     $_POST['date_created'] = '2010-01-01 00:00:00';
     $_POST['date_changed'] = '2017-08-08 00:00:00';
