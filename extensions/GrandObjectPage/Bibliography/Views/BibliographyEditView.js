@@ -275,6 +275,7 @@ BibliographyEditView = Backbone.View.extend({
 			    group: groupOpts,
 			    animation: 150,
 			    onSort: function (e) {
+                    console.log("sorted!");
                     if($(e.target).attr('id') == 'sortable1'){
                         var ids = new Array();
                         $("li:visible", $(e.target)).each(function(i, el){

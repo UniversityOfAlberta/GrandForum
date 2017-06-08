@@ -387,6 +387,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
             }
         }
     }
+
+    /**
+    * @When /^I drag an element from "([^"]*)" with id "([^"]*)" from "([^"]*)" to "([^"]*)"$/
+    */
+    public function dragLiLeftOrRight($parent, $id, $source, $destination)
+    {
+        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'").append($("#'.$parent.' #'.$source.' li[data-id='.$id.']").detach());');
+        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$source.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$source.'")});');
+        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});');
+    }
     
     static function listFiles($dir){
         global $config;

@@ -22,6 +22,22 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     APIRequest::doAction('CreateProject', true);
 }
 
+function createProduct($title) {
+    $_POST['category'] = 'Publication';
+    $_POST['type'] = 'Journal Paper';
+    $_POST['title'] = $title;
+    $_POST['date_created'] = '2010-01-01 00:00:00';
+    $_POST['date_changed'] = '2017-08-08 00:00:00';
+    $_POST['status'] = 'Submitted';
+    $_POST['access'] = 'Public';
+    $_POST['authors'] = array();
+    $_POST['projects'] = array();
+    $_POST['data'] = array();
+
+    $api = new ProductAPI();
+    $api->doPOST();
+}
+
 function addUserRole($name, $role){
     Person::$cache = array();
     Person::$namesCache = array();
@@ -280,5 +296,8 @@ addRelation("NI.User1", "HQP.User1", "Supervises");
 addRelation("NI.User1", "HQP.User2", "Supervises");
 addRelation("NI.User1", "HQP.ToBeInactivated", "Supervises");
 addRelation("NI.User1", "NI.User2", "Works With");
+
+createProduct("Product 1");
+createProduct("Product 2");
 
 ?>
