@@ -27,7 +27,7 @@ Feature: Products
         Then I should see "No data available in table"
         
     Scenario: Viewing Publication as guest (should get error)
-        Given I am on "index.php/Special:Products#/Publication/1"
+        Given I am on "index.php/Special:Products#/Publication/3"
         Then I should see "This Product does not exist"
         
     Scenario: Changing the permissions of a product
@@ -46,7 +46,7 @@ Feature: Products
         Then I should see "New Publication"
         
     Scenario: Viewing Publication as guest (should get error)
-        Given I am on "index.php/Special:Products#/Publication/1"
+        Given I am on "index.php/Special:Products#/Publication/3"
         Then I should see "New Publication"
     
     Scenario: Editing a Publication
