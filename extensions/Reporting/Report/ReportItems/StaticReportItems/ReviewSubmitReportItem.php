@@ -77,7 +77,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                                 $('#download_button_' + index).text(name + ' PDF');
                                             }
                                             else{
-                                                $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                                $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li><li>Any PDF attachements are not encrypted/password protected</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                                 $('#generate_error').css('display', 'block');
                                             }
                                         }
@@ -89,7 +89,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                                   },
 		                        error : function(response){
                                       // Error
-                                      $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
+                                      $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li><li>Any PDF attachements are not encrypted/password protected</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                       $('#generate_error').css('display', 'block');
                                       $('#generateButton').removeAttr('disabled');
                                       $('#generate_throbber').css('display', 'none');
