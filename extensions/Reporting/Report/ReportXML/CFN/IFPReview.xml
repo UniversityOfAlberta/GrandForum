@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP2016 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false">
+<Report name="IFP 2017 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="ETC">
+        <Role role="Evaluator">
+            <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Role>
     </Permissions>
+    <ReportSection id="materials" name="PDF Downloads" tooltip="Download of IFP Proposals" type="ReportSection">
+        <ReportItem id="header" type="Static">
+            <![CDATA[
+                <table class='wikitable'>
+                    <tr>
+                        <th>Applicant</th>
+                        <th>PDF Download</th>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
+            <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="footer" type="Static">
+            <![CDATA[
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" name="IFP Review" blobSection="IFP_REVIEW" tooltip="Review of IFP Proposals" type="EditableReportSection">
         <Instructions>
             <![CDATA[
@@ -28,49 +55,48 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="message" type="StaticReportItem">
-            <![CDATA[
-                <p>Please note that you must separately log into CFN’s secure website to access all relevant IFP application documents for review.  Please click on the following link and use the username and password that was previously provided to you to log into CFN’s secure website.  <a href='http://www.cfn-nce.ca/member-area/' target='_blank'>http://www.cfn-nce.ca/member-area/</a></p>
-            ]]>
-        </ReportItem>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_tvn_file_number} - {$user_name}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
                 <ReportItem id="table" type="StaticReportItem">
                     <![CDATA[
                         <div id="user{$user_id}">
                         <table class='wikitable'>
-                            <tr><td><b>Candidate's Name:</b></td><td>{$user_name}</td></tr>
-                            <tr><td><b>CFN File#:</b></td><td>{$user_tvn_file_number}</td></tr>
-                            <tr><td><b>Candidate's Scientific Discipline:</b></td><td>{$user_dept}</td></tr>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="funding" type="SelectReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_FUNDING" blobSubItem="{$user_id}" options="Master's Level|Doctoral Level|Postdoctoral/Professional Level" width="">
-                    <![CDATA[
-                        <tr><td><b>Fellowship Funding Level being Sought by Candidate:</b></td><td>{$item}</td></tr>
+                            <tr><td><b>CFN File#:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
+                            <tr><td><b>Applicant Current Organization:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,ROLE,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Applicant Discipline:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,DISCIPLINE,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Supervisor Name:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,SUP_FIRST_NAME,0,{$user_id},0)} {getText(RP_IFP_APPLICATION,INTENT,SUP_LAST_NAME,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Supervisor Host Institution:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,SUP_INSTITUTION,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Fellowship Funding Level:</b></td><td>{getText(RP_IFP_APPLICATION,INTENT,LEVEL,0,{$user_id},0)}</td></tr>
                         </table>
                     ]]>
                 </ReportItem>
                 <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of CFN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project aligns with CFN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>1. Relevance and alignment of applicant's personal research project </h2>
+                        <h2>1. Relevance and alignment of applicant's personal research project <small>(see Application Section 2: Research Project)</small></h2>
                         {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="motivation" type="RadioReportItem"  blobType="BLOB_TEXT" blobItem="IFP_REVIEW_MOTIVATION" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate does not demonstrate a personal interest, academic/professional experience, and career aspirations in late life issues related to frailty.|The candidate demonstrates some personal interest, academic/professional experience, and career aspirations in late life issues related to frailty.|The candidate demonstrates good evidence of personal interest, academic/professional experience, and career aspirations in late life issues related to frailty.|The candidate demonstrates strong evidence of personal interest, academic/professional experience, and career aspirations in late life issues related to frailty." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>2. Motivation to work in area of late life issues related to frailty and participate in IFP</h2>
+                        <h2>2. Motivation to work in area of late life issues related to frailty and participate in IFP <small>(see Application Section 3: Interest and Benefit; Section 5: Curriculum Vitae and Experience)</small></h2>
                         {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="capacity" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_CAPACITY" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate does not have the breadth and depth of training, expertise, and time required to successfully complete the Fellowship Program.|The candidate has the minimal breadth and depth of training, expertise, and time required to successfully complete the Fellowship Program.|The candidate has the good breadth and depth of training, expertise, and time required to successfully complete the Fellowship Program.|The candidate has the excellent breadth and depth of training, expertise, and time required to successfully complete the Fellowship Program." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>3. Candidate's capacity and aptitude to be successful in IFP</h2>
+                        <h2>3. Candidate's capacity and aptitude to be successful in IFP <small>(see Application Section 5: Curriculum Vitae and Experience; Section 6: Learning Plan; Section 7: Applicant and Supervisor Capacity Disclosure)</small></h2>
                         {$item}
                     ]]>
                 </ReportItem>
                 <ReportItem id="support" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_SUPPORT" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The supervisor is not willing/able to provide mentorship to the candidate.|The supervisor is willing/able to provide some mentorship to the candidate.|The supervisor is willing/able to provide mentorship to the candidate.|The supervisor is willing/able to provide strong mentorship to the candidate." orientation="horizontal" showScore="true">
                     <![CDATA[
-                        <h2>4. Supervisor support</h2>
+                        <h2>4. Supervisor support <small>(see Application Section 7: Capacity Disclosure; Section 6: Learning Plan; Supervisor Endorsement Form)</small></h2>
                         {$item}
                     ]]>
                 </ReportItem>
