@@ -230,6 +230,19 @@ class Grant extends BackboneModel {
         return 'grant'.$this->getId();
     }
 
+	//this is for when type is different than grant
+    function getGrantType(){
+	return "Grant";
+    }
+	//TODO: if status awarded etc.
+    function getStatus(){
+	return false;
+    }
+	//TODO:Role of Applicant
+    function getRole(){
+	return false;
+    }
+
 }
 
 ?>

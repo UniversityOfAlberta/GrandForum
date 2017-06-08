@@ -6,13 +6,17 @@ $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['CCVExport'] = 'CCVExport';
 $wgExtensionMessagesFiles['CCVExport'] = $dir . 'CCVExport.i18n.php';
 $wgSpecialPageGroups['CCVExport'] = 'network-tools';
-
+/*
+$degree_map = 
+  array('Masters Student'=>array("00000000000000000000000000000072","Master's Thesis"),
+        'PhD Student'=>array("00000000000000000000000000000073","Doctorate"),
+        'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
+        'PostDoc'=>array("00000000000000000000000000000074","Post-doctorate"));*/
 $degree_map = 
   array('MSc Student'=>array("6bb179b92d1d46059bae10f6d21ea096","Master's Thesis"),
-        'PhD Student'=>array("971953ad86ca49f3b32ac5c7c2758a1b","Doctorate"),
-        'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
+	'PhD Student'=>array("971953ad86ca49f3b32ac5c7c2758a1b","Doctorate"),
+  	'Undergraduate'=>array("00000000000000000000000000000071","Bachelor's"),
         'PostDoc'=>array("e0b26301c88d4be5a6f7143981c9b3bb","Post-doctorate"));
-
 
 function runCCVExport($par) {
     CCVExport::execute($par);
@@ -49,9 +53,21 @@ class CCVExport extends SpecialPage {
         }
       
         $wgOut->setPageTitle("Export To CCV");
+	$wgOut->addHTML("<p>You must click \"Reload Page\" to set a time period.</p>");
+	if(isset($_GET['datefrom']) && $_GET['datefrom'] != ""){
+            $dateto= date("Y-m-d");
+	    $datefrom = $_GET['datefrom'];
+	    if(isset($_GET['dateto']) && $_GET['dateto'] !=""){
+	         $dateto = $_GET['dateto'];
+	    }
+	    $wgOut->addHTML("<form><p><b>Date:</b> <input type='date' format='yy-mm-dd' id='datefrom' value={$datefrom} name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' value={$dateto} class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML&datefrom={$datefrom}&dateto={$dateto}'>Download XML</a></p>");
 
-        $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>Download XML</a></p>");
-
+	}
+	else{
+            $wgOut->addHTML("<form><p>Date: <input type='date' format='yy-mm-dd' id='datefrom' name='datefrom' class='hasDatepicker'> - <input type='date' id='dateto' format='yy-mm-dd' name='dateto' class='hasDatepicker'><button type='submit'>Reload Page</button></p>");
+            $wgOut->addHTML("<p><a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:CCVExport?getXML'>Download XML</a></p>");
+	}
         // Display export preview
         $xml = CCVExport::exportXML();
         $xml = str_replace("<", "&lt;", $xml); // show tags as text
@@ -112,7 +128,20 @@ class CCVExport extends SpecialPage {
 
     static function exportXML(){
         global $wgOut, $wgUser, $config, $userID;
-        
+	$datefrom = "";
+	$dateto = "";
+	$filtered = false;
+        if(isset($_GET['datefrom']) && $_GET['datefrom'] != ""){
+	    $filtered = true;
+            $datefrom = strtotime($_GET['datefrom']);
+            if(isset($_GET['dateto']) && $_GET['dateto'] !=""){
+                 $dateto = strtotime($_GET['dateto']);
+            }
+            else{
+                $dateto= strtotime(date("Y-m-d"));
+            }
+	}
+        $dom = new DOMDocument(); 
         $person = Person::newFromId($userID);
         $personCCV = $person->getCCV();
 
@@ -123,7 +152,11 @@ class CCVExport extends SpecialPage {
         $lang_file = getcwd()."/extensions/CCVExport/templates/Language.xml";
         $addr_file = getcwd()."/extensions/CCVExport/templates/Address.xml";
         $phone_file = getcwd()."/extensions/CCVExport/templates/Telephone.xml";
-        
+        $grant_file = getcwd()."/extensions/CCVExport/templates/Grant.xml";
+        $investigator_file = getcwd()."/extensions/CCVExport/templates/OtherInvestigator.xml";
+        $funding_year_file = getcwd()."/extensions/CCVExport/templates/FundingByYear.xml";
+        $funding_source_file = getcwd()."/extensions/CCVExport/templates/FundingSources.xml";
+
         if($personCCV != ""){
             $ccv = simplexml_load_string($personCCV);
         }
@@ -139,6 +172,10 @@ class CCVExport extends SpecialPage {
         $lang_map = simplexml_load_file($lang_file);
         $addr_map = simplexml_load_file($addr_file);
         $phone_map = simplexml_load_file($phone_file);
+	$grant_map = simplexml_load_file($grant_file);
+	$investigator_map = simplexml_load_file($investigator_file);
+        $funding_year_map = simplexml_load_file($funding_year_file);
+        $funding_source_map = simplexml_load_file($funding_source_file);
 
         $all_products = $person->getPapers("Publication", false, "both",true,"Public");
         $prod_sorted = array();
@@ -152,7 +189,6 @@ class CCVExport extends SpecialPage {
                 $prod_sorted[$t][] = $p;
             }
         }
-        
         self::setAttribute($ccv, 'dateTimeGenerated', date('Y-m-d H:i:s'));
 
         $section = $ccv->xpath("section[@id='f589cbc028c64fdaa783da01647e5e3c']/section[@id='2687e70e5d45487c93a8a02626543f64']");
@@ -183,7 +219,6 @@ class CCVExport extends SpecialPage {
                                            $phone,
                                            $section[0]);
         }
-
         $counter = 0;
         $section = $ccv->xpath("section[@id='047ec63e32fe450e943cb678339e8102']/section[@id='46e8f57e67db48b29d84dda77cf0ef51']");
         foreach($prod_sorted as $type => $products){
@@ -192,7 +227,11 @@ class CCVExport extends SpecialPage {
                 if($product->getStatus() == 'Rejected'){
                     continue;
                 }
-
+            	$start_date_array = explode(" ",$product->getDate());
+            	$start_date = strtotime($start_date_array[0]);
+            	if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
+                    continue;
+            	}
                 $res = CCVExport::mapItem($person, 
                                           $map->Publications->Publication, 
                                           $product, 
@@ -204,6 +243,11 @@ class CCVExport extends SpecialPage {
         $rels = $person->getRelations('Supervises', true);
         $sortedRels = array();
         foreach($rels as $rel){
+            $start_date_array = explode(" ",$rel->getStartDate());
+            $start_date = strtotime($start_date_array[0]);
+	    if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
+		continue;
+            }
             $sortedRels[$rel->getStartDate().$rel->getId()] = $rel;
         }
         ksort($sortedRels);
@@ -217,11 +261,44 @@ class CCVExport extends SpecialPage {
                                      $section[0]);
         }
 
+//=== Grants Start == //
+	//change next line into getGrants() once the table has been switched
+	foreach($person->getGrants() as $grant){
+            $start_date_array = explode(" ",$grant->getStartDate());
+            $start_date = strtotime($start_date_array[0]);
+            if($filtered && ($datefrom > $start_date || $dateto < $start_date)){
+                continue;
+            }
+            $ccv_item = $ccv->addChild("section");
+            $ccv_id = "aaedc5454412483d9131f7619d10279e";
+            $ccv_name = "Research Funding History";
+
+            self::setAttribute($ccv_item, 'id', $ccv_id);
+            self::setAttribute($ccv_item, 'label', $ccv_name);	
+            $res = CCVExport::mapGrant($person,
+                                       $grant_map,
+                                       $grant,
+                                       $ccv_item,
+				       $investigator_map,
+        			       $funding_year_map,
+        			       $funding_source_map 
+					);
+        }
+//HERE
+//==== Grants End ======== //
         // Format and indent the XML
-        $dom = new DOMDocument();
+	$xml_string = $ccv->asXML();
+	$xml_string = preg_replace('/generic-cv:section/', 'section', $xml_string);
+        $xml_string = preg_replace('/generic-cv:field/', 'field', $xml_string);
+        $xml_string = preg_replace('/generic-cv:value/', 'value', $xml_string);
+        $xml_string = preg_replace('/generic-cv:lov/', 'lov', $xml_string);
+        $xml_string = preg_replace('/generic-cv:english/', 'english', $xml_string);
+        $xml_string = preg_replace('/generic-cv:bilingual/', 'bilingual', $xml_string);
+
+	$dom = new DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        $dom->loadXML($ccv->asXML());
+        $dom->loadXML($xml_string);
         $xml = $dom->saveXML();
 
         return $xml;
@@ -262,8 +339,8 @@ class CCVExport extends SpecialPage {
                         $value = self::setChild($field, 'lov');
                         self::setAttribute($value, 'id', self::getLovId("Title", $title, ""));
                         self::setValue($value, self::getLovVal("Title", $title, ""));
-                    }    
-		    break;
+		    }
+                    break;
                 case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
                     $gender = $person->getGender();
                     $value = self::setChild($field, 'lov');
@@ -562,13 +639,13 @@ class CCVExport extends SpecialPage {
                 $field->addAttribute('label', $item_name);
                 $hqp_status = $hqp->getNationality();
                 if(!empty($hqp_status) && isset($status_map[$hqp_status])){
-                    $val = $field->addChild('lov');
+		    $val = $field->addChild('lov');
                     $lov_id = $status_map[$hqp_status][0];
                     $val->addAttribute('id', $lov_id);
                     self::setValue($val, $status_map[$hqp_status][1]);
                 }
             }
-            else if($item_name == "Degree Type or Postdoctoral Status"){
+            elseif($item_name == "Degree Type or Postdoctoral Status"){    //else if($item_name == "Study / Postdoctoral Level"){
                 $uni = $hqp->getUniversity();
                 $hqp_pos = $uni['position'];
                 if(!empty($hqp_pos) && isset($degree_map[$hqp_pos])){
@@ -692,7 +769,6 @@ class CCVExport extends SpecialPage {
         $type = $product->getType();
         
         $success = 0;
-
         foreach($section as $item){
             if((($type == "Masters Thesis" || $type == "PHD Thesis") 
              && ($type == $item['type']) && $person->isAuthorOf($product) 
@@ -742,7 +818,6 @@ class CCVExport extends SpecialPage {
                 self::setAttribute($field, 'label', $item->title['ccv_name']);
                 $val = self::setChild($field, 'value', 'type', 'String');
                 $field->value = $title;
-
                 //Status
                 $prod_status = $product->getStatus();
                 if(isset($item->statuses)){
@@ -813,6 +888,154 @@ class CCVExport extends SpecialPage {
             }
         }
         return $success;
+    }
+
+
+    static function mapGrant($person, $section, $grant, $ccv, $investigator_map, $funding_year_map, $funding_source_map){
+        global $wgUser, $wgOut;
+        $success = 0;
+        foreach($section->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = self::setChild($ccv, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
+            switch($id){
+                case "931b92a5ffed4e5aa9c7b3a0afd5f8ba": 
+		    $gtype = $grant->getGrantType();
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Funding Type", $gtype, "Grant"));
+                    self::setValue($lov, self::getLovVal("Funding Type", $gtype, "Grant"));
+                    break;
+                case "9c1db4674334436ca891b7b8a9e114bd":
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($grant->getStartDate(), 0, 7)));
+                    break;
+                case "b63179ab0f0e4c9eaa7e9a8130d60ee3":
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($grant->getEndDate(), 0, 7)));
+                    break;
+		case "735545eb499e4cc6a949b4b375a804e8":
+                    $value = self::setChild($field, 'value', 'type', 'String');
+                    self::setValue($value, $grant->getTitle());
+                    break;
+		case "0674312de78f4647aba3bf202a41d58e":
+                    $bilin = $field->addChild("bilingual");
+                    $bilin->addChild("english");
+                    self::setValue($bilin->english, $grant->getDescription());
+                    break;
+		case "0991ead151e3445ca7537aa15acbec57":
+		    //$gtype = $grant->getStatus();
+                    //$lov = self::setChild($field, 'lov');
+                    //self::setAttribute($lov, 'id', self::getLovId("Funding Status", $gtype, "Awarded"));
+                    //self::setValue($lov, self::getLovVal("Funding Status", $gtype, "Awarded"));
+		    break;
+                case "7496de092dc84038a1881e8f9d77e713":
+                    $gtype = $grant->getRole();
+                    $lov = self::setChild($field, 'lov');
+                    self::setAttribute($lov, 'id', self::getLovId("Funding Role", $gtype, "Principal Investigator"));
+                    self::setValue($lov, self::getLovVal("Funding Role", $gtype, "Principal Investigator"));
+                    break;
+                case "32ce1c0c194447c19c6847b1915d35f1":
+                    $bilin = $field->addChild("bilingual");
+                    $bilin->addChild("english");
+                    self::setValue($bilin->english, "");
+                    break;
+                    break;
+	    }
+	}
+	/*Find different way for grants
+	foreach($grant->getPeople() as $guser){
+	    if($person->getId() != $guser->getId()){
+		$ccv_item = $ccv->addChild("section");
+            	$ccv_id = "c7c473d1237b432fb7f2abd831130fb7";
+            	$ccv_name = "Other Investigators";
+
+             	self::setAttribute($ccv_item, 'id', $ccv_id);
+            	self::setAttribute($ccv_item, 'label', $ccv_name);
+		foreach($investigator_map->field as $item){
+            	    $id = $item['id'];
+            	    $label = $item['label'];
+            	    $field = self::setChild($ccv_item, 'field', 'id', $id);
+            	    self::setAttribute($field, 'label', $label);
+            	    switch($id){
+              		case "ddd551dfb26344fbb17f07afcffc94ed":
+                    	    $value = self::setChild($field, 'value', 'type', 'String');
+                    	    self::setValue($value, $guser->getReversedName());
+                    	    break;
+                	case "13806a6772d248158619261afaab2fe0":
+                    	    //$grole = $guser->getRole();
+			    $grole = "Co-applicant";
+                    	    $lov = self::setChild($field, 'lov');
+                    	    self::setAttribute($lov, 'id', self::getLovId("Funding Role", $grole, "Co-applicant"));
+                    	    self::setValue($lov, self::getLovVal("Funding Role", $grole, "Co-applicant"));
+                    	    break;	
+		    }
+		}
+	   }   
+	}*/
+	/*Grants only have one sponsor
+	foreach($grant->getPartners() as $gpartner){
+            if($gpartner->getOrganization() != ""){
+                $ccv_item = $ccv->addChild("section");
+                $ccv_id = "376b8991609f46059a3d66028f005360";
+                $ccv_name = "Funding Sources";
+
+                self::setAttribute($ccv_item, 'id', $ccv_id);
+                self::setAttribute($ccv_item, 'label', $ccv_name);
+                foreach($funding_source_map->field as $item){
+                    $id = $item['id'];
+                    $label = $item['label'];
+                    $field = self::setChild($ccv_item, 'field', 'id', $id);
+                    self::setAttribute($field, 'label', $label);
+                    switch($id){
+                        case "1bdead14642545f3971a59997d82da67":
+                            $value = self::setChild($field, 'value', 'type', 'String');
+                            self::setValue($value, $gpartner->getOrganization());
+                            break;
+                        case "dfe6a0b34347486aaa677f07306a141e":
+                            $value = self::setChild($field, 'value', 'type', 'Number');
+                            self::setValue($value, $grant->getCash());
+                            break;
+                    }
+                }
+           }
+        }*/
+	$ccv_item = $ccv->addChild("section");
+        $ccv_id = "376b8991609f46059a3d66028f005360";
+        $ccv_name = "Funding Sources";
+
+        self::setAttribute($ccv_item, 'id', $ccv_id);
+        self::setAttribute($ccv_item, 'label', $ccv_name);
+        foreach($funding_source_map->field as $item){
+            $id = $item['id'];
+            $label = $item['label'];
+            $field = self::setChild($ccv_item, 'field', 'id', $id);
+            self::setAttribute($field, 'label', $label);
+            switch($id){
+                case "1bdead14642545f3971a59997d82da67":
+                    $value = self::setChild($field, 'value', 'type', 'String');
+                    self::setValue($value, $grant->getSponsor());
+                    break;
+                case "dfe6a0b34347486aaa677f07306a141e":
+                    $value = self::setChild($field, 'value', 'type', 'Number');
+                    self::setValue($value, $grant->getTotal());
+                    break;
+		case "d62313c1cdb9419caf79014f07e1cfe0":
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($grant->getStartDate(), 0, 7)));
+                    break;
+		case "efc68e7d74f849eebb59f9a3bb85e5db":
+                    $value = self::setChild($field, 'value', 'type', 'Date');
+                    self::setAttribute($value, 'format', 'yyyy/MM');
+                    self::setValue($value, str_replace("-","/",substr($grant->getEndDate(), 0, 7)));
+                    break;
+
+            }
+        }
+
     }
 
 }

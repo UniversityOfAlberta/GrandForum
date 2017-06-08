@@ -184,7 +184,7 @@
         $email = "";
         $person = new Person(array());
         $person->name = $realName;
-        /*$person = Person::newFromName($username);
+        $person = Person::newFromName($username);
         if($person == null || $person->getId() == 0){
             // First create the user
             $user = User::createNew($username, array('real_name' => "$realName", 
@@ -204,7 +204,7 @@
             Person::$cache[$person->getId()] = $person;
         }
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
-        */
+        
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){
             // Update Role info

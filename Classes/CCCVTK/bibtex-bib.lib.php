@@ -379,7 +379,7 @@ class Bibliography // {{{
   private static function removeBraces($s) // {{{
   {
     $out = $s;
-    $out = str_replace(array("{", "}"), array("", ""), $out);
+    $out = trim(str_replace(array("{", "}"), array("", ""), $out), '"');
     return $out;
   } // }}}
   
@@ -416,7 +416,7 @@ class Bibliography // {{{
       $bibtex_type = strtolower($entry[1]);
       $bibtex_name = $entry[2];
       $bibtex_contents = $entry[3].",\n"; // Newline added so that all entries are followed by one
-      preg_match_all("/(\\w+?)\\s*=\\s*\\{(.*?)\\},\\n/ms", 
+      preg_match_all('/(\w+?)\s*=\s*(\{(.*?)\}|(.*?)),\n/ms', 
         $bibtex_contents, $pairs, PREG_SET_ORDER);
       $params = array();
       foreach ($pairs as $pair)
