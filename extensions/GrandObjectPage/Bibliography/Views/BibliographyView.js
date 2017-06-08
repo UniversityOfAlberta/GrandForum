@@ -13,7 +13,6 @@ BibliographyView = Backbone.View.extend({
 
     subviewCreators: {
         "listComments": function(){
-            console.log("THREAD ID: " + this.model.get('thread_id'));
             return new ThreadView({model: new Thread({id: this.model.get('thread_id')}), isComment: true});
         }
     },
