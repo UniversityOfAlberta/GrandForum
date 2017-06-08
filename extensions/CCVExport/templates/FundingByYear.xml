@@ -1,0 +1,9 @@
+<document>
+    <field id="c8dec2620d6d454d9cbd4e15018864af" label="Start Date"></field>
+    <field id="b8a26c08286e4f919921979bbfc47d5d" label="End Date"></field>
+    <field id="664f2b989b4b4aafa28be877d6e83123" label="Total Funding"></field>
+    <field id="c5472a9c4e4140d38cbda92406c7952b" label="Currency of Total Funding"></field>
+    <field id="8c9aa0a42b9b450c8e0386065609eb79" label="Portion of Funding Received"></field>
+    <field id="06703047af894f44acb81777a9bb5a42" label="Currency of Portion of Funding Received"></field>
+    <field id="3b3d4329241c4dc6bf1e6947be5857c9" label="Time Commitment"></field>
+</document>

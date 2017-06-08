@@ -1,0 +1,12 @@
+<document>
+		<field id="931b92a5ffed4e5aa9c7b3a0afd5f8ba" label="Funding Type"></field>
+		<field id="9c1db4674334436ca891b7b8a9e114bd" label="Funding Start Date"></field>
+		<field id="b63179ab0f0e4c9eaa7e9a8130d60ee3" label="Funding End Date"></field>
+		<field id="735545eb499e4cc6a949b4b375a804e8" label="Funding Title"></field>
+		<field id="c8e3451d1e3a405bb1e8aa0ebeb66c8d" label="Grant Type"></field>
+		<field id="0674312de78f4647aba3bf202a41d58e" label="Project Description"></field>
+		<field id="f7bfa6e647fd48cf8d404263df5843b1" label="Clinical Research Project?"></field>
+		<field id="0991ead151e3445ca7537aa15acbec57" label="Funding Status"></field>
+		<field id="7496de092dc84038a1881e8f9d77e713" label="Funding Role"></field>
+		<field id="32ce1c0c194447c19c6847b1915d35f1" label="Research Uptake"></field>
+</document>

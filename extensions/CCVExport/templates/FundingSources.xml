@@ -1,0 +1,14 @@
+<document>
+    <field id="67e083b070954e91bcbb1cc70131145a" label="Funding Organization"></field>
+    <field id="1bdead14642545f3971a59997d82da67" label="Other Funding Organization"></field>
+    <field id="97231512141a452a82151cc162e9a59c" label="Program Name"></field>
+    <field id="3fb9015d879f435d937ae9aa7ccd2973" label="Funding Reference Number"></field>
+    <field id="dfe6a0b34347486aaa677f07306a141e" label="Total Funding"></field>
+    <field id="4775aa8f2a3f4f5083dd1c816462f260" label="Currency of Total Funding"></field>
+    <field id="882a94c7548744ca992e2647346d2e14" label="Portion of Funding Received"></field>
+    <field id="b8ea355ed5ad4970bf1367fe0281b724" label="Currency of Portion of Funding Received"></field>
+    <field id="a445f692a0d54760bcf2ed9c8a829eff" label="Funding Renewable?"></field>
+    <field id="00efdc7e790a48ac8675696c66afc3ad" label="Funding Competitive?"></field>
+    <field id="d62313c1cdb9419caf79014f07e1cfe0" label="Funding Start Date"></field>
+    <field id="efc68e7d74f849eebb59f9a3bb85e5db" label="Funding End Date"></field>
+</document>
