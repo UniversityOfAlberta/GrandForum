@@ -102,7 +102,11 @@ class HQPRegisterTable extends SpecialPage{
         $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $item, 0);
         $blob = new ReportBlob(BLOB_TEXT, $year, $hqpId, 0);
         $blob->load($addr);
-        return nl2br($blob->getData());
+        $data = $blob->getData();
+        if(is_array($data)){
+            $data = implode(", ", $data);
+        }
+        return nl2br($data);
     }
     
     static function createSubTabs(&$tabs){
