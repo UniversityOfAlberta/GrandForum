@@ -39,9 +39,31 @@ BibliographyView = Backbone.View.extend({
             _.each(products, function(product){
                 xhrs2.push(product.getCitation());
             });
+
+            /*
+            <p style="text-align:left;">
+<a id="abstract" href="#">Show/Hide Abstract</a>
+<span style="float:right;">&nbsp;research, test</span>
+</p>
+            */
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
-                    this.$('#products ol').append("<li>" + product.get('citation') + "<br /><div style='width:100%;text-align:right;'>&nbsp;" + product.get('tags').join(", ") + "</div></li>");
+                    this.$('#products ol').append("<li>" + product.get('citation') + "<br />");
+                    if (product.get('description'))
+                    {
+                        var id = product.get('id');
+                        this.$('#products ol').append("<p style='text-align:left;'><a id='abstract" + id + 
+                                                      "' style='cursor:pointer;'>Show/Hide Abstract</a><span style='float:right;'>" + 
+                                                      product.get('tags').join(", ") + "</span></p></li>");
+                        this.$('#products ol').append("<div id='desc" + id + "' style='display:none;'>" + 
+                                                  product.get('description') + "</div></br>");
+                        $("#abstract" + id).click(function() {
+                            $("#desc" + id).slideToggle("slow");
+                        });
+                    } else {
+                        this.$('#products ol').append("<p><span style='float:right;'>" + 
+                                                      product.get('tags').join(", ") + "</span></p></li>");
+                    }
                 }, this));
                 $(".pdfnodisplay").remove();
             }, this));
