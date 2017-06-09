@@ -25,6 +25,7 @@ Feature: Bibliographies
     Scenario: Remove a Product in an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "New Bibliography 2"
         And I press "Edit Bibliography"
         And I fill in "title" with "Updated Bibliography 2"
@@ -36,6 +37,7 @@ Feature: Bibliographies
     Scenario: Adding multiple Products in an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "Updated Bibliography 2"
         And I press "Edit Bibliography"
         When I drag an element from "products" with id "2" from "sortable2" to "sortable1"
@@ -58,6 +60,7 @@ Feature: Bibliographies
     Scenario: Remove an Editor in an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "New Bibliography 3"
         And I press "Edit Bibliography"
         And I fill in "title" with "Updated Bibliography 3"
@@ -69,6 +72,7 @@ Feature: Bibliographies
     Scenario: Adding multiple Editors in an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "Updated Bibliography 3"
         And I press "Edit Bibliography"
         When I drag an element from "editors" with id "1" from "sortable2" to "sortable1"
@@ -80,7 +84,9 @@ Feature: Bibliographies
     Scenario: Adding a comment to an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "Updated Bibliography 3"
+        And I wait "100"
         And I fill in TinyMCE "message" with "My first comment"
         And I press "Add Reply"
         Then I should see "My first comment"
@@ -88,7 +94,9 @@ Feature: Bibliographies
     Scenario: Modify a comment from an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "Updated Bibliography 3"
+        And I wait "500"
         And I click by css ".edit-icon"
         And I fill in TinyMCE "message" with "Edited Message"
         And I press "Save"
@@ -98,7 +106,9 @@ Feature: Bibliographies
     Scenario: Deleting a comment from an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
         When I follow "Updated Bibliography 3"
+        And I wait "100"
         And I click by css ".delete-icon"
         And I wait "100"
         Then I should not see "Edited Message"
