@@ -76,3 +76,29 @@ Feature: Bibliographies
         And I press "Save Bibliography"
         And I wait "1000"
         Then I should see "Manager User1"
+
+    Scenario: Adding a comment to an existing Bibliography
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        When I follow "Updated Bibliography 3"
+        And I fill in TinyMCE "message" with "My first comment"
+        And I press "Add Reply"
+        Then I should see "My first comment"
+
+    Scenario: Modify a comment from an existing Bibliography
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        When I follow "Updated Bibliography 3"
+        And I click by css ".edit-icon"
+        And I fill in TinyMCE "message" with "Edited Message"
+        And I press "Save"
+        And I wait "100"
+        Then I should see "Edited Message"
+
+    Scenario: Deleting a comment from an existing Bibliography
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        When I follow "Updated Bibliography 3"
+        And I click by css ".delete-icon"
+        And I wait "100"
+        Then I should not see "Edited Message"
