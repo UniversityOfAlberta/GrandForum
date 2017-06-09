@@ -45,9 +45,13 @@
     <div id="addMessage">
         <%= HTML.TextArea(this, 'message', {style: 'max-height: 200px; resize: none;'}) %>
         <br>
-        <% if(!this.isDialog){ %>
+        <% if(!this.isDialog && !this.isComment){ %>
             <div style="margin-top:5px; text-align: right;">
                 <button id="submitPost" type="button">Add Reply</button>
+            </div>
+        <% } else if (!this.isDialog && this.isComment) { %>
+            <div style="margin-top:5px; text-align: right;">
+                <button id="submitPost" type="button">Add Comment</button>
             </div>
         <% } %>
         <span class="throbber" style="display:none;"></span>

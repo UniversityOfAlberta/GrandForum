@@ -88,7 +88,7 @@ Feature: Bibliographies
         When I follow "Updated Bibliography 3"
         And I wait "1000"
         And I fill in TinyMCE "message" with "My first comment"
-        And I press "Add Reply"
+        And I press "Add Comment"
         Then I should see "My first comment"
 
     Scenario: Modify a comment from an existing Bibliography

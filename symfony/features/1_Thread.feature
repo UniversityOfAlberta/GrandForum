@@ -33,7 +33,7 @@ Feature: Threads
 
     Scenario: Viewing Thread as NI
         Given I am logged in as "NI.User1" using password "NI.Pass1"
-        When I go to "index.php/Special:MyThreads#/1/4"
+        When I go to "index.php/Special:MyThreads#/1/1"
         Then I should see "This Thread does not exist."
 
     Scenario: Adding a new Thread to NI Group as Admin
