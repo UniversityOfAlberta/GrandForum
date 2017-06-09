@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Review Report" ajax="true" disabled="false" personId="0" pdfFiles="IFPReviewReportPDF,IFPReviewSummaryPDF,TransformativeReviewReportPDF,TransformativeReviewSummaryPDF,CatalystReviewReportPDF,CatalystReviewSummaryPDF">
+<Report name="Review Report" ajax="true" disabled="false" personId="0" pdfFiles="IFPReviewReportPDF,IFPReviewSummaryPDF,TransformativeReviewReportPDF,TransformativeReviewSummaryPDF,CatalystReviewReportPDF,CatalystReviewSummaryPDF" year="2015">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="STAFF">
             
