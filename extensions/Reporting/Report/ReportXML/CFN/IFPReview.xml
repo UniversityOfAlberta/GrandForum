@@ -12,15 +12,17 @@
                 <table class='wikitable'>
                     <tr>
                         <th>Applicant</th>
+                        <th>File #</th>
                         <th>PDF Download</th>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
             <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication">
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
+                        <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
                         <td>{$item}</td>
                     </tr>
                 ]]>
