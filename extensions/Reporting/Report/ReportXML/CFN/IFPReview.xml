@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="IFP 2017 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
+        <Role role="ETC">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role role="Staff">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role role="Manager">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
         <Role role="Evaluator">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
