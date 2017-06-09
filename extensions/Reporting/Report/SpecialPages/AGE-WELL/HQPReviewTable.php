@@ -103,8 +103,8 @@ class HQPReviewTable extends SpecialPage{
             }
             
             $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_LVL);
-            if($level == 'Other:'){
-                $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_OTH);
+            if($level == 'Other:' || $level == ""){
+                $level = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_LVL_OTH);
             }
             $uni = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_UNI);
             $project = HQPRegisterTable::getBlobValue($year, $candidate->getId(), HQP_APPLICATION_PROJ);
