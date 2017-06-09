@@ -98,12 +98,32 @@ class HQPRegisterTable extends SpecialPage{
         </script>");
     }
     
+    static function array_flatten(array $array)
+    {
+        $flat = array(); // initialize return array
+        $stack = array_values($array); // initialize stack
+        while($stack) // process stack until done
+        {
+            $value = array_shift($stack);
+            if (is_array($value)) // a value to further process
+            {
+                $stack = array_merge(array_values($value), $stack);
+            }
+            else // a value to take
+            {
+               $flat[] = $value;
+            }
+        }
+        return $flat;
+    }
+    
     static function getBlobValue($year, $hqpId, $item){
         $addr = ReportBlob::create_address(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, $item, 0);
         $blob = new ReportBlob(BLOB_TEXT, $year, $hqpId, 0);
         $blob->load($addr);
         $data = $blob->getData();
         if(is_array($data)){
+            $data = self::array_flatten($data);
             $data = implode(", ", $data);
         }
         return nl2br($data);
