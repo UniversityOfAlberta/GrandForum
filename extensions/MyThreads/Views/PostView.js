@@ -6,6 +6,7 @@ PostView = Backbone.View.extend({
     isDialog: false,
     oldMessage: "",
     isComment: false,
+    tinyMCEMention: null,
     
     initialize: function(options){
         this.parent = options.parent;
@@ -14,6 +15,9 @@ PostView = Backbone.View.extend({
         }
         if(options.isComment != undefined){
             this.isComment = options.isComment;
+        }
+        if(options.tinyMCEMention != undefined){
+            this.tinyMCEMention = options.tinyMCEMention;
         }
         if(this.model.isNew()){
             this.render();
@@ -74,13 +78,17 @@ PostView = Backbone.View.extend({
             });
         }
         _.defer($.proxy(function(){
+            console.log(this.tinyMCEMention);
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
-                plugins: 'link image charmap lists table paste',
+                plugins: 'link image charmap lists table paste mention',
                 toolbar: [
                     'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                 ],
+                mentions: {
+                    source: this.tinyMCEMention
+                },
                 file_browser_callback: function(field_name, url, type, win) {
                     console.log($('#tinyMCEUploadForm input'));
                     if(type=='image') $('#tinyMCEUploadForm input').click();
