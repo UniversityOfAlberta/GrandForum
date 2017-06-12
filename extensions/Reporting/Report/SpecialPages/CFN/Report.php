@@ -142,7 +142,7 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
-        if(count($person->getEvaluates("IFP-ETC", 2017)) > 0){
+        if(count($person->getEvaluates("IFP-ETC", 2017)) > 0 || $person->getName() == "Carol.Barrie" || $person->getName() == "Denise.Stockley"){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("IFP2017 Review", "{$url}IFPReview", $selected);
         }
@@ -154,9 +154,13 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TransformativeReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Transformative Review", "{$url}TransformativeReview", $selected);
         }*/
+        if($person->isRoleAtLeast(MANAGER) || $person->getName() == "Denise.Stockley" || $person->getName() == "Amber.Hastings-Truelove"){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2017")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report 2017", "{$url}ReviewReport2017", $selected);
+        }
         if($person->isRoleAtLeast(MANAGER)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report", "{$url}ReviewReport", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Review Report 2015", "{$url}ReviewReport", $selected);
         }
         return true;
     }

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="IFP 2017 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
+        <Role role="ETC">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role role="Staff">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+        <Role role="Manager">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
         <Role role="Evaluator">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
@@ -12,16 +24,20 @@
                 <table class='wikitable'>
                     <tr>
                         <th>Applicant</th>
+                        <th>File #</th>
                         <th>PDF Download</th>
+                        <th>Documents</th>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
-            <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
+            <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
                 <![CDATA[
                     <tr>
                         <td>{$user_name}</td>
+                        <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
                         <td>{$item}</td>
+                        <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download</a></td>
                     </tr>
                 ]]>
             </ReportItem>
@@ -57,9 +73,9 @@
         </Instructions>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="IFP-ETC">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)} - {$user_name}">
-                <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication">
+                <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download Application">
                     <![CDATA[
-                        {$item}
+                        {$item} <a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download Documents</a>
                     ]]>
                 </ReportItem>
                 <ReportItem id="table" type="StaticReportItem">
