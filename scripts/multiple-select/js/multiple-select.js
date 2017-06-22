@@ -195,7 +195,7 @@
 
         init: function () {
             var that = this,
-                $ul = $('<ul></ul>');
+                $ul = $('<ul id="search-items"></ul>');
 
             this.$drop.html('');
 
