@@ -140,6 +140,14 @@ class Bibliography extends BackboneModel{
         return $products;
     }
 
+    function getTags() {
+        $tags = array();
+        foreach($this->products as $product){
+            $tags[] = Product::newFromId($product)->getTags();
+        }
+        return $tags;
+    }
+
     function getThread(){
         $thread = Thread::newFromId($this->thread_id);
         return $thread;
@@ -212,6 +220,7 @@ class Bibliography extends BackboneModel{
                               'url' => $person->getUrl()),
             'editors' => $editors,
             'products' => $this->products,
+            'tags' => $this->getTags(),
             'thread_id' => $this->thread_id
         );
         return $data;

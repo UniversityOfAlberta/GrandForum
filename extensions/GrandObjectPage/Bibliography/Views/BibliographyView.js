@@ -1,6 +1,8 @@
 BibliographyView = Backbone.View.extend({
+    mention: null,
 
     initialize: function(){
+        this.mention = new Array();
         Backbone.Subviews.add(this);
         this.model.fetch({
             error: $.proxy(function(e){
@@ -13,7 +15,7 @@ BibliographyView = Backbone.View.extend({
 
     subviewCreators: {
         "listComments": function(){
-            return new ThreadView({model: new Thread({id: this.model.get('thread_id')}), isComment: true});
+            return new ThreadView({model: new Thread({id: this.model.get('thread_id')}), isComment: true, tinyMCEMention: this.mention});
         }
     },
     
@@ -36,16 +38,16 @@ BibliographyView = Backbone.View.extend({
         });
         $.when.apply(null, xhrs).done($.proxy(function(){
             var xhrs2 = new Array();
-            _.each(products, function(product){
+            var tags = new Array();
+            _.each(products, $.proxy(function(product){
                 xhrs2.push(product.getCitation());
-            });
+                this.mention.push({"name": product.get('title')});
+                var listTags = product.get('tags');
+                for (i = 0; i < listTags.length; i++) {
+                    this.mention.push({"name": listTags[i]});
+                }
+            }, this));
 
-            /*
-            <p style="text-align:left;">
-<a id="abstract" href="#">Show/Hide Abstract</a>
-<span style="float:right;">&nbsp;research, test</span>
-</p>
-            */
             $.when.apply(null, xhrs2).done($.proxy(function(){
                 _.each(products, $.proxy(function(product){
                     this.$('#products ol').append("<li>" + product.get('citation') + "<br />");

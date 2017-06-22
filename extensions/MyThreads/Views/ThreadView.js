@@ -1,10 +1,14 @@
 ThreadView = Backbone.View.extend({
     template: _.template($('#thread_template').html()),
     isComment: false,
+    tinyMCEMention: null,
 
     initialize: function(options){
         if(options.isComment != undefined){
             this.isComment = options.isComment;
+        }
+        if(options.tinyMCEMention != undefined){
+            this.tinyMCEMention = options.tinyMCEMention;
         }
         this.model.fetch({
             error: $.proxy(function(e){
@@ -29,12 +33,13 @@ ThreadView = Backbone.View.extend({
         this.$("#postRows").hide();
         var models = _.pluck(this.model.get('posts'), 'id');
         var ajax = new Array();
-        _.each(models, function(p){
+        _.each(models, $.proxy(function(p){
             var mod = new Post({'id':p});
             ajax.push(mod.fetch());
-            var row = new PostView({model: mod, parent: this, isComment: this.isComment});
+            console.log(this);
+            var row = new PostView({model: mod, parent: this, isComment: this.isComment, tinyMCEMention: this.tinyMCEMention});
             this.$("#postRows").append(row.$el);
-        });
+        }, this));
         this.addNewRow();
         $.when.apply(undefined, ajax).then($.proxy(function(){
             this.$("#loading").empty();
@@ -44,7 +49,7 @@ ThreadView = Backbone.View.extend({
 
     addNewRow: function(){
         var newPost = new Post({'thread_id':this.model.id, 'user_id':me.id});
-        var row = new PostView({model: newPost, parent: this, isComment: this.isComment});
+        var row = new PostView({model: newPost, parent: this, isComment: this.isComment, tinyMCEMention: this.tinyMCEMention});
         this.$("#postRows").append(row.$el);
     },
 
