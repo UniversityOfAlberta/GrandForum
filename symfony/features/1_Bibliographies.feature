@@ -98,7 +98,7 @@ Feature: Bibliographies
         When I follow "Updated Bibliography 3"
         And I wait "6000"
         And I click by css ".edit-icon"
-        And I wait "15000"
+        And I wait "16000"
         And I fill in TinyMCE "message" with "Edited Message"
         And I press "Save"
         And I wait "100"
