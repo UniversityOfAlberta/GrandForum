@@ -17,6 +17,8 @@
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
         </Role>
+        <Person id="2333" />
+        <Person id="847" />
     </Permissions>
     <ReportSection id="materials" name="PDF Downloads" tooltip="Download of IFP Proposals" type="ReportSection">
         <ReportItem id="header" type="Static">
