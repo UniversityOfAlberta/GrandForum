@@ -21,6 +21,12 @@ class ReferAColleague extends SpecialPage{
         }
         $wgOut->addHTML("<form action='$wgServer$wgScriptPath/index.php/Special:ReferAColleague' method='post'>\n");
         $wgOut->addHTML($form->render());
+        if($wgLang->getCode() == "en"){
+            $wgOut->addHTML("<p><i>Information sent through CAPS refer a colleague feature are kept confidential</i></p>");
+        }
+        else if($wgLang->getCode() == "fr"){
+            $wgOut->addHTML("<p><i>Les informations envoyées via CPCA renvoient une fonction de collègue qui sont confidentielles</i></p>");
+        }
         $wgOut->addHTML("</form>");
     }
     
