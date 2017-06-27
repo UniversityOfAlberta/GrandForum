@@ -68,7 +68,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Financial Report" title="Financial Report" position="7" pagebreak="false">
-        <ReportItem id="0" type="Integer" min="0" max="99" size="3" blobItem="1">
+        <ReportItem id="0" type="Text" blobItem="1">
             <![CDATA[
                 <table id="finances" class="wikitable" frame="box" rules="all">
                     <tr>
