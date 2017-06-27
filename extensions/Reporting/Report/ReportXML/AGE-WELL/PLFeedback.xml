@@ -10,6 +10,15 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="PS">
+            <SectionPermission id="feedback" permissions="rw" />
+            <SectionPermission id="cc1" permissions="rw" />
+            <SectionPermission id="cc2" permissions="rw" />
+            <SectionPermission id="cc3" permissions="rw" />
+            <SectionPermission id="cc4" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="TL">
             <SectionPermission id="feedback" permissions="rw" />
             <SectionPermission id="cc1" permissions="rw" />
