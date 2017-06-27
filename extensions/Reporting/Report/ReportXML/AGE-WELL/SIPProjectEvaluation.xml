@@ -125,7 +125,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Financial Report" title="Financial Report" position="7">
-        <ReportItem id="0" type="Integer" min="0" max="99" size="3" blobItem="1">
+        <ReportItem id="0" type="Text" blobItem="1">
             <![CDATA[
                 <p>The following table was provided to you with your Award Letter. Please provide an updated table with the total amount of funds spent to date.</p>
                 <table id="finances" class="wikitable" frame="box" rules="all">
