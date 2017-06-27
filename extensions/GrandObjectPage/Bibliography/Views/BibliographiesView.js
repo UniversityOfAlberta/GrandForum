@@ -40,16 +40,16 @@ BibliographiesView = Backbone.View.extend({
         $.when.apply(null, xhrs).done($.proxy(function(){
             this.model.each(function(bib){
                 _.each(bib.get('products'), function(product){
-                    if (!titles.includes(product.title)) {
+                    if (!_.include(titles, product.title)) {
                         titles.push(product.title);    
                     }
-                    if (!descriptions.includes(product.description) && product.description != "") {
+                    if (!_.include(descriptions, product.description) && product.description != "") {
                         descriptions.push(product.description);
                     }
                 });
                 _.each(bib.get('tags'), function(listTags){
                     for (i = 0; i < listTags.length; i++) {
-                        if (!tags.includes("<option>" + listTags[i] + "</option>")) {
+                        if (!_.includes(tags, "<option>" + listTags[i] + "</option>")) {
                             tags.push("<option>" + listTags[i] + "</option>");
                         }
                     }
@@ -89,7 +89,7 @@ BibliographiesView = Backbone.View.extend({
                         if (!(tag === "")) {
                             if ($.inArray(tag, this.selectedTags) !== -1)
                             {
-                                console.log(tag);
+                                // console.log(tag);
                                 show = true;
                             }
                         }
@@ -130,15 +130,15 @@ BibliographiesView = Backbone.View.extend({
             filter: true,
             placeholder: "Select Keywords",
             onClick: $.proxy(function(view) {
-                console.log("beginning of on click: ", view.label, view.checked);
-                console.log("before filtering: ", this.selectedTags);
+                // console.log("beginning of on click: ", view.label, view.checked);
+                // console.log("before filtering: ", this.selectedTags);
                 this.filterTags(view);
-                console.log("after filtering: ", view.label, ": ", this.selectedTags);
+                // console.log("after filtering: ", view.label, ": ", this.selectedTags);
             }, this),
             onUncheckAll: $.proxy(function() {
                 this.showAllRows();
                 this.selectedTags = new Array();
-                console.log("onUncheckAll cleared array: ", this.selectedTags);
+                // console.log("onUncheckAll cleared array: ", this.selectedTags);
             }, this),
             onCheckAll: $.proxy(function() {
                 var tags = $("#tags-select").multipleSelect("getSelects");
@@ -147,7 +147,7 @@ BibliographiesView = Backbone.View.extend({
                 for (i = 0; i < tags.length; i++) {
                     this.filterTags({"label": tags[i], "checked": true});
                 }
-                console.log("onCheckAll after filtering: ", this.selectedTags);
+                // console.log("onCheckAll after filtering: ", this.selectedTags);
             }, this),
         });
         $("#filterByTags").click($.proxy(function() {

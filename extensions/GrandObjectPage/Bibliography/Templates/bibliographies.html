@@ -82,6 +82,14 @@
         table = document.getElementById("bibliographies");
         tr = table.getElementsByTagName("tr");
 
+        if (filter.trim() == "") 
+        {
+            for (i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+            return;
+        }
+
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
             if (td) {

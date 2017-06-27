@@ -75,6 +75,7 @@ Feature: Bibliographies
         And I wait "100"
         When I follow "Updated Bibliography 3"
         And I press "Edit Bibliography"
+        And I wait "500"
         When I drag an element from "editors" with id "1" from "sortable2" to "sortable1"
         When I drag an element from "editors" with id "2" from "sortable2" to "sortable1"
         And I press "Save Bibliography"
