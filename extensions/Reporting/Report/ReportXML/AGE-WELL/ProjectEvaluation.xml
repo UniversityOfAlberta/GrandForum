@@ -52,7 +52,6 @@
         <Person id="2" />
         <Person id="3" />
         <Person id="1023" />
-        <Project deleted="false" />
     </Permissions>
     <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="AGE-WELL's Project Scorecard and Reporting Framework">
         <ReportItem id="pdf" type="PDFReportItem" buttonName="Last Year's PDF" project="true" reportType="ProjectEvaluation" year="{$last_year}">
