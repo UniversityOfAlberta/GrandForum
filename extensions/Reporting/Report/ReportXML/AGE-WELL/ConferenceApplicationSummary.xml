@@ -135,7 +135,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Poster Abstract:</b>
+                                            <b>Talk Abstract:</b>
                                         </td>
                                         <td>
                                             {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ABSTRACT,0,{$user_id},0)}

@@ -149,7 +149,7 @@
             <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" rich="true" limit="350">
                 <![CDATA[
                     <tr>
-                        <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract:</b></td>
+                        <td align="right" style="width:0;white-space:nowrap;"><b>Talk Abstract:</b></td>
                         <td>{$item}</td>
                     </tr>
                 ]]>
