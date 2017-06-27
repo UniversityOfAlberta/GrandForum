@@ -123,3 +123,28 @@ Feature: Bibliographies
         Then I should see "New Bibliography 1"
         Then I should not see "Updated Bibliography 2"
         Then I should not see "Updated Bibliography 3"
+
+    Scenario: Filtering Bibliographies by editor
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
+        And I fill in "editorInput" with "doesn't exist"
+        Then I should not see "Manager User1"
+
+    Scenario: Filtering Bibliographies by description
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
+        And I fill in "descInput" with "This is a description 3"
+        Then I should not see "Updated Bibliography 2"
+        Then I should see "Updated Bibliography 3"
+
+    Scenario: Filtering Bibliographies by keywords
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
+        And I click by css ".ms-choice"
+        And I click by css "input[value='testing']"
+        Then I should see "Updated Bibliography 2"
+        Then I should not see "Updated Bibliography 3"
+        Then I should not see "New Bibliography 1"
