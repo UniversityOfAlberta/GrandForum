@@ -90,13 +90,18 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "CIPApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CIP Application", "{$url}CIPApplication", $selected);*/
         }
-        if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC)){
+        if($person->isRole(PL) || $person->isRole(TL) || $person->isRole(TC) || $person->isRole(PS)){
             $projects = array();
             foreach($person->leadership() as $project){
                 $projects[$project->getName()] = $project;
             }
             foreach($person->getThemeProjects() as $project){
                 $projects[$project->getName()] = $project;
+            }
+            foreach($person->getProjects() as $project){
+                if($person->isRole(PS, $project)){
+                    $projects[$project->getName()] = $project;
+                }
             }
             foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
