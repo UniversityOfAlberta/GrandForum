@@ -22,7 +22,7 @@ function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $ef
     APIRequest::doAction('CreateProject', true);
 }
 
-function createProduct($title) {
+function createProduct($title, $tags) {
     $_POST['category'] = 'Publication';
     $_POST['type'] = 'Journal Paper';
     $_POST['title'] = $title;
@@ -32,7 +32,7 @@ function createProduct($title) {
     $_POST['access'] = 'Public';
     $_POST['authors'] = array();
     $_POST['projects'] = array();
-    $_POST['data'] = array();
+    $_POST['tags'] = $tags;
 
     $api = new ProductAPI();
     $api->doPOST();
@@ -299,7 +299,7 @@ addRelation("NI.User1", "HQP.User2", "Supervises");
 addRelation("NI.User1", "HQP.ToBeInactivated", "Supervises");
 addRelation("NI.User1", "NI.User2", "Works With");
 
-createProduct("Product 1");
-createProduct("Product 2");
+createProduct("Product 1", array("tag 1", "example", "tag test"));
+createProduct("Product 2", array("testing", "research"));
 
 ?>

@@ -243,8 +243,8 @@ BibliographyEditView = Backbone.View.extend({
         this.$("#products .sortable-widget").show();
         
         // Left Side (Current)
-        _.each(products, $.proxy(function(id){
-            var product = this.allProducts.findWhere({id: id.toString()});
+        _.each(products, $.proxy(function(p){
+            var product = this.allProducts.findWhere({id: p.id.toString()});
             if(product != null){
                 var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
                 this.$("#products #sortable1").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
@@ -254,7 +254,8 @@ BibliographyEditView = Backbone.View.extend({
         //Right Side (Available)
         this.allProducts.each($.proxy(function(product){
             var authors = _.pluck(product.get('authors'), 'fullname').join(" ");
-            if(!_.contains(products, parseInt(product.get('id')))){
+            // console.log("product: ", products);
+            if(!_.contains(_.pluck(products, 'id'), product.get('id'))){
                 this.$("#products #sortable2").append("<li data-id='" + product.get('id') + "'>" + product.get('title') + "<span style='display:none;'>" + authors + "</span></li>");
             }
         }, this));

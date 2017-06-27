@@ -49,7 +49,7 @@ BibliographiesView = Backbone.View.extend({
                 });
                 _.each(bib.get('tags'), function(listTags){
                     for (i = 0; i < listTags.length; i++) {
-                        if (!_.includes(tags, "<option>" + listTags[i] + "</option>")) {
+                        if (!_.include(tags, "<option>" + listTags[i] + "</option>")) {
                             tags.push("<option>" + listTags[i] + "</option>");
                         }
                     }
@@ -113,7 +113,7 @@ BibliographiesView = Backbone.View.extend({
             var tags = new Array();
             _.each(bib.get('tags'), function(listTags){
                 for (i = 0; i < listTags.length; i++) {
-                    if (!tags.includes(listTags[i])) {
+                    if (!_.include(tags, listTags[i])) {
                         tags.push(listTags[i]);
                     }
                 }
