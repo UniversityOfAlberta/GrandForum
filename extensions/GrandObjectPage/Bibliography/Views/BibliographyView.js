@@ -32,7 +32,8 @@ BibliographyView = Backbone.View.extend({
         var products = new Array();
         var citations = new Array();
         _.each(this.model.get('products'), function(prod){
-            var product = new Product({id: prod});
+            console.log(prod);
+            var product = new Product({id: prod.id});
             products.push(product);
             xhrs.push(product.fetch());
         });

@@ -1,24 +1,60 @@
 <% if(me.isLoggedIn()){ %>
     <a href="#/new" class="button" id="add">Add Bibliography</a><br /><br />
 <% } %>
+<h3>Filter Options &nbsp;</h3>
+<div id="faceted-bib-search">
+    <div class="title-editor-desc-search">
+        <label style="padding-left: 3px"><b>Title: &nbsp;</b></label>
+        <input type="text" id="titleInput" onkeyup="filterRows()" placeholder="Search here..." title="Enter Title" style="width: 205px">
+        <label style="padding-left: 3px"><b>Editor: &nbsp;</b></label>
+        <input type="text" id="editorInput" onkeyup="filterRows()" placeholder="Search here..." title="Enter Editor" style="width: 205px">
+        <label style="padding-left: 3px"><b>Description: &nbsp;</b></label>
+        <input type="text" id="descInput" onkeyup="filterRows()" placeholder="Search here..." title="Enter Description" style="width: 205px">
+    </div>
+    </br>
+    <div class="tags-search">
+        
+            <label><input type="checkbox" id="filterByTags" checked="true" />Filter by Keywords</label>   
+        
+        <div class="selectBox">
+            <label style="padding-left: 3px"><b>Keywords: &nbsp;</b></label>
+            <select multiple="multiple" id="tags-select">
+                    <%= main.get('tagsFilterHTML') %>
+            </select>
+            <div class="overSelect"></div>
+        </div>
+
+    </div>
+    </br>
+    <tr>
+        <td><button id="clearFiltersButton">Clear Filters</button>
+    </tr>
+</div>
+</br>
 <table id="bibliographies" frame="box" rules="all">
     <thead>
         <tr>
-            <th width="25%">Title</th>
-            <th width="24%">Editors</th>
-            <th width="50%">Description</th>
+            <th width="20%">Title</th>
+            <th width="19%">Editors</th>
+            <th width="30%">Description</th>
+            <th width="20%">Keywords</th>
             <th width="1%">#Publications</th>
         </tr>
     </thead>
     <tbody>
         <% this.model.each(function(bib){ %>
             <tr>
-                <td><a href="<%= bib.get('url') %>"><%= bib.get('title') %></a></td>
+                <td>
+                    <a href="<%= bib.get('url') %>"><%= bib.get('title') %></a>
+                </td>
                 <td>
                     <%= bib.get('editorsHTML') %>
                 </td>
                 <td>
                     <div style="max-height:75px; overflow-y: auto;"><%= bib.get('description') %></div>
+                </td>
+                <td>
+                    <%= bib.get('tagsHTML') %>
                 </td>
                 <td align="right">
                     <%= bib.get('products').length %>
@@ -28,3 +64,79 @@
     </tbody>
 </table>
 <div id="editDialog" title="New Bibliography"></div>
+<script>
+
+    function filterRows() {
+        filterTitle();
+        filterEditor();
+        filterDescription();
+    }
+
+    function filterTitle() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("titleInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("bibliographies");
+        tr = table.getElementsByTagName("tr");
+
+        if (filter.trim() == "") 
+        {
+            for (i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+            return;
+        }
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterEditor() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("editorInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("bibliographies");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filterDescription() {
+
+        var input, filter, table, tr, td, i;
+
+        input = document.getElementById("descInput");
+        filter = input.value.toUpperCase();
+
+        table = document.getElementById("bibliographies");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                if (!(td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

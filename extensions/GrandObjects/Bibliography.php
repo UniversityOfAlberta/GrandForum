@@ -209,6 +209,12 @@ class Bibliography extends BackboneModel{
                                'fullname' => $editor->getNameForForms(),
                                'url' => $editor->getUrl());
         }
+        $products = array();
+        foreach($this->getProducts() as $product){
+            $products[] = array('id' => $product->getId(),
+                               'title' => $product->getTitle(),
+                               'description' => $product->getDescription());
+        }
         $data = array(
             'id' => $this->getId(),
             'title' => $this->getTitle(),
@@ -219,7 +225,7 @@ class Bibliography extends BackboneModel{
                               'fullname' => $person->getNameForForms(),
                               'url' => $person->getUrl()),
             'editors' => $editors,
-            'products' => $this->products,
+            'products' => $products,
             'tags' => $this->getTags(),
             'thread_id' => $this->thread_id
         );
