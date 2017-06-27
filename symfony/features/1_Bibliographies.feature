@@ -110,7 +110,7 @@ Feature: Bibliographies
         When I go to "index.php/Special:BibliographyPage"
         And I wait "100"
         When I follow "Updated Bibliography 3"
-        And I wait "10000"
+        And I wait "1000"
         And I click by css ".delete-icon"
         And I wait "100"
         Then I should not see "Edited Message"
