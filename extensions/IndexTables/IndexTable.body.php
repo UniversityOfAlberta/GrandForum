@@ -244,7 +244,7 @@ class IndexTable {
                case 'ALL Canadian':
                 $wgOut->setPageTitle("Canadian Resources");
                     if($wgLang->getCode() == 'fr'){
-                        $wgOut->setPageTitle("Les ressources Canadiennes");
+                        $wgOut->setPageTitle("Ressources Canadiennes");
                     }
 				$this->generatePersonTable("Canadian");	
 			        break;
