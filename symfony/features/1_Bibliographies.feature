@@ -114,3 +114,12 @@ Feature: Bibliographies
         And I click by css ".delete-icon"
         And I wait "100"
         Then I should not see "Edited Message"
+
+    Scenario: Filtering Bibliographies by title
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:BibliographyPage"
+        And I wait "100"
+        And I fill in "titleInput" with "New Bibliography"
+        Then I should see "New Bibliography 1"
+        Then I should not see "Updated Bibliography 2"
+        Then I should not see "Updated Bibliography 3"
