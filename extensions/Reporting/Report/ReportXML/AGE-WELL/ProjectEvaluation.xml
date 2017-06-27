@@ -25,6 +25,18 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="PS">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="narrative1" permissions="rw" />
+            <SectionPermission id="research" permissions="rw" />
+            <SectionPermission id="networking" permissions="rw" />
+            <SectionPermission id="ktee1" permissions="rw" />
+            <SectionPermission id="hqp" permissions="rw" />
+            <SectionPermission id="narrative2" permissions="rw" />
+            <SectionPermission id="budget" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <Role role="WPL">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="narrative1" permissions="rw" />
