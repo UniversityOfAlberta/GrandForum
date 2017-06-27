@@ -36,6 +36,7 @@ Voici les différentes catégories de ressources disponibles dans {$config->getV
 			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Organizations'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/organizations_files.png'></a><br /><span class='en'>Organizations</span><span class='fr'>Organizations</span></div>
 			             <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Articles'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/articles_files.png'></a><br /><span class='en'>Articles</span><span class='fr'>Des articles</span></div>
                         <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Patients'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/patient_resource_files.png'></a><br /><span class='en'>Patient Resources</span><span class='fr'>les ressources des patients</span></div>
+                        <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Canadian'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/canadian.png'></a><br /><span class='en'>Canadian Resources</span><span class='fr'>les ressources Canadiennes</span></div>
                     </div><br /><br /><br />
 <center><hr style='width:80%;' /></center><br />");
 	$wgOut->addHTML("

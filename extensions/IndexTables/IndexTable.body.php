@@ -241,6 +241,14 @@ class IndexTable {
 				$this->generatePersonTable("Tools");	
 			        break;
 
+               case 'ALL Canadian':
+                $wgOut->setPageTitle("Canadian Resources");
+                    if($wgLang->getCode() == 'fr'){
+                        $wgOut->setPageTitle("Les ressources Canadiennes");
+                    }
+				$this->generatePersonTable("Canadian");	
+			        break;
+
 			   case 'ALL Organizations':
 				$wgOut->setPageTitle("Organizations");
                     if($wgLang->getCode() == 'fr'){
