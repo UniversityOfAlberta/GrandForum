@@ -270,7 +270,13 @@ function orderSpecialPages(&$aSpecialPages){
 			  "Redirect",
 			  "Search");
 	if(!$me->isLoggedIn() && 
-	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister" && $key !="ChangePassword" && $key != "HelpfulResources")){
+	  ($key != "Userlogin" && $key != "PasswordReset" && $key != "CAPSRegister" && $key !="ChangePassword" && 
+	    $key != "HelpfulResources" && 
+	    $key != "PharmacyMap" &&
+	    $key != "WhoSupplies" &&
+	    $key != "ReferAColleague" &&
+	    $key != "LatestNews" &&
+	    $key != "MyThreads")){
 	    unset($aSpecialPages[$key]);
 	    continue;
 	}
