@@ -590,7 +590,7 @@ class ReportItemCallback {
         $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
                     if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
@@ -607,7 +607,7 @@ class ReportItemCallback {
         $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $key => $author){
                     if($key > 0){

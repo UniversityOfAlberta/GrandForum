@@ -1297,12 +1297,12 @@
         </ReportItem>
         <ReportItem id="rev_1_6_m9a" blobItem="REV_1_6_M9A" type="Hidden" size="3" default="{project_n_hqp_lead_author({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of HQP involved as a lead author on a publication: {$item} <b title="The count of HQP listed as the first author of a Publication associated with this project">{$value}</b> <br />
+                    #of HQP involved as a lead author on an output: {$item} <b title="The count of HQP listed as the first author of any output associated with this project">{$value}</b> <br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m9b" blobItem="REV_1_6_M9B" type="Hidden" size="3" default="{project_n_hqp_co_author({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    and co-author: {$item} <b title="The count of HQP listed as the second or later author of a Publication associated with this project">{$value}</b>
+                    and co-author: {$item} <b title="The count of HQP listed as the second or later author of any output associated with this project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>

@@ -1132,7 +1132,7 @@
         </ReportItem>
         <ReportItem id="rev_1_6_m9a" blobItem="REV_1_6_M9A" type="Integer" size="3">
             <![CDATA[
-                    #of HQP involved as a lead author on a publication: <b>{$item}</b><br />
+                    #of HQP involved as a lead author on an output: <b>{$item}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_1_6_m9b" blobItem="REV_1_6_M9B" type="Integer" size="3">
