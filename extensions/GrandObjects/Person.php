@@ -1913,7 +1913,11 @@ class Person extends BackboneModel {
      * @return array The current Universities this Person is at
      */
     function getCurrentUniversities(){
-        return $this->getUniversitiesDuring(date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
+        $unis = $this->getUniversitiesDuring(date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
+        if(count($unis) == 0){
+            $unis[] = $this->getUniversity();
+        }
+        return $unis;
     }
     
     /**
