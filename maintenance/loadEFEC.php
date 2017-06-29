@@ -50,6 +50,10 @@
     DBFunctions::execSQL("ALTER TABLE mw_user AUTO_INCREMENT = 2", true);
     DBFunctions::execSQL("ALTER TABLE grand_roles AUTO_INCREMENT = 2", true);
     
+    $awards = DBFunctions::select(array('bddEfec2_development.awards' => 'a', 'bddEfec2_development.award_scopes' => 's'),
+                                  array('a.name', 'a.category', 'a.faculty_staff_member_id', 'a.reporting_year' => 'year', 's.name' => 'scope'),
+                                  array('a.award_scope_id' => EQ(COL('s.id'))));
+    
     $staff = DBFunctions::select(array('bddEfec2_development.faculty_staff_members'),
                                  array('*'));
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
@@ -94,7 +98,7 @@
     $external_authors = $newExternals;
                                                   
     $iterationsSoFar = 0;
-    $nIterations = count($staff) + count($responsibilities) + count($publications) + count($histories);
+    $nIterations = count($staff) + count($responsibilities) + count($publications) + count($awards) + count($histories);
     
     // Adding Faculty Staff
     $staffIdMap = array();
@@ -171,7 +175,7 @@
     $hqpRoles = array();
     $hqpRelations = array();
     foreach($responsibilities as $row){
-        $username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
+        /*$username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
         $username = explode(",", $username, 2);
         if(count($username) > 1){
             $username = "{$username[1]}.{$username[0]}";
@@ -244,7 +248,7 @@
             $role->startDate = min($role->getStartDate(), $row['started']);
             $role->endDate   = max($role->getEndDate(),   $row['ended']);
             $hqpRoles[$person->getId()] = $role;
-        }
+        }*/
         show_status(++$iterationsSoFar, $nIterations);
     }
     
@@ -328,6 +332,31 @@
         }
         
         $product->create();
+        show_status(++$iterationsSoFar, $nIterations);
+    }
+    
+    foreach($awards as $award){
+        $product = new Product(array());
+        $product->category = 'Award';
+        $product->type = 'Award';
+        $product->title = ucwords(trim($award['name']));
+        $product->date = $award['year']."00-00";
+        $product->status = "Published";
+        $product->access = "Public";
+        $product->data = array('award_category' => $award['category'],
+                               'scope' => $award['scope']);
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Author
+        if($award['faculty_staff_member_id'] != null){
+            if(isset($staffIdMap[$award['faculty_staff_member_id']])){
+                $product->authors[] = $staffIdMap[$award['faculty_staff_member_id']];
+            }
+            
+            $product->create();
+        }
         show_status(++$iterationsSoFar, $nIterations);
     }
     
