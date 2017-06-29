@@ -375,25 +375,25 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,Publication)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,Publication)}}">
+        <ReportItem id="rev_3_5_m1a" blobItem="REV_3_5_M1A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,all)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,all)}}">
             <![CDATA[
-                    #of publications published with any of the following listed as a co-author:<br />
-                    older adult or caregiver: {$item} <b title="The number of Publications with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
+                    #of outputs published with any of the following listed as a co-author:<br />
+                    older adult or caregiver: {$item} <b title="The number of Outputs with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,Publication)}">
+        <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,all)}">
             <![CDATA[
-                    community organization: {$item} <b title="The number of Publications with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
+                    community organization: {$item} <b title="The number of Outputs with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,Publication)}">
+        <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,all)}">
             <![CDATA[
-                    industry member: {$item} <b title="The number of Publications with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
+                    industry member: {$item} <b title="The number of Outputs with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,Publication)}">
+        <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,all)}">
             <![CDATA[
-                    policymaker: {$item} <b title="The number of Publications with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
+                    policymaker: {$item} <b title="The number of Outputs with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
