@@ -243,6 +243,8 @@
         </ReportItem>
         <ReportItem id="ethics" blobItem="ETHICS" type="Radio" options="Yes, I expect that this research will require an ethics review|No, I do not expect that this research will require an ethics review">
             <![CDATA[
+                <h2>Ethics/Environmental Assessment</h2>
+                <p>Please answer the two questions below.</p>
                 <ol>
                     <li>Ethics Approval: If the proposed study involves biohazards, humans, human embryonic stem cells or animals, AND is funded by CFN, certification of approval by your institutional certification committee must be provided to CFN prior to the release of funds.{$item}</li>
             ]]>
