@@ -265,7 +265,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="1500">
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="1500">
             <![CDATA[
                 <h2>Scientific Summary</h2>
                 <p>Provide a non-confidential scientific summary of the KT proposal, highlighting the study objectives, milestones and deliverables and potential socioeconomic impact. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</p>
