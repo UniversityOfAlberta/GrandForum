@@ -106,6 +106,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>Mifegymiso®  may not be covered by most provincial drug plans, individuals will have to pay anywhere from $270 to $300 out of pocket, (Sept. 26th, 2016) <a href='http://www.shns.ca/?q=tags/mifegymiso' target='_blank'>read more</a></li>
                     <li>The College of Physicians and Surgeons of Nova Scotia has become the third province, after British Columbia and Ontario to announce their support of pharmacist dispensing of Mifegymiso®, <a href='https://www.cpsns.ns.ca/DesktopModules/Bring2mind/DMX/Download.aspx?PortalId=0&TabId=129&EntryId=293' target='_blank'>read more</a>.</li>
+                    <li>The Nova Scotia College of Pharmacists has published the following guidance to pharmacists and pharmacy technicians when dispensing Mifegymiso®: <a href='http://www.nspharmacists.ca/wp-content/uploads/2017/06/Guidance_DispensingMifegymiso.pdf' target='_blank'>Practice Guidance: Dispensing Mifegymiso</a>.</li>
                 </ul>
             </div>
             
