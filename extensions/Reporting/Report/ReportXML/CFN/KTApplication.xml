@@ -22,9 +22,15 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="Admin Information" title="Section 1 - Administrative Information">
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
         <ReportItem id="title" blobItem="TITLE" type="Text">
             <![CDATA[
+                <div style="text-align: center; width:100%;border: 1px solid black;">
+                    <p>Please read the <a href="{$wgServer}{$wgScriptPath}/data/KT2017 - Program Guidelines.docx">Program Guidelines</a> and <a href="{$wgServer}{$wgScriptPath}/data/KT2017 - Application Instructions.docx">Application Instructions</a> before completing this application form.</p>
+                    <p><b>Full applications will only be considered if an Intent to Apply is received by Monday July 24, 2017 – 5 pm ET.</b></p> 
+                    <p><b>Completed application packages are due by Tuesday September 5, 2017 – 5 pm ET.</b></p>
+                    <p><b>Please provide all information in English.</b></p>
+                </div><br />
                 <table frame="box" rules="all">
                     <tr>
                         <td>
@@ -257,7 +263,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="Proposal Summary" title="Section 2 - Proposal Summary">
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
         <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="350" rich="true">
             <![CDATA[
                 <h2>2.1: Lay Summary</h2>
@@ -273,7 +279,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="KT Proposal" title="Section 3 - KT Proposal">
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - KT Proposal" title="Section 3 - KT Proposal">
         <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="850" rich="true">
             <![CDATA[
                 <h2>3.1: Concept</h2>
@@ -334,10 +340,11 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="additional" type="EditableReportSection" blobSection="CV" name="Additional Information" title="Section 4 - Additional Information">
+    <ReportSection id="additional" type="EditableReportSection" blobSection="CV" name="4 - Additional Information" title="Section 4 - Additional Information">
         <ReportItem id="references" blobItem="REFERENCES" type="Textarea" rich="true">
             <![CDATA[
                 <h3>References</h3>
+                <p>Please provide all references referred to in Section 3.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -349,13 +356,13 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="Partnerships" title="Section 5 - Partnerships &amp; Letters of Support">
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships" title="Section 5 - Partnerships &amp; Letters of Support">
         <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" labels="Eligible Partner Organization(s)|Potential Conflict of Interest|Partner’s Role in Study and Specific Use of Contribution in Study|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
             <![CDATA[
                 <ul>
                     <li>Complete the table below.</li>
-                    <li>Provide a letter of support on the organization’s letterhead of each eligible partner detailing the partnership and specifically indicating their cash and/or in-kind contribution. The letter should specifically include reference to CFN, the proposed study, and any conditions placed on funding. See Application Instructions for guidance on allowable expenses and eligible partners and contributions.</li>
-                    <li>Individuals from the partner organizations that will be participating as project team members should be listed in the Project Team List.</li>
+                    <li>In a single PDF document please provide letters of support for each partner, collaborator etc. Upload this document below.  Make sure that each letter of support within the PDF is on the organization’s letterhead, detailing the partnership and specifically indicating their cash and/or in-kind contribution. The letter should specifically include reference to CFN, the proposed study, and any conditions placed on funding.  See Application Instructions for guidance on allowable expenses and eligible partners and contributions.</li>
+                    <li>Individuals from the partner organizations that will be participating as project team members must be listed in the submitted Project Team Information document.</li>
                     <li>All financial information provided in the table below must also appear in the submitted budget document.</li>
                     <li>Where a researcher has a “financial interest” (as defined by NCE Conflict of Interest Guidelines) in a partner, the potential conflict of interest should be declared in the table.  This does not preclude the partnership in any way, but provides transparency during the review process. Please see CFN Conflict of Interest Policy and Guidelines for additional guidance <a href='http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf' target='_blank'>http://www.cfn-nce.ca/media/23963/cfn-conflict-of-interest-policy.pdf</a></li>
                 </ul>
@@ -370,7 +377,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="Other Funding" title="Section 6 - Other Funding">
+    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding">
         <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status|Funding Source|Amount|Purpose|% Scientific Overlap|% Financial Overlap" sizes="120|150|100|200|75|75" multiple="true">
             <![CDATA[
                 <p>Please provide details of other funding applied for that could leverage/support your CFN Network proposal.  By person, for the Project Leader, all other Principal Investigators, and all Co-Investigators, list all grants currently planned to be applied for, being applied for, pending, about to be submitted, and all grants received, for the entire period covered by this application.</p>
