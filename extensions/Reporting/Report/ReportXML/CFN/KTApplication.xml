@@ -25,7 +25,7 @@
     <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="Admin Information" title="Section 1 - Administrative Information">
         <ReportItem id="title" blobItem="TITLE" type="Text">
             <![CDATA[
-                <table frame="box" rules="all" style="width: 800px;">
+                <table frame="box" rules="all">
                     <tr>
                         <td>
                             <b>Title of KT Proposal provided in Intent to Apply:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
