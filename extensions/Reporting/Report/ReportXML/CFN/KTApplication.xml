@@ -258,26 +258,26 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="Proposal Summary" title="Section 2 - Proposal Summary">
-        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="1500">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="350" rich="true">
             <![CDATA[
-                <h2>Lay Summary</h2>
+                <h2>2.1: Lay Summary</h2>
                 <p>Provide a non-confidential summary in lay terms of the KT proposal.  A lay summary is an overview of a research project described in a way that can be easily understood by those without prior experience of the subject. It is not a slight modification of the scientific abstract or a simplification of the study; a well-written lay summary allows the public to understand research and its value, impact, and applications. Lay summaries also help juries evaluate research grant applications and facilitate use of the research by government, the public and private sectors, and the community at large. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="1500">
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="350" rich="true">
             <![CDATA[
-                <h2>Scientific Summary</h2>
+                <h2>2.2: Scientific Summary</h2>
                 <p>Provide a non-confidential scientific summary of the KT proposal, highlighting the study objectives, milestones and deliverables and potential socioeconomic impact. (For funded KT proposals, this summary will be used externally in media releases, communications and posted on the CFN’s website.)</p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="KT Proposal" title="Section 3 - KT Proposal">
-        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="3500">
+        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="850" rich="true">
             <![CDATA[
-                <h2>Concept</h2>
-                <h3>Quality of the Idea</h3>
+                <h2>3.1: Concept</h2>
+                <h3>3.1.1: Quality of the Idea</h3>
                 <ol type="a">
                     <li>Please describe any success stories or real-world impacts that resulted from your prior KT activities related to your CFN-funded research project and if relevant how this supports your current KT proposal.  Note that the information you provide may be used publicly for external CFN communications (e.g., CFN website, CFN newsletter, social media).</li>
                     <li>Please clearly describe the overall goal and objectives of the study and provide distinct outputs that support advances in health-related knowledge, health research, health care, health systems, and/or health outcomes for the care of Canadians living with frailty.</li>
@@ -286,17 +286,17 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="importance" blobItem="IMPORTANCE" type="Textarea" limit="1750">
+        <ReportItem id="importance" blobItem="IMPORTANCE" type="Textarea" limit="425" rich="true">
             <![CDATA[
-                <h3>Importance of the Idea</h3>
+                <h3>3.1.2: Importance of the Idea</h3>
                 <p>lease clearly describe how the study will contribute to advancing health-related knowledge, health research, health care, health systems and/or health outcomes related to the care of Canadians living with frailty.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="approach" blobItem="APPROACH" type="Textarea" limit="15750">
+        <ReportItem id="approach" blobItem="APPROACH" type="Textarea" limit="3700" rich="true">
             <![CDATA[
-                <h2>Feasibility</h2>
-                <h3>Approach</h3>
+                <h2>3.2: Feasibility</h2>
+                <h3>3.2.1: Approach</h3>
                 <ol type="a">
                     <li>Please describe the approaches and methods used in this study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s). The proposal should be developed using an appropriate KT strategy based on a KT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</li>
                     <li>Please provide timelines showing when goals, objectives and outputs will be reached.</li>
@@ -305,9 +305,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" limit="3500">
+        <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" limit="825" rich="true">
             <![CDATA[
-                <h3>Expertise, Experience and Resources</h3>
+                <h3>3.2.2: Expertise, Experience and Resources</h3>
                 <ol type="a">
                     <li>Please describe the expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team member to show that he/she can lead and deliver on the proposed outputs and achieve the goals and objectives of this proposal.</li>
                     <li>Please provide an estimate on the number of hours per week (contribution) for each Principal Investigator, Co-investigator, Partner and other critical team member that will be working on the study and describe why this is an appropriate level of engagement and/or commitment to deliver the proposed outputs and achieve the goals and objectives of this proposal. (Note: All Individuals participating as project team members will also need to be listed in the Project Team List document).</li>
@@ -316,16 +316,16 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hqp" blobItem="HQP" type="Textarea" limit="1750">
+        <ReportItem id="hqp" blobItem="HQP" type="Textarea" limit="425" rich="true">
             <![CDATA[
-                <h2>Capacity Building - Highly Qualified Personnel (HQP)</h2>
+                <h2>3.3: Capacity Building - Highly Qualified Personnel (HQP)</h2>
                 <p>CFN funded proposals must contribute to the development of HQP through their inclusion as fully involved team members. Describe the number of HQP and their level of training/experience and role/activities for the study and the number of hours per week that each will be working on the study.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" limit="3500">
+        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" limit="825" rich="true">
             <![CDATA[
-                <h2>Project Networking and Engagement</h2>
+                <h2>3.4: Project Networking and Engagement</h2>
                 <ol type="a">
                     <li>Describe the networking and engagement planned for this project across disciplines and sectors. Projects must represent a collaborative effort of different Investigators in more than one discipline and at more than one Institution.</li>
                     <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the KT study in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the study.</li>
@@ -335,7 +335,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="additional" type="EditableReportSection" blobSection="CV" name="Additional Information" title="Section 4 - Additional Information">
-        <ReportItem id="references" blobItem="REFERENCES" type="Textarea" height="300px">
+        <ReportItem id="references" blobItem="REFERENCES" type="Textarea" rich="true">
             <![CDATA[
                 <h3>References</h3>
                 {$item}
