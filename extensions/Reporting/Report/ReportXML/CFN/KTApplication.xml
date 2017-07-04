@@ -306,8 +306,8 @@
                 <h2>3.2: Feasibility</h2>
                 <h3>3.2.1: Approach</h3>
                 <ol type="a">
-                    <li>Please describe the approaches and methods used in this study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s). The proposal should be developed using an appropriate KT strategy based on a KT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</li>
-                    <li>Please provide timelines showing when goals, objectives and outputs will be reached.</li>
+                    <li>Please describe the approaches and methods used in this study and why they are appropriate to meet the goals and objectives and deliver upon the proposed output(s). The proposal should be developed using an appropriate KT strategy based on a KT framework identified in the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a href='http://www.who.int/ageing/publications/knowledge_translation.pdf' target='_blank'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).  In addition to the budget justification you provided in the budget template, please provide any additional budget justification as it relates to the approaches and methods.</li>
+                    <li>Please provide timelines showing when goals, objectives and outputs will be reached.  In addition to the budget justification you provided in the budget template, please provide any additional budget justification as it relates to the goals, objectives and outputs.</li>
                     <li>Please describe the potential barriers and challenges related to achieving the proposed goals and objectives and how you intend on overcoming these barriers and challenges.  What is your mitigation strategy?</li>
                 </ol>
                 {$item}
