@@ -8,6 +8,7 @@
             <SectionPermission id="additional" permissions="rw" />
             <SectionPermission id="partnerships" permissions="rw" />
             <SectionPermission id="funding" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -18,6 +19,7 @@
             <SectionPermission id="additional" permissions="rw" />
             <SectionPermission id="partnerships" permissions="rw" />
             <SectionPermission id="funding" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -381,6 +383,43 @@
         <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status|Funding Source|Amount|Purpose|% Scientific Overlap|% Financial Overlap" sizes="120|150|100|200|75|75" multiple="true">
             <![CDATA[
                 <p>Please provide details of other funding applied for that could leverage/support your CFN Network proposal.  By person, for the Project Leader, all other Principal Investigators, and all Co-Investigators, list all grants currently planned to be applied for, being applied for, pending, about to be submitted, and all grants received, for the entire period covered by this application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Project team Information</h2>
+                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Budget</h2>
+                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Budget.xlsx'>template Excel document</a> and upload back onto Forum when complete.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Principal Investigator CV(s)</h2>
+                Please upload a single PDF document containing all PI CVs.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Team Member CVs</h2>
+                Please upload a single PDF document containing all Team Member CVs.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Required Signatures</h2>
+                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.
                 {$item}
             ]]>
         </ReportItem>
