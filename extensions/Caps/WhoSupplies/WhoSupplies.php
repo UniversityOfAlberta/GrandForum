@@ -224,7 +224,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
-                    <li>28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                    <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
             </div>
             
@@ -297,7 +297,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
-                    <li>28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                    <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
             </div>
             
@@ -320,7 +320,7 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Shipment/Distributing Information</h3>
                 <ul>
-                    <li>28, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
+                    <li>As of Jan 28th, 2017, Canadian distributor Celopharma has not reported shipments here to date</li>
                 </ul>
             </div>
             
