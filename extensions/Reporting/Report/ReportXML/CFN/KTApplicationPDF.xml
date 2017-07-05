@@ -23,7 +23,7 @@
                 <table class="wikitable" frame="box" rules="all" style="width:100%">
                     <tr>
                         <td>
-                            <b>Title of KT Proposal provided in Intent to Apply:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
+                            <b>Title of KT Proposal provided in Intent to Apply:</b></small>
                         </td>
                         <td>{$item}</td>
                     </tr>
@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <td>
-                        &nbsp;&nbsp;Type of CFN Grant (e.g. Catalyst Grant, Strategic Impact Grant):
+                        &nbsp;&nbsp;Type of CFN Grant:
                     </td>
                     <td>
                         {$item}
@@ -74,8 +74,7 @@
             <![CDATA[
                     <tr>
                         <td>
-                            <b>Term of KT Proposal:</b><br />
-                            <small>(Maximum 24 months)</small>
+                            <b>Term of KT Proposal:</b>
                         </td>
                         <td>{$item}</td>
                     </tr>
@@ -246,7 +245,7 @@
         </ReportItem>
         <ReportItem id="assessment" blobItem="ASSESSMENT" type="Radio" options="Yes, I expect that this research will require an environmental impact review|No, I do not expect that this research will require an environmental impact review">
             <![CDATA[
-                    <li>Environmental Assessment: {$item}
+                    <li><b>Environmental Assessment:</b> <small><i>Does any phase or part of the research described in this proposal a) take place outside an office or laboratory, or b) involve an undertaking as described in part 1 of Appendix B of the Natural Sciences and Engineering Research Council of Canada (NSERC) Form 101 (<a href='http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf' target='_blank'>http://www.nserc-crsng.gc.ca/OnlineServices-ServicesEnLigne/pdf/F101_e.pdf</a>)?.</i></small><br />{$item}</li>
                 </ol>
             ]]>
         </ReportItem>
@@ -383,7 +382,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents" pagebreak="false">
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Project team Information</h2>

@@ -297,7 +297,7 @@
         <ReportItem id="importance" blobItem="IMPORTANCE" type="Textarea" limit="425" rich="true">
             <![CDATA[
                 <h3>3.1.2: Importance of the Idea</h3>
-                <p>lease clearly describe how the study will contribute to advancing health-related knowledge, health research, health care, health systems and/or health outcomes related to the care of Canadians living with frailty.</p>
+                <p>Please clearly describe how the study will contribute to advancing health-related knowledge, health research, health care, health systems and/or health outcomes related to the care of Canadians living with frailty.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -353,7 +353,7 @@
         <ReportItem id="figures" blobItem="FIGURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h3>Tables and Figures</h3>
-                Upload a single PDF document containing all tables and figures.
+                <p>Upload a single PDF document containing all tables and figures.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -374,8 +374,8 @@
         <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h3>Letters of Support</h3>
-                    Upload a single PDF document containing all of the letters of support.
-                    {$item}
+                <p>Upload a single PDF document containing all of the letters of support.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -391,35 +391,35 @@
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Project team Information</h2>
-                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Project_Team_Information.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Budget</h2>
-                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Budget.xlsx'>template Excel document</a> and upload back onto Forum when complete.
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Budget.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
-                Please upload a single PDF document containing all PI CVs.
+                <p>Please upload a single PDF document containing all PI CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Team Member CVs</h2>
-                Please upload a single PDF document containing all Team Member CVs.
+                <p>Please upload a single PDF document containing all Team Member CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Required Signatures</h2>
-                Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CFN KT2017_Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.</p>
                 {$item}
             ]]>
         </ReportItem>
