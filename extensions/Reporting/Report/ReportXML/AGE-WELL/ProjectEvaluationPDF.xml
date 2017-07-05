@@ -50,7 +50,7 @@
                 <p>How many products is your project developing?</p> {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Stage|PRL Level" types="Text|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)" class="wikitable">
+        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Product Type|Stage|PRL Level" types="Text|Select(Technology,Policy/Practice,Service)|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)" class="wikitable">
             <![CDATA[
                 <h3>PRL Levels</h3>
                 {$item}

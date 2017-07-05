@@ -133,7 +133,7 @@
                 <p>How many products is your project developing?</p> {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Stage|PRL Level" types="Text|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)">
+        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" labels="Product|Product Type|Stage|PRL Level" types="Text|Select(Technology,Policy/Practice,Service)|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)">
             <![CDATA[
                 <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product(s) currently at:</h3>
                     <b>PRL Levels</b>
