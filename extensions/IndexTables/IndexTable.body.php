@@ -50,7 +50,6 @@ class IndexTable {
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
             }
-            $tabs['Main']['subtabs'][] = $projectTab;
         }
         
         $lastRole = "";
@@ -68,17 +67,26 @@ class IndexTable {
                 }
             }
         }
+        $hubsSubTab = TabUtils::createSubTab("Innovation Hubs");
         $peopleSubTab = TabUtils::createSubTab("People");
         $roles = array_values($wgAllRoles);
         $roles[] = NI;
         sort($roles);
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
+            if(strstr($role, "AWNIH") === false && ($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
                 $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
+            else if(strstr($role, "AWNIH") !== false){
+                $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
+                $hubsSubTab['dropdown'][] = TabUtils::createSubTab($role, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+            }
         }
         
+        $tabs['Main']['subtabs'][] = $hubsSubTab;
+        if($config->getValue('projectsEnabled')){
+            $tabs['Main']['subtabs'][] = $projectTab;
+        }
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
         $selected = ($wgTitle->getText() == "Products" || 
