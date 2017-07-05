@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KTApplication" year="2017" ajax="true">
+<Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KTApplicationPDF" year="2017" ajax="true">
     <Permissions>
         <Role role="External" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
             <SectionPermission id="information" permissions="rw" />
@@ -387,7 +387,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
+    <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="7 - Supporting Documents" title="Section 7 - Supporting Documents">
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Project team Information</h2>
