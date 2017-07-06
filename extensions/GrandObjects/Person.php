@@ -15,6 +15,7 @@ class Person extends BackboneModel {
     static $authorshipCache = array();
     static $namesCache = array();
     static $idsCache = array();
+    static $employeeIdsCache = array();
     static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
@@ -100,6 +101,28 @@ class Person extends BackboneModel {
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
+        self::$cache['eId'.$person->employeeId] = $person;
+        self::$cache[strtolower($person->name)] = $person;
+        return $person;
+    }
+    
+    /**
+     * Returns a new Person from the given emplyee id
+     * @param int $id The empoyee id of the person
+     * @return Person The Person from the given id
+     */
+    static function newFromEmployeeId($id){
+        if(isset(self::$cache['eId'.$id])){
+            return self::$cache['eId'.$id];
+        }
+        self::generateNamesCache();
+        $data = array();
+        if(isset(self::$employeeIdsCache[$id])){
+            $data[] = self::$employeeIdsCache[$id];
+        }
+        $person = new Person($data);
+        self::$cache[$person->id] = $person;
+        self::$cache['eId'.$person->employeeId] = $person;
         self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
@@ -121,6 +144,7 @@ class Person extends BackboneModel {
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
+        self::$cache['eId'.$person->employeeId] = $person;
         self::$cache[strtolower($person->name)] = $person;
         return $person;
     }
@@ -288,20 +312,6 @@ class Person extends BackboneModel {
      */
     static function generateNamesCache(){
         if(count(self::$namesCache) == 0){
-            /*$phoneNumbers = array();
-            $phoneData = DBFunctions::select(array('grand_user_telephone'),
-                                             array('user_id',
-                                                   'area_code', 
-                                                   'number'),
-                                             array('primary_indicator' => EQ(1)));
-            foreach($phoneData as $row){
-                if($row['area_code'] == ""){
-                    $phoneNumbers[$row['user_id']] = $row['number'];
-                }
-                else{
-                    $phoneNumbers[$row['user_id']] = "{$row['area_code']}-{$row['number']}";
-                }
-            }*/
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
                                               'user_name',
@@ -328,9 +338,6 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
-                /*if(isset($phoneNumbers[$row['user_id']])){
-                    $row['phone'] = $phoneNumbers[$row['user_id']];
-                }*/
                 $exploded = explode(".", unaccentChars($row['user_name']));
                 
                 $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
@@ -338,6 +345,7 @@ class Person extends BackboneModel {
                 $middleName = unaccentChars($row['middle_name']);
                 
                 self::$idsCache[$row['user_id']] = $row;
+                self::$employeeIdsCache[$row['employee_id']] = $row;
                 self::$namesCache[strtolower($row['user_name'])] = $row;
                 self::$namesCache[strtolower("$firstName $lastName")] = $row;
                 self::$namesCache[strtolower("$lastName $firstName")] = $row;

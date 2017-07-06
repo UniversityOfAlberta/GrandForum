@@ -522,6 +522,8 @@
         <Product type="Patent" status="">
             <data>
                 <field label="Number" type="String">number</field>
+                <field label="Country" type="String">country</field>
+                <field label="Tech Department" type="String">tech_department</field>
             </data>
         </Product>
 
