@@ -82,7 +82,7 @@ class Role extends BackboneModel {
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
-	    if($status){
+	    if($status && php_sapi_name() != "cli"){
             $this->id = $id;
             Notification::addNotification($me, $person, "Role Added", "Effective {$this->getStartDate()} you assume the role '{$this->getRole()}'", "{$person->getUrl()}");
             $supervisors = $person->getSupervisors();

@@ -24,6 +24,20 @@
         $r->create();
     }
     
+    $titleMap = array(
+        '' => "",
+        'phd' => "Graduate Student - Doctoral",
+        'bsc' => "Undergraduate",
+        'msc' => "Graduate Student - Master's",
+        'research/technical assistant' => "Research/Technical Assistant",
+        'pdf' => "Post-Doctoral Fellow",
+        'research associate' => "Research Associate",
+        'honors thesis' => "Honors Thesis",
+        'ma' => "Graduate Student - Master's",
+        'high school' => "High School Student",
+        'meng' => "Graduate Student - Master's"
+    );
+    
     $productCategoryMap = array(
         'Conference'      => array('Publication', 'Conference Paper'),
         'Journal'         => array('Publication', 'Journal Paper'),
@@ -43,6 +57,7 @@
     DBFunctions::execSQL("TRUNCATE grand_relations", true);
     DBFunctions::execSQL("TRUNCATE grand_movedOn", true);
     DBFunctions::execSQL("TRUNCATE grand_theses", true);
+    DBFunctions::execSQL("TRUNCATE grand_managed_people", true);
     
     DBFunctions::execSQL("DELETE FROM mw_user WHERE user_id != 1", true);
     DBFunctions::execSQL("DELETE FROM grand_roles WHERE user_id != 1", true);
@@ -60,9 +75,13 @@
     $students = DBFunctions::select(array('bddEfec2_development.students'),
                                     array('*'),
                                     array('ROLE_DESCR' => EQ('Supervisor'),
-                                          WHERE_OR('ROLE_DESCR') => EQ('Co-Supervisor')));
+                                          WHERE_OR('ROLE_DESCR') => EQ('Co-Supervisor'),
+                                          WHERE_OR('ROLE_DESCR') => EQ('')));
                                           
     $patents = DBFunctions::select(array('bddEfec2_development.patents'),
+                                    array('*'));
+                                    
+    $spinoffs = DBFunctions::select(array('bddEfec2_development.spinoffs'),
                                     array('*'));
                                  
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
@@ -82,6 +101,7 @@
     
     $wgUser = User::newFromId(1);
     Person::$idsCache = array();
+    Person::$employeeIdsCache = array();
     Person::$cache = array();
     Person::$namesCache = array();
     
@@ -105,11 +125,10 @@
         $newExternals[$s['id']] = $s;
     }
     $external_authors = $newExternals;
-                                                  
-    $iterationsSoFar = 0;
-    $nIterations = count($staff) + count($students) + count($publications) + count($awards) + count($histories);
     
     // Adding Faculty Staff
+    $iterationsSoFar = 0;
+    echo "\nImporting Faculty\n";
     $staffIdMap = array();
     foreach($staff as $row){
         $username = str_replace(" ", "", preg_replace("/\(.*\)/", "", 
@@ -135,8 +154,10 @@
         $person->realname = $realName;
         Person::$namesCache[$person->getName()] = $person;
         Person::$idsCache[$person->getId()] = $person;
+        Person::$employeeIdsCache[$row['uid']] = $person;
         Person::$cache[$person->getName()] = $person;
         Person::$cache[$person->getId()] = $person;
+        Person::$cache['eId'.$row['uid']] = $person;
 
         $staffIdMap[$row['id']] = $person;
 
@@ -176,7 +197,7 @@
         
         // Update University Info
         addUserUniversity($person, "University of Alberta", ucwords($row['department']), ucwords($row['rank']), $row['date_of_appointment'], $row['date_retirement']);
-        show_status(++$iterationsSoFar, $nIterations);
+        show_status(++$iterationsSoFar, count($staff));
     }
     
     // Adding HQP
@@ -184,8 +205,123 @@
     $hqpRoles = array();
     $hqpRelations = array();
     $hqpUniversities = array();
-    /*
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting HQP From Spreadsheet\n";
+    foreach($students as $student){
+        $person = Person::newFromEmployeeId($student['EMPLID']);
+        if(($person == null || $person->getId() == 0) && $student['CAMPUS_ID'] != ""){
+            // First create the user
+            $usernames = explode(",", $student['NAME']);
+            $firsts = explode(" ", $usernames[1]);
+            $realName = trim($usernames[1])." ".trim($usernames[0]);
+            $username = str_replace(" ", "", $firsts[0].".".$usernames[0]);
+            $email = $student['CAMPUS_ID']."@ualberta.ca";
+            $user = User::createNew($username, array('real_name' => "$realName", 
+                                                     'password' => User::crypt(mt_rand()), 
+                                                     'email' => $email));
+            if($user == null){
+                show_status(++$iterationsSoFar, count($students));
+                continue;
+            }
+            DBFunctions::update('mw_user',
+                                array('employee_id' => $student['EMPLID']),
+                                array('user_id' => EQ($user->getId())));
+            
+            $person = new Person(array());
+            $person->id = $user->getId();
+            $person->name = $user->getName();
+            $person->realname = $realName;
+            Person::$namesCache[$person->getName()] = $person;
+            Person::$employeeIdsCache[$student['EMPLID']] = $person;
+            Person::$idsCache[$person->getId()] = $person;
+            Person::$cache[$person->getName()] = $person;
+            Person::$cache[$person->getId()] = $person;
+            Person::$cache['eId'.$student['EMPLID']] = $person;
+        }
+        
+        if($person->getId() != 0){
+            // Update Role info
+            if(!isset($hqpRoles[$person->getId()])){
+                $r = new Role(array());
+                $r->user = $person->getId();
+                $r->role = HQP;
+                $r->startDate = $student['ADMISSION_START_DT'];
+                $hqpRoles[$person->getId()] = $r;
+            }
+            
+            $endDate = $student['COMPLETION_DT'];
+            if(trim($endDate) == ""){
+                $endDate = $student['END_DATE'];
+            }
+            if(strstr($endDate, "/") !== false){
+                $endYear = substr($endDate, 6, 4);
+                $endDay = substr($endDate, 0, 2);
+                $endMonth = substr($endDate, 3, 2);
+                $endDate = "$endYear-$endMonth-$endDay";
+            }
+            
+            $supervisor = Person::newFromEmployeeId($student['SUPERVISOR_ID']);
+            if($supervisor != null && $supervisor->getId() != 0){
+                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES])){
+                    $rel = new Relationship(array());
+                    $rel->user1 = $supervisor->getId();
+                    $rel->user2 = $person->getId();
+                    $rel->startDate = $student['ADMISSION_START_DT'];
+                    $rel->endDate = $endDate;
+                    $rel->type = SUPERVISES;
+                    
+                    $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES] = $rel;
+                }
+                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES];
+                $relation->startDate = min($relation->getStartDate(), $student['ADMISSION_START_DT']);
+                $relation->endDate   = max($relation->getEndDate(),   $endDate);
+            }
+            
+            if(!isset($hqpUniversities[$person->getId()][$student['PROG_TYPE']])){
+                
+                $uni = array();
+                $uni['university'] = "University of Alberta";
+                $uni['department'] = $student['UASA_ACAD_PLN1_D30'];
+                $uni['startDate'] = $student['ADMISSION_START_DT'];
+                $uni['title'] = "";
+                $uni['endDate'] = $endDate;
+                switch($student['PROG_TYPE']){
+                    case "Masters Course":
+                        $uni['title'] = "Graduate Student - Master's Course";
+                        break;
+                    case "Masters Thesis":
+                        $uni['title'] = "Graduate Student - Master's Thesis ";
+                        break;
+                    case "Doctoral Program":
+                        $uni['title'] = "Graduate Student - Doctoral";
+                        break;
+                }
+                $hqpUniversities[$person->getId()][$student['PROG_TYPE']] = $uni;
+            }
+            
+            $university = $hqpUniversities[$person->getId()][$student['PROG_TYPE']];
+            $university['startDate'] = min($university['startDate'], $student['ADMISSION_START_DT']);
+            $university['endDate'] = max($university['endDate'], $endDate);
+            
+            $role = $hqpRoles[$person->getId()];
+            $role->startDate = min($role->getStartDate(), $student['ADMISSION_START_DT']);
+            $role->endDate   = max($role->getEndDate(),   $endDate);
+            $hqpRoles[$person->getId()] = $role;
+        }
+        show_status(++$iterationsSoFar, count($students));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting HQP From eFEC\n";
     foreach($responsibilities as $row){
+        if($row['responsibility'] == 'phd' ||
+           $row['responsibility'] == 'msc' ||
+           $row['responsibility'] == 'meng' ||
+           $row['responsibility'] == 'ma'){
+            show_status(++$iterationsSoFar, count($responsibilities));
+            continue;
+        }
         $username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
         $username = explode(",", $username, 2);
         if(count($username) > 1){
@@ -206,7 +342,7 @@
                                                      'password' => User::crypt(mt_rand()), 
                                                      'email' => $email));
             if($user == null){
-                show_status(++$iterationsSoFar, $nIterations);
+                show_status(++$iterationsSoFar, count($responsibilities));
                 continue;
             }
             $person = new Person(array());
@@ -228,7 +364,6 @@
                 $r->user = $person->getId();
                 $r->role = HQP;
                 $hqpRoles[$person->getId()] = $r;
-                $nIterations++;
             }
             if($sup != null){
                 if(!isset($hqpRelations[$sup->getId()][$person->getId()][$row['role']])){
@@ -248,7 +383,6 @@
                             break;
                     }
                     $hqpRelations[$sup->getId()][$person->getId()][$row['role']] = $rel;
-                    $nIterations++;
                 }
                 $relation = $hqpRelations[$sup->getId()][$person->getId()][$row['role']];
                 $relation->startDate = min($relation->getStartDate(), $row['started']);
@@ -260,100 +394,22 @@
             $role->endDate   = max($role->getEndDate(),   $row['ended']);
             $hqpRoles[$person->getId()] = $role;
         }
-        show_status(++$iterationsSoFar, $nIterations);
-    }
-    */
-    
-    foreach($students as $student){
-        $person = Person::newFromEmployeeId($student['EMPLID']);
-        if(($person == null || $person->getId() == 0) && $student['CAMPUS_ID'] != ""){
-            // First create the user
-            $usernames = explode(",", $student['NAME']);
-            $firsts = explode(" ", $usernames[1]);
-            $realName = trim($usernames[1])." ".trim($usernames[0]);
-            $username = str_replace(" ", "", $firsts[0].".".$usernames[0]);
-            $email = $student['CAMPUS_ID']."@ualberta.ca";
-            $user = User::createNew($username, array('real_name' => "$realName", 
-                                                     'password' => User::crypt(mt_rand()), 
-                                                     'email' => $email));
-            if($user == null){
-                show_status(++$iterationsSoFar, $nIterations);
-                continue;
-            }
-            $person = new Person(array());
-            $person->id = $user->getId();
-            $person->name = $user->getName();
-            $person->realname = $realName;
-            Person::$namesCache[$person->getName()] = $person;
-            Person::$idsCache[$person->getId()] = $person;
-            Person::$cache[$person->getName()] = $person;
-            Person::$cache[$person->getId()] = $person;
+        
+        if(!isset($hqpUniversities[$person->getId()][$row['responsibility']])){
+            $uni = array();
+            $uni['university'] = "University of Alberta";
+            $uni['department'] = "";
+            $uni['startDate'] = $row['started'];
+            $uni['endDate'] = $row['ended'];
+            $uni['title'] = $titleMap[$row['responsibility']];
+            $hqpUniversities[$person->getId()][$row['responsibility']] = $uni;
         }
         
-        if($person->getId() != 0){
-            // Update Role info
-            if(!isset($hqpRoles[$person->getId()])){
-                $r = new Role(array());
-                $r->user = $person->getId();
-                $r->role = HQP;
-                $r->startDate = $student['ADMISSION_START_DT'];
-                $hqpRoles[$person->getId()] = $r;
-                $nIterations++;
-            }
-            
-            $endDate = $student['COMPLETION_DT'];
-            $endYear = substr($endDate, 6, 4);
-            $endDay = substr($endDate, 0, 2);
-            $endMonth = substr($endDate, 3, 2);
-            $endDate = "$endYear-$endMonth-$endDay";
-            
-            $supervisor = Person::newFromEmployeeId($student['SUPERVISOR_ID']);
-            if($supervisor != null && $supervisor->getId() != 0){
-                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES])){
-                    $rel = new Relationship(array());
-                    $rel->user1 = $supervisor->getId();
-                    $rel->user2 = $person->getId();
-                    $rel->startDate = $student['ADMISSION_START_DT'];
-                    $rel->endDate = $endDate;
-                    $rel->type = SUPERVISES;
-                    
-                    $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES] = $rel;
-                    $nIterations++;
-                }
-                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES];
-                $relation->startDate = min($relation->getStartDate(), $student['ADMISSION_START_DT']);
-                $relation->endDate   = max($relation->getEndDate(),   $endDate);
-            }
-            
-            if(!isset($hqpUniversities[$person->getId()][$student['PROG_TYPE']])){
-                
-                $uni = array();
-                $uni['university'] = "University of Alberta";
-                $uni['department'] = $student['UASA_ACAD_PLN1_D30'];
-                $uni['startDate'] = $student['ADMISSION_START_DT'];
-                $uni['endDate'] = $endDate;
-                switch($student['PROG_TYPE']){
-                    default:
-                    case "Masters Thesis":
-                        $uni['title'] = "Graduate Student - Master's";
-                        break;
-                    case "Doctoral Program":
-                        $uni['title'] = "Graduate Student - Doctoral";
-                        break;
-                }
-                $hqpUniversities[$person->getId()][$student['PROG_TYPE']] = $uni;
-            }
-            
-            $university = $hqpUniversities[$person->getId()][$student['PROG_TYPE']];
-            $university['startDate'] = min($university['startDate'], $student['ADMISSION_START_DT']);
-            $university['endDate'] = max($university['endDate'], $endDate);
-            
-            $role = $hqpRoles[$person->getId()];
-            $role->startDate = min($role->getStartDate(), $student['ADMISSION_START_DT']);
-            $role->endDate   = max($role->getEndDate(),   $endDate);
-            $hqpRoles[$person->getId()] = $role;
-        }
-        show_status(++$iterationsSoFar, $nIterations);
+        $university = $hqpUniversities[$person->getId()][$row['responsibility']];
+        $university['startDate'] = min($university['startDate'], $row['started']);
+        $university['endDate'] = max($university['endDate'], $row['ended']);
+        
+        show_status(++$iterationsSoFar, count($responsibilities));
     }
     
     Person::$namesCache = array();
@@ -361,29 +417,45 @@
     Person::$cache = array();
     Person::$cache = array();
     
+    $iterationsSoFar = 0;
+    echo "\nCreating HQP Roles\n";
     foreach($hqpRoles as $id => $role){
         $role->create();
-        show_status(++$iterationsSoFar, $nIterations);
+        show_status(++$iterationsSoFar, count($hqpRoles));
     }
     
+    $iterationsSoFar = 0;
+    $nRelations = 0;
+    foreach($hqpRelations as $sup){
+        foreach($sup as $hqp){
+            foreach($hqp as $rel){
+                $nRelations++;
+            }
+        }
+    }
+    echo "\nCreating HQP Relations\n";
     foreach($hqpRelations as $sup){
         foreach($sup as $hqp){
             foreach($hqp as $rel){
                 $rel->create();
-                show_status(++$iterationsSoFar, $nIterations);
             }
         }
+        show_status(++$iterationsSoFar, $nRelations);
     }
     
+    $iterationsSoFar = 0;
+    echo "\nCreating HQP Universities\n";
     foreach($hqpUniversities as $id => $unis){
         foreach($unis as $uni){
             $person = Person::newFromId($id);
             addUserUniversity($person, $uni['university'], $uni['department'], $uni['title'], $uni['startDate'], $uni['endDate']);
-            show_status(++$iterationsSoFar, $nIterations);
         }
+        show_status(++$iterationsSoFar, count($hqpUniversities));
     }
     
     // Create Products
+    $iterationsSoFar = 0;
+    echo "\nImporting Publications\n";
     DBFunctions::execSQL("TRUNCATE table `grand_products`", true);
     DBFunctions::execSQL("TRUNCATE table `grand_product_authors`", true);
     foreach($publications as $publication){
@@ -444,9 +516,11 @@
         }
         
         $product->create();
-        show_status(++$iterationsSoFar, $nIterations);
+        show_status(++$iterationsSoFar, count($publications));
     }
     
+    $iterationsSoFar = 0;
+    echo "\nImporting Awards\n";
     foreach($awards as $award){
         $product = new Product(array());
         $product->category = 'Award';
@@ -469,35 +543,72 @@
             
             $product->create();
         }
-        show_status(++$iterationsSoFar, $nIterations);
+        show_status(++$iterationsSoFar, count($awards));
     }
     
+    $iterationsSoFar = 0;
+    echo "\nImporting Patents\n";
     foreach($patents as $patent){
         $product = new Product(array());
-        $product->category = 'Award';
-        $product->type = 'Award';
+        $product->category = 'Product';
+        $product->type = 'Patent';
         $product->title = ucwords(trim($patent['TECH_TITLE']));
-        $product->date = $award['ISSUEDATE'];
+        $product->date = $patent['ISSUEDATE'];
         $product->status = "Published";
         $product->access = "Public";
         $product->data = array('number' => $patent['PATENTNO'],
-                               'country' => $patent['COUNTRYNAME']);
+                               'country' => $patent['COUNTRYNAME'],
+                               'tech_department' => $patent['TECH_CLIENTDEPARTMENTS']);
                                
         $product->authors = array();
         $product->projects = array();
                                
-        // Add Author
-        if($patent['faculty_staff_member_id'] != null){
-            if(isset($staffIdMap[$patent['faculty_staff_member_id']])){
-                $product->authors[] = $staffIdMap[$patent['faculty_staff_member_id']];
+        // Add Authors
+        $inventors = explode(",", $patent['INVENTORS']);
+        foreach($inventors as $inventor){
+            $inventor = trim($inventor);
+            $person = Person::newFromNameLike($inventor);
+            if($person->getId() == 0){
+                $person->name = $inventor;
             }
-            
-            $product->create();
+            $product->authors[] = $person;
         }
-        show_status(++$iterationsSoFar, $nIterations);
+        $product->create();
+        show_status(++$iterationsSoFar, count($patents));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Spin-Offs\n";
+    foreach($spinoffs as $spinoff){
+        $product = new Product(array());
+        $product->category = 'Product';
+        $product->type = 'Spin-Off';
+        $product->title = ucwords(trim($spinoff['Spin-Off Company']));
+        $product->date = $spinoff['Creation Date'];
+        $product->status = "Published";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        $spinoff['Researcher'] = str_replace(" and ", " & ", $spinoff['Researcher']);
+        $inventors = explode("&", $spinoff['Researcher']);
+        foreach($inventors as $inventor){
+            $inventor = trim($inventor);
+            $person = Person::newFromNameLike($inventor);
+            if($person->getId() == 0){
+                $person->name = $inventor;
+            }
+            $product->authors[] = $person;
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($spinoffs));
     }
     
     // Create Product Histories
+    $iterationsSoFar = 0;
+    echo "\nImporting Product Histories\n";
     DBFunctions::execSQL("TRUNCATE grand_product_histories", true);
     foreach($histories as $history){
         if(isset($staffIdMap[$history['faculty_staff_member_id']])){
@@ -511,7 +622,7 @@
                                       'created' => $history['created_at'],
                                       'updated' => $history['updated_at']));
         }
-        show_status(++$iterationsSoFar, $nIterations);
+        show_status(++$iterationsSoFar, count($histories));
     }
 
 echo "\n";

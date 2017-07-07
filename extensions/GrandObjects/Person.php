@@ -2959,7 +2959,9 @@ class Person extends BackboneModel {
     function isStudent(){
         if($this->isRole(HQP)){
             $uni = $this->getUniversity();
-            if(strtolower($uni['position']) == "graduate student - master's" ||
+            if(strtolower($uni['position']) == "graduate student - master's course" ||
+               strtolower($uni['position']) == "graduate student - master's thesis" ||
+               strtolower($uni['position']) == "graduate student - master's" ||
                strtolower($uni['position']) == "graduate student - doctoral" ||
                strtolower($uni['position']) == "post-doctoral fellow" ||
                strtolower($uni['position']) == 'undergraduate' ||

@@ -7,14 +7,17 @@
         <% if(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
               _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0){ %>
             <%= HTML.Select(this, 'position', {options: ["Other", 
-                                                         "Graduate Student - Master's", 
+                                                         "Graduate Student - Master's Course", 
+                                                         "Graduate Student - Master's Thesis",
+                                                         "Graduate Student - Master's",
                                                          "Graduate Student - Doctoral", 
                                                          "Post-Doctoral Fellow", 
                                                          "Research Associate", 
                                                          "Research Assistant", 
                                                          "Technician",
                                                          "Professional End User",
-                                                         "Summer Student", 
+                                                         "Summer Student",
+                                                         "High School Student",
                                                          "Undergraduate Student"]}) %>
         <% } else { %>
             <%= HTML.Select(this, 'position', {options: allPositions}) %>
