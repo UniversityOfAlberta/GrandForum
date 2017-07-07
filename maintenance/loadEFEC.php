@@ -86,6 +86,21 @@
                                  
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
                                             array('*'));
+                                            
+    $grants1 = DBFunctions::select(array('bddEfec2_development.grants1'),
+                                   array('*'));
+                                   
+    $grants2 = DBFunctions::select(array('bddEfec2_development.grants2'),
+                                   array('*'));
+                                   
+    $grants3 = DBFunctions::select(array('bddEfec2_development.grants3'),
+                                   array('*'));
+    $newGrants3 = array();
+    foreach($grants3 as $grant){
+        $newGrants3[$grant['Project']][] = $grant;
+    }
+    $grants3 = $newGrants3;
+                                            
     $publications = DBFunctions::select(array('bddEfec2_development.publications'),
                                     array('*'));
     $authorships = DBFunctions::select(array('bddEfec2_development.authorships'),
@@ -438,9 +453,9 @@
         foreach($sup as $hqp){
             foreach($hqp as $rel){
                 $rel->create();
+                show_status(++$iterationsSoFar, $nRelations);
             }
         }
-        show_status(++$iterationsSoFar, $nRelations);
     }
     
     $iterationsSoFar = 0;
@@ -452,6 +467,37 @@
         }
         show_status(++$iterationsSoFar, count($hqpUniversities));
     }
+    
+    // Import Grants
+    $iterationsSoFar = 0;
+    echo "\nLoading Grants\n";
+    DBFunctions::execSQL("TRUNCATE table `grand_grants`", true);
+    DBFunctions::execSQL("TRUNCATE table `grand_grant_contributions`", true);
+    foreach($grants1 as $row){
+        $person = Person::newFromEmployeeId($row['PI/ Student Employee ID']);
+        if($person != null && $person->getId() != 0){
+            $newGrant = new Grant(array());
+            $newGrant->user_id = $person->getId();
+            $newGrant->total = $row['Total Award (Budget)'];
+            $newGrant->title = $row['Project Title'];
+            $newGrant->description = $row['Scientific Title (Awd Long Description)'];
+            $newGrant->start_date = $row['Proj Start Date'];
+            $newGrant->end_date = $row['Proj End Date'];
+            if($row['Award Sponsor ID'] == "MULTI" && isset($grants3[$row['Project']])){
+                $sponsors = array();
+                foreach($grants3[$row['Project']] as $sponsor){
+                    $sponsors[] = $sponsor['Sponsor Description'];
+                }
+                $newGrant->sponsor = implode(", ", $sponsors);
+            }
+            else{
+                $newGrant->sponsor = $row['Award Sponsor Name'];
+            }
+            $newGrant->create();
+        }
+        show_status(++$iterationsSoFar, count($grants1));
+    }
+    
     
     // Create Products
     $iterationsSoFar = 0;

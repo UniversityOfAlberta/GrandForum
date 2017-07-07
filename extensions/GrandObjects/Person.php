@@ -112,6 +112,7 @@ class Person extends BackboneModel {
      * @return Person The Person from the given id
      */
     static function newFromEmployeeId($id){
+        $id = ltrim($id, '0');
         if(isset(self::$cache['eId'.$id])){
             return self::$cache['eId'.$id];
         }
