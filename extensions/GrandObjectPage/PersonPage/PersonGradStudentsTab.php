@@ -106,7 +106,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 } 
                             $html .= 
                             "<tr>
-				<td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getNameForForms()}</a></td>
+				<td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                 <td>$position</td>
                 <td style='white-space: nowrap;'>$start_date</td>
 				<td style='white-space: nowrap;'>$end_date</td>
@@ -189,7 +189,7 @@ class PersonGradStudentsTab extends AbstractTab {
                             }
                             $html .=
                             "<tr>
-                                <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getNameForForms()}</a></td>
+                                <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                                 <td>$position</td>
                                 <td style='white-space: nowrap;'>$start_date</td>
                                 <td style='white-space: nowrap;'>$end_date</td>
