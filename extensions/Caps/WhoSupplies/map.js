@@ -132,17 +132,23 @@ $(document).ready(function(){
       (function (st, province) {
         st[0].style.cursor = "pointer";
         st[0].onmouseover = function () {
-          st.animate({fill: "#0A748E"}, 250);
-          st.toFront();
-          paper.safari();
+          if($(st[0]).attr("data-hover") != "true"){
+              $(st[0]).attr("data-hover", "true");
+              st.animate({fill: "#0A748E"}, 250);
+              st.toFront();
+              paper.safari();
+          }
         };
         st[0].onmouseout = function () {
+            $(st[0]).attr("data-hover", "false");
           st.animate({fill: "#4C92AC"}, 250);
           st.toFront();
           paper.safari();
         };
-        st[0].onclick = function() {
-            $("#" + province.slice(2, 4)).click();
+        st[0].onmousedown = function() {
+            _.delay(function(){
+                $("#" + province.slice(2, 4)).click();
+            }, 50);
         };
       })(canada[province], province);
     }
