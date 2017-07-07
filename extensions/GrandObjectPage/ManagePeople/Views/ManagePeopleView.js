@@ -9,6 +9,7 @@ ManagePeopleView = Backbone.View.extend({
     initialize: function(){
         this.allPeople = new People();
         this.allPeople.fetch();
+        this.listenTo(this.allPeople, "sync", this.updateExistingMember);
         this.template = _.template($('#manage_people_template').html());
         this.listenTo(this.model, "sync", function(){
             this.people = this.model;
@@ -67,6 +68,15 @@ ManagePeopleView = Backbone.View.extend({
 	    this.$("#listTable_length").empty();
     },
     
+    updateExistingMember: function(){
+        if(this.allPeople.length > 0){
+            this.$("#addExistingMember").prop("disabled", false);
+        }
+        else{
+            this.$("#addExistingMember").prop("disabled", true);
+        }
+    },
+    
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
@@ -84,6 +94,7 @@ ManagePeopleView = Backbone.View.extend({
     render: function(){
         this.$el.empty();
         this.$el.html(this.template());
+        this.updateExistingMember();
         this.addRows();
         this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
 	        autoOpen: false,
