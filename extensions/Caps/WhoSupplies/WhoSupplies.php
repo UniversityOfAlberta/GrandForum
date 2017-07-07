@@ -316,6 +316,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>Public coverage of Mifegymiso® is currently undergoing an evaluation process (Feb. 6th, 2017) <a href='http://www.cmq.org/nouvelle/en/recommandations-interimaires-bon-usage-mifegymiso.aspx'>read more</a></li>
+                    <li>On July 6th, Quebec became the 4th province in Canada to announce full coverage of Mifegymiso®! To read more, <a href='http://www.msss.gouv.qc.ca/documentation/salle-de-presse/ficheCommunique.php?id=1359' target='_blank'>click here</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
