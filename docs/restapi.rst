@@ -276,7 +276,36 @@ role/:id
 
 Projects
 --------
-  
+
+theme
+~~~~~
+
+    **Actions**
+        **GET**
+            Returns a list of all Themes
+            
+theme/:id
+~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Theme
+
+    **Actions**
+        **GET**
+            Returns the specified Theme
+            
+theme/:id/projects
+~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:id**
+            The id of the Theme
+
+    **Actions**
+        **GET**
+            Returns a list of Projects in the specified Theme
+
 project
 ~~~~~~~
 

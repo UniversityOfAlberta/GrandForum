@@ -55,6 +55,9 @@ $apiRequest->addAction('Hidden','role', 'RoleAPI');
 $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');
 
 // Project
+$apiRequest->addAction('Hidden','theme', 'ThemeAPI');
+$apiRequest->addAction('Hidden','theme/:id', 'ThemeAPI');
+$apiRequest->addAction('Hidden','theme/:id/projects', 'ThemeProjectsAPI');
 $apiRequest->addAction('Hidden','project', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/members', 'ProjectMembersAPI');

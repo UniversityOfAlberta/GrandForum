@@ -16,7 +16,6 @@ class Theme {
     var $wiki;
     var $phase;
     var $color;
-    var $leader = null;
     
     /**
      * Returns a new Theme from the given Id
