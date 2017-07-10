@@ -79,6 +79,7 @@ class Role extends BackboneModel {
 	                                        'comment'    => $this->getComment()));
 	    $id = DBFunctions::insertId();
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    Cache::delete("rolesCache");
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -106,6 +107,7 @@ class Role extends BackboneModel {
 	                                        'comment'    => $this->getComment()),
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    Cache::delete("rolesCache");
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;
@@ -121,6 +123,7 @@ class Role extends BackboneModel {
 	    $status = DBFunctions::delete('grand_roles',
 	                                  array('id' => EQ($this->getId())));
 	    Cache::delete("personRolesDuring".$this->getPerson()->getId(), true);
+	    Cache::delete("rolesCache");
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    $this->getPerson()->roles = null;

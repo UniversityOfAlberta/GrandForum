@@ -40,10 +40,6 @@ class Person extends BackboneModel {
     var $firstName;
     var $lastName;
     var $middleName;
-    var $prevFirstName;
-    var $prevLastName;
-    var $honorific;
-    var $language;
     var $projects;
     var $university;
     var $universityDuring;
@@ -320,11 +316,7 @@ class Person extends BackboneModel {
                                               'first_name',
                                               'middle_name',
                                               'last_name',
-                                              //'prev_first_name',
-                                              //'prev_last_name',
                                               'employee_id',
-                                              //'honorific',
-                                              //'language',
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
@@ -339,27 +331,39 @@ class Person extends BackboneModel {
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
-                $exploded = explode(".", unaccentChars($row['user_name']));
-                
-                $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
-                $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
-                $middleName = unaccentChars($row['middle_name']);
-                
                 self::$idsCache[$row['user_id']] = $row;
                 self::$employeeIdsCache[$row['employee_id']] = $row;
-                self::$namesCache[strtolower($row['user_name'])] = $row;
-                self::$namesCache[strtolower("$firstName $lastName")] = $row;
-                self::$namesCache[strtolower("$lastName $firstName")] = $row;
-                self::$namesCache[strtolower("$firstName ".substr($lastName, 0, 1))] = $row;
-                self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
-                self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
-                if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                    self::$namesCache[unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])))] = $row;
+                
+                $keys = array();
+                if(!Cache::exists("nameCache_{$row['user_id']}")){
+                    // This is just caching the ids for namescache
+                    $exploded = explode(".", unaccentChars($row['user_name']));
+                    $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
+                    $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
+                    $middleName = unaccentChars($row['middle_name']);
+                    $keys = array(
+                        strtolower($row['user_name']),
+                        strtolower("$firstName $lastName"),
+                        strtolower("$lastName $firstName"),
+                        strtolower("$firstName ".substr($lastName, 0, 1)),
+                        strtolower("$lastName ".substr($firstName, 0, 1)),
+                        strtolower(substr($firstName, 0, 1)." $lastName")
+                    );
+                    if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
+                        $keys[] = strtolower(substr($firstName, 0, 1)." $lastName");
+                    }
+                    if($middleName != ""){
+                        $keys[] = strtolower("$firstName $middleName $lastName");
+                        $keys[] = strtolower("$firstName ".substr($middleName, 0, 1)." $lastName");
+                        $keys[] = strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1));
+                    }
+                    Cache::store("nameCache_{$row['user_id']}", $keys);
                 }
-                if($middleName != ""){
-                    self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
-                    self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
+                else{
+                    $keys = Cache::fetch("nameCache_{$row['user_id']}");
+                }
+                foreach($keys as $key){
+                    self::$namesCache[$key] = $row;
                 }
             }
         }
@@ -371,19 +375,25 @@ class Person extends BackboneModel {
      */
     static function generateRolesCache(){
         if(count(self::$rolesCache) == 0){
-            $sql = "SELECT *
-                    FROM grand_roles
-                    WHERE (end_date = '0000-00-00 00:00:00'
-                           OR end_date > CURRENT_TIMESTAMP)
-                    AND start_date <= CURRENT_TIMESTAMP";
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0){
-                foreach($data as $row){
-                    if(!isset(self::$rolesCache[$row['user_id']])){
-                        self::$rolesCache[$row['user_id']] = array();
+            if(Cache::exists("rolesCache")){
+                self::$rolesCache = Cache::fetch("rolesCache");
+            }
+            else{
+                $sql = "SELECT *
+                        FROM grand_roles
+                        WHERE (end_date = '0000-00-00 00:00:00'
+                               OR end_date > CURRENT_TIMESTAMP)
+                        AND start_date <= CURRENT_TIMESTAMP";
+                $data = DBFunctions::execSQL($sql);
+                if(count($data) > 0){
+                    foreach($data as $row){
+                        if(!isset(self::$rolesCache[$row['user_id']])){
+                            self::$rolesCache[$row['user_id']] = array();
+                        }
+                        self::$rolesCache[$row['user_id']][] = $row;
                     }
-                    self::$rolesCache[$row['user_id']][] = $row;
                 }
+                Cache::store("rolesCache", self::$rolesCache);
             }
         }
     }
@@ -860,13 +870,8 @@ class Person extends BackboneModel {
             $this->firstName = @$data[0]['first_name'];
             $this->lastName = @$data[0]['last_name'];
             $this->middleName = @$data[0]['middle_name'];
-            //$this->prevFirstName = @$data[0]['prev_first_name'];
-            //$this->prevLastName = @$data[0]['prev_last_name'];
             $this->employeeId = @$data[0]['employee_id'];
-            //$this->honorific = @$data[0]['honorific'];
-            //$this->language = @$data[0]['language'];
             $this->email = @$data[0]['user_email'];
-            //$this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
@@ -967,6 +972,7 @@ class Person extends BackboneModel {
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
+            Cache::delete("rolesCache");
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
@@ -996,10 +1002,6 @@ class Person extends BackboneModel {
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
-                                          //'prev_first_name' => $this->getPrevFirstName(),
-                                          //'prev_last_name' => $this->getPrevLastName(),
-                                          //'honorific' => $this->getHonorific(),
-                                          //'language' => $this->getCorrespondenceLanguage(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
@@ -1015,6 +1017,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("nameCache_{$this->getId()}");
             return $status;
         }
         return false;
@@ -1499,54 +1502,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the previous first name of this Person
-     * @return String The previous first name of this Person
-     */
-    function getPrevFirstName(){
-        return $this->prevFirstName;
-    }
-    
-    /**
-     * Returns the previous last name of this Person
-     * @return String The previous last name of this Person
-     */
-    function getPrevLastName(){
-        return $this->prevLastName;
-    }
-    
-    /**
-     * Returns the honorific (Dr. Mrs. etc) of this Person
-     * @return String The honorific (Dr. Mrs. etc) of this Person
-     */
-    function getHonorific(){
-        return $this->honorific;
-    }
-    
-    /**
-     * Returns the correspondence language of this Person (either 'French' or 'English')
-     * @return String The correspondence language of this Person (either 'French' or 'English')
-     */
-    function getCorrespondenceLanguage(){
-        return $this->language;
-    }
-    
-    /**
-     * Returns an array of UserLanguage objects that this Person knows
-     * @return array The UserLanguages that this Person knows
-     */
-    function getLanguages(){
-        $data = DBFunctions::select(array('grand_user_languages'),
-                                    array('id'),
-                                    array('user_id' => EQ($this->getId())));
-        $languages = array();
-        foreach($data as $row){
-            $language = UserLanguage::newFromId($row['id']);
-            $languages[$language->getLanguage()] = $language;
-        }
-        return $languages;
-    }
-    
-    /**
      * Returns an array of Address objects that this Person is from
      * @return array The Address objects that this Person is from
      */
@@ -1824,11 +1779,17 @@ class Person extends BackboneModel {
      * @return array The current University this Person is at
      */ 
     function getUniversity(){
-        self::generateUniversityCache();
         if($this->university !== false){
             return $this->university;
         }
-        $this->university = @self::$universityCache[$this->id];
+        if(!Cache::exists("user_university_{$this->id}")){
+            self::generateUniversityCache();
+            $this->university = @self::$universityCache[$this->id];
+            Cache::store("user_university_{$this->id}", $this->university);
+        }
+        else{
+            $this->university = Cache::fetch("user_university_{$this->id}");
+        }
         return $this->university;
     }
 
