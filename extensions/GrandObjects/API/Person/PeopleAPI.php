@@ -5,8 +5,12 @@ class PeopleAPI extends RESTAPI {
     function doGET(){
         if($this->getParam('role') != ""){
             $university = "";
+            $department = "";
             if($this->getParam('university') != ""){
                 $university = $this->getParam('university');
+            }
+            if($this->getParam('department') != ""){
+                $department = $this->getParam('department');
             }
             $exploded = explode(",", $this->getParam('role'));
             $finalPeople = array();
@@ -21,14 +25,16 @@ class PeopleAPI extends RESTAPI {
                     $people = Person::getAllPeople($role);
                 }
                 foreach($people as $person){
-                    if($university == ""){
+                    if($university == "" && $department == ""){
                         $finalPeople[$person->getReversedName()] = $person;
                     }
                     else {
                         $unis = $person->getCurrentUniversities();
                         foreach($unis as $uni){
                             if($uni['university'] == $university){
-                                $finalPeople[$person->getReversedName()] = $person;
+                                if($department == "" || $department == $uni['department']){
+                                    $finalPeople[$person->getReversedName()] = $person;
+                                }
                             }
                         }
                     }

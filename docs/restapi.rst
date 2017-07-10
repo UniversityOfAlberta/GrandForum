@@ -229,6 +229,20 @@ people/:role/:university
     **Actions**
         **GET**
             Returns a list of all People that belong to the specified Role(s), and are from the specified University
+            
+people/:role/:university/:department
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+    **Arguments**
+        **:role**
+            The type of Role to filter by.  Multiple Roles can be specified if separated by commas.  Using 'all' for the Role will include all roles.
+        **:university**
+            The name of the University to filter by
+        **:department**
+            The name of the department to filter by
+    **Actions**
+        **GET**
+            Returns a list of all People that belong to the specified Role(s), and are from the specified University and Department
 
 -----
 
@@ -593,6 +607,13 @@ university/:id
     **Actions**
         **GET**
             Returns the specified University
+            
+departments
+~~~~~~~~~~~
+
+    **Actions**
+        **GET**
+            Returns a list of departments (Strings)
           
 -----
             

@@ -48,6 +48,7 @@ $apiRequest->addAction('Hidden','people', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/managed', 'PeopleManagedAPI');
 $apiRequest->addAction('Hidden','people/:role', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/:university', 'PeopleAPI');
+$apiRequest->addAction('Hidden','people/:role/:university/:department', 'PeopleAPI');
 
 // Role
 $apiRequest->addAction('Hidden','role', 'RoleAPI');
@@ -88,6 +89,7 @@ $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyA
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
 $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
+$apiRequest->addAction('Hidden','departments', 'DepartmentAPI');
 
 // Wiki
 $apiRequest->addAction('Hidden','wikipage/:id', 'WikiPageAPI');
