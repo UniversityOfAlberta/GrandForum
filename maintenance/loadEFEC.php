@@ -278,23 +278,32 @@
             
             $supervisor = Person::newFromEmployeeId($student['SUPERVISOR_ID']);
             if($supervisor != null && $supervisor->getId() != 0){
-                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES])){
+                switch($student['ROLE_DESCR']){
+                    default:
+                    case "Supervisor":
+                        $roleType = SUPERVISES;
+                        break;
+                    case "Co-Supervisor":
+                        $roleType = CO_SUPERVISES;
+                        break;
+                }
+                
+                if(!isset($hqpRelations[$supervisor->getId()][$person->getId()][$roleType])){
                     $rel = new Relationship(array());
                     $rel->user1 = $supervisor->getId();
                     $rel->user2 = $person->getId();
                     $rel->startDate = $student['ADMISSION_START_DT'];
                     $rel->endDate = $endDate;
-                    $rel->type = SUPERVISES;
+                    $rel->type = $roleType;
                     
-                    $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES] = $rel;
+                    $hqpRelations[$supervisor->getId()][$person->getId()][$roleType] = $rel;
                 }
-                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][SUPERVISES];
+                $relation = $hqpRelations[$supervisor->getId()][$person->getId()][$roleType];
                 $relation->startDate = min($relation->getStartDate(), $student['ADMISSION_START_DT']);
                 $relation->endDate   = max($relation->getEndDate(),   $endDate);
             }
             
             if(!isset($hqpUniversities[$person->getId()][$student['PROG_TYPE']])){
-                
                 $uni = array();
                 $uni['university'] = "University of Alberta";
                 $uni['department'] = $student['UASA_ACAD_PLN1_D30'];
@@ -389,9 +398,11 @@
                     $rel->endDate = $row['ended'];
                     switch($row['role']){
                         case "":
-                        case "co-supervisor":
                         case "supervisor":
                             $rel->type = SUPERVISES;
+                            break;
+                        case "co-supervisor":
+                            $rel->type = CO_SUPERVISES;
                             break;
                         default:
                             $rel->type = ucwords($row['role']);

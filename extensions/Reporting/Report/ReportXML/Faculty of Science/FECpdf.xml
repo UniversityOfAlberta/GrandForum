@@ -151,7 +151,7 @@
     	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
     	     <ReportItem id="row" type="StaticReportItem">
     	         <![CDATA[
-    	         	<tr><td class="b">{$hqp_name}</td>
+    	         	<tr><td class="b">{$hqp_reversed_name}</td>
     	         	<td class="b" align='center'>{$hqp_position}</td>
     	         	<td class="b" align='center'>{$hqp_awards}</td>
     	         	<td class="b" align='center'>{$user_hqp_role}</td>

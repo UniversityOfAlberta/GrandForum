@@ -36,6 +36,7 @@ class ReportItemCallback {
             "course_enroll_percent" => "getCourseEnrollPercent",
             // Student Relation
             "hqp_name" => "getHqpName",
+            "hqp_reversed_name" => "getHqpReversedName",
             "hqp_position" => "getHqpPosition",
             "hqp_awards" => "getHqpAwards",
             "user_hqp_role" => "getUserHqpRole",
@@ -440,10 +441,17 @@ class ReportItemCallback {
         }
         return implode(", ", $newProjects);
     }
+    
     function getHqpName(){
-	$relation = Relationship::newFromId($this->reportItem->projectId);
-	$hqp = $relation->getUser2();
-	return $hqp->getNameForForms();
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        $hqp = $relation->getUser2();
+        return $hqp->getNameForForms();
+    }
+    
+    function getHqpReversedName(){
+        $relation = Relationship::newFromId($this->reportItem->projectId);
+        $hqp = $relation->getUser2();
+        return $hqp->getReversedName();
     }
 
     function getHqpPosition(){
@@ -465,14 +473,21 @@ class ReportItemCallback {
     
     function getUserHqpRole(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
+        switch($relation->type){
+            case SUPERVISES:
+                return "Supervisor";
+                break;
+            case CO_SUPERVISES:
+                return "Co-Supervisor";
+                break;
+        }
         return $relation->type;
-	
     }
    
     function getHqpStartDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $array = explode(" ", $relation->getStartDate());
-	return $array[0];
+        return $array[0];
     }
     
     function getHqpEndDate(){

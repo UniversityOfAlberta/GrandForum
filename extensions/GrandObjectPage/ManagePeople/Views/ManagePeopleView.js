@@ -80,8 +80,8 @@ ManagePeopleView = Backbone.View.extend({
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
-        this.allPeople.each(function(p){
-            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + p.get('fullName') + "</option>");
+        _.each(this.allPeople.sortBy('reversedName'), function(p){
+            this.$("#selectExistingMember").append("<option value='" + p.get('id') + "'>" + p.get('reversedName') + "</option>");
         });
         $("#selectExistingMember").chosen();
         this.addExistingMemberDialog.parent().css('overflow', 'visible');

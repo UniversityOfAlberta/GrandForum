@@ -1698,7 +1698,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_relations'),
                                     array('end_date'),
                                     array('user2' => EQ($this->getId()),
-                                          'type' => EQ('Supervises')),
+                                          'type' => LIKE('%Supervises%')),
                                     array('end_date' => 'ASC'));
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
@@ -3254,13 +3254,13 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type = 'Supervises'";
+                        AND type LIKE '%Supervises%'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type = 'Supervises'
+                        AND type LIKE '%Supervises%'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -3280,7 +3280,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type = 'Supervises'
+                AND type LIKE '%Supervises%'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         $hqps = array();
@@ -3334,7 +3334,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type = 'Supervises'
+                AND type LIKE '%Supervises%'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
@@ -3372,13 +3372,13 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
-                        AND type = 'Supervises'";
+                        AND type LIKE '%Supervises%'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user2 = '{$this->id}'
-                        AND type = 'Supervises'
+                        AND type LIKE '%Supervises%'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -3393,7 +3393,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
-                AND type = 'Supervises'
+                AND type LIKE '%Supervises%'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         $people = array();
@@ -3414,7 +3414,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
-                AND type = 'Supervises'
+                AND type LIKE '%Supervises%'
                 AND ( 
                 ( (end_date != '0000-00-00 00:00:00') AND
                 (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
@@ -3448,13 +3448,13 @@ class Person extends BackboneModel {
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type = 'Supervises'";
+                        AND type LIKE '%Supervises%'";
             }
             else{
                 $sql = "SELECT *
                         FROM grand_relations
                         WHERE user1 = '{$this->id}'
-                        AND type = 'Supervises'
+                        AND type LIKE '%Supervises%'
                         AND start_date <= '{$history}'
                         AND (end_date >= '{$history}' OR end_date = '0000-00-00 00:00:00')";
             }
@@ -3464,7 +3464,7 @@ class Person extends BackboneModel {
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
-                AND type = 'Supervises'
+                AND type LIKE '%Supervises%'
                 AND start_date > end_date";
         $data = DBFunctions::execSQL($sql);
         return count($data);

@@ -5,6 +5,7 @@ require_once(dirname(__FILE__)."/../Reporting/Addressing.php");
 // Relations Constants
 define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
+define("CO_SUPERVISES", 'Co-Supervises');
 define("MENTORS", 'Mentors');
 
 // Autoloads
