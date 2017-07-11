@@ -170,7 +170,7 @@
         Person::$namesCache[$person->getName()] = $person;
         Person::$idsCache[$person->getId()] = $person;
         Person::$employeeIdsCache[$row['uid']] = $person;
-        Person::$cache[$person->getName()] = $person;
+        Person::$cache[strtolower($person->getName())] = $person;
         Person::$cache[$person->getId()] = $person;
         Person::$cache['eId'.$row['uid']] = $person;
 
@@ -250,7 +250,7 @@
             Person::$namesCache[$person->getName()] = $person;
             Person::$employeeIdsCache[$student['EMPLID']] = $person;
             Person::$idsCache[$person->getId()] = $person;
-            Person::$cache[$person->getName()] = $person;
+            Person::$cache[strtolower($person->getName())] = $person;
             Person::$cache[$person->getId()] = $person;
             Person::$cache['eId'.$student['EMPLID']] = $person;
         }
@@ -354,12 +354,12 @@
         else{
             $username = $username[0];
         }
+        
         $realName = $username;
         $username = str_replace(" ", "", $username);
         $email = "";
-        $person = new Person(array());
-        $person->name = $realName;
         $person = Person::newFromName($username);
+        
         if($person == null || $person->getId() == 0){
             // First create the user
             $user = User::createNew($username, array('real_name' => "$realName", 
@@ -375,9 +375,10 @@
             $person->realname = $realName;
             Person::$namesCache[$person->getName()] = $person;
             Person::$idsCache[$person->getId()] = $person;
-            Person::$cache[$person->getName()] = $person;
+            Person::$cache[strtolower($person->getName())] = $person;
             Person::$cache[$person->getId()] = $person;
         }
+        
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
         
         $respIdMap[$row['id']] = $person;
@@ -410,6 +411,7 @@
                     }
                     $hqpRelations[$sup->getId()][$person->getId()][$row['role']] = $rel;
                 }
+                
                 $relation = $hqpRelations[$sup->getId()][$person->getId()][$row['role']];
                 $relation->startDate = min($relation->getStartDate(), $row['started']);
                 $relation->endDate   = max($relation->getEndDate(),   $row['ended']);
