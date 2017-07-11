@@ -38,7 +38,7 @@ TabView = Backbone.View.extend({
                         intervalId3 = null;
                     }
                  }, 100);
-		 var intervalId4 = setInterval(function(){
+		        var intervalId4 = setInterval(function(){
                     if($('#coursetab').is(':visible')){
                         self.subviews.courseFileImport.render();
                         clearInterval(intervalId4);
@@ -51,9 +51,9 @@ TabView = Backbone.View.extend({
     },
 
     subviewCreators: {
-	"ccvImport" : function(){
+	    "ccvImport" : function(){
 	     return new CCVImportView({parent: this, model: new CCVImportModel()});
-	},
+	    },
         "csvImport" : function(){
              return new CSVImportView({parent: this, model: new CCVImportModel()});
         },
@@ -68,7 +68,7 @@ TabView = Backbone.View.extend({
         },
         "courseFileImport" : function(){
              return new CourseFileImportView({parent: this, model: new CCVImportModel()});
-        },
+        }
     },   
 
  

@@ -160,7 +160,30 @@ ManageProductsViewRow = Backbone.View.extend({
            _.intersection(_.pluck(this.model.get('authors'), 'fullname'), studentFullNames).length > 0){
             isMine.isMine = true;
         }
-        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine));
+        
+        //Sanity Check: If there is ONLY title and year (no data), set incomplete == true;
+        var incomplete = {incomplete: true};
+        
+        // $.proxy rebinds this to val to this.model.get('cat') instead of 'type'
+        _.each(productStructure.categories[this.model.get('category')].
+        types[this.model.get('type')].data, $.proxy(function(val, key){        
+            if ( this.model.get('data')[key] != undefined &&  this.model.get('data')[key].trim() != ""){
+                incomplete.incomplete = false;
+            }
+        }, this)
+        )
+        
+        /*
+        // This version of the code does NOT highlight if type of publication is changed.
+        
+        if ( _.size( _.filter(this.model.get('data').trim(), function(val){return val != ""})) >= 1){
+            console.log(productStructure.categories[this.model.get('category')].types[this.model.get('type')].data)  
+            //console.log(_.size( _.filter(this.model.get('data'), function(val){return val != ""})));
+            incomplete.incomplete = false;
+        } 
+        */  
+            
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), isMine, incomplete));
         if(this.parent.table != null){
             // Need this so that the search functionality is updated
             var data = new Array();
@@ -170,13 +193,15 @@ ManageProductsViewRow = Backbone.View.extend({
             if(this.row != null){
                 this.row.data(data);
             }
+        
         }
         if(classes.length > 0){
             this.$("td").each(function(i, val){
                 $(val).addClass(classes[i]);
             });
         }
+        
         return this.$el;
     }
-    
+
 });

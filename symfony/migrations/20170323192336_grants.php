@@ -27,7 +27,7 @@ class Grants extends AbstractMigration
         if(!$table->exists()){
             $table->addColumn('user_id','integer')
                   ->addColumn('project_id', 'string', array('limit' => 256))
-                  ->addColumn('sponsor', 'string', array('limit', 1024))
+                  ->addColumn('sponsor', 'string', array('limit' => 1024))
                   ->addColumn('total','float')
                   ->addColumn('funds_before','float')
                   ->addColumn('funds_after','float')

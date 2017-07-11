@@ -33,7 +33,7 @@
 <td>
     <%= type %>
 </td>
-<td>
+<td style="<% if(incomplete) { %>background: #FFA500; <% } %>" >
     <a target="_blank" href="<%= url %>"><%= title %></a>
 </td>
 <td style="<% if(!isMine) { %>background: #ffd118; <% } %>">
@@ -53,3 +53,4 @@
     }) %>
     <%= names.join(',&nbsp;') %>
 </td>
+
