@@ -52,7 +52,7 @@ class PersonGradStudentsTab extends AbstractTab {
                 $html .= "<table width='100%'><tr>";
                 if(count($person->getRelationsAll()>0)){
                     $html .= "<td style='width:100%;' valign='top'>";
-                    $html .= "<table id='relations_table' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
+                    $html .= "<table id='relations_table' class='wikitable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                                 <thead><tr>
                                         <th>Name</th>
                                         <th>Position</th>
@@ -119,7 +119,7 @@ class PersonGradStudentsTab extends AbstractTab {
                                         <td style='white-space: nowrap;'>$role</td>";
                                     $html .= "</tr>";
                     }
-                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false})</script>";
+                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false});</script>";
                     $html .= "</td></tr></table>";
                 }
             }
