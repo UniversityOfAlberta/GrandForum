@@ -85,13 +85,13 @@ class PersonPage {
                         break;
                     }
                 }
-                $isSupervisor = ( $isSupervisor || (!FROZEN && $me->isRoleAtLeast(MANAGER)) );
-                $isMe = ( $isMe && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
+                $isSupervisor = ( $isSupervisor || ($me->isRoleAtLeast(MANAGER)) );
+                $isMe = ( $isMe && ($me->isRoleAtLeast(MANAGER)) );
                 $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
-                $edit = ( $edit && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
+                $edit = ( $edit && ($me->isRoleAtLeast(MANAGER)) );
                 
                 $post = ((isset($_POST['submit']) && $_POST['submit'] == "Save Profile"));
-                $post = ( $post && (!FROZEN || $me->isRoleAtLeast(MANAGER)) );
+                $post = ( $post && ($me->isRoleAtLeast(MANAGER)) );
                 $wgOut->clearHTML();
                 
                 //Adding support for GET['edit']
@@ -112,7 +112,9 @@ class PersonPage {
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                $tabbedPage->addTab(new PersonFECTab($person, $visibility));
+                if($person->isRole(NI)){
+                    $tabbedPage->addTab(new PersonFECTab($person, $visibility));
+                }
                 if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
@@ -123,7 +125,7 @@ class PersonPage {
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP)){
+                if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
@@ -139,7 +141,7 @@ class PersonPage {
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
                     $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility));
                 }
-                if($config->getValue('projectsEnabled')){
+                if($person->isRole(HQP) || $person->wasLastRole(HQP)){
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));

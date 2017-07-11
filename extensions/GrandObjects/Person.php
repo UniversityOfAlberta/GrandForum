@@ -518,6 +518,9 @@ class Person extends BackboneModel {
                                     array('user_id' => EQ($this->getId())));
         if(count($data) >0){
             $row = $data[0];
+            foreach($row as $key => $value){
+                $row[$key] = str_replace("0000-00-00 00:00:00", "", $value);
+            }
             $this->dateOfPhd = $row['date_of_phd'];
             $this->dateOfAppointment = $row['date_of_appointment'];
             $this->dateOfAssistant = $row['date_assistant'];
