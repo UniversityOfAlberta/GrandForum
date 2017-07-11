@@ -902,7 +902,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge and Technology Exchange and Exploitation - Knowledge mobilization &amp; Commercialization" name="Knowledge Mobilization" title="Knowledge and Technology Exchange and Exploitation - Knowledge mobilization &amp; Commercialization">
+    <ReportSection id="ktee1" type="EditableReportSection" blobSection="KTEE1" tooltip="Knowledge &amp; Technology Exchange and Exploitation" name="KTEE" title="Knowledge &amp; Technology Exchange and Exploitation">
         <ReportItem id="instructions" type="Static">
             <![CDATA[
                 <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication.</p>
