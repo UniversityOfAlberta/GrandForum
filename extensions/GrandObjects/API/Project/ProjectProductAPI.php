@@ -5,6 +5,9 @@ class ProjectProductAPI extends RESTAPI {
     function doGET(){
         if($this->getParam(0) == "project"){
             $project = Project::newFromId($this->getParam('id'));
+            if($project == null || $project->getId() == 0){
+                $this->throwError("This Project does not exist");
+            }
             $json = array();
             $products = $project->getPapers("all");
             foreach($products as $product){
@@ -23,6 +26,9 @@ class ProjectProductAPI extends RESTAPI {
         }
         else if($this->getParam(0) == "product"){
             $product = Paper::newFromId($this->getParam('id'));
+            if($product == null || $product->getId() == 0){
+                $this->throwError("This Product does not exist");
+            }
             $json = array();
             $projects = $product->getProjects(); 
             foreach($projects as $project){
@@ -54,7 +60,10 @@ class ProjectProductAPI extends RESTAPI {
             else if($this->getParam(0) == "product"){
                 $product = Paper::newFromId($this->getParam('id'));
                 $project = Project::newFromId($this->getParam('projectId'));
-            }            
+            }
+            if($project == null || $project->getId() == 0){
+                $this->throwError("This Project does not exist");
+            }
             $projects = $product->getProjects();
             $serializedProjects = array();
             $found = false;
@@ -93,6 +102,9 @@ class ProjectProductAPI extends RESTAPI {
             else if($this->getParam(0) == "product"){
                 $product = Paper::newFromId($this->getParam('id'));
                 $project = Project::newFromId($this->getParam('projectId'));
+            }
+            if($project == null || $project->getId() == 0){
+                $this->throwError("This Project does not exist");
             }
             $serializedProjects = array();
             $projects = $product->getProjects();
