@@ -1249,7 +1249,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies" pagebreak="false">
+    <ReportSection id="narrative2" type="EditableReportSection" blobSection="NARRATIVE2" tooltip="PRL Justifications &amp; Case Studies" name="PRL Justifications" title="PRL Justifications &amp; Case Studies">
         <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="500">
             <![CDATA[
                 <h3>Use the information you have filled out above to give a justification for the PRL that you have selected including progress made over the past year from one level to the next.</h3>
@@ -1265,6 +1265,35 @@
         <ReportItem id="study" type="Textarea" blobItem="STUDY" rich="true" optional="true" limit="350">
             <![CDATA[
                 <h3>Please provide a short case study of outstanding work or achievement in any of the above evaluation impact areas.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request"  pagebreak="false">
+        <ReportItem id="budget_amount" type="Integer" blobItem="BUDGET_AMOUNT" mimeType=".xlsx" min="0" max="10000000" size="6">
+            <![CDATA[
+                Total project budget allocation (2018-2020), as determined by your WP: $ {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="UploadReportItem" blobItem="BUDGET" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" optional="true">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources_amount" type="Integer" blobItem="RESOURCES_AMOUNT" optional="true" min="0" max="10000000" size="6">
+            <![CDATA[
+                <h3>Shared WP Resources</h3>
+                Total amount allocated to a shared resource: $ {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="Textarea" blobItem="RESOURCES" optional="true">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>

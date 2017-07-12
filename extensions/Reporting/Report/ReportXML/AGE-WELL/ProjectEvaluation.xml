@@ -1430,6 +1430,39 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="budget" type="EditableReportSection" blobSection="BUDGET" name="Budget Request" title="Budget Request">
+        <ReportItem id="budget_amount" type="Integer" blobItem="BUDGET_AMOUNT" min="0" max="10000000" size="6">
+            <![CDATA[
+                Total project budget allocation (2018-2020), as determined by your WP: $ {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="UploadReportItem" blobItem="BUDGET" mimeType=".xlsx" fileSize="5">
+            <![CDATA[
+                <p>Download the following <a href="{$wgServer}{$wgScriptPath}/data/AGE-WELL Y4&5 Budget.xlsx">template</a>, fill it out locally, and upload it below.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" optional="true">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <p>Please provide a detailed budget justification. Please keep in mind that ≥50% of budget must be allocated to KTEE activities and HQP training OR a strong rationale for ongoing development work where budget and project plans do not include significant KTEE activities. Funding for KTEE activities should be clearly defined for the RMC. The justification must align with the outcomes and activities outlined in your balance scorecard. If partner contributions are contributing to the 50% of the budget allocated for KTEE activities and HQP, please detail who the partner is and what contributions they are providing.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources_amount" type="Integer" blobItem="RESOURCES_AMOUNT" optional="true" min="0" max="10000000" size="6">
+            <![CDATA[
+                <h3>Shared WP Resources</h3>
+                <p>If your WP has decided to allocate funding to a shared resource (ex. Post doc to work on business development), please explain what the funds are allocated for, how this will benefit your project, and who will be holding the funds (if determined).</p>
+                Total amount allocated to a shared resource: $ {$item}<br />
+                <small>(*This amount should NOT be included in the table above unless your project will be holding these funds for your WP).</small>
+            ]]>
+        </ReportItem>
+        <ReportItem id="resources" type="Textarea" blobItem="RESOURCES" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
