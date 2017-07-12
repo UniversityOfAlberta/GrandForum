@@ -2696,8 +2696,8 @@ class Person extends BackboneModel {
         $people = array();
         $data = DBFunctions::select(array('grand_managed_people'),
                                     array('managed_id'),
-                                    array('user_id' => EQ($this->getId(),
-                                          'deleted' => EQ(0))));
+                                    array('user_id' => EQ($this->getId()),
+                                          'deleted' => EQ(0)));
         foreach($data as $row){
             $person = Person::newFromId($row['managed_id']);
             $people[$person->getReversedName()] = $person;
