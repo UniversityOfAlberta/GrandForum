@@ -185,7 +185,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     
     function generateBody(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP) && $me->isMemberOf($this->project)){
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             parent::generateBody();
             $this->addScript();
@@ -196,7 +196,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     
     function generateEditBody(){
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP) && $me->isMemberOf($this->project)){
+        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             parent::generateBody();
             $this->addScript();
