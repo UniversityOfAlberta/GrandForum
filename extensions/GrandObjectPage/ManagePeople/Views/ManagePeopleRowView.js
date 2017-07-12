@@ -64,7 +64,28 @@ ManagePeopleRowView = Backbone.View.extend({
         this.$("td").each(function(i, val){
             classes.push($(val).attr("class"));
         });
-        this.el.innerHTML = this.template(this.model.toJSON());
+
+	    // Sanity Check 1: Incomplete Student Data Check - highlights students with empty dataset
+        var complete = {complete: true};
+	    if ( _.size(_.filter( [this.model.get('university').trim().toLowerCase(),
+	                                  this.model.get('position').trim().toLowerCase(),
+	                                  this.model.get('department').trim().toLowerCase()],
+	                                 function(val){
+	                                    return (val != "" && 
+	                                            val != undefined && 
+	                                            val != "unknown");
+	                                 }
+	                         )
+	               ) != 3
+	        ){ complete.complete = false; }
+        
+        // Sanity Check 2: Relationship with Faculty Member
+        var doubtful = {doubtful: false};
+        if (me.get('department').trim().toLowerCase() != this.model.get('department').trim().toLowerCase()){
+            doubtful.doubtful = true;
+        }
+
+        this.el.innerHTML = this.template(_.extend(this.model.toJSON(), complete, doubtful));
         if(this.parent.table != null){
             var data = new Array();
             this.$("td").each(function(i, val){
@@ -231,7 +252,8 @@ ManagePeopleRowView = Backbone.View.extend({
 	                this.universitiesDialog.dialog('close');
 	            }, this)
 	        }
-	    });
+	    });   
+	    
         return this.$el;
     }
     

@@ -24,7 +24,13 @@ class PersonHandler extends AbstractDuplicatesHandler {
         if(!$this->areIgnored($person1->getId(), $person2->getId())){
             similar_text($person1->getName(), $person2->getName(), $percent1);
             similar_text($person1->getEmail(), $person2->getEmail(), $percent2);
-            $percent = round(($percent1 + $percent2)/2);
+            
+            if ($person1->getEmail() == "" || $person2->getEmail() == ""){
+                $percent = $percent1;
+            }
+            else{
+                $percent = round(($percent1 + $percent2)/2);
+            }
             if($percent >= 75){
                 $projs1 = $person1->getProjects();
                 $projs2 = $person2->getProjects();

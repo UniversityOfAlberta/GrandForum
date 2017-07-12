@@ -26,6 +26,8 @@
 <td align="center">
     <span id="editUniversities" class="edit-icon" title="Edit Universities"></span>
 </td>
-<td style="border-left: 2px solid #AAAAAA;" align="left">
+<td style="border-left: 2px solid #AAAAAA; 
+           <% if(!complete) { %> background:#FFA500; <% } %> 
+           <% if(doubtful) { %> font-weight:bold; <% } %>" align="left" >
     <a href="<%= url %>"><%= reversedName %></a>
 </td>

@@ -5,6 +5,7 @@ require_once("DuplicatesTab.php");
 require_once("Handlers/ProductHandler.php");
 require_once("Handlers/MyProductHandler.php");
 require_once("Handlers/PersonHandler.php");
+require_once("Handlers/HQPHandler.php");
 require_once("MyDuplicateProducts.php");
 
 $dir = dirname(__FILE__) . '/';
@@ -25,6 +26,7 @@ function handleDuplicates($action, $request){
         ProductHandler::init();
 	    MyProductHandler::init();
 	    PersonHandler::init();
+	    HQPHandler::init();
         foreach(AbstractDuplicatesHandler::$handlers as $handler){
             if($_GET['handler'] == $handler->id){
                 if($action == "getDuplicates"){
@@ -34,10 +36,12 @@ function handleDuplicates($action, $request){
                 }
                 else if($action == "deleteDuplicates"){
                     $handler->handleDelete();
+                    DBFunctions::commit();
                     exit;
                 }
                 else if($action == "ignoreDuplicates"){
                     $handler->handleIgnore();
+                    DBFunctions::commit();
                     exit;
                 }
                 break;

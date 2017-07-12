@@ -2687,7 +2687,9 @@ class Person extends BackboneModel {
                                     array('user_id' => EQ($this->getId())));
         foreach($data as $row){
             $person = Person::newFromId($row['managed_id']);
-            $people[$person->getReversedName()] = $person;
+            if($person->getId() != 0){
+                $people[$person->getReversedName()] = $person;
+            } 
         }
         return $people;
     }

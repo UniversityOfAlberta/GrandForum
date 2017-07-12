@@ -206,7 +206,7 @@ class DBFunctions {
 		    }
 		    else{
 		        $me = Person::newFromUser($wgUser);
-		        if($me->isRoleAtLeast(MANAGER)){
+		        //if($me->isRoleAtLeast(MANAGER)){
 		            $traces = debug_backtrace();
 		            foreach($traces as $trace){ 
 		                $file = $trace['file'];
@@ -216,10 +216,10 @@ class DBFunctions {
 		                }
 		            }
 		            $wgMessage->addError("<pre class='inlineError' style='font-weight:bold;background:none;border:none;padding:0;overflow:hidden;margin:0;'>".$e->getMessage()."in <i>{$file}</i> on line <i>{$line}</i></pre>");
-		        }
-		        else{
-		            $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.");
-		        }
+		        //}
+		        //else{
+		        //    $wgMessage->addError("A Database error #{$e->errno} has occurred, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.");
+		        //}
 		    }
 		    if($rollback){
 		        DBFunctions::rollback();
