@@ -434,12 +434,12 @@ class Paper extends BackboneModel{
                     $paper = self::$cache[$row['id']];
                 }
                 if($project != "all"){
-                    $papers[] = $paper;
+                    $papers[$paper->getId()] = $paper;
                 }
                 else if(($grand == 'grand' && $paper->isGrandRelated()) ||
                         ($grand == 'nonGrand' && !$paper->isGrandRelated()) ||
                          $grand == 'both'){
-                    $papers[] = $paper;
+                    $papers[$paper->getId()] = $paper;
                 }
             }
             self::$dataCache[$proj.$category.$grand.$startRange.$endRange.$str] = $papers;
