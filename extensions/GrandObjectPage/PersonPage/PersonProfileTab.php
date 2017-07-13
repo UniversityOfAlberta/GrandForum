@@ -56,8 +56,8 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= $this->showEditTable($this->person, $this->visibility);
         $this->html .= "<h2>Profile</h2>";
-	$this->showEditProfile($this->person, $this->visibility);
-    	$this->html .= "<script type='text/javascript'>
+        $this->showEditProfile($this->person, $this->visibility);
+        $this->html .= "<script type='text/javascript'>
             $(document).ready(function(){
                 $('select.chosen:visible').chosen();
                 $('select.chosen').each(function(i, el){
@@ -90,8 +90,8 @@ class PersonProfileTab extends AbstractEditableTab {
     function handleEdit(){
         $this->handleContactEdit();
         $tab = new PersonDashboardTab($this->person, $this->visibility);
-	$tab->handleEdit();
-	$_POST['user_name'] = $this->person->getName();
+        $tab->handleEdit();
+        $_POST['user_name'] = $this->person->getName();
         $_POST['type'] = "public";
         $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
         $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
@@ -288,29 +288,29 @@ EOF;
     }
     
     static function getPersonCloudData($action, $article){
-	    global $wgServer, $wgScriptPath;
-	    if($action == "getPersonCloudData"){
-	        $text = "";
-	        $person = Person::newFromId($_GET['person']);
-	        $text .= $person->getProfile()."\n";
-	        
-	        $products = $person->getPapers("all", false, 'both', true, 'Public');
-	        foreach($products as $product){
-	            $text .= $product->getTitle()."\n";
-	            $text .= $product->getDescription()."\n";
-	        }
-	        CommonWords::$commonWords[] = strtolower($person->getFirstName());
-	        CommonWords::$commonWords[] = strtolower($person->getLastName());
-	        $data = Wordle::createDataFromText($text);
-	        $data = array_slice($data, 0, 75);
+        global $wgServer, $wgScriptPath;
+        if($action == "getPersonCloudData"){
+            $text = "";
+            $person = Person::newFromId($_GET['person']);
+            $text .= $person->getProfile()."\n";
+            
+            $products = $person->getPapers("all", false, 'both', true, 'Public');
+            foreach($products as $product){
+                $text .= $product->getTitle()."\n";
+                $text .= $product->getDescription()."\n";
+            }
+            CommonWords::$commonWords[] = strtolower($person->getFirstName());
+            CommonWords::$commonWords[] = strtolower($person->getLastName());
+            $data = Wordle::createDataFromText($text);
+            $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
         }
         return true;
-	}
-	
-	function showDoughnut($person, $visibility){
+    }
+
+    function showDoughnut($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
         $fn = '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")';
@@ -396,22 +396,22 @@ EOF;
     function showTable($person, $visibility){
         global $config;
         $me = Person::newFromWgUser();
-	$visibilityCopy = $visibility;
-	$visibilityCopy['isMe'] = false;
-	$tab = new PersonDashboardTab($person, $visibilityCopy);
-	$tab->showTopProducts($person, $visibilityCopy, 5);
-	$string = $tab->html;
-	return $string;
+        $visibilityCopy = $visibility;
+        $visibilityCopy['isMe'] = false;
+        $tab = new PersonDashboardTab($person, $visibilityCopy);
+        $tab->showTopProducts($person, $visibilityCopy, 5);
+        $string = $tab->html;
+        return $string;
     }
 
     function showEditTable($person, $visibility){
-	$me = Person::newFromWgUser();
-	$visibilityCopy = $visibility;
-	$visibilityCopy['isMe'] = false;
-	$tab = new PersonDashboardTab($person, $visibilityCopy);
-	$tab->showEditTopProducts($person, $visibilityCopy, 5);
-	$string = $tab->html;
-	return $string;	
+        $me = Person::newFromWgUser();
+        $visibilityCopy = $visibility;
+        $visibilityCopy['isMe'] = false;
+        $tab = new PersonDashboardTab($person, $visibilityCopy);
+        $tab->showEditTopProducts($person, $visibilityCopy, 5);
+        $string = $tab->html;
+        return $string;
     }
  
     /**
@@ -439,7 +439,7 @@ EOF;
     }
     
     function showEditPhoto($person, $visibility){
-	global $config;
+        global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
         $this->html .= "<div id=\"special_links\"></div>";
@@ -458,8 +458,8 @@ EOF;
                                 <td align='right'><b>Website URL:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>";
-	if($config->getValue('singleUniversity')){
-		$this->html .= "<tr>
+        if($config->getValue('singleUniversity')){
+                $this->html .= "<tr>
                                 <td align='right'><b>LDAP URL:</b></td>
                                 <td><input type='text' size='30' name='ldap' value='".str_replace("'", "&#39;", $person->getLdap())."' /></td>
                             </tr>";
@@ -475,8 +475,8 @@ EOF;
                                 <td align='right'><b>ORCID:</b></td>
                                 <td><input type='text' size='30' name='orcId' value='".str_replace("'", "&#39;", $person->getOrcId())."' /></td>
                             </tr>";
-	}
-	$this->html .=  "<tr>
+        }
+        $this->html .=  "<tr>
                                 <td align='right'><b>Twitter Account:</b></td>
                                 <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>

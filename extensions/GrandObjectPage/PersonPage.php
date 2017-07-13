@@ -86,7 +86,7 @@ class PersonPage {
                     }
                 }
                 $isSupervisor = ( $isSupervisor || ($me->isRoleAtLeast(MANAGER)) );
-                $isMe = ( $isMe && ($me->isRoleAtLeast(MANAGER)) );
+                $isMe = ( $isMe || ($me->isRoleAtLeast(MANAGER)) );
                 $edit = ((isset($_GET['edit']) || isset($_POST['edit'])) && ($isMe || $isSupervisor));
                 $edit = ( $edit && ($me->isRoleAtLeast(MANAGER)) );
                 

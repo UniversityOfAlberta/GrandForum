@@ -49,7 +49,7 @@
     DBFunctions::execSQL("TRUNCATE grand_courses", true);
     DBFunctions::execSQL("TRUNCATE grand_user_courses", true);    
     
-    $dataDir = "/home/sangsoo/Desktop/Work/FoS/courses/csv/";
+    $dataDir = "csv/";
     //$dataDir = dirname(__FILE__).'/csv_test/'; // if csv in maintanence
     $dir = new DirectoryIterator($dataDir);
     
