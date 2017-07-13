@@ -17,6 +17,7 @@ class UserWebsiteAPI extends API{
         DBFunctions::update('mw_user',
                             array('user_website' => $_POST['website']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Website added\n";
         }

@@ -90,10 +90,16 @@ class Person extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        self::generateNamesCache();
-        $data = array();
-        if(isset(self::$idsCache[$id])){
-            $data[] = self::$idsCache[$id];
+        if(!Cache::exists("idsCache_$id")){
+            self::generateNamesCache();
+            $data = array();
+            if(isset(self::$idsCache[$id])){
+                $data[] = self::$idsCache[$id];
+            }
+            Cache::store("idsCache_$id", $data);
+        }
+        else{
+            $data = Cache::fetch("idsCache_$id");
         }
         $person = new Person($data);
         self::$cache[$person->id] = $person;
@@ -1021,6 +1027,7 @@ class Person extends BackboneModel {
             Person::$aliasCache = array();
             Person::$idsCache = array();
             Cache::delete("nameCache_{$this->getId()}");
+            Cache::delete("idsCache_{$this->getId()}");
             return $status;
         }
         return false;
@@ -1029,6 +1036,7 @@ class Person extends BackboneModel {
     function delete(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
+            Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
                                  array('user_id' => EQ($this->getId())));

@@ -17,6 +17,7 @@ class UserOrcIdAPI extends API{
         DBFunctions::update('mw_user',
                             array('orcid' => $_POST['orcId']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "ORCID added\n";
         }

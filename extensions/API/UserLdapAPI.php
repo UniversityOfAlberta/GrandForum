@@ -17,6 +17,7 @@ class UserLdapAPI extends API{
         DBFunctions::update('mw_user',
                             array('ldap_url' => $_POST['ldap']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Ldap added\n";
         }

@@ -6,6 +6,7 @@ class Grant extends BackboneModel {
     var $user_id;
     var $project_id;
     var $sponsor;
+    var $copi = array();
     var $total;
     var $funds_before;
     var $funds_after;
@@ -55,6 +56,7 @@ class Grant extends BackboneModel {
                 $this->user_id = $row['user_id'];
                 $this->project_id = $row['project_id'];
                 $this->sponsor = $row['sponsor'];
+                $this->copi = unserialize($row['copi']);
                 $this->total = $row['total'];
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
@@ -82,6 +84,14 @@ class Grant extends BackboneModel {
     
     function getSponsor(){
         return $this->sponsor;
+    }
+    
+    function getCoPI(){
+        $copis = array();
+        foreach($this->copi as $copi){
+            $copis[] = Person::newFromId($copi);
+        }
+        return $copis;
     }
     
     function getTotal(){
@@ -143,6 +153,7 @@ class Grant extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
+                                  'copi' => serialize($this->copi),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
@@ -170,6 +181,7 @@ class Grant extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
+                                  'copi' => serialize($this->copi),
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
@@ -207,6 +219,7 @@ class Grant extends BackboneModel {
             'user_id' => $this->user_id,
             'project_id' => $this->project_id,
             'sponsor' => $this->sponsor,
+            'copi' => $this->copi,
             'total' => $this->total,
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,

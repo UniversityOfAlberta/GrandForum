@@ -23,6 +23,7 @@ class PersonCoursesTab extends AbstractTab {
                             <th>Term</th>
                             <th style='white-space:nowrap;'>Catalog Description</th>
                             <th style='white-space:nowrap;'>USRIs</th>
+                            <th style='white-space:nowrap;'>Enrolled</th>
                             <th style='white-space:nowrap;'>Start Date</th>
                             <th style='white-space:nowrap;'>End Date</th>
                         </tr></thead><tbody>";
@@ -64,10 +65,10 @@ class PersonCoursesTab extends AbstractTab {
                             <td align=center>{$question['strongly disagree']}</td>
                             <td align=center>{$question['disagree']}</td>
                             <td align=center>{$question['neither d or a']}</td>
-                                                <td align=center>{$question['agree']}</td>
-                                                <td align=center>{$question['strongly agree']}</td>
-                                                <td align=center>{$question['median']}</td>
-                                                <td align=center>{$question['tukey fence']}</td>
+                            <td align=center>{$question['agree']}</td>
+                            <td align=center>{$question['strongly agree']}</td>
+                            <td align=center>{$question['median']}</td>
+                            <td align=center>{$question['tukey fence']}</td>
                             <td align=center>{$question['25%']}</td>
                             <td align=center>{$question['50%']}</td>
                             <td align=center>{$question['75%']}</td>
@@ -80,7 +81,7 @@ class PersonCoursesTab extends AbstractTab {
                 $this->html .= "No Current Data";
             }
             $this->html .= "</td>";
-                
+            $this->html .= "<td>{$course->totEnrl}</td>";
             $this->html .= "<td style='white-space:nowrap;'>{$course->getStartDate()}</td>";
             $this->html .= "<td style='white-space:nowrap;'>{$course->getEndDate()}</td>";
 

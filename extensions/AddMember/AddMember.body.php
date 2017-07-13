@@ -72,7 +72,7 @@ class UserCreate {
         DBFunctions::update('mw_user',
 	                        array('candidate' => $_POST['candidate']),
 	                        array('user_id' => EQ($wgUser->getId())));
-        
+        Cache::delete("idsCache_{$wgUser->getId()}");
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();
         Person::$cache = array();

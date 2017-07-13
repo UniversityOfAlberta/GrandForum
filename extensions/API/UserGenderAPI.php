@@ -17,6 +17,7 @@ class UserGenderAPI extends API{
         DBFunctions::update('mw_user',
                             array('user_gender' => $_POST['gender']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "User's Gender updated\n";
         }

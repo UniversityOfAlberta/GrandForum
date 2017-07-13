@@ -5,11 +5,13 @@ EditGrantView = Backbone.View.extend({
     allContributions: null,
 
     initialize: function(){
-        this.model.fetch({
-            error: $.proxy(function(e){
-                this.$el.html("This Grant does not exist");
-            }, this)
-        });
+        if(!this.model.isNew()){
+            this.model.fetch({
+                error: $.proxy(function(e){
+                    this.$el.html("This Grant does not exist");
+                }, this)
+            });
+        }
         this.listenTo(this.model, "change:title", function(){
             main.set('title', this.model.get('title'));
         });
@@ -24,6 +26,9 @@ EditGrantView = Backbone.View.extend({
         }, this));
         
         this.template = _.template($('#edit_grant_template').html());
+        if(this.model.isNew()){
+            this.model.trigger("sync");
+        }
     },
     
     save: function(){
@@ -179,11 +184,30 @@ EditGrantView = Backbone.View.extend({
 	    this.$("#contributions .sortable-search input").change($.proxy(changeFn, this));
 	    this.$("#contributions .sortable-search input").keyup($.proxy(changeFn, this));
     },
+    
+    renderCoPI: function(){
+        var xhrs = new Array();
+        var people = new Array();
+        _.each(this.model.get('copi'), function(copi){
+            var person = new Person({id: copi});
+            people.push(person);
+            xhrs.push(person.fetch());
+        });
+        $.when.apply($, xhrs).then($.proxy(function(){
+            this.$("#copi").empty();
+            var html = new Array();
+            _.each(people, $.proxy(function(copi){
+                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
+            }, this));
+            this.$("#copi").html(html.join(", "));
+        }, this));
+    },
 
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributionsWidget();
+        this.renderCoPI();
         this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});

@@ -17,6 +17,7 @@ class UserGoogleScholarAPI extends API{
         DBFunctions::update('mw_user',
                             array('google_scholar_url' => $_POST['googleScholarUrl']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Google Scholar Url added\n";
         }

@@ -27,6 +27,7 @@ class UserEmailAPI extends API{
                             array('user_email' => $_POST['email']),
                             array('user_id' => EQ($person->getId())));
         $person->email = $_POST['email'];
+        Cache::delete("idsCache_{$person->getId()}");
         // Re-Add the person to the mailing lists using their new email
         MailingList::subscribeAll($person);
         if(!$noEcho){

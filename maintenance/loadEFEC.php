@@ -86,15 +86,25 @@
                                  
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
                                             array('*'));
-                                            
+    
+    // Basic Grant Information
     $grants1 = DBFunctions::select(array('bddEfec2_development.grants1'),
                                    array('*'));
-                                   
+    
+    // Co-Applicant Information
     $grants2 = DBFunctions::select(array('bddEfec2_development.grants2'),
                                    array('*'));
-                                   
+    
+    // Sponsor Information (Mainly for MULTI)
     $grants3 = DBFunctions::select(array('bddEfec2_development.grants3'),
                                    array('*'));
+    
+    $newGrants2 = array();
+    foreach($grants2 as $grant){
+        $newGrants2[$grant['Project']][] = $grant;
+    }
+    $grants2 = $newGrants2;
+    
     $newGrants3 = array();
     foreach($grants3 as $grant){
         $newGrants3[$grant['Project']][] = $grant;
@@ -339,13 +349,6 @@
     $iterationsSoFar = 0;
     echo "\nImporting HQP From eFEC\n";
     foreach($responsibilities as $row){
-        if($row['responsibility'] == 'phd' ||
-           $row['responsibility'] == 'msc' ||
-           $row['responsibility'] == 'meng' ||
-           $row['responsibility'] == 'ma'){
-            show_status(++$iterationsSoFar, count($responsibilities));
-            continue;
-        }
         $username = preg_replace("/\(.*\)/", "", trim(str_replace(".", "", $row['name']), " -\t\n\r\0\x0B"));
         $username = explode(",", $username, 2);
         if(count($username) > 1){
@@ -356,10 +359,23 @@
         }
         
         $realName = $username;
-        $username = str_replace(" ", "", $username);
+        $username = str_replace(" ", ".", $username);
+        
+        if($row['responsibility'] == 'phd' ||
+           $row['responsibility'] == 'msc' ||
+           $row['responsibility'] == 'meng' ||
+           $row['responsibility'] == 'ma'){
+            // Don't actually create these users, but keep track of them for publication authors
+            $person = new Person(array());
+            $person->name = $realName;
+            $person->realname = $realName;
+            $respIdMap[$row['id']] = $person;
+            show_status(++$iterationsSoFar, count($responsibilities));
+            continue;
+        }
+        
         $email = "";
         $person = Person::newFromName($username);
-        
         if($person == null || $person->getId() == 0){
             // First create the user
             $user = User::createNew($username, array('real_name' => "$realName", 
@@ -506,11 +522,20 @@
             else{
                 $newGrant->sponsor = $row['Award Sponsor Name'];
             }
+            if(isset($grants2[$row['Project']])){
+                foreach($grants2[$row['Project']] as $row2){
+                    if($row2['Proposal Team Member Role Description'] == "Co-PI"){
+                        $member = Person::newFromEmployeeId($row2['Prop Team Member Emplid (if available)']);
+                        if($member != null && $member->getId() != 0){
+                            $newGrant->copi[] = $member->getId();
+                        }
+                    }
+                }
+            }
             $newGrant->create();
         }
         show_status(++$iterationsSoFar, count($grants1));
     }
-    
     
     // Create Products
     $iterationsSoFar = 0;

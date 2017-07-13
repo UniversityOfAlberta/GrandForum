@@ -18,7 +18,7 @@ class GrantAPI extends RESTAPI {
     }
     
     function doPOST(){
-        $grant = new Grant();
+        $grant = new Grant(array());
         $grant->user_id = $this->POST('user_id');
         $grant->project_id = $this->POST('project_id');
         $grant->total = $this->POST('total');

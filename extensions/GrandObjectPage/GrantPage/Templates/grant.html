@@ -3,9 +3,15 @@
 </p>
 <table>
     <tr>
-        <td class="label">User:</td>
+        <td class="label">PI:</td>
         <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
+    <% if(copi.length > 0) { %>
+        <tr>
+            <td class="label">Co-PI:</td>
+            <td id="copi"></td>
+        </tr>
+    <% } %>
     <% if(sponsor != ""){ %>
     <tr>
         <td class="label">Sponsor:</td>

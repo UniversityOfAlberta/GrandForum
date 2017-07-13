@@ -16,6 +16,7 @@ class UserProfileAPI extends API{
         DBFunctions::update('mw_user',
                             array("user_{$_POST['type']}_profile" => @$_POST['profile']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Account profile updated\n";
         }

@@ -39,11 +39,30 @@ GrantView = Backbone.View.extend({
             }, this));
         }
     },
+    
+    renderCoPI: function(){
+        var xhrs = new Array();
+        var people = new Array();
+        _.each(this.model.get('copi'), function(copi){
+            var person = new Person({id: copi});
+            people.push(person);
+            xhrs.push(person.fetch());
+        });
+        $.when.apply($, xhrs).then($.proxy(function(){
+            this.$("#copi").empty();
+            var html = new Array();
+            _.each(people, $.proxy(function(copi){
+                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
+            }, this));
+            this.$("#copi").html(html.join(", "));
+        }, this));
+    },
 
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributions();
+        this.renderCoPI();
         return this.$el;
     }
 

@@ -16,7 +16,7 @@ class PersonCitationsTab extends AbstractTab {
         if(!$wgUser->isLoggedIn()){
             return "";
         }
-	$wgOut->addScript(
+        $wgOut->addScript(
                 "<script type='text/javascript'>
                 $(document).ready(function(){
                     $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
@@ -28,37 +28,37 @@ class PersonCitationsTab extends AbstractTab {
 
 
         $metric = $this->person->getMetric();
-	$acm_stats = $this->getAcmStats($metric);
+        $acm_stats = $this->getAcmStats($metric);
         $scopus_stats = $this->getScopusStats($metric);
-	$gs_stats = $this->getGsStats();
-	$this->html ="
-	    <div class='citationAccordion'>
+        $gs_stats = $this->getGsStats();
+        $this->html ="
+            <div class='citationAccordion'>
                 <h3><a href='#'>ACM Statistics</a></h3>
                 <div>
                 {$acm_stats}
                 </div>
-	    </div>
-	    <div class='citationAccordion'>
+        </div>
+        <div class='citationAccordion'>
                 <h3><a href='#'>Scopus Statistics</a></h3>
                 <div>
-		{$scopus_stats}
+                    {$scopus_stats}
                 </div>
             </div>
             <div class='citationAccordion'>
-		<h3><a href='#'>Google Scholar Statistics</a></h3>
-		<div id='gs_stats'>
-		{$gs_stats}
-		</div>
-            </div>";
+            <h3><a href='#'>Google Scholar Statistics</a></h3>
+            <div id='gs_stats'>
+                {$gs_stats}
+            </div>
+        </div>";
         return $this->html;
     }
 
 
     function getAcmStats($metric){
-	$html = "";
-	if($metric != "" && $metric->acm_publication_count != 0){
-	    $html .= "<ul>";
-	    $html .= "<li><strong>Start Date:</strong> ".time2date($metric->acm_start_date)."</li>";  
+        $html = "";
+        if($metric != "" && $metric->acm_publication_count != 0){
+            $html .= "<ul>";
+            $html .= "<li><strong>Start Date:</strong> ".time2date($metric->acm_start_date)."</li>";  
             $html .= "<li><strong>End Date:</strong> ".time2date($metric->acm_end_date)."</li>";
             $html .= "<li><strong>Publication Count:</strong> {$metric->acm_publication_count}</li>";
             $html .= "<li><strong>Average Citation Per Article:</strong> {$metric->acm_avg_citations_per_article}</li>";
@@ -69,12 +69,12 @@ class PersonCitationsTab extends AbstractTab {
             $html .= "<li><strong>Downloads in Past 6 weeks:</strong> {$metric->acm_download_6_weeks}</li>";
             $html .= "<li><strong>Downloads in Past Year:</strong> {$metric->acm_download_1_year}</li>";
             $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
-	    $html .= "</ul>";
-	}
-	else{
-	    $html .= "<strong>No ACM Statistics Available</strong>";
-	}
-	return $html;
+            $html .= "</ul>";
+        }
+        else{
+            $html .= "<strong>No ACM Statistics Available</strong>";
+        }
+        return $html;
     }
 
     function getScopusStats($metric){
@@ -96,44 +96,44 @@ class PersonCitationsTab extends AbstractTab {
     }
 
     function getGsStats(){
-	global $wgServer, $wgScriptPath, $wgTitle;
-     	$metric = $this->person->getGsMetric();
-	$html = "";
-	if($metric != ""){
+        global $wgServer, $wgScriptPath, $wgTitle;
+        $metric = $this->person->getGsMetric();
+        $html = "";
+        if($metric != ""){
             $array = $metric->getGsCitations();
-	    $html .= "<ul>";
+            $html .= "<ul>";
             $html .= "<li><strong>H-Index (All Time):</strong> {$metric->hindex}</li>";
             $html .= "<li><strong>H-Index (Last 5 years):</strong> {$metric->hindex_5_years}</li>";
             $html .= "<li><strong>i10-Index (All Time):</strong> {$metric->i10_index}</li>";
             $html .= "<li><strong>i10-Index (Last 5 Years):</strong> {$metric->i10_index_5_years}</li>";
             $html .= "<li><strong>Citation Count (All Time):</strong> {$metric->citation_count}</li>";
             $html .= "<li><strong>Citation Count (Last 5 Years):</strong> {$metric->getRecentCitationCount()}</li>";
-	    $html .= "</ul>";
-	    $bar = new Bar($array);
-	    $html .= $bar->show();
-	    $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
-
-	}
-	else{ $html .= "<strong>No Google Scholar Statistics Available</strong>";}
-            $_POST['id'] = $this->person->getId();
-	    $html .= "<br /><br /><input type='button' id='GsUpdate' value='Update GS Stats'></input>
-
-			<script>
-
-
-			    $(document).ready(function(){ 
-				$('#GsUpdate').click(function(e){
-				e.preventDefault();
-				$.ajax({type:'POST',
-					url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
-					data: {id:".$this->person->getId()."},
-					success:function(result){
-							location.reload();
-					}});
-				});
-			});
-				</script>";	
-	return $html;
+            $html .= "</ul>";
+            $bar = new Bar($array);
+            $html .= $bar->show();
+            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
+        }
+        else{
+            $html .= "<strong>No Google Scholar Statistics Available</strong>";
+        }
+        $_POST['id'] = $this->person->getId();
+        if($this->person->isMe()){
+            $html .= "<br /><br /><input type='button' id='GsUpdate' value='Update GS Stats'></input>
+                <script>
+                    $(document).ready(function(){ 
+                    $('#GsUpdate').click(function(e){
+                    e.preventDefault();
+                    $.ajax({type:'POST',
+                            url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
+                            data: {id:".$this->person->getId()."},
+                            success:function(result){
+                                    location.reload();
+                            }});
+                        });
+                    });
+                </script>";
+        }
+        return $html;
     }
 }
 ?>

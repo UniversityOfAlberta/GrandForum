@@ -17,6 +17,7 @@ class UserTwitterAccountAPI extends API{
         DBFunctions::update('mw_user',
                             array('user_twitter' => $_POST['twitter']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Account added\n";
         }

@@ -17,6 +17,7 @@ class UserSciverseAPI extends API{
         DBFunctions::update('mw_user',
                             array('sciverse_id' => $_POST['sciverseId']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Sciverse Id added\n";
         }

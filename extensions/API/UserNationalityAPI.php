@@ -17,6 +17,7 @@ class UserNationalityAPI extends API{
         DBFunctions::update('mw_user',
                             array('user_nationality' => $_POST['nationality']),
                             array('user_id' => EQ($person->getId())));
+        Cache::delete("idsCache_{$person->getId()}");
         if(!$noEcho){
             echo "Nationality added\n";
         }
