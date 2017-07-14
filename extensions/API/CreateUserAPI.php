@@ -95,7 +95,6 @@ class CreateUserAPI extends API{
             $tmpUser = User::newFromName($_POST['wpName']);
             if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
                 $wgEnableEmail = $oldWgEnableEmail;
-                $__POST['user_name'] = 
                 
                 Person::$cache = array();
                 Person::$namesCache = array();
