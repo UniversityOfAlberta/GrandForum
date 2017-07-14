@@ -442,6 +442,7 @@ function ShibUserLoadFromSession($user, &$result)
 	DBFunctions::update('mw_user',
                         array('user_email' => $shib_email),
                         array('user_id' => EQ($user->getId())));
+    Cache::delete("idsCache_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
