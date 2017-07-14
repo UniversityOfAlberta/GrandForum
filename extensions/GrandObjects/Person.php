@@ -816,7 +816,7 @@ class Person extends BackboneModel {
     }
     
     function toArray(){
-        global $wgUser;
+        global $wgUser, $config;
         $privateProfile = "";
         $publicProfile = $this->getProfile(false);
         if($wgUser->isLoggedIn()){
@@ -872,6 +872,23 @@ class Person extends BackboneModel {
                       'privateProfile' => $privateProfile,
                       'url' => $this->getUrl(),
                       'candidate' => ($this->isCandidate() == 1));
+        if($config->getValue('networkName') == 'FES'){
+            $deptUrlMap = array('Engineering' => 'https://www.engineering.ualberta.ca/',
+                                'Science' => 'https://www.ualberta.ca/science',
+                                'Agricultural, Life & Environmental Sciences' => 'https://www.ualberta.ca/agriculture-life-environment-sciences',
+                                'School of Business' => 'https://www.ualberta.ca/business/',
+                                'Arts' => 'https://www.ualberta.ca/arts/',
+                                'Native Studies' => 'https://www.ualberta.ca/native-studies',
+                                'Law' => 'https://www.ualberta.ca/law/',
+                                'Augustana Campus', 'https://www.ualberta.ca/augustana/',
+                                'Campus St. Jean' => 'https://www.ualberta.ca/en/campus-saint-jean');
+            if(isset($deptUrlMap[$this->getDepartment()])){
+                $json['departmentUrl'] = $deptUrlMap[$this->getDepartment()];
+            }
+            else{
+                $json['departmentUrl'] = "";
+            }
+        }
         return $json;
     }
     
