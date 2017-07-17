@@ -27,9 +27,9 @@ class GlobalSearchAPI extends RESTAPI {
                         // Only search by email if the person is logged in
                         $person->email = $pRow['user_email'];
                     }
-                    $realName = $person->getNameForForms();
-                    $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
-                                         explode(" ", str_replace(".", "", unaccentChars($realName))));
+                    $realName = unaccentChars($person->getNameForForms());
+                    $names = array_merge(explode(".", str_replace(" ", "", $realName)), 
+                                         explode(" ", str_replace(".", "", $realName)));
                     $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
@@ -40,15 +40,13 @@ class GlobalSearchAPI extends RESTAPI {
                         }
                     }
                     if($found){
-                        $data[] = array('user_id' => $pRow['user_id'],
-                                        'user_name' => $person->getName());
+                        $data[] = $pRow['user_id'];
                     }
                 }
                 $results = array();
                 $myRelations = $me->getRelations();
                 $sups = $me->getSupervisors();
-                $dataCollection = new Collection($data);
-                $people = Person::getByIds($dataCollection->pluck('user_id'));
+                $people = Person::getByIds($data);
                 foreach($people as $person){
                     $continue = false;
                     if($person->getName() == "Admin"){

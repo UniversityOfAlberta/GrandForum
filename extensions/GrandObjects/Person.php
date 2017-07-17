@@ -986,6 +986,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("idsCache_{$this->getId()}");
             $person = Person::newFromName($_POST['wpName']);
             if($person->exists()){
                 return $status;
@@ -1036,6 +1037,7 @@ class Person extends BackboneModel {
     function delete(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
+            Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),

@@ -325,7 +325,7 @@
                         $uni['title'] = "Graduate Student - Master's Course";
                         break;
                     case "Masters Thesis":
-                        $uni['title'] = "Graduate Student - Master's Thesis ";
+                        $uni['title'] = "Graduate Student - Master's Thesis";
                         break;
                     case "Doctoral Program":
                         $uni['title'] = "Graduate Student - Doctoral";
@@ -360,11 +360,14 @@
         
         $realName = $username;
         $username = str_replace(" ", ".", $username);
+        $sup = @$staffIdMap[$row['faculty_staff_member_id']];
+        $person = Person::newFromName($username);
         
-        if($row['responsibility'] == 'phd' ||
-           $row['responsibility'] == 'msc' ||
-           $row['responsibility'] == 'meng' ||
-           $row['responsibility'] == 'ma'){
+        if(($person->getId() == 0) &&
+           ($row['responsibility'] == 'phd' ||
+            $row['responsibility'] == 'msc' ||
+            $row['responsibility'] == 'meng' ||
+            $row['responsibility'] == 'ma')){
             // Don't actually create these users, but keep track of them for publication authors
             $person = new Person(array());
             $person->name = $realName;
@@ -375,7 +378,6 @@
         }
         
         $email = "";
-        $person = Person::newFromName($username);
         if($person == null || $person->getId() == 0){
             // First create the user
             $user = User::createNew($username, array('real_name' => "$realName", 
@@ -394,8 +396,6 @@
             Person::$cache[strtolower($person->getName())] = $person;
             Person::$cache[$person->getId()] = $person;
         }
-        
-        $sup = @$staffIdMap[$row['faculty_staff_member_id']];
         
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){

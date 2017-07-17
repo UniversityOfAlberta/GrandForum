@@ -2099,10 +2099,13 @@ class ReportItemCallback {
 
     function getUserGradCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc","phd student", "msc student", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
                 
                 $count++;
             }
@@ -2112,7 +2115,10 @@ class ReportItemCallback {
 
     function getUserFellowCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
         $count = 0;
         foreach($relations as $relation){
             if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","ra","post-doctoral fellow", "research/technical assistant"))){
@@ -2124,7 +2130,10 @@ class ReportItemCallback {
     
     function getUserTechCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
         $count = 0;
         foreach($relations as $relation){
             if(in_array(strtolower($relation->getUser2()->getPosition()), array("technician", "professional end user"))){
@@ -2136,10 +2145,13 @@ class ReportItemCallback {
     
     function getUserUgradCount(){
         $person = Person::newFromId($this->reportItem->personId);
-        $relations = $person->getRelationsDuring("Supervises", ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $relations = array_merge(
+            $person->getRelationsDuring(SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30"),
+            $person->getRelationsDuring(CO_SUPERVISES, ($this->reportItem->getReport()->year-1)."-07-01", ($this->reportItem->getReport()->year)."-06-30")
+        );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("ugrad", "undergraduate student"))){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("ugrad", "undergraduate", "undergraduate student"))){
                 $count++;
             }
         }
