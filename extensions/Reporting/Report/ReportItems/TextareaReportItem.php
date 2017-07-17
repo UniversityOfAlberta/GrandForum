@@ -6,6 +6,7 @@ class TextareaReportItem extends AbstractReportItem {
         global $wgOut, $wgServer, $wgScriptPath;
         $item = $this->getHTML();
         $limit = $this->getLimit();
+        $recommended = strtolower($this->getAttr('recommended', 'false'));
         if($limit > 0 && strtolower($this->getAttr('rich', 'false')) != 'true'){
             $item .= "<script type='text/javascript'>
                 $(document).ready(function(){
@@ -64,17 +65,28 @@ class TextareaReportItem extends AbstractReportItem {
                         },
                         setup: function(ed){
                             if('$limit' > 0){
-                                var updateCount = function(){
-                                    _.delay(function(){
-                                        var words = $('.mce-wordcount', $(ed.editorContainer)).text().replace('Words:', '').trim();
-                                        changeColor{$this->getPostId()}(null, words);
-                                        $('#{$this->getPostId()}_chars_left').text(words);
-                                    }, 100);
+                                var updateCount = function(e){
+                                    ed.undoManager.add();
+                                    var wordcount = ed.plugins.wordcount.getCount();
+                                    changeColor{$this->getPostId()}(null, wordcount);
+                                    $('#{$this->getPostId()}_chars_left').text(wordcount);
+                                    if(wordcount > $limit && '$recommended' == 'false' && e.keyCode != 8 && e.keyCode != 46) {
+                                        var status = tinymce.dom.Event.cancel(e);
+                                        if(detectIE() != false){
+                                            ed.execCommand('UNDO');
+                                            ed.selection.collapse();
+                                        }
+                                        else{
+                                            ed.execCommand('DELETE');
+                                        }
+                                        return status;
+                                    }
                                 };
                                 ed.on('keydown', updateCount);
                                 ed.on('keyup', updateCount);
                                 ed.on('change', updateCount);
                                 ed.on('init', updateCount);
+                                ed.on('paste', updateCount);
                             }
                         }
                     });
