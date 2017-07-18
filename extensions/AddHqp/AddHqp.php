@@ -134,12 +134,12 @@ class AddHqp extends SpecialPage{
     }
 
     static function redirect($specialPages){
-	global $wgTitle, $wgServer, $wgScriptPath;
-	$person = Person::newFromWgUser();
-	if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "AddMember" && !$person->isRoleAtLeast(ADMIN)){
-	    redirect("$wgServer$wgScriptPath/index.php/Special:AddHqp");
-	}
-	return true;
+        global $wgTitle, $wgServer, $wgScriptPath;
+        $person = Person::newFromWgUser();
+        if($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "AddMember" && !$person->isRoleAtLeast(ADMIN)){
+            redirect("$wgServer$wgScriptPath/index.php/Special:AddHqp");
+        }
+        return true;
     }
 }
 

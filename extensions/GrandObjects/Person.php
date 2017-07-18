@@ -507,13 +507,19 @@ class Person extends BackboneModel {
      */
     static function generateAllPeopleCache(){
         if(count(self::$allPeopleCache) == 0){
-            $data = DBFunctions::select(array('mw_user'),
-                                        array('user_id'),
-                                        array('deleted' => NEQ(1),
-                                              'candidate' => NEQ(1)),
-                                        array('user_name' => 'ASC'));
-            foreach($data as $row){
-                self::$allPeopleCache[] = $row['user_id'];
+            if(Cache::exists("allPeopleCache")){
+                self::$allPeopleCache = Cache::fetch("allPeopleCache");
+            }
+            else{
+                $data = DBFunctions::select(array('mw_user'),
+                                            array('user_id'),
+                                            array('deleted' => NEQ(1),
+                                                  'candidate' => NEQ(1)),
+                                            array('user_name' => 'ASC'));
+                foreach($data as $row){
+                    self::$allPeopleCache[] = $row['user_id'];
+                }
+                Cache::store("allPeopleCache", self::$allPeopleCache);
             }
         }
     }
@@ -981,11 +987,13 @@ class Person extends BackboneModel {
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
-            Cache::delete("rolesCache");
+            
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("rolesCache");
+            Cache::delete("allPeopleCache");
             Cache::delete("idsCache_{$this->getId()}");
             $person = Person::newFromName($_POST['wpName']);
             if($person->exists()){
@@ -1027,6 +1035,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("allPeopleCache");
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return $status;
@@ -1037,6 +1046,7 @@ class Person extends BackboneModel {
     function delete(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
+            Cache::delete("allPeopleCache");
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',
