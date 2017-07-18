@@ -41,6 +41,9 @@ function isExtensionEnabled($ext){
 
 $egAnnokiExtensions = array();
 
+$egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
+                                             'path' => "$IP/extensions/Shibboleth/Shibboleth.php");
+
 $egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
                                              'path' => "$IP/extensions/AccessControls/AccessControls.php");
 
