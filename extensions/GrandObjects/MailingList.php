@@ -215,7 +215,7 @@ class MailingList extends BackboneModel {
                         if($value == CHAMP && $person->isRole($value)){
                             foreach($person->getProjects() as $proj){
                                 if(count($phaseRules) > 0){
-                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
+                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules) !== false));
                                 }
                                 else{
                                     $roleResult = ($roleResult || true);
@@ -226,10 +226,10 @@ class MailingList extends BackboneModel {
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
                                 if(count($projRules) > 0){
-                                    $roleResult = ($roleResult || (array_search($proj->getId(), $projRules)));
+                                    $roleResult = ($roleResult || (array_search($proj->getId(), $projRules) !== false));
                                 }
                                 else if(count($phaseRules) > 0){
-                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules)));
+                                    $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules) !== false));
                                 }
                                 else{
                                     $roleResult = ($roleResult || true);
