@@ -213,9 +213,34 @@
                 </tbody></table>
             ]]>
         </ReportItem>
-        <ReportItem id="awardsReceived" type="MultiTextReportItem" blobItem="FEC_INFO_AWARDS" blobType="BLOB_ARRAY" labels="Name|Category|Scope" types="Text|Text|Text" multiple="true" optional="true">
+        <ReportItem id="awardheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Awards Received</h2>{$item}
+                <h2>Awards Received</h2>
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Award Category</th>
+                            <th>Scope</th>
+                            <th>Year</th>
+                        </tr>
+                    </thead>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{subtract({$this_year},2)}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
+                <![CDATA[
+                    <tr><td>{$product_title}</td>
+                        <td align='center'>{$award_category}</td>
+                        <td align='center'>{$award_scope}</td>
+                        <td align='center'>{$product_year}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="awardfooter" type="StaticReportItem">
+            <![CDATA[
+                </table>
             ]]>
         </ReportItem>
     </ReportSection>

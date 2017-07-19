@@ -708,6 +708,10 @@
         }
         show_status(++$iterationsSoFar, count($histories));
     }
+    
+    echo "\n";
+    
+    require_once("importAllCourses.php");
 
-echo "\n";
+    echo "\n";
 ?>

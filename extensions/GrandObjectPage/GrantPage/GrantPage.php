@@ -1,7 +1,7 @@
 <?php
 
-//$wgHooks['ToolboxLinks'][] = 'GrantPage::createToolboxLinks';
-BackbonePage::register('GrantPage', 'GrantPage', 'network-tools', dirname(__FILE__));
+$wgHooks['ToolboxLinks'][] = 'GrantPage::createToolboxLinks';
+BackbonePage::register('GrantPage', 'Grants', 'network-tools', dirname(__FILE__));
 
 class GrantPage extends BackbonePage {
     
@@ -15,11 +15,13 @@ class GrantPage extends BackbonePage {
     
     function getTemplates(){
         return array('grant',
+                     'grants',
                      'edit_grant');
     }
     
     function getViews(){
         return array('GrantView',
+                     'GrantsView',
                      'EditGrantView');
     }
     
@@ -31,8 +33,8 @@ class GrantPage extends BackbonePage {
 	    global $wgServer, $wgScriptPath, $config, $wgUser;
 	    $me = Person::newFromWgUser();
 	    if($me->isRoleAtLeast(NI)){
-	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Create Grant", 
-	                                                                      "$wgServer$wgScriptPath/index.php/Special:GrantPage#/new");
+	        $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Grants", 
+	                                                                      "$wgServer$wgScriptPath/index.php/Special:GrantPage");
 	    }
 	    return true;
 	}
