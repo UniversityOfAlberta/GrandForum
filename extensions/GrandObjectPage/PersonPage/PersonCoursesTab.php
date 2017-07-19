@@ -21,6 +21,7 @@ class PersonCoursesTab extends AbstractTab {
                         <thead><tr>
                             <th style='white-space:nowrap;'>Title</th>
                             <th>Term</th>
+                            <th style='white-space:nowrap;'>Title</th>
                             <th style='white-space:nowrap;'>Catalog Description</th>
                             <th style='white-space:nowrap;'>USRIs</th>
                             <th style='white-space:nowrap;'>Enrolled</th>
@@ -32,6 +33,7 @@ class PersonCoursesTab extends AbstractTab {
             $this->html .= "<tr>";
             $this->html .= "<td>{$course->subject} {$course->catalog} ({$course->component})</td>";
             $this->html .= "<td>{$course->getTerm()}</td>";
+            $this->html .= "<td>{$course->descr}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";
             $this->html .= "<td style='white-space:nowrap;'>";
             if(isset($courseEval['evaluation'])){
