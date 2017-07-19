@@ -569,8 +569,8 @@
          <Award type="Award">
              <data>
                   <field label="URL" type="URL">url</field>
-                  <field label="String" type="Award Category">award_category</field>
-                  <field label="String" type="">scope</field>
+                  <field label="Award Category" type="String">award_category</field>
+                  <field label="Scope" type="String">scope</field>
              </data>
          </Award>
     </Awards>

@@ -183,6 +183,8 @@ class ReportItemCallback {
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
             "product_citation" => "getProductCitation",
+            "product_date" => "getProductDate",
+            "product_year" => "getProductYear",
             //Presentations
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
@@ -190,8 +192,11 @@ class ReportItemCallback {
             "presentation_refereed" => "getPresentationRefereed",
             "presentation_organization" => "getPresentationOrganization",
             "presentation_country" => "getPresentationCountry",
-            "presentation_date" => "getPresentationDate",
+            "presentation_date" => "getProductDate",
             "presentation_duration" => "getPresentationDuration",
+            //Awards
+            "award_category" => "getAwardCategory",
+            "award_scope" => "getAwardScope",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1838,9 +1843,26 @@ class ReportItemCallback {
         return @$product['location'];
     }
     
-    function getPresentationDate(){
+    function getProductDate(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return @$product->date;
+        return @$product->getDate();
+    }
+    
+    function getAwardCategory(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $product = $product->getData();
+        return @$product['award_category'];
+    }
+    
+    function getAwardScope(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $product = $product->getData();
+        return @$product['scope'];
+    }
+    
+    function getProductYear(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return @$product->getYear();
     }
 
     function getWgUserId(){
