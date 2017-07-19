@@ -28,6 +28,9 @@ class HQPEpicTab extends AbstractEditableTab {
         if(!$this->userCanView()){
             return "";
         }
+        if($this->visibility['isMe'] && $this->person->isSubRole("SIP/CAT HQP")){
+            $this->html .= "<div class='info'>Please contact the education and training administrator to enrol in EPIC appear as well</div>";
+        }
         $position = strtolower($this->person->getPosition());
         if($this->person->isSubRole("WP/CC Funded HQP") || 
           ($this->person->isSubRole("Alumni HQP") && $position != "undergraduate student" &&
@@ -528,7 +531,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     }
     
     function handleEdit(){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
         foreach($_POST as $key => $value){
             if(strstr($key, "epic_") !== false){
                 $this->saveBlobValue(str_replace("epic_", "", $key), $value);
