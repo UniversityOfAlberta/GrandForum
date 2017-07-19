@@ -15,11 +15,13 @@ class GrantPage extends BackbonePage {
     
     function getTemplates(){
         return array('grant',
+                     'grants',
                      'edit_grant');
     }
     
     function getViews(){
         return array('GrantView',
+                     'GrantsView',
                      'EditGrantView');
     }
     

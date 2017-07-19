@@ -6,22 +6,26 @@ Grant = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.grant',
     
-    defaults: {
-        id: null,
-        user_id: '',
-        project_id: '',
-        sponsor: '',
-        total: 0,
-        funds_before: 0,
-        funds_after: 0,
-        speed_code: '',
-        title: '',
-        description: '',
-        request: '',
-        start_date: '',
-        end_date: '',
-        url: '',
-        contributions: null
+    defaults: function(){ return {
+            id: null,
+            user_id: '',
+            pi: null,
+            copi: new Array(),
+            copi_string: '',
+            project_id: '',
+            sponsor: '',
+            total: 0,
+            funds_before: 0,
+            funds_after: 0,
+            speed_code: '',
+            title: '',
+            description: '',
+            request: '',
+            start_date: '',
+            end_date: '',
+            url: '',
+            contributions: null
+        };
     }
     
 });

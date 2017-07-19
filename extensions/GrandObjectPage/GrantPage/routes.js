@@ -17,6 +17,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "": "showGrants",
         "new": "newGrant",
         ":id": "showGrant",
         ":id/edit": "editGrant"
@@ -25,6 +26,19 @@ PageRouter = Backbone.Router.extend({
 
 // Initiate the router
 var pageRouter = new PageRouter;
+
+pageRouter.on('route:showGrants', function(){
+    // Show all Grants (the set of grants will vary depending on the user)
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var grants = new Grants();
+        this.closeCurrentView();
+        this.currentView = new GrantsView({el: $("#currentView"), model: grants});
+    }
+});
 
 pageRouter.on('route:newGrant', function () {
     // Get A single grant

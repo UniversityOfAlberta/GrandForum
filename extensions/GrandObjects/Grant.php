@@ -86,6 +86,10 @@ class Grant extends BackboneModel {
         return $this->sponsor;
     }
     
+    function getPI(){
+        return Person::newFromId($this->user_id);
+    }
+    
     function getCoPI(){
         $copis = array();
         foreach($this->copi as $copi){
@@ -172,7 +176,6 @@ class Grant extends BackboneModel {
                                       'contribution_id' => $contribution));
         }
         DBFunctions::commit();
-        
         return $this;
     }
     
@@ -214,12 +217,18 @@ class Grant extends BackboneModel {
     }
     
     function toArray(){
+        $copis = array();
+        foreach($this->getCoPI() as $copi){
+            $copis[] = $copi->getNameForForms();
+        }
         $json = array(
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'pi' => $this->getPI()->toArray(),
             'project_id' => $this->project_id,
             'sponsor' => $this->sponsor,
             'copi' => $this->copi,
+            'copi_string' => implode(", ", $copis),
             'total' => $this->total,
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
