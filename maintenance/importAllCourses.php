@@ -77,23 +77,23 @@
                 
                 $rowsParsed++;
 
-                $acadOrg = DBFunctions::escape($rowValues[1]);
-                $term = DBFunctions::escape($rowValues[0]);
-                $classNbr = DBFunctions::escape(ltrim($rowValues[11], '0'));
-                $subject = DBFunctions::escape($rowValues[9]);
-                $catalog = DBFunctions::escape($rowValues[10]);
-                $component = DBFunctions::escape($rowValues[12]);
-                $sect = DBFunctions::escape($rowValues[8]);
-                $crsStatus = DBFunctions::escape($rowValues[13]);
-                $facilID = DBFunctions::escape(ltrim($rowValues[15], '0'));
-                $startDate = DBFunctions::escape($date["start"]);
-                $endDate = DBFunctions::escape($date["end"]);
-                $hrsFrom = DBFunctions::escape($rowValues[16]);
-                $hrsTo = DBFunctions::escape($rowValues[17]);
-                $totEnrl = DBFunctions::escape($rowValues[14]);
-                $campus = DBFunctions::escape($rowValues[19]);
-                $note = DBFunctions::escape($rowValues[18]);   
-                $employeeID = DBFunctions::escape(ltrim($rowValues[2], '0'));
+                $acadOrg = DBFunctions::escape(trim($rowValues[1]));
+                $term = DBFunctions::escape(trim($rowValues[0]));
+                $classNbr = DBFunctions::escape(trim(ltrim($rowValues[11], '0')));
+                $subject = DBFunctions::escape(trim($rowValues[9]));
+                $catalog = DBFunctions::escape(trim($rowValues[10]));
+                $component = DBFunctions::escape(trim($rowValues[12]));
+                $sect = DBFunctions::escape(trim($rowValues[8]));
+                $crsStatus = DBFunctions::escape(trim($rowValues[13]));
+                $facilID = DBFunctions::escape(trim(ltrim($rowValues[15], '0')));
+                $startDate = DBFunctions::escape(trim($date["start"]));
+                $endDate = DBFunctions::escape(trim($date["end"]));
+                $hrsFrom = DBFunctions::escape(trim($rowValues[16]));
+                $hrsTo = DBFunctions::escape(trim($rowValues[17]));
+                $totEnrl = DBFunctions::escape(trim($rowValues[14]));
+                $campus = DBFunctions::escape(trim($rowValues[19]));
+                $note = DBFunctions::escape(trim($rowValues[18]));   
+                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[2], '0')));
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
                   
                 // key: Term + Class Nbr + Component + Sect + Employee Id
