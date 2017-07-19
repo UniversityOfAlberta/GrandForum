@@ -29,7 +29,7 @@ class HQPEpicTab extends AbstractEditableTab {
             return "";
         }
         if($this->visibility['isMe'] && $this->person->isSubRole("SIP/CAT HQP")){
-            $this->html .= "<div class='info'>Please contact the education and training administrator to enrol in EPIC.</div>";
+            $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>";
         }
         $position = strtolower($this->person->getPosition());
         if($this->person->isSubRole("WP/CC Funded HQP") || 
