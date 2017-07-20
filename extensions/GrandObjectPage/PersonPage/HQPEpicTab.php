@@ -294,7 +294,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     }
     
     function generateAffiliate(){
-        $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>
+        $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator (training@agewell-nce.ca) if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>
                         <div style='font-size:1.2em;text-align:center;'><h3>AGE-WELL EPIC Program Requirements For Affiliate HQP</h3>
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p>As an AGE-WELL HQP you have the opportunity to be truly EPIC. You have unprecedented access to a wide variety of aging and technology resources and experts in a unique training environment based on scientific excellence and real-world applicability.</p>
@@ -365,7 +365,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
     }
     
     function generateWPCC(){
-        $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>
+        $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator (training@agewell-nce.ca) if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>
                         <div style='font-size:1.2em;text-align:center;'><h3>AGE-WELL EPIC Program Requirements For WP/CC Funded HQP</h3>
                         <b>E</b>arly <b>P</b>rofessionals, <b>I</b>nspired <b>C</b>areers</div>
                         <p><i>WP/CC HQP include AGE-WELL funded research associates, research assistants, technicians, summer students, and undergraduate students.</i></p>

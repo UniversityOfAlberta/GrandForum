@@ -267,7 +267,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - KT Proposal" title="Section 3 - KT Proposal">
-        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="850" rich="true">
+        <ReportItem id="quality" blobItem="QUALITY" type="Textarea" limit="1100" rich="true">
             <![CDATA[
                 <h2>3.1: Concept</h2>
                 <h3>3.1.1: Quality of the Idea</h3>
@@ -276,6 +276,7 @@
                     <li>Please describe any success stories or real-world impacts that resulted from your prior KT activities related to your CFN-funded research project and if relevant how this supports your current KT proposal.  Note that the information you provide may be used publicly for external CFN communications (e.g., CFN website, CFN newsletter, social media).</li>
                     <li>Please clearly describe the overall goal and objectives of the study and provide distinct outputs that support advances in health-related knowledge, health research, health care, health systems, and/or health outcomes for the care of Canadians living with frailty.</li>
                     <li>Please clearly describe the hypothesis and rationale of the study and articulate why this proposal is considered to have the potential to change the care of older Canadians living with frailty.</li>
+                    <li>Please clearly describe how you plan on measuring and evaluating the impact of your proposal on the care of older adults living with frailty.</li>
                 </ol>
                 </i></small>
                 {$item}
