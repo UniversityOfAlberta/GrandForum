@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfType="RPTP_FEC" ajax="true">
-    <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
+<Report name="FEC" reportType="RP_FEC" pdfType="RPTP_FEC" ajax="true" startYear="-5">
+    <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member - Faculty of Science" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
             <style>
@@ -13,64 +13,70 @@
             	}
             }
             </style>
-            	<table><tr><td style='width:50%'>
-            	<table class='wikitable'>
-            	<tr><td>Name:</td><td><b>{$user_name}</b></td></tr>
-                <tr><td>Rank:</td><td><b>{$user_level}</b></td></tr>
-                <tr><td>Department</td><td><b>{$user_dept}</b></td></tr>
-                <tr><td>Year of PhD:</td><td><b>{$user_phd_year}</b></td></tr>
-                <tr><td>Year of Appointment:&nbsp;</td><td><b>{$user_appointment_year}</b></td></tr>
-            	<tr><td>Graduate Students(Supervised or Co-supervised):</td><td><b>{$user_grad_count}</td></b></tr>
-                <tr><td style='width:350px;'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</td><td><b>{$user_fellow_count}</b></tr></td>
-                <tr><td style='width:350px;'>Technicians:</td><td><b>{$user_tech_count}</b></tr></td>
-                <tr><td style='width:350px;'>Undergraduates (Supervised or Co-supervised):</td><td><b>{$user_ugrad_count}</b></tr></td>
-	    	</table></td><td><div>
-	    	    <center><b>Period: July {subtract({$this_year},1)} to June {$this_year}</b></center>A staff member is required to submit an annual report covering the staff member's activities during the previous year; see Faculty Agreement or FSO Agreement. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</center></div>
-		<table width:'100%'>
-		    <tr>
-		        <th></th>
-		    	<th>Refereed</th>
-		    	<th>Books</th>
-		    	<th>Patents</th>
-		    </tr>
-		    <tr>
-		        <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
-		    </tr>
-		    <tr>
-		        <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
-		        <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
-		    </tr>
-		    <tr>
-		    	<td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
-		    </tr>
-		    <tr>
-		    	<td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
-		    </tr>
-		    <tr>
-		    	<td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
-		    	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
-		    </tr>
-		    <tr>
-		    	<td><b>Lifetime</b></td>
-		    	<td align='center'>{user_lifetime_pubs_count(Publication)}</td>
-		    	<td align='center'>{user_lifetime_pubs_count(Book)}</td>
-		    	<td align='center'>{user_lifetime_pubs_count(Patent)}</td>
-		    </tr>
-		</table>
-		</td></tr></table>
+            	<table style="line-height:1.75em;">
+            	    <tr>
+            	        <td style='width:60%'>
+                        	<table width="100%" class='wikitable'>
+                            	<tr><td>Name:&nbsp;<b>{$user_name}</b></td></tr>
+                                <tr><td>Rank:&nbsp;<b>{$user_level}</b></td></tr>
+                                <tr><td>Department:&nbsp;<b>{$user_dept}</b></td></tr>
+                                <tr><td>Year of PhD:&nbsp;<b>{$user_phd_year}</b></td></tr>
+                                <tr><td>Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
+                            	<tr><td>Graduate Students(Supervised or Co-supervised):&nbsp;<b>{$user_grad_count}</td></b></tr>
+                                <tr><td>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):&nbsp;<b>{$user_fellow_count}</b></tr></td>
+                                <tr><td>Technicians:&nbsp;<b>{$user_tech_count}</b></tr></td>
+                                <tr><td>Undergraduates (Supervised or Co-supervised):&nbsp;<b>{$user_ugrad_count}</b></tr></td>
+	                	    </table>
+	                	</td>
+	                	<td>
+	    	                <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see Faculty Agreement or FSO Agreement. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
+		                    <table width="100%">
+		                        <tr>
+		                            <th></th>
+		                        	<th>Refereed</th>
+		                        	<th>Books</th>
+		                        	<th>Patents</th>
+		                        </tr>
+		                        <tr>
+		                            <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
+		                        </tr>
+		                        <tr>
+		                            <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
+		                            <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
+		                        </tr>
+		                        <tr>
+		                        	<td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
+		                        </tr>
+		                        <tr>
+		                        	<td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
+		                        </tr>
+		                        <tr>
+		                        	<td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
+		                        	<td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
+		                        </tr>
+		                        <tr>
+		                        	<td><b>Lifetime</b></td>
+		                        	<td align='center'>{user_lifetime_pubs_count(Publication)}</td>
+		                        	<td align='center'>{user_lifetime_pubs_count(Book)}</td>
+		                        	<td align='center'>{user_lifetime_pubs_count(Patent)}</td>
+		                        </tr>
+		                    </table>
+		                </td>
+		            </tr>
+		        </table><br />
 	    ]]>
 	</ReportItem>
 	<ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
@@ -88,7 +94,7 @@
 	</ReportItem>
 	<ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
 	    <![CDATA[
-		<h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
+		<h2>Reasons For Reduced Teaching <i>(if applicable)</i></h2>
 		{$item}
 	    ]]>
 	</ReportItem>
@@ -101,7 +107,7 @@
 	<ReportItem id="coursesheader" type="StaticReportItem">
 	    <![CDATA[
 		<h2>Courses</h2>
-		<table class="one"><thead><tr>
+		<table class="wikitable" rules="all" frame="box" width="100%"><thead><tr>
 		<th>Subject</th>
 		<th>Term</th>
 		<th>Comp.</th>
@@ -110,7 +116,7 @@
 		<!--th>%</th--></tr></thead><tbody>
 	    ]]>
 	</ReportItem>
-	<ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+	<ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
 	     <ReportItem id="row" type="StaticReportItem">
 	     	<![CDATA[
 
@@ -148,7 +154,7 @@
     	    	    <th>Status</th></tr></thead><tbody>
     	    ]]>
     	 </ReportItem>
-    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+    	 <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
     	     <ReportItem id="row" type="StaticReportItem">
     	         <![CDATA[
     	         	<tr><td class="b">{$hqp_reversed_name}</td>
@@ -172,7 +178,7 @@
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_citation}</td></tr>
@@ -200,7 +206,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center' class="b">{$presentation_title}</td>
@@ -234,7 +240,7 @@
                     <tbody>
             ]]>
         </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -266,7 +272,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_title}</td>

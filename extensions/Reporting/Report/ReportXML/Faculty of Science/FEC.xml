@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true">
+<Report name="FEC" reportType="RP_FEC" pdfFiles="FECpdf" ajax="true" startYear="-5">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="information" permissions="rw" />
@@ -67,7 +67,7 @@
                 <!--th>%</th--></tr></thead><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                  <tr><td align='center'>{$course_subject} {$course_number}</td>
@@ -104,7 +104,7 @@
                     <th>Status</th></tr></thead><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$hqp_reversed_name}</td>
@@ -131,7 +131,7 @@
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" start="{$start_year}-07-01" end="{$this_year}-06-30">
         <ReportItem id="row" type="StaticReportItem">
             <![CDATA[
                 <tr><td>{$product_citation}</td></tr>
@@ -160,7 +160,7 @@
                     <tbody>
             ]]>
         </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td align='center'>{$presentation_title}</td>
@@ -195,7 +195,7 @@
                     <tbody>
             ]]>
         </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{subtract({$this_year},1)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
@@ -227,7 +227,7 @@
                     </thead>
             ]]>
         </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{subtract({$this_year},2)}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr><td>{$product_title}</td>
