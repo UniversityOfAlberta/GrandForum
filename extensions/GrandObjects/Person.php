@@ -2149,15 +2149,6 @@ class Person extends BackboneModel {
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
-        if($this->isProjectLeader()){
-            $roleNames[] = "PL";
-        }
-        if($this->isThemeLeader()){
-            $roleNames[] = TL;
-        }
-        if($this->isThemeCoordinator()){
-            $roleNames[] = TC;
-        }
         foreach($roleNames as $key => $role){
             if($role == INACTIVE){
                 if($this->isProjectLeader()){
@@ -2224,12 +2215,39 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         if($this->roles == null && $this->id != null){
             $this->roles = array();
+            if($this->isProjectLeader()){
+                $this->roles[] = new Role(array(0 => array('id' => -1,
+                                                           'user_id' => $this->id,
+                                                           'role' => PL,
+                                                           'title' => '',
+                                                           'start_date' => '0000-00-00 00:00:00',
+                                                           'end_date' => '0000-00-00 00:00:00',
+                                                           'comment' => '')));
+            }
+            if($this->isThemeLeader()){
+                $this->roles[] = new Role(array(0 => array('id' => -1,
+                                                           'user_id' => $this->id,
+                                                           'role' => TL,
+                                                           'title' => '',
+                                                           'start_date' => '0000-00-00 00:00:00',
+                                                           'end_date' => '0000-00-00 00:00:00',
+                                                           'comment' => '')));
+            }
+            if($this->isThemeCoordinator()){
+                $this->roles[] = new Role(array(0 => array('id' => -1,
+                                                           'user_id' => $this->id,
+                                                           'role' => TC,
+                                                           'title' => '',
+                                                           'start_date' => '0000-00-00 00:00:00',
+                                                           'end_date' => '0000-00-00 00:00:00',
+                                                           'comment' => '')));
+            }
             if(isset(self::$rolesCache[$this->id])){
                 foreach(self::$rolesCache[$this->id] as $row){
                     $this->roles[] = new Role(array(0 => $row));
                 }
             }
-            else{
+            else if(count($this->roles) == 0){
                 $this->roles[] = new Role(array(0 => array('id' => -1,
                                                            'user_id' => $this->id,
                                                            'role' => INACTIVE,
