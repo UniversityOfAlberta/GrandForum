@@ -104,7 +104,7 @@
         
         <!-- Application 2 -->
         <ReportItemSet id="2_if" type="If" if="{>(2017-07-21 17:00:00,{$timestamp})}">
-            <ReportItem id="2_start" type="Static">
+            <ReportItem id="2_head" type="Static">
                 <![CDATA[
                     <h1>Scientific Talks</h1>
                     <p><u>Information:</u></p>
@@ -112,64 +112,82 @@
                     <p>This year within the main conference programming 20 scientific talks will be offered across all project programs & crosscutting activity themes (Core Research Projects, CC’s, Catalyst & SIP). Each talk will consist of a 15 minute presentation and 5 minutes for Q&A. Scientific talks are a way to communicate the state of the science in AGE-WELL to a broad group of attendees. Please submit your abstract for consideration by <b>July 21</b>. Abstracts must not exceed 350 words.</p>
 
                     <p>Please contact <a href='mailto:Krystle.wiltshire@uhn.ca'>Krystle.wiltshire@uhn.ca</a> for any questions.</p>
-                    
-                    <p><u>Application:</u></p>
-                    <table>
+                    <div id="2_accordion">
                 ]]>
             </ReportItem>
-            <ReportItem id="2_presenter" type="Text" blobItem="2_PRESENTER">
+            <ReportItemSet type="For" from="0" to="6">
+                <ReportItem id="2_start" type="Static">
+                    <![CDATA[
+                        <h3 style="padding-left: 25px !important;">Application {add({$extraIndex},1)}:</h3>
+                        <div>
+                        <table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_presenter" type="Text" blobItem="2_PRESENTER" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" blobSubItem="{$extraIndex}" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="2_THEME"  blobSubItem="{$extraIndex}" options="Technology|Policy|Knowledge Mobilization|Commercialization|Caregivers|Older Adults|ICTs|eHealth|AI|Mobile Technologies">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Theme Keywords:</b></td>
+                            <td>{$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_theme_other" type="Text" blobItem="2_THEME_OTHER" blobSubItem="{$extraIndex}">
+                    <![CDATA[
+                                Other: {$item}
+                            </td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="350" recommended="true">
+                    <![CDATA[
+                        <tr>
+                            <td align="right" style="width:0;white-space:nowrap;"><b>Talk Abstract:</b></td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_submit" type="Checkbox" blobItem="2_SUBMIT" blobSubItem="{$extraIndex}" blobType="BLOB_ARRAY" options="I would like to apply for this session">
+                    <![CDATA[
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="submit">
+                                    {$item}
+                                    <input type="button" value="Save" />
+                                </div>
+                            </td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_end" type="Static">
+                    <![CDATA[
+                        </table>
+                        </div>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="2_foot" type="Static">
                 <![CDATA[
-                    <tr>
-                        <td align="right" style="width:0;white-space:nowrap;"><b>Presenter(s) Name:</b></td>
-                        <td>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_project" type="Select" blobItem="2_PROJECT" options="1.1 RRITE|1.2 TUNGSTEN|1.3 OA-INVOLVE|1.4-S2|2.1 INToCARE|2.2 MovIT-PLUS|2.3 CARE-RATE|2.4 ATforCC|2.5-S1 PCOACH|2.6-CAT1 CWiC|2.7-S4|2.8-CAT|2.9-CAT|3.1 VIGIL|3.2 CoPILOT|3.3 DIY-AIDE|3.5-S5|3.6-S5|3.7-S5|3.8-CAT|3.9-CAT|4.1 CONNECT-TECH|4.2 CONNECT-PLAY|4.3 CONNECT-CREATE|4.4-CAT1 CONNECT-KT|4.6-S3 Lha’hutit’en|4.7-S3 ACCESS-H-INFO|5.1 AMBI-MON|5.2 PRED-FALL|5.3 IIES-PHYS|5.4-CAT1 REACT|5.5-S2 STIM-OAB|5.6-S4|5.7-S4 WELBI|5.8-S5|5.9-CAT|6.1 MEN-ASSESS|6.2 COG-ASSESS|6.3 PAIN-ASSESS|6.5-CAT|6.7-CAT|7.1 PRI-TECH|7.2 DRIVE|7.3 3DHC|7.4-S2|8.1 AT-SELECT|8.2 ADT|8.3 PRIV-SENSE|8.5-CAT|CC1 K-MOB|CC2 TECH-TRANS|CC3 T-WORK|CC4 TRAIN">
-                <![CDATA[
-                    <tr>
-                        <td align="right" style="width:0;white-space:nowrap;"><b>Project/CC:</b></td>
-                        <td>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="2_THEME" options="Technology|Policy|Knowledge Mobilization|Commercialization|Caregivers|Older Adults|ICTs|eHealth|AI|Mobile Technologies">
-                <![CDATA[
-                    <tr>
-                        <td align="right" style="width:0;white-space:nowrap;"><b>Theme Keywords:</b></td>
-                        <td>{$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_theme_other" type="Text" blobItem="2_THEME_OTHER">
-                <![CDATA[
-                            Other: {$item}
-                        </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" rich="true" limit="350" recommended="true">
-                <![CDATA[
-                    <tr>
-                        <td align="right" style="width:0;white-space:nowrap;"><b>Talk Abstract:</b></td>
-                        <td>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_submit" type="Checkbox" blobItem="2_SUBMIT" blobType="BLOB_ARRAY" options="I would like to apply for this session">
-                <![CDATA[
-                    <tr>
-                        <td></td>
-                        <td>
-                            <div class="submit">
-                                {$item}
-                                <input type="button" value="Save" />
-                            </div>
-                        </td>
-                    </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="2_end" type="Static">
-                <![CDATA[
-                    </table>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#2_accordion").accordion({heightStyle: "content"});
+                        });
+                    </script>
                 ]]>
             </ReportItem>
         </ReportItemSet>
