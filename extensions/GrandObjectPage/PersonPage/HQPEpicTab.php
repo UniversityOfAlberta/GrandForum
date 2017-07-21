@@ -537,6 +537,8 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
                 $this->saveBlobValue(str_replace("epic_", "", $key), $value);
             }
         }
+        $user = Person::newFromName("Stephanie.Markowitz");
+        Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
         $user = Person::newFromName("Samantha.Sandassie");
         Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
         $user = Person::newFromName("Pam.Borghardt");
