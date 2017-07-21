@@ -103,7 +103,7 @@
         </ReportItemSet>
         
         <!-- Application 2 -->
-        <ReportItemSet id="2_if" type="If" if="{>(2017-07-21,{$timestamp})}">
+        <ReportItemSet id="2_if" type="If" if="{>(2017-07-21 17:00:00,{$timestamp})}">
             <ReportItem id="2_start" type="Static">
                 <![CDATA[
                     <h1>Scientific Talks</h1>
