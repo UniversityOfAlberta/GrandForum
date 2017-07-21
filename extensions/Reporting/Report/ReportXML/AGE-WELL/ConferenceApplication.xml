@@ -146,7 +146,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" rich="true" limit="350">
+            <ReportItem id="2_abstract" type="Textarea" blobItem="2_ABSTRACT" rich="true" limit="350" recommended="true">
                 <![CDATA[
                     <tr>
                         <td align="right" style="width:0;white-space:nowrap;"><b>Talk Abstract:</b></td>
@@ -211,7 +211,7 @@
                     </tr>
                 ]]>
             </ReportItem>
-            <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" rich="true" limit="100">
+            <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" rich="true" limit="100" recommended="true">
                 <![CDATA[
                     <tr>
                         <td align="right" style="width:0;white-space:nowrap;"><b>Demo Abstract:</b></td>
@@ -284,7 +284,7 @@
                     </tr>
                 ]]>
             </ReportItem>
-            <ReportItem id="1_abstract" type="Textarea" blobItem="1_ABSTRACT" rich="true" limit="100">
+            <ReportItem id="1_abstract" type="Textarea" blobItem="1_ABSTRACT" rich="true" limit="100" recommended="true">
                 <![CDATA[
                     <tr>
                         <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract:</b></td>
@@ -369,7 +369,7 @@
                     </tr>
                 ]]>
             </ReportItem>
-            <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" rich="true" limit="100">
+            <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" rich="true" limit="100" recommended="true">
                 <![CDATA[
                     <tr>
                         <td align="right" style="width:0;white-space:nowrap;"><b>Poster Abstract/Alley Description:</b></td>
