@@ -44,16 +44,32 @@
         'BookChapter'     => array('Publication', 'Book Chapter'),
         'TechnicalReport' => array('Publication', 'Tech Report'),
         'Other'           => array('Publication', 'Misc'),
-        'PosterArticle'   => array('Presentation', 'Poster'),
+        'PosterArticle'   => array('Publication', 'Poster'),
         'PaperAbstract'   => array('Publication', 'Journal Abstract'),
         'Review'          => array('Activity', 'Review'),
         'Book'            => array('Publication', 'Book'),
         'Patent'          => array('Product', 'Patent')
     );
     
+    $presentationMap = array(
+        'colloquium/seminar presentation at another university or other institution' => 'Seminar',
+        'panel member' => 'Panel Member',
+        'conference/symposium/workshop keynote or plenary presentation (no parallel sessions during presentation)' => 'Keynote',
+        'colloquium/seminar presentation at the university of alberta' => 'Seminar',
+        'conference/symposium/workshop oral presentation' => 'Oral Presentation',
+        'public (non-academic audience) off campus presentation' => 'Public Presentation',
+        'conference/symposium/workshop poster presentation' => 'Poster Presentation',
+        'tutorial presentation' => 'Tutorial',
+        'presentation on the web' => 'Web Presentation',
+        'public (non-academic audience) presentation' => 'Public Presentation',
+        'colloquium/seminar presentation' => 'Seminar',
+        'conference/symposium/workshop keynote or plenary presentation' => 'Keynote'
+    );
+    
     DBFunctions::execSQL("TRUNCATE grand_notifications", true);
     DBFunctions::execSQL("TRUNCATE grand_personal_fec_info", true);
     DBFunctions::execSQL("TRUNCATE grand_user_university", true);
+    DBFunctions::execSQL("TRUNCATE grand_positions", true);
     DBFunctions::execSQL("TRUNCATE grand_relations", true);
     DBFunctions::execSQL("TRUNCATE grand_movedOn", true);
     DBFunctions::execSQL("TRUNCATE grand_theses", true);
@@ -79,7 +95,10 @@
                                           WHERE_OR('ROLE_DESCR') => EQ('')));
                                           
     $patents = DBFunctions::select(array('bddEfec2_development.patents'),
-                                    array('*'));
+                                   array('*'));
+                                    
+    $presentations = DBFunctions::select(array('bddEfec2_development.presentations'),
+                                         array('*'));
                                     
     $spinoffs = DBFunctions::select(array('bddEfec2_development.spinoffs'),
                                     array('*'));
@@ -515,7 +534,7 @@
             if($row['Award Sponsor ID'] == "MULTI" && isset($grants3[$row['Project']])){
                 $sponsors = array();
                 foreach($grants3[$row['Project']] as $sponsor){
-                    $sponsors[] = $sponsor['Sponsor Description'];
+                    $sponsors[$sponsor['Sponsor Description']] = $sponsor['Sponsor Description'];
                 }
                 $newGrant->sponsor = implode(", ", $sponsors);
             }
@@ -601,6 +620,48 @@
         
         $product->create();
         show_status(++$iterationsSoFar, count($publications));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Presentations\n";
+    foreach($presentations as $presentation){
+        $product = new Product(array());
+        $product->category = 'Presentation';
+        $product->type = $presentationMap[$presentation['category']];
+        $product->title = trim($presentation['organization'])." {$product->type}";
+        $product->date = $presentation['date'];
+        $product->access = "Public";
+        
+        if($presentation['invited'] == "formal invitation"){
+            $product->status = "Invited";
+        }
+        else{
+            $product->status = "Not Invited";
+        }
+        
+        $product->authors = array();
+        $product->projects = array();
+        $data = array(
+            'organizing_body' => $presentation['organization'],
+            'location' => $presentation['country']
+        );
+        if($presentation['refereed'] == "not refereed" ||
+           $presentation['refereed'] == ""){
+            $data['peer_reviewed'] = "No";
+        }
+        else{
+            $data['peer_reviewed'] = "Yes";
+        }
+        
+        $product->data = $data;
+        
+        // Add Authors
+        if(isset($staffIdMap[$presentation['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$presentation['faculty_staff_member_id']];
+            
+            $product->create();
+        }
+        show_status(++$iterationsSoFar, count($presentations));
     }
     
     $iterationsSoFar = 0;

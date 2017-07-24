@@ -1324,6 +1324,7 @@ class Person extends BackboneModel {
      * @return string The real name of this Person
      */
     function getRealName(){
+        return $this->getReversedName();
         return $this->realname;
     }
     
@@ -1576,6 +1577,7 @@ class Person extends BackboneModel {
      * @return string A name usable in forms
      */
     function getNameForForms($sep = ' ') {
+        return $this->getReversedName();
         if (!empty($this->realname))
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
@@ -3651,7 +3653,6 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               (!$networkRelated || $paper->isGrandRelated() || !$config->getValue("projectsEnabled")) &&
                $paper->getId() != 0 && 
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;

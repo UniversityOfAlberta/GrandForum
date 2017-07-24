@@ -1098,9 +1098,9 @@ class Paper extends BackboneModel{
      */
     function getDate(){
         global $config;
-        $dates = $config->getValue('projectPhaseDates');
+        //$dates = $config->getValue('projectPhaseDates');
         $date = $this->date;
-        $date = str_replace("0000", substr($dates[1], 0, 4), $date);
+        //$date = str_replace("0000", substr($dates[1], 0, 4), $date);
         $date = str_replace("-00", "-01", $date);
         return $date;
     }

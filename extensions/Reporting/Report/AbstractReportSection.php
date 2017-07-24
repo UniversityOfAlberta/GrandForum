@@ -64,6 +64,10 @@ abstract class AbstractReportSection {
         return $this->parent;
     }
     
+    function getReport(){
+        return $this->parent;
+    }
+    
     function getLimit(){
         if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
             return 0;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FEC" reportType="RP_FEC" pdfType="RPTP_FEC" ajax="true">
-    <ReportSection id="information" tooltip="Information" name="Information" title="Annual Report of Faculty Member - Faculty of Science" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
+<Report name="2017 Quality Assurance Program Review CV" reportType="RP_QA" pdfType="RPTP_QA" ajax="true" startYear="-5">
+    <ReportSection id="information" tooltip="Information" name="Information" title="2017 Quality Assurance Program Review CV: July {$start_year} - June {$this_year}" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
                 <table style="line-height:1.75em;">
