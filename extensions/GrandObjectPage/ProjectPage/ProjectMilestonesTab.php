@@ -115,7 +115,7 @@ class ProjectMilestonesTab extends AbstractTab {
                 foreach($people as $person){
                     $peopleText[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
                 }
-                $peopleText = implode(", ", $peopleText);
+                $peopleText = implode("; ", $peopleText);
                 $this->html .= "<td class='left_border'>{$leaderText}</td>";
                 $this->html .= "<td class='left_comment'>{$commentIcon}{$peopleText}</td>";
                 $this->html .= "</tr>";

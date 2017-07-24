@@ -54,7 +54,7 @@ GrantView = Backbone.View.extend({
             _.each(people, $.proxy(function(copi){
                 html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
             }, this));
-            this.$("#copi").html(html.join(", "));
+            this.$("#copi").html(html.join("; "));
         }, this));
     },
 

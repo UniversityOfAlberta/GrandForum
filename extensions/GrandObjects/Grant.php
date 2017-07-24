@@ -228,7 +228,7 @@ class Grant extends BackboneModel {
             'project_id' => $this->project_id,
             'sponsor' => $this->sponsor,
             'copi' => $this->copi,
-            'copi_string' => implode(", ", $copis),
+            'copi_string' => implode("; ", $copis),
             'total' => $this->total,
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,

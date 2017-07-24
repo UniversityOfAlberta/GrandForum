@@ -121,14 +121,9 @@
         'Impersonation',
         'Visualizations',
         'PublicVisualizations',
-        //'Survey',
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'ScreenCapture',
-        //'Solr',
-        //'TravelForm',
-        //'AdvancedSearch',
         'CCVExport'
     ));
     

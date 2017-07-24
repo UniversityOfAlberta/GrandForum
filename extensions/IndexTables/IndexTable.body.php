@@ -276,8 +276,8 @@ class IndexTable {
             foreach($coords as $coord){
                 $coordinators[] = "<a href='{$coord->getUrl()}'>{$coord->getNameForForms()}</a>";
             }
-            $leadersString = implode(", ", $leaders);
-            $coordsString = implode(", ", $coordinators);
+            $leadersString = implode("; ", $leaders);
+            $coordsString = implode("; ", $coordinators);
             $wgOut->addHTML("<tr>
                 <td align='left'>
                 <a href='{$theme->getUrl()}'>{$theme->getAcronym()}</a>
@@ -309,7 +309,7 @@ class IndexTable {
                 foreach($project->getLeaders() as $lead){
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
                 }
-                $leaderString = implode(", ", $leaders);
+                $leaderString = implode("; ", $leaders);
                 $wgOut->addHTML("<tr>");
                 $wgOut->addHTML("<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:Information'>{$project->getName()}<a></td>");
                 $wgOut->addHTML("<td>{$project->getFullName()}</td>");
@@ -484,7 +484,7 @@ class IndexTable {
                     $personLinks[] = "{$person->getName()}";
                 }
             }
-            $wgOut->addHTML("<td>".implode(", ", $personLinks)."</td>");
+            $wgOut->addHTML("<td>".implode("; ", $personLinks)."</td>");
             $wgOut->addHTML("<td>".implode(", ", $projs)."</td>");
             $wgOut->addHTML("</tr>");
         }
@@ -585,8 +585,8 @@ class IndexTable {
             $wgOut->addHTML("<tr><td><a href='{$contribution->getURL()}'>{$contribution->getName()}</a></td>
                 <td align=center>{$contribution->getStartYear()}</td>
                                 <td align=center>{$partners[0]->getOrganization()}</td>
-                                <td>".implode(", ", $pis)."</td>
-                                <td>".implode(", ", $names)."</td>
+                                <td>".implode("; ", $pis)."</td>
+                                <td>".implode("; ", $names)."</td>
                                 <td align=right>$".number_format($contribution->getCash())."</td>
                                 <td align=right>$".number_format($contribution->getKind())."</td>
                                  <td align=right>$".number_format($contribution->getTotal())."</td></tr>");

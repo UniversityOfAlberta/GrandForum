@@ -18,11 +18,11 @@ class PersonPublicationsTab extends AbstractTab {
             return "";
         }
         $contributions = $this->person->getContributions();
-	   $this->html .= $this->showTable($this->person, $this->visibility);
+       $this->html .= $this->showTable($this->person, $this->visibility);
     }
 
     function showTable($person, $visibility){
-	global $config;
+        global $config;
         $me = Person::newFromWgUser();
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
@@ -40,22 +40,11 @@ class PersonPublicationsTab extends AbstractTab {
                     $projects[] = "{$project->getName()}";
                 }
 
-                $names = array();
-                foreach($paper->getAuthors() as $author){
-                    if($author->getId() != 0 && $author->getUrl() != ""){
-                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
-                    }
-                    else{
-                        $names[] = $author->getNameForForms();
-                    }
-                }
-
                 $string .= "<tr>";
                 $string .= "<td>{$paper->getProperCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
-                $string  .= "<td align=center>{$paper->getCategory()}</td>";
-                $string  .= "<td align=center>{$paper->getType()}</td>";
-		$string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-
+                $string .= "<td align=center>{$paper->getCategory()}</td>";
+                $string .= "<td align=center>{$paper->getType()}</td>";
+                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "</tr>";
             }
             $string .= "</tbody>

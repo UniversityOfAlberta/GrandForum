@@ -368,7 +368,7 @@ class ReportItemCallback {
                 $string_names[] = $recipient;
             }
         }
-        return implode(",",$string_names);
+        return implode(";",$string_names);
     }  
 
 
@@ -384,7 +384,7 @@ class ReportItemCallback {
                 $string_names[] = $recipient;
             }
         }
-        return implode(",",$string_names);
+        return implode(";",$string_names);
     }
  
     function getGrantTitle(){
@@ -639,7 +639,7 @@ class ReportItemCallback {
                 }
             }
         }
-        return implode(", ", $supervisors);
+        return implode("; ", $supervisors);
     }
 
     function getUserPublicationCount($start_date,$end_date,$type='Publication'){

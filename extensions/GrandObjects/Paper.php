@@ -1274,7 +1274,7 @@ class Paper extends BackboneModel{
                 $au[] = $a->getNameForForms();
             }
         }
-        $au = implode(',&nbsp;', $au);
+        $au = implode(';&nbsp;', $au);
         $vn = $this->getVenue();
 
         if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
