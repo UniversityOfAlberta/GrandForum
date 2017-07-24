@@ -28,31 +28,6 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
-            <![CDATA[
-                <h2>Responsibilities Variation</h2>
-                Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
-                <div style='margin-left:25px;'>{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
-            <![CDATA[
-                <h2>Leaves</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Teaching Development And Innovation</h2>
-                  {$item}
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
         <ReportItem id="coursesheader" type="StaticReportItem">
@@ -82,11 +57,6 @@
         <ReportItem id="coursesfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-            ]]>
-        </ReportItem>
-        <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Other Teaching</h2>{$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -277,55 +247,6 @@
         <ReportItem id="serviceOutreachOther" type="TextareaReportItem" blobItem="FEC_INFO_OTHER" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
                 <b>Other</b>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Additional Data</h2>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Footnotes</h2>{$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
-        <ReportItem id="chairTable" type="StaticReportItem">
-            <![CDATA[
-                <p id='comment_p'></p>
-                <div id='chair_comments_none' style=visibility:hidden;">
-                    No Chair Recommendation Available.
-                </div>
-                <div id='chair_comments' style="visibility:hidden;">
-                    <table class='dashboard wikitable'>
-                    <tbody>
-                    <tr><td>Teaching Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_TEACHING_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Research Evaluations</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_RESEARCH_EVALUATION,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Departmental</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_DEPARTMENTAL,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Faculty</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_FACULTY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>University</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_UNIVERSITY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Scientific</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_SCIENTIFIC,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Community Outreach</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMUNITY,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Other</td><td>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_OTHER,{$user_id},{$chair_id},0)}</td></tr>
-                    <tr><td>Comments</td><td><p id='fec_comments'>{getText(RP_FEC,FEC_REVIEW,FEC_REVIEW_COMMENTS,{$user_id},{$chair_id},0)}</p></td></tr>
-                    </tbody>
-                    </table>
-                </div>
-                <script type='text/javascript'>
-                var intervalId = setInterval(function(){
-                    if ($('#comment_p').is(':visible') && !$('#fec_comments').is(':empty')){
-                        document.getElementById('chair_comments').style.visibility = 'visible';
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                    else if($('#comment_p').is(':visible') && $('#fec_comments').is(':empty')){
-                        document.getElementById('chair_comments_none').style.visibility = 'visible';
-                        clearInterval(intervalId);
-                        intervalId = null;
-                    }
-                }, 100);
-                </script>
             ]]>
         </ReportItem>
     </ReportSection>

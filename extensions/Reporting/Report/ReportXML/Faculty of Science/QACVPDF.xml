@@ -19,7 +19,7 @@
                             </table>
                         </td>
                         <td>
-                            <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see Faculty Agreement or FSO Agreement. The information submited will be used in arriving at decisions regrading salaries, tenure, and promotion.</p></center>
+                            <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">This CV contains information for the period of July 1, 2011 - June 30, 2016 only, as supplementary data for the University of Alberta Quality Assurance Graduate and Undergraduate Program Reviews. It does not represent the complete academic CV of the staff member. </p></center>
                             <table width="100%">
                                 <tr>
                                     <th></th>
@@ -69,31 +69,6 @@
                 </table><br />
         ]]>
     </ReportItem>
-    <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
-        <![CDATA[
-            <h2>Responsibilities Variation</h2>
-            Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
-            <div style='margin-left:25px;'>{$item}</div>
-        ]]>
-    </ReportItem>
-    <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
-        <![CDATA[
-            <h2>Leaves</h2>
-            {$item}
-        ]]>
-    </ReportItem>
-    <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
-        <![CDATA[
-            <h2>Reasons For Reduced Teaching <i>(if applicable)</i></h2>
-            {$item}
-        ]]>
-    </ReportItem>
-        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Teaching Development And Innovation</h2>
-                {$item}
-            ]]>
-        </ReportItem>
     <ReportItem id="coursesheader" type="StaticReportItem">
         <![CDATA[
             <h2>Courses</h2>
@@ -124,11 +99,6 @@
         <![CDATA[
             </tbody></table>
         ]]>
-        </ReportItem>
-        <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobSection="FEC_COURSES" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Other Teaching</h2>{$item}
-            ]]>
         </ReportItem>
         <ReportItem id="studentsheader" type="StaticReportItem">
             <![CDATA[
@@ -215,7 +185,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id ="grantsheader" type="StaticReportItem">
+        <ReportItem id="grantsheader" type="StaticReportItem">
             <![CDATA[
                 <h2>Research Grants and Contracts</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
@@ -312,16 +282,6 @@
         <ReportItem id="serviceOutrechOther" type="TextareaReportItem" blobItem="FEC_INFO_OTHER" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
             <![CDATA[
             	<b>Other</b>{$item}<br>
-            ]]>
-        </ReportItem>
-        <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" blobSection="FEC_ADDITIONAL_INFO">
-            <![CDATA[
-                <h2>Additional Data</h2>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
-            <![CDATA[
-            	<b>Footnotes</b>{$item}
             ]]>
         </ReportItem>
     </ReportSection>

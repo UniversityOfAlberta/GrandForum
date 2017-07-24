@@ -222,13 +222,13 @@ class ReportItemCallback {
     function getHqpStartDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $array = explode(" ", $relation->getStartDate());
-        return $array[0];
+        return str_replace("0000-00-00", "", $array[0]);
     }
     
     function getHqpEndDate(){
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $array = explode(" ", $relation->getEndDate());
-        return $array[0];
+        return str_replace("0000-00-00", "", $array[0]);
     }
     
     function getHqpResearchArea(){
@@ -238,7 +238,7 @@ class ReportItemCallback {
     }
 
     function getHqpStatus(){
-        if($this->getHqpEndDate() == '0000-00-00'){
+        if($this->getHqpEndDate() == '0000-00-00' || $this->getHqpEndDate() == ''){
             return "Continuing";
         }
         else{

@@ -671,7 +671,7 @@
         $product->category = 'Award';
         $product->type = 'Award';
         $product->title = ucwords(trim($award['name']));
-        $product->date = $award['year']."00-00";
+        $product->date = $award['year']."-00-00";
         $product->status = "Published";
         $product->access = "Public";
         $product->data = array('award_category' => $award['category'],

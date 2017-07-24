@@ -111,7 +111,6 @@
         'EditMember',
         'ManagePeople',
         //'HQPRegister',
-        'Poll',
         'QueryableTable',
         'IndexTables',
         //'Reporting',
@@ -122,7 +121,6 @@
         'Visualizations',
         'PublicVisualizations',
         'Duplicates',
-        //'AllocatedBudgets',
         'ProjectEvolution',
         'CCVExport'
     ));

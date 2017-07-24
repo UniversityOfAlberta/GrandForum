@@ -89,9 +89,6 @@ $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
 $egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
                                           'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
-$egAnnokiExtensions['Poll'] = array('name' => 'Poll',
-                                    'path' => "$IP/extensions/Poll/Poll.body.php");
-
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
 
@@ -118,9 +115,6 @@ $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizat
 
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
-
-$egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
-                                                'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
 
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");

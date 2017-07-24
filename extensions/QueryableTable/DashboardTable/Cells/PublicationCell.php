@@ -121,18 +121,6 @@ abstract class PublicationCell extends DashboardCell {
             $first_author = $first_author[0];
         }
         $citation = $paper->getProperCitation();
-        $reported = "";
-        if($this->category == "Publication" || $this->category == "Artifact"){
-            $rmcYears = $paper->getReportedYears('RMC');
-            //$nceYears = $paper->getReportedYears('NCE');
-            $nce = "";
-            $rmc = (count($rmcYears) > 0) ? implode(", ", $rmcYears) : "Never";
-            /*if($this->category == "Publication"){
-                $nce = (count($nceYears) > 0) ? implode(", ", $nceYears) : "Never";
-                $nce = "<span class='pdfnodisplay'><br /></span><span class='pdfOnly'>; </span><b>Reported to NCE:</b> {$nce}";
-            }*/
-            $reported = "<td style='text-align:left;'><b>Reported to RMC:</b> {$rmc}{$nce}</td>";
-        }
         $hqpAuthored = "";
         if($this instanceof PersonPublicationCell){
             $found = false;
