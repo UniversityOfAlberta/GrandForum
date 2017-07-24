@@ -71,7 +71,8 @@ class WhoSupplies extends SpecialPage{
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>On June 12, 2017, the Alberta College of Pharmacists published guidelines to support the practice of pharmacy professionals dispensing Mifegymiso®, <a href='https://pharmacists.ab.ca/guidelines-dispensing-mifegymiso' target='_blank'>read more</a></li>
+                    <li>Alberta pharmacist Dr. Nese Yuksel, has written additional information for AB Pharmacists, <a href='https://secure.campaigner.com/CSB/public/ReadmoreContent.aspx?id=28435696&campaignid=21466857' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
@@ -127,6 +128,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>As reported in the media on March 9th, 2017, Winnipeg Regional Health Authority has confirmed Mifegymiso® is now available at Health Sciences Centre's Women's Hospital, but patients must pay $350, <a href='http://www.cbc.ca/beta/news/canada/manitoba/abortion-pill-available-at-hsc-in-winnipeg-but-patients-will-pay-1.4016440' target='_blank'>read more</a></li>
+                    <li>On July 20th, 2017 government officials from the province of Manitoba announced that mifepristone will be covered at select sites, <a href='http://www.cbc.ca/news/canada/manitoba/manitoba-to-cover-cost-of-abortion-pill-mifegymiso-at-approved-centres-1.4214354' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
