@@ -98,7 +98,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Description<small> - 750 words maximum including references</small></h3>
                 <p>Describe the rationale, target audience, activities, and resources provided to participants at the proposed workshop, as well as the role of each facilitator.</p>

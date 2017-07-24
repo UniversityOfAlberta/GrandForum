@@ -118,14 +118,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" name="Executive Summary" blobSection="INFORMATION">
-        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500" recommended="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="background" type="EditableReportSection" name="Background Information" blobSection="INFORMATION">
-        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000">
+        <ReportItem id="background" type="TextareaReportItem" blobItem="BACKGROUND" rich="true" limit="1000" recommended="true">
             <![CDATA[
                 {$item}<br />
             ]]>
@@ -138,19 +138,19 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="achievements" type="EditableReportSection" blobSection="ACHIEVEMENTS" name="Achievements" title="Research Achievements">
-        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="500">
+        <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <p><b>Project Objectives and Past Achievements</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000">
+        <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000" recommended="true">
             <![CDATA[
                 <p><b>Research Achievements in the Current Funding Period</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500">
+        <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <p><b>Future Directions</b></p>
                 {$item}<br />
@@ -195,7 +195,7 @@
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="HQP" title="Development of Highly Qualified Personnel">
         <ReportItemSet id="hqps" type="ProjectAllPeopleReportItemSet" role="HQP" startDate="{$this_year}-04-01 00:00:00" endDate="{$next_year}-04-30 00:00:00">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
-                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200">
+                <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$user_id}" rich="true" limit="200" recommended="true">
                     <![CDATA[
                         <p><b>Describe the role of the trainee within the project, highlighting progress made to date.</b></p>
                         {$item}<br />

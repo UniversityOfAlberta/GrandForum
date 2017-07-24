@@ -59,7 +59,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500">
+        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <h3>Most Significant Contributions to Research</h3>
                 <p>Describe up to five of your most significant research contributions, specifying your role in the contribution and highlighting the impact of your research in the broader field of study.  </p>
@@ -129,21 +129,21 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250" recommended="true">
             <![CDATA[
                 <h3>Summary of Proposal</h3>
                 <p>This summary may be used in GlycoNet publications and on the GlycoNet website.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000">
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000" recommended="true">
             <![CDATA[
                 <h3>Research Proposal <small>(max 2000 words, including references)</small></h3>
                 <p>Address your own research progress in areas relating to the proposed project, research objectives, a brief overview of current literature to help put the proposal into context, methodology to be used, and impact of the project.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500">
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <h3>HQP Training Plan</h3>
                 <p>Describe the undergraduate/co-op HQP’s involvement in the proposed research, and explain how this trainee will benefit in both the short- and long-term from the project.</p>
@@ -189,7 +189,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Budget Justification</h3>
                 <p>Describe how the requested funds will be spent. If other sources of matching funds are available, describe them here.</p>

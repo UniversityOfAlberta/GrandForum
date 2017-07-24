@@ -210,7 +210,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" limit="250" rich="true" blobItem="DESCRIPTION">
+        <ReportItem id="description" type="Textarea" limit="250" rich="true" recommended="true" blobItem="DESCRIPTION">
             <![CDATA[
                 <h2>Self-Description</h2>
                 <p>Describe your career goals, and explain how a Summer Award will help you reach those goals.</p>
@@ -337,7 +337,7 @@
                         </table>
                     ]]>
                 </ReportItem>
-                <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" blobSubItem="{$user_id}" limit="750" rich="true" height="400px">
+                <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" blobSubItem="{$user_id}" limit="750" rich="true" recommended="true" height="400px">
                     <![CDATA[
                         <h2>Project Description - <small>750 words maximum, including references</small></h2>
                         <p>Describe the proposed summer research project, emphasizing the student's role and alignment with one or more of GlycoNet's themes. Please use <i>Journal of Biological Chemistry</i> style for references.</p>

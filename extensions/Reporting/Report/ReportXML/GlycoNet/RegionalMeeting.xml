@@ -89,20 +89,20 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="offered_desc" type="Textarea" blobItem="OFFERED_DESC" rich="true" optional="true" limit="300">
+        <ReportItem id="offered_desc" type="Textarea" blobItem="OFFERED_DESC" rich="true" optional="true" limit="300" recommended="true">
             <![CDATA[
                 <p>If so, briefly describe the context and outcomes of the previous meeting:</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true" limit="150">
+        <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true" limit="150" recommended="true">
             <![CDATA[
                 <h3>Abstract</h3>
                 <p>This section will be used for advertising to potential participants.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="500">
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <h3>Objectives</h3>
                 <p>Briefly describe the knowledge, skills, and perspectives participants can expect to gain by taking part in this meeting.</p>

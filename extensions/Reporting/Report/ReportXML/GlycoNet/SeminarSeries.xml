@@ -79,7 +79,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" optional="true" limit="250">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" optional="true" limit="250" recommended="true">
             <![CDATA[
                 <h3>Description</h3>
                 <p>Describe how the invited speaker’s visit will be maximized for the benefit of the department(s) and trainees involved.</p>

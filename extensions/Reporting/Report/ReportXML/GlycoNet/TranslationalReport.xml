@@ -220,7 +220,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
             <![CDATA[
                 <script type="text/javascript">
                     var resub = function(){
@@ -263,7 +263,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" recommended="true">
             <![CDATA[
                 <h2>Training Potential</h2>
                 {$item}

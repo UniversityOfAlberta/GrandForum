@@ -140,7 +140,7 @@
             ]]>
         </ReportItem>
         <ReportItemSet id="if" type="IfReportItemSet" if="{==({getText(RP_COLLAB,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
-            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000">
+            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
                 <![CDATA[
                     <p><b>Please provide a response to the previous reviews</b></p>
                     {$item}

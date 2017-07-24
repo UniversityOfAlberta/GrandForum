@@ -30,7 +30,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500">
+        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <h3>Most Significant Contributions to Research</h3>
                 {$item}
@@ -97,19 +97,19 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250" recommended="true">
             <![CDATA[
                 <h3>Summary of Proposal</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000">
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000" recommended="true">
             <![CDATA[
                 <h3>Research Proposal</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500">
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <h3>HQP Training Plan</h3>
                 {$item}
@@ -154,7 +154,7 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300">
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Budget Justification</h3>
                 {$item}

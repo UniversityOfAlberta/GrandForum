@@ -63,7 +63,7 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="750" rich="true">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Project Summary - <small>750 words, including references</small></h3>
                 {$item}

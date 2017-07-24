@@ -121,7 +121,7 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true" recommended="true">
             <![CDATA[
                 <h2>Exchange Summary</h2>
                 {$item}

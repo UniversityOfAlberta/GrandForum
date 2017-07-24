@@ -83,7 +83,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" limit="750" rich="true" recommended="true">
             <![CDATA[
                 <h3>Description<small> - 750 words maximum including references</small></h3>
                 {$item}

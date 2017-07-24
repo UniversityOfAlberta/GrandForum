@@ -90,7 +90,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" limit="250" rich="true" blobItem="DESCRIPTION">
+        <ReportItem id="description" type="Textarea" limit="250" rich="true" recommended="true" blobItem="DESCRIPTION">
             <![CDATA[
                 <h2>Self-Description</h2>
                 {$item}
