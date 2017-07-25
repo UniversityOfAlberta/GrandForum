@@ -1209,21 +1209,34 @@ class Paper extends BackboneModel{
         $au = array();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
-                if($hyperlink){
-                    $name = $a->getNameForForms();
-                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $name = "<u>{$a->getNameForForms()}</u>";
+                $name = $a->getNameForForms();
+                if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
+                    $name = "{$a->getNameForForms()}";
+                }
+                else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                    $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
+                    foreach($unis as $uni){
+                        if(strstr($uni['position'], "Graduate Student") !== false ||
+                           strstr($uni['position'], "Post-Doctoral Fellow") !== false){
+                            $name = "<b>{$a->getNameForForms()}</b>";
+                        }
+                        else if(strstr($uni['position'], "Undergraduate") !== false ||
+                                strstr($uni['position'], "Summer Student") !== false){
+                            $name = "<u>{$a->getNameForForms()}</u>";
+                        }
                     }
-                    else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                        $name = "<i>{$a->getNameForForms()}</i>";
-                    }
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                 }
                 else{
-                    $au[] = "<b>". $a->getNameForForms() ."</b>";
+                    $name = "{$a->getNameForForms()}";
                 }
-            }else{
+                if($hyperlink){
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
+                }
+                else{
+                    $au[] = "{$name}";
+                }
+            }
+            else{
                 $au[] = $a->getNameForForms();
             }
         }

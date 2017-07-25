@@ -16,6 +16,7 @@ class ReportItemCallback {
             "course_end" => "getCourseEnd",
             "course_subject" => "getCourseSubject",
             "course_number" => "getCourseNumber",
+            "course_title" => "getCourseTitle",
             "course_comp" => "getCourseComp",
             "course_section" => "getCourseSection",
             "course_enroll" => "getCourseEnroll",    
@@ -279,6 +280,11 @@ class ReportItemCallback {
     function getCourseNumber(){
         $course = Course::newFromId($this->reportItem->projectId);
         return $course->catalog;
+    }
+    
+    function getCourseTitle(){
+        $course = Course::newFromId($this->reportItem->projectId);
+        return $course->descr;
     }
 
     function getCourseComp(){

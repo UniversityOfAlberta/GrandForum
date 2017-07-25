@@ -12,10 +12,6 @@
                                 <tr><td>Department:&nbsp;<b>{$user_dept}</b></td></tr>
                                 <tr><td>Year of PhD:&nbsp;<b>{$user_phd_year}</b></td></tr>
                                 <tr><td>Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
-                                <tr><td>Graduate Students(Supervised or Co-supervised):&nbsp;<b>{$user_grad_count}</td></b></tr>
-                                <tr><td>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):&nbsp;<b>{$user_fellow_count}</b></tr></td>
-                                <tr><td>Technicians:&nbsp;<b>{$user_tech_count}</b></tr></td>
-                                <tr><td>Undergraduates (Supervised or Co-supervised):&nbsp;<b>{$user_ugrad_count}</b></tr></td>
                             </table>
                         </td>
                         <td>
@@ -69,6 +65,36 @@
                 </table><br />
         ]]>
     </ReportItem>
+    <ReportItem id="awardheader" type="StaticReportItem">
+        <![CDATA[
+            <h2>Awards Received</h2>
+            <table class='wikitable' frame='box' rules='all' width='100%'>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Award Category</th>
+                        <th>Scope</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+        ]]>
+    </ReportItem>
+    <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItem id="row" type="StaticReportItem">
+            <![CDATA[
+                <tr><td>{$product_title}</td>
+                    <td align='center'>{$award_category}</td>
+                    <td align='center'>{$award_scope}</td>
+                    <td align='center'>{$product_year}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+    </ReportItemSet>
+    <ReportItem id="awardfooter" type="StaticReportItem">
+        <![CDATA[
+            </table>
+        ]]>
+    </ReportItem>
     <ReportItem id="coursesheader" type="StaticReportItem">
         <![CDATA[
             <h2>Courses</h2>
@@ -77,6 +103,7 @@
             <th>Term</th>
             <th>Comp.</th>
             <th>Section</th>
+            <th>Title</th>
             <th>Enroll.</th>
             <!--th>%</th--></tr></thead><tbody>
         ]]>
@@ -89,6 +116,7 @@
                     <td align='center'>{$course_term}</td>
                     <td align='center'>{$course_comp}</td>
                     <td align='center'>{$course_section}</td>
+                    <td align='left'>{$course_title}</td>
                     <td align='center'>{$course_enroll}</td>
                     <!--td align='center'>{$course_enroll_percent}</td-->
                 </tr>
@@ -103,6 +131,12 @@
         <ReportItem id="studentsheader" type="StaticReportItem">
             <![CDATA[
                 <h2>Responsibilities for HQP</h2>
+                <table>
+                    <tr><td>Graduate Students(Supervised or Co-supervised):&nbsp;<b>{$user_grad_count}</b></td></tr>
+                    <tr><td>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):&nbsp;<b>{$user_fellow_count}</b></td></tr>
+                    <tr><td>Technicians:&nbsp;<b>{$user_tech_count}</b></td></tr>
+                    <tr><td>Undergraduates (Supervised or Co-supervised):&nbsp;<b>{$user_ugrad_count}</b></td></tr>
+                </table>
                 <table class='wikitable' frame='box' rules='all' width='100%'><thead><tr>
                     <th>Name</th>
                     <th>Resp</th>
@@ -118,7 +152,7 @@
                  <![CDATA[
                      <tr>
                         <td>{$hqp_reversed_name}</td>
-                         <td align='center'>{$hqp_position}</td>
+                         <td align='left'>{$hqp_position}</td>
                          <td align='center'>{$hqp_awards}</td>
                          <td align='center'>{$user_hqp_role}</td>
                          <td align='center'>{$hqp_start_date}</td>
@@ -135,7 +169,7 @@
          </ReportItem>
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Publications</h2>
+                <h2>Publications (Graduate student name bolded; undergraduate student underlined)</h2>
                 <table class='wikitable' style='width:100%'><tbody>
             ]]>
         </ReportItem>
@@ -187,7 +221,7 @@
         </ReportItem>
         <ReportItem id="grantsheader" type="StaticReportItem">
             <![CDATA[
-                <h2>Research Grants and Contracts</h2>
+                <h2>Research Grants and Contracts (active at any time during reporting period)</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -217,36 +251,6 @@
         <ReportItem id="grantsfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
-            ]]>
-        </ReportItem>
-        <ReportItem id="awardheader" type="StaticReportItem">
-            <![CDATA[
-                <h2>Awards Received</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Award Category</th>
-                            <th>Scope</th>
-                            <th>Year</th>
-                        </tr>
-                    </thead>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr><td>{$product_title}</td>
-                        <td align='center'>{$award_category}</td>
-                        <td align='center'>{$award_scope}</td>
-                        <td align='center'>{$product_year}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="awardfooter" type="StaticReportItem">
-            <![CDATA[
-                </table>
             ]]>
         </ReportItem>
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
