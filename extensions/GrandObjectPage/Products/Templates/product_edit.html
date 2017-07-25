@@ -96,14 +96,22 @@
 			     <%= HTML.TextBox(this, 'acceptance_ratio_numerator', {style:"width:50px;"}) %>/<%= HTML.TextBox(this, 'acceptance_ratio_denominator', {style:"width:50px;"}) %></td>
     </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
-		<% if(!val.hidden){ %>
+        <% if(!val.hidden){ %>
             <tr>
-                <td class="label"><%= val.label %>:</td>
+                <td class="label"><%= val.label %>:
+                    <% if(val.type == "File"){ %>
+                        <small style="display:block;line-height:6px;">(Max 5MB)</small>
+                    <% } %>
+                </td>
                 <td class="field">
                     <% if(val.type == "String"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } else if(val.type == "Radio"){ %>
                         <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                    <% } else if(val.type == "Select"){ %>
+                        <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
+                    <% } else if(val.type == "File"){ %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
                     <% } else { %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } %>

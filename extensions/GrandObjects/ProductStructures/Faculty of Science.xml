@@ -642,12 +642,38 @@
          </Award>
     </Awards>
 
-    <Activity category="Activity">
-        <Award type="Review">
+    <Activities category="Activity">
+        <Activity type="Scientific Committee">
              <data>
-                  
+                  <field label="Scope" type="Select" options="International|National|Provincial">scope</field>
+                  <field label="Organization" type="String">organization</field>
              </data>
-         </Award>
-    </Activity>
+         </Activity>
+         
+         <Activity type="University Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Faculty Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Departmental Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Community Outreach Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Other Committee">
+             <data>
+             </data>
+         </Activity>
+    </Activities>
 
 </Products>
