@@ -25,7 +25,7 @@
         </Role>
     </Permissions>
     <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
-        <ReportItem id="title" blobItem="TITLE" type="Text">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
             <![CDATA[
                 <div class="info">Please read all questions within this application form very carefully since some questions may be different from the previous draft application document provided on CFN’s website.</div>
                 <div style="text-align: center; width:100%;border: 1px solid black;">
@@ -35,6 +35,16 @@
                     <p><b>Please provide all information in English.</b></p>
                 </div><br />
                 <table frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text">
+            <![CDATA[
                     <tr>
                         <td>
                             <b>Title of KT Proposal provided in Intent to Apply:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
