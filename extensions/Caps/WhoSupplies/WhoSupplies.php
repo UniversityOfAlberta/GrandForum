@@ -80,6 +80,7 @@ class WhoSupplies extends SpecialPage{
                     <li>As reported in the media, Mifegymiso®, ~ $300/dose (Oct. 7th, 2016) <a href='http://edmontonjournal.com/news/politics/paula-simons-access-to-abortion-drug-one-step-closer-for-alberta-women' target='_blank'>read more</a></li>
                     <li>As reported in the media on March 6th 2017, Calgary’s Kensington Clinic is providing Mifegymiso® for free, <a href='https://www.thestar.com/opinion/commentary/2017/03/06/abortion-pill-rollout-deeply-flawed-mallick.html' target='_blank'>read more</a></li>
                     <li>Following the positive listing by the Canadian expert review of Mifegymiso, Alberta became the second province (after New Brunswick) to announce that it will be offering universal access to the drug, <a href='https://beta.theglobeandmail.com/news/national/alberta-promises-to-offer-universal-access-to-the-abortion-pill/article34768401/?ref=http://www.theglobeandmail.com&service=mobile' target='_blank'>read more from the media</a> (April 20th, 2017)</li>
+                    <li>On July 24th, 2017 government officials from the province of Alberta announced that mifepristone coverage is now fully operational across their province, <a href='http://www.timescolonist.com/alberta-latest-province-to-cover-the-cost-of-abortion-pill-mifegymiso-1.21338876'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
