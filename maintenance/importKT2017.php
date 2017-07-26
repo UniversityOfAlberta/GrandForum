@@ -59,7 +59,9 @@ foreach($contents as $line){
             $role->user = $person->getId();
             $role->role = NI;
             $role->create();
-            
+        }
+        
+        if(!$person->isSubRole("KT2017Applicant")){
             DBFunctions::insert('grand_role_subtype',
                                 array('user_id' => $person->getId(),
                                       'sub_role' => "KT2017Applicant"));
