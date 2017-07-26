@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KTApplicationPDF" year="2017" ajax="true">
     <Permissions>
-        <Role role="External" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
+        <Role role="NI" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
@@ -12,7 +12,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="External-Candidate" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
+        <Role role="NI-Candidate" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="proposal" permissions="rw" />
