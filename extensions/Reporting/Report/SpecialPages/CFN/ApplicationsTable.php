@@ -65,6 +65,7 @@ class ApplicationsTable extends SpecialPage{
         
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ifp'>IFP</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=kt'>KT</a>";
         }
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
@@ -78,12 +79,22 @@ class ApplicationsTable extends SpecialPage{
         if($program == "ifp" && $me->isRoleAtLeast(SD)){
             $this->generateIFP();
         }
+        else if($program == "kt" && $me->isRoleAtLeast(SD)){
+            $this->generateKT();
+        }
     }
     
     function generateIFP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", $this->hqps, 2017, "2017"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateKT(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
