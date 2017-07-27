@@ -310,7 +310,7 @@ class Course extends BackboneModel{
         $courses = array();
         foreach($data as $row){
             $course = Course::newFromId($row['course_id']);
-            $courses["{$course->subject} {$course->catalog} {$course->startDate}"] = $course;
+            $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
         }
         ksort($courses);
         return $courses;
