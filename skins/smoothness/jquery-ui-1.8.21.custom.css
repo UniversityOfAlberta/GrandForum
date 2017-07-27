@@ -343,6 +343,11 @@
  */
 .ui-autocomplete { position: absolute; cursor: default; }	
 
+.ui-autocomplete-loading {
+    background: url("../Throbber.gif") right center no-repeat;
+	background-size: 16px 16px; 
+}
+
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
 
@@ -379,7 +384,7 @@
 	padding:.2em .4em;
 	line-height:1.5;
 	zoom:1;
-	max-width: 400px;
+	max-width: 800px;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 }

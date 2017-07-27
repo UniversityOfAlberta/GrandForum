@@ -242,6 +242,42 @@ ProductEditView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
+        console.log(this.$("input[name=data_published_in]" ));
+        this.$("input[name=data_published_in]" ).autocomplete({ //name = data published in ... jquery selector: tag[...]
+
+            source: $.proxy(function( request, response ) {
+                var journals = new Journals();
+                journals.search = request.term;
+                journals.fetch({success: function( collection ) {
+                    var data = _.map(collection.toJSON(), function(journal){
+                            return { id: journal.id, 
+                                    label: journal.title + " " + journal.year + " (" + journal.description + ")", 
+                                    value: journal.title,
+                                    numerator: journal.ranking_numerator,
+                                    denominator: journal.ranking_denominator,
+                                    ratio: journal.ratio };
+                    });
+                    response( data );
+                    console.log(data);
+                    //console.log(this);
+                }});
+            }, this ),
+
+            minLength: 2,
+            select: $.proxy(function( event, ui ) {
+                console.log(ui.item);
+                this.$("input[name=data_published_in]").val(ui.item.value).change();
+                this.$("input[name=acceptance_ratio_numerator]").val(ui.item.numerator).change();
+                this.$("input[name=acceptance_ratio_denominator]").val(ui.item.denominator).change();
+                this.$("input[name=ratio]").val(ui.item.ratio).change();
+                
+                console.log(this.model.toJSON());
+
+                //log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+            }, this)
+        });
+
+
         return this.$el;
     }
 

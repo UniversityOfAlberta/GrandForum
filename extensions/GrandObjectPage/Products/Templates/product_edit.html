@@ -100,7 +100,9 @@
             <tr>
                 <td class="label"><%= val.label %>:</td>
                 <td class="field">
-                    <% if(val.type == "String"){ %>
+                    <% if(val.label == "Journal"){ %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:400px;"}) %>
+                    <% } else if(val.type == "String"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
                     <% } else if(val.type == "Radio"){ %>
                         <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
