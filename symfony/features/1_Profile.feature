@@ -7,7 +7,7 @@ Feature: User Profile
         Given I am logged in as "NI.User2" using password "NI.Pass2"
         When I follow "My Profile"
         And I press "Edit Bio"
-        And I press "Add University"
+        And I press "Add Institution"
         And I fill in "combo_university" with "Test University"
         And I fill in "combo_department" with "Test Department"
         And I select "Graduate Student - Master's" from "position"
