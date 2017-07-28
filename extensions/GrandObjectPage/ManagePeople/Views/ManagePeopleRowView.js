@@ -191,7 +191,7 @@ ManagePeopleRowView = Backbone.View.extend({
 	            }, this),
 	            buttons: {
 	                "+": { 
-	                    text: "Add University", 
+	                    text: "Add Institution", 
 	                    click: $.proxy(function(e){
 	                        this.editUniversities.addUniversity();
 	                    }, this), 

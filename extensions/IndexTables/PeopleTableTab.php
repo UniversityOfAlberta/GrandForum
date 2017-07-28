@@ -41,14 +41,14 @@ class PeopleTableTab extends AbstractTab {
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
-        $this->html .= "Below are all the current $this->table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or university.<br /><br />";
+        $this->html .= "Below are all the current $this->table in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
         $this->html .= "<table class='indexTable' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap;'>Name</th>
                                     {$subRoleHeader}
                                     {$projectsHeader}
-                                    <th style='white-space: nowrap;'>University</th>
+                                    <th style='white-space: nowrap;'>Institution</th>
                                     <th style='white-space: nowrap;'>Department</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$epicHeader}

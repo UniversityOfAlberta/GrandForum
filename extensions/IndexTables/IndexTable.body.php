@@ -408,7 +408,7 @@ class IndexTable {
     function generateFormsTable(){
         global $wgServer, $wgScriptPath, $wgOut;
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>University</th><th>Project</th></tr></thead><tbody>");
+<thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>Institution</th><th>Project</th></tr></thead><tbody>");
         $forms = Form::getAllForms();
         foreach($forms as $form){
             $personName = "";

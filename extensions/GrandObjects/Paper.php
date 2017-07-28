@@ -24,7 +24,7 @@ class Paper extends BackboneModel{
     var $venue;
     var $status;
     var $authors;
-    var $data;
+    var $data = array();
     var $lastModified;
     var $authorsWaiting;
     var $projectsWaiting;
@@ -1438,17 +1438,9 @@ class Paper extends BackboneModel{
                                           true);
             // Get the Product Id
             if($status){
-                $data = DBFunctions::select(array('grand_products'),
-                                            array('id'),
-                                            array('title' => EQ($this->title),
-                                                  'category' => EQ($this->category),
-                                                  'type' => EQ($this->type)),
-                                            array('id' => 'DESC'));
-                if(count($data) > 0){
-                    $id = $data[0]['id'];
-                    $this->id = $id;
-                }
+                $this->id = DBFunctions::insertId();
             }
+            
             // Update product_projects table
             if($status){
                 $status = DBFunctions::delete("grand_product_projects", 
