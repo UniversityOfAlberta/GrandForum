@@ -122,13 +122,13 @@ Feature: Manage People
         When I follow "Manage People"
         And I fill in "Search:" with "HQP User4"
         And I click by css "#editUniversities"
-        And I press "Add University"
+        And I press "Add Institution"
         And I fill in "combo_university" with "Test University"
         And I fill in "combo_department" with "Test Department"
         And I select "Graduate Student - Master's" from "position"
         And I press "Save"
         And I wait "1000"
-        Then I should see "Universities saved"
+        Then I should see "Institutions saved"
         
     Scenario: Updating University information
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -138,4 +138,4 @@ Feature: Manage People
         And I fill in "combo_department" with "Test Department Updated"
         And I press "Save"
         And I wait "1000"
-        Then I should see "Universities saved"
+        Then I should see "Institutions saved"
