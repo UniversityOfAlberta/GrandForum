@@ -43,6 +43,7 @@ class ReportItemCallback {
             "contribution_pis" => "getContributionPIs",
             // Grants
             "grant_title" => "getGrantTitle",
+            "grant_description" => "getGrantDescription",
             "grant_sponsor" => "getGrantSponsor",
             "grant_start_date" => "getGrantStartDate",
             "grant_end_date" => "getGrantEndDate",
@@ -96,6 +97,7 @@ class ReportItemCallback {
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
+            "product_description" => "getProductDescription",
             "product_url" => "getProductUrl",
             "product_citation" => "getProductCitation",
             "product_date" => "getProductDate",
@@ -396,6 +398,11 @@ class ReportItemCallback {
     function getGrantTitle(){
         $grant = Grant::newFromId($this->reportItem->projectId);
         return $grant->getTitle();
+    }
+    
+    function getGrantDescription(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return $grant->getDescription();
     }
     
     function getGrantSponsor(){
@@ -718,6 +725,11 @@ class ReportItemCallback {
     function getProductTitle(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getTitle();
+    }
+    
+    function getProductDescription(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getDescription();
     }
     
     function getProductUrl(){

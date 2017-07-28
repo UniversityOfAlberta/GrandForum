@@ -1584,6 +1584,49 @@ class Person extends BackboneModel {
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
     }
     
+    private function formatName($matches){
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            $match1 = str_replace("%first", $this->getFirstName(), $match1);
+            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+            $match1 = str_replace("%last", $this->getLastName(), $match1);
+            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+
+            $match2 = str_replace("%first", "", $match2);
+            $match2 = str_replace("%middle", "", $match2);
+            $match2 = str_replace("%last", "", $match2);
+            $match2 = str_replace("%f", "", $match2);
+            $match2 = str_replace("%m", "", $match2);
+            $match2 = str_replace("%l", "", $match2);
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("",$matches);
+    }
+
+    function getNameForProduct(){
+        global $config;
+        /*if($this->getId() == 0){
+            return $this->getNameForForms();
+        }*/
+        $firstname = $this->getFirstName();
+        $middlename = $this->getMiddleName();
+        $lastname = $this->getLastName();
+
+        $regex = "/\{.*?\}/";
+        $format = strtolower($config->getValue("nameFormat"));
+        $format = preg_replace_callback($regex,"self::formatName",$format);
+        $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
+        return $format;
+    }
+    
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public
     /**

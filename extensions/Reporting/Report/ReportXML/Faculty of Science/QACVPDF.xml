@@ -95,20 +95,13 @@
             </table><br />
         ]]>
     </ReportItem>
-    <ReportItem id="coursesheader" type="StaticReportItem">
+    <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
         <![CDATA[
             <h2>Courses</h2>
-            <table class="wikitable" rules="all" frame="box" width="100%"><thead><tr>
-            <th>Subject</th>
-            <th>Term</th>
-            <th>Comp.</th>
-            <th>Section</th>
-            <th>Title</th>
-            <th>Enroll.</th>
-            <!--th>%</th--></tr></thead><tbody>
+            {$item}
         ]]>
     </ReportItem>
-    <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
+    <!--ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
          <ReportItem id="row" type="StaticReportItem">
             <![CDATA[
                 <tr>
@@ -118,7 +111,6 @@
                     <td align='center'>{$course_section}</td>
                     <td align='left'>{$course_title}</td>
                     <td align='center'>{$course_enroll}</td>
-                    <!--td align='center'>{$course_enroll_percent}</td-->
                 </tr>
             ]]>
          </ReportItem>
@@ -166,7 +158,7 @@
              <![CDATA[
                  </tbody></table><br />
              ]]>
-         </ReportItem>
+         </ReportItem-->
         <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
                 <h2>Publications (Graduate student name bolded; undergraduate student underlined)</h2>
@@ -239,7 +231,9 @@
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td align='left'>{$grant_title}</td>
+                        <td align='left'>{$grant_title}<br />
+                            <p>{$grant_description}</p>
+                        </td>
                         <td align='left'>{$grant_sponsor}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
@@ -258,35 +252,93 @@
                 <h2>Supplementary Professional Activities</h2>{$item}
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreachDepartmental" type="TextareaReportItem" blobItem="FEC_INFO_DEPARTMENTAL" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItem id="serviceOutreachDepartmental" type="Static">
             <![CDATA[
                 <h2>Service/Committees/Outreach</h2>
-                <h3>Departmental</h3>{$item}
+                <h3>Departmental</h3>
+                <ul>
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreachFaculty" type="TextareaReportItem" blobItem="FEC_INFO_FACULTY" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceOutreachFaculty" type="Static">
             <![CDATA[
-                <h3>Faculty</h3>{$item}
+                </ul>
+                <h3>Faculty</h3>
+                <ul>
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreachUniversity" type="TextareaReportItem" blobItem="FEC_INFO_UNIVERSITY" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceOutreachUniversity" type="Static">
             <![CDATA[
-                <h3>University</h3>{$item}
+                </ul>
+                <h3>University</h3>
+                <ul>
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreachScientific" type="MultiTextReportItem" blobItem="FEC_INFO_SCIENTIFIC" blobType="BLOB_ARRAY" labels="Scope|Organization|Description" types="Text|Text|Text" multiple="true" optional="true" blobSection="FEC_ADDITIONAL_INFO" class="wikitable">
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="University Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceOutreachScientific" type="Static">
             <![CDATA[
-                <h3>Scientific</h3>{$item}
+                </ul>
+                <h3>Scientific</h3>
+                <ul>
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutreachCommunity" type="TextareaReportItem" blobItem="FEC_INFO_COMMUNITY" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceOutreachCommunity" type="Static">
             <![CDATA[
-                <h3>Outreach/Community Engagement/Media</h3>{$item}
+                </ul>
+                <h3>Outreach/Community Engagement/Media</h3>
+                <ul>
             ]]>
         </ReportItem>
-        <ReportItem id="serviceOutrechOther" type="TextareaReportItem" blobItem="FEC_INFO_OTHER" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceOutrechOther" type="Static">
             <![CDATA[
-            	<h3>Other</h3>{$item}
+                </ul>
+            	<h3>Other</h3>
+            	<ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="committee" type="Static">
+                <![CDATA[
+                    <li>{$product_description}</li>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="serviceFooter" type="Static">
+            <![CDATA[
+                </ul>
             ]]>
         </ReportItem>
     </ReportSection>

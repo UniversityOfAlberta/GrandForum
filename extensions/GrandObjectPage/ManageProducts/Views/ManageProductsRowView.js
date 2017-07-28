@@ -165,13 +165,19 @@ ManageProductsViewRow = Backbone.View.extend({
         var incomplete = {incomplete: true};
         
         // $.proxy rebinds this to val to this.model.get('cat') instead of 'type'
-        _.each(productStructure.categories[this.model.get('category')].
-        types[this.model.get('type')].data, $.proxy(function(val, key){        
-            if ( this.model.get('data')[key] != undefined &&  this.model.get('data')[key].trim() != ""){
-                incomplete.incomplete = false;
-            }
-        }, this)
-        )
+        if(productStructure.categories[this.model.get('category')].
+           types[this.model.get('type')].data.length == 0){
+            incomplete.incomplete = false;
+        }
+        else{
+            _.each(productStructure.categories[this.model.get('category')].
+                   types[this.model.get('type')].data, $.proxy(function(val, key){        
+                        if(this.model.get('data')[key] != undefined &&  this.model.get('data')[key].trim() != ""){
+                            incomplete.incomplete = false;
+                        }
+                }, this)
+            );
+        }
         
         /*
         // This version of the code does NOT highlight if type of publication is changed.

@@ -21,7 +21,7 @@ class Paper extends BackboneModel{
     var $date;
     var $status;
     var $authors;
-    var $data = false;
+    var $data = array();
     var $lastModified;
     var $authorsWaiting;
     var $projectsWaiting;
@@ -806,6 +806,9 @@ class Paper extends BackboneModel{
                     if(isset($auth->id)){
                         $unserialized[] = $auth->id;
                     }
+                    else if(isset($auth->fullname)){
+                        $unserialized[] = $auth->fullname;
+                    }
                     else{
                         $unserialized[] = $auth->name;
                     }
@@ -1404,6 +1407,9 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
+                }
                 else{
                     $authors[] = $author->name;
                 }
@@ -1497,7 +1503,11 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
+                }
                 else{
+                    // This is more for legacy purposes
                     $authors[] = $author->name;
                 }
             }
@@ -1640,7 +1650,8 @@ class Paper extends BackboneModel{
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
-                                   'name' => $author->getNameForForms(),
+                                   'name' => $author->getNameForProduct(),
+                                   'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){

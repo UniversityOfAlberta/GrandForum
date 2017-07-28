@@ -73,6 +73,8 @@
     // The terminology for administrative projects 
     $config->setValue("adminProjects", "Admin Project");
     
+    $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
+    
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     

@@ -2,8 +2,7 @@
 
 define("REPORTING_YEAR_REAL", YEAR); // Hard-coded year for the reporting period
 if(isset($_GET['reportingYear']) && 
-   ((preg_match("/.*Special:Report.*/", $_SERVER["REQUEST_URI"]) !== false && isset($_GET['ticket']) && isset($_GET['report'])) || 
-     preg_match("/.*Special:CreatePDF.*/", $_SERVER["REQUEST_URI"]) !== false)){
+   ((preg_match("/.*Special:Report.*/", $_SERVER["REQUEST_URI"]) !== false && isset($_GET['ticket']) && isset($_GET['report'])))){
     define("REPORTING_YEAR", str_replace("'", "", $_GET['reportingYear']));
 }
 else{

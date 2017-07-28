@@ -52,16 +52,3 @@ Feature: Tabs
         When I follow "My Reports"
         Then I should see "NI"
         And I should see "Phase2Project1"
-    
-    @grand
-    Scenario: Admin viewing CreatePDF (issue #63)
-        Given I am logged in as "Admin.User1" using password "Admin.Pass1"
-        When I go to "index.php/Special:CreatePDF"
-        Then I should see "NI"
-        And I should see "Project NI Comments"
-        And I should see "HQP"
-        And I should see "Project"
-        And I should see "ISAC Project Comments"
-        And I should see "Champion Project Comments"
-        And I should see "LOI"
-        But I should not see "Visualizations"

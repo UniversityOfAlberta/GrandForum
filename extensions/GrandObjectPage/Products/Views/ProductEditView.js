@@ -213,11 +213,18 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthorsWidget: function(){
-        var left = _.pluck(this.model.get('authors'), 'name');
+        var left = _.pluck(this.model.get('authors'), 'fullname');
         var right = _.difference(this.allPeople.pluck('fullName'), left);
-        var html = HTML.Switcheroo(this, 'authors.name', {name: 'author',
+        var objs = [];
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
+        });
+        var html = HTML.Switcheroo(this, 'authors.fullname', {name: 'author',
                                                           'left': left,
-                                                          'right': right
+                                                          'right': right,
+                                                          'objs': objs
                                                           });
         this.$("#productAuthors").html(html);
         createSwitcheroos();
@@ -242,7 +249,6 @@ ProductEditView = Backbone.View.extend({
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
-        console.log(this.$("input[name=data_published_in]" ));
         this.$("input[name=data_published_in]" ).autocomplete({ //name = data published in ... jquery selector: tag[...]
 
             source: $.proxy(function( request, response ) {
@@ -250,33 +256,26 @@ ProductEditView = Backbone.View.extend({
                 journals.search = request.term;
                 journals.fetch({success: function( collection ) {
                     var data = _.map(collection.toJSON(), function(journal){
-                            return { id: journal.id, 
+                        return {id: journal.id, 
                                     label: journal.title + " " + journal.year + " (" + journal.description + ")", 
                                     value: journal.title,
                                     numerator: journal.ranking_numerator,
                                     denominator: journal.ranking_denominator,
-                                    ratio: journal.ratio };
+                                    ratio: journal.ratio
+                        };
                     });
-                    response( data );
-                    console.log(data);
-                    //console.log(this);
+                    response(data);
                 }});
             }, this ),
 
             minLength: 2,
-            select: $.proxy(function( event, ui ) {
-                console.log(ui.item);
+            select: $.proxy(function(event, ui){
                 this.$("input[name=data_published_in]").val(ui.item.value).change();
                 this.$("input[name=acceptance_ratio_numerator]").val(ui.item.numerator).change();
                 this.$("input[name=acceptance_ratio_denominator]").val(ui.item.denominator).change();
                 this.$("input[name=ratio]").val(ui.item.ratio).change();
-                
-                console.log(this.model.toJSON());
-
-                //log( "Selected: " + ui.item.value + " aka " + ui.item.id );
             }, this)
         });
-
 
         return this.$el;
     }

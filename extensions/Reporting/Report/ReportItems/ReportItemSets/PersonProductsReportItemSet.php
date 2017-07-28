@@ -5,6 +5,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
     function getData(){
         $data = array();
         $category = $this->getAttr("category", "all");
+        $productType = $this->getAttr("productType", "");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end",REPORTING_CYCLE_END_ACTUAL);
         $me = Person::newFromWgUser();
@@ -16,9 +17,11 @@ class PersonProductsReportItemSet extends ReportItemSet {
         //$products = $person->getPapers($category, false, 'both', true, "Public");
         if(is_array($products)){
             foreach($products as $prod){
-                $tuple = self::createTuple();
-                $tuple['product_id'] = $prod->id;
-                $data[] = $tuple;
+                if($productType == "" || $productType == $prod->getType()){
+                    $tuple = self::createTuple();
+                    $tuple['product_id'] = $prod->id;
+                    $data[] = $tuple;
+                }
             }
         }
         return $data;

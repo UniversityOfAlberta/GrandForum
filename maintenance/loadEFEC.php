@@ -102,13 +102,32 @@
                                     
     $spinoffs = DBFunctions::select(array('bddEfec2_development.spinoffs'),
                                     array('*'));
-                                 
+    
+    $community_outreach_committees = DBFunctions::select(array('bddEfec2_development.community_outreach_committees'),
+                                                         array('*'));
+                                                         
+    $departmental_committees = DBFunctions::select(array('bddEfec2_development.departmental_committees'),
+                                                   array('*'));
+                                                   
+    $faculty_committees = DBFunctions::select(array('bddEfec2_development.faculty_committees'),
+                                                   array('*'));
+                                                   
+    $scientific_committees = DBFunctions::select(array('bddEfec2_development.scientific_committees'),
+                                                   array('*'));
+                                                   
+    $university_committees = DBFunctions::select(array('bddEfec2_development.university_committees'),
+                                                   array('*'));
+    
+    $other_committees = DBFunctions::select(array('bddEfec2_development.other_committees'),
+                                                   array('*'));
+    
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
                                             array('*'));
     
     // Basic Grant Information
     $grants1 = DBFunctions::select(array('bddEfec2_development.grants1'),
-                                   array('*'));
+                                   array('*'),
+                                   array('`Proj Mgr Role`' => NEQ('VP Research')));
     
     // Co-Applicant Information
     $grants2 = DBFunctions::select(array('bddEfec2_development.grants2'),
@@ -179,6 +198,8 @@
             trim(str_replace(".", "", $row['first_name']), " -\t\n\r\0\x0B").".".
             trim(str_replace(".", "", $row['last_name']),  " -\t\n\r\0\x0B")
         ));
+        $username = str_replace("'", "", $username);
+        $username = preg_replace("/\".*\"/", "", $username);
         $fname = $row['first_name'];
         $lname = $row['last_name'];
         $email = $row['ccid']."@ualberta.ca";
@@ -260,6 +281,8 @@
             $firsts = explode(" ", $usernames[1]);
             $realName = trim($usernames[1])." ".trim($usernames[0]);
             $username = str_replace(" ", "", $firsts[0].".".$usernames[0]);
+            $username = str_replace("'", "", $username);
+            $username = preg_replace("/\".*\"/", "", $username);
             $email = $student['CAMPUS_ID']."@ualberta.ca";
             $user = User::createNew($username, array('real_name' => "$realName", 
                                                      'password' => User::crypt(mt_rand()), 
@@ -379,9 +402,10 @@
         
         $realName = $username;
         $username = str_replace(" ", ".", $username);
+        $username = str_replace("'", ".", $username);
+        $username = preg_replace("/\".*\"/", "", $username);
         $sup = @$staffIdMap[$row['faculty_staff_member_id']];
         $person = Person::newFromName($username);
-        
         if(($person->getId() == 0) &&
            ($row['responsibility'] == 'phd' ||
             $row['responsibility'] == 'msc' ||
@@ -518,7 +542,7 @@
     
     // Import Grants
     $iterationsSoFar = 0;
-    echo "\nLoading Grants\n";
+    echo "\nImporting Grants\n";
     DBFunctions::execSQL("TRUNCATE table `grand_grants`", true);
     DBFunctions::execSQL("TRUNCATE table `grand_grant_contributions`", true);
     foreach($grants1 as $row){
@@ -551,7 +575,9 @@
                     }
                 }
             }
-            $newGrant->create();
+            if(strstr(strtolower($newGrant->sponsor), "university of alberta") === false){
+                $newGrant->create();
+            }
         }
         show_status(++$iterationsSoFar, count($grants1));
     }
@@ -749,6 +775,160 @@
         }
         $product->create();
         show_status(++$iterationsSoFar, count($spinoffs));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Community Outreach Committees\n";
+    foreach($community_outreach_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Community Outreach Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($community_outreach_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Departmental Committees\n";
+    foreach($departmental_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Departmental Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($departmental_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Faculty Committees\n";
+    foreach($faculty_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Faculty Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($faculty_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Other Committees\n";
+    foreach($other_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Other Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($other_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Scientific Committees\n";
+    foreach($scientific_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Scientific Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+        $product->data = array(
+            'scope' => ucfirst($committee['scientific_committee_scope']),
+            'organization' => trim($committee['organization'])
+        );
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($scientific_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting University Committees\n";
+    foreach($university_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'University Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create();
+        show_status(++$iterationsSoFar, count($university_committees));
     }
     
     // Create Product Histories

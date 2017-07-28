@@ -16,11 +16,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <Instructions>
-            <![CDATA[
-
-            ]]>
-        </Instructions>
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>
 </Report>
