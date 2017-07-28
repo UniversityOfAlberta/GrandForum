@@ -90,17 +90,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = $_POST['public_profile'];
         $this->person->privateProfile = $_POST['private_profile'];
         $this->person->update();
-        
-        if(isset($_POST['role_title'])){
-            foreach($this->person->getRoles() as $role){
-                if(isset($_POST['role_title'][$role->getId()])){
-                    $value = $_POST['role_title'][$role->getId()];
-                    DBFunctions::update('grand_roles', 
-                                        array('title' => $value),
-                                        array('id' => $role->getId()));
-                }
-            }
-        }
+
         Person::$rolesCache = array();
         Person::$cache = array();
         Person::$namesCache = array();
