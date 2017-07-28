@@ -83,22 +83,21 @@ class PersonProfileTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return ($this->visibility['isMe'] || 
-                $this->visibility['isSupervisor']);
+        $me = Person::newFromWgUser();
+        return (($this->visibility['isMe'] || 
+                 $this->visibility['isSupervisor']) &&
+                $me->isAllowedToEdit($this->person));
     }
     
     function handleEdit(){
         $this->handleContactEdit();
         $tab = new PersonDashboardTab($this->person, $this->visibility);
         $tab->handleEdit();
-        $_POST['user_name'] = $this->person->getName();
-        $_POST['type'] = "public";
-        $_POST['profile'] = str_replace("'", "&#39;", $_POST['public_profile']);
-        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['profile']));
-        APIRequest::doAction('UserProfile', true);
-        $_POST['type'] = "private";
-        $_POST['profile'] = @str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['private_profile']));
-        APIRequest::doAction('UserProfile', true);
+        
+        $this->person->publicProfile = $_POST['public_profile'];
+        $this->person->privateProfile = $_POST['private_profile'];
+        $this->person->update();
+        
         if(isset($_POST['role_title'])){
             foreach($this->person->getRoles() as $role){
                 if(isset($_POST['role_title'][$role->getId()])){
@@ -181,44 +180,27 @@ class PersonProfileTab extends AbstractEditableTab {
         if($error == ""){
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
-            $_POST['twitter'] = @$_POST['twitter'];
             $_POST['phone'] = @$_POST['phone'];
-            $_POST['website'] = @$_POST['website'];
-            $_POST['ldap'] = @$_POST['ldap'];
-            $_POST['googleScholarUrl'] = @$_POST['googleScholarUrl'];
-            $_POST['sciverseId'] = @$_POST['sciverseId'];
-            $_POST['orcId'] = @$_POST['orcId'];
-            $_POST['nationality'] = @$_POST['nationality'];
             $_POST['email'] = @$_POST['email'];
-            $_POST['university'] = @$_POST['university'];
-            $_POST['department'] = @$_POST['department'];
-            $_POST['researchArea'] = @$_POST['researchArea'];
-            $_POST['title'] = @$_POST['title'];
-            $_POST['gender'] = @$_POST['gender'];
-
-            $api = new UserUniversityAPI();
-            $api->processParams(array());
-            $api->doAction(true);
-
+            
             $api = new UserPhoneAPI();
             $api->doAction(true);
-            $api = new UserTwitterAccountAPI();
-            $api->doAction(true);
-            $api = new UserWebsiteAPI();
-            $api->doAction(true);
-            $api = new UserLdapAPI();
-            $api->doAction(true);
-            $api = new UserGoogleScholarAPI();
-            $api->doAction(true);
-            $api = new UserSciverseAPI();
-            $api->doAction(true);
-            $api = new UserOrcIdAPI();
-            $api->doAction(true);
-            $api = new UserNationalityAPI();
-            $api->doAction(true);
+
+            $this->person->firstName = @$_POST['first_name'];
+            $this->person->lastName = @$_POST['last_name'];
+            $this->person->realName = @"{$_POST['first_name']} {$_POST['last_name']}";
+            $this->person->employeeId = @$_POST['employeeId'];
+            $this->person->gender = @$_POST['gender'];
+            $this->person->twitter = @$_POST['twitter'];
+            $this->person->website = @$_POST['website'];
+            $this->person->ldap = @$_POST['ldap'];
+            $this->person->googleScholar = @$_POST['googleScholarUrl'];
+            $this->person->sciverseId = @$_POST['sciverseId'];
+            $this->person->orcId = @$_POST['orcId'];
+            $this->person->nationality = @$_POST['nationality'];
+            $this->person->update();
+            
             $api = new UserEmailAPI();
-            $api->doAction(true);
-            $api = new UserGenderAPI();
             $api->doAction(true);
         }
         
@@ -442,7 +424,7 @@ EOF;
         global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
         $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
-        $this->html .= "<div id=\"special_links\"></div>";
+        $this->html .= "<div id='special_links'></div>";
         $this->html .= "</td></tr>";
         $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>
                             <tr>
@@ -508,7 +490,7 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser;
+        global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
@@ -548,86 +530,58 @@ EOF;
         }
         $this->html .= "<table>
                             <tr>
+                                <td align='right'><b>First Name:</b></td>
+                                <td><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Last Name:</b></td>
+                                <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Employee Id:</b></td>
+                                <td><input size='10' type='text' name='employeeId' value='".str_replace("'", "&#39;", $person->getEmployeeId())."'></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>Email:</b></td>
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
-                            {$gender}";
+                            {$gender}
+                        </table>";
         
-        $roles = $person->getRoles();
-        $universities = new Collection(University::getAllUniversities());
-        $uniNames = $universities->pluck('name');
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $positions = Person::getAllPositions();
-        }
-        else{
-            $positions = array("Other", 
-                               "Graduate Student - Master's", 
-                               "Graduate Student - Doctoral", 
-                               "Post-Doctoral Fellow", 
-                               "Research Associate", 
-                               "Research Assistant", 
-                               "Technician", 
-                               "Summer Student", 
-                               "Undergraduate Student");
-        }
-        $myPosition = "";
-        foreach($positions as $key => $position){
-            if($university['position'] == $position){
-                $myPosition = $key;
-            }
-        }
-        if($myPosition == ""){
-            $positions[] = $university['position'];
-            $myPosition = count($positions) - 1;
-        }
-        $departments = Person::getAllDepartments();
-        $organizations = $uniNames;
-        sort($organizations);
-        if(!$person->isRole(HQP) && !$person->isRole(HQP.'-Candidate')){
-            $titleCombo = new ComboBox('title', "Title", $myPosition, $positions);
-        }
-        else{
-            $titleCombo = new SelectBox('title', "Title", $myPosition, $positions);
-        }
-        $orgCombo = new ComboBox('university', "Institution", $university['university'], $organizations);
-        $deptCombo = new ComboBox('department', "Department", $university['department'], $departments);
-        $areaCombo = new ComboBox('researchArea', "Research Area", $university['research_area'], array_merge(array(""), $departments));
-        $titleCombo->attr('style', 'max-width: 250px;');
-        $orgCombo->attr('style', 'max-width: 250px;');
-        $deptCombo->attr('style', 'max-width: 250px;');
-        $areaCombo->attr('style', 'max-width: 250px;');
-        $this->html .= "<tr>
-                            <td align='right'><b>Title:</b></td>
-                            <td>{$titleCombo->render()}</td>
-                        </tr>";
-        if($me->isRoleAtLeast(STAFF)){
-            $this->html .= "<tr>
-                                <td></td>
-                                <td><table>";
-            $titles = array("", "Chair", "Vice-Chair", "Member", "Non-Voting");
-            foreach($roles as $role){
-                $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
-                $this->html .= "<tr>
-                                    <td align='right'><b>{$role->getRole()}:</b></td>
-                                    <td>{$roleTitleCombo->render()}</td>
-                                </tr>";
-            }
-            $this->html .= "</table></td></tr>";
-        }
-        $this->html .= "<tr>
-                            <td align='right'><b>Institution:</b></td>
-                            <td>{$orgCombo->render()}</td>
-                        </tr>
-                        <tr>
-                            <td align='right'><b>Department:</b></td>
-                            <td>{$deptCombo->render()}</td>
-                        </tr>
-                        <tr>
-                            <td align='right'><b>Research Area:</b></td>
-                            <td>{$areaCombo->render()}</td>
-                        </tr>";
-        $this->html .= "</table>";
+        $this->html .= "<script type='text/javascript'>
+            $('input[name=employeeId]').forceNumeric({min: 0, max: 100000000000,includeCommas: false, decimals: 0})
+        </script>";
+        
+        // Load the scripts for Manage People so that the University editing can be used
+        $managePeople = new ManagePeople();
+        $managePeople->loadTemplates();
+        $managePeople->loadModels();
+        $managePeople->loadHelpers();
+        $managePeople->loadViews();
+        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
+        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add Institution' />
+        <script type='text/javascript'>
+            var model = new Person({id: {$this->person->getId()}});
+            var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
+            $('#addUniversity').click(function(){
+                view.addUniversity();
+            });
+            $('form').on('submit', function(e){
+                if($('input[value=\"Save {$this->name}\"]').is(':visible')){
+                    var requests = view.saveAll();
+                    e.preventDefault();
+                    $('input[value=\"Save {$this->name}\"]').prop('disabled', true);
+                    $.when.apply($, requests).then(function(){
+                        $('form').off('submit');
+                        $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
+                        _.delay(function(){
+                            $('input[value=\"Save {$this->name}\"]').click();
+                        }, 10);
+                    });
+                }
+            });
+        </script>";
     }
     
 }

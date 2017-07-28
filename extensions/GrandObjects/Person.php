@@ -975,7 +975,8 @@ class Person extends BackboneModel {
             $specialUserLogin = new LoginForm($wgRequest, 'signup');
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
-                                    array('user_twitter' => $this->getTwitter(),
+                                    array('employee_id' => $this->getEmployeeId(),
+                                          'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
                                           'google_scholar_url' => $this->getGoogleScholar(),
@@ -1005,21 +1006,14 @@ class Person extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        foreach($this->getSupervisors() as $supervisor){
-            if($supervisor->getId() == $me->getId()){
-                $isSupervisor = true;
-                break;
-            }
-        }
-        if($me->getId() == $this->getId() ||
-           $me->isRoleAtLeast(MANAGER) ||
-           $isSupervisor){
+        if($me->isAllowedToEdit($this)){
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
+                                          'employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
@@ -1071,32 +1065,41 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
+        if($this->isMe()){
+            // User is themselves
+            return true;
+        }
         if($this->isRoleAtLeast(STAFF)){
+            // User is at least Staff
             return true;
         }
-        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+        if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
+            // User is NI, therefore can edit anyone who is not in a committee or higher
             return true;
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
-        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if(($this->isThemeCoordinator() || $this->isThemeLeader()) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Theme Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
-        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+        if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
+            // User is in a committee or higher, therefore can edit anyone who is not at least Staff
             return true;
+        }
+        if($this->relatedTo($person, SUPERVISES)){
+            // User supervises the Person
+            return true;
+        }
+        foreach($person->getCreators() as $creator){
+            if($creator->getId() == $this->getId()){
+                // User created the Person
+                return true;
+            }
         }
         return false;
-        if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
-            ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
-           )){
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -1338,6 +1341,17 @@ class Person extends BackboneModel {
             return "{$this->email}";
         }
         return "";
+    }
+    
+    /**
+     * Returns the email address of this Person
+     * @return string The email address of this Person
+     */
+    function getEmployeeId(){
+        if($this->employeeId == 0){
+            return "";
+        }
+        return sprintf("%07d", $this->employeeId);
     }
     
     /**
@@ -1771,75 +1785,6 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
         return NULL;
-    }
-    
-    /**
-     * Returns whether this Person has worked on their survey
-     * @return boolean whether this Person has worked on their survey
-     */
-    function hasDoneSurvey(){
-        $sql = "SELECT *
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        return (DBFunctions::getNRows() > 0);
-    }
-    
-    /**
-     * Returns this Person's primary funding agency from their response in the Survey
-     * @return string This Person's primary funding agency from their response in the Survey
-     */
-    function getPrimaryFundingAgency(){
-        $sql = "SELECT `discipline`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $discipline = json_decode($data[0]['discipline']);
-            if(isset($discipline->d_level1a)){
-                return $discipline->d_level1a;
-            }
-        }
-        return "Unknown";
-    }
-    
-    /**
-     * Returns this Person's primary discipline from the Survey
-     * @return string This Person's primary discipline from the Survey
-     */
-    function getSurveyDiscipline(){
-        $sql = "SELECT `discipline`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $discipline = json_decode($data[0]['discipline']);
-            if(isset($discipline->d_level2)){
-                return $discipline->d_level2;
-            }
-        }
-        return "Unknown";
-    }
-    
-    /**
-     * Returns this Person's first degree connections from their response in the Survey
-     * @return array This Person's first degree connections from their response in the Survey
-     */
-    function getSurveyFirstDegreeConnections(){
-        $sql = "SELECT `grand_connections`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $connections = json_decode($data[0]['grand_connections']);
-            if(count($connections) > 0){
-                return $connections;
-            }
-            else{
-                return array();
-            }
-        }
-        return array();
     }
     
     /**
