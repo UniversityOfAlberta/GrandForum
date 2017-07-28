@@ -119,7 +119,7 @@ class PersonGradStudentsTab extends AbstractTab {
                                         <td style='white-space: nowrap;'>$role</td>";
                                     $html .= "</tr>";
                     }
-                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false});</script>";
+                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25});</script>";
                     $html .= "</td></tr></table>";
                 }
             }
@@ -201,7 +201,7 @@ class PersonGradStudentsTab extends AbstractTab {
                             <td style='white-space: nowrap;'>$role</td>";
                         $html .= "</tr>";
                     }
-                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false})</script>";
+                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false, 'iDisplayLength': 25})</script>";
                     $html .= "</td></tr></table>";
                 }
             }

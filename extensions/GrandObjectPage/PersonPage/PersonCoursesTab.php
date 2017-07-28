@@ -89,7 +89,7 @@ class PersonCoursesTab extends AbstractTab {
 
         }
         $this->html .= "</table></tbody><script type='text/javascript'>
-                        $('#courses_table').dataTable({autoWidth: false, 'aaSorting':[[0, 'asc'],[1,'asc'],[4,'desc']]});
+                        $('#courses_table').dataTable({autoWidth: false, 'iDisplayLength': 25, 'aaSorting':[[0, 'asc'],[1,'asc'],[4,'desc']]});
         </script>";
     }
 }

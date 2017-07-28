@@ -60,7 +60,7 @@ class PersonGrantsTab extends AbstractTab {
                             <td style='white-space:nowrap;'>".time2date($contribution->getEndDate(), "Y-m-d")."</td>
                             <td align=right>$".number_format($contribution->getTotal())."</td></tr>";}
             $string .= "</table></tbody><script type='text/javascript'>
-                $('#grants_table').dataTable();
+                $('#grants_table').dataTable({'iDisplayLength': 25});
             </script>";
         return $string;
     }
@@ -83,7 +83,7 @@ class PersonGrantsTab extends AbstractTab {
                                 <td style='white-space:nowrap;'>".time2date($grant->getEndDate(), "Y-m-d")."</td>
                                  <td align=right>$".number_format($grant->getTotal())."</td></tr>";}
         $string .= "</table></tbody><script type='text/javascript'>
-            $('#grants_table2').dataTable();
+            $('#grants_table2').dataTable({'iDisplayLength': 25});
         </script>";
         return $string;
     }

@@ -4,12 +4,19 @@ class PersonPublicationsTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $category;
 
-    function PersonPublicationsTab($person, $visibility){
+    function PersonPublicationsTab($person, $visibility, $category='all'){
         global $config;
-        parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+        if($category == "all" || is_array($category)){
+            parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+        }
+        else{
+            parent::AbstractTab(Inflect::pluralize($category));
+        }
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->category = $category;
     }
 
     function generateBody(){
@@ -24,10 +31,18 @@ class PersonPublicationsTab extends AbstractTab {
     function showTable($person, $visibility){
         global $config;
         $me = Person::newFromWgUser();
-        $products = $person->getPapers("all", false, 'both', true, "Public");
+        if(is_array($this->category)){
+            $products = array();
+            foreach($this->category as $category){
+                $products = array_merge($products, $person->getPapers($category, false, 'both', true, "Public"));
+            }
+        }
+        else{
+            $products = $person->getPapers($this->category, false, 'both', true, "Public");
+        }
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='personPubs' rules='all' frame='box'>
+            $string = "<table id='{$this->name}Pubs' rules='all' frame='box'>
                 <thead>
                     <tr>
                         <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th>
@@ -50,9 +65,10 @@ class PersonPublicationsTab extends AbstractTab {
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personPubs').dataTable({
+                    $('#{$this->name}Pubs').dataTable({
                         'order': [[ 1, 'desc' ]],
-                        'autoWidth': false
+                        'autoWidth': false,
+                        'iDisplayLength': 50
                     });
                 </script>";
         }

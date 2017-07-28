@@ -247,11 +247,6 @@
                 </tbody></table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
-            <![CDATA[
-                <h2>Supplementary Professional Activities</h2>{$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="serviceOutreachDepartmental" type="Static">
             <![CDATA[
                 <h2>Service/Committees/Outreach</h2>

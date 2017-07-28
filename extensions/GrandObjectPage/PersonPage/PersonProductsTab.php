@@ -4,18 +4,34 @@ class PersonProductsTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $category;
 
-    function PersonProductsTab($person, $visibility){
-        parent::AbstractTab("Products");
+    function PersonProductsTab($person, $visibility, $category='all'){
+        global $config;
+        if($category == "all" || is_array($category)){
+            parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+        }
+        else{
+            parent::AbstractTab(Inflect::pluralize($category));
+        }
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->category = $category;
     }
 
     function generateBody(){
         global $wgUser;
         if($wgUser->isLoggedIn()){
             $dashboard = null;
-            $prods = $this->person->getPapers('all', true, 'both');
+            if(is_array($this->category)){
+                $prods = array();
+                foreach($this->category as $category){
+                    $prods = array_merge($prods, $this->person->getPapers($category, true, 'both'));
+                }
+            }
+            else{
+                $prods = $this->person->getPapers($this->category, true, 'both');
+            }
             $categories = array();
             foreach($prods as $product){
                 $categories[$product->getCategory()][$product->getTitle()] = $product;
