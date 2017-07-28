@@ -63,7 +63,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
             }
         }, this));
         $.when.apply($, requests).then(function(){
-            addSuccess("Instituions saved");
+            addSuccess("Institutions saved");
         }).fail(function(){
             addError("Institutions could not be saved");
         });
