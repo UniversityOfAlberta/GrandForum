@@ -297,6 +297,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>As reported in the media, Student Health Plans covering: UPEI (90% covered) and Holland College (80% covered) (Feb. 10th, 2017) <a href='http://www.cbc.ca/news/canada/prince-edward-island/abortion-drug-pill-mifegymiso-pei-doctors-pharmacists-1.3976558' target='_blank'>read more info</a></li>
+                    <li>PEI is still exploring coverage options. As reported in the media, by mid-June, 22 physicians from PEI had completed the training, and another four had registered for the course, <a href='http://www.cbc.ca/news/canada/prince-edward-island/pei-mifegymiso-1.4225850' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
