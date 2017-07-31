@@ -36,6 +36,9 @@ class AddMember extends SpecialPage{
                     else if($_POST['wpUserType'] == AR){
                         $_POST['wpAlias'] = "PH";
                     }
+                    else if($_POST['wpUserType'] == NP){
+                        $_POST['wpAlias'] = "NP";
+                    }
                     else if($_POST['wpUserType'] == HQP){
                         if($_POST['wpOtherRole'] == "Nurse"){
                             $_POST['wpAlias'] = "RN";

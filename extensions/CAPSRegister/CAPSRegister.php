@@ -96,7 +96,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician", "Pharmacist", "Facility Staff", "Other"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician", "Pharmacist", "Nurse Practitioner", "Facility Staff", "Other"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
@@ -257,7 +257,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Rôle", "Le rôle de l'utilisateur", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Médecin", "Pharmacien", "Personnel de l'installation", "Autre"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Médecin", "Pharmacien", "Infirmière Praticienne", "Personnel de l'installation", "Autre"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
 
@@ -466,7 +466,8 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                             });
 
                     function toggleFields() {
-                        if($('#role_field').val() == 'Physician' || $('#role_field').val() == 'Médecin'){
+                        if($('#role_field').val() == 'Physician' || $('#role_field').val() == 'Médecin' ||
+                           $('#role_field').val() == 'Nurse Practitioner' || $('#role_field').val() == 'Infirmière Praticienne'){
                             $('#specialty_label').parent().parent().show();
                             $('#years_label').parent().parent().show();
                             $('#provision_label').parent().parent().show();
@@ -551,6 +552,10 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                 $_POST['wpUserType'] = AR;
                 $_POST['wpRole'] = AR;
             }
+            else if(in_array($_POST['wpRole'], array("Nurse Practitioner", "Infirmière Praticienne"))){
+                $_POST['wpUserType'] = NP;
+                $_POST['wpRole'] = NP;
+            }
             else if(in_array($_POST['wpRole'], array("Facility Staff", "Personnel de l&#39;installation"))){
                 $_POST['wpUserType'] = HQP;
                 $_POST['wpRole'] = HQP;
@@ -579,7 +584,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $province = $form->getElementById('province_field')->setPOST('wpProvince');
             //$reference = $form->getElementById('reference_field')->setPOST('wpReference');
             $agreeExtra = $form->getElementById('terms_extra')->setPOST('wpAgreeExtra');
-            if($_POST['wpRole'] == "Physician"){
+            if($_POST['wpRole'] == "Physician" || $_POST['wpRole'] == "Nurse"){
                 $clinic = $form->getElementById('clinic_field')->setPOST('wpClinic');
                 $provision = $form->getElementById('provision_field')->setPOST('wpProvision');
                 if($_POST['wpProvision'] != "Yes" && $_POST['wpProvision'] != "No"){
@@ -607,7 +612,7 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                 $msg .= "Postal Code: ".$_POST['wpPostalCode']."\n";
                 $msg .= "City: ".$_POST['wpCity']."\n";
                 $msg .= "Province: ".$_POST['wpProvince']."\n";
-                if($_POST['wpRole'] == "Physician"){
+                if($_POST['wpRole'] == "Physician" || $_POST['wpRole'] == "Nurse"){
                     $msg .= "Specialty: ".$_POST['wpSpecialty']."\n";
                     $msg .= "Clinic Name: ".$_POST['wpClinic']."\n";
                     $msg .= "Provision: ".$_POST['wpProvision']."\n";
