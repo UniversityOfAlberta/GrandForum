@@ -50,6 +50,7 @@ class ReferAColleague extends SpecialPage{
         global $wgServer, $wgScriptPath;
         if($_POST['language_field'] == "en"){
             switch($_POST['role_field']){
+                case "Nurse Practitioner":
                 case "Physician":
                     return "<p>Hello {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
                             <p>Welcome to The Canadian Abortion Providers Support (CAPS-CPCA) online community platform!  You are receiving this email because a colleague of yours has referred you.</p>
@@ -96,6 +97,7 @@ class ReferAColleague extends SpecialPage{
         }
         else if($_POST['language_field'] == "fr"){
             switch($_POST['role_field']){
+                case "Nurse Practitioner":
                 case "Physician":
                     return "<p>Bonjour {$_POST['first_name_field']} {$_POST['last_name_field']}</p>
                             <p>Bienvenue sur la plate-forme en ligne de la Communauté de pratique canadienne sur l’avortement (CAPS-CPCA)! Vous recevez ce courriel parce qu'un de vos collègues a suggéré de vous écrire.</p>
@@ -179,7 +181,7 @@ class ReferAColleague extends SpecialPage{
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Physician", "Pharmacist" => "Pharmacist", "Facility Staff" => "Facility Staff"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Physician", "Nurse Practitioner" => "Nurse Practitioner", "Pharmacist" => "Pharmacist", "Facility Staff" => "Facility Staff"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
             
@@ -211,7 +213,7 @@ class ReferAColleague extends SpecialPage{
             $emailRow->append($emailLabel)->append($emailField);
 
             $roleLabel = new Label("role_label", "Rôle", "Le rôle de l'utilisateur", VALIDATE_NOT_NULL);
-            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Médecin", "Pharmacist" => "Pharmacien", "Facility Staff" => "Personnel de l'installation"), VALIDATE_NOT_NULL);
+            $roleField = new SelectBox("role_field", "Role", "", array("Physician" => "Médecin", "Nurse Practitioner" => "Infirmière Praticienne", "Pharmacist" => "Pharmacien", "Facility Staff" => "Personnel de l'installation"), VALIDATE_NOT_NULL);
             $roleRow = new FormTableRow("role_row");
             $roleRow->append($roleLabel)->append($roleField);
             
