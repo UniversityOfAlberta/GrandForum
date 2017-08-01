@@ -67,7 +67,7 @@ class ImportBibTeXAPI extends API{
             $product = $checkBibProduct;
         }
         else if($checkProduct->getId() != 0 && 
-           $checkProduct->getCategory() == $category &&
+           ($checkProduct->getCategory() == $category || $category == null) &&
            $checkProduct->getType() == $type){
             // Make sure that a product with the same title/category/type does not already exist
             $product = $checkProduct;
@@ -95,9 +95,7 @@ class ImportBibTeXAPI extends API{
                 }
             }
             if(!$found){
-                // If not, then use the Misc type
-                $structure = $this->structure['categories'][$category]['types']['Misc'];
-                $product->type = "Misc: {$type}";
+                return null;
             }
         }
         $me = Person::newFromWgUser();
@@ -184,7 +182,7 @@ class ImportBibTeXAPI extends API{
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $bibtex_id => $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
-                    $product = $this->createProduct($paper, "Publication", $type, $bibtex_id, $overwrite);
+                    $product = $this->createProduct($paper, null, $type, $bibtex_id, $overwrite);
                     if($product != null){
                         $createdProducts[] = $product;
                     }

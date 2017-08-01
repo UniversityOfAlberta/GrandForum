@@ -1309,7 +1309,7 @@ EOF;
 
     function showDisseminations(){
         global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Publication', "grand", $this->from, $this->to);
+        $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
 
         $dissem = array("a1_r1"=>array(), "a1_r2"=>array(), "a2_r1"=>array(), "a2_r2"=>array(), "b_r1"=>array(), "b_r2"=>array());
 

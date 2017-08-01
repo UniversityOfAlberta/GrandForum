@@ -251,33 +251,33 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{project_n_presentations_national({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2a" blobItem="REV_1_5_M2A" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Misc,level=National)}">
             <![CDATA[
                     #invited expert presentations meetings keynotes, etc. at:<br />
-                    national: {$item} <b title="The number of Presentations of type 'Invited Presentation' or have status equal to 'Invited', and level equal to 'National' and associated with this Project">{$value}</b>
+                    national: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Misc', and level equal to 'National' and associated with this Project">{$value}</b>
                     <br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{project_n_presentations_international({$this_year}-10-01, {$next_year}-09-30)}">
+        <ReportItem id="rev_1_5_m2b" blobItem="REV_1_5_M2B" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation|Misc,level=International)}">
             <![CDATA[
-                    international: {$item} <b title="The number of Presentations of type 'Invited Presentation' or have status equal to 'Invited', and level equal to 'International' and associated with this Project">{$value}</b>
+                    international: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' or 'Misc', and level equal to 'International' and associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,Activity,Leadership Position,level=Local)}">
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Leadership Position,level=Local)}">
             <![CDATA[
                     #of leadership positions in policy & practice you hold (e.g. membership in communities of practice, funding organizations, grass-roots organizations, advocacy groups, NGOs) at the:<br />
-                    local level: {$item} <b title="The number of Activities of type 'Leadership Position' and level equal to 'Local' and associated with this Project">{$value}</b><br />
+                    local level: {$item} <b title="The number of Outputs of type 'Leadership Position' and level equal to 'Local' and associated with this Project">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,Activity,Leadership Position,level=National)}">
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Leadership Position,level=National)}">
             <![CDATA[
-                    national level: {$item} <b title="The number of Activities of type 'Leadership Position' and level equal to 'National' and associated with this Project">{$value}</b><br />
+                    national level: {$item} <b title="The number of Outputs of type 'Leadership Position' and level equal to 'National' and associated with this Project">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,Activity,Leadership Position,level=International)}">
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30,all,Leadership Position,level=International)}">
             <![CDATA[
-                    international level: {$item} <b title="The number of Activities of type 'Leadership Position' and level equal to 'International' and associated with this Project">{$value}</b>
+                    international level: {$item} <b title="The number of Outputs of type 'Leadership Position' and level equal to 'International' and associated with this Project">{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -299,16 +299,16 @@
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Journal Paper|Journal Abstract)}">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Journal Paper|Journal Abstract)}">
             <![CDATA[
                 <td>
-                    #journal publications: {$item} <b title="The number of Publications of type 'Publication' or 'Journal Paper' or 'Journal Abstract' associated with this Project">{$value}</b>
+                    #journal publications: {$item} <b title="The number of Outputs of 'Journal Paper' or 'Journal Abstract' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{add({project_n_presentations({$this_year}-10-01, {$next_year}-09-30)},{getNProducts({$this_year}-10-01, {$next_year}-09-30, Publication, Conference Paper|Conference Abstract|Proceedings Paper)})}">
+        <ReportItem id="rev_2_5_m2" blobItem="REV_2_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Conference Paper|Conference Abstract|Proceedings Paper|Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
             <![CDATA[
-                    #conference presentations (including invited expert presentations): {$item} <b title="The number of Publications of type 'Conference Paper' or 'Conference Abstract' or 'Proceedings Paper' or Presentations of type 'Invited Presentation' or having status equal to 'Invited' and associated with this Project">{$value}</b>
+                    #conference presentations (including invited expert presentations): {$item} <b title="The number of Outputs of type 'Conference Paper' or 'Conference Abstract' or 'Proceedings Paper' or 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation'">{$value}</b>
                 </td>
                 </tr>
             ]]>
@@ -397,25 +397,25 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,Presentation)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,Presentation)}}">
+        <ReportItem id="rev_3_5_m2a" blobItem="REV_3_5_M2A" type="Hidden" size="3" default="{add({getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Older Adult,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)},{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Caregiver,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}}">
             <![CDATA[
                     #presentations that involved:<br />
-                    older adult or caregiver: {$item} <b title="The number of Presentations with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
+                    older adult or caregiver: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Older Adult' or 'Caregiver'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,Presentation)}">
+        <ReportItem id="rev_3_5_m2b" blobItem="REV_3_5_M2B" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Community Organization,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
             <![CDATA[
-                    community organization: {$item} <b title="The number of Presentations with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
+                    community organization: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Community Organization'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,Presentation)}">
+        <ReportItem id="rev_3_5_m2c" blobItem="REV_3_5_M2C" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Industry Member,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
             <![CDATA[
-                    industry member: {$item} <b title="The number of Presentations with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
+                    industry member: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Industry Member'">{$value}</b><br />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,Presentation)}">
+        <ReportItem id="rev_3_5_m2d" blobItem="REV_3_5_M2D" type="Hidden" size="3" default="{getNStakeholderProducts({$this_year}-10-01, {$next_year}-09-30,Policymaker,all,Invited Presentation|Oral Presentation|Panel Presentation|Seminar Presentation|Symposium Presentation|Workshop Presentation)}">
             <![CDATA[
-                    policymaker: {$item} <b title="The number of Presentations with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
+                    policymaker: {$item} <b title="The number of Outputs of type 'Invited Presentation' or 'Oral Presentation' or 'Panel Presentation' or 'Seminar Presentation' or 'Symposium Presentation' or 'Workshop Presentation' with at least one author with the stakeholder category (on profile) equal to 'Policymaker'">{$value}</b>
             ]]>
         </ReportItem>
         <ReportItem id="rev_foot" type="Static">
@@ -959,17 +959,17 @@
         </ReportItem>
         <ReportItem id="rev_3_5_m1b" blobItem="REV_3_5_M1B" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Digital News Interview|Blog|Website)}">
             <![CDATA[
-                    digital: {$item} <b title="The number of outputs of type 'Digital News Interview' or 'Blog' or 'Website' associated with this Project">{$value}</b><br />
+                    digital: {$item} <b title="The number of Outputs of type 'Digital News Interview' or 'Blog' or 'Website' associated with this Project">{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1c" blobItem="REV_3_5_M1C" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Meeting|Workshop Presentation|Seminar Presentation)}">
             <![CDATA[
-                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item} <b title="The number of outputs of type 'Meeting' or 'Workshop Presentation' or 'Seminar Presentation' associated with this Project">{$value}</b><br />
+                    face-to-face (e.g. workshop, course, training session, rounds, knowledge café): {$item} <b title="The number of Outputs of type 'Meeting' or 'Workshop Presentation' or 'Seminar Presentation' associated with this Project">{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1d" blobItem="REV_3_5_M1D" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Radio Interview|TV Interview)}">
             <![CDATA[
-                    TV & radio interviews: {$item} <b title="The number of outputs of type 'Radio Interview' or 'TV Interview' associated with this Project">{$value}</b><br />
+                    TV & radio interviews: {$item} <b title="The number of Outputs of type 'Radio Interview' or 'TV Interview' associated with this Project">{$value}</b><br />
             ]]>
         </ReportItem>
         <ReportItem id="rev_3_5_m1e" blobItem="REV_3_5_M1E" type="Integer" size="3">
@@ -978,7 +978,7 @@
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Product, Policy Brief)}">
+        <ReportItem id="rev_3_5_m2" blobItem="REV_3_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Policy Brief)}">
             <![CDATA[
                     #of policy briefs provided to government and non-governmental organisations: {$item} <b title="The number of Products of type 'Policy Brief' associated with this Project">{$value}</b>
                     <hr />
@@ -1008,40 +1008,40 @@
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Patent)}">
+        <ReportItem id="rev_2_5_m4" blobItem="REV_2_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Patent)}">
             <![CDATA[
                 <td>
-                    #of patents: {$item} <b title="The number of 'IP Management' outputs of type 'Patent' associated with this Project">{$value}</b>
+                    #of patents: {$item} <b title="The number of Outputs of type 'Patent' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Provisional Patent)}">
+        <ReportItem id="rev_1_5_m3" blobItem="REV_1_5_M3" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Provisional Patent)}">
             <![CDATA[
-                    #of provisional patents: {$item} <b title="The number of 'IP Management' outputs of type 'Provisional Patent' associated with this Project">{$value}</b>
+                    #of provisional patents: {$item} <b title="The number of Outputs of type 'Provisional Patent' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, IP Disclosure)}">
+        <ReportItem id="rev_1_5_m4" blobItem="REV_1_5_M4" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, IP Disclosure)}">
             <![CDATA[
-                    #of ip disclosures: {$item} <b title="The number of 'IP Management' outputs of type 'IP Disclosure' associated with this Project">{$value}</b>
+                    #of ip disclosures: {$item} <b title="The number of Outputs of type 'IP Disclosure' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, License Agreement)}">
+        <ReportItem id="rev_1_5_m2" blobItem="REV_1_5_M2" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, License Agreement)}">
             <![CDATA[
-                    #of licensing agreements: {$item} <b title="The number of 'IP Management' outputs of type 'License Agreement' associated with this Project">{$value}</b>
+                    #of licensing agreements: {$item} <b title="The number of Outputs of type 'License Agreement' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Copyright)}">
+        <ReportItem id="rev_1_5_m5" blobItem="REV_1_5_M5" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Copyright)}">
             <![CDATA[
-                    #of copyrights: {$item} <b title="The number of 'IP Management' outputs of type 'Copyright' associated with this Project">{$value}</b>
+                    #of copyrights: {$item} <b title="The number of Outputs of type 'Copyright' associated with this Project">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>
-        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, IP Management, Trademark)}">
+        <ReportItem id="rev_1_5_m6" blobItem="REV_1_5_M6" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Trademark)}">
             <![CDATA[
-                    #of trademarks: {$item} <b title="The number of 'IP Management' outputs of type 'Trademark' associated with this Project">{$value}</b>
+                    #of trademarks: {$item} <b title="The number of Outputs of type 'Trademark' associated with this Project">{$value}</b>
                     </td>
                 </tr>
             ]]>
@@ -1063,10 +1063,10 @@
                 <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, Activity, Start-Up)}">
+        <ReportItem id="rev_2_5_m1" blobItem="REV_2_5_M1" type="Hidden" size="3" default="{getNProducts({$this_year}-10-01, {$next_year}-09-30, all, Start-Up)}">
             <![CDATA[
                 <td>
-                    #of start-ups created: {$item} <b title="The number of 'Product' outputs of type 'Start-Up' associated with this Project">{$value}</b>
+                    #of start-ups created: {$item} <b title="The number of Outputs of type 'Start-Up' associated with this Project">{$value}</b>
                     </td>
                 </tr>
             ]]>
@@ -1314,7 +1314,7 @@
         </ReportItem>
         <ReportItem id="rev_1_6_m3" blobItem="REV_1_6_M3" type="Hidden" size="3" default="{project_n_hqp_interns({$this_year}-10-01, {$next_year}-09-30)}">
             <![CDATA[
-                    #of internships HQP accomplished {$item} <b title="The count of Activities of type 'Internship' that are associated with this project and have at least 1 HQP as an author">{$value}</b>
+                    #of internships HQP accomplished {$item} <b title="The count of Outputs of type 'Internship' that are associated with this project and have at least 1 HQP as an author">{$value}</b>
                     <hr />
             ]]>
         </ReportItem>

@@ -55,13 +55,28 @@ class UploadCCVAPI extends API{
             $checkProduct = Product::newFromTitle($paper['title']);
         }
         if($checkProduct->getId() != 0 && 
-           $checkProduct->getCategory() == $category &&
+           ($checkProduct->getCategory() == $category || $category == null) &&
            $checkProduct->getType() == $type && 
            !$overwrite){
             // Make sure that a product with the same title/category/type does not already exist
             return null;
         }
-        $structure = $this->structure['categories'][$category]['types'][$type];
+        if($category == null){
+            foreach($this->structure['categories'] as $cat => $cats){
+                if(isset($cats['types'][$type])){
+                    $structure = $cats['types'][$type];
+                    $category = $cat;
+                    break;
+                }
+            }
+        }
+        else{
+            $structure = $this->structure['categories'][$category]['types'][$type];
+        }
+        if($category == null){
+            return null;
+        }
+        
         if($checkProduct->exists()){
             $product = $checkProduct;
         }
@@ -613,7 +628,7 @@ class UploadCCVAPI extends API{
                     $reviewedJournalPapers = $cv->getReviewedJournalPapers();
                     $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
                     foreach($conferencePapers as $ccv_id => $paper){
-                        $product = $this->createProduct($person, $paper, "Publication", "Conference Paper", $ccv_id, $overwrite);
+                        $product = $this->createProduct($person, $paper, null, "Conference Paper", $ccv_id, $overwrite);
                         if($product != null){
                             $createdProducts[] = $product;
                         }
@@ -622,7 +637,7 @@ class UploadCCVAPI extends API{
                         }
                     }
                     foreach($journalPapers as $ccv_id => $paper){
-                        $product = $this->createProduct($person, $paper, "Publication", "Journal Paper", $ccv_id, $overwrite);
+                        $product = $this->createProduct($person, $paper, null, "Journal Paper", $ccv_id, $overwrite);
                         if($product != null){
                             $createdProducts[] = $product;
                         }
@@ -631,7 +646,7 @@ class UploadCCVAPI extends API{
                         }
                     }
                     foreach($bookChapters as $ccv_id => $paper){
-                        $product = $this->createProduct($person, $paper, "Publication", "Book Chapter", $ccv_id, $overwrite);
+                        $product = $this->createProduct($person, $paper, null, "Book Chapter", $ccv_id, $overwrite);
                         if($product != null){
                             $createdProducts[] = $product;
                         }

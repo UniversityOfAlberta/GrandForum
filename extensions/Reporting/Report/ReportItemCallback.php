@@ -26,16 +26,11 @@ class ReportItemCallback {
             "project_champions" => "getProjectChampions",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
-            "project_n_presentations" => "getNPresentations",
-            "project_n_presentations_national" => "getNPresentationsNational",
-            "project_n_presentations_international" => "getNPresentationsInternational",
-            "project_n_products_with_partners" => "getNProductsWithPartners",
             "project_n_collaborators" => "getNCollaborators",
             "getNStakeholders" => "getNStakeholders",
             "getNStakeholderProducts" => "getNStakeholderProducts",
             "project_n_partners" => "getNPartners",
             "project_n_products_other" => "getNProductsWithOther",
-            "project_n_products_hqp" => "getNProductsWithHQP",
             "project_n_hqp_lead_author" => "getNHQPLeadAuthor",
             "project_n_hqp_co_author" => "getNHQPCoAuthor",
             "project_n_hqp_co_presenter" => "getNHQPCoPresenter",
@@ -399,61 +394,19 @@ class ReportItemCallback {
         return implode(", ", $newProjects);
     }
     
-    function getNPresentations($startDate = false, $endDate = false){
-        $presentations = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $pres = $project->getPapers('Presentation', $startDate, $endDate);
-            foreach($pres as $presentation){
-                if($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation"){
-                    $presentations[] = $pres;
-                }
-            }
-        }
-        return count($presentations);
-    }
-    
-    function getNPresentationsNational($startDate = false, $endDate = false){
-        $presentations = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $pres = $project->getPapers('Presentation', $startDate, $endDate);
-            foreach($pres as $presentation){
-                $data = $presentation->getData();
-                if(@$data['level'] == "National" && 
-                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
-                    $presentations[] = $pres;
-                }
-            }
-        }
-        return count($presentations);
-    }
-    
-    function getNPresentationsInternational($startDate = false, $endDate = false){
-        $presentations = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $pres = $project->getPapers('Presentation', $startDate, $endDate);
-            foreach($pres as $presentation){
-                $data = $presentation->getData();
-                if(@$data['level'] == "International" && 
-                   ($presentation->getStatus() == "Invited" || $presentation->getType() == "Invited Presentation")){
-                    $presentations[] = $pres;
-                }
-            }
-        }
-        return count($presentations);
-    }
-    
     function getNFaceWithStakeholder($startDate = false, $endDate = false){
         $faces = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
             $faceTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($faceTmp as $face){
-                if($face->getType() == "Meeting" || 
+                if($face->getType() == "Project Meeting" || 
                    $face->getType() == "Workshop Presentation" ||
-                   $face->getType() == "Seminar Presentation"){
+                   $face->getType() == "Seminar Presentation" ||
+                   $face->getType() == "Industry Partner Meeting - In-Person" ||
+                   $face->getType() == "Community Partner Meeting - In-Person" ||
+                   $face->getType() == "Policy Partner Meeting- In-Person" ||
+                   $face->getType() == "Older Adult and/or Caregiver Meeting - In-Person"){
                     foreach($face->getAuthors() as $author){
                         if($author->isStakeholder()){
                             $faces[] = $face;
@@ -464,25 +417,6 @@ class ReportItemCallback {
             }
         }
         return count($faces);
-    }
-    
-    function getNProductsWithPartners($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('all', $startDate, $endDate);
-            foreach($productTmp as $product){
-                if($product->getCategory() == "Publication" || $product->getCategory() == "Presentation"){
-                    foreach($product->getAuthors() as $author){
-                        if($author->isRoleDuring(CHAMP, $startDate, $endDate)){
-                            $products[] = $product;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return count($products);
     }
     
     function getNCollaborators($startDate = false, $endDate = false){
@@ -514,7 +448,7 @@ class ReportItemCallback {
         return count($stakeholders);
     }
     
-    function getNStakeholderProducts($startDate = false, $endDate = false, $stakeholderCategory="", $category="all"){
+    function getNStakeholderProducts($startDate = false, $endDate = false, $stakeholderCategory="", $category="all", $type="all"){
         $products = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
@@ -525,6 +459,15 @@ class ReportItemCallback {
                         $products[] = $product;
                         break;
                     }
+                }
+            }
+        }
+        if($type != "all"){
+            $types = explode("|", $type);
+            foreach($products as $key => $product){
+                if(!in_array($product->getType(), $types)){
+                    // Type doesn't match
+                    unset($products[$key]);
                 }
             }
         }
@@ -554,7 +497,7 @@ class ReportItemCallback {
         $products = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
+            $productTmp = $project->getPapers('Scientific Excellence - Advancing Knowledge', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
                     if($author->isRoleDuring(NI, $startDate, $endDate) && 
@@ -567,23 +510,6 @@ class ReportItemCallback {
             }
         }
         return count($products); 
-    }
-    
-    function getNProductsWithHQP($startDate = false, $endDate = false){
-        $products = array();
-        if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Publication', $startDate, $endDate);
-            foreach($productTmp as $product){
-                foreach($product->getAuthors() as $author){
-                    if($author->isRoleDuring(HQP, $startDate, $endDate)){
-                        $products[] = $product;
-                        break;
-                    }
-                }
-            }
-        }
-        return count($products);
     }
     
     function getNHQPLeadAuthor($startDate = false, $endDate = false){
@@ -625,11 +551,13 @@ class ReportItemCallback {
         $hqps = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Presentation', $startDate, $endDate);
+            $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
-                foreach($product->getAuthors() as $key => $author){
-                    if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
-                        $hqps[$author->getId()] = $author;
+                if(strstr($product->getType(), 'Presentation') !== false){
+                    foreach($product->getAuthors() as $key => $author){
+                        if($author->isRoleDuring(HQP, $startDate, $endDate) && $author->isMemberOfDuring($project, $startDate, $endDate)){
+                            $hqps[$author->getId()] = $author;
+                        }
                     }
                 }
             }
@@ -641,7 +569,7 @@ class ReportItemCallback {
         $products = array();
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $productTmp = $project->getPapers('Activity', $startDate, $endDate);
+            $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 if($product->getType() == "Internship"){
                     foreach($product->getAuthors() as $key => $author){

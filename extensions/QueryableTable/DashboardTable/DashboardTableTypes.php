@@ -92,7 +92,7 @@ function initDashboardGlobals(){
         $persRow = array();
         $projRow = array();
         foreach($categories as $category){
-            $head[] = HEAD."(".Inflect::pluralize($category).")";
+            $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
             $persRow[] = PERSON_PRODUCTS."(".$category.")";
             $projRow[] = PROJECT_PRODUCTS."(".$category.")";
         }

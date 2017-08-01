@@ -15,17 +15,16 @@ $dashboardStructures[HQP_REPORT_STRUCTURE] = function($start=REPORTING_CYCLE_STA
     $persRow = array();
     $projRow = array();
     foreach($categories as $category){
-        $head[] = HEAD."(".Inflect::pluralize($category).")";
+        $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
         $persRow[] = STRUCT(PERSON_PRODUCTS, $category, $start, $end);
         $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, $start, $end);
     }
-    return array(array_merge(array(HEAD."(Projects)"), $head, array(HEAD."(Multimedia)")),
-          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, $start, $end))),
+    return array(array_merge(array(HEAD."(Projects)"), $head),
+          array_merge(array(HEAD.'(Total:)'), $persRow),
           STRUCT(GROUP_BY, PERSON_PROJECTS_ARRAY, $start, $end) => array_merge(
                                                             array(PERSON_PROJECTS),
-                                                            $persRow,
-                                                            array(STRUCT(PERSON_MULTIMEDIA, $start, $end))),
-          array_merge(array(HEAD.'(Total:)'), $persRow, array(STRUCT(PERSON_MULTIMEDIA, $start, $end)))
+                                                            $persRow),
+          array_merge(array(HEAD.'(Total:)'), $persRow)
     );  
 };
 
@@ -37,20 +36,18 @@ $dashboardStructures[PROJECT_REPORT_PRODUCTIVITY_STRUCTURE] = function($start=RE
     $persRow = array();
     $projRow = array();
     foreach($categories as $category){
-        $head[] = HEAD."(".Inflect::pluralize($category).")";
+        $head[] = HEAD."(".str_replace("and", "and<br />", str_replace("-", "<br />", Inflect::pluralize($category))).")";
         $persRow[] = STRUCT(PERSON_PRODUCTS, $category, $start, $end);
         $projRow[] = STRUCT(PROJECT_PRODUCTS, $category, $start, $end);
     }
-    return array(array_merge(array(HEAD."(People)"), $head, array(HEAD."(Multimedia)")),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, $start, $end))),
+    return array(array_merge(array(HEAD."(People)"), $head),
+          array_merge(array(HEAD.'(Total:)'), $projRow),
           STRUCT(GROUP_BY, PROJECT_LEADERS_ARRAY) => array_merge(array(PROJECT_PEOPLE_ROLES),
-                                                                 $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, $start, $end))),
+                                                                 $projRow),
           STRUCT(GROUP_BY, PROJECT_PEOPLE_NO_LEADERS_ARRAY, $start, $end) => array_merge(
                                                                  array(PROJECT_PEOPLE_ROLES),
-                                                                 $projRow,
-                                                                 array(STRUCT(PROJECT_MULTIMEDIA, $start, $end))),
-          array_merge(array(HEAD.'(Total:)'), $projRow, array(STRUCT(PROJECT_MULTIMEDIA, $start, $end)))
+                                                                 $projRow),
+          array_merge(array(HEAD.'(Total:)'), $projRow)
     );
 };
     

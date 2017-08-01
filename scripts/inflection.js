@@ -104,7 +104,10 @@ InflectionJS =
     */
     uncountable_words: [
         'equipment', 'information', 'rice', 'money', 'species', 'series',
-        'fish', 'sheep', 'moose', 'deer', 'news'
+        'fish', 'sheep', 'moose', 'deer', 'news', 'intellectual property',
+        'ip management', 'network management office', 'scientific excellence - leadership',
+        'scientific excellence - advancing knowledge', 'networking and partnerships',
+        'ktee - knowledge mobilization', 'ktee - commercialization', 'hqp training'
     ],
 
     /*

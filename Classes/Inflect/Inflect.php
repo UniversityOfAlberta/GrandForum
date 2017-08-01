@@ -108,7 +108,13 @@ class Inflect
         'press',
         'intellectual property',
         'ip management',
-        'network management office'
+        'network management office',
+        'scientific excellence - leadership',
+        'scientific excellence - advancing knowledge',
+        'networking and partnerships',
+        'ktee - knowledge mobilization',
+        'ktee - commercialization',
+        'hqp training'
     );
 
 	/**
