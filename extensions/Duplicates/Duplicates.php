@@ -72,7 +72,7 @@ class Duplicates extends SpecialPage{
         $tabbedPage = new TabbedPage("duplicates");
         $structure = Product::structure();
         foreach($structure['categories'] as $key => $cat){
-            $key = str_replace(" ", "", $key);
+            $key = str_replace("-", "", str_replace(" ", "", $key));
             $tabbedPage->addTab(new DuplicatesTab(Inflect::pluralize($key), $handlers[strtolower($key)]));
         }
         $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));

@@ -189,7 +189,7 @@ EOF;
         
         $html = "<div id='duplicateProductsAccordion'>";
         foreach($structure['categories'] as $key => $cat){
-            $key = str_replace(" ", "", $key);
+            $key = str_replace("-", "", str_replace(" ", "", $key));
             $dup_pub = new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]);
             $dup_pub->generateBody();
             $html .= "<h4><a href='#'>".Inflect::pluralize($key)."</a></h4>
