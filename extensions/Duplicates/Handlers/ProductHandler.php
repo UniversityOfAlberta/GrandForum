@@ -82,11 +82,15 @@ class ProductHandler extends AbstractDuplicatesHandler {
                 $data2 = $paper2->getData();
                 $datas1 = array();
                 $datas2 = array();
-                foreach($data1 as $key => $data){
-                    $datas1[] = "<b>$key</b>:&nbsp;".$data."\n";
+                if(is_array($data1)){
+                    foreach($data1 as $key => $data){
+                        $datas1[] = "<b>$key</b>:&nbsp;".$data."\n";
+                    }
                 }
-                foreach($data2 as $key => $data){
-                    $datas2[] = "<b>$key</b>:&nbsp;".$data."\n";
+                if(is_array($data2)){
+                    foreach($data2 as $key => $data){
+                        $datas2[] = "<b>$key</b>:&nbsp;".$data."\n";
+                    }
                 }
                 
                 $buffer = "";
