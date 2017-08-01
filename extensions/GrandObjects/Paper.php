@@ -1397,7 +1397,7 @@ class Paper extends BackboneModel{
         return $return;
     }
 
-    function create(){
+    function create($syncAuthors=true){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn() && trim($this->title) != ""){
             // Begin Transaction
@@ -1471,7 +1471,9 @@ class Paper extends BackboneModel{
                 DBFunctions::commit();
                 // Sync Authors
                 $this->authorsWaiting = true;
-                $this->syncAuthors();
+                if($syncAuthors){
+                    $this->syncAuthors();
+                }
                 Cache::delete($this->getCacheId());
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product is public
@@ -1490,7 +1492,7 @@ class Paper extends BackboneModel{
         return false;
     }
     
-    function update(){
+    function update($syncAuthors=true){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn() && trim($this->title) != ""){
             // Begin Transaction
@@ -1558,7 +1560,9 @@ class Paper extends BackboneModel{
                 DBFunctions::commit();
                 // Sync Authors
                 $this->authorsWaiting = true;
-                $this->syncAuthors();
+                if($syncAuthors){
+                    $this->syncAuthors();
+                }
                 Cache::delete($this->getCacheId());
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product was public

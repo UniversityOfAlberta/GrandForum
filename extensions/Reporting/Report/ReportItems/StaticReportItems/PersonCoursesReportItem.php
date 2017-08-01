@@ -9,35 +9,30 @@ class PersonCoursesReportItem extends StaticReportItem {
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $courses = $person->getCoursesDuring($start, $end);
-        
-        $item = "<table class='wikitable' rules='all' frame='box' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Title</th>
-                            <th>Term</th>
-                            <th>Comp.</th>
-                            <th>Section</th>
-                            <th>Enroll.</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
         $coursesArray = array();
         foreach($courses as $course){
             $coursesArray["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
         }
+        $item = "";
         foreach($coursesArray as $subj => $terms){
             $nRows = array_sum(array_map("count", $terms));
-            
+            $item .= "<div style='page-break-inside: avoid;'>
+                      <h3>{$course->subject} {$course->catalog} - {$course->descr}</h3>
+                      <table class='wikitable' rules='all' frame='box' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Term</th>
+                                <th>Comp.</th>
+                                <th>Section</th>
+                                <th>Enroll.</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
             $first1 = true;
             foreach($terms as $term => $terms){
                 $first2 = true;
                 foreach($terms as $course){
                     $item .= "<tr>";
-                    if($first1){
-                        $item .= "<td align='center' rowspan='$nRows'>{$course->subject} {$course->catalog}</td>
-                                  <td align='left' rowspan='$nRows'>{$course->descr}</td>";
-                    }
                     if($first2){
                         $item .= "<td align='center' rowspan='".count($terms)."'>{$course->getTerm()}</td>";
                     }
@@ -49,9 +44,10 @@ class PersonCoursesReportItem extends StaticReportItem {
                     $first2 = false;
                 }
             }
+            $item .= "</tbody>
+                    </table>
+                    </div>";
         }
-        $item .= "</tbody>
-                </table>";
         return $item;
     }
 

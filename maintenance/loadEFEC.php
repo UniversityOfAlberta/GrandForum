@@ -48,7 +48,7 @@
         'PaperAbstract'   => array('Publication', 'Journal Abstract'),
         'Review'          => array('Activity', 'Review'),
         'Book'            => array('Publication', 'Book'),
-        'Patent'          => array('Product', 'Patent')
+        'Patent'          => array('Patent/Spin-Off', 'Patent')
     );
     
     $presentationMap = array(
@@ -126,8 +126,7 @@
     
     // Basic Grant Information
     $grants1 = DBFunctions::select(array('bddEfec2_development.grants1'),
-                                   array('*'),
-                                   array('`Proj Mgr Role`' => NEQ('VP Research')));
+                                   array('*'));
     
     // Co-Applicant Information
     $grants2 = DBFunctions::select(array('bddEfec2_development.grants2'),
@@ -575,7 +574,15 @@
                     }
                 }
             }
-            if(strstr(strtolower($newGrant->sponsor), "university of alberta") === false){
+            if(strstr(strtolower($newGrant->sponsor), "university of alberta") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "canada research chair") === false &&
+               strstr(strtolower($row['Award Sponsor ID']), "internal") === false &&
+               strstr(strtolower($row['Proj Mgr Role']), "supervising investigator") === false &&
+               strstr(strtolower($row['Proj Mgr Role']), "vp research") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "studentship") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "scholarship") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false){
+                // Above are ignore rules from Renee
                 $newGrant->create();
             }
         }
@@ -644,7 +651,7 @@
             }
         }
         
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($publications));
     }
     
@@ -685,7 +692,7 @@
         if(isset($staffIdMap[$presentation['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$presentation['faculty_staff_member_id']];
             
-            $product->create();
+            $product->create(false);
         }
         show_status(++$iterationsSoFar, count($presentations));
     }
@@ -712,7 +719,7 @@
                 $product->authors[] = $staffIdMap[$award['faculty_staff_member_id']];
             }
             
-            $product->create();
+            $product->create(false);
         }
         show_status(++$iterationsSoFar, count($awards));
     }
@@ -721,7 +728,7 @@
     echo "\nImporting Patents\n";
     foreach($patents as $patent){
         $product = new Product(array());
-        $product->category = 'Product';
+        $product->category = 'Patent/Spin-Off';
         $product->type = 'Patent';
         $product->title = ucwords(trim($patent['TECH_TITLE']));
         $product->date = $patent['ISSUEDATE'];
@@ -744,7 +751,7 @@
             }
             $product->authors[] = $person;
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($patents));
     }
     
@@ -752,7 +759,7 @@
     echo "\nImporting Spin-Offs\n";
     foreach($spinoffs as $spinoff){
         $product = new Product(array());
-        $product->category = 'Product';
+        $product->category = 'Patent/Spin-Off';
         $product->type = 'Spin-Off';
         $product->title = ucwords(trim($spinoff['Spin-Off Company']));
         $product->date = $spinoff['Creation Date'];
@@ -773,7 +780,7 @@
             }
             $product->authors[] = $person;
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($spinoffs));
     }
     
@@ -798,7 +805,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($community_outreach_committees));
     }
     
@@ -823,7 +830,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($departmental_committees));
     }
     
@@ -848,7 +855,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($faculty_committees));
     }
     
@@ -873,7 +880,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($other_committees));
     }
     
@@ -902,7 +909,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($scientific_committees));
     }
     
@@ -927,7 +934,7 @@
         if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
             $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($university_committees));
     }
     
@@ -949,6 +956,9 @@
         }
         show_status(++$iterationsSoFar, count($histories));
     }
+    
+    echo "\nSyncing Authors\n";
+    require_once("syncAuthors.php");
     
     echo "\n";
     

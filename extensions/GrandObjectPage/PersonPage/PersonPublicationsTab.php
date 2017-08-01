@@ -45,7 +45,12 @@ class PersonPublicationsTab extends AbstractTab {
             $string = "<table id='{$this->name}Pubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th>
+                        <th>{$config->getValue('productsTerm')}</th>";
+            if(is_array($this->category) || $this->category == "all"){
+                $string .= "<th>Category</th>";
+            }
+            $string .= "<th>Type</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -57,7 +62,9 @@ class PersonPublicationsTab extends AbstractTab {
 
                 $string .= "<tr>";
                 $string .= "<td>{$paper->getProperCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
-                $string .= "<td align=center>{$paper->getCategory()}</td>";
+                if(is_array($this->category) || $this->category == "all"){
+                    $string .= "<td align=center>{$paper->getCategory()}</td>";
+                }
                 $string .= "<td align=center>{$paper->getType()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "</tr>";

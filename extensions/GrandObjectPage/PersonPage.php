@@ -126,8 +126,10 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,array('Publication', 'Presentation', 'Product')));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Patent/Spin Off'));
                     $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
@@ -160,7 +162,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);

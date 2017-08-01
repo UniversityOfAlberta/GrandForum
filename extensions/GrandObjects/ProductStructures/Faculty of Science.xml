@@ -580,8 +580,8 @@
 
     </Presentations>
     
-    <!-- Products -->
-    <Products category="Product">
+    <!-- Patents and Spin Offs -->
+    <Products category="Patent/Spin-Off">
         <Product type="Tool" status="">
             <data></data>
         </Product>
