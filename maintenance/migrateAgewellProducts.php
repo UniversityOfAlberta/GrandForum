@@ -3,11 +3,19 @@
     require_once('commandLine.inc');
 
     function updateProducts($fromCategory, $fromType, $toCategory, $toType){
-        DBFunctions::update('grand_products',
-                            array('category' => $toCategory,
-                                  'type' => $toType),
-                            array('category' => EQ($fromCategory),
-                                  'type' => EQ($fromType)));
+        if($toType == "Misc"){
+            DBFunctions::update('grand_products',
+                                array('category' => $toCategory),
+                                array('category' => EQ($fromCategory),
+                                      'type' => LIKE("$fromType")));
+        }
+        else{
+            DBFunctions::update('grand_products',
+                                array('category' => $toCategory,
+                                      'type' => $toType),
+                                array('category' => EQ($fromCategory),
+                                      'type' => LIKE("$fromType")));
+        }
     }
     
     // Acivity
@@ -23,7 +31,7 @@
     updateProducts('Activity', 'Internship', 'HQP Training', 'Internship');
     updateProducts('Activity', 'Student Exchange', 'HQP Training', 'Student Exchange');
     updateProducts('Activity', 'Summer Institute Attendance', 'HQP Training', 'Summer Institute Attendance');
-    updateProducts('Activity', 'Misc', 'Networking and Partnerships', 'Misc');
+    updateProducts('Activity', 'Misc%', 'Networking and Partnerships', 'Misc');
     
     // Publication
     updateProducts('Publication', 'Bachelors Thesis', 'HQP Training', 'Bachelors Thesis');
@@ -46,7 +54,7 @@
     updateProducts('Publication', 'White Paper', 'Scientific Excellence - Advancing Knowledge', 'White Paper');
     updateProducts('Publication', 'Manual', 'Scientific Excellence - Advancing Knowledge', 'Manual');
     updateProducts('Publication', 'Scoping Review', 'Scientific Excellence - Advancing Knowledge', 'Scoping Review');
-    updateProducts('Publication', 'Misc', 'Scientific Excellence - Advancing Knowledge', 'Misc');
+    updateProducts('Publication', 'Misc%', 'Scientific Excellence - Advancing Knowledge', 'Misc');
     
     // Presentation
     updateProducts('Presentation', 'Seminar Presentation', 'Scientific Excellence - Advancing Knowledge', 'Seminar Presentation');
@@ -57,7 +65,7 @@
     updateProducts('Presentation', 'TV Interview', 'KTEE - Knowledge Mobilization', 'TV Interview');
     updateProducts('Presentation', 'Digital News Interview', 'KTEE - Knowledge Mobilization', 'Digital News Interview');
     updateProducts('Presentation', 'Workshop Presentation', 'Scientific Excellence - Advancing Knowledge', 'Workshop Presentation');
-    updateProducts('Presentation', 'Misc', 'KTEE - Knowledge Mobilization', 'Misc');
+    updateProducts('Presentation', 'Misc%', 'KTEE - Knowledge Mobilization', 'Misc');
     
     // Product
     updateProducts('Product', 'Policy Brief', 'KTEE - Knowledge Mobilization', 'Policy Brief');
@@ -71,10 +79,10 @@
     updateProducts('IP Management', 'Copyright', 'KTEE - Commercialization', 'Copyright');
     updateProducts('IP Management', 'Patent', 'KTEE - Commercialization', 'Patent');
     updateProducts('IP Management', 'Trademark', 'KTEE - Commercialization', 'Trademark');
-    updateProducts('IP Management', 'Misc', 'KTEE - Commercialization', 'Misc');
+    updateProducts('IP Management', 'Misc%', 'KTEE - Commercialization', 'Misc');
     
     // Award
     updateProducts('Award', 'Award', 'Scientific Excellence - Leadership', 'Award');
-    updateProducts('Award', 'Misc', 'Scientific Excellence - Leadership', 'Award');
+    updateProducts('Award', 'Misc%', 'Scientific Excellence - Leadership', 'Award');
 
 ?>
