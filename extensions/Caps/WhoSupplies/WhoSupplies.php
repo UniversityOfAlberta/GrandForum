@@ -106,6 +106,7 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>In private clinics, individuals must pay out of pocket, ~$300 per package </li>
                     <li>Mifegymiso® is being considered for possible coverage under the <a href='http://www2.gov.bc.ca/assets/gov/health/health-drug-coverage/pharmacare/mifepristone-misoprostol-3509-info.pdf' target='_blank'>B.C. PharmaCare Program</a> (Feb. 14th, 2017)</li>
+                    <li>B.C.’s income-based drug plan, Fair PharmaCare, is now covering Mifegymiso (July 11th, 2017), <a href='https://pharmacareformularysearch.gov.bc.ca/faces/Search.xhtml' target='_blank'>read more</a>.</li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
