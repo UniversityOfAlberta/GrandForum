@@ -657,7 +657,7 @@ class ReportItemCallback {
             foreach($products as $key => $product){
                 $productData = $product->getData();
                 $datas = explode("=", $data);
-                if($productData[$datas[0]] != $datas[1]){
+                if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
                     // Data doesn't match
                     unset($products[$key]);
                 }
