@@ -614,12 +614,14 @@
             'pages' => $publication['pages'],
             'volume' => $publication['volume'],
             'issue' => $publication['issue'],
+            'number' => $publication['issue'],
             'doi' => $publication['doi'],
             'url' => $publication['url'],
             'venue' => $publication['venue'],
             'event_title' => $publication['venue'],
             'book_title' => $publication['venue'],
             'journal_title' => $publication['venue'],
+            'published_in' => $publication['venue'],
             'event_location' => $publication['location'],
             'location' => $publication['location'],
             'editors' => $publication['editors'],
@@ -765,7 +767,8 @@
         $product->date = $spinoff['Creation Date'];
         $product->status = "Published";
         $product->access = "Public";
-                               
+                       
+        $product->data = array();        
         $product->authors = array();
         $product->projects = array();
                                
@@ -797,7 +800,8 @@
         }
         $product->date = ($committee['reporting_year']+1)."-01-01";
         $product->access = "Public";
-                               
+                    
+        $product->data = array();
         $product->authors = array();
         $product->projects = array();
                                
@@ -823,6 +827,7 @@
         $product->date = ($committee['reporting_year']+1)."-01-01";
         $product->access = "Public";
                                
+        $product->data = array();
         $product->authors = array();
         $product->projects = array();
                                
@@ -848,6 +853,7 @@
         $product->date = ($committee['reporting_year']+1)."-01-01";
         $product->access = "Public";
                                
+        $product->data = array();
         $product->authors = array();
         $product->projects = array();
                                
@@ -872,7 +878,8 @@
         }
         $product->date = ($committee['reporting_year']+1)."-01-01";
         $product->access = "Public";
-                               
+                       
+        $product->data = array();        
         $product->authors = array();
         $product->projects = array();
                                
@@ -927,6 +934,7 @@
         $product->date = ($committee['reporting_year']+1)."-01-01";
         $product->access = "Public";
                                
+        $product->data = array();  
         $product->authors = array();
         $product->projects = array();
                                

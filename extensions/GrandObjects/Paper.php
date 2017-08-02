@@ -21,7 +21,7 @@ class Paper extends BackboneModel{
     var $date;
     var $status;
     var $authors;
-    var $data = array();
+    var $data = false;
     var $lastModified;
     var $authorsWaiting;
     var $projectsWaiting;
