@@ -106,11 +106,9 @@ class ReportItemCallback {
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
             "presentation_invited" => "getPresentationInvited",
-            "presentation_refereed" => "getPresentationRefereed",
             "presentation_organization" => "getPresentationOrganization",
             "presentation_country" => "getPresentationCountry",
             "presentation_date" => "getProductDate",
-            "presentation_duration" => "getPresentationDuration",
             //Awards
             "award_category" => "getAwardCategory",
             "award_scope" => "getAwardScope",
@@ -762,19 +760,7 @@ class ReportItemCallback {
         }
         return "No";
     }
-    
-    function getPresentationDuration(){
-        $product = Paper::newFromId($this->reportItem->productId);
-        $product = $product->getPresentationInfo();
-        return @$product->duration;
-    }
-    
-    function getPresentationRefereed(){
-        $product = Paper::newFromId($this->reportItem->productId);
-        $product = $product->getPresentationInfo();
-        return @$product->refereed;
-    }
-    
+      
     function getPresentationOrganization(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();

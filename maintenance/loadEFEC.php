@@ -66,6 +66,8 @@
         'conference/symposium/workshop keynote or plenary presentation' => 'Keynote'
     );
     
+    DBFunctions::execSQL("TRUNCATE grand_pdf_index", true);
+    DBFunctions::execSQL("TRUNCATE grand_pdf_report", true);
     DBFunctions::execSQL("TRUNCATE grand_notifications", true);
     DBFunctions::execSQL("TRUNCATE grand_personal_fec_info", true);
     DBFunctions::execSQL("TRUNCATE grand_user_university", true);

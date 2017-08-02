@@ -36,9 +36,6 @@ class Paper extends BackboneModel{
     var $ratio;
     var $acceptance_ratio_numerator;
     var $acceptance_ratio_denominator;
-    var $duration;
-    var $invited;
-    var $refereed;
 
     /**
      * Returns a new Paper from the given id
@@ -636,18 +633,6 @@ class Paper extends BackboneModel{
      */
     function getCategory(){
         return $this->category;
-    }
-
-    function getPresentationInfo(){
-        $data = DBFunctions::select(array('grand_products'),
-                                  array('duration', 'invited', 'refereed'),
-                                  array('id'=>$this->getId()));
-        if(count($data)>0){
-            $this->duration = $data[0]['duration'];
-            $this->invited = $data[0]['invited'];
-            $this->refereed = $data[0]['refereed'];
-        }
-        return $this;
     }
  
     /**
@@ -1432,9 +1417,6 @@ class Paper extends BackboneModel{
                                                 'ratio' => $this->ratio,
                                                 'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
                                                 'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
-                                                'duration' => $this->duration,
-                                                'invited' => $this->invited,
-                                                'refereed' => $this->refereed,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1530,9 +1512,6 @@ class Paper extends BackboneModel{
                                                 'ratio' => $this->ratio,
                                                 'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
                                                 'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
-                                                'duration' => $this->duration,
-                                                'invited' => $this->invited,
-                                                'refereed' => $this->refereed,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
