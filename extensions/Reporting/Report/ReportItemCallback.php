@@ -124,12 +124,14 @@ class ReportItemCallback {
             "name" => "getName",
             "index" => "getIndex",
             "extraIndex" => "getExtraIndex",
+            "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
             "getNumber" => "getNumber",
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "count" => "count",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
@@ -904,6 +906,41 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getNProducts($startDate = false, $endDate = false, $category="all", $type="all", $data="", $includeHQP="true"){
+        $products = array();
+        $includeHQP = (strtolower($includeHQP) == "true");
+        if($this->reportItem->projectId != 0){
+            // Project Products
+            $project = Project::newFromId($this->reportItem->projectId);
+            $products = $project->getPapers($category, $startDate, $endDate);
+        }
+        else if($this->reportItem->personId != 0){
+            // Person Products
+            $person = Person::newFromId($this->reportItem->personId);
+            $products = $person->getPapersAuthored($category, $startDate, $endDate, $includeHQP, true);
+        }
+        if($type != "all"){
+            $types = explode("|", $type);
+            foreach($products as $key => $product){
+                if(!in_array($product->getType(), $types)){
+                    // Type doesn't match
+                    unset($products[$key]);
+                }
+            }
+        }
+        if($data != ""){
+            foreach($products as $key => $product){
+                $productData = $product->getData();
+                $datas = explode("=", $data);
+                if(isset($productData[$datas[0]]) && $productData[$datas[0]] != $datas[1]){
+                    // Data doesn't match
+                    unset($products[$key]);
+                }
+            }
+        }
+        return count($products);
+    }
+    
     function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId){
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_PDF, $this->reportItem->getReport()->year, $personId, $projectId);
@@ -933,6 +970,10 @@ class ReportItemCallback {
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+    }
+    
+    function count($val){
+        return count($val);
     }
     
     function add($val1, $val2){
@@ -998,7 +1039,7 @@ class ReportItemCallback {
     }
     
     function gt($val1, $val2){
-        return ($val2 > $val2);
+        return ($val1 > $val2);
     }
     
     function lt($val1, $val2){
@@ -1037,8 +1078,9 @@ class ReportItemCallback {
         return $this->reportItem->getPostId();
     }
     
-    function getTimestamp(){ 
-        return date("Y-m-d H:i:s T", time()); 
+    function getTimestamp(){
+        $date = new DateTime("now", new DateTimeZone(date_default_timezone_get())); // USER's timezone
+        return $date->format('Y-m-d H:i:s T');
     }
     
     function getReportName(){

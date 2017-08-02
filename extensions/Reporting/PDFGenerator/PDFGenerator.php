@@ -772,14 +772,15 @@ if ( isset($pdf) ) {
   $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
 }
 </script>';
-        $dateStr = date("Y-m-d H:i:s T", time());
-        $html = str_replace("line-height:inherit;", "", $html);
+        $date = new DateTime("now", new DateTimeZone(date_default_timezone_get())); // USER's timezone
+        $dateStr = $date->format('Y-m-d H:i:s T');
         $html = str_replace("line-height: inherit;", "", $html);
-        $html = str_replace("line-height:inherit", "", $html);
+        $html = str_replace("line-height: inherit;", "", $html);
+        $html = str_replace("line-height: inherit", "", $html);
         $html = str_replace("line-height: inherit", "", $html);
         if($preview){
             $html = PDFGenerator::replaceSpecial($html);
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><i>Generated: $dateStr</i></div><div class='belowLine'></div>$html</div></body></html>";
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><!--i>Generated: $dateStr</i--><i>{$report->name}</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
         
@@ -791,7 +792,9 @@ if ( isset($pdf) ) {
         $html = PDFGenerator::replaceSpecial($html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-".(PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.5))."px;font-size:smaller;'><i>Generated: $dateStr</i></div>$pages$html</body></html>");
+        $nHeaderLines = count(explode("<br", $report->name));
+        $headerHeight = (PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.5*$nHeaderLines));
+        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-{$headerHeight}px;font-size:smaller;'><!--i>Generated: $dateStr</i--><i>{$report->name}</i></div>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();

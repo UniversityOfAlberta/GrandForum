@@ -11,13 +11,16 @@ class PersonCoursesReportItem extends StaticReportItem {
         $courses = $person->getCoursesDuring($start, $end);
         $coursesArray = array();
         foreach($courses as $course){
-            $coursesArray["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
+            if($course->totEnrl > 0){
+                $coursesArray["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
+            }
         }
         $item = "";
         foreach($coursesArray as $subj => $terms){
-            $nRows = array_sum(array_map("count", $terms));
-            $item .= "<div style='page-break-inside: avoid;'>
-                      <h3>{$course->subject} {$course->catalog} - {$course->descr}</h3>
+            $first = true;
+            foreach($terms as $term => $terms){
+                if($first){
+                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3>
                       <table class='wikitable' rules='all' frame='box' width='100%'>
                         <thead>
                             <tr>
@@ -28,25 +31,22 @@ class PersonCoursesReportItem extends StaticReportItem {
                             </tr>
                         </thead>
                         <tbody>";
-            $first1 = true;
-            foreach($terms as $term => $terms){
-                $first2 = true;
-                foreach($terms as $course){
-                    $item .= "<tr>";
-                    if($first2){
-                        $item .= "<td align='center' rowspan='".count($terms)."'>{$course->getTerm()}</td>";
-                    }
-                    $item .= "<td align='center'>{$course->component}</td>
-                              <td align='center'>{$course->sect}</td>
-                              <td align='center'>{$course->totEnrl}</td>
-                          </tr>";
-                    $first1 = false;
-                    $first2 = false;
                 }
+                $courses = new Collection($terms);
+                $components = $courses->pluck('component');
+                $sects = $courses->pluck('sect');
+                $totEnrls = $courses->pluck('totEnrl');
+                
+                $item .= "<tr>
+                              <td align='center'>{$course->getTerm()}</td>
+                              <td align='center'>".implode("<br />", $components)."</td>
+                              <td align='center'>".implode("<br />", $sects)."</td>
+                              <td align='center'>".implode("<br />", $totEnrls)."</td>
+                          </tr>";
+                $first = false;
             }
             $item .= "</tbody>
-                    </table>
-                    </div>";
+                    </table>";
         }
         return $item;
     }

@@ -1,254 +1,164 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2017 Quality Assurance Program Review CV" reportType="RP_QA" pdfType="RPTP_QA" ajax="true" startYear="-5">
-    <ReportSection id="information" tooltip="Information" name="Information" title="2017 Quality Assurance Program Review CV: July {$start_year} - June {$this_year}" blobSection="FEC_INFORMATION" type="EditableReportSection" pagebreak="false">
+<Report name="U of Alberta Quality Assurance Program Review&lt;br /&gt;Abbreviated CV: July 1, 2011 - June 30, 2016" reportType="RP_QA" pdfType="RPTP_QA" ajax="true" startYear="-5">
+    <ReportSection id="information" tooltip="Information" name="Information" title="QA CV" blobSection="FEC_INFORMATION" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="information" type="StaticReportItem">
             <![CDATA[
-                <table style="line-height:1.75em;">
+                <h1 style='padding:0; margin:0; font-size: 2em;'>{$user_name}</h1>
+                <table style="width:100%;line-height:1em;" cellpadding='0'>
                     <tr>
-                        <td style='width:60%'>
-                            <table width="100%" class='wikitable'>
-                                <tr><td>Name:&nbsp;<b>{$user_name}</b></td></tr>
-                                <tr><td>Rank:&nbsp;<b>{$user_level}</b></td></tr>
-                                <tr><td>Department:&nbsp;<b>{$user_dept}</b></td></tr>
-                                <tr><td>Year of PhD:&nbsp;<b>{$user_phd_year}</b></td></tr>
-                                <tr><td>Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
+                        <td style='width:50%;' valign='top'>
+                            <table width="100%" cellpadding='0'>
+                                <tr><td>{$user_level}</td></tr>
+                                <tr><td>{$user_dept}</td></tr>
+                                <tr><td>{$user_uni}</td></tr>
                             </table>
                         </td>
-                        <td>
-                            <center><b>Period: July {$start_year} to June {$this_year}</b></center><p style="font-size:0.8em;line-height:1.5em;">This CV contains information for the period of July 1, 2011 - June 30, 2016 only, as supplementary data for the University of Alberta Quality Assurance Graduate and Undergraduate Program Reviews. It does not represent the complete academic CV of the staff member. </p></center>
-                            <table width="100%">
-                                <tr>
-                                    <th></th>
-                                    <th>Refereed</th>
-                                    <th>Books</th>
-                                    <th>Patents</th>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},1)}/{$this_year}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},1)}-07-01, {$this_year}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},2)}/{subtract({$this_year},1)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},2)}-07-01, {subtract({$this_year},1)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},3)}/{subtract({$this_year},2)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},3)}-07-01, {subtract({$this_year},2)}-06-30, Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},4)}/{subtract({$this_year},3)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},4)}-07-01, {subtract({$this_year},3)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>{subtract({$this_year},5)}/{subtract({$this_year},4)}</b></td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Book)}</td>
-                                    <td align='center'>{getUserPublicationCount({subtract({$this_year},5)}-07-01, {subtract({$this_year},4)}-06-30,Patent)}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Lifetime</b></td>
-                                    <td align='center'>{user_lifetime_pubs_count(Publication)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Book)}</td>
-                                    <td align='center'>{user_lifetime_pubs_count(Patent)}</td>
-                                </tr>
+                        <td valign='top'>
+                            <table width="100%" cellpadding='0'>
+                                <tr><td align="right">Year of PhD:&nbsp;<b>{$user_phd_year}</b></td></tr>
+                                <tr><td align="right">Year of Appointment:&nbsp;<b>{$user_appointment_year}</b></td></tr>
                             </table>
                         </td>
                     </tr>
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Awards Received">
-            <![CDATA[
-                <h2>Awards Received</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Award Category</th>
-                            <th>Scope</th>
-                            <th>Year</th>
+        
+        <!-- Honors and Awards -->
+        <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Award, all,, false)}, 0)}">
+            <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">
+                <![CDATA[
+                    <h2>Honors and Awards</h2>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Award Category</th>
+                                <th>Scope</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <tr><td>{$product_title}</td>
+                            <td align='center'>{$award_category}</td>
+                            <td align='center'>{$award_scope}</td>
+                            <td align='center'>{$product_year}</td>
                         </tr>
-                    </thead>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="awardfooter" type="StaticReportItem">
                 <![CDATA[
-                    <tr><td>{$product_title}</td>
-                        <td align='center'>{$award_category}</td>
-                        <td align='center'>{$award_scope}</td>
-                        <td align='center'>{$product_year}</td>
-                    </tr>
+                    </table><br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="awardfooter" type="StaticReportItem">
+        
+        <!-- Courses Taught -->
+        <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses Taught">
             <![CDATA[
+                <h2>Courses Taught</h2>
+            ]]>
+        </ReportItem>
+        <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Responsibilities for Highly-Qualified Personnel -->
+        <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Responsibilities for Highly-Qualified Personnel">
+            <![CDATA[
+                <h2>Responsibilities for Highly-Qualified Personnel</h2>
+                <table width="100%">
+                    <tr><td>Graduate Students(Supervised or Co-supervised):&nbsp;<b>{$user_grad_count}</td></b></tr>
+                    <tr><td>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):&nbsp;<b>{$user_fellow_count}</b></tr></td>
+                    <tr><td>Technicians:&nbsp;<b>{$user_tech_count}</b></tr></td>
+                    <tr><td>Undergraduates (Supervised or Co-supervised):&nbsp;<b>{$user_ugrad_count}</b></tr></td>
                 </table><br />
+                <table class='wikitable' frame='box' rules='all' width='100%'><thead><tr>
+                    <th>Name</th>
+                    <th>Resp</th>
+                    <th>Awards</th>
+                    <th>Role</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th></tr></thead><tbody>
             ]]>
-        </ReportItem>
+         </ReportItem>
+         <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
+             <ReportItem id="row" type="StaticReportItem">
+                 <![CDATA[
+                     <tr>
+                        <td>{$hqp_reversed_name}</td>
+                         <td>{$hqp_position}</td>
+                         <td align='center'>{$hqp_awards}</td>
+                         <td align='center'>{$user_hqp_role}</td>
+                         <td align='center'>{$hqp_start_date}</td>
+                         <td align='center'>{$hqp_end_date}</td>
+                         <td align='center'>{$hqp_status}</td>
+                     </tr>
+                 ]]>
+             </ReportItem>
+         </ReportItemSet>
+         <ReportItem id="studentsfooter" type="StaticReportItem">
+             <![CDATA[
+                 </tbody></table><br />
+             ]]>
+         </ReportItem>
         
-        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
-            <![CDATA[
-                <h2>Publications (Graduate student name bolded; undergraduate student underlined)</h2>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
+        <!-- Publications -->
+        <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Publication, all,, false)}, 0)}">
+            <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
                 <![CDATA[
-                    <li>{$product_citation}</li>
+                    <h2>Publications <i>(bold = graduate student; underline = undergraduate student)</i></h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <li>{$product_citation}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="productsfooter" type="StaticReportItem">
+                <![CDATA[
+                    </ul><br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="productsfooter" type="StaticReportItem">
-            <![CDATA[
-                </ul><br />
-            ]]>
-        </ReportItem>
 
-        <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
-            <![CDATA[
-                <h2>Presentations</h2>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
+        <!-- Presentations -->
+        <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Presentation, all,, false)}, 0)}">
+            <ReportItem id="presentationbookmark" type="BookmarkReportItem" title="Presentations">
                 <![CDATA[
-                    <li>{$product_citation}</li>
+                    <h2>Presentations <i>(by staff member)</i></h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="presentations" type="PersonProductsReportItemSet" category="Presentation" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <li>{$product_citation}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="presentationfooter" type="StaticReportItem">
+                <![CDATA[
+                    </ul><br />
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="presentationfooter" type="StaticReportItem">
-            <![CDATA[
-                </ul><br />
-            ]]>
-        </ReportItem>
-
-        <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents and Spin Offs">
-            <![CDATA[
-                <h2>Patents and Spin Offs</h2>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <li>{$product_citation}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="patentsfooter" type="StaticReportItem">
-            <![CDATA[
-                </ul><br />
-            ]]>
-        </ReportItem>
         
-        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
-            <![CDATA[
-                <h2>Service/Committees/Outreach</h2>
-            ]]>
-        </ReportItem>
-        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
-            <![CDATA[
-                <h3>Departmental</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
-            <![CDATA[
-                </ul>
-                <h3>Faculty</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
-            <![CDATA[
-                </ul>
-                <h3>University</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
-            <![CDATA[
-                </ul>
-                <h3>Scientific</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach/Community Engagement/Media">
-            <![CDATA[
-                </ul>
-                <h3>Outreach/Community Engagement/Media</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
-            <![CDATA[
-                </ul>
-            	<h3>Other</h3>
-            	<ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="serviceFooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
+        <!-- Grants -->
         <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
             <![CDATA[
-                <h2>Research Grants and Contracts (active at any time during reporting period)</h2>
+                <h2>Research Grants and Contracts <i>(external and active during reporting period)</i></h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
                     <thead>
                         <tr>
@@ -282,49 +192,184 @@
                 </tbody></table><br />
             ]]>
         </ReportItem>
+
+        <!-- Patents and Spin Offs -->
+        <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Patent/Spin-Off, all,, false)}, 0)}">
+            <ReportItem id="patentsbookmark" type="BookmarkReportItem" title="Patents and Spin Offs">
+                <![CDATA[
+                    <h2>Patents and Spin Offs</h2>
+                    <ul>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="patents" type="PersonProductsReportItemSet" category="Patent/Spin-Off" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <li>{$product_citation}</li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="patentsfooter" type="StaticReportItem">
+                <![CDATA[
+                    </ul><br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         
-        <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Teaching">
+        <!-- Service/Committees/Outreach -->
+        <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental Committee|Faculty Committee|University Committee|Scientific Committee|Community Outreach Committee|Other Committee,, false)}, 0)}">
+            <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service/Committees/Outreach">
+                <![CDATA[
+                    <h2>Service/Committees/Outreach</h2>
+                ]]>
+            </ReportItem>
+            
+            <!-- Departmental -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Departmental Committee,, false)}, 0)}">
+                <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
+                    <![CDATA[
+                        <h3>Departmental</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="departmentalfooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            
+            <!-- Faculty -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Faculty Committee,, false)}, 0)}">
+                <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
+                    <![CDATA[
+                        <h3>Faculty</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="facultyfooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            
+            <!-- University -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, University Committee,, false)}, 0)}">
+                <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
+                    <![CDATA[
+                        <h3>University</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="universityfooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            
+            <!-- Scientific -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Scientific Committee,, false)}, 0)}">
+                <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
+                    <![CDATA[
+                        <h3>Scientific</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="scientificfooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            
+            <!-- Outreach/Community Engagement/Media -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Community Outreach Committee,, false)}, 0)}">
+                <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach/Community Engagement/Media">
+                    <![CDATA[
+                        <h3>Outreach/Community Engagement/Media</h3>
+                        <ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="outreachfooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            
+            <!-- Other -->
+            <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Activity, Other Committee,, false)}, 0)}">
+                <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
+                    <![CDATA[
+                    	<h3>Other</h3>
+                    	<ul>
+                    ]]>
+                </ReportItem>
+                <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                    <ReportItem id="committee" type="Static">
+                        <![CDATA[
+                            <li>{$product_description}</li>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+                <ReportItem id="otherFooter" type="Static">
+                    <![CDATA[
+                        </ul>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+        
+        <!-- Footer -->
+        <ReportItem id="cv_footer" type="Static">
             <![CDATA[
-                <h2>Teaching</h2>
+                <div style="page-break-inside:avoid;">
+                <h2></h2><br />
+                <p>This abbreviated CV was prepared as supplementary material for the 2017-2018  Quality Assurance Review of Undergraduate and Graduate Programs at the University of Alberta. It covers a designated reporting period from July 1, 2011 - June 30, 2016 and does not represent the full academic activities and achievements of the staff member</p>
+                <br />
+                <table style='font-style: italic; white-space: nowrap;'>
+                    <tr><td>Generated:&nbsp;&nbsp;&nbsp;</td><td>{$timestamp}</td><td></td></tr>
+                    <tr><td>Last Edited:&nbsp;&nbsp;&nbsp;</td><td>{$timestamp}&nbsp;&nbsp;&nbsp;</td><td>by&nbsp;&nbsp;&nbsp;{$user_name}</td></tr>
+                    <tr><td>Signed off:&nbsp;&nbsp;&nbsp;</td><td>{$timestamp}&nbsp;&nbsp;&nbsp;</td><td>by&nbsp;&nbsp;&nbsp;{$user_name}</td></tr>
+                </table>
+                </div>
             ]]>
-        </ReportItem>
-        <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <![CDATA[
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Responsibilities for HQP">
-            <![CDATA[
-                <h2>Responsibilities for HQP</h2>
-                <table class='wikitable' frame='box' rules='all' width='100%'><thead><tr>
-                    <th>Name</th>
-                    <th>Resp</th>
-                    <th>Awards</th>
-                    <th>Role</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Status</th></tr></thead><tbody>
-            ]]>
-         </ReportItem>
-         <ReportItemSet id="students" type="PersonSupervisesRelationReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
-             <ReportItem id="row" type="StaticReportItem">
-                 <![CDATA[
-                     <tr>
-                        <td>{$hqp_reversed_name}</td>
-                         <td align='center'>{$hqp_position}</td>
-                         <td align='center'>{$hqp_awards}</td>
-                         <td align='center'>{$user_hqp_role}</td>
-                         <td align='center'>{$hqp_start_date}</td>
-                         <td align='center'>{$hqp_end_date}</td>
-                         <td align='center'>{$hqp_status}</td>
-                     </tr>
-                 ]]>
-             </ReportItem>
-         </ReportItemSet>
-         <ReportItem id="studentsfooter" type="StaticReportItem">
-             <![CDATA[
-                 </tbody></table>
-             ]]>
          </ReportItem>
     </ReportSection>
 </Report>
