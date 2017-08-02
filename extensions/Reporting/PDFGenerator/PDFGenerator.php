@@ -731,47 +731,56 @@ EOF;
                 $headerName = "{$person->getReversedName()}";
             }
         }
+        
+        $headerLines = explode("<br />", $report->name);
+        $nHeaderLines = count($headerLines);
+        
         $pages = '
         <script type="text/php">
 
-if ( isset($pdf) ) {
+        if ( isset($pdf) ) {
 
-  $font = $fontMetrics->getFont("'.$config->getValue('pdfFont').'");
-  $size = "10";
-  $size2 = 6;
-  $color = array(0,0,0);
-  $text_height = $fontMetrics->getFontHeight($font, $size);
-  $text_height2 = $fontMetrics->getFontHeight($font, $size2);
-  
-  $foot = $pdf->open_object();
-  
-  $w = $pdf->get_width();
-  $h = $pdf->get_height();
+            $font = $fontMetrics->getFont("'.$config->getValue('pdfFont').'");
+            $size = "10";
+            $size2 = 6;
+            $color = array(0,0,0);
+            $text_height = $fontMetrics->getFontHeight($font, $size);
+            $text_height2 = $fontMetrics->getFontHeight($font, $size2);
 
-  // Draw a line along the bottom
-  $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
-  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $color, 0.5);
-  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
-             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
-             $color, 0.5);
-  $pdf->close_object();
-  $pdf->add_object($foot, "all");
-  $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
+            $foot = $pdf->open_object();
 
-  // Center the text
-  $nameWidth = $fontMetrics->getTextWidth("'.utf8_encode($headerName).' ", $font, $size);
-  $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
+            $w = $pdf->get_width();
+            $h = $pdf->get_height();
+
+            // Draw a line along the bottom
+            $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
+            $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $color, 0.5);
+            $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                     $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                     $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
+                     $color, 0.5);
+            $pdf->close_object();
+            $pdf->add_object($foot, "all");
+            $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
+
+            // Center the text
+            $nameWidth = $fontMetrics->getTextWidth("'.utf8_encode($headerName).' ", $font, $size);
+            $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
+
+            $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
+            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);';
   
-  $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-  $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
-}
-</script>';
+        foreach($headerLines as $i => $line){
+            $pages .= '$pdf->page_text('.PDFGenerator::cmToPixels($margins['left']).', '.PDFGenerator::cmToPixels($margins['top']).' - ($text_height * '.($nHeaderLines-$i).') - 1, "'.utf8_encode($line).'", $font, $size, $color, 0.01);';
+        }
+        $pages .= 
+        '}
+        </script>';
         $date = new DateTime("now", new DateTimeZone(date_default_timezone_get())); // USER's timezone
         $dateStr = $date->format('Y-m-d H:i:s T');
         $html = str_replace("line-height: inherit;", "", $html);
@@ -780,7 +789,8 @@ if ( isset($pdf) ) {
         $html = str_replace("line-height: inherit", "", $html);
         if($preview){
             $html = PDFGenerator::replaceSpecial($html);
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:0;font-size:smaller;'><!--i>Generated: $dateStr</i--><i>{$report->name}</i></div><div class='belowLine'></div>$html</div></body></html>";
+            $headerTop = -($nHeaderLines - 1)*5*DPI_CONSTANT;
+            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:{$headerTop}px;font-size:smaller;'><i>{$report->name}</i></div><div class='belowLine'></div>$html</div></body></html>";
             return;
         }
         
@@ -792,9 +802,9 @@ if ( isset($pdf) ) {
         $html = PDFGenerator::replaceSpecial($html);
         //$html = utf8_encode($html);
         $html = preg_replace('/\cP/', '', $html);
-        $nHeaderLines = count(explode("<br", $report->name));
+        
         $headerHeight = (PDFGenerator::cmToPixels($margins['top'] + 0.5)+($fontSize*0.5*$nHeaderLines));
-        $finalHTML = utf8_decode($header."<body id='pdfBody'><div style='position:absolute;left:0;top:-{$headerHeight}px;font-size:smaller;'><!--i>Generated: $dateStr</i--><i>{$report->name}</i></div>$pages$html</body></html>");
+        $finalHTML = utf8_decode($header."<body id='pdfBody'>$pages$html</body></html>");
         $dompdf->load_html($finalHTML);
         $dompdf->render();
         //$pdfStr = $dompdf->output();
