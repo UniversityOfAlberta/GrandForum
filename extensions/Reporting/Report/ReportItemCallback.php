@@ -84,6 +84,7 @@ class ReportItemCallback {
             "user_fellow_count" => "getUserFellowCount",
             "user_tech_count" => "getUserTechCount",
             "user_ugrad_count" => "getUserUgradCount",
+            "user_courses_count" => "getUserCoursesCount",
             "user_contribution_count" => "getUserContributionCount",
             "user_contribution_cash_total" => "getUserContributionCashTotal",
             "user_grant_count" => "getUserGrantCount",
@@ -1148,7 +1149,19 @@ class ReportItemCallback {
         }
         return $count;
     }
-
+    
+    function getUserCoursesCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $courses = $person->getCoursesDuring(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");
+        $count = 0;
+        foreach($courses as $course){
+            if($course->totEnrl > 0){
+                $count++;
+            }
+        }
+        return $count;
+    }
+    
     function getUserContributionCount(){
         $person = Person::newFromId($this->reportItem->personId);
         $contributions = $person->getContributionsBetween(($this->reportItem->getReport()->startYear)."-07-01", ($this->reportItem->getReport()->year)."-06-30");

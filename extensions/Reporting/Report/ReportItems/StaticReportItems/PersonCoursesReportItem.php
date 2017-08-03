@@ -20,33 +20,22 @@ class PersonCoursesReportItem extends StaticReportItem {
             $first = true;
             foreach($terms as $term => $terms){
                 if($first){
-                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3>
-                      <table class='wikitable' rules='all' frame='box' width='100%'>
-                        <thead>
-                            <tr>
-                                <th>Term</th>
-                                <th>Comp.</th>
-                                <th>Section</th>
-                                <th>Enroll.</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-                }
+                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3><ul>";
+                }   
                 $courses = new Collection($terms);
                 $components = $courses->pluck('component');
                 $sects = $courses->pluck('sect');
                 $totEnrls = $courses->pluck('totEnrl');
                 
-                $item .= "<tr>
-                              <td align='center'>{$course->getTerm()}</td>
-                              <td align='center'>".implode("<br />", $components)."</td>
-                              <td align='center'>".implode("<br />", $sects)."</td>
-                              <td align='center'>".implode("<br />", $totEnrls)."</td>
-                          </tr>";
+                $inner = array();
+                foreach($components as $key => $component){
+                    $inner[] = "{$component} {$sects[$key]} : {$totEnrls[$key]}";
+                }
+                $inner = implode(", ", $inner);
+                $item .= "<li><b>{$term}</b> ($inner)</li>";
                 $first = false;
             }
-            $item .= "</tbody>
-                    </table>";
+            $item .= "</ul>";
         }
         return $item;
     }
