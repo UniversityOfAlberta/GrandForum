@@ -104,7 +104,7 @@ class ProjectMilestoneHistoryAPI extends API{
             $diffEnd = @htmldiff($lastEnd, $p_end_date);
             $diffComment = @htmldiffNL($lastComment, $p_comment);
             $diffLabel = trim(@htmldiff($lastLabel, $label));
-            $diffPeople = @htmldiff($lastPeople, implode(", ", $p_names));
+            $diffPeople = @htmldiff($lastPeople, implode("; ", $p_names));
 
             $history_html =<<<EOF
             <div id='milestone_{$m_parent->getId()}' style='padding: 0;'>
@@ -152,7 +152,7 @@ EOF;
             $lastEnd = $p_end_date;
             $lastComment = $p_comment;
             $lastLabel = $label;
-            $lastPeople = implode(", ", $p_names);
+            $lastPeople = implode("; ", $p_names);
             $lastRev = $m_parent;
             
             $diff_html .= "$history_html";

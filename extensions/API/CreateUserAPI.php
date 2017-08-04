@@ -102,10 +102,9 @@ class CreateUserAPI extends API{
                 $person = Person::newFromName($_POST['wpName']);
                 if($person != null && $person->getName() != null){
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
-                        $_POST['title'] = $_POST['position'];
-                        $_POST['user_name'] = $person->getName();
-                        $api = new UserUniversityAPI();
-                        $api->doAction(true);
+                        $api = new PersonUniversitiesAPI();
+                        $api->params['id'] = $person->getId();
+                        $api->doPOST();
                     }
                     else{
                         $defaultUni = Person::getDefaultUniversity();

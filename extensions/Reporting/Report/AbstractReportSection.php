@@ -64,6 +64,10 @@ abstract class AbstractReportSection {
         return $this->parent;
     }
     
+    function getReport(){
+        return $this->parent;
+    }
+    
     function getLimit(){
         if($this->getParent()->topProjectOnly && $this->private && $this->projectId == 0){
             return 0;
@@ -408,7 +412,7 @@ abstract class AbstractReportSection {
             }
             $number = implode(', ', $numbers).'. ';
         }
-        $wgOut->addHTML("<center><h1>{$number}{$this->varSubstitute($this->title)}</h1></center>");
+        $wgOut->addHTML("<h1>{$number}{$this->varSubstitute($this->title)}</h1>");
         if($this->previewOnly){
             $wgOut->addHTML("<span style='color:#FF0000;'>(This section is not part of the document that will be reviewed by the Research Management Committee (RMC). If there is information here that you want to be considered as part of your evaluation, it should be included in a previous section. Provide the full details here. This section will be provided to your project leaders to assist with their project reporting.)</span>");
         }

@@ -1,0 +1,27 @@
+<p><a href="#/new" class="button">Create New Grant</a></p>
+<table id="grants" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>PI</th>
+            <th>Co-PI</th>
+            <th>Sponsor</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total ($)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(grant){ %>
+            <tr>
+                <td><a href="<%= grant.get('url') %>"><%= grant.get('title') %></a><br /><%= grant.get('description') %></td>
+                <td><%= grant.get('pi').reversedName %></td>
+                <td><%= grant.get('copi_string') %></td>
+                <td><%= grant.get('sponsor') %></td>
+                <td><%= grant.get('start_date') %></td>
+                <td><%= grant.get('end_date') %></td>
+                <td align="right"><%= number_format(grant.get('total')) %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

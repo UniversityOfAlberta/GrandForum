@@ -127,18 +127,8 @@ class APIRequest{
         $this->addAction('User Accounts', 'addThemeLeader', 'AddThemeLeaderAPI');
         $this->addAction('User Accounts', 'addHQPThesis', 'AddHQPThesisAPI');
         $this->addAction('User Accounts', 'addHQPMovedOn', 'AddHQPMovedOnAPI');
-        $this->addAction('User Accounts', 'updateUserTwitterAccount', 'UserTwitterAccountAPI');
         $this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
-        $this->addAction('User Accounts', 'updateUserWebsite', 'UserWebsiteAPI');
-        $this->addAction('User Accounts', 'updateUserLdap', 'UserLdapAPI');
-        $this->addAction('User Accounts', 'updateGoogleScholarUrl', 'UserGoogleScholarAPI');
-        $this->addAction('User Accounts', 'updateSciverseId', 'UserSciverseAPI');
-        $this->addAction('User Accounts', 'updateOrcId', 'UserOrcIdAPI');
-        $this->addAction('User Accounts', 'updateUserNationality', 'UserNationalityAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
-        $this->addAction('User Accounts', 'updateUserGender', 'UserGenderAPI');
-        $this->addAction('User Accounts', 'updateUserUniversity', 'UserUniversityAPI');
-        $this->addAction('User Accounts', 'updateUserProfile', 'UserProfileAPI');
         $this->addAction('User Accounts', 'deleteProjectLeader', 'DeleteProjectLeaderAPI');
         $this->addAction('User Accounts', 'deleteThemeLeader', 'DeleteThemeLeaderAPI');
         $this->addAction('User Accounts', 'updateGoogleScholarCitations', 'UpdateGoogleScholarCitationsAPI');

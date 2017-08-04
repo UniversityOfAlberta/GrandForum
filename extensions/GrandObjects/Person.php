@@ -507,13 +507,19 @@ class Person extends BackboneModel {
      */
     static function generateAllPeopleCache(){
         if(count(self::$allPeopleCache) == 0){
-            $data = DBFunctions::select(array('mw_user'),
-                                        array('user_id'),
-                                        array('deleted' => NEQ(1),
-                                              'candidate' => NEQ(1)),
-                                        array('user_name' => 'ASC'));
-            foreach($data as $row){
-                self::$allPeopleCache[] = $row['user_id'];
+            if(Cache::exists("allPeopleCache")){
+                self::$allPeopleCache = Cache::fetch("allPeopleCache");
+            }
+            else{
+                $data = DBFunctions::select(array('mw_user'),
+                                            array('user_id'),
+                                            array('deleted' => NEQ(1),
+                                                  'candidate' => NEQ(1)),
+                                            array('user_name' => 'ASC'));
+                foreach($data as $row){
+                    self::$allPeopleCache[] = $row['user_id'];
+                }
+                Cache::store("allPeopleCache", self::$allPeopleCache);
             }
         }
     }
@@ -969,7 +975,8 @@ class Person extends BackboneModel {
             $specialUserLogin = new LoginForm($wgRequest, 'signup');
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
-                                    array('user_twitter' => $this->getTwitter(),
+                                    array('employee_id' => $this->getEmployeeId(),
+                                          'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
                                           'google_scholar_url' => $this->getGoogleScholar(),
@@ -981,11 +988,14 @@ class Person extends BackboneModel {
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
             DBFunctions::commit();
-            Cache::delete("rolesCache");
+            
             Person::$cache = array();
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("rolesCache");
+            Cache::delete("allPeopleCache");
+            Cache::delete("idsCache_{$this->getId()}");
             $person = Person::newFromName($_POST['wpName']);
             if($person->exists()){
                 return $status;
@@ -996,21 +1006,14 @@ class Person extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        foreach($this->getSupervisors() as $supervisor){
-            if($supervisor->getId() == $me->getId()){
-                $isSupervisor = true;
-                break;
-            }
-        }
-        if($me->getId() == $this->getId() ||
-           $me->isRoleAtLeast(MANAGER) ||
-           $isSupervisor){
+        if($me->isAllowedToEdit($this)){
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
                                           'first_name' => $this->getFirstName(),
                                           'middle_name' => $this->getMiddleName(),
                                           'last_name' => $this->getLastName(),
+                                          'employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'ldap_url' => $this->getLdap(),
@@ -1026,6 +1029,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("allPeopleCache");
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return $status;
@@ -1036,6 +1040,8 @@ class Person extends BackboneModel {
     function delete(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
+            Cache::delete("allPeopleCache");
+            Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
@@ -1059,32 +1065,41 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowd to edit the specified Person
      */
     function isAllowedToEdit($person){
+        if($this->isMe()){
+            // User is themselves
+            return true;
+        }
         if($this->isRoleAtLeast(STAFF)){
+            // User is at least Staff
             return true;
         }
-        if($this->isRole(NI) && !$person->isRoleAtLeast(RMC)){
+        if($this->isRole(NI) && !$person->isRoleAtLeast(COMMITTEE)){
+            // User is NI, therefore can edit anyone who is not in a committee or higher
             return true;
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
-        if($this->isThemeCoordinator() && (!$person->isRoleAtLeast(RMC) || $person->isRole(NI) || $person->isRole(HQP))){
+        if(($this->isThemeCoordinator() || $this->isThemeLeader()) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+            // User is a Theme Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
-        if($this->isRoleAtLeast(RMC) && !$person->isRoleAtLeast(STAFF)){
+        if($this->isRoleAtLeast(COMMITTEE) && !$person->isRoleAtLeast(STAFF)){
+            // User is in a committee or higher, therefore can edit anyone who is not at least Staff
             return true;
+        }
+        if($this->relatedTo($person, SUPERVISES)){
+            // User supervises the Person
+            return true;
+        }
+        foreach($person->getCreators() as $creator){
+            if($creator->getId() == $this->getId()){
+                // User created the Person
+                return true;
+            }
         }
         return false;
-        if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
-           (($this->isRole(NI) && $person->isRoleAtLeast(RMC)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(RMC) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
-            ($this->isRoleAtLeast(RMC) && $this->isRoleAtMost(GOV) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
-           )){
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -1312,6 +1327,7 @@ class Person extends BackboneModel {
      * @return string The real name of this Person
      */
     function getRealName(){
+        return $this->getReversedName();
         return $this->realname;
     }
     
@@ -1325,6 +1341,17 @@ class Person extends BackboneModel {
             return "{$this->email}";
         }
         return "";
+    }
+    
+    /**
+     * Returns the email address of this Person
+     * @return string The email address of this Person
+     */
+    function getEmployeeId(){
+        if($this->employeeId == 0){
+            return "";
+        }
+        return sprintf("%07d", $this->employeeId);
     }
     
     /**
@@ -1564,10 +1591,54 @@ class Person extends BackboneModel {
      * @return string A name usable in forms
      */
     function getNameForForms($sep = ' ') {
+        return $this->getReversedName();
         if (!empty($this->realname))
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));
+    }
+    
+    private function formatName($matches){
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            $match1 = str_replace("%first", $this->getFirstName(), $match1);
+            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
+            $match1 = str_replace("%last", $this->getLastName(), $match1);
+            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
+            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
+            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+
+            $match2 = str_replace("%first", "", $match2);
+            $match2 = str_replace("%middle", "", $match2);
+            $match2 = str_replace("%last", "", $match2);
+            $match2 = str_replace("%f", "", $match2);
+            $match2 = str_replace("%m", "", $match2);
+            $match2 = str_replace("%l", "", $match2);
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("",$matches);
+    }
+
+    function getNameForProduct(){
+        global $config;
+        /*if($this->getId() == 0){
+            return $this->getNameForForms();
+        }*/
+        $firstname = $this->getFirstName();
+        $middlename = $this->getMiddleName();
+        $lastname = $this->getLastName();
+
+        $regex = "/\{.*?\}/";
+        $format = strtolower($config->getValue("nameFormat"));
+        $format = preg_replace_callback($regex,"self::formatName",$format);
+        $format = str_replace("\"", "<span class='noshow'>&quot;</span>", $format);
+        return $format;
     }
     
     // Returns the user's profile.
@@ -1714,75 +1785,6 @@ class Person extends BackboneModel {
         if(DBFunctions::getNRows() > 0)
           return $data[0]['end_date'];
         return NULL;
-    }
-    
-    /**
-     * Returns whether this Person has worked on their survey
-     * @return boolean whether this Person has worked on their survey
-     */
-    function hasDoneSurvey(){
-        $sql = "SELECT *
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        return (DBFunctions::getNRows() > 0);
-    }
-    
-    /**
-     * Returns this Person's primary funding agency from their response in the Survey
-     * @return string This Person's primary funding agency from their response in the Survey
-     */
-    function getPrimaryFundingAgency(){
-        $sql = "SELECT `discipline`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $discipline = json_decode($data[0]['discipline']);
-            if(isset($discipline->d_level1a)){
-                return $discipline->d_level1a;
-            }
-        }
-        return "Unknown";
-    }
-    
-    /**
-     * Returns this Person's primary discipline from the Survey
-     * @return string This Person's primary discipline from the Survey
-     */
-    function getSurveyDiscipline(){
-        $sql = "SELECT `discipline`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $discipline = json_decode($data[0]['discipline']);
-            if(isset($discipline->d_level2)){
-                return $discipline->d_level2;
-            }
-        }
-        return "Unknown";
-    }
-    
-    /**
-     * Returns this Person's first degree connections from their response in the Survey
-     * @return array This Person's first degree connections from their response in the Survey
-     */
-    function getSurveyFirstDegreeConnections(){
-        $sql = "SELECT `grand_connections`
-                FROM `survey_results`
-                WHERE `user_id` = '{$this->id}'";
-        $data = DBFunctions::execSQL($sql);
-        if(DBFunctions::getNRows() > 0){
-            $connections = json_decode($data[0]['grand_connections']);
-            if(count($connections) > 0){
-                return $connections;
-            }
-            else{
-                return array();
-            }
-        }
-        return array();
     }
     
     /**
@@ -2358,6 +2360,10 @@ class Person extends BackboneModel {
      * @returns array A list of projects (strings) which this Person is allowed to edit
      */
     function getAllowedProjects(){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            return array();
+        }
         $projects = array();
         foreach($this->getProjects() as $project){
             if(!$project->isSubProject()){
@@ -3635,7 +3641,6 @@ class Person extends BackboneModel {
         foreach($papers as $paper){
             $date = $paper->getDate();
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               (!$networkRelated || $paper->isGrandRelated() || !$config->getValue("projectsEnabled")) &&
                $paper->getId() != 0 && 
                (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
                 $papersArray[] = $paper;

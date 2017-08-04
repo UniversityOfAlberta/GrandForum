@@ -115,11 +115,11 @@ class PersonGradStudentsTab extends AbstractTab {
                                         <td style='white-space: nowrap;'>$start_date</td>
                                         <td style='white-space: nowrap;'>$end_date</td>
                                         <td>$research_area</td>
-                                        <!--td></td><td>".implode(", ",$names)."</td-->
+                                        <!--td></td><td>".implode("; ",$names)."</td-->
                                         <td style='white-space: nowrap;'>$role</td>";
                                     $html .= "</tr>";
                     }
-                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false});</script>";
+                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false, 'iDisplayLength': 25});</script>";
                     $html .= "</td></tr></table>";
                 }
             }
@@ -197,11 +197,11 @@ class PersonGradStudentsTab extends AbstractTab {
                             <td style='white-space: nowrap;'>$start_date</td>
                             <td style='white-space: nowrap;'>$end_date</td>
                             <td>$research_area</td>
-                            <!--td></td><td>".implode(", ",$names)."</td-->
+                            <!--td></td><td>".implode("; ",$names)."</td-->
                             <td style='white-space: nowrap;'>$role</td>";
                         $html .= "</tr>";
                     }
-                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false})</script>";
+                    $html .= "</tbody></table><script type='text/javascript'>$('#relations_table2').dataTable({autoWidth: false, 'iDisplayLength': 25})</script>";
                     $html .= "</td></tr></table>";
                 }
             }

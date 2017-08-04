@@ -41,6 +41,9 @@ function isExtensionEnabled($ext){
 
 $egAnnokiExtensions = array();
 
+$egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
+                                             'path' => "$IP/extensions/Shibboleth/Shibboleth.php");
+
 $egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
                                              'path' => "$IP/extensions/AccessControls/AccessControls.php");
 
@@ -86,9 +89,6 @@ $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
 $egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
                                           'path' => "$IP/extensions/HQPRegister/HQPRegister.php");
 
-$egAnnokiExtensions['Poll'] = array('name' => 'Poll',
-                                    'path' => "$IP/extensions/Poll/Poll.body.php");
-
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
 
@@ -113,29 +113,11 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
 $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
                                                     'path' => "$IP/extensions/Visualizations/PublicVisualizations/PublicVisualizations.php");
 
-$egAnnokiExtensions['Survey'] = array('name' => 'Survey',
-                                      'path' => "$IP/extensions/Survey/Survey.php");
-
 $egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
                                           'path' => "$IP/extensions/Duplicates/Duplicates.php");
 
-$egAnnokiExtensions['AllocatedBudgets'] = array('name' => 'Allocated Budgets',
-                                                'path' => "$IP/extensions/AllocatedBudgets/AllocatedBudgets.php");
-
 $egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
                                                 'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-
-$egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
-                                             'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
-
-$egAnnokiExtensions['Solr'] = array('name' => 'Solr',
-                                    'path' => "$IP/extensions/Solr/Solr.php");
-
-$egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
-                                          'path' => "$IP/extensions/TravelForm/TravelForm.php");
-
-$egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
-                                              'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
 
 $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
                                          'path' => "$IP/extensions/CCVExport/CCVExport.php");

@@ -54,7 +54,7 @@ class PersonPage {
                $person->getName() != null && 
                $person != null && ($person->isRole($role) || $person->isRole($role."-Candidate"))){
                 TabUtils::clearActions();
-                $supervisors = $person->getSupervisors();
+                $supervisors = $person->getSupervisors(true);
                 
                 $isMe = ($person->isMe() ||
                         $me->isRoleAtLeast(STAFF));
@@ -126,7 +126,11 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)){
-                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Award'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Publication'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Presentation'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Patent/Spin Off'));
+                    $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility,'Activity'));
                 }
                 if($wgUser->isLoggedIn() && $person->isRole(NI)){
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
@@ -158,7 +162,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
-                $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                //$tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);

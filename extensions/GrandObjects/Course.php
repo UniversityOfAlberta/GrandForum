@@ -3,52 +3,52 @@
     * @package GrandObjects
     */
 
-    class Course extends BackboneModel{
+class Course extends BackboneModel{
 
-	static $cache = array();
-	var $id;
-	var $acadOrg;
-	var $term;
-	var $term_string;
-	var $shortDesc;
-	var $classNbr;
-	var $subject;
-	var $catalog;
-	var $component;
-	var $sect;
-	var $descr;
-	var $crsStatus;
-	var $facilId;
-	var $place;
-	var $pat;
-	var $startDate;
-	var $endDate;
-	var $hrsFrom;
-	var $hrsTo;
-	var $mon;
-	var $tues;
-	var $wed;
-	var $thurs;
-	var $fri;
-	var $sat;
-	var $sun;
-	var $classType;
-	var $capEnrl;
-	var $totEnrl;
-	var $campus;
-	var $location;
-	var $notesNbr;
-	var $noteNbr;
-	var $note;
-	var $rqGroup;
-	var $restrictionDescr;
-	var $approvedHrs;
-	var $duration;
-	var $career;
-	var $consent;
-	var $courseDescr;
-	var $maxUnits;
-	var $courseName;
+    static $cache = array();
+    var $id;
+    var $acadOrg;
+    var $term;
+    var $term_string;
+    var $shortDesc;
+    var $classNbr;
+    var $subject;
+    var $catalog;
+    var $component;
+    var $sect;
+    var $descr;
+    var $crsStatus;
+    var $facilId;
+    var $place;
+    var $pat;
+    var $startDate;
+    var $endDate;
+    var $hrsFrom;
+    var $hrsTo;
+    var $mon;
+    var $tues;
+    var $wed;
+    var $thurs;
+    var $fri;
+    var $sat;
+    var $sun;
+    var $classType;
+    var $capEnrl;
+    var $totEnrl;
+    var $campus;
+    var $location;
+    var $notesNbr;
+    var $noteNbr;
+    var $note;
+    var $rqGroup;
+    var $restrictionDescr;
+    var $approvedHrs;
+    var $duration;
+    var $career;
+    var $consent;
+    var $courseDescr;
+    var $maxUnits;
+    var $courseName;
 
     // Constructor
     function Course($data){
@@ -99,332 +99,285 @@
         }
     }
 
-	/**
-	* Returns a new Course from the given id
-	* @param integer $id The id of the course
-	* @return Course The Course with the given id. If no
-	* course exists with that id, it will return an empty course.
-	*/
-	static function newFromId($id){
-	      //check if exists in cache for easy access
-	    if(isset(self::$cache[$id])){
-	    	return self::$cache[$id];
-	    }
-            $sql = "SELECT * 
-		    FROM grand_courses 
-		    WHERE `id` = '$id'";
-	    $data = DBFunctions::execSQL($sql);
-	    $course = new Course($data);
-	    //$self::$cache[$course->id] = &$course;
-	    return $course;
-	} 
-
-	/**
-	 * Returns an array of courses that match the given subject and id
-	 * @param string $subject The name of the course
-	 * @param integer $catalog The catalog number of the course
-	 * @return array The array of Courses
-	*/
-	static function newFromSubjectCatalog($subject, $catalog){
-	    $sql = "SELECT *
-		   FROM grand_courses
-		   WHERE `Subject` LIKE '%$subject%'
-		   AND `Catalog` LIKE '%$catalog%'";
-	    $data = array('hello','hi');
-	    $data = DBFunctions::execSQL($sql);
-	    $courses = array();
-	    foreach($data as $row){
-		$course = new Course(array($row));
-	        //$self::$cache[$course->id] = &$course;
-		array_push($courses, $course);
-	    }
-	    return $courses;
-	}
-
-        /**
-         * Returns an array of courses that match the given subject and id
-         * @param string $subject The name of the course
-         * @param integer $catalog The catalog number of the course
-         * @return array The array of Courses
-        */
-        static function newFromSubjectCatalogSectStartDateTerm($subject, $catalog,$sect,$startDate,$term){
-            $sql = "SELECT *
-                   FROM grand_courses
-                   WHERE `Subject` LIKE '%$subject%'
-                   AND `Catalog` LIKE '%$catalog%'
-                   AND `Sect` LIKE '%$sect%'
-                   AND `Start Date` LIKE '%$startDate%'
-                   AND `Term` LIKE '%$term%'";
-            $data = DBFunctions::execSQL($sql);
-            if(count($data)>0){
-                $course = new Course(array($data[0]));
-                return $course;
-            }
-            return new Course(array());
+    /**
+    * Returns a new Course from the given id
+    * @param integer $id The id of the course
+    * @return Course The Course with the given id. If no
+    * course exists with that id, it will return an empty course.
+    */
+    static function newFromId($id){
+        //check if exists in cache for easy access
+        if(isset(self::$cache[$id])){
+            return self::$cache[$id];
         }
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('*'),
+                                    array('id' => EQ($id)));
+        $course = new Course($data);
+        //$self::$cache[$course->id] = &$course;
+        return $course;
+    }
+
+    /**
+     * Returns an array of courses that match the given subject and id
+     * @param string $subject The name of the course
+     * @param integer $catalog The catalog number of the course
+     * @return array The array of Courses
+    */
+    static function newFromSubjectCatalog($subject, $catalog){
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('*'),
+                                    array('Subject' => LIKE("%$subject%"),
+                                          'Catalog' => LIKE("%$catalog%")));
+        $courses = array();
+        foreach($data as $row){
+            $course = new Course(array($row));
+            //$self::$cache[$course->id] = &$course;
+            array_push($courses, $course);
+        }
+        return $courses;
+    }
+
+    /**
+     * Returns an array of courses that match the given subject and id
+     * @param string $subject The name of the course
+     * @param integer $catalog The catalog number of the course
+     * @return array The array of Courses
+    */
+    static function newFromSubjectCatalogSectStartDateTerm($subject, $catalog,$sect,$startDate,$term){
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('*'),
+                                    array('Subject' => LIKE("%$subject%"),
+                                          'Catalog' => LIKE("%$catalog%"),
+                                          'Sect' => LIKE("%$sect%"),
+                                          '`Start Date`' => LIKE("%$startDate%"),
+                                          'Term' => LIKE("%$term%")));
+        $data = DBFunctions::execSQL($sql);
+        if(count($data)>0){
+            $course = new Course(array($data[0]));
+            return $course;
+        }
+        return new Course(array());
+    }
         
-
-        /**
-         * Returns an array of courses that match the given subject and id
-         * @param string $subject The name of the course
-         * @param integer $catalog The catalog number of the course
-         * @return array The array of Courses
-        */
-        static function newFromSubjectCatalogSectStartDateTermLike($subject = '%', $catalog = '%' ,$sect = '%', $startDate = '%', $term = '%'){
-            $sql = "SELECT *
-                   FROM grand_courses
-                   WHERE `Subject` LIKE '%$subject%'
-                   AND `Catalog` LIKE '%$catalog%'
-		   AND `Sect` LIKE '%$sect%'
-		   AND `Start Date` LIKE '%$startDate%'
-		   AND `Term` LIKE '%$term%'";
-            $data = DBFunctions::execSQL($sql);
-	    if(count($data)>0){
+    /**
+     * Returns an array of courses that match the given subject and id
+     * @param string $subject The name of the course
+     * @param integer $catalog The catalog number of the course
+     * @return array The array of Courses
+    */
+    static function newFromSubjectCatalogSectStartDateTermLike($subject = '%', $catalog = '%' ,$sect = '%', $startDate = '%', $term = '%'){
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('*'),
+                                    array('Subject' => LIKE("%$subject%"),
+                                          'Catalog' => LIKE("%$catalog%"),
+                                          'Sect' => LIKE("%$sect%"),
+                                          '`Start Date`' => LIKE("%$startDate%"),
+                                          'Term' => LIKE("%$term%")));
+        $data = DBFunctions::execSQL($sql);
+        if(count($data)>0){
                 $course = new Course(array($data[0]));
-	        return $course;
-	    }
-	    return new Course(array());
+            return $course;
         }
-	
-	/**
-	 * Returns True if the course is saved correctly to the course table in the database
-	 * @return boolean True if the database accepted the new course
-	*/
-        function create(){
-	    $me = Person::newFromWGUser();
-	    if($me->isLoggedIn() 
-		&& $this->subject != "" 
-		&& $this->catalog != ""){
-                $sql = "INSERT INTO grand_courses (`Acad Org`,
-						    `Term`,
-						    `term_string`,
-						    `Short Desc`,
-						    `Class Nbr`,
-                                                    `Subject`, 
-                                                    `Catalog`,
-						    `Component`, 
-                                                    `Sect`, 
-                                                    `Descr`, 
-                                                    `Crs Status`,
-						    `Facil ID`, 
-                                                    `Place`, 
-                                                    `Pat`, 
-                                                    `Start Date`, 
-						    `End Date`, 
-                                                    `Hrs From`,                                                    
-                                                    `Hrs To`, 
-                                                    `Mon`,
-						    `Tues`, 
-                                                    `Wed`, 
-                                                    `Thurs`, 
-                                                    `Fri`, 
-                                                    `Sat`, 
-                                                    `Sun`,
-						    `Class Type`, 
-                                                    `Cap Enrl`, 
-                                                    `Tot Enrl`, 
-                                                    `Campus`,
-						    `Location`, 
-                                                    `Notes Nbr`, 
-                                                    `Note Nbr`, 
-                                                    `Note`, 
-                                                    `Rq Group`,
-						    `Restriction Descr`, 
-                                                    `Approved Hrs`, 
-                                                    `Duration`, 
-                                                    `Career`,
-						    `Consent`, 
-                                                    `Course Descr`, 
-                                                    `Max Units`) VALUES
-						   ('{$this->acadOrg}',
-                                                    '{$this->term}',
-						    '{$this->term_string}',
-                                                    '{$this->shortDesc}',
-                                                    '{$this->classNbr}',
-						    '{$this->subject}',
-                                                    '{$this->catalog}',
-                                                    '{$this->component}',
-                                                    '{$this->sect}',
-						    '{$this->descr}',
-                                                    '{$this->crsStatus}',
-                                                    '{$this->facilId}',
-                                                    '{$this->place}',
-						    '{$this->pat}',
-                                                    '{$this->startDate}',
-                                                    '{$this->endDate}',
-                                                    '{$this->hrsFrom}',
-						    '{$this->hrsTo}',
-                                                    '{$this->mon}',
-                                                    '{$this->tues}',
-                                                    '{$this->wed}',
-                                                    '{$this->thurs}',
-						    '{$this->fri}',
-                                                    '{$this->sat}',
-                                                    '{$this->sun}',
-                                                    '{$this->classType}',
-                                                    '{$this->capEnrl}',
-						    '{$this->totEnrl}',
-                                                    '{$this->campus}',
-                                                    '{$this->location}',
-                                                    '{$this->notesNbr}',
-						    '{$this->noteNbr}',
-                                                    '{$this->note}',
-                                                    '{$this->rqGroup}',
-                                                    '{$this->restrictionDescr}',
-						    '{$this->approvedHrs}',
-                                                    '{$this->duration}',
-                                                    '{$this->career}',
-                                                    '{$this->consent}',
-						    '{$this->courseDescr}',
-                                                    '{$this->maxUnits}')";
-                DBFunctions::execSQL($sql, true);
-	    }			
-	}
+        return new Course(array());
+    }
 
-        /**
-         * Returns True if the course is updated correctly to the course table in the database
-         * @return boolean True if the database accepted the updated course
-        */
-	function update(){
-	    $me = Person::newFromWGUser();
-	    if($me->isLoggedIn()
-                && $this->subject != ""
-                && $this->catalog != ""){
-	    	//begin transactions
-		$sql = "UPDATE grand_courses
-			SET `Acad Org` = '{$this->acadOrg}',
-			`Term` = '{$this->term}',
-			`term_string` = '{$this->term_string}',
-			`Short Desc` = '{$this->shortDesc}',
-			`Class Nbr` = '{$this->classNbr}',
-			`Subject` = '{$this->subject}',
-			`Catalog` = '{$this->catalog}',
-			`Component` = '{$this->component}',
-			`Sect` = '{$this->sect}',
-			`Descr` = '{$this->descr}',
-			`Crs Status` = '{$this->crsStatus}',
-			`Facil ID` = '{$this->facilId}',
-			`Place` = '{$this->place}',
-			`Pat` = '{$this->pat}',
-			`Start Date` = '{$this->startDate}',
-			`End Date` = '{$this->endDate}',
-			`Hrs From` = '{$this->hrsFrom}',
-			`Hrs To` = '{$this->hrsTo}',
-			`Mon` = '{$this->mon}',
-			`Tues` = '{$this->tues}',
-			`Wed` = '{$this->wed}',
-			`Thurs` = '{$this->thurs}',
-			`Fri` = '{$this->fri}',
-			`Sat` = '{$this->sat}',
-			`Sun` = '{$this->sun}',
-			`Class Type` = '{$this->classType}',
-			`Cap Enrl` = '{$this->capEnrl}',
-			`Tot Enrl` = '{$this->totEnrl}',
-                        `Campus` = '{$this->campus}',
-                        `Location` = '{$this->location}',
-                        `Notes Nbr` = '{$this->notesNbr}',
-                        `Note Nbr` = '{$this->noteNbr}',
-                        `Note` = '{$this->note}',
-                        `Rq Group` = '{$this->rqGroup}',
-                        `Restriction Descr` = '{$this->restrictionDescr}',
-                        `Approved Hrs` = '{$this->approvedHrs}',
-                        `Duration` = '{$this->duration}',
-                        `Career` = '{$this->career}',
-                        `Consent` = '{$this->consent}',
-                        `Course Descr` = '{$this->courseDescr}',
-                        `Max Units` = '{$this->maxUnits}'                         
-                        WHERE `id` = '{$this->id}'";
+    /**
+     * Returns True if the course is saved correctly to the course table in the database
+     * @return boolean True if the database accepted the new course
+    */
+    function create(){
+        $me = Person::newFromWGUser();
+        if($me->isLoggedIn() 
+            && $this->subject != "" 
+            && $this->catalog != ""){
+                DBFunctions::insert('grand_courses',
+                                    array('`Acad Org`'          => $this->acadOrg,
+                                          '`Term`'              => $this->term,
+                                          '`term_string`'       => $this->term_string,
+                                          '`Short Desc`'        => $this->shortDesc,
+                                          '`Class Nbr`'         => $this->classNbr,
+                                          '`Subject`'           => $this->subject,
+                                          '`Catalog`'           => $this->catalog,
+                                          '`Component`'         => $this->component,
+                                          '`Sect`'              => $this->sect,
+                                          '`Descr`'             => $this->descr,
+                                          '`Crs Status`'        => $this->crsStatus,
+                                          '`Facil ID`'          => $this->facilId,
+                                          '`Place`'             => $this->place,
+                                          '`Pat`'               => $this->pat,
+                                          '`Start Date`'        => $this->startDate,
+                                          '`End Date`'          => $this->endDate,
+                                          '`Hrs From`'          => $this->hrsFrom,
+                                          '`Hrs To`'            => $this->hrsTo,
+                                          '`Mon`'               => $this->mon,
+                                          '`Tues`'              => $this->tues,
+                                          '`Wed`'               => $this->wed,
+                                          '`Thurs`'             => $this->thurs,
+                                          '`Fri`'               => $this->fri,
+                                          '`Sat`'               => $this->sat,
+                                          '`Sun`'               => $this->sun,
+                                          '`Class Type`'        => $this->classType,
+                                          '`Cap Enrl`'          => $this->capEnrl,
+                                          '`Tot Enrl`'          => $this->totEnrl,
+                                          '`Campus`'            => $this->campus,
+                                          '`Location`'          => $this->location,
+                                          '`Notes Nbr`'         => $this->notesNbr,
+                                          '`Note Nbr`'          => $this->noteNbr,
+                                          '`Note`'              => $this->note,
+                                          '`Rq Group`'          => $this->rqGroup,
+                                          '`Restriction Descr`' => $this->restrictionDescr,
+                                          '`Approved Hrs`'      => $this->approvedHrs,
+                                          '`Duration`'          => $this->duration,
+                                          '`Career`'            => $this->career,
+                                          '`Consent`'           => $this->consent,
+                                          '`Course Descr`'      => $this->courseDescr,
+                                          '`Max Units`'         => $this->maxUnits));
+            $this->id = DBFunctions::insertId();
+        }
+    }
 
-		DBFunctions::execSQL($sql, true);
-	    }
-	}
+    /**
+     * Returns True if the course is updated correctly to the course table in the database
+     * @return boolean True if the database accepted the updated course
+    */
+    function update(){
+        $me = Person::newFromWGUser();
+        if($me->isLoggedIn()
+            && $this->subject != ""
+            && $this->catalog != ""){
+                DBFunctions::update('grand_courses',
+                                    array('`Acad Org`'          => $this->acadOrg,
+                                          '`Term`'              => $this->term,
+                                          '`term_string`'       => $this->term_string,
+                                          '`Short Desc`'        => $this->shortDesc,
+                                          '`Class Nbr`'         => $this->classNbr,
+                                          '`Subject`'           => $this->subject,
+                                          '`Catalog`'           => $this->catalog,
+                                          '`Component`'         => $this->component,
+                                          '`Sect`'              => $this->sect,
+                                          '`Descr`'             => $this->descr,
+                                          '`Crs Status`'        => $this->crsStatus,
+                                          '`Facil ID`'          => $this->facilId,
+                                          '`Place`'             => $this->place,
+                                          '`Pat`'               => $this->pat,
+                                          '`Start Date`'        => $this->startDate,
+                                          '`End Date`'          => $this->endDate,
+                                          '`Hrs From`'          => $this->hrsFrom,
+                                          '`Hrs To`'            => $this->hrsTo,
+                                          '`Mon`'               => $this->mon,
+                                          '`Tues`'              => $this->tues,
+                                          '`Wed`'               => $this->wed,
+                                          '`Thurs`'             => $this->thurs,
+                                          '`Fri`'               => $this->fri,
+                                          '`Sat`'               => $this->sat,
+                                          '`Sun`'               => $this->sun,
+                                          '`Class Type`'        => $this->classType,
+                                          '`Cap Enrl`'          => $this->capEnrl,
+                                          '`Tot Enrl`'          => $this->totEnrl,
+                                          '`Campus`'            => $this->campus,
+                                          '`Location`'          => $this->location,
+                                          '`Notes Nbr`'         => $this->notesNbr,
+                                          '`Note Nbr`'          => $this->noteNbr,
+                                          '`Note`'              => $this->note,
+                                          '`Rq Group`'          => $this->rqGroup,
+                                          '`Restriction Descr`' => $this->restrictionDescr,
+                                          '`Approved Hrs`'      => $this->approvedHrs,
+                                          '`Duration`'          => $this->duration,
+                                          '`Career`'            => $this->career,
+                                          '`Consent`'           => $this->consent,
+                                          '`Course Descr`'      => $this->courseDescr,
+                                          '`Max Units`'         => $this->maxUnits),
+                                    array('id' => EQ($this->id)));
+        }
+    }
 
-	function getAllCourses(){
-	    $sql = "SELECT DISTINCT(id)
-		   FROM `grand_courses`";
-	    $data = DBFunctions::execSQL($sql);
-	    $courses = array();
-	    foreach($data as $row){
-	        $courses[] = Course::newFromId($row['id']);
-	    }
-	    return $courses;
-	}
+    function getAllCourses(){
+        $data = DBFunctions::select(array('grand_courses'),
+                                    array('id'));
+        $courses = array();
+        foreach($data as $row){
+            $courses[] = Course::newFromId($row['id']);
+        }
+        return $courses;
+    }
 
-	function getUserCourses($id){
-	    $sql = "SELECT DISTINCT course_id
-		   FROM `grand_user_courses`
-	  	   WHERE (user_id = '$id')";
-	    $data = DBFunctions::execSQL($sql);
-	    $courses = array();
-	    foreach($data as $row){
-		$courses[] = Course::newFromId($row['course_id']);
-	    }
-	    return $courses;
-	}
+    function getUserCourses($id){
+        $sql = "SELECT DISTINCT course_id
+                FROM `grand_user_courses`
+                WHERE (user_id = '$id')";
+        $data = DBFunctions::execSQL($sql);
+        $courses = array();
+        foreach($data as $row){
+            $course = Course::newFromId($row['course_id']);
+            $courses["{$course->subject} {$course->catalog} {$course->startDate} {$course->component} {$course->sect}"] = $course;
+        }
+        ksort($courses);
+        return $courses;
+    }
 
-	function getProfessors(){
-	    $data= DBFunctions::select(array('grand_user_courses'),
+    function getProfessors(){
+        $data= DBFunctions::select(array('grand_user_courses'),
                                     array('user_id' => 'id'),
                                     array('course_id' => EQ($this->id)));
-	    $profs = array();
-	    foreach($data as $row){
-		$profs[] = Person::newFromId($row['id']);
-	    }
-	    return $profs;
-	}
+        $profs = array();
+        foreach($data as $row){
+            $profs[] = Person::newFromId($row['id']);
+        }
+        return $profs;
+    }
 
-	function toarray(){
-		//TODO:implement function
-	}
-        function delete(){
-                //TODO:implement function
-        }
-        function exists(){
-                //TODO:implement function
-        }
-        function getCacheId(){
-                //TODO:implement function
-        }
-	
-	function getId(){
-	    return $this->id;
-	}
-	
-	function getStartDate(){
-	    $date = strtotime("01 January 1900 +{$this->startDate} days");
-	    return date("Y-m-d", $date);
-	}
+    function toarray(){
+        //TODO:implement function
+    }
+    function delete(){
+            //TODO:implement function
+    }
+    function exists(){
+            //TODO:implement function
+    }
+    function getCacheId(){
+            //TODO:implement function
+    }
+
+    function getId(){
+        return $this->id;
+    }
+
+    function getStartDate(){
+        $date = strtotime("01 January 1900 +{$this->startDate} days");
+        return date("Y-m-d", $date);
+    }
         
-	function getEndDate(){
-            $date = strtotime("01 January 1900 +{$this->endDate} days");
-            return date("Y-m-d", $date);
-        }
+    function getEndDate(){
+        $date = strtotime("01 January 1900 +{$this->endDate} days");
+        return date("Y-m-d", $date);
+    }
 
-	function getStartMonth(){
-            $date = strtotime("01 January 1900 +{$this->startDate} days");
-            return date("M", $date);
-	}
+    function getStartMonth(){
+        $date = strtotime("01 January 1900 +{$this->startDate} days");
+        return date("M", $date);
+    }
 
-	function getStartYear(){
-            $date = strtotime("01 January 1900 +{$this->startDate} days");
-            return date("Y", $date);
+    function getStartYear(){
+        $date = strtotime("01 January 1900 +{$this->startDate} days");
+        return date("Y", $date);
+    }
 
-	}
-	
-	function getTerm(){
-	    $year = $this->getStartYear();
-	    $term = $this->getTermUsingStartMonth($this->getStartMonth());
-	    return "$term $year";
-	}
+    function getTerm(){
+        $year = $this->getStartYear();
+        $term = $this->getTermUsingStartMonth($this->getStartMonth());
+        return "$term $year";
+    }
 
     function getTermUsingStartMonth($month){
         if($month == "Sep"){
             return "Fall";
         }
-        elseif($month == "Jan"){
+        else if($month == "Jan"){
             return "Winter";
         }
-        elseif($month == "Apr"){
+        else if($month == "Apr"){
             return "Spring";
         }
         else{
@@ -432,5 +385,6 @@
         }
     }
 
-    }
+}
+
 ?>

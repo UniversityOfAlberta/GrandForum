@@ -51,6 +51,7 @@ class UserCreate {
                 }
             }
         }
+        Cache::delete("rolesCache");
         
         if(isset($_POST['wpNS'])){
             $box = $_POST['wpNS'];
@@ -72,6 +73,8 @@ class UserCreate {
         DBFunctions::update('mw_user',
 	                        array('candidate' => $_POST['candidate']),
 	                        array('user_id' => EQ($wgUser->getId())));
+	    Cache::delete("allPeopleCache");
+	    Cache::delete("nameCache_{$wgUser->getId()}");
         Cache::delete("idsCache_{$wgUser->getId()}");
         UserCreate::addNewUserPage($wgUser);
         DBFunctions::commit();

@@ -1,101 +1,9 @@
 <?php
-/**
- * @package dompdf
- * @link    http://www.dompdf.com/
- * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id$
- */
 
-//error_reporting(E_STRICT | E_ALL | E_DEPRECATED);
-//ini_set("display_errors", 1);
+require_once("autoload.inc.php");
 
-PHP_VERSION >= 5.0 or die("DOMPDF requires PHP 5.0+");
-
-/**
- * The root of your DOMPDF installation
- */
-define("DOMPDF_DIR", str_replace(DIRECTORY_SEPARATOR, '/', realpath(dirname(__FILE__))));
-
-/**
- * The location of the DOMPDF include directory
- */
-define("DOMPDF_INC_DIR", DOMPDF_DIR . "/include");
-
-/**
- * The location of the DOMPDF lib directory
- */
-define("DOMPDF_LIB_DIR", DOMPDF_DIR . "/lib");
-
-/**
- * Some installations don't have $_SERVER['DOCUMENT_ROOT']
- * http://fyneworks.blogspot.com/2007/08/php-documentroot-in-iis-windows-servers.html
- */
-if( !isset($_SERVER['DOCUMENT_ROOT']) ) {
-  $path = "";
-  
-  if ( isset($_SERVER['SCRIPT_FILENAME']) )
-    $path = $_SERVER['SCRIPT_FILENAME'];
-  elseif ( isset($_SERVER['PATH_TRANSLATED']) )
-    $path = str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']);
-    
-  $_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($path, 0, 0-strlen($_SERVER['PHP_SELF'])));
-}
-
-/** Include the custom config file if it exists */
-if ( file_exists(DOMPDF_DIR . "/dompdf_config.custom.inc.php") ){
-  require_once(DOMPDF_DIR . "/dompdf_config.custom.inc.php");
-}
-
-//FIXME: Some function definitions rely on the constants defined by DOMPDF. However, might this location prove problematic?
-require_once(DOMPDF_INC_DIR . "/functions.inc.php");
-
-/**
- * Username and password used by the configuration utility in www/
- */
-def("DOMPDF_ADMIN_USERNAME", "");
-def("DOMPDF_ADMIN_PASSWORD", "");
-
-/**
- * The location of the DOMPDF font directory
- *
- * If DOMPDF_FONT_DIR identical to DOMPDF_FONT_CACHE or user executing DOMPDF from the CLI,
- * this directory must be writable by the webserver process ().
- * *Please note the trailing slash.*
- *
- * Notes regarding fonts:
- * Additional .afm font metrics can be added by executing load_font.php from command line.
- *
- * Only the original "Base 14 fonts" are present on all pdf viewers. Additional fonts must
- * be embedded in the pdf file or the PDF may not display correctly. This can significantly
- * increase file size and could violate copyright provisions of a font. Font subsetting is
- * not currently supported.
- *
- * Any font specification in the source HTML is translated to the closest font available
- * in the font directory.
- *
- * The pdf standard "Base 14 fonts" are:
- * Courier, Courier-Bold, Courier-BoldOblique, Courier-Oblique,
- * Helvetica, Helvetica-Bold, Helvetica-BoldOblique, Helvetica-Oblique,
- * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
- * Symbol,
- * ZapfDingbats,
- *
- * *Please note the trailing slash.*
- */
-def("DOMPDF_FONT_DIR", DOMPDF_DIR . "/lib/fonts/");
-
-/**
- * The location of the DOMPDF font cache directory
- *
- * Note this directory must be writable by the webserver process
- * This folder must already exist!
- * It contains the .afm files, on demand parsed, converted to php syntax and cached
- * This folder can be the same as DOMPDF_FONT_DIR
- */
-def("DOMPDF_FONT_CACHE", DOMPDF_FONT_DIR);
+global $dompdfOptions;
+$dompdfOptions = new Dompdf\Options();
 
 /**
  * The location of a temporary directory.
@@ -104,37 +12,12 @@ def("DOMPDF_FONT_CACHE", DOMPDF_FONT_DIR);
  * The temporary directory is required to download remote images and when
  * using the PFDLib back end.
  */
-def("DOMPDF_TEMP_DIR", sys_get_temp_dir());
-
-/**
- * ==== IMPORTANT ====
- *
- * dompdf's "chroot": Prevents dompdf from accessing system files or other
- * files on the webserver.  All local files opened by dompdf must be in a
- * subdirectory of this directory.  DO NOT set it to '/' since this could
- * allow an attacker to use dompdf to read any files on the server.  This
- * should be an absolute path.
- * This is only checked on command line call by dompdf.php, but not by
- * direct class use like:
- * $dompdf = new DOMPDF();	$dompdf->load_html($htmldata); $dompdf->render(); $pdfdata = $dompdf->output();
- */
-def("DOMPDF_CHROOT", realpath(DOMPDF_DIR));
-
-/**
- * Whether to use Unicode fonts or not.
- *
- * When set to true the PDF backend must be set to "CPDF" and fonts must be
- * loaded via load_font.php.
- *
- * When enabled, dompdf can support all Unicode glyphs.  Any glyphs used in a
- * document must be present in your fonts, however.
- */
-def("DOMPDF_UNICODE_ENABLED", true);
+$dompdfOptions->set('temp_dir', sys_get_temp_dir());
 
 /**
  * Whether to make font subsetting or not.
  */
-def("DOMPDF_ENABLE_FONTSUBSETTING", false);
+$dompdfOptions->set('enable_font_subsetting', false);
 
 /**
  * The PDF rendering backend to use
@@ -164,7 +47,7 @@ def("DOMPDF_ENABLE_FONTSUBSETTING", false);
  * @link http://www.ros.co.nz/pdf
  * @link http://www.php.net/image
  */
-def("DOMPDF_PDF_BACKEND", "CPDF");
+$dompdfOptions->set('pdf_backend', 'CPDF');
 
 /**
  * PDFlib license key
@@ -190,7 +73,7 @@ def("DOMPDF_PDF_BACKEND", "CPDF");
  * the desired content might be different (e.g. screen or projection view of html file).
  * Therefore allow specification of content here.
  */
-def("DOMPDF_DEFAULT_MEDIA_TYPE", "screen");
+$dompdfOptions->set('default_media_type', 'screen');
 
 /**
  * The default paper size.
@@ -199,7 +82,7 @@ def("DOMPDF_DEFAULT_MEDIA_TYPE", "screen");
  *
  * @see CPDF_Adapter::PAPER_SIZES for valid sizes
  */
-def("DOMPDF_DEFAULT_PAPER_SIZE", "letter");
+$dompdfOptions->set('default_paper_size', 'letter');
 
 /**
  * The default font family
@@ -207,7 +90,7 @@ def("DOMPDF_DEFAULT_PAPER_SIZE", "letter");
  * Used if no suitable fonts can be found. This must exist in the font folder.
  * @var string
  */
-def("DOMPDF_DEFAULT_FONT", "serif");
+$dompdfOptions->set('default_font', 'serif');
 
 /**
  * Image DPI setting
@@ -245,7 +128,7 @@ def("DOMPDF_DEFAULT_FONT", "serif");
 if(!defined('DPI')){
     define('DPI', 300);
 }
-def("DOMPDF_DPI", DPI);
+$dompdfOptions->set('dpi', DPI);
 
 /**
  * Enable inline PHP
@@ -259,7 +142,7 @@ def("DOMPDF_DPI", DPI);
  *
  * @var bool
  */
-def("DOMPDF_ENABLE_PHP", true);
+$dompdfOptions->set('enable_php', true);
 
 /**
  * Enable inline Javascript
@@ -269,7 +152,7 @@ def("DOMPDF_ENABLE_PHP", true);
  *
  * @var bool
  */
-def("DOMPDF_ENABLE_JAVASCRIPT", false);
+$dompdfOptions->set('enable_javascript', false);
 
 /**
  * Enable remote file access
@@ -288,100 +171,21 @@ def("DOMPDF_ENABLE_JAVASCRIPT", false);
  *
  * @var bool
  */
-def("DOMPDF_ENABLE_REMOTE", false);
-
-/**
- * The debug output log
- * @var string
- */
-def("DOMPDF_LOG_OUTPUT_FILE", DOMPDF_FONT_DIR."log.htm");
+$dompdfOptions->set('enable_remote', true);
 
 /**
  * A ratio applied to the fonts height to be more like browsers' line height
  */
-def("DOMPDF_FONT_HEIGHT_RATIO", 1.2);
-
-/**
- * Enable CSS float
- *
- * Allows people to disabled CSS float support
- * @var bool
- */
-def("DOMPDF_ENABLE_CSS_FLOAT", true);
-
-/**
- * Prepend the DOMPDF autoload function the spl_autoload stack
- *
- * @var bool
- */
-def("DOMPDF_AUTOLOAD_PREPEND", false);
+$dompdfOptions->set('font_height_ratio', 1.2);
 
 /**
  * Use the more-than-experimental HTML5 Lib parser
  */
-def("DOMPDF_ENABLE_HTML5PARSER", false);
-require_once(DOMPDF_LIB_DIR . "/html5lib/Parser.php");
+$dompdfOptions->set('enable_html5_parser', false);
 
 // ### End of user-configurable options ###
-
-require_once(DOMPDF_INC_DIR . "/autoload.inc.php");
 
 /**
  * Ensure that PHP is working with text internally using UTF8 character encoding.
  */
 mb_internal_encoding('UTF-8');
-
-/**
- * Global array of warnings generated by DomDocument parser and
- * stylesheet class
- *
- * @var array
- */
-global $_dompdf_warnings;
-$_dompdf_warnings = array();
-
-/**
- * If true, $_dompdf_warnings is dumped on script termination when using
- * dompdf/dompdf.php or after rendering when using the DOMPDF class.
- * When using the class, setting this value to true will prevent you from
- * streaming the PDF.
- *
- * @var bool
- */
-global $_dompdf_show_warnings;
-$_dompdf_show_warnings = false;
-
-/**
- * If true, the entire tree is dumped to stdout in dompdf.cls.php.
- * Setting this value to true will prevent you from streaming the PDF.
- *
- * @var bool
- */
-global $_dompdf_debug;
-$_dompdf_debug = false;
-
-/**
- * Array of enabled debug message types
- *
- * @var array
- */
-global $_DOMPDF_DEBUG_TYPES;
-$_DOMPDF_DEBUG_TYPES = array(); //array("page-break" => 1);
-
-/* Optionally enable different classes of debug output before the pdf content.
- * Visible if displaying pdf as text,
- * E.g. on repeated display of same pdf in browser when pdf is not taken out of
- * the browser cache and the premature output prevents setting of the mime type.
- */
-def('DEBUGPNG', false);
-def('DEBUGKEEPTEMP', false);
-def('DEBUGCSS', false);
-
-/* Layout debugging. Will display rectangles around different block levels.
- * Visible in the PDF itself.
- */
-def('DEBUG_LAYOUT', false);
-def('DEBUG_LAYOUT_LINES', true);
-def('DEBUG_LAYOUT_BLOCKS', true);
-def('DEBUG_LAYOUT_INLINE', true);
-def('DEBUG_LAYOUT_PADDINGBOX', true);

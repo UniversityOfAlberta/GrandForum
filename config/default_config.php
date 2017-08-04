@@ -73,6 +73,8 @@
     // The terminology for administrative projects 
     $config->setValue("adminProjects", "Admin Project");
     
+    $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
+    
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
@@ -111,7 +113,6 @@
         'EditMember',
         'ManagePeople',
         //'HQPRegister',
-        'Poll',
         'QueryableTable',
         'IndexTables',
         //'Reporting',
@@ -121,14 +122,8 @@
         'Impersonation',
         'Visualizations',
         'PublicVisualizations',
-        //'Survey',
         'Duplicates',
-        //'AllocatedBudgets',
         'ProjectEvolution',
-        //'ScreenCapture',
-        //'Solr',
-        //'TravelForm',
-        //'AdvancedSearch',
         'CCVExport'
     ));
     

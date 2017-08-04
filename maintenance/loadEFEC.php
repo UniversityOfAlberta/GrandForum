@@ -44,16 +44,34 @@
         'BookChapter'     => array('Publication', 'Book Chapter'),
         'TechnicalReport' => array('Publication', 'Tech Report'),
         'Other'           => array('Publication', 'Misc'),
-        'PosterArticle'   => array('Presentation', 'Poster'),
+        'PosterArticle'   => array('Publication', 'Poster'),
         'PaperAbstract'   => array('Publication', 'Journal Abstract'),
         'Review'          => array('Activity', 'Review'),
         'Book'            => array('Publication', 'Book'),
-        'Patent'          => array('Product', 'Patent')
+        'Patent'          => array('Patent/Spin-Off', 'Patent')
     );
     
+    $presentationMap = array(
+        'colloquium/seminar presentation at another university or other institution' => 'Seminar',
+        'panel member' => 'Panel Member',
+        'conference/symposium/workshop keynote or plenary presentation (no parallel sessions during presentation)' => 'Keynote',
+        'colloquium/seminar presentation at the university of alberta' => 'Seminar',
+        'conference/symposium/workshop oral presentation' => 'Oral Presentation',
+        'public (non-academic audience) off campus presentation' => 'Public Presentation',
+        'conference/symposium/workshop poster presentation' => 'Poster Presentation',
+        'tutorial presentation' => 'Tutorial',
+        'presentation on the web' => 'Web Presentation',
+        'public (non-academic audience) presentation' => 'Public Presentation',
+        'colloquium/seminar presentation' => 'Seminar',
+        'conference/symposium/workshop keynote or plenary presentation' => 'Keynote'
+    );
+    
+    DBFunctions::execSQL("TRUNCATE grand_pdf_index", true);
+    DBFunctions::execSQL("TRUNCATE grand_pdf_report", true);
     DBFunctions::execSQL("TRUNCATE grand_notifications", true);
     DBFunctions::execSQL("TRUNCATE grand_personal_fec_info", true);
     DBFunctions::execSQL("TRUNCATE grand_user_university", true);
+    DBFunctions::execSQL("TRUNCATE grand_positions", true);
     DBFunctions::execSQL("TRUNCATE grand_relations", true);
     DBFunctions::execSQL("TRUNCATE grand_movedOn", true);
     DBFunctions::execSQL("TRUNCATE grand_theses", true);
@@ -79,11 +97,32 @@
                                           WHERE_OR('ROLE_DESCR') => EQ('')));
                                           
     $patents = DBFunctions::select(array('bddEfec2_development.patents'),
-                                    array('*'));
+                                   array('*'));
+                                    
+    $presentations = DBFunctions::select(array('bddEfec2_development.presentations'),
+                                         array('*'));
                                     
     $spinoffs = DBFunctions::select(array('bddEfec2_development.spinoffs'),
                                     array('*'));
-                                 
+    
+    $community_outreach_committees = DBFunctions::select(array('bddEfec2_development.community_outreach_committees'),
+                                                         array('*'));
+                                                         
+    $departmental_committees = DBFunctions::select(array('bddEfec2_development.departmental_committees'),
+                                                   array('*'));
+                                                   
+    $faculty_committees = DBFunctions::select(array('bddEfec2_development.faculty_committees'),
+                                                   array('*'));
+                                                   
+    $scientific_committees = DBFunctions::select(array('bddEfec2_development.scientific_committees'),
+                                                   array('*'));
+                                                   
+    $university_committees = DBFunctions::select(array('bddEfec2_development.university_committees'),
+                                                   array('*'));
+    
+    $other_committees = DBFunctions::select(array('bddEfec2_development.other_committees'),
+                                                   array('*'));
+    
     $responsibilities = DBFunctions::select(array('bddEfec2_development.responsibilities'),
                                             array('*'));
     
@@ -160,6 +199,8 @@
             trim(str_replace(".", "", $row['first_name']), " -\t\n\r\0\x0B").".".
             trim(str_replace(".", "", $row['last_name']),  " -\t\n\r\0\x0B")
         ));
+        $username = str_replace("'", "", $username);
+        $username = preg_replace("/\".*\"/", "", $username);
         $fname = $row['first_name'];
         $lname = $row['last_name'];
         $email = $row['ccid']."@ualberta.ca";
@@ -241,6 +282,8 @@
             $firsts = explode(" ", $usernames[1]);
             $realName = trim($usernames[1])." ".trim($usernames[0]);
             $username = str_replace(" ", "", $firsts[0].".".$usernames[0]);
+            $username = str_replace("'", "", $username);
+            $username = preg_replace("/\".*\"/", "", $username);
             $email = $student['CAMPUS_ID']."@ualberta.ca";
             $user = User::createNew($username, array('real_name' => "$realName", 
                                                      'password' => User::crypt(mt_rand()), 
@@ -325,7 +368,7 @@
                         $uni['title'] = "Graduate Student - Master's Course";
                         break;
                     case "Masters Thesis":
-                        $uni['title'] = "Graduate Student - Master's Thesis ";
+                        $uni['title'] = "Graduate Student - Master's Thesis";
                         break;
                     case "Doctoral Program":
                         $uni['title'] = "Graduate Student - Doctoral";
@@ -360,11 +403,15 @@
         
         $realName = $username;
         $username = str_replace(" ", ".", $username);
-        
-        if($row['responsibility'] == 'phd' ||
-           $row['responsibility'] == 'msc' ||
-           $row['responsibility'] == 'meng' ||
-           $row['responsibility'] == 'ma'){
+        $username = str_replace("'", ".", $username);
+        $username = preg_replace("/\".*\"/", "", $username);
+        $sup = @$staffIdMap[$row['faculty_staff_member_id']];
+        $person = Person::newFromName($username);
+        if(($person->getId() == 0) &&
+           ($row['responsibility'] == 'phd' ||
+            $row['responsibility'] == 'msc' ||
+            $row['responsibility'] == 'meng' ||
+            $row['responsibility'] == 'ma')){
             // Don't actually create these users, but keep track of them for publication authors
             $person = new Person(array());
             $person->name = $realName;
@@ -375,7 +422,6 @@
         }
         
         $email = "";
-        $person = Person::newFromName($username);
         if($person == null || $person->getId() == 0){
             // First create the user
             $user = User::createNew($username, array('real_name' => "$realName", 
@@ -394,8 +440,6 @@
             Person::$cache[strtolower($person->getName())] = $person;
             Person::$cache[$person->getId()] = $person;
         }
-        
-        $sup = @$staffIdMap[$row['faculty_staff_member_id']];
         
         $respIdMap[$row['id']] = $person;
         if($person->getId() != 0){
@@ -499,7 +543,7 @@
     
     // Import Grants
     $iterationsSoFar = 0;
-    echo "\nLoading Grants\n";
+    echo "\nImporting Grants\n";
     DBFunctions::execSQL("TRUNCATE table `grand_grants`", true);
     DBFunctions::execSQL("TRUNCATE table `grand_grant_contributions`", true);
     foreach($grants1 as $row){
@@ -515,7 +559,7 @@
             if($row['Award Sponsor ID'] == "MULTI" && isset($grants3[$row['Project']])){
                 $sponsors = array();
                 foreach($grants3[$row['Project']] as $sponsor){
-                    $sponsors[] = $sponsor['Sponsor Description'];
+                    $sponsors[$sponsor['Sponsor Description']] = $sponsor['Sponsor Description'];
                 }
                 $newGrant->sponsor = implode(", ", $sponsors);
             }
@@ -532,7 +576,17 @@
                     }
                 }
             }
-            $newGrant->create();
+            if(strstr(strtolower($newGrant->sponsor), "university of alberta") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "canada research chair") === false &&
+               strstr(strtolower($row['Award Sponsor ID']), "internal") === false &&
+               strstr(strtolower($row['Proj Mgr Role']), "supervising investigator") === false &&
+               strstr(strtolower($row['Proj Mgr Role']), "vp research") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "studentship") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "scholarship") === false &&
+               strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false){
+                // Above are ignore rules from Renee
+                $newGrant->create();
+            }
         }
         show_status(++$iterationsSoFar, count($grants1));
     }
@@ -562,12 +616,14 @@
             'pages' => $publication['pages'],
             'volume' => $publication['volume'],
             'issue' => $publication['issue'],
+            'number' => $publication['issue'],
             'doi' => $publication['doi'],
             'url' => $publication['url'],
             'venue' => $publication['venue'],
             'event_title' => $publication['venue'],
             'book_title' => $publication['venue'],
             'journal_title' => $publication['venue'],
+            'published_in' => $publication['venue'],
             'event_location' => $publication['location'],
             'location' => $publication['location'],
             'editors' => $publication['editors'],
@@ -599,8 +655,50 @@
             }
         }
         
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($publications));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Presentations\n";
+    foreach($presentations as $presentation){
+        $product = new Product(array());
+        $product->category = 'Presentation';
+        $product->type = $presentationMap[$presentation['category']];
+        $product->title = trim($presentation['organization'])." {$product->type}";
+        $product->date = $presentation['date'];
+        $product->access = "Public";
+        
+        if($presentation['invited'] == "formal invitation"){
+            $product->status = "Invited";
+        }
+        else{
+            $product->status = "Not Invited";
+        }
+        
+        $product->authors = array();
+        $product->projects = array();
+        $data = array(
+            'organizing_body' => $presentation['organization'],
+            'location' => $presentation['country']
+        );
+        if($presentation['refereed'] == "not refereed" ||
+           $presentation['refereed'] == ""){
+            $data['peer_reviewed'] = "No";
+        }
+        else{
+            $data['peer_reviewed'] = "Yes";
+        }
+        
+        $product->data = $data;
+        
+        // Add Authors
+        if(isset($staffIdMap[$presentation['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$presentation['faculty_staff_member_id']];
+            
+            $product->create(false);
+        }
+        show_status(++$iterationsSoFar, count($presentations));
     }
     
     $iterationsSoFar = 0;
@@ -610,7 +708,7 @@
         $product->category = 'Award';
         $product->type = 'Award';
         $product->title = ucwords(trim($award['name']));
-        $product->date = $award['year']."00-00";
+        $product->date = $award['year']."-00-00";
         $product->status = "Published";
         $product->access = "Public";
         $product->data = array('award_category' => $award['category'],
@@ -625,7 +723,7 @@
                 $product->authors[] = $staffIdMap[$award['faculty_staff_member_id']];
             }
             
-            $product->create();
+            $product->create(false);
         }
         show_status(++$iterationsSoFar, count($awards));
     }
@@ -634,7 +732,7 @@
     echo "\nImporting Patents\n";
     foreach($patents as $patent){
         $product = new Product(array());
-        $product->category = 'Product';
+        $product->category = 'Patent/Spin-Off';
         $product->type = 'Patent';
         $product->title = ucwords(trim($patent['TECH_TITLE']));
         $product->date = $patent['ISSUEDATE'];
@@ -657,7 +755,7 @@
             }
             $product->authors[] = $person;
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($patents));
     }
     
@@ -665,13 +763,14 @@
     echo "\nImporting Spin-Offs\n";
     foreach($spinoffs as $spinoff){
         $product = new Product(array());
-        $product->category = 'Product';
+        $product->category = 'Patent/Spin-Off';
         $product->type = 'Spin-Off';
         $product->title = ucwords(trim($spinoff['Spin-Off Company']));
         $product->date = $spinoff['Creation Date'];
         $product->status = "Published";
         $product->access = "Public";
-                               
+                       
+        $product->data = array();        
         $product->authors = array();
         $product->projects = array();
                                
@@ -686,8 +785,167 @@
             }
             $product->authors[] = $person;
         }
-        $product->create();
+        $product->create(false);
         show_status(++$iterationsSoFar, count($spinoffs));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Community Outreach Committees\n";
+    foreach($community_outreach_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Community Outreach Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                    
+        $product->data = array();
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($community_outreach_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Departmental Committees\n";
+    foreach($departmental_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Departmental Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->data = array();
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($departmental_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Faculty Committees\n";
+    foreach($faculty_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Faculty Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->data = array();
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($faculty_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Other Committees\n";
+    foreach($other_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Other Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                       
+        $product->data = array();        
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($other_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting Scientific Committees\n";
+    foreach($scientific_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'Scientific Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->authors = array();
+        $product->projects = array();
+        $product->data = array(
+            'scope' => ucfirst($committee['scientific_committee_scope']),
+            'organization' => trim($committee['organization'])
+        );
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($scientific_committees));
+    }
+    
+    $iterationsSoFar = 0;
+    echo "\nImporting University Committees\n";
+    foreach($university_committees as $committee){
+        $product = new Product(array());
+        $product->category = 'Activity';
+        $product->type = 'University Committee';
+        $product->description = trim($committee['description']);
+        $product->title = trim(substr($committee['description'], 0, 100));
+        if($product->title != $committee['description']){
+            $product->title .= "...";
+        }
+        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->access = "Public";
+                               
+        $product->data = array();  
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Authors
+        if(isset($staffIdMap[$committee['faculty_staff_member_id']])){
+            $product->authors[] = $staffIdMap[$committee['faculty_staff_member_id']];
+        }
+        $product->create(false);
+        show_status(++$iterationsSoFar, count($university_committees));
     }
     
     // Create Product Histories
@@ -708,6 +966,13 @@
         }
         show_status(++$iterationsSoFar, count($histories));
     }
+    
+    echo "\nSyncing Authors\n";
+    require_once("syncAuthors.php");
+    
+    echo "\n";
+    
+    require_once("importAllCourses.php");
 
-echo "\n";
+    echo "\n";
 ?>

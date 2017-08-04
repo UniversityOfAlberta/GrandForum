@@ -167,7 +167,7 @@ function getImpersonatingMessage(){
         $wgRealUser = $wgUser;
     }
     $realPerson = Person::newFromId($wgRealUser->getId());
-    if($realPerson->isDelegateFor($person)){
+    if($realPerson->isRoleAtLeast(MANAGER) || $realPerson->isDelegateFor($person)){
         $wgImpersonating = false;
         $wgDelegating = true;
     }

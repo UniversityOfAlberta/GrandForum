@@ -6,7 +6,7 @@ class PersonFECTab extends AbstractEditableTab {
     var $visibility;
 
     function PersonFECTab($person, $visibility){
-        parent::AbstractEditableTab("FEC Info");
+        parent::AbstractEditableTab("FEC History");
         $this->person = $person;
         $this->visibility = $visibility;
     }

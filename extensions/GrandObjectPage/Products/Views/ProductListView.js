@@ -40,7 +40,7 @@ ProductListView = Backbone.View.extend({
             });
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join(', '));
+                                "<a href='" + model.url + "'>" + model.title + "</a>", authors.join('; '));
             if(projectsEnabled){
                 row.push(projects.join(', '));
             }

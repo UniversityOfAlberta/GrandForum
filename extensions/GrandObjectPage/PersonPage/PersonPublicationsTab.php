@@ -4,12 +4,19 @@ class PersonPublicationsTab extends AbstractTab {
 
     var $person;
     var $visibility;
+    var $category;
 
-    function PersonPublicationsTab($person, $visibility){
+    function PersonPublicationsTab($person, $visibility, $category='all'){
         global $config;
-        parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+        if($category == "all" || is_array($category)){
+            parent::AbstractTab(Inflect::pluralize($config->getValue("productsTerm")));
+        }
+        else{
+            parent::AbstractTab(Inflect::pluralize($category));
+        }
         $this->person = $person;
         $this->visibility = $visibility;
+        $this->category = $category;
     }
 
     function generateBody(){
@@ -18,19 +25,32 @@ class PersonPublicationsTab extends AbstractTab {
             return "";
         }
         $contributions = $this->person->getContributions();
-	   $this->html .= $this->showTable($this->person, $this->visibility);
+       $this->html .= $this->showTable($this->person, $this->visibility);
     }
 
     function showTable($person, $visibility){
-	global $config;
+        global $config;
         $me = Person::newFromWgUser();
-        $products = $person->getPapers("all", false, 'both', true, "Public");
+        if(is_array($this->category)){
+            $products = array();
+            foreach($this->category as $category){
+                $products = array_merge($products, $person->getPapers($category, false, 'both', true, "Public"));
+            }
+        }
+        else{
+            $products = $person->getPapers($this->category, false, 'both', true, "Public");
+        }
         $string = "";
         if(count($products) > 0){
-            $string = "<table id='personPubs' rules='all' frame='box'>
+            $string = "<table id='{$this->name}Pubs' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>{$config->getValue('productsTerm')}</th><th>Category</th><th>Type</th><th>Year</th>
+                        <th>{$config->getValue('productsTerm')}</th>";
+            if(is_array($this->category) || $this->category == "all"){
+                $string .= "<th>Category</th>";
+            }
+            $string .= "<th>Type</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -40,30 +60,22 @@ class PersonPublicationsTab extends AbstractTab {
                     $projects[] = "{$project->getName()}";
                 }
 
-                $names = array();
-                foreach($paper->getAuthors() as $author){
-                    if($author->getId() != 0 && $author->getUrl() != ""){
-                        $names[] = "<a href='{$author->getUrl()}'>{$author->getNameForForms()}</a>";
-                    }
-                    else{
-                        $names[] = $author->getNameForForms();
-                    }
-                }
-
                 $string .= "<tr>";
                 $string .= "<td>{$paper->getProperCitation()}<span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)."</span></td>";
-                $string  .= "<td align=center>{$paper->getCategory()}</td>";
-                $string  .= "<td align=center>{$paper->getType()}</td>";
-		$string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-
+                if(is_array($this->category) || $this->category == "all"){
+                    $string .= "<td align=center>{$paper->getCategory()}</td>";
+                }
+                $string .= "<td align=center>{$paper->getType()}</td>";
+                $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "</tr>";
             }
             $string .= "</tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#personPubs').dataTable({
+                    $('#{$this->name}Pubs').dataTable({
                         'order': [[ 1, 'desc' ]],
-                        'autoWidth': false
+                        'autoWidth': false,
+                        'iDisplayLength': 50
                     });
                 </script>";
         }

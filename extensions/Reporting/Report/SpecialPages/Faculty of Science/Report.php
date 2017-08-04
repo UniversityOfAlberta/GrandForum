@@ -25,9 +25,10 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         if($wgUser->isLoggedIn()){
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
+            $tabs["CV"] = TabUtils::createTab("My CV");
             $tabs["Recommendations"] = TabUtils::createTab("Recommendations");
-	    $tabs["FosStats"] = TabUtils::createTab("FOS Stats");
-	}
+            $tabs["FosStats"] = TabUtils::createTab("FOS Stats");
+        }
         return true;
     }
     
@@ -35,29 +36,31 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-	if(!$person->isRole(ISAC)){
+        if(!$person->isRole(ISAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "QACV")) ? "selected" : false;
+            $tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
         }
         if($person->isRole(RMC) || $person->isRole(ISAC)){
-	    $depts = Person::getAllDepartments();
-	    foreach($depts as $dept){
-		if($dept != $person->getDepartment()){
+            $depts = Person::getAllDepartments();
+            foreach($depts as $dept){
+                if($dept != $person->getDepartment()){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $dept) ? "selected" : false;
                     $subTabs[] = TabUtils::createSubTab("{$dept}", "{$url}FECReview&dept=".urlencode($dept), $selected);
-		}
-	    }
-	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $person->getDepartment()) ? "selected" : false;
+                }
+            }
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $person->getDepartment()) ? "selected" : false;
             $tabs["Recommendations"]['subtabs'][0] = TabUtils::createSubTab("{$person->getDepartment()}", "{$url}FECReview&dept=".urlencode($person->getDepartment()), $selected);
             
-	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $dept) ? "selected" : false;
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECReview") && $_GET['dept'] == $dept) ? "selected" : false;
             $tabs["Recommendations"]['subtabs'][1] = TabUtils::createSubTab("Other", "", $selected);
-	    $tabs["Recommendations"]['subtabs'][1]['dropdown'] = $subTabs;
-	    
-	    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
+            $tabs["Recommendations"]['subtabs'][1]['dropdown'] = $subTabs;
+    
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECStats")) ? "selected" : false;
             $tabs["FosStats"]['subtabs'][] = TabUtils::createSubTab("Stats", "{$url}FECStats", $selected);
-	}
-
+        }
         return true;
     }
     

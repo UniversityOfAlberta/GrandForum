@@ -884,25 +884,23 @@ class UploadCSVAPI extends API{
 					array('category'=>'Presentation',
 					      'title' => "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}"));
 	    if(count($data) >0){
-		continue;
+            continue;
 	    }
-	    $newPresentation = new Paper(array());
-            $newPresentation->type = 'Invited Presentation';
-	    $newPresentation->category = 'Presentation';
-            $newPresentation->description = $presentation['description'];
-            $newPresentation->data = array('location'=>$presentation['country'],
-					   'refereed'=>$presentation['refereed'],
-					   'organization'=>$presentation['organization']);
-	    $newPresentation->invited = $presentation['invited'];
-	    $newPresentation->refereed = $presentation['refereed'];
-	    $newPresentation->duration = $presentation['duration'];
-	    $newPresentation->date = $presentation['date'];
-	    $newPresentation->title = "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}";
-	    $newPresentation->authors = array($person);
-	    $status = $newPresentation->create();
-	    if($status){
-		$success[] = $status;
-	    }	
+        $newPresentation = new Paper(array());
+        $newPresentation->type = 'Invited Presentation';
+        $newPresentation->category = 'Presentation';
+        $newPresentation->description = $presentation['description'];
+        $newPresentation->data = array('location'=>$presentation['country'],
+		                               'refereed'=>$presentation['refereed'],
+		                               'organization'=>$presentation['organization'],
+		                               'duration'=>$presentation['duration']);
+        $newPresentation->date = $presentation['date'];
+        $newPresentation->title = "{$person->getNameForForms()} {$presentation['organization']} {$presentation['date']}";
+        $newPresentation->authors = array($person);
+        $status = $newPresentation->create();
+        if($status){
+        $success[] = $status;
+        }	
 	}
 	return $success;
     }

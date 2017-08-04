@@ -117,7 +117,7 @@ EOF;
             foreach($people as $p){
                 $peoples[] = "<a href='{$p->getUrl()}' target='_blank'>{$p->getNameForForms()}</a>";
             }
-            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td>".implode(", ", $peoples)." </td><td><a href='{$media->getUrl()}' target='_blank'><i>{$media->getTitle()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>".implode(", ", $projs)."</i></div></td>";
+            $details = "<td style='white-space:nowrap;text-align:center;' class='pdfnodisplay'>{$date} </td><td class='pdfnodisplay'>".implode(", ", $projs)."<br /></td><td>".implode("; ", $peoples)." </td><td><a href='{$media->getUrl()}' target='_blank'><i>{$media->getTitle()}</i></a><span class='pdfOnly'>, {$date}</span><div class='pdfOnly' style='width:50%;margin-left:50%;text-align:right;'><i>".implode(", ", $projs)."</i></div></td>";
             return $details;
         }
         

@@ -417,6 +417,36 @@
             </data>
         </Publication>
         
+        <Publication type="Poster" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
+            <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
+                <type lov_id="00000000000000000000000100007002">Poster</type>
+            </pub_type>
+            <title ccv_id="8e6ee535c95e42ec866b777c7472bafb" ccv_name="Publication Title"></title>
+            <statuses ccv_id="080301b1f1c0464bba7fcfa1fa8fe182" ccv_name="Publishing Status">
+                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
+                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
+                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
+                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
+                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
+                <status>Rejected</status>
+            </statuses>
+            <data>
+                <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
+                <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
+                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="DOI" type="DOI">doi</field>
+                <field label="Peer Reviewed" type="String">peer_reviewed</field>
+                <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
+            <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
+            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
         <Publication type="Manual" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="1790f670e1144703a04ffa6268c454c7" ccv_name="Manual Title"></title>
             <statuses ccv_id="24f82f269eef4156aed0a1f92358c898" ccv_name="Publishing Status">
@@ -450,71 +480,108 @@
         
         <Presentation type="Seminar" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-        
-        <Presentation type="Poster" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
-                <type lov_id="00000000000000000000000100007002">Poster</type>
-            </pub_type>
-            <title ccv_id="8e6ee535c95e42ec866b777c7472bafb" ccv_name="Publication Title"></title>
-            <statuses ccv_id="080301b1f1c0464bba7fcfa1fa8fe182" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <data>
-                <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
-                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
-                <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="DOI" type="DOI">doi</field>
-                <field label="Peer Reviewed" type="String">peer_reviewed</field>
-                <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
-            <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
-            <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
-            <description ccv_id="a6e901e5f0cf48a3a7d674bf1e6fcd7f" ccv_name="Description / Contribution Value"></description>
         </Presentation>
         
-        <Presentation type="Conference Presentation" status="Invited|Not Invited">
+        <Presentation type="Panel Member" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
         </Presentation>
         
-        <Presentation type="Media Interview" status="Invited|Not Invited">
+        <Presentation type="Workshop" status="Invited|Not Invited">
             <data>
+                <field label="Event Title" type="String">event_title</field>
                 <field label="Location" type="String">location</field>
-                <field label="Media Organization" type="String">media_organization</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Oral Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Public Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Tutorial" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Keynote" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Web Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+            </data>
+        </Presentation>
+        
+        <Presentation type="Poster Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">event_title</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
         </Presentation>
         
         <Presentation type="Misc" status="Invited|Not Invited">
             <data>
                 <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
+                <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
+                <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
             </data>
         </Presentation>
 
     </Presentations>
     
-    <!-- Products -->
-    <Products category="Product">
+    <!-- Patents and Spin Offs -->
+    <Products category="Patent/Spin-Off">
         <Product type="Tool" status="">
             <data></data>
         </Product>
@@ -569,18 +636,44 @@
          <Award type="Award">
              <data>
                   <field label="URL" type="URL">url</field>
-                  <field label="String" type="Award Category">award_category</field>
-                  <field label="String" type="">scope</field>
+                  <field label="Award Category" type="String">award_category</field>
+                  <field label="Scope" type="String">scope</field>
              </data>
          </Award>
     </Awards>
 
-    <Activity category="Activity">
-        <Award type="Review">
+    <Activities category="Activity">
+        <Activity type="Scientific Committee">
              <data>
-                  
+                  <field label="Scope" type="Select" options="International|National|Provincial">scope</field>
+                  <field label="Organization" type="String">organization</field>
              </data>
-         </Award>
-    </Activity>
+         </Activity>
+         
+         <Activity type="University Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Faculty Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Departmental Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Community Outreach Committee">
+             <data>
+             </data>
+         </Activity>
+         
+         <Activity type="Other Committee">
+             <data>
+             </data>
+         </Activity>
+    </Activities>
 
 </Products>

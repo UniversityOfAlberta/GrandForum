@@ -42,6 +42,8 @@
         return $startEndDate; 
     }
     
+
+    
     //Start Timer
     $start = microtime(true);
     
@@ -50,9 +52,25 @@
     DBFunctions::execSQL("TRUNCATE grand_user_courses", true);    
     
     $dataDir = "csv/";
+    $courseDescrFile = "allCoursesDescription.csv";
     //$dataDir = dirname(__FILE__).'/csv_test/'; // if csv in maintanence
+    
     $dir = new DirectoryIterator($dataDir);
     
+    
+    // Generate a map of course title and description under key of subject+catalog
+    $filename = $dataDir . $courseDescrFile;
+    $descrMap = array_map("str_getcsv", file($filename)); 
+    $map = array(); // map to be used like $map = array(key => array(('title' => $title, 'descr' => $descr)))
+    
+    foreach($descrMap as $rowIndex => $rowValues){
+        $key = trim($rowValues[0]) . trim($rowValues[1]);
+        $title = trim($rowValues[2]);
+        $descr = trim($rowValues[3]);
+        //echo $key . " " . $title . " " . $descr . "\n";
+        $map[$key] = array('title' => $title, 'descr' => $descr);
+    }
+
     
     $courseID = 0; // needs to be out of the whole loop.
     foreach($dir as $file) {
@@ -60,6 +78,7 @@
         $filename = $file->getFilename();
         
         if ($dir->isDot()){ continue;} // skip "." and ".." directories.
+        if ($filename == $courseDescrFile){ continue; } // skip coursesDescr file
         
         $termString = rtrim($filename, ".csv"); // filename is the term (ex. Fall2011)
         $date = getStartEndDate($termString);
@@ -77,25 +96,26 @@
                 
                 $rowsParsed++;
 
-                $acadOrg = DBFunctions::escape($rowValues[1]);
-                $term = DBFunctions::escape($rowValues[0]);
-                $classNbr = DBFunctions::escape(ltrim($rowValues[11], '0'));
-                $subject = DBFunctions::escape($rowValues[9]);
-                $catalog = DBFunctions::escape($rowValues[10]);
-                $component = DBFunctions::escape($rowValues[12]);
-                $sect = DBFunctions::escape($rowValues[8]);
-                $crsStatus = DBFunctions::escape($rowValues[13]);
-                $facilID = DBFunctions::escape(ltrim($rowValues[15], '0'));
-                $startDate = DBFunctions::escape($date["start"]);
-                $endDate = DBFunctions::escape($date["end"]);
-                $hrsFrom = DBFunctions::escape($rowValues[16]);
-                $hrsTo = DBFunctions::escape($rowValues[17]);
-                $totEnrl = DBFunctions::escape($rowValues[14]);
-                $campus = DBFunctions::escape($rowValues[19]);
-                $note = DBFunctions::escape($rowValues[18]);   
-                $employeeID = DBFunctions::escape(ltrim($rowValues[2], '0'));
+                $acadOrg = DBFunctions::escape(trim($rowValues[1]));
+                $term = DBFunctions::escape(trim($rowValues[0]));
+                $classNbr = DBFunctions::escape(trim(ltrim($rowValues[11], '0')));
+                $subject = DBFunctions::escape(trim($rowValues[9]));
+                $catalog = DBFunctions::escape(trim($rowValues[10]));
+                $component = DBFunctions::escape(trim($rowValues[12]));
+                $sect = DBFunctions::escape(trim($rowValues[8]));
+                $crsStatus = DBFunctions::escape(trim($rowValues[13]));
+                $facilID = DBFunctions::escape(trim(ltrim($rowValues[15], '0')));
+                $startDate = DBFunctions::escape(trim($date["start"]));
+                $endDate = DBFunctions::escape(trim($date["end"]));
+                $hrsFrom = DBFunctions::escape(trim($rowValues[16]));
+                $hrsTo = DBFunctions::escape(trim($rowValues[17]));
+                $totEnrl = DBFunctions::escape(trim($rowValues[14]));
+                $campus = DBFunctions::escape(trim($rowValues[19]));
+                $note = DBFunctions::escape(trim($rowValues[18]));   
+                $employeeID = DBFunctions::escape(trim(ltrim($rowValues[2], '0')));
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
-                  
+                
+ 
                 // key: Term + Class Nbr + Component + Sect + Employee Id
                 $key = $term . $classNbr . $component . $sect . $employeeID;
                 
@@ -103,6 +123,12 @@
                 if (isset($grandCourses[$key]) || $userID == 0 ){
                     continue;
                 }
+
+                // set course title and description
+                $mapKey = $subject . $catalog;
+                $title = @DBFunctions::escape($map[$mapKey]['title']); // some courses may not exist in the map
+                $descr = @DBFunctions::escape($map[$mapKey]['descr']); // @ gets rid of warnings
+                
                 
                 //if ($userID == 337){ echo "yoooooooooo" . $subject . " " . $catalog . "\n"; }
                 
@@ -114,7 +140,7 @@
                                         '{$component}','{$sect}','{$crsStatus}',
                                         '{$facilID}','{$startDate}','{$endDate}',
                                         '{$hrsFrom}','{$hrsTo}','{$totEnrl}',
-                                        '{$campus}','{$note}')";
+                                        '{$campus}','{$note}', '{$title}', '{$descr}')";
                 
                // set grandUserCourses         
                $grandUserCourses[] = "('{$userID}','{$courseID}')";
@@ -127,7 +153,7 @@
                                 `Component`, `Sect`, `Crs Status`,
                                 `Facil ID`, `Start Date`, `End Date`,
                                 `Hrs From`, `Hrs To`, `Tot Enrl`,
-                                `Campus`, `Note`) VALUES ";
+                                `Campus`, `Note`, `Descr`, `Course Descr`) VALUES ";
                                 
         $insertSQLGUC = "INSERT INTO `grand_user_courses` (`user_id`, `course_id`) VALUES "; 
                

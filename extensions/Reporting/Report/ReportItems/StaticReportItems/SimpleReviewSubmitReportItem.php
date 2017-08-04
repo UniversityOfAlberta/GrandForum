@@ -46,7 +46,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_success').html('PDF Generated Successfully.');
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
-                                                        $('#download_button_' + index).text(name + ' PDF');
+                                                        $('#download_button_' + index).html(name + ' PDF');
                                                     }
                                                     else{
                                                         $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');

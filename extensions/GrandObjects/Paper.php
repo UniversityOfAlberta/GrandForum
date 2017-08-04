@@ -31,15 +31,11 @@ class Paper extends BackboneModel{
     var $created_by = 0;
     var $ccv_id;
     var $bibtex_id;
-    var $central_repo_id;
     var $reported = array();
     var $acceptance_date;
     var $ratio;
     var $acceptance_ratio_numerator;
     var $acceptance_ratio_denominator;
-    var $duration;
-    var $invited;
-    var $refereed;
 
     /**
      * Returns a new Paper from the given id
@@ -274,7 +270,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created, acceptance_date, acceptance_ratio_denominator, ratio, acceptance_ratio_numerator
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date, acceptance_ratio_denominator, ratio, acceptance_ratio_numerator
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -433,15 +429,15 @@ class Paper extends BackboneModel{
     }
 
     static function getAllPrivatePapers($project='all', $category='all', $grand='grand'){
-	if(isset(self::$dataCache["me".$project.$category.$grand])){
+        if(isset(self::$dataCache["me".$project.$category.$grand])){
             return self::$dataCache["me".$project.$category.$grand];
         }
-	$me = Person::newFromWgUser();
-	$sql = "SELECT SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, central_repo_id, date_created
-		 FROM grand_products WHERE
-		(access_id = '{$me->getId()}'
-		OR created_by = '{$me->getId()}')
-		";
+        $me = Person::newFromWgUser();
+        $sql = "SELECT SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created
+             FROM grand_products WHERE
+            (access_id = '{$me->getId()}'
+            OR created_by = '{$me->getId()}')
+            ";
         if($category != "all"){
             $sql .= "\nAND `category` = '$category'";
         }
@@ -449,7 +445,7 @@ class Paper extends BackboneModel{
         $data = DBFunctions::execSQL($sql);
         self::generateProductProjectsCache();
         $papers = array();
-	foreach($data as $row){
+        foreach($data as $row){
             $hasProjects = (isset(self::$productProjectsCache[$row['id']]) && count(self::$productProjectsCache[$row['id']]) > 0);
             if($project != "all" ||
                (($grand == 'grand' && $hasProjects) ||
@@ -466,7 +462,7 @@ class Paper extends BackboneModel{
             }
         }
         self::$dataCache["me".$project.$category.$grand] = $papers;
-	return $papers;
+        return $papers;
     }
 
     
@@ -600,11 +596,10 @@ class Paper extends BackboneModel{
             $this->authorsWaiting = true;
             //$this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
-	    $this->central_repo_id = $data[0]['central_repo_id'];
-	    $this->ratio = $data[0]['ratio'];
-	    $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
-	    $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
-	    $this->acceptance_date = $data[0]['acceptance_date'];
+            $this->ratio = $data[0]['ratio'];
+            $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
+            $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
+            $this->acceptance_date = $data[0]['acceptance_date'];
         }
     }
     
@@ -639,31 +634,19 @@ class Paper extends BackboneModel{
     function getCategory(){
         return $this->category;
     }
-
-    function getPresentationInfo(){
-      $data = DBFunctions::select(array('grand_products'),
-                                  array('duration', 'invited', 'refereed'),
-                                  array('id'=>$this->getId()));
-      if(count($data)>0){
-	$this->duration = $data[0]['duration'];
-      	$this->invited = $data[0]['invited'];
-      	$this->refereed = $data[0]['refereed'];
-      }
-      return $this;
-    }
  
     /**
      * Returns the abstract or description of this Paper
      * @return string The abstract or description of this Paper
      */
     function getDescription(){
-	if($this->description === false){
-	    $data = DBFunctions::select(array("grand_products"), array("description"), array("id"=>$this->getId()));
-	    if(count($data) >0){
-	        $this->description = $data[0]['description'];
-	    }
-	}
-	return $this->description;
+        if($this->description === false){
+            $data = DBFunctions::select(array("grand_products"), array("description"), array("id"=>$this->getId()));
+            if(count($data) >0){
+                $this->description = $data[0]['description'];
+            }
+        }
+        return $this->description;
     }
 
     /**
@@ -773,9 +756,9 @@ class Paper extends BackboneModel{
     function getCitationCount($type){
       $paperId = $this->id;
       $data = DBFunctions::select(array('grand_product_citations'),
-				  array('citation_count'),
-				  array('type'=>$type,
-					'product_id'=>$paperId));
+                                  array('citation_count'),
+                                  array('type'=>$type,
+                                        'product_id'=>$paperId));
       if(count($data) == 0){
           return 0;
       } 
@@ -787,15 +770,9 @@ class Paper extends BackboneModel{
     */
     function getTotalCitationCount(){
         $sciverseCount = $this->getCitationCount("Sciverse Scopus");
-	$scholarCount = $this->getCitationCount("Google Scholar");
-	$total = $sciverseCount + $scholarCount;
-	return $total; 
-    }
-
-    /** Returns id associated with the central repo of this paper
-    */
-    function getCentralRepoId(){
-    	return $this->central_repo_id;
+        $scholarCount = $this->getCitationCount("Google Scholar");
+        $total = $sciverseCount + $scholarCount;
+        return $total; 
     }
 
     /**
@@ -813,6 +790,9 @@ class Paper extends BackboneModel{
                 foreach($this->authors as $auth){
                     if(isset($auth->id)){
                         $unserialized[] = $auth->id;
+                    }
+                    else if(isset($auth->fullname)){
+                        $unserialized[] = $auth->fullname;
                     }
                     else{
                         $unserialized[] = $auth->name;
@@ -1098,9 +1078,9 @@ class Paper extends BackboneModel{
      */
     function getDate(){
         global $config;
-        $dates = $config->getValue('projectPhaseDates');
+        //$dates = $config->getValue('projectPhaseDates');
         $date = $this->date;
-        $date = str_replace("0000", substr($dates[1], 0, 4), $date);
+        //$date = str_replace("0000", substr($dates[1], 0, 4), $date);
         $date = str_replace("-00", "-01", $date);
         return $date;
     }
@@ -1114,19 +1094,19 @@ class Paper extends BackboneModel{
     }
 
     function getAcceptanceDate(){
-	return $this->acceptance_date;
+        return $this->acceptance_date;
     }
 
     function getRatio(){
-	return $this->ratio;
+        return $this->ratio;
     }
 
     function getAcceptanceRatioNumerator(){
-	return $this->acceptance_ratio_numerator;
+        return $this->acceptance_ratio_numerator;
     }
 
     function getAcceptanceRatioDenominator(){
-	return $this->acceptance_ratio_denominator;
+        return $this->acceptance_ratio_denominator;
     }
     
     /**
@@ -1188,7 +1168,7 @@ class Paper extends BackboneModel{
                 $this->data = unserialize($data[0]['data']);
             }
         }
-        return $this->data;	
+        return $this->data;
     }
     
     /**
@@ -1197,45 +1177,6 @@ class Paper extends BackboneModel{
      */
     function isDeleted(){
         return ($this->deleted === "1");
-    }
-
-    /**
-     * Returns whether or not this Paper has been reported in the given year
-     * @param string $year The reporting year to check
-     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
-     * @return boolean Whether or not this Paper has been reported in the given year
-     */
-    function hasBeenReported($year, $reportedType){
-        if(($reportedType == 'RMC' || $reportedType == 'NCE')){
-            if(!isset($this->reported[$reportedType])){
-                $this->getReportedYears();
-            }
-            $years = $this->reported[$reportedType];
-            if(isset($years[$year])){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns the years that this Paper was reported
-     * @param string $reportedType The type of reporting to check (must be either 'RMC' or 'NCE')
-     * @return array The years that this Paper was reported
-     */
-    function getReportedYears($reportedType){
-        if(!isset($this->reported[$reportedType])){
-            $this->reported['RMC'] = array();
-            $this->reported['NCE'] = array();
-            $sql = "SELECT DISTINCT `year`, `reported_type`
-                    FROM `grand_products_reported`
-                    WHERE `product_id` = '{$this->id}'";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->reported[$row['reported_type']][] = $row['year'];
-            }
-        }
-        return $this->reported[$reportedType];
     }
     
     /**
@@ -1256,25 +1197,38 @@ class Paper extends BackboneModel{
         $au = array();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
-                if($hyperlink){
-                    $name = $a->getNameForForms();
-                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                        $name = "<u>{$a->getNameForForms()}</u>";
+                $name = $a->getNameForForms();
+                if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
+                    $name = "{$a->getNameForForms()}";
+                }
+                else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                    $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
+                    foreach($unis as $uni){
+                        if(strstr($uni['position'], "Graduate Student") !== false ||
+                           strstr($uni['position'], "Post-Doctoral Fellow") !== false){
+                            $name = "<b>{$a->getNameForForms()}</b>";
+                        }
+                        else if(strstr($uni['position'], "Undergraduate") !== false ||
+                                strstr($uni['position'], "Summer Student") !== false){
+                            $name = "<u>{$a->getNameForForms()}</u>";
+                        }
                     }
-                    else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                        $name = "<i>{$a->getNameForForms()}</i>";
-                    }
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                 }
                 else{
-                    $au[] = "<b>". $a->getNameForForms() ."</b>";
+                    $name = "{$a->getNameForForms()}";
                 }
-            }else{
+                if($hyperlink){
+                    $au[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
+                }
+                else{
+                    $au[] = "{$name}";
+                }
+            }
+            else{
                 $au[] = $a->getNameForForms();
             }
         }
-        $au = implode(',&nbsp;', $au);
+        $au = implode(';&nbsp;', $au);
         $vn = $this->getVenue();
 
         if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
@@ -1344,7 +1298,7 @@ class Paper extends BackboneModel{
             $pb = "&nbsp;{$pb}";
         }
         $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
-       		         <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+                     <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
         return trim($citation);
     }
 
@@ -1428,7 +1382,7 @@ class Paper extends BackboneModel{
         return $return;
     }
 
-    function create(){
+    function create($syncAuthors=true){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn() && trim($this->title) != ""){
             // Begin Transaction
@@ -1437,6 +1391,9 @@ class Paper extends BackboneModel{
             foreach($this->authors as $author){
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
+                }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
                 }
                 else{
                     $authors[] = $author->name;
@@ -1460,9 +1417,6 @@ class Paper extends BackboneModel{
                                                 'ratio' => $this->ratio,
                                                 'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
                                                 'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
-                                                'duration' => $this->duration,
-                                                'invited' => $this->invited,
-                                                'refereed' => $this->refereed,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1471,42 +1425,37 @@ class Paper extends BackboneModel{
                                                 'access' => $this->access,
                                                 'ccv_id' => $this->ccv_id,
                                                 'bibtex_id' => $this->bibtex_id,
-                                                'central_repo_id' => $this->central_repo_id,
                                                 'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),
                                           true);
+            
             // Get the Product Id
             if($status){
-                $data = DBFunctions::select(array('grand_products'),
-                                            array('id'),
-                                            array('title' => EQ($this->title),
-                                                  'category' => EQ($this->category),
-                                                  'type' => EQ($this->type)),
-                                            array('id' => 'DESC'));
-                if(count($data) > 0){
-                    $id = $data[0]['id'];
-                    $this->id = $id;
-                }
+                $this->id = DBFunctions::insertId();
             }
+            
             // Update product_projects table
-            if($status){
+            if($status && count($this->projects) > 0){
                 $status = DBFunctions::delete("grand_product_projects", 
                                               array('product_id' => $this->id),
                                               true);
-            }
-            foreach($this->projects as $project){
-                if($status){
-                    $status = DBFunctions::insert("grand_product_projects", 
-                                                  array('product_id' => $this->id,
-                                                        'project_id' => $project->id),
-                                                  true);
+                foreach($this->projects as $project){
+                    if($status){
+                        $status = DBFunctions::insert("grand_product_projects", 
+                                                      array('product_id' => $this->id,
+                                                            'project_id' => $project->id),
+                                                      true);
+                    }
                 }
             }
+            
             if($status){
                 // Commit transaction
                 DBFunctions::commit();
                 // Sync Authors
                 $this->authorsWaiting = true;
-                $this->syncAuthors();
+                if($syncAuthors){
+                    $this->syncAuthors();
+                }
                 Cache::delete($this->getCacheId());
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product is public
@@ -1525,7 +1474,7 @@ class Paper extends BackboneModel{
         return false;
     }
     
-    function update(){
+    function update($syncAuthors=true){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn() && trim($this->title) != ""){
             // Begin Transaction
@@ -1538,7 +1487,11 @@ class Paper extends BackboneModel{
                 if(isset($author->id) && $author->id != 0){
                     $authors[] = $author->id;
                 }
+                else if(isset($author->fullname)){
+                    $authors[] = $author->fullname;
+                }
                 else{
+                    // This is more for legacy purposes
                     $authors[] = $author->name;
                 }
             }
@@ -1555,13 +1508,10 @@ class Paper extends BackboneModel{
                                                 'type' => $this->type,
                                                 'title' => $this->title,
                                                 'date' => $this->date,
-						'acceptance_date' => $this->acceptance_date,
-						'ratio' => $this->ratio,
-						'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
-						'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
-						'duration' => $this->duration,
-						'invited' => $this->invited,
-						'refereed' => $this->refereed,
+                                                'acceptance_date' => $this->acceptance_date,
+                                                'ratio' => $this->ratio,
+                                                'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
+                                                'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1589,7 +1539,9 @@ class Paper extends BackboneModel{
                 DBFunctions::commit();
                 // Sync Authors
                 $this->authorsWaiting = true;
-                $this->syncAuthors();
+                if($syncAuthors){
+                    $this->syncAuthors();
+                }
                 Cache::delete($this->getCacheId());
                 if($this->getAccessId() == 0){
                     // Only send out notifications if the Product was public
@@ -1681,7 +1633,8 @@ class Paper extends BackboneModel{
             
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
-                                   'name' => $author->getNameForForms(),
+                                   'name' => $author->getNameForProduct(),
+                                   'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){
