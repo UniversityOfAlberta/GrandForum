@@ -31,7 +31,7 @@ class PersonCoursesTab extends AbstractTab {
         foreach($courses as $course){
             $courseEval = $this->person->getCourseEval($course->id);
             $this->html .= "<tr>";
-            $this->html .= "<td>{$course->subject} {$course->catalog} ({$course->component})</td>";
+            $this->html .= "<td style='white-space:nowrap;'>{$course->subject} {$course->catalog} ({$course->component})</td>";
             $this->html .= "<td>{$course->getTerm()}</td>";
             $this->html .= "<td>{$course->descr}</td>";
             $this->html .= "<td>{$course->courseDescr}</td>";

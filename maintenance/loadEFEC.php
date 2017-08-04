@@ -76,6 +76,8 @@
     DBFunctions::execSQL("TRUNCATE grand_movedOn", true);
     DBFunctions::execSQL("TRUNCATE grand_theses", true);
     DBFunctions::execSQL("TRUNCATE grand_managed_people", true);
+    DBFunctions::execSQL("TRUNCATE grand_new_grants", true);
+    DBFunctions::execSQL("TRUNCATE grand_new_grant_partner", true);
     
     DBFunctions::execSQL("DELETE FROM mw_user WHERE user_id != 1", true);
     DBFunctions::execSQL("DELETE FROM grand_roles WHERE user_id != 1", true);
@@ -583,7 +585,8 @@
                strstr(strtolower($row['Proj Mgr Role']), "vp research") === false &&
                strstr(strtolower($row['Awd Spons Program Description']), "studentship") === false &&
                strstr(strtolower($row['Awd Spons Program Description']), "scholarship") === false &&
-               strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false){
+               strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false &&
+               intval($newGrant->total) >= 5000){
                 // Above are ignore rules from Renee
                 $newGrant->create();
             }
@@ -795,6 +798,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'Community Outreach Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -821,6 +825,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'Departmental Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -847,6 +852,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'Faculty Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -873,6 +879,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'Other Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -899,6 +906,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'Scientific Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -928,6 +936,7 @@
         $product = new Product(array());
         $product->category = 'Activity';
         $product->type = 'University Committee';
+        $committee['description'] = str_replace("￼", "", $committee['description']);
         $product->description = trim($committee['description']);
         $product->title = trim(substr($committee['description'], 0, 100));
         if($product->title != $committee['description']){
@@ -973,6 +982,14 @@
     echo "\n";
     
     require_once("importAllCourses.php");
+
+    echo "\n";
+    
+    require_once("2importAwardsXls.php");
+    
+    echo "\n";
+    
+    require_once("3importPartnersXls.php");
 
     echo "\n";
 ?>
