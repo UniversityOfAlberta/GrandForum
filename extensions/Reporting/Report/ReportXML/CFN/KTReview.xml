@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="KT Review" reportType="RP_KT_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="RMC">
+        <Role role="RMC">
             <SectionPermission id="eula" permissions="-" />
             <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="ktc_review" permissions="-" />
             <SectionPermission id="rmc_review" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="KTC">
+        <Role role="KTC">
             <SectionPermission id="eula" permissions="-" />
             <SectionPermission id="ex_review" permissions="-" />
             <SectionPermission id="ktc_review" permissions="rw" />
@@ -19,7 +19,7 @@
             <SectionPermission id="ktc_review" permissions="-" />
             <SectionPermission id="rmc_review" permissions="-" />
         </Role-->
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="EVALUATOR">
+        <Role role="EVALUATOR">
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="ex_review" permissions="rw" />
             <SectionPermission id="ktc_review" permissions="" />
