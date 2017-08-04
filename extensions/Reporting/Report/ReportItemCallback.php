@@ -148,6 +148,7 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "replace" => "replace",
             "set" => "set",
             "get" => "get",
             "and" => "andCond",
@@ -1646,6 +1647,10 @@ class ReportItemCallback {
             return "";
         }
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function replace($pattern, $replacement, $string){
+        return str_replace($pattern, $replacement, $string);
     }
     
     function set($key, $val){

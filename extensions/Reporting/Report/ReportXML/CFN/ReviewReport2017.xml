@@ -299,17 +299,17 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right'>
                                 {round(
                                     {multiply(
@@ -489,17 +489,17 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_11,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_9,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_10,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_KTC_REVIEW,KT_KTC_11,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right'>
                                 {round(
                                     {multiply(
@@ -679,17 +679,17 @@
                         <![CDATA[
                             <tr>
                             <td>{$user_name}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_9,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_10,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_11,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_1,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_2,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_3,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_4,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_5,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_6,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_7,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_8,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_9,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_10,{$parent_id},{$user_id},0)},2)}</td>
+                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_RMC_REVIEW,KT_RMC_11,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right'>
                                 {round(
                                     {multiply(
