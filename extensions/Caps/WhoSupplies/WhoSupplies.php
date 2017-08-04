@@ -271,7 +271,7 @@ class WhoSupplies extends SpecialPage{
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>On April 27th, the Ontario Liberal government announced its provincial budget for 2017 which includes universal coverage of Mifegymiso®, read more from the media <a href='http://news.nationalpost.com/news/canada/free-abortion-pill-cash-for-boobs-and-babies-top-23-takeaways-from-the-ontario-budget' target='_blank'>here</a></li>
-                    <li>The Ontario government has announced full coverage of Mifegymiso® to take effect by August 10th, 2017, <a href='http://www.cbc.ca/news/canada/toronto/abortion-pill-mifegymiso-1.4233611' target='_blank'>read more</a>/li>
+                    <li>The Ontario government has announced full coverage of Mifegymiso® to take effect by August 10th, 2017, <a href='http://www.cbc.ca/news/canada/toronto/abortion-pill-mifegymiso-1.4233611' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
