@@ -268,10 +268,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="table_head" type="StaticReportItem">
+                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        [Download Application]
+                        {$item}
                         <table class='wikitable' id="{$project_id}_table1ex">
                             <thead>
                                 <tr>
@@ -458,10 +458,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="table_head" type="StaticReportItem">
+                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        [Download Application]
+                        {$item}
                         <table class='wikitable' id="{$project_id}_table1ktc">
                             <thead>
                                 <tr>
@@ -648,10 +648,10 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="table_head" type="StaticReportItem">
+                <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
                         <div style="margin: 10px;">
-                        [Download Application]
+                        {$item}
                         <table class='wikitable' id="{$project_id}_table1rmc">
                             <thead>
                                 <tr>
