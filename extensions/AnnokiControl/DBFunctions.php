@@ -479,6 +479,7 @@ class DBFunctions {
 	
 	static function close(){
 	    DBFunctions::initDB();
+        DBFunctions::commit();
 	    DBFunctions::$dbw->close();
 	}
 	

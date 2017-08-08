@@ -366,14 +366,15 @@ function ShibUserLoadFromSession($user, &$result)
 	}
  
 	//Is the user already in the database?
-	$person = Person::newFromEmployeeId($shib_employeeId);
+	$person = new Person(array());
+	//$person = Person::newFromEmployeeId($shib_employeeId);
 	if($person->getId() == 0){
 	    $person = Person::newFromEmail($shib_email);
 	}
 	if($person->getId() == 0){
 	    $person = Person::newFromName($shib_UN);
 	}
-	if($person->getId() == 0){
+	if($person->getId() != 0){
 		$user = User::newFromName($shib_UN);
 		$user->load();
 		$wgAuth->existingUser = true;
@@ -448,7 +449,8 @@ function ShibUserLoadFromSession($user, &$result)
 	ShibAddGroups($user);
 	DBFunctions::update('mw_user',
                         array('user_email' => $shib_email,
-                              'employee_id' => $shib_employeeId)
+                              //'employee_id' => $shib_employeeId
+                              ),
                         array('user_id' => EQ($user->getId())));
     Cache::delete("idsCache_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
