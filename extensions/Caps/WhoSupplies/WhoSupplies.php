@@ -28,14 +28,15 @@ class WhoSupplies extends SpecialPage{
                 <ul>
                     <li>There is no longer any requirement for a health care professional to witness a person taking either of the drugs in Mifegymiso, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=2'>read more</a></li>
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
-                    <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso(R), <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
+                    <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso®, <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
+                    <li>On May 18th, Health Canada released a Dear Healthcare Professional Letter to clarify the different requirements associate with Mifegymiso®, <a href='http://healthycanadians.gc.ca/recall-alert-rappel-avis/hc-sc/2017/63330a-eng.php' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
                     <li>People are not required to present a signed consent form to a pharmacist when filling a Rx for Mife, <a href='https://www.caps-cpca.ubc.ca/index.php/Special:LatestNews?pdf=3' >read more</a></li>
                     <li>Health Canada’s <a href='https://www.caps-cpca.ubc.ca/AnnokiUploadAuth.php/7/7a/Patients_Mifegymiso_Eng_guide_01_19_17.pdf' target='_blank'>Patient Information Guide</a></li>
-                    <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso(R), <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
+                    <li>On May 18th, 2017 Celopharma, in collaboration with Health Canada, issued communication to clarify the different requirements to prescribe, order, stock, and/or dispense Mifegymiso®, <a href='{$wgServer}{$wgScriptPath}/data/HPRC_Mifegymiso_{$wgLang->getCode()}-signed.pdf'>read more</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
@@ -260,18 +261,19 @@ class WhoSupplies extends SpecialPage{
             <div>
                 <h3>Physician Regulations</h3>
                 <ul>
-                    <li>See information under 'National Regulations'</li>
+                    <li>The College of Physicians and Surgeons of Ontario has issued guidance for its members, <a href='http://www.cpso.on.ca/Policies-Publications/Positions-Initiatives/Mifegymiso' target='_blank'>click here</a> for details</li>
                 </ul>
                 
                 <h3>Pharmacist Regulations</h3>
                 <ul>
-                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidlines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
+                    <li>On March 7th, 2017, the Ontario College of Pharmacists published guidelines to support the practice of pharmacy professionals dispensing Mifegymiso® in Ontario, joining Bristish Columbia <a href='http://www.ocpinfo.com/library/practice-related/download/Dispensing_Mifegymiso.pdf' target='_blank'>read more</a></li>
                 </ul>
                 
                 <h3>Coverage Information</h3>
                 <ul>
                     <li>On April 27th, the Ontario Liberal government announced its provincial budget for 2017 which includes universal coverage of Mifegymiso®, read more from the media <a href='http://news.nationalpost.com/news/canada/free-abortion-pill-cash-for-boobs-and-babies-top-23-takeaways-from-the-ontario-budget' target='_blank'>here</a></li>
                     <li>The Ontario government has announced full coverage of Mifegymiso® to take effect by August 10th, 2017, <a href='http://www.cbc.ca/news/canada/toronto/abortion-pill-mifegymiso-1.4233611' target='_blank'>read more</a></li>
+                    <li>Pharmacy billing procedures including reimbursement and claim submissions for Mifegymiso®, <a href='http://www.health.gov.on.ca/en/pro/programs/drugs/opdp_eo/eo_communiq.aspx' target='_blank'>click here</a></li>
                 </ul>
                 
                 <h3>Shipment/Distributing Information</h3>
