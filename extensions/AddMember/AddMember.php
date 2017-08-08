@@ -227,34 +227,36 @@ class AddMember extends SpecialPage{
                 }
             }
             $refHTML = "<ul>".implode("", $refHTML)."</ul>";
-            $forms[] = "<form action='$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
-                            <input type='hidden' name='id' value='{$request->getId()}' />
-                            <input type='hidden' name='wpName' value='{$request->getName()}' />
-                            <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
-                            <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
-                            <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
-                            <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
-                            <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
-                            <input type='hidden' name='wpOtherRole' value='".str_replace("'", "&#39;", @$extras['otherRole'])."' />
-                            <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
-                            <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
-                            <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
-                            <input type='hidden' name='wpLanguage' value='".str_replace("'", "&#39;", $extras['language'])."' />
-                            <input type='hidden' name='wpPostalCode' value='".str_replace("'", "&#39;", $extras['postal_code'])."' />
-                            <input type='hidden' name='wpCity' value='".str_replace("'", "&#39;", $extras['city'])."' />
-                            <input type='hidden' name='wpProvince' value='".str_replace("'", "&#39;", $extras['province'])."' />
-                            <input type='hidden' name='wpClinic' value='".str_replace("'", "&#39;", $extras['clinic'])."' />
-                            <input type='hidden' name='wpSpecialty' value='".str_replace("'", "&#39;", $extras['specialty'])."' />
-                            <input type='hidden' name='wpProvision' value='".str_replace("'", "&#39;", $extras['provision'])."' />
-                            <input type='hidden' name='wpPharmacyName' value='".str_replace("'", "&#39;", $extras['pharmacy_name'])."' />
-                            <input type='hidden' name='wpPharmacyAddress' value='".str_replace("'", "&#39;", $extras['pharmacy_address'])."' />
-                            <input type='hidden' name='wpCollectDemo' value='".str_replace("'", "&#39;", @$extras['collect_demo'])."' />
-                            <input type='hidden' name='wpCollectComments' value='".str_replace("'", "&#39;", @$extras['collect_comments'])."' />
-                            <input type='hidden' name='wpSendMail' value='$wpSendMail' />
-                            <input id='{$request->getId()}_promote' type='submit' name='submit' value='Promote' />
-                            <input id='{$request->getId()}_ignore' type='submit' name='submit' value='Ignore' />
-                            <input id='{$request->getId()}_accept' type='submit' name='submit' value='Accept' />
-                        </form>";
+            if(!$history){
+                $forms[] = "<form action='$wgScriptPath/index.php/Special:AddMember?action=view' method='post'>
+                                <input type='hidden' name='id' value='{$request->getId()}' />
+                                <input type='hidden' name='wpName' value='{$request->getName()}' />
+                                <input type='hidden' name='wpEmail' value='{$request->getEmail()}' />
+                                <input type='hidden' name='wpRealName' value='{$request->getRealName()}' />
+                                <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
+                                <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
+                                <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
+                                <input type='hidden' name='wpOtherRole' value='".str_replace("'", "&#39;", @$extras['otherRole'])."' />
+                                <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
+                                <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
+                                <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
+                                <input type='hidden' name='wpLanguage' value='".str_replace("'", "&#39;", $extras['language'])."' />
+                                <input type='hidden' name='wpPostalCode' value='".str_replace("'", "&#39;", $extras['postal_code'])."' />
+                                <input type='hidden' name='wpCity' value='".str_replace("'", "&#39;", $extras['city'])."' />
+                                <input type='hidden' name='wpProvince' value='".str_replace("'", "&#39;", $extras['province'])."' />
+                                <input type='hidden' name='wpClinic' value='".str_replace("'", "&#39;", $extras['clinic'])."' />
+                                <input type='hidden' name='wpSpecialty' value='".str_replace("'", "&#39;", $extras['specialty'])."' />
+                                <input type='hidden' name='wpProvision' value='".str_replace("'", "&#39;", $extras['provision'])."' />
+                                <input type='hidden' name='wpPharmacyName' value='".str_replace("'", "&#39;", $extras['pharmacy_name'])."' />
+                                <input type='hidden' name='wpPharmacyAddress' value='".str_replace("'", "&#39;", $extras['pharmacy_address'])."' />
+                                <input type='hidden' name='wpCollectDemo' value='".str_replace("'", "&#39;", @$extras['collect_demo'])."' />
+                                <input type='hidden' name='wpCollectComments' value='".str_replace("'", "&#39;", @$extras['collect_comments'])."' />
+                                <input type='hidden' name='wpSendMail' value='$wpSendMail' />
+                                <input id='{$request->getId()}_promote' type='submit' name='submit' value='Promote' />
+                                <input id='{$request->getId()}_ignore' type='submit' name='submit' value='Ignore' />
+                                <input id='{$request->getId()}_accept' type='submit' name='submit' value='Accept' />
+                            </form>";
+            }
             $wgOut->addHTML("<td align='left'>{$refHTML}</td>
                         <td>{$file_name}</td>
 			            <td align='left'>".implode("<br />", $other)."</td>
