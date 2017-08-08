@@ -418,82 +418,6 @@
                         ]]>
                     </ReportItem>
                     
-                    <ReportItem id="ex_10" blobType="BLOB_TEXT" blobItem="KT_EX_10" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                        <![CDATA[
-                            <h2>10. Budget Justification</h2>
-                            <p>Does the applicant justify the need for the budget items listed and are the costs associated with each item reasonable?  Please review the Budget document (Excel document) and if necessary refer to Section 3.2.1 (Approach) for additional budget justification.  Note applicants were advised that, because of the limited overall budget amount (for this KT competition) and the expected high interest in this competition, the budget justification within submitted proposals will be a major evaluation criterion.</p>
-                            <table class='wikitable' width='100%'>
-                                <tr>
-                                    <th width='23%'>Unacceptable<br />
-                                        <small>(score = 0)</small>
-                                    </th>
-                                    <th width='23%'>Borderline<br />
-                                        <small>(score = 1)</small>
-                                    </th>
-                                    <th width='23%'>Good/Solid<br />
-                                        <small>(score = 3)</small>
-                                    </th>
-                                    <th width='23%'>Excellent<br />
-                                        <small>(score = 4)</small>
-                                    </th>
-                                    <th width='8%'>Your score<br />
-                                        <small>(Max 4)</small></th>
-                                </tr>
-                                <tr>
-                                    <td class='small' valign='top'>The budget was not appropriately justified and is unreasonable.</td>
-                                    <td class='small' valign='top'>Parts of the budget are appropriately justified. </td>
-                                    <td class='small' valign='top'>The entire budget is justified, although some components appear unreasonable.</td>
-                                    <td class='small' valign='top'>The entire budget is justified and very reasonable.</td>
-                                    <td align='center'>{$item}</td>
-                                </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="ex_10_comments" type="Textarea" blobItem="KT_EX_10_COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <b>Comments: Please provide comments to justify your score:</b> {$item}
-                        ]]>
-                    </ReportItem>
-                    
-                    <ReportItem id="ex_11" blobType="BLOB_TEXT" blobItem="KT_EX_11" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
-                        <![CDATA[
-                            <h2>11.  Budget Amount and Potential Impact</h2>
-                            <p>Does the potential impact of the study justify the requested total study budget?  Note that there was no maximum budget amount stipulated to applicants and thus applicants were advised that increasing budgetary requests will be expected to produce a proportionately greater impact and will undergo commensurate scrutiny as to their ability to achieve these impacts.</p>
-                            <table class='wikitable' width='100%'>
-                                <tr>
-                                    <th width='23%'>Unacceptable<br />
-                                        <small>(score = 0)</small>
-                                    </th>
-                                    <th width='23%'>Borderline<br />
-                                        <small>(score = 1)</small>
-                                    </th>
-                                    <th width='23%'>Good/Solid<br />
-                                        <small>(score = 3)</small>
-                                    </th>
-                                    <th width='23%'>Excellent<br />
-                                        <small>(score = 4)</small>
-                                    </th>
-                                    <th width='8%'>Your score<br />
-                                        <small>(Max 4)</small></th>
-                                </tr>
-                                <tr>
-                                    <td class='small' valign='top'>The impact of the study is expected to be at the micro-level and thus the budget amount cannot be justified.  In this context "micro-level" impact refers to the study affecting a very small number of individuals, not necessarily representative of most older adults living with frailty and thus the study impact will not reach much beyond the small number of citizens in the study.</td>
-                                    <td class='small' valign='top'>The impact of the study is expected to be at the meso-level and thus the budget amount may be appropriate.  In this context "meso-level" impact refers to the study affecting a small number of individuals in a single province.  However, the magnitude of the impact on this small group is likely to be high, although the ability to scale and spread these results in the future are likely low.</td>
-                                    <td class='small' valign='top'>The impact of the study is expected to be at the macro-level and thus the budget amount is appropriate.  In this context "macro-level" impact refers to either of the following scenarios: 
-<ol>
-    <li>study affects a large population of individuals, representative of most older adults living with frailty and thus the future impact should be applicable nation-wide, although the magnitude of the impact on this large population may be minor, or</li>
-    <li>study affects a small number of indivuduals, but the impact is likely to be significant and the ability to scale and spread the results in the future are likely very high.</li></td>
-                                    <td class='small' valign='top'>The impact of the study is expected to be at the macro-level and thus the budget amount is appropriate.  In this context "macro-level" impact refers to the study affecting a large population of individuals, representative of all older adults living with frailty and thus the impact should be nation-wide.  In addition, the magnitude of the impact to this large population is likely to be very significant.</td>
-                                    <td align='center'>{$item}</td>
-                                </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="ex_11_comments" type="Textarea" blobItem="KT_EX_11_COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <b>Comments: Please provide comments to justify your score:</b> {$item}
-                        ]]>
-                    </ReportItem>
                     <ReportItem id="total1" type="StaticReportItem">
                         <![CDATA[
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
@@ -506,11 +430,9 @@
                                          {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$user_id},{$my_id},0)},
                                          {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$user_id},{$my_id},0)},
-                                         {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$user_id},{$my_id},0)}
+                                         {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)}
                                     )}
-                                </b> (Score out of 44)</p>
+                                </b> (Score out of 36)</p>
                             <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
                                 <b id="proj{$user_id}_total5">
                                     {round(
@@ -524,11 +446,9 @@
                                                      {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$user_id},{$my_id},0)},
                                                      {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$user_id},{$my_id},0)},
-                                                     {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$user_id},{$my_id},0)}
+                                                     {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 44)}
+                                            , 36)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score converted out of 5)</p>
@@ -541,7 +461,7 @@
                                         }
                                     });
                                     $("#proj{$user_id}_total").html(Math.round(total*100)/100);
-                                    $("#proj{$user_id}_total5").html(Math.round((total/44)*5*100)/100 );
+                                    $("#proj{$user_id}_total5").html(Math.round((total/36)*5*100)/100 );
                                 });
                             </script>
                             </div>

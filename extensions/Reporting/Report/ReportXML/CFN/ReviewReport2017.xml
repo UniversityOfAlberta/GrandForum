@@ -232,8 +232,6 @@
                         {set(q7, 0)}
                         {set(q8, 0)}
                         {set(q9, 0)}
-                        {set(q10, 0)}
-                        {set(q11, 0)}
                         
                         {set(nReviewers, 0)}
                     ]]>
@@ -247,9 +245,7 @@
                                                                {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
                                                                {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},)},
-                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)},)}
+                                                               {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)}
                                                           )}">
                         <![CDATA[
                             {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
@@ -261,8 +257,6 @@
                             {set(q7, {add({get(q7)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)})})}
                             {set(q8, {add({get(q8)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)})})}
                             {set(q9, {add({get(q9)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)})})}
-                            {set(q10, {add({get(q10)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)})})}
-                            {set(q11, {add({get(q11)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)})})}
 
                             {set(nReviewers, {add({get(nReviewers)},1)})}
                         ]]>
@@ -285,8 +279,6 @@
                                     <th>Q7</th>
                                     <th>Q8</th>
                                     <th>Q9</th>
-                                    <th>Q10</th>
-                                    <th>Q11</th>
                                     <th>Total</th>
                                     <th width='60%'>Comments</th>
                                 </tr>
@@ -308,8 +300,6 @@
                             <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},2)}</td>
-                            <td align='right' title='{replace(',&#39;,{getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11_COMMENTS,{$parent_id},{$user_id},0)})}'>{round({getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)},2)}</td>
                             <td align='right'>
                                 {round(
                                     {multiply(
@@ -322,11 +312,9 @@
                                                  {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},
                                                  {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},
                                                  {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},
-                                                 {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},
-                                                 {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},
-                                                 {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)}
+                                                 {getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)}
                                             )}
-                                        ,44)}
+                                        ,36)}
                                     ,5)}
                                 ,2)}
                             </td>
@@ -373,12 +361,6 @@
                                         {round({divide({get(q9)},{get(nReviewers)})},2)}
                                     </th>
                                     <th>
-                                        {round({divide({get(q10)},{get(nReviewers)})},2)}
-                                    </th>
-                                    <th>
-                                        {round({divide({get(q11)},{get(nReviewers)})},2)}
-                                    </th>
-                                    <th>
                                         {set(total, 
                                             {add({get(q1)},
                                                  {get(q2)},
@@ -388,12 +370,10 @@
                                                  {get(q6)},
                                                  {get(q7)},
                                                  {get(q8)},
-                                                 {get(q9)},
-                                                 {get(q10)},
-                                                 {get(q11)}
+                                                 {get(q9)}
                                             )}
                                         )}
-                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},44)},5)},2)}
+                                        {round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},2)}
                                     </th>
                                     <th></th>
                                 </tr>
@@ -804,8 +784,6 @@
                             <th>Avg. Q7</th>
                             <th>Avg. Q8</th>
                             <th>Avg. Q9</th>
-                            <th>Avg. Q10</th>
-                            <th>Avg. Q11</th>
                             <th>Avg. Total</th>
                         </tr>
                     </thead>
@@ -824,8 +802,6 @@
                     {set(q7, 0)}
                     {set(q8, 0)}
                     {set(q9, 0)}
-                    {set(q10, 0)}
-                    {set(q11, 0)}
                     
                     {set(nReviewers, 0)}
                 ]]>
@@ -839,9 +815,7 @@
                                                            {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_6,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)},)},
                                                            {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)},)},
-                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)},)}
+                                                           {!=({getText(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)},)}
                                                       )}">
                     <![CDATA[
                         {set(q1, {add({get(q1)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_1,{$parent_id},{$user_id},0)})})}
@@ -853,8 +827,6 @@
                         {set(q7, {add({get(q7)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_7,{$parent_id},{$user_id},0)})})}
                         {set(q8, {add({get(q8)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_8,{$parent_id},{$user_id},0)})})}
                         {set(q9, {add({get(q9)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_9,{$parent_id},{$user_id},0)})})}
-                        {set(q10, {add({get(q10)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_10,{$parent_id},{$user_id},0)})})}
-                        {set(q11, {add({get(q11)},{getNumber(RP_KT_REVIEW,KT_EX_REVIEW,KT_EX_11,{$parent_id},{$user_id},0)})})}
 
                         {set(nReviewers, {add({get(nReviewers)},1)})}
                     ]]>
@@ -871,12 +843,10 @@
                              {get(q6)},
                              {get(q7)},
                              {get(q8)},
-                             {get(q9)},
-                             {get(q10)},
-                             {get(q11)},
+                             {get(q9)}
                         )}
                     )}
-                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},44)},5)},2)})}
+                    {set(total,{round({multiply({divide({divide({get(total)},{get(nReviewers)})},36)},5)},2)})}
                     {set(highlight,)}
                 ]]>
             </ReportItem>
@@ -915,12 +885,6 @@
                         </td>
                         <td align='right'>
                             {round({divide({get(q9)},{get(nReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(q10)},{get(nReviewers)})},2)}
-                        </td>
-                        <td align='right'>
-                            {round({divide({get(q11)},{get(nReviewers)})},2)}
                         </td>
                         <td align='right' style='{get(highlight)}'>
                             {get(total)}
