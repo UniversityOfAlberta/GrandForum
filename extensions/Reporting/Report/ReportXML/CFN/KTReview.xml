@@ -489,7 +489,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ktc_review" name="Scientific Review" blobSection="KT_KTC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
+    <ReportSection id="ktc_review" name="KTC Review" blobSection="KT_KTC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
@@ -984,7 +984,7 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="rmc_review" name="Fit Review" blobSection="KT_RMC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
+    <ReportSection id="rmc_review" name="RMC Review" blobSection="KT_RMC_REVIEW" tooltip="Review of KT Grants" type="EditableReportSection">
         <Instructions>
             <![CDATA[
                 <ol>
