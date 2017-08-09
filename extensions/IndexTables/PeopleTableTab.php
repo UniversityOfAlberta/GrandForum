@@ -75,10 +75,12 @@ class PeopleTableTab extends AbstractTab {
                 }
 
                 if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                    $projects = $person->getProjects();
+                    $projects = array_merge($person->leadership(), $person->getProjects());
                     $projs = array();
                     foreach($projects as $project){
-                        if(!$project->isSubProject() && ($project->getPhase() == PROJECT_PHASE)){
+                        if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
+                            $project->getPhase() == PROJECT_PHASE &&
+                            $person->isRole($this->table, $project)){
                             $subprojs = array();
                             foreach($project->getSubProjects() as $subproject){
                                 if($person->isMemberOf($subproject)){
@@ -89,7 +91,7 @@ class PeopleTableTab extends AbstractTab {
                             if(count($subprojs) > 0){
                                 $subprojects = "(".implode(", ", $subprojs).")";
                             }
-                            $projs[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
+                            $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                         }
                     }
                     $this->html .= "<td align='left'style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";

@@ -2933,20 +2933,27 @@ class Person extends BackboneModel {
                     $this->isRole(CI.'-Candidate', $project));
         }
         if($role == PL || $role == 'PL'){
-            return $this->isProjectLeader();
+            return ($project != null) ? $this->leadershipOf($project) : $this->isProjectLeader();
         }
         if($role == APL){
             $leadership = $this->leadership(false, true, 'Administrative');
-            if(count($leadership) > 0){
+            if($project != null){
+                foreach($leadership as $proj){
+                    if($proj == $project->getId()){
+                        return true;
+                    }
+                }
+            }
+            else if(count($leadership) > 0){
                 return true;
             }
             return false;
         }
         if($role == TL || $role == 'TL'){
-            return $this->isThemeLeader();
+            return ($project != null) ? $this->isThemeLeaderOf($project) : $this->isThemeLeader();
         }
         if($role == TC || $role == 'TC'){
-            return $this->isThemeCoordinator();
+            return ($project != null) ? $this->isThemeCoordinatorOf($project) : $this->isThemeCoordinator();
         }
         if($role == EVALUATOR){
             return $this->isEvaluator();
