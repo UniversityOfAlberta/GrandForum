@@ -185,7 +185,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                if($person->isRoleDuring(NI, $start, $end)){
+                if($person->isRoleDuring(NI, $start, $end) || $person->leadershipOf($project)){
                     $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
