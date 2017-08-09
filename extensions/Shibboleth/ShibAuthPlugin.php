@@ -375,7 +375,7 @@ function ShibUserLoadFromSession($user, &$result)
 	    $person = Person::newFromName($shib_UN);
 	}
 	if($person->getId() != 0){
-		$user = User::newFromName($shib_UN);
+		$user = $person->getUser();
 		$user->load();
 		$wgAuth->existingUser = true;
 		$wgAuth->updateUser($user); //Make sure password is nologin

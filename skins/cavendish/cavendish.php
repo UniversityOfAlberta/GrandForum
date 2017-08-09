@@ -508,6 +508,17 @@ class CavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
+		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		    <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').css('cursor', 'pointer');
+                    $('#status_logout').click(function(){
+                        document.location = 'https://forum-fos.ualberta.ca/Shibboleth.sso/Logout?return=' + wgServer + wgScriptPath;
+                    });
+                });
+	        </script>
+		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
 		    

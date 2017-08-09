@@ -1,8 +1,12 @@
 <?php
 
 // Shibboleth Authentication Stuff
-
-if(php_sapi_name() != 'cli'){
+if(isset($_GET['clearSession'])){
+    session_unset();
+    session_destroy();
+    exit;
+}
+else if(php_sapi_name() != 'cli' && isset($_SERVER['uid'])){
     // Load ShibAuthPlugin
     require_once('ShibAuthPlugin.php');
      
