@@ -514,7 +514,7 @@ class CavendishTemplate extends QuickTemplate {
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').css('cursor', 'pointer');
                     $('#status_logout').click(function(){
-                        document.location = 'https://forum-fos.ualberta.ca/Shibboleth.sso/Logout?return=' + wgServer + wgScriptPath;
+                        document.location = "<?php echo $config->getValue('shibLogoutUrl') ?>";
                     });
                 });
 	        </script>
