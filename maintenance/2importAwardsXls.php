@@ -1,18 +1,25 @@
 <?php
     require_once( "commandLine.inc" );
     $wgUser=User::newFromId("1");
-    for($num=0;$num<=26;$num++){
+    for($num=1;$num<=25;$num++){
         if(file_exists("grant_awards/award".$num.".csv")){
             $handle = fopen("grant_awards/award".$num.".csv", "r");
-            echo "\nImporting Awards{$num}.csv\n";
+            echo "\nImporting award{$num}.csv\n";
             $iterationsSoFar = 0;
             $lines = array();
             while (($data = fgetcsv($handle, 0, ",")) !== false) {
                 $lines[] = $data;
             }
             fclose($handle);
+            $offset = 0;
             foreach($lines as $i => $cells){
+                if($i == 0 && array_search("Num_Partie", $cells) !== false){
+                    $offset++;
+                }
                 if($i > 0 && count($cells)>1){
+                    foreach($cells as $key => $cell){
+                        $cells[$key] = utf8_encode($cell);
+                    }
                     $fullname = $cells[1];
                     $name_array = explode(",", $fullname);
                     $first_name = @$name_array[1];
@@ -26,8 +33,8 @@
                         $institution = str_replace("'", "''",$cells[4]);
                         $province = str_replace("'", "''",$cells[5]);
                         $country = str_replace("'", "''",$cells[7]);
-                        $fiscal_year = $cells[9].'-01-01 00:00:00';
-                        $competition_year = $cells[10].'-01-01 00:00:00';
+                        $fiscal_year = $cells[9];
+                        $competition_year = $cells[10];
                         $amount = $cells[11];
                         $program_id = $cells[12];
                         $program_name = str_replace("'", "''",$cells[13]);
@@ -48,16 +55,16 @@
                         if($cells[31] == ""){
                             $partie = 0;
                         }
-                        $nb_partie = $cells[32];
+                        $nb_partie = $cells[32+$offset];
                         if($cells[31] == ""){
                             $nb_partie = 0;
                         }
-                        $application_title = str_replace("'", "''",$cells[33]);
-                        $keyword = str_replace("'", "''",$cells[34]);
-                        if($cells[34] == ""){
+                        $application_title = str_replace("'", "''",$cells[33+$offset]);
+                        $keyword = str_replace("'", "''",$cells[34+$offset]);
+                        if($cells[34+$offset] == ""){
                             $keyword = '';
                         }
-                        $application_summary = str_replace("'", "''",$cells[35]);
+                        $application_summary = str_replace("'", "''",$cells[35+$offset]);
 
                         $status = DBFunctions::insert('grand_new_grants',
                                                       array('user_id' => $user_id,

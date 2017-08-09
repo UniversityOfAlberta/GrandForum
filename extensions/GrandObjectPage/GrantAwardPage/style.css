@@ -1,0 +1,111 @@
+/* Any custom styles should go here */
+
+#preview {
+    box-shadow: 0 0 5px 0px rgba(0,0,0,0.75);
+    position: absolute;
+    background: white;
+    min-width: 500px;
+    max-width: 750px;
+    padding: 15px;
+    transform: scale(0.5);
+    z-index: 10000;
+}
+
+#contributions {
+    
+}
+
+#contributions.edit {
+    height: 390px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.sortable-widget {
+    display: none;
+}
+
+.sortable-search {
+    margin-top: 10px;
+    text-align: right;
+    padding-left:10px;
+}
+
+.sortable-search > div {
+    width: 50%;
+    margin-left: auto;
+}
+
+.sortable-search input {
+    margin: 0;
+    border-radius: 0;
+    height: 24px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.sortable-outer {
+    width: 50%;
+}
+
+.sortable-container {
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+
+.sortable-left, .sortable-right {
+    vertical-align: top;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sortable-left {
+    margin-right: 5px;
+}
+
+.sortable-right {
+    margin-left: 5px;
+}
+
+.sortable-header {
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 8px 10px;
+}
+
+.sortable-list {
+    max-height: 304px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sortable-container ul {
+    margin: 0;
+    max-height: 280px;
+    height: 280px;
+    width: 100%;
+    background: #EEEEEE;
+}
+
+.sortable-container li {
+    display: block;
+    background: #EEEEEE;
+    margin: 0;
+    padding: 5px 10px;
+    cursor: move;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #555555;
+}
+
+.sortable-container li:hover {
+    background: #E0E0E0;
+}
+
+.sortable-ghost, .sortable-chosen {
+    background: #F8F8F8 !important;
+}

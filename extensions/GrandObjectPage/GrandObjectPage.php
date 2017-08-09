@@ -11,6 +11,7 @@
     require_once("ManageProducts/ManageProducts.php");
     require_once("ProductHistories/ProductHistories.php");
     require_once("GrantPage/GrantPage.php");
+    require_once("GrantAwardPage/GrantAwardPage.php");
     //require_once("AddContributionPage.php");
     //require_once("AddMultimediaPage.php");
     //require_once("AddFormPage.php");

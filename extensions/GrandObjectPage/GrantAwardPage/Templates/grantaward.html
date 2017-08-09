@@ -1,0 +1,59 @@
+<p>
+    <%= description %>
+</p>
+<table>
+    <tr>
+        <td class="label">PI:</td>
+        <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+    </tr>
+    <% if(copi.length > 0) { %>
+        <tr>
+            <td class="label">Co-PI:</td>
+            <td id="copi"></td>
+        </tr>
+    <% } %>
+    <% if(sponsor != ""){ %>
+    <tr>
+        <td class="label">Sponsor:</td>
+        <td><%= sponsor %></td>
+    </tr>
+    <% } %>
+    <% if(start_date != ""){ %>
+    <tr>
+        <td class="label">Start Date:</td>
+        <td><%= start_date.substring(0, 10) %></td>
+    </tr>
+    <% } %>
+    <% if(end_date != ""){ %>
+        <tr>
+            <td class="label">End Date:</td>
+            <td><%= end_date.substring(0, 10) %></td>
+        </tr>
+    <% } %>
+    <% if(project_id != ""){ %>
+        <tr>
+            <td class="label">Project ID:</td>
+            <td><%= project_id %></td>
+        </tr>
+    <% } %>
+    <% if(speed_code != ""){ %>
+        <tr>
+            <td class="label">Speed Code:</td>
+            <td><%= speed_code %></td>
+        </tr>
+    <% } %>
+</table>
+<table class="wikitable" rules="all" frame="box">
+    <tr>
+        <th>Total</th>
+        <th>Funds Available<br />Before Commitments</th>
+        <th>Funds Available<br />After Commitments</th>
+    </tr>
+    <tr>
+        <td align="right">$<%= number_format(total, 2) %></td>
+        <td align="right">$<%= number_format(funds_before, 2) %></td>
+        <td align="right">$<%= number_format(funds_after, 2) %></td>
+    </tr>
+</table>
+<br />
+<button id="edit">Edit Grant Award</button>

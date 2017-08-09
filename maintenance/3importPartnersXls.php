@@ -13,9 +13,13 @@
             fclose($handle);
             foreach($lines as $i => $cells){
                 if($i > 0 && count($cells)>1){
+                    foreach($cells as $key => $cell){
+                        $cells[$key] = utf8_encode($cell);
+                    }
                     $cle = $cells[0];
-                    $searchStatement = "SELECT * FROM grand_new_grants WHERE cle = $cle";
-                    $datacheck = DBFunctions::execSQL($searchStatement);
+                    $datacheck = DBFunctions::select(array('grand_new_grants'),
+                                                     array('*'),
+                                                     array('cle' => $cle));
                     if(count($datacheck)>0){
                         $part_organization_id = str_replace("'", "''",$cells[1]);
                         $part_institution = str_replace("'", "''",$cells[2]);

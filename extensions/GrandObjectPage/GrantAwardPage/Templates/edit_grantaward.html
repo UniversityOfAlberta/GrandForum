@@ -1,0 +1,83 @@
+<p>
+    <h3>Title</h3>
+    <%= HTML.TextBox(this, 'title', {size: '60'}) %>
+    <h3>Description:</h3>
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+</p>
+<div id="preview" style="display:none;"></div>
+<table>
+    <tr>
+        <td class="label">PI:</td>
+        <td colspan="3"><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
+    </tr>
+    <% if(copi.length > 0) { %>
+        <tr>
+            <td class="label">Co-PI:</td>
+            <td id="copi" colspan="3"></td>
+        </tr>
+    <% } %>
+    <tr>
+        <td class="label">Sponsor:</td>
+        <td colspan="3"><%= HTML.TextBox(this, 'sponsor') %></td>
+    </tr>
+    <tr>
+        <td class="label">Start Date:</td>
+        <td colspan="3"><%= HTML.DatePicker(this, 'start_date', {format: 'yy-mm-dd'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">End Date:</td>
+        <td colspan="3"><%= HTML.DatePicker(this, 'end_date', {format: 'yy-mm-dd'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Project ID:</td>
+        <td colspan="3"><%= HTML.TextBox(this, 'project_id') %></td>
+    </tr>
+    <tr>
+        <td class="label">Speed Code:</td>
+        <td colspan="3"><%= HTML.TextBox(this, 'speed_code') %></td>
+    </tr>
+</table>
+<table class="wikitable" rules="all" frame="box">
+    <tr>
+        <th>Total</th>
+        <th>Funds Available<br />Before Commitments</th>
+        <th>Funds Available<br />After Commitments</th>
+    </tr>
+    <tr>
+        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'total') %></span></td>
+        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'funds_before') %></span></td>
+        <td>$ <span style="vertical-align: middle;"><%= HTML.TextBox(this, 'funds_after') %></span></td>
+    </tr>
+</table>
+<!--h2>Contributions</h2>
+<p>Choose from the following list of contributions.  If you do not see a contribution then you may need to <a href="<%= wgServer %><%= wgScriptPath %>/index.php/Special:AddContributionPage">add it</a>.</p>
+<div id="contributions" class="edit">
+    <div class="sortable-widget">
+        <div class="sortable-search">
+            <div>
+                <input type="text" placeholder="Search Available Contributions..." />
+            </div>
+        </div>
+        <div class="sortable-container">
+            <div class="sortable-left">
+                <div class="sortable-header">Associated Contributions</div>
+                <div class="sortable-list">
+                    <ul id="sortable1">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="sortable-container">
+            <div class="sortable-right">
+                <div class="sortable-header">Available Contributions</div>
+                <div class="sortable-list">
+                    <ul id="sortable2">
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div-->
+<button id="save"><% if(this.model.isNew()) { %>Create Grant Award<% } else { %>Save Grant Award<% } %></button><span class="throbber" style="display:none;"></span>
