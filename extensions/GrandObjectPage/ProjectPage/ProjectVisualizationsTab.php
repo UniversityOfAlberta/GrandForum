@@ -173,6 +173,9 @@ class ProjectVisualizationsTab extends AbstractTab {
             $groups = array(array('id' => 'members',
                                   'content' => 'Members (NI)',
                                   'className' => 'visRed'),
+                            array('id' => 'members_ot',
+                                  'content' => 'Members (Other)',
+                                  'className' => 'visBlue'),
                             array('id' => 'products',
                                   'content' => Inflect::pluralize($config->getValue('productsTerm')),
                                   'className' => 'visOrange'));
@@ -185,12 +188,21 @@ class ProjectVisualizationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                if($person->isRoleDuring(NI, $start, $end) || $person->leadershipOf($project)){
+                if($person->isRoleDuring(NI, $start, $end, $project) || $person->leadershipOf($project)){
                     $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
                                                             'text' => $content),
                                      'group' => 'members',
+                                     'start' => $start,
+                                     'end' => $end);
+                }
+                else {
+                    $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
+                    $items[] = array('content' => $person->getNameForForms(),
+                                     'description' => array('title' => $person->getNameForForms(),
+                                                            'text' => $content),
+                                     'group' => 'members_ot',
                                      'start' => $start,
                                      'end' => $end);
                 }
