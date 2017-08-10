@@ -7,7 +7,6 @@ class GrantAward extends BackboneModel {
     var $grant_id;
     var $cle;
     var $department;
-    var $organization;
     var $institution;
     var $province;
     var $country;
@@ -17,12 +16,9 @@ class GrantAward extends BackboneModel {
     var $program_id;
     var $program_name;
     var $group;
-    var $committee_code;
     var $committee_name;
-    var $area_of_application_code;
     var $area_of_application_group;
     var $area_of_application;
-    var $research_subject_code;
     var $research_subject_group;
     var $installment;
     var $partie;
@@ -72,7 +68,6 @@ class GrantAward extends BackboneModel {
                 $this->grant_id = $row['grant_id'];
                 $this->cle = $row['cle'];
                 $this->department = $row['department'];
-                $this->organization = $row['organization'];
                 $this->institution = $row['institution'];
                 $this->province = $row['province'];
                 $this->country = $row['country'];
@@ -82,12 +77,9 @@ class GrantAward extends BackboneModel {
                 $this->program_id = $row['program_id'];
                 $this->program_name = $row['program_name'];
                 $this->group = $row['group'];
-                $this->committee_code = $row['committee_code'];
                 $this->committee_name = $row['committee_name'];
-                $this->area_of_application_code = $row['area_of_application_code'];
                 $this->area_of_application_group = $row['area_of_application_group'];
                 $this->area_of_application = $row['area_of_application'];
-                $this->research_subject_code = $row['research_subject_code'];
                 $this->research_subject_group = $row['research_subject_group'];
                 $this->installment = $row['installment'];
                 $this->partie = $row['partie'];
@@ -104,8 +96,11 @@ class GrantAward extends BackboneModel {
         if($this->partners == null){
             $data = DBFunctions::select(array('grand_new_grant_partner'),
                                         array('*'),
-                                        array('cle' => $this->cle));
-            $this->partners = $data;
+                                        array('award_id' => $this->id));
+            $this->partners = array();
+            foreach($data as $row){
+                $this->partners[] = new GrantPartner(array($row));
+            }
         }
         return $this->partners;
     }
@@ -120,7 +115,6 @@ class GrantAward extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'cle' => $this->cle,
                                   'department' => $this->department,
-                                  'organization' => $this->organization,
                                   'institution' => $this->institution,
                                   'province' => $this->province,
                                   'country' => $this->country,
@@ -130,12 +124,9 @@ class GrantAward extends BackboneModel {
                                   'program_id' => $this->program_id,
                                   'program_name' => $this->program_name,
                                   '`group`' => $this->group,
-                                  'committee_code' => $this->committee_code,
                                   'committee_name' => $this->committee_name,
-                                  'area_of_application_code' => $this->area_of_application_code,
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
-                                  'research_subject_code' => $this->research_subject_code,
                                   'research_subject_group' => $this->research_subject_group,
                                   'installment' => $this->installment,
                                   'partie' => $this->partie,
@@ -145,6 +136,14 @@ class GrantAward extends BackboneModel {
                                   'application_summary' => $this->application_summary,
                                   'coapplicants' => $this->coapplicants));
         $this->id = DBFunctions::insertId();
+        foreach($this->partners as $partner){
+            if(is_object($partner)){
+                $partner = get_object_vars($partner);
+            }
+            $partner = new GrantPartner(array($partner));
+            $partner->award_id = $this->id;
+            $partner->create();
+        }
         DBFunctions::commit();
         return $this;
     }
@@ -154,7 +153,6 @@ class GrantAward extends BackboneModel {
                             array('user_id' => $this->user_id,
                                   'cle' => $this->cle,
                                   'department' => $this->department,
-                                  'organization' => $this->organization,
                                   'institution' => $this->institution,
                                   'province' => $this->province,
                                   'country' => $this->country,
@@ -164,12 +162,9 @@ class GrantAward extends BackboneModel {
                                   'program_id' => $this->program_id,
                                   'program_name' => $this->program_name,
                                   '`group`' => $this->group,
-                                  'committee_code' => $this->committee_code,
                                   'committee_name' => $this->committee_name,
-                                  'area_of_application_code' => $this->area_of_application_code,
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
-                                  'research_subject_code' => $this->research_subject_code,
                                   'research_subject_group' => $this->research_subject_group,
                                   'installment' => $this->installment,
                                   'partie' => $this->partie,
@@ -179,6 +174,16 @@ class GrantAward extends BackboneModel {
                                   'application_summary' => $this->application_summary,
                                   'coapplicants' => $this->coapplicants),
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_new_grant_partner',
+                            array('award_id' => $this->id));
+        foreach($this->partners as $partner){
+            if(is_object($partner)){
+                $partner = get_object_vars($partner);
+            }
+            $partner = new GrantPartner(array($partner));
+            $partner->award_id = $this->id;
+            $partner->create();
+        }
         DBFunctions::commit();
         return $this;
     }
@@ -186,18 +191,20 @@ class GrantAward extends BackboneModel {
     function delete(){
         DBFunctions::delete('grand_new_grants',
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_new_grant_partner',
+                            array('award_id' => $this->id));
         DBFunctions::commit();
         $this->id = null;
         return $this;
     }
     
     function toArray(){
+        $partners = new Collection($this->getPartners());
         $json = array('id' => $this->id,
                       'user_id' => $this->user_id,
                       'grant_id' => $this->grant_id,
                       'cle' => $this->cle,
                       'department' => $this->department,
-                      'organization' => $this->organization,
                       'institution' => $this->institution,
                       'province' => $this->province,
                       'country' => $this->country,
@@ -207,12 +214,9 @@ class GrantAward extends BackboneModel {
                       'program_id' => $this->program_id,
                       'program_name' => $this->program_name,
                       'group' => $this->group,
-                      'committee_code' => $this->committee_code,
                       'committee_name' => $this->committee_name,
-                      'area_of_application_code' => $this->area_of_application_code,
                       'area_of_application_group' => $this->area_of_application_group,
                       'area_of_application' => $this->area_of_application,
-                      'research_subject_code' => $this->research_subject_code,
                       'research_subject_group' => $this->research_subject_group,
                       'installment' => $this->installment,
                       'partie' => $this->partie,
@@ -222,7 +226,7 @@ class GrantAward extends BackboneModel {
                       'application_summary' => $this->application_summary,
                       'coapplicants' => $this->coapplicants,
                       'url' => $this->getUrl(),
-                      'partners' => $this->getPartners()
+                      'partners' => $partners->toArray()
         );
         return $json;
     }

@@ -21,7 +21,7 @@
     <% if(partners.length > 0){ %>
     <tr>
         <td class="label">Partners:</td>
-        <td><%= _.pluck(partners, 'part_institution').join(', ') %></td>
+        <td><%= new GrantPartners(partners).pluck('part_institution').join(', ') %></td>
     </tr>
     <% } %>
     <% if(fiscal_year != ""){ %>

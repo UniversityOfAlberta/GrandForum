@@ -29,7 +29,6 @@
                         $user_id = $person->getId();
                         $cle = $cells[0];
                         $department = str_replace("'", "''",$cells[2]);
-                        $organization = str_replace("'", "''",$cells[3]);
                         $institution = str_replace("'", "''",$cells[4]);
                         $province = str_replace("'", "''",$cells[5]);
                         $country = str_replace("'", "''",$cells[7]);
@@ -39,12 +38,9 @@
                         $program_id = $cells[12];
                         $program_name = str_replace("'", "''",$cells[13]);
                         $group = str_replace("'", "''",$cells[15]);
-                        $committee_code = $cells[17];
                         $committee_name = str_replace("'", "''",$cells[18]);
-                        $area_of_application_code = $cells[20];
                         $area_of_application_group = str_replace("'", "''",$cells[21]);
                         $area_of_application = str_replace("'", "''",$cells[23]);
-                        $research_subject_code = $cells[25];
                         $research_subject_group = str_replace("'", "''",$cells[26]);
                         $installment_date = strtotime($cells[30]."-".$cells[9]);
                         $installment = date('Y-m-d', $installment_date);
@@ -70,7 +66,6 @@
                                                       array('user_id' => $user_id,
                                                             'cle' => $cle,
                                                             'department' => $department,
-                                                            'organization' => $organization,
                                                             'institution' => $institution,
                                                             'province' => $province,
                                                             'country' => $country,
@@ -80,12 +75,9 @@
                                                             'program_id' => $program_id,
                                                             'program_name' => $program_name,
                                                             '`group`' => $group,
-                                                            'committee_code' => $committee_code,
                                                             'committee_name' => $committee_name,
-                                                            'area_of_application_code' => $area_of_application_code,
                                                             'area_of_application_group' => $area_of_application_group,
                                                             'area_of_application' => $area_of_application,
-                                                            'research_subject_code' => $research_subject_code,
                                                             'research_subject_group' => $research_subject_group,
                                                             'installment' => $installment,
                                                             'partie' => $partie,

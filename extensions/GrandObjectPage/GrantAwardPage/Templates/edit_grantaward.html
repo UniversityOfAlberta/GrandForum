@@ -12,7 +12,7 @@
     </tr>
     <tr>
         <td class="label">Partners:</td>
-        <td><%= _.pluck(partners, 'part_institution').join(', ') %></td>
+        <td><div id="partners"></div><button id="addPartner">Add Partner</button></td>
     </tr>
     <tr>
         <td class="label">Fiscal Year:</td>
@@ -23,7 +23,7 @@
         <td><%= HTML.TextBox(this, 'competition_year', {size: '4'}) %></td>
     </tr>
     <tr>
-        <td class="label">Amount:</td>
+        <td class="label">Amount ($):</td>
         <td><%= HTML.TextBox(this, 'amount', {size: 12}) %></td>
     </tr>
 </table>

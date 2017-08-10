@@ -49,13 +49,28 @@ EditGrantAwardView = Backbone.View.extend({
         });
     },
     
+    addPartner: function(){
+        this.model.get('partners').push(new GrantPartner({award_id: this.model.get('id')})); 
+        this.renderPartners();
+    },
+    
     events: {
         "click #save": "save",
+        "click #addPartner": "addPartner"
+    },
+    
+    renderPartners: function(){
+        this.$("#partners").empty();
+        _.each(this.model.get('partners'), $.proxy(function(partner){
+            var view = new EditPartnerView({model: partner, parent: this});
+            this.$("#partners").append(view.render());
+        }, this));
     },
     
     render: function(){
         main.set('title', this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderPartners();
         this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('input[name=competition_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});

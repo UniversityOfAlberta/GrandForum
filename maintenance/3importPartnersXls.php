@@ -29,8 +29,7 @@
                         $org_type = str_replace("'", "''",$cells[8]);
                         $committee_name = "";
                         $status = DBFunctions::insert('grand_new_grant_partner',
-                                                      array('cle' => $cle,
-                                                            'part_organization_id' => $part_organization_id,
+                                                      array('award_id' => $datacheck[0]['id'],
                                                             'part_institution' => $part_institution,
                                                             'province' => $province,
                                                             'country' => $country,

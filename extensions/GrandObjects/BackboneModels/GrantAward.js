@@ -6,6 +6,15 @@ GrantAward = Backbone.Model.extend({
         this.bind("change:grant_id", function(){
             this.grant.set('id', this.get('grant_id'));
         });
+        
+        this.bind("sync", function(){
+            var partners = new Array();
+            _.each(this.get('partners'), function(partner){
+                var p = new GrantPartner(partner);
+                partners.push(p);
+            });
+            this.set('partners', partners);
+        });
     },
 
     urlRoot: 'index.php?action=api.grantaward',
@@ -15,13 +24,13 @@ GrantAward = Backbone.Model.extend({
         return this.grant;
     },
     
-    defaults: function(){ return {
+    defaults: function(){ 
+        return {
             id: null,
             user_id: '',
             grant_id: 0,
             cle: '',
             department: '',
-            organization: '',
             institution: '',
             province: '',
             country: '',
@@ -31,12 +40,9 @@ GrantAward = Backbone.Model.extend({
             program_id: '',
             program_name: '',
             group: '',
-            committee_code: '',
             committee_name: '',
-            area_of_application_code: '',
             area_of_application_group: '',
             area_of_application: '',
-            research_subject_code: '',
             research_subject_group: '',
             installment: '',
             partie: '',

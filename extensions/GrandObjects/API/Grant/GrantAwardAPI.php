@@ -22,7 +22,6 @@ class GrantAwardAPI extends RESTAPI {
         $grant->user_id = $this->POST('user_id');
         $grant->grant_id = $this->POST('grant_id');
         $grant->department = $this->POST('department');
-        $grant->organization = $this->POST('organization');
         $grant->institution = $this->POST('institution');
         $grant->province = $this->POST('province');
         $grant->country = $this->POST('country');
@@ -32,12 +31,9 @@ class GrantAwardAPI extends RESTAPI {
         $grant->program_id = $this->POST('program_id');
         $grant->program_name = $this->POST('program_name');
         $grant->group = $this->POST('group');
-        $grant->committee_code = $this->POST('committee_code');
         $grant->committee_name = $this->POST('committee_name');
-        $grant->area_of_application_code = $this->POST('area_of_application_code');
         $grant->area_of_application_group = $this->POST('area_of_application_group');
         $grant->area_of_application = $this->POST('area_of_application');
-        $grant->research_subject_code = $this->POST('research_subject_code');
         $grant->research_subject_group = $this->POST('research_subject_group');
         $grant->installment = $this->POST('installment');
         $grant->partie = $this->POST('partie');
@@ -59,7 +55,6 @@ class GrantAwardAPI extends RESTAPI {
             }
             $grant->grant_id = $this->POST('grant_id');
             $grant->department = $this->POST('department');
-            $grant->organization = $this->POST('organization');
             $grant->institution = $this->POST('institution');
             $grant->province = $this->POST('province');
             $grant->country = $this->POST('country');
@@ -69,12 +64,9 @@ class GrantAwardAPI extends RESTAPI {
             $grant->program_id = $this->POST('program_id');
             $grant->program_name = $this->POST('program_name');
             $grant->group = $this->POST('group');
-            $grant->committee_code = $this->POST('committee_code');
             $grant->committee_name = $this->POST('committee_name');
-            $grant->area_of_application_code = $this->POST('area_of_application_code');
             $grant->area_of_application_group = $this->POST('area_of_application_group');
             $grant->area_of_application = $this->POST('area_of_application');
-            $grant->research_subject_code = $this->POST('research_subject_code');
             $grant->research_subject_group = $this->POST('research_subject_group');
             $grant->installment = $this->POST('installment');
             $grant->partie = $this->POST('partie');
@@ -82,6 +74,7 @@ class GrantAwardAPI extends RESTAPI {
             $grant->application_title = $this->POST('application_title');
             $grant->keyword = $this->POST('keyword');
             $grant->application_summary = $this->POST('application_summary');
+            $grant->partners = $this->POST('partners');
             //$grant->coapplicants = $this->POST('coapplicants');
             $grant->update();
             return $grant->toJSON();

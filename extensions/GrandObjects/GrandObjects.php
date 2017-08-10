@@ -78,6 +78,8 @@ $apiRequest->addAction('Hidden','grant', 'GrantAPI');
 $apiRequest->addAction('Hidden','grant/:id', 'GrantAPI');
 $apiRequest->addAction('Hidden','grantaward', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantaward/:id', 'GrantAwardAPI');
+$apiRequest->addAction('Hidden','grantpartner', 'GrantPartnerAPI');
+$apiRequest->addAction('Hidden','grantpartner/:id', 'GrantPartnerAPI');
 // MailingList
 $apiRequest->addAction('Hidden','mailingList', 'MailingListAPI');
 $apiRequest->addAction('Hidden','mailingList/:listId', 'MailingListAPI');
@@ -102,6 +104,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Grant.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GrantAward.js'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GrantPartner.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js'></script>\n";
