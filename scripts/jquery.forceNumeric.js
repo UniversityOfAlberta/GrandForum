@@ -60,21 +60,38 @@ jQuery.fn.forceNumeric = function (options) {
             lastValue = $(target).val();
         }
         
+        var checkArrows = function(e){
+            var key = e.which || e.keyCode;
+            if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
+                key == 37 || key == 39){
+                return false;
+            }
+            return true;
+        };
+        
         if(options.max != ""){
             $(this).keyup(function(e){
-                validateMax(e.target);
+                if(checkArrows(e)){
+                    validateMax(e.target);
+                }
             });
             $(this).change(function(e){
-                validateMax(e.target);
+                if(checkArrows(e)){
+                    validateMax(e.target);
+                }
             });
             validateMax(this);
         }
         if(options.min != ""){
             $(this).keyup(function(e){
-                validateMin(e.target);
+                if(checkArrows(e)){
+                    validateMin(e.target);
+                }
             });
             $(this).change(function(e){
-                validateMax(e.target);
+                if(checkArrows(e)){
+                    validateMax(e.target);
+                }
             });
             validateMin(this);
         }
@@ -84,7 +101,6 @@ jQuery.fn.forceNumeric = function (options) {
         }
         $(this).keydown(function (e) {
              var key = e.which || e.keyCode;
-
              if (!e.shiftKey && !e.altKey && !e.ctrlKey &&
              // numbers   
                  key >= 48 && key <= 57 ||

@@ -9,14 +9,13 @@ GrantAwardView = Backbone.View.extend({
                 this.$el.html("This Grant Award does not exist");
             }, this)
         });
+        
         this.listenTo(this.model, 'change', $.proxy(function(){
             this.person = new Person({id: this.model.get('user_id')});
             var xhr = this.person.fetch();
+            this.listenTo(this.model.grant, 'sync', this.render);
+            this.model.getGrant();
             $.when(xhr).then(this.render);
-        }, this));
-        
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
-            this.allContributions = response;
         }, this));
         
         this.template = _.template($('#grantaward_template').html());
@@ -29,40 +28,10 @@ GrantAwardView = Backbone.View.extend({
     events: {
         "click #edit": "edit"
     },
-    
-    renderContributions: function(){
-        if(this.allContributions.length != null && this.model.get('contributions').length > 0){
-            this.$("#contributions").empty();
-            _.each(this.model.get('contributions'), $.proxy(function(cId){
-                var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-                this.$("#contributions").append("<li><a href='" + wgServer + wgScriptPath + "/index.php/Contribution:" + contribution.id + "'>" + contribution.name + "</a></li>");
-            }, this));
-        }
-    },
-    
-    renderCoPI: function(){
-        var xhrs = new Array();
-        var people = new Array();
-        _.each(this.model.get('copi'), function(copi){
-            var person = new Person({id: copi});
-            people.push(person);
-            xhrs.push(person.fetch());
-        });
-        $.when.apply($, xhrs).then($.proxy(function(){
-            this.$("#copi").empty();
-            var html = new Array();
-            _.each(people, $.proxy(function(copi){
-                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
-            }, this));
-            this.$("#copi").html(html.join("; "));
-        }, this));
-    },
 
     render: function(){
-        main.set('title', this.model.get('title'));
+        main.set('title', this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributions();
-        this.renderCoPI();
         return this.$el;
     }
 

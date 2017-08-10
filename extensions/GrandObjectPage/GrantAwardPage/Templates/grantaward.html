@@ -1,58 +1,46 @@
 <p>
-    <%= description %>
+    <%= application_summary %>
 </p>
 <table>
     <tr>
         <td class="label">PI:</td>
         <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
-    <% if(copi.length > 0) { %>
+    <% if(coapplicants != "") { %>
         <tr>
-            <td class="label">Co-PI:</td>
-            <td id="copi"></td>
+            <td class="label">Co-Applicants:</td>
+            <td id="copi"><%= coapplicants %></td>
         </tr>
     <% } %>
-    <% if(sponsor != ""){ %>
+    <% if(this.model.grant.get('id') != 0){ %>
     <tr>
-        <td class="label">Sponsor:</td>
-        <td><%= sponsor %></td>
+        <td class="label">Grant:</td>
+        <td><a href="<%= this.model.grant.get('url') %>"><%= this.model.grant.get('title') %></a></td>
     </tr>
     <% } %>
-    <% if(start_date != ""){ %>
+    <% if(partners.length > 0){ %>
     <tr>
-        <td class="label">Start Date:</td>
-        <td><%= start_date.substring(0, 10) %></td>
+        <td class="label">Partners:</td>
+        <td><%= _.pluck(partners, 'part_institution').join(', ') %></td>
     </tr>
     <% } %>
-    <% if(end_date != ""){ %>
-        <tr>
-            <td class="label">End Date:</td>
-            <td><%= end_date.substring(0, 10) %></td>
-        </tr>
-    <% } %>
-    <% if(project_id != ""){ %>
-        <tr>
-            <td class="label">Project ID:</td>
-            <td><%= project_id %></td>
-        </tr>
-    <% } %>
-    <% if(speed_code != ""){ %>
-        <tr>
-            <td class="label">Speed Code:</td>
-            <td><%= speed_code %></td>
-        </tr>
-    <% } %>
-</table>
-<table class="wikitable" rules="all" frame="box">
+    <% if(fiscal_year != ""){ %>
     <tr>
-        <th>Total</th>
-        <th>Funds Available<br />Before Commitments</th>
-        <th>Funds Available<br />After Commitments</th>
+        <td class="label">Fiscal Year:</td>
+        <td><%= fiscal_year %></td>
     </tr>
+    <% } %>
+    <% if(competition_year != ""){ %>
+        <tr>
+            <td class="label">Competition Year:</td>
+            <td><%= competition_year %></td>
+        </tr>
+    <% } %>
     <tr>
-        <td align="right">$<%= number_format(total, 2) %></td>
-        <td align="right">$<%= number_format(funds_before, 2) %></td>
-        <td align="right">$<%= number_format(funds_after, 2) %></td>
+        <td class="label">Amount:</td>
+        <td>
+            $<%= number_format(amount, 2) %>
+        </td>
     </tr>
 </table>
 <br />

@@ -1,8 +1,6 @@
 EditGrantAwardView = Backbone.View.extend({
 
     person: null,
-    timeout: null,
-    allContributions: null,
 
     initialize: function(){
         if(!this.model.isNew()){
@@ -12,18 +10,14 @@ EditGrantAwardView = Backbone.View.extend({
                 }, this)
             });
         }
-        this.listenTo(this.model, "change:title", function(){
-            main.set('title', this.model.get('title'));
+        this.listenTo(this.model, "change:application_title", function(){
+            main.set('title', this.model.get('application_title'));
         });
         this.listenTo(this.model, 'sync', function(){
             this.person = new Person({id: this.model.get('user_id')});
             var xhr = this.person.fetch();
             $.when(xhr).then(this.render);
         });
-        
-        $.get(wgServer + wgScriptPath + "/index.php?action=contributionSearch&phrase=&category=all", $.proxy(function(response){
-            this.allContributions = response;
-        }, this));
         
         this.template = _.template($('#edit_grantaward_template').html());
         if(this.model.isNew()){
@@ -55,162 +49,16 @@ EditGrantAwardView = Backbone.View.extend({
         });
     },
     
-    previewContribution: function(e){
-        if(this.timeout != null){
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout($.proxy(function(){
-            var id = $(e.currentTarget).attr('data-id');
-            $.get(wgServer + wgScriptPath + "/index.php/Contribution:" + id, $.proxy(function(response){
-                var widthBefore = $(document).width();
-                var heightBefore = $(document).height();
-
-                var view = $("#bodyContent", response);
-                $("#footer", view).remove();
-
-                $("#preview").html(view.html());
-
-                $("input[name=edit]").hide();
-
-                $("#preview").fadeIn(100);
-                $("#preview").css('left', $(e.currentTarget).position().left + $(e.currentTarget).outerWidth() + 30 - $("#preview").width()/4);
-                $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2);
-                
-                var widthAfter = $(document).width();
-                var heightAfter = $(document).height();
-                
-                if(widthAfter != widthBefore){
-                    $("#preview").css('left', $(e.currentTarget).position().left + $(e.currentTarget).outerWidth() + 30 - $("#preview").width()/4 - (widthAfter - widthBefore + 5));
-                }
-                if(heightAfter != heightBefore){
-                    $("#preview").css('top', $(e.currentTarget).position().top - $("#preview").height()/2 - (heightAfter - heightBefore + 5));
-                }
-            }, this));
-        }, this), 50);
-    },
-    
-    hidePreview: function(e){
-        if(this.timeout != null){
-            clearTimeout(this.timeout);
-        }
-        $("#preview").hide();
-    },
-    
     events: {
         "click #save": "save",
-        "mouseover #contributions .sortable-list li": "previewContribution",
-        "mouseout #contributions .sortable-list li": "hidePreview"
     },
     
-    renderContributionsWidget: function(){
-        var model = this.model;
-        if(headerColor != "#333333"){
-            // Headers were changed, use this color
-            this.$("#contributions .sortable-header").css("background", headerColor);
-        }
-        else{
-            // Otherwise use the highlight color
-            this.$("#contributions .sortable-header").css("background", highlightColor);
-        }
-
-        if(this.allContributions.length == 0){
-            return;
-        }
-
-        var contributions = this.model.get('contributions');
-        this.$("#contributions .sortable-widget").show();
-        
-        // Left Side (Current)
-        _.each(contributions, $.proxy(function(cId){
-            var contribution = _.findWhere(this.allContributions, {id: cId.toString()});
-            if(contribution != null){
-                this.$("#contributions #sortable1").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
-            }
-        }, this));
-        
-        // Right Side (Available)
-        _.each(this.allContributions, $.proxy(function(contribution){
-            if(!_.contains(contributions, contribution.id)){
-                this.$("#contributions #sortable2").append("<li data-id='" + contribution.id + "'>" + contribution.name + "</li>");
-            }
-        }, this));
-    
-        // Advanced groups
-	    [{
-		    name: 'contributions',
-		    pull: true,
-		    put: true
-	    },
-	    {
-		    name: 'contributions',
-		    pull: true,
-		    put: true
-	    }].forEach(function (groupOpts, i) {
-	        if($("#contributions #sortable" + (i + 1)).length > 0){
-		        Sortable.create($("#contributions #sortable" + (i + 1))[0], {
-			        sort: (i != 1),
-			        group: groupOpts,
-			        animation: 150,
-			        onSort: function (e) {
-                        if($(e.target).attr('id') == 'sortable1'){
-                            var ids = new Array();
-                            $("li:visible", $(e.target)).each(function(i, el){
-                                ids.push(parseInt($(el).attr('data-id')));
-                            });
-                            model.set('contributions', ids);
-                        }
-                    }
-		        });
-		    }
-	    });
-	    
-	    var changeFn = function(){
-	        var value = this.$("#contributions .sortable-search input").val().trim();
-	        var lower = value.toLowerCase();
-	        var showElements = new Array();
-	        var hideElements = new Array();
-	        $("#contributions #sortable2 li").each(function(i, el){
-	            if($(el).text().toLowerCase().indexOf(lower) !== -1 || value == ""){
-	                showElements.push(el);
-	            }
-	            else{
-	                hideElements.push(el);
-	            }
-	        });
-	        $(showElements).show();
-	        $(hideElements).hide();
-	    };
-	    
-	    this.$("#contributions .sortable-search input").change($.proxy(changeFn, this));
-	    this.$("#contributions .sortable-search input").keyup($.proxy(changeFn, this));
-    },
-    
-    renderCoPI: function(){
-        var xhrs = new Array();
-        var people = new Array();
-        _.each(this.model.get('copi'), function(copi){
-            var person = new Person({id: copi});
-            people.push(person);
-            xhrs.push(person.fetch());
-        });
-        $.when.apply($, xhrs).then($.proxy(function(){
-            this.$("#copi").empty();
-            var html = new Array();
-            _.each(people, $.proxy(function(copi){
-                html.push("<a href='" + copi.get('url') + "'>" + copi.get('realName') + "</a>");
-            }, this));
-            this.$("#copi").html(html.join("; "));
-        }, this));
-    },
-
     render: function(){
-        main.set('title', this.model.get('title'));
+        main.set('title', this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
-        this.renderContributionsWidget();
-        this.renderCoPI();
-        this.$('input[name=total]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
-        this.$('input[name=funds_before]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
-        this.$('input[name=funds_after]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
+        this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
+        this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
+        this.$('input[name=competition_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         return this.$el;
     }
 

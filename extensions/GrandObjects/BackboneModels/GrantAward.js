@@ -1,14 +1,24 @@
 GrantAward = Backbone.Model.extend({
 
     initialize: function(){
+        this.grant = new Grant();
         
+        this.bind("change:grant_id", function(){
+            this.grant.set('id', this.get('grant_id'));
+        });
     },
 
     urlRoot: 'index.php?action=api.grantaward',
     
+    getGrant: function(){
+        this.grant.fetch();
+        return this.grant;
+    },
+    
     defaults: function(){ return {
             id: null,
             user_id: '',
+            grant_id: 0,
             cle: '',
             department: '',
             organization: '',
@@ -34,7 +44,8 @@ GrantAward = Backbone.Model.extend({
             application_title: '',
             keyword: '',
             application_summary: '',
-            coapplicants: ''
+            coapplicants: '',
+            partners: new Array()
         };
     }
     
