@@ -243,8 +243,7 @@ function ShibGetAuthHook() {
 /*
  * End of AuthPlugin Code, beginning of hook code and auth functions
  */
- 
-$wgExtensionFunctions[] = 'SetupShibAuth';
+
 $wgExtensionCredits['other'][] = array(
 			'name' => 'Shibboleth Authentication',
 			'version' => '1.2.4',
@@ -259,7 +258,6 @@ function SetupShibAuth()
 	global $wgHooks;
 	global $wgAuth;
 	global $wgCookieExpiration;
- 
 	if($shib_UN != null){
 		$wgCookieExpiration = -3600;
 		$wgHooks[ShibGetAuthHook()][] = "Shib".ShibGetAuthHook();
@@ -340,6 +338,7 @@ function ShibAutoAuthenticate(&$user) {
 /* Tries to be magical about when to log in users and when not to. */
 function ShibUserLoadFromSession($user, &$result)
 {
+    global $wgUser;
 	global $wgContLang;
 	global $wgAuth;
 	global $shib_UN;
@@ -382,6 +381,8 @@ function ShibUserLoadFromSession($user, &$result)
 		wfSetupSession();
 		$user->setCookies();
 		ShibAddGroups($user);
+		$wgUser = $user;
+		impersonate();
 		return true;
 	}
 	$user = $person->getUser();
