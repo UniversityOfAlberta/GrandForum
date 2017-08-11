@@ -59,7 +59,7 @@ ProductView = Backbone.View.extend({
             views.push(new PersonLinkView({model: link}).render());
         });
         var csv = new CSVView({el: this.$('#productAuthors'), model: views});
-        csv.separator = ', ';
+        csv.separator = '; ';
         csv.render();
     },
     

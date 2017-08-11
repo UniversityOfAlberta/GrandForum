@@ -22,9 +22,9 @@ class GrantAward extends BackboneModel {
     var $area_of_application_group;
     var $area_of_application;
     var $research_subject_group;
-    var $installment;
-    var $partie;
-    var $nb_partie;
+    //var $installment;
+    //var $partie;
+    //var $nb_partie;
     var $application_title;
     var $keyword;
     var $application_summary;
@@ -101,9 +101,9 @@ class GrantAward extends BackboneModel {
                 $this->area_of_application_group = $row['area_of_application_group'];
                 $this->area_of_application = $row['area_of_application'];
                 $this->research_subject_group = $row['research_subject_group'];
-                $this->installment = $row['installment'];
-                $this->partie = $row['partie'];
-                $this->nb_partie = $row['nb_partie'];
+                //$this->installment = $row['installment'];
+                //$this->partie = $row['partie'];
+                //$this->nb_partie = $row['nb_partie'];
                 $this->application_title = $row['application_title'];
                 $this->keyword = $row['keyword'];
                 $this->application_summary = $row['application_summary'];
@@ -150,9 +150,9 @@ class GrantAward extends BackboneModel {
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
                                   'research_subject_group' => $this->research_subject_group,
-                                  'installment' => $this->installment,
-                                  'partie' => $this->partie,
-                                  'nb_partie' => $this->nb_partie,
+                                  //'installment' => $this->installment,
+                                  //'partie' => $this->partie,
+                                  //'nb_partie' => $this->nb_partie,
                                   'application_title' => $this->application_title,
                                   'keyword' => $this->keyword,
                                   'application_summary' => $this->application_summary,
@@ -189,9 +189,9 @@ class GrantAward extends BackboneModel {
                                   'area_of_application_group' => $this->area_of_application_group,
                                   'area_of_application' => $this->area_of_application,
                                   'research_subject_group' => $this->research_subject_group,
-                                  'installment' => $this->installment,
-                                  'partie' => $this->partie,
-                                  'nb_partie' => $this->nb_partie,
+                                  //'installment' => $this->installment,
+                                  //'partie' => $this->partie,
+                                  //'nb_partie' => $this->nb_partie,
                                   'application_title' => $this->application_title,
                                   'keyword' => $this->keyword,
                                   'application_summary' => $this->application_summary,
@@ -243,9 +243,9 @@ class GrantAward extends BackboneModel {
                       'area_of_application_group' => $this->area_of_application_group,
                       'area_of_application' => $this->area_of_application,
                       'research_subject_group' => $this->research_subject_group,
-                      'installment' => $this->installment,
-                      'partie' => $this->partie,
-                      'nb_partie' => $this->nb_partie,
+                      //'installment' => $this->installment,
+                      //'partie' => $this->partie,
+                      //'nb_partie' => $this->nb_partie,
                       'application_title' => $this->application_title,
                       'keyword' => $this->keyword,
                       'application_summary' => $this->application_summary,

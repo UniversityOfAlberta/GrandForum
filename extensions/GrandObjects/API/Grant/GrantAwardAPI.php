@@ -42,9 +42,9 @@ class GrantAwardAPI extends RESTAPI {
         $grant->area_of_application_group = $this->POST('area_of_application_group');
         $grant->area_of_application = $this->POST('area_of_application');
         $grant->research_subject_group = $this->POST('research_subject_group');
-        $grant->installment = $this->POST('installment');
-        $grant->partie = $this->POST('partie');
-        $grant->nb_partie = $this->POST('nb_partie');
+        //$grant->installment = $this->POST('installment');
+        //$grant->partie = $this->POST('partie');
+        //$grant->nb_partie = $this->POST('nb_partie');
         $grant->application_title = $this->POST('application_title');
         $grant->keyword = $this->POST('keyword');
         $grant->application_summary = $this->POST('application_summary');
@@ -76,9 +76,9 @@ class GrantAwardAPI extends RESTAPI {
             $grant->area_of_application_group = $this->POST('area_of_application_group');
             $grant->area_of_application = $this->POST('area_of_application');
             $grant->research_subject_group = $this->POST('research_subject_group');
-            $grant->installment = $this->POST('installment');
-            $grant->partie = $this->POST('partie');
-            $grant->nb_partie = $this->POST('nb_partie');
+            //$grant->installment = $this->POST('installment');
+            //$grant->partie = $this->POST('partie');
+            //$grant->nb_partie = $this->POST('nb_partie');
             $grant->application_title = $this->POST('application_title');
             $grant->keyword = $this->POST('keyword');
             $grant->application_summary = $this->POST('application_summary');

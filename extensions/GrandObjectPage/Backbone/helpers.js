@@ -42,6 +42,14 @@ function parseUrl(url) {
     };
 }
 
+function nl2br(str) {
+    return str.replace(/\n/g, "<br />");
+}
+
+function striphtml(str) {
+    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function abbr(str, nChars){
     var abbr = $("<span></span>");
     if(str.length > nChars){
