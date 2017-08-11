@@ -48,10 +48,15 @@ class GrantAward extends BackboneModel {
     }
     
     static function getAllGrantAwards($start=0, $count=999999999){
+        $me = Person::newFromWgUser();
         $grants = array();
+        $where = array();
+        if(!$me->isRoleAtLeast(ISAC)){
+            $where = array('user_id' => $me->getId());
+        }
         $data = DBFunctions::select(array('grand_new_grants'),
                                     array('*'),
-                                    array(),
+                                    $where,
                                     array(),
                                     array($start, $count));
         foreach($data as $row){
