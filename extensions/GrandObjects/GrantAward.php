@@ -135,6 +135,7 @@ class GrantAward extends BackboneModel {
     function create(){
         DBFunctions::insert('grand_new_grants',
                             array('user_id' => $this->user_id,
+                                  'grant_id' => $this->grant_id,
                                   'cle' => $this->cle,
                                   'department' => $this->department,
                                   'institution' => $this->institution,
@@ -174,6 +175,7 @@ class GrantAward extends BackboneModel {
     function update(){
         $status = DBFunctions::update('grand_new_grants',
                             array('user_id' => $this->user_id,
+                                  'grant_id' => $this->grant_id,
                                   'cle' => $this->cle,
                                   'department' => $this->department,
                                   'institution' => $this->institution,

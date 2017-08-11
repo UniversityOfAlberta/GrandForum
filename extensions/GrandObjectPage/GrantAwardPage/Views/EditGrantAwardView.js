@@ -1,6 +1,7 @@
 EditGrantAwardView = Backbone.View.extend({
 
     person: null,
+    grants: null,
 
     initialize: function(){
         if(!this.model.isNew()){
@@ -10,13 +11,18 @@ EditGrantAwardView = Backbone.View.extend({
                 }, this)
             });
         }
+        this.grants = new Grants();
+        var xhr1 = this.grants.fetch();
         this.listenTo(this.model, "change:application_title", function(){
             main.set('title', this.model.get('application_title'));
         });
         this.listenTo(this.model, 'sync', function(){
+            if(this.model.get('grant_id') == 0){
+                this.model.set('grant_id', '');
+            }
             this.person = new Person({id: this.model.get('user_id')});
-            var xhr = this.person.fetch();
-            $.when(xhr).then(this.render);
+            var xhr2 = this.person.fetch();
+            $.when.apply($, [xhr1, xhr2]).then(this.render);
         });
         
         this.template = _.template($('#edit_grantaward_template').html());
@@ -74,6 +80,7 @@ EditGrantAwardView = Backbone.View.extend({
         this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('input[name=competition_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
+        this.$('select[name=grant_id]').chosen();
         return this.$el;
     }
 
