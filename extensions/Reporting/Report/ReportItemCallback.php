@@ -113,6 +113,7 @@ class ReportItemCallback {
             //Awards
             "award_category" => "getAwardCategory",
             "award_scope" => "getAwardScope",
+            "award_by" => "getAwardedBy",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -789,6 +790,12 @@ class ReportItemCallback {
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
         return @$product['scope'];
+    }
+    
+    function getAwardedBy(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $product = $product->getData();
+        return @$product['awarded_by'];
     }
     
     function getProductYear(){

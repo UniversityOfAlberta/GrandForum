@@ -34,6 +34,7 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Award Category</th>
+                                <th>Awarded By</th>
                                 <th>Scope</th>
                                 <th>Year</th>
                             </tr>
@@ -45,6 +46,7 @@
                     <![CDATA[
                         <tr><td>{$product_title}</td>
                             <td align='center'>{$award_category}</td>
+                            <td align='center'>{$award_by}</td>
                             <td align='center'>{$award_scope}</td>
                             <td align='center'>{$product_year}</td>
                         </tr>
