@@ -2,6 +2,8 @@
 
 class GrantAward extends BackboneModel {
     
+    static $partnersCache = array();
+    
     var $id;
     var $user_id;
     var $grant_id;
@@ -45,10 +47,13 @@ class GrantAward extends BackboneModel {
         return $grant;
     }
     
-    static function getAllGrantAwards(){
+    static function getAllGrantAwards($start=0, $count=999999999){
         $grants = array();
         $data = DBFunctions::select(array('grand_new_grants'),
-                                    array('*'));
+                                    array('*'),
+                                    array(),
+                                    array(),
+                                    array($start, $count));
         foreach($data as $row){
             $grant = new GrantAward(array($row));
             if($grant != null && $grant->getId() != 0){
@@ -56,6 +61,16 @@ class GrantAward extends BackboneModel {
             }
         }
         return $grants;
+    }
+    
+    static function generatePartnersCache(){
+        if(count(self::$partnersCache) == 0){
+            $data = DBFunctions::select(array('grand_new_grant_partner'),
+                                        array('*'));
+            foreach($data as $row){
+                self::$partnersCache[$row['award_id']][] = $row;
+            }
+        }
     }
     
     function GrantAward($data){
@@ -93,13 +108,15 @@ class GrantAward extends BackboneModel {
     }
     
     function getPartners(){
+        self::generatePartnersCache();
         if($this->partners == null){
-            $data = DBFunctions::select(array('grand_new_grant_partner'),
-                                        array('*'),
-                                        array('award_id' => $this->id));
             $this->partners = array();
-            foreach($data as $row){
-                $this->partners[] = new GrantPartner(array($row));
+            if(isset(self::$partnersCache[$this->getId()])){
+                $data = self::$partnersCache[$this->getId()];
+                $this->partners = array();
+                foreach($data as $row){
+                    $this->partners[] = new GrantPartner(array($row));
+                }
             }
         }
         return $this->partners;
@@ -120,7 +137,7 @@ class GrantAward extends BackboneModel {
                                   'country' => $this->country,
                                   'fiscal_year' => $this->fiscal_year,
                                   'competition_year' => $this->competition_year,
-                                  'amount' => $this->amount,
+                                  'amount' => str_replace(",", "", $this->amount),
                                   'program_id' => $this->program_id,
                                   'program_name' => $this->program_name,
                                   '`group`' => $this->group,
@@ -145,6 +162,7 @@ class GrantAward extends BackboneModel {
             $partner->create();
         }
         DBFunctions::commit();
+        self::$partnersCache = array();
         return $this;
     }
     
@@ -185,6 +203,7 @@ class GrantAward extends BackboneModel {
             $partner->create();
         }
         DBFunctions::commit();
+        self::$partnersCache = array();
         return $this;
     }
     
@@ -194,6 +213,7 @@ class GrantAward extends BackboneModel {
         DBFunctions::delete('grand_new_grant_partner',
                             array('award_id' => $this->id));
         DBFunctions::commit();
+        self::$partnersCache = array();
         $this->id = null;
         return $this;
     }

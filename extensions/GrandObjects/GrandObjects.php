@@ -77,6 +77,7 @@ $apiRequest->addAction('Hidden','pdf/:id', 'PDFAPI');
 $apiRequest->addAction('Hidden','grant', 'GrantAPI');
 $apiRequest->addAction('Hidden','grant/:id', 'GrantAPI');
 $apiRequest->addAction('Hidden','grantaward', 'GrantAwardAPI');
+$apiRequest->addAction('Hidden','grantaward/:start/:count', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantaward/:id', 'GrantAwardAPI');
 $apiRequest->addAction('Hidden','grantpartner', 'GrantPartnerAPI');
 $apiRequest->addAction('Hidden','grantpartner/:id', 'GrantPartnerAPI');

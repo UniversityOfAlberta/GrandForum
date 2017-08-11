@@ -12,7 +12,14 @@ class GrantAwardAPI extends RESTAPI {
             return $grant->toJSON();
         }
         else{
-            $grants = new Collection(GrantAward::getAllGrantAwards());
+            $start = 0;
+            $count = 999999999;
+            if($this->getParam('start') != "" &&
+               $this->getParam('count') != ""){
+                $start = $this->getParam('start');
+                $count = $this->getParam('count');
+            }
+            $grants = new Collection(GrantAward::getAllGrantAwards($start, $count));
             return $grants->toJSON();
         }
     }
@@ -41,6 +48,7 @@ class GrantAwardAPI extends RESTAPI {
         $grant->application_title = $this->POST('application_title');
         $grant->keyword = $this->POST('keyword');
         $grant->application_summary = $this->POST('application_summary');
+        $grant->partners = $this->POST('partners');
         //$grant->coapplicants = $this->POST('coapplicants');
         $grant->create();
         return $grant->toJSON();

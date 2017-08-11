@@ -60,5 +60,58 @@ GrantAward = Backbone.Model.extend({
 GrantAwards = Backbone.Collection.extend({
     model: GrantAward,
     
-    url: 'index.php?action=api.grantaward'
+    fetch: function(options) {
+        if(_.isFunction(this.url)){
+            this.temp = [];
+            this.fetchChunk(0, 1000); // Fetch 1000 at a time
+        }
+        else if(_.isArray(this.url)){
+            this.temp = [];
+            this.fetchMultiple(0, 100); // Fetch 100 at a time
+        }
+        else{
+            return Backbone.Collection.prototype.fetch.call(this, options);
+        }
+    },
+    
+    fetchMultiple: function(start, count){
+        var rest = _.first(_.rest(this.url, start+1), count);
+        var url = this.url[0] + '-1,' + rest.join(',');
+        var self = this;
+        $.get(url, function(data) {
+            self.temp = self.temp.concat(data);
+            if(_.size(data) == count){
+                // There's probably more, so keep calling
+                self.fetchMultiple(start + count, count);
+            }
+            else{
+                // Done fetching
+                self.reset(self.temp);
+                self.trigger('sync');
+            }
+        });
+    },
+    
+    fetchChunk: function(start, count){
+        var url = this.url() + '/' + start + '/' + count;
+        var self = this;
+        $.get(url, function(data) {
+            self.temp = self.temp.concat(data);
+            if(_.size(data) == count){
+                // There's probably more, so keep calling
+                self.reset(self.temp, {silent: true});
+                self.trigger('partialSync', start, count);
+                self.fetchChunk(start + count, count);
+            }
+            else{
+                // Done fetching
+                self.reset(self.temp);
+                self.trigger('sync', start, count);
+            }
+        });
+    },
+    
+    url: function(){
+        return 'index.php?action=api.grantaward';
+    }
 });

@@ -1,7 +1,8 @@
-<p><a href="#/new" class="button">Create New Grant Award</a></p>
+<p><a href="#/new" class="button">Create New Grant Award</a>
+<span class="throbber" style="margin-left: 20px;"></span></p>
 <table id="grantawards" frame="box" rules="all">
     <thead>
-        <tr>
+        <tr style="white-space: nowrap;">
             <th>Title</th>
             <th>Fiscal Year</th>
             <th>Competition Year</th>
@@ -9,13 +10,6 @@
         </tr>
     </thead>
     <tbody>
-        <% this.model.each(function(grant){ %>
-            <tr>
-                <td><a href="<%= grant.get('url') %>"><%= grant.get('application_title') %></a><br /><%= grant.get('application_summary') %></td>
-                <td><%= grant.get('fiscal_year') %></td>
-                <td><%= grant.get('competition_year') %></td>
-                <td align="right"><%= number_format(grant.get('amount')) %></td>
-            </tr>
-        <% }) %>
+        
     </tbody>
 </table>
