@@ -266,7 +266,7 @@
                     <![CDATA[
                         <div style="margin: 10px;">
                         {$item}
-                        <table class='wikitable' id="{$project_id}_table1ex">
+                        <table class='wikitable' id="{$user_id}_table1ex">
                             <thead>
                                 <tr>
                                     <th>Reviewer</th>
@@ -381,7 +381,7 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$project_id}_table1ex.wikitable").dataTable({'autoWidth': false});
+                            $("#{$user_id}_table1ex.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
                 </ReportItem>
@@ -442,7 +442,7 @@
                     <![CDATA[
                         <div style="margin: 10px;">
                         {$item}
-                        <table class='wikitable' id="{$project_id}_table1ktc">
+                        <table class='wikitable' id="{$user_id}_table1ktc">
                             <thead>
                                 <tr>
                                     <th>Reviewer</th>
@@ -571,7 +571,7 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$project_id}_table1ktc.wikitable").dataTable({'autoWidth': false});
+                            $("#{$user_id}_table1ktc.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
                 </ReportItem>
@@ -632,7 +632,7 @@
                     <![CDATA[
                         <div style="margin: 10px;">
                         {$item}
-                        <table class='wikitable' id="{$project_id}_table1rmc">
+                        <table class='wikitable' id="{$user_id}_table1rmc">
                             <thead>
                                 <tr>
                                     <th>Reviewer</th>
@@ -761,7 +761,7 @@
                         </table>
                         </div>
                         <script type='text/javascript'>
-                            $("#{$project_id}_table1rmc.wikitable").dataTable({'autoWidth': false});
+                            $("#{$user_id}_table1rmc.wikitable").dataTable({'autoWidth': false});
                         </script>
                     ]]>
                 </ReportItem>
