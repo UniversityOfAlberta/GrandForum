@@ -813,10 +813,13 @@ abstract class AbstractReport extends SpecialPage {
             $roles = array($me->getRoleOn($this->project, null, true));
         }
         else{
-            $roleObjs = $me->getRolesDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
+            $roleObjs = $me->getRolesDuring($this->year-1, $this->year);
             foreach($roleObjs as $role){
                 $roles[] = $role->getRole();
             }
+        }
+        if($me->isEvaluator($this->year)){
+            $roles[] = EVALUATOR;
         }
         $permissions = array();
         foreach($roles as $role){
