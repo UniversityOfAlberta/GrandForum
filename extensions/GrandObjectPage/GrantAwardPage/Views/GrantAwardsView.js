@@ -19,7 +19,7 @@ GrantAwardsView = Backbone.View.extend({
             if(i < start){
                 return;
             }
-            var row = new Array("<a href='" + model.url + "'>" + model.application_title + "</a><br />" + model.application_summary, 
+            var row = new Array("<a href='" + model.url + "'>" + model.application_title + "</a>", 
                                 model.fiscal_year,
                                 model.competition_year,
                                 number_format(model.amount));

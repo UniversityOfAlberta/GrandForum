@@ -1481,8 +1481,8 @@ class Person extends BackboneModel {
     function splitName(){
         if(!empty($this->realname) && strstr($this->realname, ",") !== false){
              $names = explode(",", $this->realname, 2);
-             $lastname = $names[0];
-             $firstname = $names[1];
+             $lastname = trim($names[0]);
+             $firstname = trim($names[1]);
         }
         else if(!empty($this->realname)){
             $names = explode(" ", $this->realname);
@@ -1492,8 +1492,8 @@ class Person extends BackboneModel {
         }
         else if(strstr($this->name, ",") !== false){
             $names = explode(",", $this->name, 2);
-            $lastname = $names[0];
-            $firstname = $names[1];
+            $lastname = trim($names[0]);
+            $firstname = trim($names[1]);
         }
         else{
             $names = explode(".", $this->name, 2);
