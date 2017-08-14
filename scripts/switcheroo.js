@@ -4,6 +4,8 @@
     this.id = options.id;
     this.customAllowed = options.noCustom;
     this.values = new Array();
+    this.unnaccentedValues = new Array();
+    this.cleanIds = new Array();
     this.oldOptions = new Array();
     this.leftArray = new Array();
     this.rightArray = new Array();
@@ -40,10 +42,11 @@
     
     this.filterResults = function(){
         var value = $("#search" + this.id.pluralize()).val();
+        var unnaccentedValue = unaccentChars(value.replace(/ /g, "."));
         $.each($("#right" + this.id.pluralize()).children().not("#no" + this.id), function(index, val){
             var valSelect = val.id;
             if(!$(val).hasClass("custom")){
-                obj.oldOptions[valSelect] = $("#" + valSelect).detach();
+                obj.oldOptions[valSelect] = $(val).detach()[0];
             }
             else{
                 $(val).remove();
@@ -58,17 +61,18 @@
         else{
             var skip = false;
             for(i = 0; i < this.values.length; i++){
-                var cleanId = this.cleanId(this.id + this.values[i].replace(/\./g, ""));
-                if(unaccentChars(value.replace(/ /g, ".")) == unaccentChars(this.values[i].replace(/ /g, "."))){
+                var cleanId = this.cleanIds[i];
+                var unnaccentedVal = this.unnaccentedValues[i];
+                if(unnaccentedValue == unnaccentedVal){
                     skip = true;
                     if(typeof this.oldOptions[cleanId] != "undefined"){
-                        this.oldOptions[cleanId].attr("selected", true);
+                        $(this.oldOptions[cleanId]).attr("selected", true);
                     }
                     break;
                 }
                 else{
                     if(typeof this.oldOptions[cleanId] != "undefined"){
-                        this.oldOptions[cleanId].attr("selected", false);
+                        $(this.oldOptions[cleanId]).attr("selected", false);
                     }
                 }
             }
@@ -87,11 +91,12 @@
         var buffer = Array();
         for(i = 0; i < this.values.length; i++){
             var val = this.values[i];
-            var valSelect = this.cleanId(val.replace(/\./g, ""));
-            if(unaccentChars(val.replace(/ /g, ".")).indexOf(unaccentChars(value.replace(/ /g, "."))) != -1){
-                if(typeof this.oldOptions[this.id + valSelect] != "undefined"){
-                    buffer[i] = "<option id='" + $(this.oldOptions[this.id + valSelect]).attr("id") + "'>" + this.oldOptions[this.id + valSelect].html() + "</option>";
-                    this.oldOptions[this.id + valSelect] = undefined;
+            var unnaccentedVal = this.unnaccentedValues[i];
+            var cleanId = this.cleanIds[i];
+            if(unnaccentedVal.indexOf(unnaccentedValue) != -1){
+                if(typeof this.oldOptions[cleanId] != "undefined"){
+                    buffer[i] = "<option id='" + this.oldOptions[cleanId].id + "'>" + this.oldOptions[cleanId].innerHTML + "</option>";
+                    this.oldOptions[cleanId] = undefined;
                 }
                 n++;
             }
@@ -137,6 +142,10 @@
             obj.rightArray[index] = val;
         });
         this.values = this.leftArray.concat(this.rightArray);
+        for(i = 0; i < this.values.length; i++){
+            this.unnaccentedValues[i] = unaccentChars(this.values[i].replace(/ /g, "."));
+            this.cleanIds[i] = this.id + this.cleanId(this.values[i].replace(/\./g, ""));
+        }
         var customMessage = "";
         if(this.customAllowed){
             customMessage = "If the " + this.name + " is not in the list, you can add a custom " + this.name + " by entering in text in the Search Bar, and selecting the first name in the list.  ";
