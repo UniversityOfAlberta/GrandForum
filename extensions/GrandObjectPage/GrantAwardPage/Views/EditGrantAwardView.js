@@ -81,6 +81,9 @@ EditGrantAwardView = Backbone.View.extend({
         this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('input[name=competition_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});
         this.$('select[name=grant_id]').chosen();
+        this.$('select[name=area_of_application_group]').chosen();
+        this.$('select[name=area_of_application]').chosen({width: "400px"});
+        this.$('select[name=research_subject_group]').chosen({width: "400px"});
         return this.$el;
     }
 

@@ -27,6 +27,183 @@
         <td><%= HTML.TextBox(this, 'competition_year', {size: '4'}) %></td>
     </tr>
     <tr>
+        <td class="label">Institution:</td>
+        <td><%= HTML.TextBox(this, 'institution') %></td>
+    </tr>
+    <tr>
+        <td class="label">Department:</td>
+        <td><%= HTML.TextBox(this, 'department') %></td>
+    </tr>
+    <tr>
+        <td class="label">Country:</td>
+        <td><%= HTML.TextBox(this, 'country') %></td>
+    </tr>
+    <tr>
+        <td class="label">Program Id:</td>
+        <td><%= HTML.TextBox(this, 'program_id') %></td>
+    </tr>
+    <tr>
+        <td class="label">Program Name:</td>
+        <td><%= HTML.TextBox(this, 'program_name') %></td>
+    </tr>
+    <tr>
+        <td class="label">Committee Name:</td>
+        <td><%= HTML.TextBox(this, 'committee_name') %></td>
+    </tr>
+    <tr>
+        <td class="label">Area of Application Group:</td>
+        <td><%= HTML.Select(this, 'area_of_application_group', {options: ["Advancement of knowledge",
+                                                                          "Agriculture and primary food production",
+                                                                          "Commercial services",
+                                                                          "Construction, urban and rural planning",
+                                                                          "Energy resources",
+                                                                          "Environment",
+                                                                          "Health, education and social services",
+                                                                          "Information and communication services",
+                                                                          "Manufacturing processes and products",
+                                                                          "Natural resources (economic aspects)",
+                                                                          "Northern development",
+                                                                          "Not available",
+                                                                          "Transportation systems and services"]}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Area of Application:</td>
+        <td><%= HTML.Select(this, 'area_of_application', {options: ["Advancement of knowledge",
+                                                                    "Aerospace",
+                                                                    "Agricultural chemicals (fertilizers, herbicides, pesticides)",
+                                                                    "Agriculture",
+                                                                    "Agriculture and primary food production",
+                                                                    "Alternative energy resources",
+                                                                    "Animal management (animal diseases, breeding)",
+                                                                    "Animal production and animal primary products",
+                                                                    "Aquaculture",
+                                                                    "Biomedical engineering",
+                                                                    "Climate and atmosphere",
+                                                                    "Commercial fisheries",
+                                                                    "Communication systems and services (planning, organization, services)",
+                                                                    "Communications equipment",
+                                                                    "Communications technologies (satellites, radar, etc.)",
+                                                                    "Computer communications",
+                                                                    "Computer software",
+                                                                    "Conservation and preservation",
+                                                                    "Crop management (pest,disease control and breeding)",
+                                                                    "Earth sciences",
+                                                                    "Electrical and electronic machinery and equipment (including computer hardware)",
+                                                                    "Electrical energy",
+                                                                    "Energy efficiency",
+                                                                    "Energy resources (including production, exploration, processing, distribution and use)",
+                                                                    "Energy storage and conversion",
+                                                                    "Engineering",
+                                                                    "Environment",
+                                                                    "Environmental impact of economic activities (including agriculture)",
+                                                                    "Farming: soil and water resources",
+                                                                    "Forestry (silviculture, forest management)",
+                                                                    "Ground (road and rail)",
+                                                                    "Health, education and social services",
+                                                                    "Human health (including medically-related psychological research)",
+                                                                    "Human pharmaceuticals",
+                                                                    "Industrial chemicals (solvents, resins)",
+                                                                    "Information and communication services",
+                                                                    "Information systems and technology",
+                                                                    "Information, computer and communication technologies",
+                                                                    "Inland waters",
+                                                                    "Instrumentation technology",
+                                                                    "Land, solid earth, seabeds and ocean floors",
+                                                                    "Learning and education",
+                                                                    "Life sciences (including biotechnology)",
+                                                                    "Manufacturing processes and products",
+                                                                    "Materials performance",
+                                                                    "Materials sciences",
+                                                                    "Mathematical sciences",
+                                                                    "Medical and health sciences",
+                                                                    "Medical equipment and apparatus",
+                                                                    "Mineral resources ( prospecting, exploration, mining, extraction, processing)",
+                                                                    "Modelling and mathematical simulation of natural processes",
+                                                                    "Natural resources (economic aspects)",
+                                                                    "Northern development",
+                                                                    "Not available",
+                                                                    "Nuclear energy",
+                                                                    "Oceans and inland waters",
+                                                                    "Oceans, seas and estuaries",
+                                                                    "Oil, gas and coal",
+                                                                    "Other manufactured products and processes",
+                                                                    "Physical sciences",
+                                                                    "Plant production and plant primary products",
+                                                                    "Pollutants and toxic agents (waste, use 902)",
+                                                                    "Polymers, rubber and plastics",
+                                                                    "Primary metal products (ferrous and non-ferrous)",
+                                                                    "Processed food products and beverages",
+                                                                    "Production and operations management",
+                                                                    "Psychology",
+                                                                    "Social sciences",
+                                                                    "Space and astronomy",
+                                                                    "Structural engineering",
+                                                                    "Surveying and photogrammetry",
+                                                                    "Transport equipment",
+                                                                    "Transportation systems and services",
+                                                                    "Waste, waste management and recycling",
+                                                                    "Water",
+                                                                    "Wildlife management",
+                                                                    "Wood, wood products and paper"]}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Research Subject Group:</td>
+        <td><%= HTML.Select(this, 'research_subject_group', {options: ["Agricultural engineering",
+                                                                       "Analytical chemistry",
+                                                                       "Animal biology",
+                                                                       "Applied mathematics",
+                                                                       "Artificial intelligence",
+                                                                       "Astronomy and astrophysics",
+                                                                       "Atmospheric science",
+                                                                       "Biochemistry",
+                                                                       "Biomedical engineering",
+                                                                       "Cell biology",
+                                                                       "Chemical engineering",
+                                                                       "Civil engineering",
+                                                                       "Condensed matterphysics",
+                                                                       "Design and manufacturing",
+                                                                       "Earth science",
+                                                                       "Electrical and electronic engineering",
+                                                                       "Environmental engineering",
+                                                                       "Evolution and ecology",
+                                                                       "Fluid mechanics",
+                                                                       "Food science and technology",
+                                                                       "Forest engineering",
+                                                                       "Fuel and energy technology",
+                                                                       "Genetics",
+                                                                       "Geochemistry and geochronology",
+                                                                       "Geographical information",
+                                                                       "Geophysics",
+                                                                       "Hydrology",
+                                                                       "Industrial engineering",
+                                                                       "Information technology",
+                                                                       "Inorganic chemistry",
+                                                                       "Life sciences research related to human health and disease",
+                                                                       "Materials science and technology",
+                                                                       "Mechanical engineering",
+                                                                       "Medical sciences",
+                                                                       "Microbiology",
+                                                                       "Mining and mineral processing",
+                                                                       "Molecular biology",
+                                                                       "Not available",
+                                                                       "Oceanography",
+                                                                       "Organic chemistry",
+                                                                       "Other studies in natural sciences and engineering",
+                                                                       "Physical chemistry",
+                                                                       "Physical geography",
+                                                                       "Physics",
+                                                                       "Plant and treebiology",
+                                                                       "Polymer chemistry",
+                                                                       "Psychology",
+                                                                       "Pure mathematics",
+                                                                       "Robotics",
+                                                                       "Soil science",
+                                                                       "Space science",
+                                                                       "Statistics and probability",
+                                                                       "Structural engineering",
+                                                                       "Theoretical physics and chemistry"]}) %></td>
+    </tr>
+    <tr>
         <td class="label">Amount ($):</td>
         <td><%= HTML.TextBox(this, 'amount', {size: 12}) %></td>
     </tr>
