@@ -356,12 +356,12 @@ class Project extends BackboneModel {
             $subProjects = LIKE("%");
         }
         $data = DBFunctions::select(array('grand_project'),
-                                    array('name'),
+                                    array('id'),
                                     array('parent_id' => $subProjects),
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromHistoricName($row['name']);
+            $project = Project::newFromId($row['id']);
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || $project->getStatus() != 'Proposed')){
                     $projects[$project->getName()] = $project;
