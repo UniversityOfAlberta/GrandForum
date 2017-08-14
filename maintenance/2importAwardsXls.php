@@ -18,7 +18,7 @@
                 }
                 if($i > 0 && count($cells)>1){
                     foreach($cells as $key => $cell){
-                        $cells[$key] = utf8_encode($cell);
+                        $cells[$key] = trim(utf8_encode($cell));
                     }
                     $fullname = $cells[1];
                     $name_array = explode(",", $fullname);
@@ -60,7 +60,7 @@
                         if($cells[34+$offset] == ""){
                             $keyword = '';
                         }
-                        $application_summary = str_replace("'", "''",$cells[35+$offset]);
+                        $application_summary = strip_tags(str_replace("'", "''",$cells[35+$offset]));
 
                         $status = DBFunctions::insert('grand_new_grants',
                                                       array('user_id' => $user_id,

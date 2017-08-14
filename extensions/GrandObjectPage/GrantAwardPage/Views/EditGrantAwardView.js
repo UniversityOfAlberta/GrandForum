@@ -14,7 +14,12 @@ EditGrantAwardView = Backbone.View.extend({
         this.grants = new Grants();
         var xhr1 = this.grants.fetch();
         this.listenTo(this.model, "change:application_title", function(){
-            main.set('title', this.model.get('application_title'));
+            if(this.model.get('application_title') != ''){
+                main.set('title', this.model.get('application_title'));
+            }
+            else{
+                main.set('title', 'New Grant Award');
+            }
         });
         this.listenTo(this.model, 'sync', function(){
             if(this.model.get('grant_id') == 0){
@@ -108,7 +113,12 @@ EditGrantAwardView = Backbone.View.extend({
     },
     
     render: function(){
-        main.set('title', this.model.get('application_title'));
+        if(this.model.get('application_title') != ''){
+            main.set('title', this.model.get('application_title'));
+        }
+        else{
+            main.set('title', 'New Grant Award');
+        }
         this.$el.html(this.template(this.model.toJSON()));
         this.renderCoapplicants();
         this.renderPartners();

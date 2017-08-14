@@ -14,7 +14,7 @@
             foreach($lines as $i => $cells){
                 if($i > 0 && count($cells)>1){
                     foreach($cells as $key => $cell){
-                        $cells[$key] = utf8_encode($cell);
+                        $cells[$key] = trim(utf8_encode($cell));
                     }
                     $cle = $cells[0];
                     $datacheck = DBFunctions::select(array('grand_new_grants'),

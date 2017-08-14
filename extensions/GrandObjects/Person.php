@@ -177,7 +177,7 @@ class Person extends BackboneModel {
     static function newFromEmail($email){
         $data = DBFunctions::select(array('mw_user'),
                                     array('user_id'),
-                                    array('LOWER(CONVERT(user_email using latin1))' => strtolower($email)));
+                                    array('user_email' => strtolower($email)));
         if(count($data) > 0){
             return Person::newFromId($data[0]['user_id']);
         }
