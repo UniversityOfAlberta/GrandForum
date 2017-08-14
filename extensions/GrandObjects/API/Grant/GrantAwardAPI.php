@@ -49,7 +49,7 @@ class GrantAwardAPI extends RESTAPI {
         $grant->keyword = $this->POST('keyword');
         $grant->application_summary = $this->POST('application_summary');
         $grant->partners = $this->POST('partners');
-        //$grant->coapplicants = $this->POST('coapplicants');
+        $grant->coapplicants = $this->POST('coapplicants');
         $grant->create();
         return $grant->toJSON();
     }
@@ -83,7 +83,7 @@ class GrantAwardAPI extends RESTAPI {
             $grant->keyword = $this->POST('keyword');
             $grant->application_summary = $this->POST('application_summary');
             $grant->partners = $this->POST('partners');
-            //$grant->coapplicants = $this->POST('coapplicants');
+            $grant->coapplicants = $this->POST('coapplicants');
             $grant->update();
             return $grant->toJSON();
         }

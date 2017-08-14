@@ -28,10 +28,26 @@ GrantAwardView = Backbone.View.extend({
     events: {
         "click #edit": "edit"
     },
+    
+    renderCoApplicants: function(){
+        var views = Array();
+        var that = this;
+        _.each(this.model.get('coapplicants'), function(author, index){
+            var link = new Link({id: author.id,
+                                 text: author.name.replace(/&quot;/g, ''),
+                                 url: author.url,
+                                 target: ''});
+            views.push(new PersonLinkView({model: link}).render());
+        });
+        var csv = new CSVView({el: this.$('#coapplicants'), model: views});
+        csv.separator = '; ';
+        csv.render();
+    },
 
     render: function(){
         main.set('title', this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderCoApplicants();
         return this.$el;
     }
 

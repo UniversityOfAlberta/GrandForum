@@ -869,7 +869,6 @@ class Paper extends BackboneModel{
         }
         return $this->authors;
     }
-
     
     function getAuthorNames(){
         $authors = array();

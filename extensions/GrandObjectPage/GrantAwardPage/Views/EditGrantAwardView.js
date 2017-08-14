@@ -65,6 +65,40 @@ EditGrantAwardView = Backbone.View.extend({
         "click #addPartner": "addPartner"
     },
     
+    renderCoapplicantsWidget: function(){
+        var left = _.pluck(this.model.get('coapplicants'), 'fullname');
+        var right = _.difference(this.allPeople.pluck('fullName'), left);
+        var objs = [];
+        this.allPeople.each(function(p){
+            objs[p.get('fullName')] = {id: p.get('id'),
+                                       name: p.get('name'),
+                                       fullname: p.get('fullName')};
+        });
+        var html = HTML.Switcheroo(this, 'coapplicants.fullname', {name: 'Co-Applicant',
+                                                                   left: left,
+                                                                   right: right,
+                                                                   objs: objs
+                                                                  });
+        this.$("#coapplicants").html(html);
+        createSwitcheroos();
+    },
+    
+    renderCoapplicants: function(){
+        if(this.allPeople != null && this.allPeople.length > 0){
+            this.renderCoapplicantsWidget();
+        }
+        else{
+            this.allPeople = new People();
+            this.allPeople.fetch();
+            var spin = spinner("coapplicants", 10, 20, 10, 3, '#888');
+            this.allPeople.bind('sync', function(){
+                if(this.allPeople.length > 0){
+                    this.renderCoapplicantsWidget();
+                }
+            }, this);
+        }
+    },
+    
     renderPartners: function(){
         this.$("#partners").empty();
         _.each(this.model.get('partners'), $.proxy(function(partner){
@@ -76,6 +110,7 @@ EditGrantAwardView = Backbone.View.extend({
     render: function(){
         main.set('title', this.model.get('application_title'));
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderCoapplicants();
         this.renderPartners();
         this.$('input[name=amount]').forceNumeric({min: 0, max: 100000000000,includeCommas: true, decimals: 2});
         this.$('input[name=fiscal_year]').forceNumeric({min: 0, max: 9999,includeCommas: false});

@@ -14,21 +14,23 @@ class GrantAwardPage extends BackbonePage {
     }
     
     function getTemplates(){
-        return array('grantaward',
+        return array('Backbone/*',
+                     'grantaward',
                      'grantawards',
                      'edit_grantaward',
                      'edit_partner');
     }
     
     function getViews(){
-        return array('GrantAwardView',
+        return array('Backbone/*',
+                     'GrantAwardView',
                      'GrantAwardsView',
                      'EditGrantAwardView',
                      'EditPartnerView');
     }
     
     function getModels(){
-        return array();
+        return array('Backbone/*');
     }
     
     static function createToolboxLinks(&$toolbox){

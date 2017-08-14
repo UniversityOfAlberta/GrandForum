@@ -11,6 +11,9 @@
         <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
     <tr>
+        <td colspan="2" id="coapplicants"></td>
+    </tr>
+    <tr>
         <td class="label">Grant:</td>
         <td><%= HTML.Select(this, 'grant_id', {'data-placeholder': "Choose a Grant...", options: this.grants.map(function(grant){ return {option: grant.get('title'), value: grant.get('id')}; })}) %></td>
     </tr>
@@ -64,7 +67,7 @@
                                                                           "Natural resources (economic aspects)",
                                                                           "Northern development",
                                                                           "Not available",
-                                                                          "Transportation systems and services"]}) %></td>
+                                                                          "Transportation systems and services"], 'data-placeholder': "Choose an Area of Application Group...", }) %></td>
     </tr>
     <tr>
         <td class="label">Area of Application:</td>
@@ -144,7 +147,7 @@
                                                                     "Waste, waste management and recycling",
                                                                     "Water",
                                                                     "Wildlife management",
-                                                                    "Wood, wood products and paper"]}) %></td>
+                                                                    "Wood, wood products and paper"], 'data-placeholder': "Choose an Area of Application...", }) %></td>
     </tr>
     <tr>
         <td class="label">Research Subject Group:</td>
@@ -201,7 +204,7 @@
                                                                        "Space science",
                                                                        "Statistics and probability",
                                                                        "Structural engineering",
-                                                                       "Theoretical physics and chemistry"]}) %></td>
+                                                                       "Theoretical physics and chemistry"], 'data-placeholder': "Choose a Research Subject...", }) %></td>
     </tr>
     <tr>
         <td class="label">Amount ($):</td>

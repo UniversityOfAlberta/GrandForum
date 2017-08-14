@@ -30,6 +30,7 @@ class GrantAward extends BackboneModel {
     var $application_summary;
     var $coapplicants;
     var $partners = null;
+    var $coapplicantsWaiting;
     
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_new_grants'),
@@ -108,6 +109,7 @@ class GrantAward extends BackboneModel {
                 $this->keyword = $row['keyword'];
                 $this->application_summary = $row['application_summary'];
                 $this->coapplicants = $row['coapplicants'];
+                $this->coapplicantsWaiting = true;
             }
         }
     }
@@ -126,6 +128,91 @@ class GrantAward extends BackboneModel {
         }
         return $this->partners;
     }
+    
+    function getCoApplicants(){
+        if($this->coapplicantsWaiting){
+            $coapplicants = array();
+            if(is_array($this->coapplicants)){
+                // For creation/update of Product
+                foreach($this->coapplicants as $co){
+                    if(isset($co->id)){
+                        $unserialized[] = $co->id;
+                    }
+                    else if(isset($co->fullname)){
+                        $unserialized[] = $co->fullname;
+                    }
+                    else{
+                        $unserialized[] = $co->name;
+                    }
+                }
+            }
+            else{
+                $unserialized = unserialize($this->coapplicants);
+                if($unserialized == null){
+                    $unserialized = array();
+                }
+            }
+            foreach(@$unserialized as $co){
+                if($co == ""){
+                    continue;
+                }
+                $person = null;
+                if(is_numeric($co)){
+                    $person = Person::newFromId($co);
+                }
+                else{
+                    $person = Person::newFromNameLike($co);
+                    if($person == null || $person->getName() == null || $person->getName() == ""){
+                        // The name might not match exactly what is in the db, try aliases
+                        try{
+                            $person = Person::newFromAlias($co);
+                        }
+                        catch(DomainException $e){
+                            $person = null;
+                        }
+                    }
+                }
+                Product::generateIllegalAuthorsCache();
+                if($person == null || 
+                   $person->getName() == null || 
+                   $person->getName() == "" || 
+                   isset(Product::$illegalAuthorsCache[$person->getNameForForms()]) ||
+                   isset(Product::$illegalAuthorsCache[$person->getId()])){
+                    // Ok this person is not in the db, make a fake Person object
+                    $pdata = array();
+                    $pdata[0]['user_id'] = "";
+                    $pdata[0]['user_name'] = $co;
+                    $pdata[0]['user_real_name'] = $co;
+                    $pdata[0]['first_name'] = "";
+                    $pdata[0]['middle_name'] = "";
+                    $pdata[0]['last_name'] = "";
+                    $pdata[0]['prev_first_name'] = "";
+                    $pdata[0]['prev_last_name'] = "";
+                    $pdata[0]['honorific'] = "";
+                    $pdata[0]['language'] = "";
+                    $pdata[0]['user_email'] = "";
+                    $pdata[0]['user_gender'] = "";
+                    $pdata[0]['user_twitter'] = "";
+                    $pdata[0]['user_website'] = "";
+                    $pdata[0]['user_nationality'] = "";
+                    $pdata[0]['user_registration'] = "";
+                    $pdata[0]['user_public_profile'] = "";
+                    $pdata[0]['user_private_profile'] = "";
+                    $pdata[0]['candidate'] = 0;
+                    $person = new Person($pdata);
+                    Person::$cache[$co] = $person;
+                }
+                if($person->getName() == "WikiSysop"){
+                    // Under no circumstances should WikiSysop be an author
+                    continue;
+                }
+                $coapplicants[] = $person;
+            }
+            $this->coapplicants = $coapplicants;
+            $this->coapplicantsWaiting = false;
+        }
+        return $this->coapplicants;
+    }
    
     function getUrl(){
         global $wgServer, $wgScriptPath;
@@ -133,6 +220,19 @@ class GrantAward extends BackboneModel {
     }
     
     function create(){
+        $coapplicants = array();
+        foreach($this->coapplicants as $co){
+            if(isset($co->id) && $co->id != 0){
+                $coapplicants[] = $co->id;
+            }
+            else if(isset($co->fullname)){
+                $coapplicants[] = $co->fullname;
+            }
+            else{
+                // This is more for legacy purposes
+                $coapplicants[] = $co->name;
+            }
+        }
         DBFunctions::insert('grand_new_grants',
                             array('user_id' => $this->user_id,
                                   'grant_id' => $this->grant_id,
@@ -157,7 +257,7 @@ class GrantAward extends BackboneModel {
                                   'application_title' => $this->application_title,
                                   'keyword' => $this->keyword,
                                   'application_summary' => $this->application_summary,
-                                  'coapplicants' => $this->coapplicants));
+                                  'coapplicants' => serialize($coapplicants)));
         $this->id = DBFunctions::insertId();
         foreach($this->partners as $partner){
             if(is_object($partner)){
@@ -173,6 +273,19 @@ class GrantAward extends BackboneModel {
     }
     
     function update(){
+        $coapplicants = array();
+        foreach($this->coapplicants as $co){
+            if(isset($co->id) && $co->id != 0){
+                $coapplicants[] = $co->id;
+            }
+            else if(isset($co->fullname)){
+                $coapplicants[] = $co->fullname;
+            }
+            else{
+                // This is more for legacy purposes
+                $coapplicants[] = $co->name;
+            }
+        }
         $status = DBFunctions::update('grand_new_grants',
                             array('user_id' => $this->user_id,
                                   'grant_id' => $this->grant_id,
@@ -197,7 +310,7 @@ class GrantAward extends BackboneModel {
                                   'application_title' => $this->application_title,
                                   'keyword' => $this->keyword,
                                   'application_summary' => $this->application_summary,
-                                  'coapplicants' => $this->coapplicants),
+                                  'coapplicants' => serialize($coapplicants)),
                             array('id' => EQ($this->id)));
         DBFunctions::delete('grand_new_grant_partner',
                             array('award_id' => $this->id));
@@ -227,6 +340,13 @@ class GrantAward extends BackboneModel {
     
     function toArray(){
         $partners = new Collection($this->getPartners());
+        $coapplicants = array();
+        foreach($this->getCoApplicants() as $co){
+            $coapplicants[] = array('id' => $co->getId(),
+                                    'name' => $co->getNameForProduct(),
+                                    'fullname' => $co->getNameForForms(),
+                                    'url' => $co->getUrl());
+        }
         $json = array('id' => $this->id,
                       'user_id' => $this->user_id,
                       'grant_id' => $this->grant_id,
@@ -253,7 +373,8 @@ class GrantAward extends BackboneModel {
                       'application_summary' => $this->application_summary,
                       'coapplicants' => $this->coapplicants,
                       'url' => $this->getUrl(),
-                      'partners' => $partners->toArray()
+                      'partners' => $partners->toArray(),
+                      'coapplicants' => $coapplicants
         );
         return $json;
     }

@@ -6,10 +6,10 @@
         <td class="label">PI:</td>
         <td><a href="<%= this.person.get('url') %>"><%= this.person.get('fullName') %></a></td>
     </tr>
-    <% if(coapplicants != "") { %>
+    <% if(coapplicants.length > 0) { %>
         <tr>
             <td class="label">Co-Applicants:</td>
-            <td id="copi"><%= coapplicants %></td>
+            <td id="coapplicants"></td>
         </tr>
     <% } %>
     <% if(this.model.grant.get('id') != 0){ %>
