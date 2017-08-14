@@ -96,16 +96,15 @@ GrantAwards = Backbone.Collection.extend({
         var url = this.url() + '/' + start + '/' + count;
         var self = this;
         $.get(url, function(data) {
-            self.temp = self.temp.concat(data);
             if(_.size(data) == count){
                 // There's probably more, so keep calling
-                self.reset(self.temp, {silent: true});
+                self.add(data, {silent: true});
                 self.trigger('partialSync', start, count);
                 self.fetchChunk(start + count, count);
             }
             else{
                 // Done fetching
-                self.reset(self.temp);
+                self.add(data, {silent: true});
                 self.trigger('sync', start, count);
             }
         });
