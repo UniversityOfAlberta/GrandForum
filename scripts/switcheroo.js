@@ -4,7 +4,7 @@
     this.id = options.id;
     this.customAllowed = options.noCustom;
     this.values = new Array();
-    this.unnaccentedValues = new Array();
+    this.unaccentedValues = new Array();
     this.cleanIds = new Array();
     this.oldOptions = new Array();
     this.leftArray = new Array();
@@ -42,7 +42,7 @@
     
     this.filterResults = function(){
         var value = $("#search" + this.id.pluralize()).val();
-        var unnaccentedValue = unaccentChars(value.replace(/ /g, "."));
+        var unaccentedValue = unaccentChars(value.replace(/ /g, "."));
         $.each($("#right" + this.id.pluralize()).children().not("#no" + this.id), function(index, val){
             var valSelect = val.id;
             if(!$(val).hasClass("custom")){
@@ -55,15 +55,15 @@
         if(value == ""){
             var no = $("#no").detach();
             if(no.length > 0){
-                this.oldOptions["no"] = no;
+                this.oldOptions["no"] = no[0];
             }
         }
         else{
             var skip = false;
             for(i = 0; i < this.values.length; i++){
                 var cleanId = this.cleanIds[i];
-                var unnaccentedVal = this.unnaccentedValues[i];
-                if(unnaccentedValue == unnaccentedVal){
+                var unaccentedVal = this.unaccentedValues[i];
+                if(unaccentedValue == unaccentedVal){
                     skip = true;
                     if(typeof this.oldOptions[cleanId] != "undefined"){
                         $(this.oldOptions[cleanId]).attr("selected", true);
@@ -91,9 +91,9 @@
         var buffer = Array();
         for(i = 0; i < this.values.length; i++){
             var val = this.values[i];
-            var unnaccentedVal = this.unnaccentedValues[i];
+            var unaccentedVal = this.unaccentedValues[i];
             var cleanId = this.cleanIds[i];
-            if(unnaccentedVal.indexOf(unnaccentedValue) != -1){
+            if(unaccentedVal.indexOf(unaccentedValue) != -1){
                 if(typeof this.oldOptions[cleanId] != "undefined"){
                     buffer[i] = "<option id='" + this.oldOptions[cleanId].id + "'>" + this.oldOptions[cleanId].innerHTML + "</option>";
                     this.oldOptions[cleanId] = undefined;
@@ -143,7 +143,7 @@
         });
         this.values = this.leftArray.concat(this.rightArray);
         for(i = 0; i < this.values.length; i++){
-            this.unnaccentedValues[i] = unaccentChars(this.values[i].replace(/ /g, "."));
+            this.unaccentedValues[i] = unaccentChars(this.values[i].replace(/ /g, "."));
             this.cleanIds[i] = this.id + this.cleanId(this.values[i].replace(/\./g, ""));
         }
         var customMessage = "";
