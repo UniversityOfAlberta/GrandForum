@@ -753,7 +753,7 @@ class Person extends BackboneModel {
                     $people[] = $row;
                 }
                 else{
-                    $people[] = $person;
+                    $people[strtolower($person->getNameForForms())] = $person;
                 }
             }
             if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
@@ -771,7 +771,7 @@ class Person extends BackboneModel {
                                 $people[] = $row;
                             }
                             else{
-                                $people[] = $person;
+                                $people[strtolower($person->getNameForForms())] = $person;
                             }
                         }
                     }
@@ -796,11 +796,12 @@ class Person extends BackboneModel {
                 $person = Person::newFromId($row);
                 if($person->getName() != "WikiSysop"){
                     if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                        $people[] = $person;
+                        $people[strtolower($person->getNameForForms())] = $person;
                     }
                 }
             }
         }
+        ksort($people);
         return $people;
     }
     
@@ -817,9 +818,10 @@ class Person extends BackboneModel {
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleDuring($filter, $startRange, $endRange))){
-                $people[] = $person;
+                $people[strtolower($person->getNameForForms())] = $person;
             }
         }
+        ksort($people);
         return $people;
     }
     
@@ -835,9 +837,10 @@ class Person extends BackboneModel {
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRoleOn($filter, $date))){
-                $people[] = $person;
+                $people[strtolower($person->getNameForForms())] = $person;
             }
         }
+        ksort($people);
         return $people;
     }
     
@@ -864,10 +867,11 @@ class Person extends BackboneModel {
             $person = Person::newFromId($rowA[0]['user_id']);
             if($person->getName() != "WikiSysop" && ($filter == null || $filter == "all" || $person->isRole($filter.'-Candidate'))){
                 if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                    $people[] = $person;
+                    $people[strtolower($person->getNameForForms())] = $person;
                 }
             }
         }
+        ksort($people);
         return $people;
     }
 
