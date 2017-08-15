@@ -502,10 +502,11 @@ class UploadCCVAPI extends API{
                 $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
             }
             $position = Person::getDefaultPosition();
-            $rank = ($emp['rank'] != "") ? CommonCV::getCaptionFromValue($emp['rank'], "Academic Rank") : $emp['title'];
+            $rank = $emp['title']; // title has the position data.
+            //$rank = ($emp['rank'] != "") ? CommonCV::getCaptionFromValue($emp['rank'], "Academic Rank") : $emp['title'];
             $posFound = false;
             foreach($positions as $id => $pos){
-                if($pos == $rank){
+                if(strtolower($pos) == strtolower($rank)){
                     $position = $id;
                     $posFound = true;
                     break;
