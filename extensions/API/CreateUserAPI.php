@@ -19,7 +19,7 @@ class CreateUserAPI extends API{
     }
 
     function doAction($doEcho=true){
-        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail, $wgEmailAuthentication, $wgEnableUserEmail;
+        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $config, $wgEnableEmail, $wgEmailAuthentication, $wgEnableUserEmail;
         $me = Person::newFromId($wgUser->getId());
         $oldWPNS = "";
         $oldWPType = "";
@@ -130,6 +130,12 @@ class CreateUserAPI extends API{
                                                 array('user_id' => $person->id,
                                                       'sub_role' => $subtype));
                         }
+                    }
+                    if($config->getValue("networkName") == "CFN" && array_search(HQP, $_POST['wpUserType']) !== false && $wgScriptPath == ""){
+                        $from = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+                        $headers = "Content-type: text/html\r\n"; 
+                        $headers .= $from;
+                        mail("training@cfn-nce.ca", "HQP Created", "A new HQP (<a href='{$person->getUrl()}'>{$person->getReversedName()}</a> &lt;{$person->getEmail()}&gt;) has been created.", $headers);
                     }
                     Notification::addNotification("", $creator, "User Created", "A new user has been added to the forum: {$person->getReversedName()}", "{$person->getUrl()}");
                     $data = DBFunctions::select(array('grand_notifications'),
