@@ -81,12 +81,6 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.$el.scrollTop(this.el.scrollHeight);
     },
     
-    /*addUniversity: function(){
-        var university = "Unknown";
-        this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
-        this.$el.scrollTop(this.el.scrollHeight);
-    },*/
-    
     addRows: function(){
         this.universities.each($.proxy(function(university, i){
             if(this.universityViews[i] == null){
