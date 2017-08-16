@@ -977,6 +977,7 @@ class CavendishTemplate extends QuickTemplate {
 		            $failMessage = "<p>Incorrect password entered. Please try again.</p>";
 		        }
 		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
+		            LoginForm::clearLoginThrottle($_POST['wpName']);
 		            $failMessage = "";
 		            return;
 		        }
