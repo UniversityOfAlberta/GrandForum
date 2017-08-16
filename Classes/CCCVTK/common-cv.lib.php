@@ -390,6 +390,7 @@ class CommonCV // {{{
       $record['organization_subdivision'] = $this->get_xpath("field[@id='5dd34f14c1ea47c09e8ddcd202653814']/refTable/linkedWith[@label='Subdivision']/@value", $elements->item($i));
       $record['organization_type'] = $this->get_xpath("field[@id='5dd34f14c1ea47c09e8ddcd202653814']/refTable/linkedWith[@label='Organization Type']/@value", $elements->item($i));
       $record['organization_name'] = $this->get_xpath("field[@id='5dd34f14c1ea47c09e8ddcd202653814']/refTable/linkedWith[@label='Organization']/@value", $elements->item($i));
+      $record['organization_other'] = $this->get_xpath("field[@id='69b0f4fab5e64d7da044e0f8cbd70e52']", $elements->item($i));
       $record['department'] = $this->get_xpath("field[@id='cd6e5e97994e42f893bd5c9e7212c94b']/value", $elements->item($i));
       $record['faculty'] = $this->get_xpath("field[@id='58cf7001d283421b91f5da21f0ef2188']/value", $elements->item($i));
       $record['tenure'] = $this->get_xpath("field[@id='b0eca39ad77346648180dec948d13432']/lov/@id", $elements->item($i));

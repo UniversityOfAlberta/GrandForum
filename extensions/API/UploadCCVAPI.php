@@ -476,8 +476,9 @@ class UploadCCVAPI extends API{
             $department = $emp['department'];
             $university = Person::getDefaultUniversity();
             $uniFound = false;
+            $uniName = ($emp['organization_name'] != "") ? $emp['organization_name'] : $emp['organization_other'];
             foreach($universities as $id => $uni){
-                if($uni == $emp['organization_name']){
+                if($uni == $uniName){
                     $university = $id;
                     $uniFound = true;
                     break;
@@ -486,19 +487,20 @@ class UploadCCVAPI extends API{
                     $university = $id;
                 }
             }
-            if(!$uniFound && $emp['organization_name'] != ""){
+            if(!$uniFound && ($uniName != "")){
                 // University not Found, so add it
+                
                 $otherId = DBFunctions::select(array('grand_provinces'),
                                                array('id'),
                                                array('province' => EQ('Other')));
                 $otherId = (isset($otherId[0])) ? $otherId[0]['id'] : 0;
                 DBFunctions::insert('grand_universities',
-                                    array('university_name' => $emp['organization_name'],
+                                    array('university_name' => $uniName,
                                           'province_id'     => $otherId,
                                           '`order`'    => 10001));
                 $university = DBFunctions::select(array('grand_universities'),
                                                   array('university_id'),
-                                                  array('university_name' => EQ($emp['organization_name'])));
+                                                  array('university_name' => EQ($uniName)));
                 $university = (isset($university[0])) ? $university[0]['university_id'] : Person::getDefaultUniversity();
             }
             $position = Person::getDefaultPosition();

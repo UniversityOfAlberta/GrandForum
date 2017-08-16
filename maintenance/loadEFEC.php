@@ -270,6 +270,10 @@
         show_status(++$iterationsSoFar, count($staff));
     }
     
+    // Adding Employment History
+    echo "\nImporting Employment History from CCV\n";
+    require_once("ccvEmploymentUpload.php");
+    
     // Adding HQP
     $respIdMap = array();
     $hqpRoles = array();
@@ -588,7 +592,16 @@
                strstr(strtolower($row['Awd Spons Program Description']), "studentship") === false &&
                strstr(strtolower($row['Awd Spons Program Description']), "scholarship") === false &&
                strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false &&
-               intval($newGrant->total) >= 10000){
+               intval($newGrant->total) >= 10000 &&
+               strpos(strtolower($row['Project']), "B") !== 0 &&
+               strpos(strtolower($row['Project']), "D") !== 0 &&
+               array_search($row['Awd Spons Prog Seq No.'], array(33, 8, 9, 34,35, 51, 53, 65, 109)) === false &&
+               strstr(strtolower($row['Project Title']), "facsci") === false &&
+               strstr(strtolower($row['Project Title']), "fos") === false &&
+               strstr(strtolower($row['Project Title']), "fac sci") === false &&
+               strstr(strtolower($row['Project Title']), "start up") === false &&
+               strstr(strtolower($row['Project Title']), "startup") === false &&
+               strstr(strtolower($row['Project Title']), "gen res") === false){
                 // Above are ignore rules from Renee
                 $newGrant->create();
             }
