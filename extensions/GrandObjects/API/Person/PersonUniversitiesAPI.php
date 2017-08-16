@@ -53,21 +53,20 @@ class PersonUniversitiesAPI extends RESTAPI {
                                       '`default`' => 0));
         }
         
-        
         if(count($posCheck) == 0){
             // Create new Position
             DBFunctions::insert('grand_positions',
                                 array('position' => $this->POST('position'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
-            
         }
+        
+        $university_id = "";
+        $position_id = "";
        
         $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
         
-        $university_id = "";
-        $position_id = "";
         $department = $this->POST('department');
         $researchArea = $this->POST('researchArea');
         $start_date = $this->POST('startDate');
@@ -93,7 +92,6 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'position_id' => $position_id,
                                   'start_date' => $start_date,
                                   'end_date' => $end_date));
-                                  
         $this->params['personUniversityId'] = DBFunctions::insertId();
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
@@ -131,14 +129,14 @@ class PersonUniversitiesAPI extends RESTAPI {
                                 array('position' => $this->POST('position'),
                                       '`order`' => 10000,
                                       '`default`' => 0));
-            
         }
-        
-        $universities = University::getAllUniversities();
-        $positions = Person::getAllPositions();
         
         $university_id = "";
         $position_id = "";
+        
+        $universities = University::getAllUniversities();
+        $positions = Person::getAllPositions();
+
         $department = $this->POST('department');
         $researchArea = $this->POST('researchArea');
         $start_date = $this->POST('startDate');
@@ -165,6 +163,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                   'start_date' => $start_date,
                                   'end_date' => $end_date),
                             array('id' => EQ($personUniversityId)));
+
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         MailingList::subscribeAll($person);
