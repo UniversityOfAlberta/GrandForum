@@ -451,13 +451,10 @@ class Person extends BackboneModel {
     static function generateUniversityCache(){
         if(count(self::$universityCache) == 0){
             $sql = "SELECT user_id, university_name, department, position, end_date, research_area
-                    FROM (SELECT * 
-                          FROM grand_user_university 
-                          ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC) 
-                         uu, grand_universities u, grand_positions p 
+                    FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
-                    GROUP BY user_id";
+                    ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 if(!isset(self::$universityCache[$row['user_id']])){

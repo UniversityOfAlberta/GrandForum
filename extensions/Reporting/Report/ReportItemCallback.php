@@ -1120,7 +1120,7 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","ra","post-doctoral fellow", "research/technical assistant"))){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","post-doctoral fellow"))){
                 $count++;
             }
         }
@@ -1135,7 +1135,7 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("technician", "professional end user"))){
+            if(in_array(strtolower($relation->getUser2()->getPosition()), array("technician", "ra", "research/technical assistant", "professional end user"))){
                 $count++;
             }
         }
