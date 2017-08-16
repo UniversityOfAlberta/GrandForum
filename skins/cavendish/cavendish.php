@@ -1128,7 +1128,7 @@ EOF;
             }
 		}
 		else {
-		    global $wgSiteName, $wgOut;
+		    global $wgSiteName, $wgOut, $wgPasswordAttemptThrottle;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
@@ -1158,6 +1158,7 @@ EOF;
 		            $failMessage = "<p class='inlineError'>Your username or password is incorrect.</p>";
 		        }
 		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
+		            LoginForm::clearLoginThrottle($_POST['wpName']);
 		            $failMessage = "";
 		            return;
 		        }
