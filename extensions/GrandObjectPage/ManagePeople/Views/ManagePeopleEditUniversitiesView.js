@@ -3,6 +3,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     universities: null,
     person: null,
     universityViews: null,
+    interval: null,
 
     initialize: function(options){
         this.person = options.person;
@@ -13,65 +14,78 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.model.ready().then($.proxy(function(){
             this.universities = this.model;
             this.listenTo(this.universities, "add", this.addRows);
-            this.model.ready().then($.proxy(function(){
-                this.render();
-            }, this));
+            this.universities.each(function(u){
+                u.startTracking();
+            });
+            this.render();
         }, this));
         
-        var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
-        setInterval($.proxy(function(){
-	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
-	            this.$el.dialog("option","position", {
+        var dim = {w1: 0,
+                   h1: 0,
+                   w2: 0,
+                   h2: 0};
+        this.interval = setInterval($.proxy(function(){
+            if(this.$el.width() != dim.w1 ||
+               this.$el.height() != dim.h1 ||
+               $(window).width() != dim.w2 ||
+               $(window).height() != dim.h2){
+                if(this.$el.height() >= $(window).height() - 100){
+                    this.$el.height($(window).height() - 100);
+                }
+                else{
+                    this.$el.height('auto');
+                }
+                this.$el.dialog("option","position", {
                     my: "center center",
-                    at: "center center",
-                    offset: "0 -75%"
+                    at: "center center"
                 });
-	            dims.w = this.$el.width();
-	            dims.h = this.$el.height();
-	        }
+            }
+            dim.w1 = this.$el.width();
+            dim.h1 = this.$el.height();
+            dim.w2 = $(window).width();
+            dim.h2 = $(window).height();
 	    }, this), 100);
-	    $(window).resize($.proxy(function(){
-	        this.$el.dialog("option","position", {
-                my: "center center",
-                at: "center center",
-                offset: "0 -75%"
-            });
-	    }, this));
     },
     
     saveAll: function(){
         var copy = this.universities.toArray();
         clearAllMessages();
+        var requests = new Array();
         _.each(copy, $.proxy(function(university){
-            if(university.get('deleted') != "true"){
-                university.save(null, {
-                    success: function(){
-                        addSuccess("Universities saved");
-                    },
-                    error: function(){
-                        addError("Universities could not be saved");
-                    }
-                });
-            }
-            else {
-                university.destroy(null, {
-                    success: function(){
-                        addSuccess("Universities saved");
-                    },
-                    error: function(){
-                        addError("Universities could not be saved");
-                    }
-                });
+            if(university.unsavedAttributes() != false){
+                if(university.get('deleted') != "true"){
+                    requests.push(university.save(null));
+                }
+                else {
+                    requests.push(university.destroy(null));
+                }
             }
         }, this));
+        $.when.apply($, requests).then(function(){
+            addSuccess("Universities saved");
+        }).fail(function(){
+            addError("Universities could not be saved");
+        });
+        return requests;
     },
     
     addUniversity: function(){
+        var university = new PersonUniversity();
+        university.startTracking();
+        university.set("university", "Unknown");
+        university.set("department", "Unknown");
+        university.set("position", "Unknown");
+        university.set("personId", this.person.get('id'));
+        this.universities.add(university);
+        this.$el.scrollTop(this.el.scrollHeight);
+    },
+    
+    /*addUniversity: function(){
         var university = "Unknown";
         this.universities.add(new PersonUniversity({university: university, department: 'Unknown', position: 'Unknown', personId: this.person.get('id')}));
         this.$el.scrollTop(this.el.scrollHeight);
-    },
+    },*/
     
     addRows: function(){
         this.universities.each($.proxy(function(university, i){
@@ -107,10 +121,6 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.person = options.person;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
-    },
-    
-    delete: function(){
-        this.model.delete = true;
     },
     
     // Sets the end date to infinite (0000-00-00)

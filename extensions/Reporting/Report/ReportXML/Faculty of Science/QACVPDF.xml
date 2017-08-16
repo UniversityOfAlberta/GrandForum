@@ -24,6 +24,14 @@
             ]]>
         </ReportItem>
         
+        <!-- Employment/Education History -->
+        <ReportItem id="employment" type="PersonEmploymentReportItem">
+            <![CDATA[
+                <h2>Employment/Education History</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <!-- Honors and Awards -->
         <ReportItemSet type="If" if="{>({getNProducts({$start_year}-07-01, {$this_year}-06-30, Award, all,, false)}, 0)}">
             <ReportItem id="awardbookmark" type="BookmarkReportItem" title="Honors and Awards">

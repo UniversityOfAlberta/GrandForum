@@ -36,7 +36,7 @@ class Collection {
     function toArray(){
         $json = array();
         if(count($this->objects) > 0){
-            if($this->objects[0] instanceof BackboneModel){
+            if(array_values($this->objects)[0] instanceof BackboneModel){
                 foreach($this->objects as $object){
                     $json[] = $object->toArray();
                 }

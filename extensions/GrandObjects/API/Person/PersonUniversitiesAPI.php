@@ -183,7 +183,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         MailingList::subscribeAll($person);
-        return false;
+        return json_encode(array());
     }
 }
 

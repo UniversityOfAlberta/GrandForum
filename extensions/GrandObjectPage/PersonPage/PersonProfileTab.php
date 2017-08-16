@@ -576,7 +576,7 @@ EOF;
                         $('form').off('submit');
                         $('input[value=\"Save {$this->name}\"]').prop('disabled', false);
                         _.delay(function(){
-                            //$('input[value=\"Save {$this->name}\"]').click();
+                            $('input[value=\"Save {$this->name}\"]').click();
                         }, 10);
                     });
                 }
