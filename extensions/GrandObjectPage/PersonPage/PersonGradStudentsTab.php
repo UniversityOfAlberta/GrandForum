@@ -41,7 +41,7 @@ class PersonGradStudentsTab extends AbstractTab {
         return $this->html;
     }
     
-    function supervisesHTML($hqpTypes=array(), $startDate, $endDate){
+    function supervisesHTML($hqpTypes=array(), $startDate=null, $endDate=null){
         $html = "<table class='wikitable relations_table' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                     <thead><tr>
                             <th>Name</th>
@@ -52,7 +52,12 @@ class PersonGradStudentsTab extends AbstractTab {
                             <th>Role</th>
                         </tr>
                     </thead><tbody>";
-        $relations = $this->person->getRelationsAll();
+        if($startDate == null || $endDate == null){
+            $relations = $this->person->getRelationsAll();
+        }
+        else{
+            $relations = $this->person->getRelationsDuring('all', $startDate, $endDate);
+        }
         $students = array();
         foreach($relations as $r){
             $hqp = $r->getUser2();
