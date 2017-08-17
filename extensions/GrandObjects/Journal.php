@@ -119,7 +119,7 @@ class Journal extends BackboneModel {
      }
 
      function getRank(){
-         return ($this->ranking_numerator / $this->ranking_denominator);
+         return "{$this->ranking_numerator}/{$this->ranking_denominator}";
      }
 
      function create(){
@@ -153,7 +153,7 @@ class Journal extends BackboneModel {
             'description' => $this->description,
             'ranking_numerator' => $this->ranking_numerator,
             'ranking_denominator' => $this->ranking_denominator,
-            'ratio' => $this->getRank(),
+            'category_ranking' => $this->getRank(),
             'impact_factor' => $this->impact_factor,
             'cited_half_life' => $this->cited_half_life,
             'eigenfactor' => $this->eigenfactor

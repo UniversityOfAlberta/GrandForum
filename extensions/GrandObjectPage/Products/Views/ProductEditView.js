@@ -257,11 +257,11 @@ ProductEditView = Backbone.View.extend({
                 journals.fetch({success: function( collection ) {
                     var data = _.map(collection.toJSON(), function(journal){
                         return {id: journal.id, 
-                                    label: journal.title + " " + journal.year + " (" + journal.description + ")", 
-                                    value: journal.title,
-                                    numerator: journal.ranking_numerator,
-                                    denominator: journal.ranking_denominator,
-                                    ratio: journal.ratio
+                                label: journal.title + " " + journal.year + " (" + journal.description + ")", 
+                                value: journal.title,
+                                impact_factor: journal.impact_factor,
+                                category_ranking: journal.category_ranking,
+                                eigen_factor: journal.eigenfactor
                         };
                     });
                     response(data);
@@ -271,9 +271,9 @@ ProductEditView = Backbone.View.extend({
             minLength: 2,
             select: $.proxy(function(event, ui){
                 this.$("input[name=data_published_in]").val(ui.item.value).change();
-                this.$("input[name=acceptance_ratio_numerator]").val(ui.item.numerator).change();
-                this.$("input[name=acceptance_ratio_denominator]").val(ui.item.denominator).change();
-                this.$("input[name=ratio]").val(ui.item.ratio).change();
+                this.$("input[name=data_impact_factor]").val(ui.item.impact_factor).change();
+                this.$("input[name=data_category_ranking]").val(ui.item.category_ranking).change();
+                this.$("input[name=data_eigen_factor]").val(ui.item.eigen_factor).change();
             }, this)
         });
 
