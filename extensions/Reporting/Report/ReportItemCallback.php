@@ -1104,7 +1104,13 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+            }
+            else{
+                $university = $relation->getUser2()->getUniversity();
+            }
+            if(in_array(strtolower($university['position']), array("phd","msc","phd student", "msc student", "graduate student - master's course", "graduate student - master's thesis", "graduate student - master's", "graduate student - master&#39;s", "graduate student - doctoral"))){
                 
                 $count++;
             }
@@ -1120,7 +1126,13 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("pdf","post-doctoral fellow"))){
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+            }
+            else{
+                $university = $relation->getUser2()->getUniversity();
+            }
+            if(in_array(strtolower($university['position']), array("pdf","post-doctoral fellow"))){
                 $count++;
             }
         }
@@ -1135,7 +1147,13 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("technician", "ra", "research/technical assistant", "professional end user"))){
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+            }
+            else{
+                $university = $relation->getUser2()->getUniversity();
+            }
+            if(in_array(strtolower($university['position']), array("technician", "ra", "research/technical assistant", "professional end user"))){
                 $count++;
             }
         }
@@ -1150,7 +1168,13 @@ class ReportItemCallback {
         );
         $count = 0;
         foreach($relations as $relation){
-            if(in_array(strtolower($relation->getUser2()->getPosition()), array("ugrad", "undergraduate", "undergraduate student"))){
+            if($relation->getEndDate() != "0000-00-00 00:00:00"){
+                $university = $relation->getUser2()->getUniversityDuring($relation->getEndDate(), $relation->getEndDate());
+            }
+            else{
+                $university = $relation->getUser2()->getUniversity();
+            }
+            if(in_array(strtolower($university['position']), array("ugrad", "undergraduate", "undergraduate student"))){
                 $count++;
             }
         }

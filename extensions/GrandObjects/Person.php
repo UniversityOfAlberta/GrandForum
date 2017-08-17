@@ -1934,7 +1934,8 @@ class Person extends BackboneModel {
                     if($row['university_name'] != "Unknown"){
                         $universities[] = array("university" => $row['university_name'],
                                                 "department" => $row['department'],
-                                                "position"   => $row['position']);
+                                                "position"   => $row['position'],
+                                                "research_area" => $row['research_area']);
                     }
                 }
             }
@@ -4531,11 +4532,10 @@ class Person extends BackboneModel {
     }
      
     function getRelationsAll(){
-        $sql = "SELECT id, type
-                FROM grand_relations
-                WHERE user1 = '{$this->id}'";
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('id'),
+                                    array('user1' => EQ($this->id)));
         $relations = array();
-        $data = DBFunctions::execSQL($sql);
         foreach($data as $row){
             $relations[] = Relationship::newFromId($row['id']);
         }

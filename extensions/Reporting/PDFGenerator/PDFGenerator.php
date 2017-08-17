@@ -538,7 +538,7 @@ EOF;
 		        margin-bottom: 0.25em;
 		        font-size: ".($fontSize+(6*DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        padding: ".max(1, (0.5*DPI_CONSTANT))."px ".(3*DPI_CONSTANT)."px ".(2*DPI_CONSTANT)."px ".(3*DPI_CONSTANT)."px;
+		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		    }
 		    
 		    #pdfBody h2 {
@@ -546,7 +546,7 @@ EOF;
 		        font-size: ".($fontSize+(4*DPI_CONSTANT))."px;
 		        font-weight: bold;
 		        border-top: ".max(1, (0.5*DPI_CONSTANT))."px dotted #000000;
-		        padding: ".max(2, (2*DPI_CONSTANT))."px ".(3*DPI_CONSTANT)."px ".(2*DPI_CONSTANT)."px ".(3*DPI_CONSTANT)."px;
+		        padding: ".max(2, (2*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
 		        margin-top: ".(2*DPI_CONSTANT)."px;
 		    }
@@ -554,7 +554,7 @@ EOF;
 		    #pdfBody h3 {
 		        font-size: ".($fontSize+(3*DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        padding: ".max(1, (0.5*DPI_CONSTANT))."px ".(3*DPI_CONSTANT)."px ".(2*DPI_CONSTANT)."px ".(3*DPI_CONSTANT)."px;
+		        padding: ".max(1, (0.5*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
 		        margin-top: ".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;
 		    }
