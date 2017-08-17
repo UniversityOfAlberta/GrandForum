@@ -250,7 +250,6 @@ ProductEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.renderAuthors();
         this.$("input[name=data_published_in]" ).autocomplete({ //name = data published in ... jquery selector: tag[...]
-
             source: $.proxy(function( request, response ) {
                 var journals = new Journals();
                 journals.search = request.term;
