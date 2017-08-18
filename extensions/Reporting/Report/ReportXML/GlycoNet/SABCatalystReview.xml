@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Catalyst Review" reportType="RP_SAB_CAT_REVIEW" ajax="true" disabled="false">
+<Report name="SAB Catalyst Review" reportType="RP_SAB_CAT_REVIEW" ajax="true" disabled="false" year="2017">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="SAB">
             <SectionPermission id="materials" permissions="rw" />

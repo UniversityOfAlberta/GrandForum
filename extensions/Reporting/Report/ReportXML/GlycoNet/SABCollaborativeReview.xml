@@ -28,9 +28,9 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport042017" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative082017">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport082017" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="project_materials_foot" type="StaticReportItem">
@@ -40,8 +40,8 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative082017">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
