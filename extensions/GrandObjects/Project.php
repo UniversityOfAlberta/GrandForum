@@ -292,7 +292,7 @@ class Project extends BackboneModel {
         else{
             $subProjects = LIKE("%");
         }
-        if(!isset(self::$projectCache[$subProjects])){
+        if(!isset(self::$projectCache[$subProjects[1]])){
             $data = DBFunctions::select(array('grand_project'),
                                         array('id', 'name'),
                                         array('parent_id' => $subProjects),
@@ -308,9 +308,9 @@ class Project extends BackboneModel {
             }
             ksort($projects);
             $projects = array_values($projects);
-            self::$projectCache[$subProjects] = $projects;
+            self::$projectCache[$subProjects[1]] = $projects;
         }
-        return self::$projectCache[$subProjects];
+        return self::$projectCache[$subProjects[1]];
     }
     
     static function getAllProjectsDuring($startDate, $endDate, $subProjects=false){
