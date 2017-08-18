@@ -621,9 +621,9 @@
         $product->title = trim(str_replace("•", "", str_replace("￼", "", $publication['title'])));
         $product->date = $publication['publication_date'];
         $product->acceptance_date = $publication['acceptance_date'];
-        $product->ratio = $publication['ratio'];
-        $product->acceptance_ratio_numerator = $publication['acceptance_ratio_numerator'];
-        $product->acceptance_ratio_denominator = $publication['acceptance_ratio_denominator'];
+        //$product->ratio = $publication['ratio'];
+        //$product->acceptance_ratio_numerator = $publication['acceptance_ratio_numerator'];
+        //$product->acceptance_ratio_denominator = $publication['acceptance_ratio_denominator'];
         $product->status = "Published";
         $product->access = "Public";
         
@@ -645,7 +645,8 @@
             'event_location' => $publication['location'],
             'location' => $publication['location'],
             'editors' => $publication['editors'],
-            'peer_reviewed' => ucwords($publication['refereed'])
+            'peer_reviewed' => ucwords($publication['refereed']),
+            'acceptance_ratio' => "{$publication['acceptance_ratio_numerator']}/{$publication['acceptance_ratio_denominator']}"
         );
         $product->data = $data;
         

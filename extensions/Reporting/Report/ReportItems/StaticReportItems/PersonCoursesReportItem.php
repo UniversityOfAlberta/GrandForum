@@ -8,6 +8,10 @@ class PersonCoursesReportItem extends StaticReportItem {
         $person = Person::newFromId($this->personId);
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
+        
+        $tab = new PersonCoursesTab($person, array());
+        return $tab->getHTML($start, $end);
+        
         $courses = $person->getCoursesDuring($start, $end);
         $coursesArray = array();
         foreach($courses as $course){
@@ -20,7 +24,7 @@ class PersonCoursesReportItem extends StaticReportItem {
             $first = true;
             foreach($terms as $term => $terms){
                 if($first){
-                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3><ul>";
+                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3><p>{$terms[0]->courseDescr}</p><ul>";
                 }   
                 $courses = new Collection($terms);
                 $components = $courses->pluck('component');

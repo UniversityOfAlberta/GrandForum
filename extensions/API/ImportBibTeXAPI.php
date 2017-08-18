@@ -107,11 +107,8 @@ class ImportBibTeXAPI extends API{
         if($product->description == ""){ $product->description = @$paper['abstract']; }
         if($product->status == ""){ $product->status = "Published"; }
         if($product->date == ""){ $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-{$paper['day']}"; }
-        if($product->acceptance_ratio_numerator == ""){$product->acceptance_ratio_numerator = @"{$paper['acceptance_ratio_numerator']}";}
-        if($product->acceptance_ratio_denominator == ""){$product->acceptance_ratio_denominator = @"{$paper['acceptance_ratio_denominator']}";}
-        if($product->ratio == ""){$product->ratio = @"{$paper['ratio']}";}
         if($product->acceptance_date == ""){$product->acceptance_date = @"{$paper['acceptance_date']}";}
-	if(!is_array($product->data)){ $product->data = array(); }
+        if(!is_array($product->data)){ $product->data = array(); }
         if(!is_array($product->projects)){ $product->projects = array(); }
         if(!is_array($product->authors)){ $product->authors = array(); }
         if(!$product->exists()){

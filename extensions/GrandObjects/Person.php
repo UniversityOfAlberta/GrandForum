@@ -2693,7 +2693,8 @@ class Person extends BackboneModel {
                 OR
                 ( (end_date = '0000-00-00 00:00:00') AND
                 ((start_date <= '$endRange')))
-                )";
+                )
+        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
         $data = DBFunctions::execSQL($sql);
         $relations = array();
         foreach($data as $row){
@@ -2736,8 +2737,9 @@ class Person extends BackboneModel {
                     AND u1.deleted != '1'
                     AND u2.deleted != '1'";
             if(!$history){
-                $sql .= "AND start_date >= end_date";
+                $sql .= " AND start_date >= end_date";
             }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
@@ -2754,8 +2756,9 @@ class Person extends BackboneModel {
                     AND u2.deleted != '1'
                     AND type <> '".WORKS_WITH."'";
             if(!$history){
-                $sql .= "AND start_date >= end_date";
+                $sql .= " AND start_date >= end_date";
             }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
@@ -2773,8 +2776,9 @@ class Person extends BackboneModel {
                     AND u2.deleted != '1'
                     AND type = '{$type}'";
             if(!$history){
-                $sql .= "AND start_date >= end_date";
+                $sql .= " AND start_date >= end_date";
             }
+            $sql .= " ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-12-31 00:00:00') DESC";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $this->relations[$row['type']][$row['id']] = Relationship::newFromId($row['id']);
@@ -4539,6 +4543,10 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $relations[] = Relationship::newFromId($row['id']);
         }
+        usort($relations, function($a, $b){ 
+            return str_replace("0000-00-00 00:00:00", "9999-12-31 00:00:00", $a->getEndDate()) < 
+                   str_replace("0000-00-00 00:00:00", "9999-12-31 00:00:00", $b->getEndDate());
+        });
         return $relations;
     }
 

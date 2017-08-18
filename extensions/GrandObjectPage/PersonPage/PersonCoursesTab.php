@@ -10,12 +10,52 @@ class PersonCoursesTab extends AbstractTab {
         $this->person = $person;
         $this->visibility = $visibility;
     }
+    
+    function getHTML($start=null, $end=null){
+        if($start == null || $end == null){
+            $courses = $this->person->getCourses();
+        }
+        else{
+            $courses = $this->person->getCoursesDuring($start, $end);
+        }
+        $coursesArray = array();
+        foreach($courses as $course){
+            if($course->totEnrl > 0){
+                $coursesArray["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
+            }
+        }
+        $item = "";
+        foreach($coursesArray as $subj => $terms){
+            $first = true;
+            foreach($terms as $term => $terms){
+                if($first){
+                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3><p>{$terms[0]->courseDescr}</p><ul>";
+                }   
+                $courses = new Collection($terms);
+                $components = $courses->pluck('component');
+                $sects = $courses->pluck('sect');
+                $totEnrls = $courses->pluck('totEnrl');
+                
+                $inner = array();
+                foreach($components as $key => $component){
+                    $inner[] = "{$component} {$sects[$key]} : {$totEnrls[$key]}";
+                }
+                $inner = implode(", ", $inner);
+                $item .= "<li><b>{$term}</b> ($inner)</li>";
+                $first = false;
+            }
+            $item .= "</ul>";
+        }
+        return $item;
+    }
 
     function generateBody(){
         global $wgUser;
         if(!$wgUser->isLoggedIn()){
             return "";
         }
+        $this->html = $this->getHTML();
+        return;
         $courses = $this->person->getCourses();
         $this->html .= "<table id='courses_table' frame='box' rules='all'>
                         <thead><tr>

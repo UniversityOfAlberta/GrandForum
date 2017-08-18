@@ -33,9 +33,6 @@ class Paper extends BackboneModel{
     var $bibtex_id;
     var $reported = array();
     var $acceptance_date;
-    var $ratio;
-    var $acceptance_ratio_numerator;
-    var $acceptance_ratio_denominator;
 
     /**
      * Returns a new Paper from the given id
@@ -270,7 +267,7 @@ class Paper extends BackboneModel{
                 $project = $project->getName();
             }
             $me = Person::newFromWgUser();
-            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date, acceptance_ratio_denominator, ratio, acceptance_ratio_numerator
+            $sql = "SELECT id, category, type, title, date, status, authors, date_changed, deleted, access_id, created_by, access, ccv_id, bibtex_id, date_created, acceptance_date
                     FROM `grand_products` p";
             if($project != "all"){
                 $p = Project::newFromName($project);
@@ -596,9 +593,6 @@ class Paper extends BackboneModel{
             $this->authorsWaiting = true;
             //$this->data = unserialize($data[0]['data']);
             $this->lastModified = $data[0]['date_changed'];
-            $this->ratio = $data[0]['ratio'];
-            $this->acceptance_ratio_numerator = $data[0]['acceptance_ratio_numerator'];
-            $this->acceptance_ratio_denominator = $data[0]['acceptance_ratio_denominator'];
             $this->acceptance_date = $data[0]['acceptance_date'];
         }
     }
@@ -1095,18 +1089,6 @@ class Paper extends BackboneModel{
     function getAcceptanceDate(){
         return $this->acceptance_date;
     }
-
-    function getRatio(){
-        return $this->ratio;
-    }
-
-    function getAcceptanceRatioNumerator(){
-        return $this->acceptance_ratio_numerator;
-    }
-
-    function getAcceptanceRatioDenominator(){
-        return $this->acceptance_ratio_denominator;
-    }
     
     /**
      * Returns the type of this Paper
@@ -1413,9 +1395,6 @@ class Paper extends BackboneModel{
                                                 'title' => $this->title,
                                                 'date' => $this->date,
                                                 'acceptance_date' => $this->acceptance_date,
-                                                'ratio' => $this->ratio,
-                                                'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
-                                                'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1508,9 +1487,6 @@ class Paper extends BackboneModel{
                                                 'title' => $this->title,
                                                 'date' => $this->date,
                                                 'acceptance_date' => $this->acceptance_date,
-                                                'ratio' => $this->ratio,
-                                                'acceptance_ratio_numerator' => $this->acceptance_ratio_numerator,
-                                                'acceptance_ratio_denominator' => $this->acceptance_ratio_denominator,
                                                 'status' => $this->status,
                                                 'authors' => serialize($authors),
                                                 'data' => serialize($this->data),
@@ -1655,9 +1631,6 @@ class Paper extends BackboneModel{
                           'status' => $this->getStatus(),
                           'date' => $this->getDate(),
                           'acceptance_date' => $this->getAcceptanceDate(),
-                          'ratio' => $this->getRatio(),
-                          'acceptance_ratio_denominator' => $this->getAcceptanceRatioDenominator(),
-                          'acceptance_ratio_numerator' => $this->getAcceptanceRatioNumerator(),
                           'url' => $this->getUrl(),
                           'data' => $data,
                           'authors' => $authors,

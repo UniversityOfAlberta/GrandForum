@@ -90,11 +90,6 @@
         <td class="label">Acceptance Date:</td>
         <td class="field"><%= HTML.DatePicker(this, 'acceptance_date', {format: 'yy-mm-dd'}) %></td>
     </tr>
-    <tr>
-        <td class="label">Acceptance Ratio:</td>
-        <td class="field" style="white-space:nowrap"><%= HTML.TextBox(this, 'ratio', {style:"width:70px;"}) %><br />
-        <%= HTML.TextBox(this, 'acceptance_ratio_numerator', {style:"width:50px;"}) %>/<%= HTML.TextBox(this, 'acceptance_ratio_denominator', {style:"width:50px;"}) %></td>
-    </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(!val.hidden){ %>
             <tr>

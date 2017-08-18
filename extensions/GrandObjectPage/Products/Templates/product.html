@@ -13,9 +13,6 @@
     <% if(acceptance_date != "" && acceptance_date != "0000-00-00"){ %>
         <tr><td align="right"><b>Acceptance Date:</b></td><td><%= formatDate(acceptance_date) %></td></tr>
     <% } %>
-    <% if(ratio != "" && ratio != "0"){ %>
-        <tr><td align="right"><b>Ratio:</b></td><td><%= ratio %> (<%= acceptance_ratio_numerator %>/<%= acceptance_ratio_denominator %>)</td></tr>
-    <% } %>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(data[index] != "" && data[index] != undefined && !val.hidden){ %>
             <tr>
