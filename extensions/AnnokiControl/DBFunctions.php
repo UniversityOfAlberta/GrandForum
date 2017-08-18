@@ -1,13 +1,13 @@
 <?php
 
 function COL($value){
-    return "COL### $value";
+    return array("", $value);
 }
 
 function queryNumeric($value){
     if(!is_numeric($value)){
-        if(strstr($value, "COL### ") !== false){
-            $value = str_replace("COL### ", "", $value);
+        if(is_array($value)){
+            $value = $value[1];
         }
         else{
             $value = "'".DBFunctions::escape($value)."'";
@@ -18,42 +18,42 @@ function queryNumeric($value){
 
 function NEQ($value){
     $value = queryNumeric($value);
-    return "### != {$value}";
+    return array("!=", $value);
 }
 
 function EQ($value){
     $value = queryNumeric($value);
-    return "### = {$value}";
+    return array("=", $value);
 }
 
 function GT($value){
     $value = queryNumeric($value);
-    return "### > {$value}";
+    return array(">", $value);
 }
 
 function LT($value){
     $value = queryNumeric($value);
-    return "### < {$value}";
+    return array("<", $value);
 }
 
 function GTEQ($value){
     $value = queryNumeric($value);
-    return "### >= {$value}";
+    return array(">=", $value);
 }
 
 function LTEQ($value){
     $value = queryNumeric($value);
-    return "### <= {$value}";
+    return array("<=", $value);
 }
 
 function LIKE($value){
     $value = queryNumeric($value);
-    return "### LIKE {$value}";
+    return array("LIKE", $value);
 }
 
 function NOTLIKE($value){
     $value = queryNumeric($value);
-    return "### NOT LIKE {$value}";
+    return array("NOT LIKE", $value);
 }
 
 function DURING($values){
@@ -85,22 +85,22 @@ function IN($values){
     foreach($values as $key => $value){
         $values[$key] = DBFunctions::escape($value);
     }
-    return "### IN ('".implode("','", $values)."')";
+    return array("IN", "('".implode("','", $values)."')");
 }
 
 function NOT_IN($values){
     foreach($values as $key => $value){
         $values[$key] = DBFunctions::escape($value);
     }
-    return "### NOT IN ('".implode("','", $values)."')";
+    return array("NOT IN", "('".implode("','", $values)."')");
 }
 
 function WHERE_OR($value){
-    return "### OR ".$value;
+    return " OR ".$value;
 }
 
 function WHERE_AND($value){
-    return "### AND ".$value;
+    return " AND ".$value;
 }
 
 /**
@@ -275,9 +275,8 @@ class DBFunctions {
 	    }
 	    foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
-            if(strstr($value, "### ") !== false){
-                $value = str_replace("### ", "", $value);
-                $whereSQL[] = "{$key} {$value} ";
+            if(is_array($value)){
+                $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
                 $value = DBFunctions::escape($value);
@@ -298,11 +297,11 @@ class DBFunctions {
             $sql .= "WHERE ";
             foreach($whereSQL as $key => $where){
                 if($key > 0){
-                    if(strstr($where, "### OR ") !== false){
-                        $where = str_replace("### OR ", " OR ", $where);
+                    if(strpos($where, " OR ") === 0){
+                        $where = str_replace_first(" OR ", " OR ", $where);
                     }
-                    else if(strstr($where, "### AND ") !== false){
-                        $where = str_replace("### AND ", " AND ", $where);
+                    else if(strpos($where, " AND ") === 0){
+                        $where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
@@ -334,9 +333,8 @@ class DBFunctions {
         foreach($values as $key => $value){
             $key = DBFunctions::escape($key);
             $cols[] = "{$key}";
-            if(strstr($value, "### ") !== false){
-                $value = str_replace("=", "", str_replace("### ", "", $value));
-                $vals[] = "{$value}";
+            if(is_array($value)){
+                $vals[] = "{$value[1]}";
             }
             else{
                 $value = DBFunctions::escape($value);
@@ -358,9 +356,8 @@ class DBFunctions {
 	    $table = DBFunctions::escape($table);
 	    foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
-            if(strstr($value, "### ") !== false){
-                $value = str_replace("### ", "", $value);
-                $whereSQL[] = "{$key} {$value} ";
+            if(is_array($value)){
+                $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
                 $value = DBFunctions::escape($value);
@@ -372,11 +369,11 @@ class DBFunctions {
             $sql .= "WHERE ";
             foreach($whereSQL as $key => $where){
                 if($key > 0){
-                    if(strstr($where, "### OR ") !== false){
-                        $where = str_replace("### OR ", " OR ", $where);
+                    if(strpos($where, " OR ") === 0){
+                        $where = str_replace_first(" OR ", " OR ", $where);
                     }
-                    else if(strstr($where, "### AND ") !== false){
-                        $where = str_replace("### AND ", " AND ", $where);
+                    else if(strpos($where, " AND ") === 0){
+                        $where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
@@ -404,9 +401,8 @@ class DBFunctions {
         $sets = array();
         foreach($values as $key => $value){
             $key = DBFunctions::escape($key);
-            if(strstr($value, "### ") !== false){
-                $value = str_replace("### ", "", $value);
-                $sets[] = "{$key} {$value} ";
+            if(is_array($value)){
+                $sets[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
                 $value = DBFunctions::escape($value);
@@ -414,27 +410,26 @@ class DBFunctions {
             }
         }
         $sql .= implode(",\n", $sets);
-        $wheres = array();
+        $whereSQL = array();
         foreach($where as $key => $value){
             $key = DBFunctions::escape($key);
-            if(strstr($value, "### ") !== false){
-                $value = str_replace("### ", "", $value);
-                $wheres[] = "{$key} {$value} ";
+            if(is_array($value)){
+                $whereSQL[] = "{$key} {$value[0]} {$value[1]} ";
             }
             else{
                 $value = DBFunctions::escape($value);
-                $wheres[] = "{$key} = '{$value}' ";
+                $whereSQL[] = "{$key} = '{$value}' ";
             }
         }
-        if(count($wheres) > 0){
+        if(count($whereSQL) > 0){
             $sql .= "WHERE ";
-            foreach($wheres as $key => $where){
+            foreach($whereSQL as $key => $where){
                 if($key > 0){
-                    if(strstr($where, "### OR ") !== false){
-                        $where = str_replace("### OR ", " OR ", $where);
+                    if(strpos($where, " OR ") === 0){
+                        $where = str_replace_first(" OR ", " OR ", $where);
                     }
-                    else if(strstr($where, "### AND ") !== false){
-                        $where = str_replace("### AND ", " AND ", $where);
+                    else if(strpos($where, " AND ") === 0){
+                        $where = str_replace_first(" AND ", " AND ", $where);
                     }
                     else{
                         $where = " AND $where";
