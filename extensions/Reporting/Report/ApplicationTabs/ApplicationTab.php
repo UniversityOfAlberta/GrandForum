@@ -31,6 +31,7 @@ class ApplicationTab extends AbstractTab {
         else{
             parent::AbstractTab($title);
         }
+        $this->html = "";
     }
 
     function generateBody(){
@@ -76,7 +77,7 @@ class ApplicationTab extends AbstractTab {
             $report->year = $this->year;
         }
         
-        $this->html = "<table id='application_{$rpId}' frame='box' rules='all'>";
+        $this->html .= "<table id='application_{$rpId}' frame='box' rules='all'>";
         $this->html .= "<thead>";
         if(is_array($report)){
             $colspan = ($isPerson) ? "2" : "2";
