@@ -46,7 +46,7 @@ class MailingList extends BackboneModel {
     }
     
     static function getAllMailingLists(){
-        if(count(self::$allMailingLists) > 0){
+        if(count(self::$allMailingLists) == 0){
             $data = DBFunctions::select(array('wikidev_projects'),
                                         array('*'),
                                         array(),
