@@ -141,6 +141,7 @@ if(!TESTING){
         $wgParserCacheType = CACHE_APC;
     }
 }
+$wgPasswordAttemptThrottle = array(array('count' => 5, 'seconds' => 10), array('count' => 25, 'seconds' => 300));
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
