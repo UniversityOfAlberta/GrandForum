@@ -254,21 +254,8 @@ class AddMember extends SpecialPage{
             $roleValidations = VALIDATE_NOTHING;
         }
         $roleOptions = array();
-        foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && !isset($committees[$role]) && !isset($aliases[$role])){
-                $roleOptions[$config->getValue('roleDefs', $role)] = $role;
-            }
-        }
-        if($me->isRoleAtLeast(PL) && in_array(CHAMP, $wgRoles)){
-            $roleOptions[$config->getValue('roleDefs', CHAMP)] = CHAMP;
-        }
-        if($me->isRoleAtLeast(STAFF)){
-            foreach($committees as $committee => $def){
-                $roleOptions[$def] = $committee;
-            }
-            foreach($aliases as $alias => $role){
-                $roleOptions[$alias] = $alias;
-            }
+        foreach($me->getAllowedRoles() as $role){
+            $roleOptions[$config->getValue('roleDefs', $role)] = $role;
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
