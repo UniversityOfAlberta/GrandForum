@@ -6,6 +6,7 @@
 
 class MailingList extends BackboneModel {
 
+    static $allMailingLists = array();
     static $cache = array();
     static $black_list = array('grand',
                                'administrator',
@@ -45,17 +46,18 @@ class MailingList extends BackboneModel {
     }
     
     static function getAllMailingLists(){
-        $lists = array();
-        $data = DBFunctions::select(array('wikidev_projects'),
-                                    array('*'),
-                                    array(),
-                                    array('mailListName' => 'ASC'));
-        foreach($data as $row){
-            if(array_search($row['mailListName'], MailingList::listLists()) !== false){
-                $lists[] = MailingList::newFromId($row['projectid']);
+        if(count(self::$allMailingLists) > 0){
+            $data = DBFunctions::select(array('wikidev_projects'),
+                                        array('*'),
+                                        array(),
+                                        array('mailListName' => 'ASC'));
+            foreach($data as $row){
+                if(array_search($row['mailListName'], MailingList::listLists()) !== false){
+                    self::$allMailingLists[] = MailingList::newFromId($row['projectid']);
+                }
             }
         }
-        return $lists;
+        return self::$allMailingLists;
     }
     
     function MailingList($data){
