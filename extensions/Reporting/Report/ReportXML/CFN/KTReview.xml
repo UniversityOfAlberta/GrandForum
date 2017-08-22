@@ -500,7 +500,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-KTC" class="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-KTC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                 <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
@@ -995,7 +995,7 @@
                 </ol>
             ]]>
         </Instructions>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-RMC" class="Project">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="KT-RMC" class="Person">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_KT_APPLICATION,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
                 <ReportItem id="table" type="PDFReportItem" reportType="KTApplication" buttonName="Download Application">
                     <![CDATA[
