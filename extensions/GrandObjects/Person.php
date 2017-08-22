@@ -969,6 +969,7 @@ class Person extends BackboneModel {
     function update(){
         $me = Person::newFromWgUser();
         if($me->isAllowedToEdit($this)){
+            MailingList::unsubscribeAll($this);
             $status = DBFunctions::update('mw_user', 
                                     array('user_name' => $this->getName(),
                                           'user_real_name' => $this->getRealName(),
@@ -995,6 +996,7 @@ class Person extends BackboneModel {
             Person::$idsCache = array();
             Cache::delete("nameCache_{$this->getId()}");
             Cache::delete("idsCache_{$this->getId()}");
+            MailingList::subscribeAll($this);
             return $status;
         }
         return false;

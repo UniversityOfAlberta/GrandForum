@@ -47,7 +47,7 @@ MailingListRule = RelationModel.extend({
         switch(type){
             case "ROLE":
                 var candidates = _.map(wgRoles, function(role){ return role + "-Candidate"; });
-                this.set('possibleValues', {ids: wgRoles.concat(candidates), names: wgRoles.concat(candidates)});
+                this.set('possibleValues', {ids: wgRoles.concat(candidates).concat("Stakeholder"), names: wgRoles.concat(candidates).concat("Stakeholder")});
                 break;
             case "PROJ":
                 var projects = new Projects();

@@ -245,6 +245,9 @@ class MailingList extends BackboneModel {
                         else if($value == STUDENT && $person->isStudent()){
                             $roleResult = ($roleResult || true);
                         }
+                        else if($value == "Stakeholder" && $person->getStakeholder()){
+                            $roleResult = ($roleResult || true);
+                        }
                         else {
                             $roleResult = ($roleResult || $person->isRole($value));
                         }
