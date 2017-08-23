@@ -126,11 +126,14 @@ class HQPRegister extends SpecialPage{
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
             
+            $splitEmail = explode("@", $_POST['wpEmail']);
+            $domain = @$splitEmail[1];
+            
             if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
             }
             else if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0 &&
-                    !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $_POST['wpEmail'])){
+                    !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $domain)){
                 $wgMessage->addError("Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist')));
             }
             else{

@@ -39,8 +39,10 @@ class CreateUserAPI extends API{
         }
         if(!$me->isLoggedIn()){
             // Check email whitelist to help prevent spam
+            $splitEmail = explode("@", $_POST['wpEmail']);
+            $domain = @$splitEmail[1];
             if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0 && 
-               !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $_POST['wpEmail'])){
+               !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $domain)){
                 $message = "Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'));
                 $wgMessage->addWarning($message);
                 return $message;
