@@ -26,25 +26,27 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                    w2: 0,
                    h2: 0};
         this.interval = setInterval($.proxy(function(){
-            if(this.$el.width() != dim.w1 ||
-               this.$el.height() != dim.h1 ||
-               $(window).width() != dim.w2 ||
-               $(window).height() != dim.h2){
-                if(this.$el.height() >= $(window).height() - 100){
-                    this.$el.height($(window).height() - 100);
+            if(this.$el.hasClass('ui-dialog-content')){
+                if(this.$el.width() != dim.w1 ||
+                   this.$el.height() != dim.h1 ||
+                   $(window).width() != dim.w2 ||
+                   $(window).height() != dim.h2){
+                    if(this.$el.height() >= $(window).height() - 100){
+                        this.$el.height($(window).height() - 100);
+                    }
+                    else{
+                        this.$el.height('auto');
+                    }
+                    this.$el.dialog("option","position", {
+                        my: "center center",
+                        at: "center center"
+                    });
                 }
-                else{
-                    this.$el.height('auto');
-                }
-                this.$el.dialog("option","position", {
-                    my: "center center",
-                    at: "center center"
-                });
+                dim.w1 = this.$el.width();
+                dim.h1 = this.$el.height();
+                dim.w2 = $(window).width();
+                dim.h2 = $(window).height();
             }
-            dim.w1 = this.$el.width();
-            dim.h1 = this.$el.height();
-            dim.w2 = $(window).width();
-            dim.h2 = $(window).height();
 	    }, this), 100);
     },
     
