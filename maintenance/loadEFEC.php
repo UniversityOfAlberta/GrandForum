@@ -89,7 +89,7 @@
                                   array('a.name', 'a.category', 'a.faculty_staff_member_id', 'a.reporting_year' => 'year', 's.name' => 'scope'),
                                   array('a.award_scope_id' => EQ(COL('s.id'))));
                                   
-    $otherAwards = DBFunctions::execSQL("(SELECT * FROM bddEfec2_development.chem_awards) UNION (SELECT * FROM bddEfec2_development.phys_awards)");
+    $otherAwards = DBFunctions::execSQL("SELECT * FROM bddEfec2_development.all_awards");
     
     $staff = DBFunctions::select(array('bddEfec2_development.faculty_staff_members'),
                                  array('*'));
@@ -722,7 +722,7 @@
     
     $iterationsSoFar = 0;
     echo "\nImporting Awards\n";
-    foreach($awards as $award){
+    /*foreach($awards as $award){
         $product = new Product(array());
         $product->category = 'Award';
         $product->type = 'Award';
@@ -745,42 +745,44 @@
             $product->create(false);
         }
         show_status(++$iterationsSoFar, count($awards) + count($otherAwards));
-    }
+    }*/
     
     foreach($otherAwards as $award){
         $years = explode("-", $award['Year']);
-        foreach($years as $year){
-            if(strlen($year) == 2){
-                $year = "20{$year}";
-            } 
-            $product = new Product(array());
-            $product->category = 'Award';
-            $product->type = 'Award';
-            $product->title = ucwords(trim($award['Award']));
-            $product->date = trim($year)."-00-00";
-            $product->status = "Published";
-            $product->access = "Public";
-            $product->description = trim($award['award description']);
-            $website = (strstr($award['award website'], 'http') !== false) ? $award['award website'] : "";
-            $product->data = array('url' => $website,
-                                   'award_category' => ucwords($award['Award Category']),
-                                   'awarded_by' => $award['Awarded by'],
-                                   'scope' => ucwords($award['Type']));
-                                   
-            $product->authors = array();
-            $product->projects = array();
-                                   
-            // Add Author
-            if($award['Emplid'] != null){
-                $author = Person::newFromEmployeeId($award['Emplid']);
-                if($author->getId() != 0){
-                    $product->authors[] = $author;
-                }
-                
-                $product->create(false);
-            }
+        $startYear = trim($years[0]);
+        $endYear = (isset($years[1])) ? trim($years[1]) : trim($years[0]);
+        if(strlen($startYear) == 2){
+            $startYear = "20{$startYear}";
         }
-        show_status(++$iterationsSoFar, count($awards) + count($otherAwards));
+        if(strlen($endYear) == 2){
+            $endYear = "20{$endYear}";
+        } 
+        $product = new Product(array());
+        $product->category = 'Award';
+        $product->type = 'Award';
+        $product->title = ucwords(trim($award['Award']));
+        $product->acceptance_date = trim($startYear)."-00-00";
+        $product->date = trim($endYear)."-00-00";
+        $product->status = "Published";
+        $product->access = "Public";
+        $product->description = trim($award['award description']);
+        $product->data = array('award_category' => ucwords($award['Award Category']),
+                               'awarded_by' => $award['Awarded by'],
+                               'scope' => ucwords($award['Type']));
+                               
+        $product->authors = array();
+        $product->projects = array();
+                               
+        // Add Author
+        if($award['Employee ID'] != null){
+            $author = Person::newFromEmployeeId($award['Employee ID']);
+            if($author->getId() != 0){
+                $product->authors[] = $author;
+            }
+            
+            $product->create(false);
+        }
+        show_status(++$iterationsSoFar, count($otherAwards));
     }
     
     $iterationsSoFar = 0;

@@ -549,6 +549,14 @@ class Paper extends BackboneModel{
                                 }
                             }
                         }
+                        else if($child->getName() == "date"){
+                            $attrs = $child->attributes();
+                            $categories['categories'][$cname]['types'][$tname]["date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Date";
+                        }
+                        else if($child->getName() == "acceptance_date"){
+                            $attrs = $child->attributes();
+                            $categories['categories'][$cname]['types'][$tname]["acceptance_date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Acceptance Date";
+                        }
                     }
                     if(DBFunctions::isReady()){
                         $misc_types = Paper::getAllMiscTypes($cname);
@@ -1264,6 +1272,7 @@ class Paper extends BackboneModel{
         else{
             $text = $title;
         }
+        $startDate = date("Y M", strtotime($this->getAcceptanceDate()));
         $date = date("Y M", strtotime($this->getDate()));
         $type = str_replace("Misc: ", "", $type);
         if($vn != "" && ($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){

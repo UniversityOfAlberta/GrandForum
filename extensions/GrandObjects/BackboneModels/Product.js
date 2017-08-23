@@ -91,6 +91,28 @@ Product = Backbone.Model.extend({
         }
         return productStructure.categories[this.get('category')].types[type].status;
     },
+    
+    getAcceptanceDateLabel: function(){
+        var type = this.get('type').split(":")[0];
+        if(type == "" || this.get('category') == ""){
+            return new Array();
+        }
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            return _.first(_.values(productStructure.categories[this.get('category')].types)).acceptance_date_label;
+        }
+        return productStructure.categories[this.get('category')].types[type].acceptance_date_label;
+    },
+    
+    getDateLabel: function(){
+        var type = this.get('type').split(":")[0];
+        if(type == "" || this.get('category') == ""){
+            return new Array();
+        }
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            return _.first(_.values(productStructure.categories[this.get('category')].types)).date_label;
+        }
+        return productStructure.categories[this.get('category')].types[type].date_label;
+    },
 
     urlRoot: 'index.php?action=api.product',
     
