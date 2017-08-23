@@ -97,9 +97,10 @@ class HQPRegister extends SpecialPage{
     }
     
      function generateFormHTML($wgOut){
-        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config;
-        $user = Person::newFromId($wgUser->getId());
-        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        global $wgServer, $wgScriptPath, $wgRoles, $config;
+        $user = Person::newFromWgUser();
+        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br />
+        <b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."<br /><br />");
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
@@ -107,7 +108,7 @@ class HQPRegister extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -125,7 +126,10 @@ class HQPRegister extends SpecialPage{
             
             if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                 $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
-                
+            }
+            else if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0 &&
+                    !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $_POST['wpEmail'])){
+                $wgMessage->addError("Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist')));
             }
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;

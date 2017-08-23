@@ -37,6 +37,15 @@ class CreateUserAPI extends API{
         foreach($roles as $role){
             $_POST['wpUserType'][] = $role;
         }
+        if(!$me->isLoggedIn()){
+            // Check email whitelist to help prevent spam
+            if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0 && 
+               !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $_POST['wpEmail'])){
+                $message = "Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'));
+                $wgMessage->addWarning($message);
+                return $message;
+            }
+        }
         // Finished manditory checks
         $_POST['candidate'] = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
         if($me->isRoleAtLeast(STAFF) || $_POST['candidate'] == "1"){

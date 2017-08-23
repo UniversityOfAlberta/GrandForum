@@ -89,6 +89,8 @@
 
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
+    $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
+    
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
