@@ -30,10 +30,20 @@ class EPICTable extends SpecialPage{
     function generateCSV($epics){
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="EPIC Survey.csv"');
-        echo "Name,Email,1a,1b,1c,1d,1e,1f,1g,2a,2a_ex,2b,2b_ex,2c,2c_ex,2d,2d_ex,2e,2e_ex,2f,2f_ex,2g,2g_ex,2h,2h_ex,2i,2j,2j_ex,2k,2l,2m,2n,2n_ex,2o,3\n";
+        echo "Name,Email,HQP Type,Institution,Department,Title,WPs,Gender,1a,1b,1c,1d,1e,1f,1g,2a,2a_ex,2b,2b_ex,2c,2c_ex,2d,2d_ex,2e,2e_ex,2f,2f_ex,2g,2g_ex,2h,2h_ex,2i,2j,2j_ex,2k,2l,2m,2n,2n_ex,2o,3\n";
         foreach($epics as $epic){
+            $wps = array();
+            foreach($epic->getProjects() as $project){
+                $wps[$project->getChallenge()->getAcronym()] = $project->getChallenge()->getAcronym();
+            }
             echo "\"{$epic->getName()}\",";
             echo "\"{$epic->getEmail()}\",";
+            echo "\"".implode(", ", array_unique($epic->getSubRoles()))."\",";
+            echo "\"{$epic->getUni()}\",";
+            echo "\"{$epic->getDepartment()}\",";
+            echo "\"{$epic->getPosition()}\",";
+            echo "\"".implode(", ", $wps)."\",";
+            echo "\"{$epic->getGender()}\",";
             echo "\"{$this->getBlobValue($epic->getId(),'1A')}\",";
             echo "\"{$this->getBlobValue($epic->getId(),'1B')}\",";
             echo "\"{$this->getBlobValue($epic->getId(),'1C')}\",";
