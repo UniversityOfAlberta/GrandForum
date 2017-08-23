@@ -99,8 +99,10 @@ class HQPRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromWgUser();
-        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br />
-        <b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."<br /><br />");
+        $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0){
+            $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
+        }
         $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
