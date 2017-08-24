@@ -10,7 +10,7 @@ class ProductAPI extends RESTAPI {
             }
             if($this->getParam('citation') != ""){
                 header('Content-Type: text/plain');
-                return $paper->getProperCitation();
+                return $paper->getCitation();
             }
             return $paper->toJSON();
         }

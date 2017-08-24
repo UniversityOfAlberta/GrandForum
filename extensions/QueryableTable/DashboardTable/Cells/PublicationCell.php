@@ -120,7 +120,7 @@ abstract class PublicationCell extends DashboardCell {
         else{
             $first_author = $first_author[0];
         }
-        $citation = $paper->getProperCitation();
+        $citation = $paper->getCitation();
         $hqpAuthored = "";
         if($this instanceof PersonPublicationCell){
             $found = false;

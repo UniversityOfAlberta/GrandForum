@@ -1860,7 +1860,7 @@ EOF;
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
+            $ptr .= "<li>{$pub->getCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $a1_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -1899,7 +1899,7 @@ EOF;
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
+            $ptr .= "<li>{$pub->getCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $a2_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -1966,7 +1966,7 @@ EOF;
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
+            $ptr .= "<li>{$pub->getCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $b_details .= "Published:<ol>\n{$list_pub}\n</ol>";
@@ -2005,7 +2005,7 @@ EOF;
             else{
                 $ptr = &$list_pub;
             }
-            $ptr .= "<li>{$pub->getProperCitation(false, false, false)}\n";
+            $ptr .= "<li>{$pub->getCitation(false, false, false)}\n";
         }
         if (strlen($list_pub) > 0)
             $c_details .= "Published:<ol>\n{$list_pub}\n</ol>";

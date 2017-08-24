@@ -505,6 +505,7 @@ class Paper extends BackboneModel{
                 $cname = "{$cattrs->category}";
                 foreach($category->children() as $type){
                     $tattrs = $type->attributes();
+                    $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
                     $ccvType = "{$tattrs->ccv_name}";
@@ -518,6 +519,7 @@ class Paper extends BackboneModel{
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
+                                                                               'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array());
                     foreach($type->children() as $child){
                         if($child->getName() == "data"){
@@ -1150,11 +1152,24 @@ class Paper extends BackboneModel{
      * Returns the domain specific data for this Paper
      * @return array The domain specific data for this Paper
      */
-    function getData(){
+    function getData($field=null){
         if($this->data === false){
             $data = DBFunctions::select(array("grand_products"), array("data"), array("id"=>$this->getId()));
             if(count($data) >0){
                 $this->data = unserialize($data[0]['data']);
+            }
+        }
+        if($field != null){
+            if(is_array($field)){
+                foreach($field as $key){
+                    if(isset($this->data[$key]) && $this->data[$key] != ""){
+                        return $this->data[$key];
+                    }
+                }
+                return "";
+            }
+            else{
+                return @$this->data[$field];
             }
         }
         return $this->data;
@@ -1168,6 +1183,14 @@ class Paper extends BackboneModel{
         return ($this->deleted === "1");
     }
     
+    function getCitationFormat(){
+        $categories = self::structure();
+        if(@$categories['categories'][$this->getCategory()]['types'][$this->getType()]['citationFormat'] != ""){
+            return $categories['categories'][$this->getCategory()]['types'][$this->getType()]['citationFormat'];
+        }
+        return "{%Authors} {(%YYYY %Mon).} {%Title.} {<i>%Venue</i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}"; // Default
+    }
+    
     /**
      * Return a string with a citation-like format
      * @param boolean $showStatus Whether or not to show the publication status
@@ -1175,123 +1198,153 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getProperCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
-        global $wgServer, $wgScriptPath;
-
-        $data = $this->getData();
-        $type = $this->getType();
-        $title = $this->getTitle();
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+        $citationFormat = $this->getCitationFormat();
+        $format = strtolower($citationFormat);
+        $regex = "/\{.*?\}/";
+        $format = preg_replace_callback($regex, "self::formatCitation", $format);
+        
         $status = ($showStatus) ? $this->getStatus() : "";
-        $category = $this->getCategory();
-        $au = array();
+        $peer_rev = "";
+        if($showPeerReviewed && $this->getCategory() == "Publication"){
+            if($this->getData('peer_reviewed') == "Yes"){
+                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
+            }
+            else if($this->getData('peer_reviewed') == "No"){
+                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
+            }
+        }
+        
+        return trim("{$format}<div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>");
+    }
+    
+    private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+        $authors = array();
         foreach($this->getAuthors() as $a){
             if($a->getId()){
-                $name = $a->getNameForForms();
+                $name = $a->getNameForProduct();
                 if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
-                    $name = "{$a->getNameForForms()}";
+                    $name = "{$a->getNameForProduct()}";
                 }
                 else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
                     $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
                     foreach($unis as $uni){
                         if(strstr($uni['position'], "Graduate Student") !== false ||
                            strstr($uni['position'], "Post-Doctoral Fellow") !== false){
-                            $name = "<b>{$a->getNameForForms()}</b>";
+                            $name = "<b>{$a->getNameForProduct()}</b>";
                         }
                         else if(strstr($uni['position'], "Undergraduate") !== false ||
                                 strstr($uni['position'], "Summer Student") !== false){
-                            $name = "<u>{$a->getNameForForms()}</u>";
+                            $name = "<u>{$a->getNameForProduct()}</u>";
                         }
                     }
                 }
                 else{
-                    $name = "{$a->getNameForForms()}";
+                    $name = "{$a->getNameForProduct()}";
                 }
                 if($hyperlink){
-                    $au[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
+                    $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
                 }
                 else{
-                    $au[] = "{$name}";
+                    $authors[] = "{$name}";
                 }
             }
             else{
-                $au[] = $a->getNameForForms();
+                $authors[] = $a->getNameForProduct();
             }
         }
-        $au = implode(';&nbsp;', $au);
-        $vn = $this->getVenue();
-
-        if(($type == "Proceedings Paper" || $category == "Presentation") && empty($vn)){
-            $vn = "(no venue)";
-        }
-
-        //This is not really a venue, but this is how we want to put this into the proper citation
-        if(($type == "Journal Paper" || $type == "Journal Abstract")){
-            $vn = ArrayUtil::get_string($data, 'journal_title');
-            if(empty($vn)){
-                $vn = ArrayUtil::get_string($data, 'published_in');
-            }
-            $volume = ArrayUtil::get_string($data, 'volume');
-            $number = ArrayUtil::get_string($data, 'number');
-            if(!empty($volume)){
-                $vn .= " $volume";
-            }
-            if(!empty($number)){
-                $vn .= "($number)";
-            }
-        }
-        else {
-            if($vn == "") $vn .= ArrayUtil::get_string($data, 'event_title');
-            if($vn == "") $vn .= ArrayUtil::get_string($data, 'journal_title');
-            if($vn == "") $vn .= ArrayUtil::get_string($data, 'book_title');
-            if($vn == "") $vn .= ArrayUtil::get_string($data, 'owner');
-            if($vn == "") $vn .= ArrayUtil::get_string($data, 'assignor');
-        }
-
-        $pg = ArrayUtil::get_string($data, 'pages');
-        if (strlen($pg) > 0){
-            $pg = "{$pg}pp.";
-        }
-        else{
-            $pg = "";
-        }
-        $pb = ArrayUtil::get_string($data, 'publisher', '');
-
-        $peer_rev = "";
-        if($showPeerReviewed && $category == "Publication"){
-            if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "Yes"){
-                $peer_rev = "&nbsp;/&nbsp;Peer Reviewed";
-            }
-            else if(isset($data['peer_reviewed']) && $data['peer_reviewed'] == "No"){
-                $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
-            }
-        }
-
+        $authors = implode("; ", $authors);
+    
+        $date = $this->getDate();
+        $acceptance_date = $this->getAcceptanceDate();
+        
         if($hyperlink){
-            $text = "<a href='{$this->getUrl()}'>{$title}</a>";
+            $title = "<a href='{$this->getUrl()}'>{$this->title}</a>";
         }
         else{
-            $text = $title;
+            $title = $title;
         }
-        $startDate = date("Y M", strtotime($this->getAcceptanceDate()));
-        $date = date("Y M", strtotime($this->getDate()));
-        $type = str_replace("Misc: ", "", $type);
-        if($vn != "" && ($pg != "" || $pb != "") && ($status != "" || $peer_rev != "")){
-            $vn = "$vn,";
-        }
-        if($vn != ""){
-            $vn = "&nbsp;{$vn}";
-        }
-        if($pg != ""){
-            $pg = "&nbsp;{$pg}";
-        }
-        if($pb != ""){
-            $pb = "&nbsp;{$pb}";
-        }
-        $citation = "{$au}&nbsp;({$date}).&nbsp;<i>{$text}.</i>{$vn}{$pg}{$pb}
-                     <div class='pdfnodisplay' style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
-        return trim($citation);
-    }
+        $type = $this->type;
+        $pages = $this->getData(array('pages'));
+        $publisher = $this->getData(array('publisher'));
+        $venue = $this->getData(array('event_title', 'published_in', 'journal_title', 'book_title', 'organization', 'owner', 'assignor'));
+        $volume = $this->getData(array('volume'));
+        $issue = $this->getData(array('number'));
+        $editor = $this->getData(array('editors'));
+        
+        $yyyy = substr($date, 0, 4);
+        $yy = substr($date, 2, 2);
+        $mm = substr($date, 5, 2);
+        $dd = substr($date, 8, 2);
+        
+        $month = date('F', strtotime($date));
+        $mon = date('M', strtotime($date));
+        
+        $ayyyy = substr($acceptance_date, 0, 4);
+        $ayy = substr($acceptance_date, 2, 2);
+        $amm = substr($acceptance_date, 5, 2);
+        $add = substr($acceptance_date, 8, 2);
+        
+        $amonth = date('F', strtotime($acceptance_date));
+        $amon = date('M', strtotime($acceptance_date));
+        
+        foreach($matches as $key => $match){
+            $match1 = $match;
+            $match2 = $match;
+            
+            $match1 = str_replace("%yyyy",      $yyyy,      $match1);
+            $match1 = str_replace("%yy",        $yy,        $match1);
+            $match1 = str_replace("%mm",        $mm,        $match1);
+            $match1 = str_replace("%dd",        $dd,        $match1);
+            $match1 = str_replace("%month",     $month,     $match1);
+            $match1 = str_replace("%mon",       $mon,       $match1);
+            $match1 = str_replace("%ayyyy",     $ayyyy,     $match1);
+            $match1 = str_replace("%ayy",       $ayy,       $match1);
+            $match1 = str_replace("%amm",       $amm,       $match1);
+            $match1 = str_replace("%add",       $add,       $match1);
+            $match1 = str_replace("%amonth",    $amonth,    $match1);
+            $match1 = str_replace("%amon",      $amon,      $match1);
+            $match1 = str_replace("%title",     $title,     $match1);
+            $match1 = str_replace("%type",      $type,      $match1);
+            $match1 = str_replace("%pages",     $pages,     $match1);
+            $match1 = str_replace("%authors",   $authors,   $match1);
+            $match1 = str_replace("%publisher", $publisher, $match1);
+            $match1 = str_replace("%editor",    $editor,    $match1);
+            $match1 = str_replace("%venue",     $venue,     $match1);
+            $match1 = str_replace("%issue",     $issue,     $match1);
+            $match1 = str_replace("%volume",    $volume,    $match1);
 
+            $match2 = str_replace("%yyyy",      "", $match2);
+            $match2 = str_replace("%yy",        "", $match2);
+            $match2 = str_replace("%mm",        "", $match2);
+            $match2 = str_replace("%dd",        "", $match2);
+            $match2 = str_replace("%month",     "", $match2);
+            $match2 = str_replace("%mon",       "", $match2);
+            $match2 = str_replace("%ayyyy",     "", $match2);
+            $match2 = str_replace("%ayy",       "", $match2);
+            $match2 = str_replace("%amm",       "", $match2);
+            $match2 = str_replace("%add",       "", $match2);
+            $match2 = str_replace("%amonth",    "", $match2);
+            $match2 = str_replace("%amon",      "", $match2);
+            $match2 = str_replace("%title",     "", $match2);
+            $match2 = str_replace("%type",      "", $match2);
+            $match2 = str_replace("%pages",     "", $match2);
+            $match2 = str_replace("%authors",   "", $match2);
+            $match2 = str_replace("%publisher", "", $match2);
+            $match2 = str_replace("%editor",    "", $match2);
+            $match2 = str_replace("%venue",     "", $match2);
+            $match2 = str_replace("%issue",     "", $match2);
+            $match2 = str_replace("%volume",    "", $match2);
+            
+            if($match1 == $match2){
+                 $matches[$key] = "";
+            }
+            else{
+                $matches[$key] = str_replace("}","",str_replace("{","",$match1));
+            }
+        }
+        return implode("", $matches);
+    }
 
     /**
      * Checks appropriate type of paper for requred venue, pages and publisher fields. If paper falls under category that

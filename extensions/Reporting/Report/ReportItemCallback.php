@@ -741,7 +741,7 @@ class ReportItemCallback {
    
     function getProductCitation(){
         $product = Paper::newFromId($this->reportItem->productId);
-        return $product->getProperCitation(true, true, false);
+        return $product->getCitation(true, true, false);
     }
 
     function getPresentationTitle(){

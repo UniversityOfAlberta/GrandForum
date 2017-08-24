@@ -170,7 +170,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $this->html .= "<tr>
                                     <td align='center'>{$year}</td>
                                     <td>{$product->getCategory()}</td>
-                                    <td>{$product->getProperCitation()}</td>
+                                    <td>{$product->getCitation()}</td>
                                 </tr>";
             }
             $this->html .= "</table><i>Last updated on: $date</i><br />";

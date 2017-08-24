@@ -761,8 +761,8 @@
         $product->category = 'Award';
         $product->type = 'Award';
         $product->title = ucwords(trim($award['Award']));
-        $product->acceptance_date = trim($startYear)."-00-00";
-        $product->date = trim($endYear)."-00-00";
+        $product->acceptance_date = trim($startYear)."-01-01";
+        $product->date = trim($endYear)."-01-01";
         $product->status = "Published";
         $product->access = "Public";
         $product->description = trim($award['award description']);
