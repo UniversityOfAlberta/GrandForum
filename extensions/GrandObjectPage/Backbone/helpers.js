@@ -198,6 +198,56 @@ HTML.Radio = function(view, attr, options){
     return $(el).parent().html();
 }
 
+HTML.Pages = function(view, attr, options){
+    var value = HTML.Value(view, attr);
+    var values = value.split("-");
+    var start = values[0].trim();
+    values.splice(0, 1);
+    var end = "";
+    if(values[1] != undefined){
+        end = values.join('-').trim();
+    }
+    var el1 = HTML.Element("<input type='integer' />", options);
+    $(el1).attr('name', HTML.Name(attr) + '_start');
+    $(el1).attr('value', start);
+    
+    var el2 = HTML.Element("<input type='integer' />", options);
+    $(el2).attr('name', HTML.Name(attr) + '_end');
+    $(el2).attr('value', end);
+    
+    var events = view.events;
+    var fn = function(e){
+        if(attr.indexOf('.') != -1){
+            var index = attr.indexOf('.');
+            var data = view.model.get(attr.substr(0, index));
+            var start = $('input[name=' + HTML.Name(attr) + '_start]').val();
+            var end = $('input[name=' + HTML.Name(attr) + '_end]').val();
+            if(end == ""){
+                data[attr.substr(index+1)] = $('input[name=' + HTML.Name(attr) + '_start]').val();
+            }
+            else{
+                data[attr.substr(index+1)] = $('input[name=' + HTML.Name(attr) + '_start]').val() + "-" + $('input[name=' + HTML.Name(attr) + '_end]').val();
+            }
+            view.model.set(attr.substr(0, index), _.clone(data));
+        }
+        else{
+            if(end == ""){
+                view.model.set(attr, $('input[name=' + HTML.Name(attr) + '_start]').val());
+            }
+            else{
+                view.model.set(attr, $('input[name=' + HTML.Name(attr) + '_start]').val() + "-" + $('input[name=' + HTML.Name(attr) + '_end]').val());
+            }
+        }
+    };
+    view.events['change input[name=' + HTML.Name(attr) + '_start]'] = fn;
+    view.events['change input[name=' + HTML.Name(attr) + '_end]'] = fn;
+    view.delegateEvents(events);
+    $(el1).wrap('div');
+    $(el1).parent().append(" - ").append(el2);
+    
+    return $(el1).parent().html();
+}
+
 HTML.DatePicker = function(view, attr, options){
     var el = HTML.Element("<input type='datepicker' />", options);
     $(el).attr('name', HTML.Name(attr));

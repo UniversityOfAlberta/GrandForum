@@ -8,7 +8,7 @@ jQuery.fn.forceNumeric = function (options) {
     if(_.isUndefined(options.decimals)){
         options.decimals = 0;
     }
-    var regex = new RegExp('^[0-9,]*\.?[0-9]{0,' + options.decimals + '}$');
+    var regex = new RegExp('^[0-9,-]*\.?[0-9]{0,' + options.decimals + '}$');
      return this.each(function () {
         var lastValue = $(this).val();
         

@@ -158,6 +158,9 @@ class CavendishTemplate extends QuickTemplate {
                         'buttonImageOnly': true
                     });
                 });
+                $.each(this.$el.find('input[type=integer]'), function(index, val){
+                    $(val).forceNumeric({min: 0});
+                });
                 this.$el.find('.tooltip').qtip({
 		            position: {
 		                adjust: {
