@@ -135,7 +135,7 @@
             <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
                 <![CDATA[
                     <h2>Publications</h2>
-                    <small><i>(bold = graduate student; underline = undergraduate student)</i></small>
+                    <i>bold = graduate student; underline = undergraduate student</i>
                     <ul>
                 ]]>
             </ReportItem>
@@ -190,7 +190,7 @@
             <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
                     <h2>Research Funding</h2>
-                    <small><i>Total funding awarded from external sources only and available during the reporting period</i></small>
+                    <i>Total funding awarded from external sources only and available during the reporting period</i>
                     <table class='wikitable' frame='box' rules='all' width='100%'>
                         <thead>
                             <tr>
@@ -402,7 +402,8 @@
         <!-- Footer -->
         <ReportItem id="cv_footer" type="Static">
             <![CDATA[
-                <div style="page-break-inside:avoid;">
+                <br />
+                <div style="page-break-inside:avoid; position: absolute; bottom:0;">
                     <i>Generated: {$timestamp}</i>
                 </div>
             ]]>

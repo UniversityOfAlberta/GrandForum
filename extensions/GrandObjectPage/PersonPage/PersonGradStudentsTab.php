@@ -48,7 +48,7 @@ class PersonGradStudentsTab extends AbstractTab {
                             <th>Position</th>
                             <th style='white-space: nowrap;'>Start Date</th>
                             <th style='white-space: nowrap;'>End Date</th>
-                            <th style='white-space: nowrap;'>Research Area</th>
+                            <!--th style='white-space: nowrap;'>Research Area</th-->
                             <th>Role</th>
                         </tr>
                     </thead><tbody>";
@@ -105,10 +105,10 @@ class PersonGradStudentsTab extends AbstractTab {
             $html .= 
             "<tr>
                 <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
-                <td>$position</td>
+                <td style='white-space: nowrap;'>$position</td>
                 <td style='white-space: nowrap;'>$start_date</td>
                 <td style='white-space: nowrap;'>$end_date</td>
-                <td>$research_area</td>
+                <!--td>$research_area</td-->
                 <!--td></td><td>".implode("; ",$names)."</td-->
                 <td style='white-space: nowrap;'>$role</td>";
             $html .= "</tr>";
@@ -171,7 +171,7 @@ class PersonGradStudentsTab extends AbstractTab {
                                             <th>Position</th>
                                             <th style='white-space: nowrap;'>Start Date</th>
                                             <th style='white-space: nowrap;'>End Date</th>
-                                            <th style='white-space: nowrap;'>Research Area</th>
+                                            <!--th style='white-space: nowrap;'>Research Area</th-->
                                             <!--th>Completion Milestones</th>
                                             <th>Co-Supervisors & Committees</th-->
                                             <th>Role</th>
@@ -209,10 +209,10 @@ class PersonGradStudentsTab extends AbstractTab {
                         $html .=
                         "<tr>
                             <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
-                            <td>$position</td>
+                            <td style='white-space: nowrap;'>$position</td>
                             <td style='white-space: nowrap;'>$start_date</td>
                             <td style='white-space: nowrap;'>$end_date</td>
-                            <td>$research_area</td>
+                            <!--td>$research_area</td-->
                             <!--td></td><td>".implode("; ",$names)."</td-->
                             <td style='white-space: nowrap;'>$role</td>";
                         $html .= "</tr>";
