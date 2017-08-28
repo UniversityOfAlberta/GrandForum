@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Annual Report - EPIC Survey" reportType="RP_EPIC_REPORT" pdfType="RPTP_EPIC_REPORT" pdfFiles="EPICReportPDF" ajax="true" disabled="false" year="0">
     <Permissions>
-        <Role role="HQP">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="survey" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role role="STAFF+">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="survey" permissions="rw" />
-            <SectionPermission id="appendix" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" type="ReportSection">
         <ReportItem id="instructions" type="StaticReportItem">
