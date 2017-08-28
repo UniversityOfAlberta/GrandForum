@@ -256,6 +256,9 @@ class ReportXMLParser {
             if(isset($attributes->headerName)){
                 $this->report->setHeaderName("{$attributes->headerName}");
             }
+            if(isset($attributes->footer)){
+                $this->report->setFooter("{$attributes->footer}");
+            }
             if(isset($attributes->reportType)){
                 $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);

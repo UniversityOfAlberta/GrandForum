@@ -13,6 +13,9 @@ class Grant extends BackboneModel {
     var $speed_code;
     var $title;
     var $description;
+    var $role;
+    var $seq_no;
+    var $prog_description;
     var $request;
     var $start_date;
     var $end_date;
@@ -63,6 +66,9 @@ class Grant extends BackboneModel {
                 $this->speed_code = $row['speed_code'];
                 $this->title = $row['title'];
                 $this->description = $row['description'];
+                $this->role = $row['role'];
+                $this->seq_no = $row['seq_no'];
+                $this->prog_description = $row['prog_description'];
                 $this->request = $row['request'];
                 $this->start_date = $row['start_date'];
                 $this->end_date = $row['end_date'];
@@ -132,6 +138,18 @@ class Grant extends BackboneModel {
         return $this->description;
     }
     
+    function getRole(){
+        return $this->role;
+    }
+    
+    function getSeqNo(){
+        return $this->seq_no;
+    }
+    
+    function getProgDescription(){
+        return $this->prog_description;
+    }
+    
     function getRequest(){
         return $this->request;
     }
@@ -174,6 +192,9 @@ class Grant extends BackboneModel {
                                   'speed_code' => $this->speed_code,
                                   'title' => $this->title,
                                   'description' => $this->description,
+                                  'role' => $this->role,
+                                  'seq_no' => $this->seq_no,
+                                  'prog_description' => $this->prog_description,
                                   'request' => $this->request,
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date));
@@ -201,6 +222,9 @@ class Grant extends BackboneModel {
                                   'speed_code' => $this->speed_code,
                                   'title' => $this->title,
                                   'description' => $this->description,
+                                  'role' => $this->role,
+                                  'seq_no' => $this->seq_no,
+                                  'prog_description' => $this->prog_description,
                                   'request' => $this->request,
                                   'start_date' => $this->start_date,
                                   'end_date' => $this->end_date),
@@ -245,6 +269,9 @@ class Grant extends BackboneModel {
             'speed_code' => $this->speed_code,
             'title' => $this->title,
             'description' => $this->description,
+            'role' => $this->role,
+            'seq_no' => $this->seq_no,
+            'prog_description' => $this->prog_description,
             'request' => $this->request,
             'start_date' => time2date($this->getStartDate(), "Y-m-d"),
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
@@ -269,11 +296,6 @@ class Grant extends BackboneModel {
 
     //TODO: if status awarded etc.
     function getStatus(){
-        return false;
-    }
-    
-    //TODO:Role of Applicant
-    function getRole(){
         return false;
     }
 

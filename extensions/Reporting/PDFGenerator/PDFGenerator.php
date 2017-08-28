@@ -333,6 +333,11 @@ EOF;
         $fontSize = ($config->getValue('pdfFontSize')*DPI_CONSTANT);
         if($preview){
             $header .= "
+            body, html {
+                margin: 0;
+                padding: 0;
+            }
+            
             #pdfBody .pagebreak {
 		        border-width: 0 0 ".max(1, (0.5*DPI_CONSTANT))."px 0;
 		        border-style: dashed;
@@ -373,10 +378,16 @@ EOF;
 		    }
 		    
 		    #pdfBody {
-		        margin: ".(20*DPI_CONSTANT)."px ".(20*DPI_CONSTANT)."px !important;
 		        position: relative;
 		        white-space: normal !important;
 		    }
+		    
+		    #pdfBody {
+		        margin-top: ".PDFGenerator::cmToPixels($margins['top'])."px;
+                margin-right: ".PDFGenerator::cmToPixels($margins['right'])."px;
+                margin-bottom: ".PDFGenerator::cmToPixels($margins['bottom'])."px;
+                margin-left: ".PDFGenerator::cmToPixels($margins['left'])."px;
+            }
 		    
 		    .ui-dialog-content {
 		        white-space: normal !important;
@@ -417,8 +428,6 @@ EOF;
             }
 		
 		    #pdfBody  {
-		        margin: ".PDFGenerator::cmToPixels(0.5)."px 0;
-		        margin-bottom: ".PDFGenerator::cmToPixels(0.5)."px;
 		        font-family: {$config->getValue('pdfFont')} !important;
 		        font-size: {$fontSize}px;
 		        text-align: justify;
@@ -545,7 +554,6 @@ EOF;
 		        color: #00713B;
 		        font-size: ".($fontSize+(4*DPI_CONSTANT))."px;
 		        font-weight: bold;
-		        border-top: ".max(1, (0.5*DPI_CONSTANT))."px dotted #000000;
 		        padding: ".max(2, (2*DPI_CONSTANT))."px 0 ".(2*DPI_CONSTANT)."px 0;
 		        margin-bottom: ".(2*DPI_CONSTANT)."px;
 		        margin-top: ".(2*DPI_CONSTANT)."px;
@@ -718,6 +726,7 @@ EOF;
 		$previewScript
 		</head>";
 		$headerName = @$report->headerName;
+		$footer = @$report->footer;
 		if($headerName == ""){
             if($project != null){
                 if($project->getName() == ""){
@@ -754,11 +763,13 @@ EOF;
 
             // Draw a line along the bottom
             $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
-            $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-                     '.PDFGenerator::cmToPixels($margins['top']).', 
-                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-                     '.PDFGenerator::cmToPixels($margins['top']).', 
-                     $color, 0.5);
+            if("'.trim($headerName).'" != ""){
+                $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                         '.PDFGenerator::cmToPixels($margins['top']).', 
+                         $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                         '.PDFGenerator::cmToPixels($margins['top']).', 
+                         $color, 0.5);
+            }
             $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
                      $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
                      $w - '.PDFGenerator::cmToPixels($margins['right']).', 
@@ -773,7 +784,9 @@ EOF;
             $width = $fontMetrics->getTextWidth("Page 1 of 50", $font, $size2);
 
             $pdf->page_text($w - $nameWidth - '.PDFGenerator::cmToPixels($margins['right']).', '.PDFGenerator::cmToPixels($margins['top']).' - $text_height - 1, "'.utf8_encode($headerName).'", $font, $size, $color, 0.01);
-            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);';
+            $pdf->page_text($w - $width - '.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', $text, $font, $size2, $color, 0.01);
+            
+            $pdf->page_text('.PDFGenerator::cmToPixels($margins['right']).', $h+2 - '.PDFGenerator::cmToPixels($margins['bottom']).', "'.utf8_encode($footer).'", $font, $size2, $color, 0.01);';
   
         foreach($headerLines as $i => $line){
             $pages .= '$pdf->page_text('.PDFGenerator::cmToPixels($margins['left']).', '.PDFGenerator::cmToPixels($margins['top']).' - ($text_height * '.($nHeaderLines-$i).') - 1, "'.utf8_encode($line).'", $font, $size, $color, 0.01);';
@@ -790,7 +803,9 @@ EOF;
         if($preview){
             $html = PDFGenerator::replaceSpecial($html);
             $headerTop = -($nHeaderLines - 1)*5*DPI_CONSTANT;
-            echo $header."<body><div id='pdfBody'><div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' /><div style='position:absolute;top:{$headerTop}px;font-size:smaller;'><i>{$report->name}</i></div><div class='belowLine'></div>$html</div></body></html>";
+            $pageHeader = (trim($headerName) != "") ? "<div id='page_header'>{$headerName}</div><hr style='border-width:1px 0 0 0;position:absolute;left:".(0*DPI_CONSTANT)."px;right:".(0*DPI_CONSTANT)."px;top:".($config->getValue('pdfFontSize')*DPI_CONSTANT)."px;' />" : "";
+            $belowLine = (trim($headerName) != "") ? "<div class='belowLine'></div>" : "";
+            echo $header."<body><div id='pdfBody'>{$pageHeader}<div style='position:absolute;top:{$headerTop}px;font-size:smaller;'><i>{$report->name}</i></div>{$belowLine}{$html}</div></body></html>";
             return;
         }
         
@@ -829,7 +844,7 @@ EOF;
         global $IP;
         $str = "";
         $attached = array();
-        $name = str_replace("\\", "", str_replace("/", "", $name));
+        $name = md5($name);
         foreach($GLOBALS['attachedPDFs'] as $pdf){
             $blob = new ReportBlob();
             $blob->loadFromMD5($pdf);

@@ -2,7 +2,7 @@
 <Products>
 
     <!-- Publications -->
-    <Publications category="Publication" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Publications category="Publication" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher.}">
         <Publication type="Bachelors Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="cf36bbd2e16c45cba9768a84ac2d6729" ccv_name="Publishing Status">
@@ -511,7 +511,7 @@
     </Publications>
 
     <!-- Presentations -->
-    <Presentations category="Presentation" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Presentations category="Presentation" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher.}">
         
         <Presentation type="Seminar" status="Invited|Not Invited">
             <data>
@@ -636,7 +636,7 @@
     </Presentations>
     
     <!-- Patents and Spin Offs -->
-    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Products category="Patent/Spin-Off" citationFormat="{%Authors} {(%YYYY %Mon).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher.}">
         <Product type="Tool" status="">
             <data></data>
             <date label="Date"></date>
@@ -695,7 +695,7 @@
         
     </Products>  
 
-    <Awards category="Award" citationFormat="{%Authors} {(%AYYYY - %YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Awards category="Award" citationFormat="{%Authors} {(%AYYYY - %YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher.}">
          <Award type="Award">
              <data>
                   <field label="URL" type="URL">url</field>
@@ -708,7 +708,7 @@
          </Award>
     </Awards>
 
-    <Activities category="Activity" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}">
+    <Activities category="Activity" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher.}">
         <Activity type="Scientific Committee">
              <data>
                   <field label="Scope" type="Select" options="International|National|Provincial">scope</field>

@@ -564,6 +564,10 @@
             $newGrant->description = $row['Scientific Title (Awd Long Description)'];
             $newGrant->start_date = $row['Proj Start Date'];
             $newGrant->end_date = $row['Proj End Date'];
+            $newGrant->project_id = $row['Project'];
+            $newGrant->role = str_replace("Principal Investigat", "Principal Investigator", $row['PI/ Student Role']);
+            $newGrant->seq_no = $row['Awd Spons Prog Seq No.'];
+            $newGrant->prog_description = $row['Awd Spons Program Description'];
             if($row['Award Sponsor ID'] == "MULTI" && isset($grants3[$row['Project']])){
                 $sponsors = array();
                 foreach($grants3[$row['Project']] as $sponsor){
@@ -584,27 +588,7 @@
                     }
                 }
             }
-            if(strstr(strtolower($newGrant->sponsor), "university of alberta") === false &&
-               strstr(strtolower($row['Awd Spons Program Description']), "canada research chair") === false &&
-               strstr(strtolower($row['Award Sponsor ID']), "internal") === false &&
-               strstr(strtolower($row['Proj Mgr Role']), "supervising investigator") === false &&
-               strstr(strtolower($row['Proj Mgr Role']), "vp research") === false &&
-               strstr(strtolower($row['Awd Spons Program Description']), "studentship") === false &&
-               strstr(strtolower($row['Awd Spons Program Description']), "scholarship") === false &&
-               strstr(strtolower($row['Awd Spons Program Description']), "student schlr") === false &&
-               intval($newGrant->total) >= 10000 &&
-               strpos(strtolower($row['Project']), "B") !== 0 &&
-               strpos(strtolower($row['Project']), "D") !== 0 &&
-               array_search($row['Awd Spons Prog Seq No.'], array(33, 8, 9, 34,35, 51, 53, 65, 109)) === false &&
-               strstr(strtolower($row['Project Title']), "facsci") === false &&
-               strstr(strtolower($row['Project Title']), "fos") === false &&
-               strstr(strtolower($row['Project Title']), "fac sci") === false &&
-               strstr(strtolower($row['Project Title']), "start up") === false &&
-               strstr(strtolower($row['Project Title']), "startup") === false &&
-               strstr(strtolower($row['Project Title']), "gen res") === false){
-                // Above are ignore rules from Renee
-                $newGrant->create();
-            }
+            $newGrant->create();
         }
         show_status(++$iterationsSoFar, count($grants1));
     }
@@ -858,7 +842,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                     
         $product->data = array();
@@ -885,7 +870,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                                
         $product->data = array();
@@ -912,7 +898,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                                
         $product->data = array();
@@ -939,7 +926,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                        
         $product->data = array();        
@@ -966,7 +954,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                                
         $product->authors = array();
@@ -996,7 +985,8 @@
         if($product->title != $committee['description']){
             $product->title .= "...";
         }
-        $product->date = ($committee['reporting_year']+1)."-01-01";
+        $product->acceptance_date = ($committee['reporting_year'])."-07-01";
+        $product->date = ($committee['reporting_year']+1)."-06-30";
         $product->access = "Public";
                                
         $product->data = array();  

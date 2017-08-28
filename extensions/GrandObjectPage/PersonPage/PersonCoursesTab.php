@@ -21,30 +21,43 @@ class PersonCoursesTab extends AbstractTab {
         $coursesArray = array();
         foreach($courses as $course){
             if($course->totEnrl > 0){
-                $coursesArray["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
+                $level = substr($course->catalog, 0, 1)."00";
+                $coursesArray[$level]["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
             }
         }
-        $item = "";
-        foreach($coursesArray as $subj => $terms){
-            $first = true;
-            foreach($terms as $term => $terms){
-                if($first){
-                    $item .= "<h3>{$subj} - {$terms[0]->descr}</h3><p>{$terms[0]->courseDescr}</p><ul>";
-                }   
-                $courses = new Collection($terms);
-                $components = $courses->pluck('component');
-                $sects = $courses->pluck('sect');
-                $totEnrls = $courses->pluck('totEnrl');
-                
-                $inner = array();
-                foreach($components as $key => $component){
-                    $inner[] = "{$component} {$sects[$key]} : {$totEnrls[$key]}";
+        $item = "<small><i>Total enrolment per across multiple LEC, SEM, or LAB given in parentheses<i></small>";
+        foreach($coursesArray as $level => $levels){
+            $item .= "<h3>{$level} Level</h3>";
+            $item .= "<table class='wikitable' frame='box' rules='all' width='100%'>";
+            foreach($levels as $subj => $terms){
+                $termStrings = array();
+                foreach($terms as $term => $terms){
+                    
+                    $courses = new Collection($terms);
+                    $components = $courses->pluck('component');
+                    $sects = $courses->pluck('sect');
+                    $totEnrls = $courses->pluck('totEnrl');
+                    
+                    $inner = array();
+                    $counts = array();
+                    foreach($components as $key => $component){
+                        $counts[$component][] = $totEnrls[$key];
+                        //$inner[] = "{$component} {$sects[$key]} : {$totEnrls[$key]}";
+                    }
+                    foreach($counts as $component => $count){
+                        $inner[] = count($count)." $component (".array_sum($count).")";
+                    }
+                    $inner = implode(", ", $inner);
+                    $termStrings[] = "{$term}: $inner";
                 }
-                $inner = implode(", ", $inner);
-                $item .= "<li><b>{$term}</b> ($inner)</li>";
-                $first = false;
+                $item .= "<tr>";
+                $item .= "<td style='white-space:nowrap;width:10%;'>{$subj}</td>";
+                $item .= @"<td>{$terms[0]->descr}</td>";
+                $item .= @"<td class='pdfnodisplay'>{$terms[0]->courseDescr}</td>";
+                $item .= "<td style='width:45%;'>".implode("; ", $termStrings)."</td>";
+                $item .= "</tr>";
             }
-            $item .= "</ul>";
+            $item .= "</table>";
         }
         return $item;
     }

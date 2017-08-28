@@ -10,7 +10,7 @@ class PersonEmploymentReportItem extends StaticReportItem {
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         
         $employment = array_reverse($person->getUniversities());
-        $item = "";
+        $items = array();
         foreach($employment as $emp){
             $startYear = substr($emp['start'], 0, 4);
             $endYear = substr($emp['end'], 0, 4);
@@ -19,13 +19,16 @@ class PersonEmploymentReportItem extends StaticReportItem {
                 $endYear = "Present";
             }
             
-            $item .= "<h3>{$emp['university']}</h3>";
-            $item .= "<b>Department:</b> {$emp['department']}<br />";
-            $item .= "<b>Position:</b> {$emp['position']}<br />";
-            $item .= "<b>Years:</b> {$startYear} - {$endYear}<br />";
+            $items[$emp['university']][] = "{$emp['position']}, {$emp['department']}<br />
+                                            {$startYear} - {$endYear}<br />";
         }
         
-        return $item;
+        $html = "";
+        foreach($items as $key => $item){
+            $html .= "<h3>{$key}</h3>".implode("<br style='line-height:0.5em;' />", $item);
+        }
+        
+        return $html;
     }
 
     function render(){

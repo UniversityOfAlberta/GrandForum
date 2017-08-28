@@ -45,6 +45,7 @@ class ReportItemCallback {
             "grant_title" => "getGrantTitle",
             "grant_description" => "getGrantDescription",
             "grant_sponsor" => "getGrantSponsor",
+            "grant_project_id" => "getGrantProjectId",
             "grant_start_date" => "getGrantStartDate",
             "grant_end_date" => "getGrantEndDate",
             "grant_total" => "getGrantTotal",
@@ -102,7 +103,9 @@ class ReportItemCallback {
             "product_url" => "getProductUrl",
             "product_citation" => "getProductCitation",
             "product_date" => "getProductDate",
+            "product_acceptance_year" => "getProductAcceptanceYear",
             "product_year" => "getProductYear",
+            "product_year_range" => "getProductYearRange",
             //Presentations
             "presentation_title" => "getPresentationTitle",
             "presentation_type" => "getPresentationType",
@@ -407,6 +410,11 @@ class ReportItemCallback {
         return $grant->getDescription();
     }
     
+    function getGrantProjectId(){
+        $grant = Grant::newFromId($this->reportItem->projectId);
+        return $grant->getProjectId();
+    }
+    
     function getGrantSponsor(){
         $grant = Grant::newFromId($this->reportItem->projectId);
         return $grant->getSponsor();
@@ -424,7 +432,7 @@ class ReportItemCallback {
     
     function getGrantTotal(){
         $grant = Grant::newFromId($this->reportItem->projectId);
-        return number_format($grant->getTotal(), 2);
+        return number_format($grant->getTotal());
     }
     
     function getReportHasStarted(){
@@ -798,9 +806,32 @@ class ReportItemCallback {
         return @$product['awarded_by'];
     }
     
+    function getProductAcceptanceYear(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return @$product->getAcceptanceYear();
+    }
+    
     function getProductYear(){
         $product = Paper::newFromId($this->reportItem->productId);
         return @$product->getYear();
+    }
+    
+    function getProductYearRange(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $startYear = $product->getAcceptanceYear();
+        $endYear = $product->getYear();
+        if($startYear == $endYear){
+            return $endYear;        
+        }
+        else if($startYear == "0000"){
+            return $endYear;
+        }
+        else if($endYear == "0000"){
+            return $startYear;
+        }
+        else{
+            return "{$startYear} - {$endYear}";
+        }
     }
 
     function getWgUserId(){

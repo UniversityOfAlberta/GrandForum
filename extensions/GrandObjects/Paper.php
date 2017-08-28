@@ -1088,6 +1088,10 @@ class Paper extends BackboneModel{
         return $date;
     }
     
+    function getAcceptanceDate(){
+        return $this->acceptance_date;
+    }
+    
     /**
      * Returns the year of this Paper
      * @return string The year of this Paper
@@ -1096,8 +1100,8 @@ class Paper extends BackboneModel{
         return substr($this->getDate(), 0, 4);
     }
 
-    function getAcceptanceDate(){
-        return $this->acceptance_date;
+    function getAcceptanceYear(){
+        return substr($this->getAcceptanceDate(), 0, 4);
     }
     
     /**

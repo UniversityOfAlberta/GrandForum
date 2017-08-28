@@ -3654,11 +3654,20 @@ class Person extends BackboneModel {
         }
         
         $papers = Product::getByIds($papers);
+        $structure = Product::structure();
         foreach($papers as $paper){
+            $acceptanceDate = $paper->getAcceptanceDate();
             $date = $paper->getDate();
+            $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["date_label"];
+            $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$paper->getType()]["acceptance_date_label"];
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
                $paper->getId() != 0 && 
-               (strcmp($date, $startRange) >= 0 && strcmp($date, $endRange) <= 0 )){
+               (($date >= $startRange && $date <= $endRange) ||
+                ($acceptanceDateLabel == "Start Date" && $dateLabel = "End Date" && 
+                 ($acceptanceDate >= $startRange && $date <= $endRange ||
+                  $acceptanceDate <= $startRange && $date <= $endRange ||
+                  $acceptanceDate >= $startRange && $date >= $endRange ||
+                  $acceptanceDate <= $startRange && $date >= $endRange)))){
                 $papersArray[] = $paper;
             }
         }

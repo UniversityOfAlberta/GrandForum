@@ -38,6 +38,7 @@ abstract class AbstractReport extends SpecialPage {
     var $reportType;
     var $ajax;
     var $header;
+    var $footer;
     var $headerName;
     var $sections;
     var $currentSection;
@@ -445,6 +446,20 @@ abstract class AbstractReport extends SpecialPage {
             $item->setProjectId($this->project->getId());
         }
         $this->headerName = $item->varSubstitute($name);
+    }
+    
+    function setFooter($footer){
+        $section = new ReportSection();
+        $item = new StaticReportItem();
+        $section->parent = $this;
+        $item->parent = $section;
+        if($this->person != null){
+            $item->setPersonId($this->person->getId());
+        }
+        if($this->project != null){
+            $item->setProjectId($this->project->getId());
+        }
+        $this->footer = $item->varSubstitute($footer);
     }
     
     // Specifies which report this one inherits from
