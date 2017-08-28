@@ -45,7 +45,8 @@ class PublicChordTab extends AbstractTab {
             $sortedProjects = array();
             
             foreach($people as $key => $person){
-                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
+                if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) &&
+                   !$person->isRoleDuring(PL,$year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
                     unset($people[$key]);
                     continue;
                 }
