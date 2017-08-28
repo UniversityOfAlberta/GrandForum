@@ -88,8 +88,8 @@ class EPICTable extends SpecialPage{
         $me = Person::newFromWgUser();
 
         $epics = array();
-        $hqps = array_merge(Person::getAllPeopleDuring(HQP, "0000", "9999"), 
-                            Person::getAllCandidatesDuring(HQP, "0000", "9999"));
+        $hqps = array_merge(Person::getAllPeopleDuring(HQP, "0000-00-00", "9999-12-31"), 
+                            Person::getAllCandidatesDuring(HQP, "0000-00-00", "9999-12-31"));
         
         foreach($hqps as $hqp){
             if($hqp->isEpic()){
