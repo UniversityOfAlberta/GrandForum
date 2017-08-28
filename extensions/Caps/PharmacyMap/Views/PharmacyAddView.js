@@ -1,21 +1,31 @@
 PharmacyAddView = Backbone.View.extend({
     template: _.template($('#pharmacy_add_template').html()),
     map: null,
-    lat:0,
-    lng:0,
+    lat: undefined,
+    lng: undefined,
     initialize: function(){
         this.model.bind('sync', this.render);//change to on
     },
 
     events:{
         "click #addPharmacy": "addPharmacy",
-
+        "change #lat": "changeAddress",
+        "keyup #lat": "changeAddress"
+    },
+    
+    changeAddress: function(){
+        if(this.lat == undefined || this.lng == undefined){
+            this.$("#addPharmacy").prop("disabled", true);
+        }
+        else{
+            this.$("#addPharmacy").prop("disabled", false);
+        }
     },
 
     addPharmacy: function(){
 	var university = new University({name: $('#name').val(),
-					 latitude: lat.toString(),
-					 longitude: lng.toString(),
+					 latitude: this.lat.toString(),
+					 longitude: this.lng.toString(),
 					 province_string: $("select[name='province']").val(),
 					 address: $('#lat').val(),
                      phone: $('#phone').val(),
@@ -56,22 +66,23 @@ PharmacyAddView = Backbone.View.extend({
         });
 
         var markers = [];
-        searchBox.addListener('places_changed', function(){
+        searchBox.addListener('places_changed', $.proxy(function(){
             var places = searchBox.getPlaces();
             if(places.length == 0){
                 return;
             }
 
             var bounds = new google.maps.LatLngBounds();
-            places.forEach(function(place){
-                lat = place.geometry.location.lat();//use this to save  .lng() for longittude
-                lng = place.geometry.location.lng();//use this to save  .lng() for longittude
+            places.forEach($.proxy(function(place){
+                this.lat = place.geometry.location.lat();//use this to save  .lng() for longittude
+                this.lng = place.geometry.location.lng();//use this to save  .lng() for longittude
                 if (place.geometry.viewport){
                     bounds.union(place.geometry.viewport);
                 } else {
                     bounds.extend(place.geometry.location);
                 }
-             });
+                this.changeAddress();
+             }, this));
              if(places.length >1){
                  map.fitBounds(bounds);
              }
@@ -79,7 +90,7 @@ PharmacyAddView = Backbone.View.extend({
                  map.setCenter(bounds.getCenter());
                  map.setZoom(17);
              }
-        });
+        }, this));
     },
 
     AddMarkers: function(group){
@@ -113,6 +124,7 @@ PharmacyAddView = Backbone.View.extend({
         var title = $("#pageTitle").clone();
 	    $(title).attr('id', 'copiedTitle');
 	    this.$el.prepend(title);
+	    this.changeAddress();
         return this.$el;
     }
 
