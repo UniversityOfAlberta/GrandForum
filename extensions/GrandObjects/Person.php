@@ -3017,7 +3017,7 @@ class Person extends BackboneModel {
         if($role == PL || $role == "PL"){
             $project_objs = $this->leadershipOn($date);
             if(count($project_objs) > 0){
-                $roles[] = "PL";
+                $roles[] = PL;
             }
         }
         if(count($role_objs) > 0){
@@ -3079,7 +3079,7 @@ class Person extends BackboneModel {
         if($role == PL || $role == "PL"){
             $project_objs = $this->leadershipDuring($startRange, $endRange);
             if(count($project_objs) > 0){
-                $roles[] = "PL";
+                $roles[] = PL;
             }
         }
         if(count($role_objs) > 0){
