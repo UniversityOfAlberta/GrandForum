@@ -24,8 +24,12 @@ class ProjectBudgetTab extends AbstractEditableTab {
         global $config;
         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
         $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE');
-        
-        $multiBudget = new MultiBudget(array($structure, $niStructure), $contents);
+        if($config->getValue('networkName') == "FES"){
+            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
+        }
+        else {
+            $multiBudget = new MultiBudget(array($structure, $niStructure), $contents);
+        }
         if($config->getValue('networkName') == "AGE-WELL"){
             // AGE-WELL Budget Allocations
             DBFunctions::delete("grand_allocations",
@@ -235,7 +239,12 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 if(!$edit){
                     $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         $alloc<br /><br />";
-                    $multiBudget = new MultiBudget(array($structure, $niStructure), $xls);
+                    if($config->getValue('networkName') == "FES"){
+                        $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $xls);
+                    }
+                    else {
+                        $multiBudget = new MultiBudget(array($structure, $niStructure), $xls);
+                    }
                     if($multiBudget->nBudgets() > 0){
                         $budget = $multiBudget->getBudget(0);
                         $total = str_replace('$', '', $budget->copy()->select(COL_TOTAL)->where(COL_TOTAL)->toString());

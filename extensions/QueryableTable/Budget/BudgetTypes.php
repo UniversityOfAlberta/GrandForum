@@ -56,35 +56,38 @@ define('TVN_CATALYST_STRUCTURE', 10);
 define('FES_BUDGET_STRUCTURE', 11);
 define('FES_THEME_BUDGET_STRUCTURE', 12);
 define('FES_NI_BUDGET_STRUCTURE', 13); // Not really NIs, it is the Equipment
+define('FES_EQUIPMENT_STRUCTURE', 14);
+define('FES_EXTERNAL_STRUCTURE', 15);
 
 $budgetStructures = array();
 
 $budgetStructures[NETWORK_BUDGET_STRUCTURE] = array(array());
 
 $budgetStructures[FES_BUDGET_STRUCTURE] = 
-    array(array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
-          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
-          array(HEAD2_ROW.('(1.1 Postdoctoral)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.2 Doctorate)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.3 Masters)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.4 Bachelors)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.5 Research Associates)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.6 Research Technical Support)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.7 Research Admin Support)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.8 Professional and Technical Services)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD2_ROW.('(1.9 Other Misc. Compensation Expenses)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
-          array(HEAD2_ROW.('(4.1 Equipment)'),  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
-          array(HEAD2_ROW.('(4.2 Supplies)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  READ,       READ,       READ,       READ,       READ,       READ,       READ),
-          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
-          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
-          array(HEAD2_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
-          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+    array(array(NA, HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD2_ROW.('(1.1 Postdoctoral)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.2 Doctorate)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.3 Masters)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.4 Bachelors)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.5 Research Associates)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.6 Research Technical Support)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.7 Research Admin Support)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.8 Professional and Technical Services)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD2_ROW.('(1.9 Other Misc. Compensation Expenses)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD2_ROW.('(4.1 Equipment)'),  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD2_ROW.('(4.2 Supplies)'),  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  READ,       READ,       READ,       READ,       READ,       READ,       READ),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD2_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD2_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
     );
     
 $budgetStructures[FES_NI_BUDGET_STRUCTURE] = 
@@ -110,6 +113,59 @@ $budgetStructures[FES_NI_BUDGET_STRUCTURE] =
           array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+    );
+    
+$budgetStructures[FES_EQUIPMENT_STRUCTURE] = 
+    array(array(HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+    );
+    
+$budgetStructures[FES_EXTERNAL_STRUCTURE] = 
+    array(array(NA, HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY),
+          array(NA, NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA, NA,         NA,         NA,         NA,         NA,         NA,         NA,         NA),
+          array(NA, BLANK,      BLANK,      BLANK,      BLANK,      BLANK,      BLANK,      BLANK,      BLANK),
+          array(NA, HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, READ,       MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY,      MONEY),
+          array(NA, HEAD1_ROW,  HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY, HEAD_MONEY)
     );
     
 $budgetStructures[FES_THEME_BUDGET_STRUCTURE] = 
