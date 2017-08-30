@@ -28,6 +28,12 @@
                 </table>
             ]]>
         </ReportItem>
+        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
+            <![CDATA[
+                <h2>Leaves</h2>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <h2>Responsibilities Variation</h2>
@@ -35,22 +41,10 @@
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date|Date" multiple="true" optional="true">
-            <![CDATA[
-                <h2>Leaves</h2>
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
                 <h2>Reasons For Reduced Teaching<small> (if applicable)</small></h2>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
-            <![CDATA[
-                <h2>Teaching Development And Innovation</h2>
-                  {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -82,6 +76,12 @@
         <ReportItem id="coursesfooter" type="StaticReportItem">
             <![CDATA[
                 </tbody></table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
+            <![CDATA[
+                <h2>Teaching Development And Innovation</h2>
+                  {$item}
             ]]>
         </ReportItem>
         <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobType="BLOB_TEXT" rich="true" optional="true">
@@ -290,7 +290,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
+    <!--ReportSection id="chair" tooltip="Chair Recommendation" name="Chair Recommendation" blobSection="CHAIR_REVIEW" type="EditableReportSection">
         <ReportItem id="chairTable" type="StaticReportItem">
             <![CDATA[
                 <p id='comment_p'></p>
@@ -328,7 +328,7 @@
                 </script>
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>

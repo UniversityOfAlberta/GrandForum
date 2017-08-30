@@ -56,8 +56,10 @@ class PersonPublicationsTab extends AbstractTab {
                 <tbody>";
             foreach($products as $paper){
                 $projects = array();
-                foreach($paper->getProjects() as $project){
-                    $projects[] = "{$project->getName()}";
+                if($config->getValue('projectsEnabled')){
+                    foreach($paper->getProjects() as $project){
+                        $projects[] = "{$project->getName()}";
+                    }
                 }
 
                 $string .= "<tr>";

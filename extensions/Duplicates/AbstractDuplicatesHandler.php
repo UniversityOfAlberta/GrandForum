@@ -11,7 +11,7 @@ abstract class AbstractDuplicatesHandler {
     static $handlers;
     
     function AbstractDuplicatesHandler($id){
-        $this->id = str_replace(" ", "", $id);
+        $this->id = str_replace("/", "", str_replace("-", "", str_replace(" ", "", $id)));
         $this->upperId = ucfirst($this->id);
         self::$handlers[$this->id] = $this;
         $this->ignoredCache = null;

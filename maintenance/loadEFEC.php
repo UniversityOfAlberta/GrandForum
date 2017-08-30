@@ -46,7 +46,7 @@
         'Other'           => array('Publication', 'Misc'),
         'PosterArticle'   => array('Publication', 'Poster'),
         'PaperAbstract'   => array('Publication', 'Journal Abstract'),
-        'Review'          => array('Activity', 'Review'),
+        'Review'          => array('Publication', 'Book Review'),
         'Book'            => array('Publication', 'Book'),
         'Patent'          => array('Patent/Spin-Off', 'Patent')
     );
@@ -79,11 +79,11 @@
     DBFunctions::execSQL("TRUNCATE grand_new_grants", true);
     DBFunctions::execSQL("TRUNCATE grand_new_grant_partner", true);
     
-    DBFunctions::execSQL("DELETE FROM mw_user WHERE user_id != 1", true);
-    DBFunctions::execSQL("DELETE FROM grand_roles WHERE user_id != 1", true);
+    DBFunctions::execSQL("DELETE FROM mw_user WHERE user_id > 2", true);
+    DBFunctions::execSQL("DELETE FROM grand_roles WHERE user_id > 2", true);
     
-    DBFunctions::execSQL("ALTER TABLE mw_user AUTO_INCREMENT = 2", true);
-    DBFunctions::execSQL("ALTER TABLE grand_roles AUTO_INCREMENT = 2", true);
+    DBFunctions::execSQL("ALTER TABLE mw_user AUTO_INCREMENT = 3", true);
+    DBFunctions::execSQL("ALTER TABLE grand_roles AUTO_INCREMENT = 3", true);
     
     $awards = DBFunctions::select(array('bddEfec2_development.awards' => 'a', 'bddEfec2_development.award_scopes' => 's'),
                                   array('a.name', 'a.category', 'a.faculty_staff_member_id', 'a.reporting_year' => 'year', 's.name' => 'scope'),

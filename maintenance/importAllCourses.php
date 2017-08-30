@@ -98,6 +98,7 @@
 
                 $acadOrg = DBFunctions::escape(trim($rowValues[1]));
                 $term = DBFunctions::escape(trim($rowValues[0]));
+                $role = DBFunctions::escape(trim($rowValues[3]));
                 $classNbr = DBFunctions::escape(trim(ltrim($rowValues[11], '0')));
                 $subject = DBFunctions::escape(trim($rowValues[9]));
                 $catalog = DBFunctions::escape(trim($rowValues[10]));
@@ -120,7 +121,7 @@
                 $key = $term . $classNbr . $component . $sect . $employeeID;
                 
                 // skip if key exists OR user is not a Faculty of Science Member
-                if (isset($grandCourses[$key]) || $userID == 0 ){
+                if (isset($grandCourses[$key]) || $userID == 0 || $role != "PI"){
                     continue;
                 }
 

@@ -321,9 +321,9 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer"){
                             $item .= "<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
-			else if(strstr(strtolower(@$types[$j]), "date") !== false){
+                        else if(strstr(strtolower(@$types[$j]), "date") !== false){
                             $item .= "<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
-			}
+                        }
                         else{
                             $item .= "<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }

@@ -221,7 +221,7 @@ class Person extends BackboneModel {
         if(isset(self::$namesCache[$name])){
             $data[] = self::$namesCache[$name];
         }
-        return new Person($data);
+        return @Person::newFromId($data[0]['id']);
     }
 
     /**
@@ -487,14 +487,17 @@ class Person extends BackboneModel {
     /**
      * Caches the resultset of the product authors
      */
-    static function generateAuthorshipCache(){
-        if(count(self::$authorshipCache) == 0){
-             $data = DBFunctions::select(array('grand_product_authors'),
-                                        array('author', 'product_id'));
+    static function generateAuthorshipCache($id="%"){
+        if(!isset(self::$authorshipCache[$id])){
+            self::$authorshipCache[$id] = array();
+        }
+        else {
+            $data = DBFunctions::select(array('grand_product_authors'),
+                                        array('author', 'product_id'),
+                                        array('author' => COL("REGEXP '[0-9]+'"),
+                                              'author' => LIKE($id)));
             foreach($data as $row){
-                if(is_numeric($row['author'])){
-                    self::$authorshipCache[$row['author']][] = $row['product_id'];
-                }
+                self::$authorshipCache[$row['author']][] = $row['product_id'];
             }
         }
     }
@@ -1913,35 +1916,36 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
-        if(!isset($this->universityDuring[$startRange.$endRange])){
-            $sql = "SELECT * 
-                    FROM grand_user_university uu, grand_universities u, grand_positions p
-                    WHERE uu.user_id = '{$this->id}'
-                    AND u.university_id = uu.university_id
-                    AND uu.position_id = p.position_id
-                    AND ( 
-                    ( (end_date != '0000-00-00 00:00:00') AND
-                    (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                    OR
-                    ( (end_date = '0000-00-00 00:00:00') AND
-                    ((start_date <= '$endRange')))
-                    )
-                    ORDER BY uu.id DESC";
-            $data = DBFunctions::execSQL($sql);
-            $universities = array();
-            if(count($data) > 0){
-                foreach($data as $row){
-                    if($row['university_name'] != "Unknown"){
-                        $universities[] = array("university" => $row['university_name'],
-                                                "department" => $row['department'],
-                                                "position"   => $row['position'],
-                                                "research_area" => $row['research_area']);
-                    }
+        if(Cache::exists("user_university_{$this->id}_{$startRange}_{$endRange}")){
+            return Cache::fetch("user_university_{$this->id}_{$startRange}_{$endRange}");
+        }
+        $sql = "SELECT * 
+                FROM grand_user_university uu, grand_universities u, grand_positions p
+                WHERE uu.user_id = '{$this->id}'
+                AND u.university_id = uu.university_id
+                AND uu.position_id = p.position_id
+                AND ( 
+                ( (end_date != '0000-00-00 00:00:00') AND
+                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
+                OR
+                ( (end_date = '0000-00-00 00:00:00') AND
+                ((start_date <= '$endRange')))
+                )
+                ORDER BY uu.id DESC";
+        $data = DBFunctions::execSQL($sql);
+        $universities = array();
+        if(count($data) > 0){
+            foreach($data as $row){
+                if($row['university_name'] != "Unknown"){
+                    $universities[] = array("university" => $row['university_name'],
+                                            "department" => $row['department'],
+                                            "position"   => $row['position'],
+                                            "research_area" => $row['research_area']);
                 }
             }
-            $this->universityDuring[$startRange.$endRange] = $universities;
         }
-        return $this->universityDuring[$startRange.$endRange];
+        Cache::store("user_university_{$this->id}_{$startRange}_{$endRange}", $universities);
+        return $universities;
     }
     
     /**
@@ -2297,7 +2301,7 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $roles[] = new Role(array(0 => $row));
         }
-        return $roles; 
+        return $roles;
     }
     
     /**
@@ -2309,12 +2313,18 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        
-        $sql = "SELECT *
-                FROM grand_roles
-                WHERE user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
+        $cacheId = "personRolesDuring".$this->id."_".$date;
+        if(Cache::exists($cacheId)){
+            $data = Cache::fetch($cacheId);
+        }
+        else{
+            $sql = "SELECT *
+                    FROM grand_roles
+                    WHERE user_id = '{$this->id}'
+                    AND (('$date' BETWEEN start_date AND end_date) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
+            $data = DBFunctions::execSQL($sql);
+            Cache::store($cacheId, $data);
+        }
         $roles = array();
         foreach($data as $row){
             $roles[] = new Role(array(0 => $row));
@@ -3567,7 +3577,7 @@ class Person extends BackboneModel {
      */ 
     function getPapers($category="all", $history=false, $grand='grand', $onlyPublic=true, $access='Forum'){
         $me = Person::newFromWgUser();
-        self::generateAuthorshipCache();
+        self::generateAuthorshipCache($this->id);
         $processed = array();
         $papersArray = array();
         $papers = array();
@@ -3629,7 +3639,7 @@ class Person extends BackboneModel {
      */
     function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true){
         global $config;
-        self::generateAuthorshipCache();
+        self::generateAuthorshipCache($this->id);
         $processed = array();
         $papersArray = array();
         $papers = array();

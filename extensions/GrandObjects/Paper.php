@@ -586,7 +586,7 @@ class Paper extends BackboneModel{
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->category = $data[0]['category'];
-            //$this->description = $data[0]['description'];
+            $this->description = isset($data[0]['description']) ? $data[0]['description'] : false;
             $this->title = $data[0]['title'];
             $this->type = $data[0]['type'];
             $this->date = $data[0]['date'];
@@ -601,7 +601,7 @@ class Paper extends BackboneModel{
             $this->projectsWaiting = true;
             $this->authors = $data[0]['authors'];
             $this->authorsWaiting = true;
-            //$this->data = unserialize($data[0]['data']);
+            $this->data = isset($data[0]['data']) ? unserialize($data[0]['data']) : false;
             $this->lastModified = $data[0]['date_changed'];
             $this->acceptance_date = $data[0]['acceptance_date'];
         }
@@ -1129,27 +1129,7 @@ class Paper extends BackboneModel{
      * @return string The venue for this Paper
      */
     function getVenue(){
-        $venue = "";
-        if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->getData(), 'venue');
-        }
-        
-        if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->getData(), 'event_title');
-        }
-
-        if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->getData(), 'conference');
-        }
-
-        if( empty($venue) ){
-            $venue = ArrayUtil::get_string($this->getData(), 'event_location');
-        }
-
-        if(empty($venue)){
-            $venue = ArrayUtil::get_string($this->getData(), 'location');
-        }
-        return $venue;
+        return $this->getData(array('event_title', 'published_in', 'journal_title', 'book_title', 'organization', 'owner', 'assignor'));
     }
 
     /**
@@ -1271,7 +1251,7 @@ class Paper extends BackboneModel{
         $type = $this->type;
         $pages = $this->getData(array('pages'));
         $publisher = $this->getData(array('publisher'));
-        $venue = $this->getData(array('event_title', 'published_in', 'journal_title', 'book_title', 'organization', 'owner', 'assignor'));
+        $venue = $this->getVenue();
         $volume = $this->getData(array('volume'));
         $issue = $this->getData(array('number'));
         $editor = $this->getData(array('editors'));

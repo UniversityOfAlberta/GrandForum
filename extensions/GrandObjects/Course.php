@@ -110,9 +110,15 @@ class Course extends BackboneModel{
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        $data = DBFunctions::select(array('grand_courses'),
-                                    array('*'),
-                                    array('id' => EQ($id)));
+        if(Cache::exists("course_$id")){
+            $data = Cache::fetch("course_$id");
+        }
+        else{
+            $data = DBFunctions::select(array('grand_courses'),
+                                        array('*'),
+                                        array('id' => EQ($id)));
+            Cache::store("course_$id", $data);
+        }
         $course = new Course($data);
         //$self::$cache[$course->id] = &$course;
         return $course;
@@ -234,6 +240,7 @@ class Course extends BackboneModel{
                                           '`Course Descr`'      => $this->courseDescr,
                                           '`Max Units`'         => $this->maxUnits));
             $this->id = DBFunctions::insertId();
+            Cache::delete("course_{$this->id}");
         }
     }
 
@@ -289,6 +296,7 @@ class Course extends BackboneModel{
                                           '`Course Descr`'      => $this->courseDescr,
                                           '`Max Units`'         => $this->maxUnits),
                                     array('id' => EQ($this->id)));
+            Cache::delete("course_{$this->id}");
         }
     }
 
@@ -331,13 +339,13 @@ class Course extends BackboneModel{
         //TODO:implement function
     }
     function delete(){
-            //TODO:implement function
+        //TODO:implement function
     }
     function exists(){
-            //TODO:implement function
+        //TODO:implement function
     }
     function getCacheId(){
-            //TODO:implement function
+        //TODO:implement function
     }
 
     function getId(){

@@ -191,7 +191,7 @@ class ShibAuthPlugin extends AuthPlugin {
 	 * @access public
 	 */
 	function addUser( $user, $password, $email = '', $realname = '' ) {
-		return false;
+		return true;
 	}
  
  

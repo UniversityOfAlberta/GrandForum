@@ -29,7 +29,7 @@ class MyDuplicateProducts extends SpecialPage{
         
         $structure = Product::structure();
         foreach($structure['categories'] as $key => $cat){
-            $key = str_replace(" ", "", $key);
+            $key = str_replace("/", "", str_replace("-", "", str_replace(" ", "", $key)));
             $tabbedPage->addTab(new DuplicatesTab(Inflect::pluralize($key), $handlers["my$key"]));
         }
         $wgOut->setPageTitle("My Duplicate ".Inflect::pluralize($config->getValue('productsTerm')));
