@@ -38,7 +38,7 @@ class Chord extends Visualization {
         }
         $string .= <<<EOF
 <script type='text/javascript'>
-    var params = Array();
+    var params{$this->index} = Array();
     function hashCode(str) { // java String#hashCode
         var hash = 0;
         if(str == null){
@@ -56,12 +56,12 @@ class Chord extends Visualization {
                ("00" + (i&0xFF).toString(16)).slice(-2);
     }
   
-  var lastChordRequest = null;
+  var lastChordRequest{$this->index} = null;
   
   var render{$this->index} = function(){};
   
   function onLoad{$this->index}(){
-    lastChordRequest = $.get('{$this->url}' + params.join(''), function(data){
+    lastChordRequest{$this->index} = $.get('{$this->url}' + params{$this->index}.join(''), function(data){
         
         var width = {$this->width},
             height = {$this->height};
@@ -215,14 +215,14 @@ class Chord extends Visualization {
                 }
                 $("#visOptions{$this->index} input").change(function(){
                     if((!$(this).hasClass('inverted') && !$(this).is(':checked')) || ($(this).hasClass('inverted') && $(this).is(':checked'))) {
-                        params.push('&' + $(this).val());
+                        params{$this->index}.push('&' + $(this).val());
                     }
                     else{
-                        var index = params.indexOf('&' + $(this).val());
-                        params[index] = null;
-                        delete params[index];
+                        var index = params{$this->index}.indexOf('&' + $(this).val());
+                        params{$this->index}[index] = null;
+                        delete params{$this->index}[index];
                     }
-                    lastChordRequest.abort();
+                    lastChordRequest{$this->index}.abort();
                     onLoad{$this->index}();
                 });
                 
@@ -235,16 +235,16 @@ class Chord extends Visualization {
                         step: 1,
                         range: "max",
                         slide: function( event, ui ) {
-                            for(pId in params){
-                                var param = params[pId];
+                            for(pId in params{$this->index}){
+                                var param = params{$this->index}[pId];
                                 if(param.indexOf('&date=') !== -1){
-                                    params[pId] = null;
-                                    delete params[pId];
+                                    params{$this->index}[pId] = null;
+                                    delete params{$this->index}[pId];
                                 }
                             }
-                            params.push('&date=' + ui.value);
+                            params{$this->index}.push('&date=' + ui.value);
                             
-                            lastChordRequest.abort();
+                            lastChordRequest{$this->index}.abort();
                             onLoad{$this->index}();
                         }
                     });
@@ -269,15 +269,15 @@ class Chord extends Visualization {
                 $("#visSort{$this->index} input").change(function(){
                     $.each($("#visSort{$this->index} input"), function(i, val){
                         if($(val).is(':checked')){
-                            params.push('&sortBy=' + $(val).val());
+                            params{$this->index}.push('&sortBy=' + $(val).val());
                         }
                         else{
-                            var index = params.indexOf('&sortBy=' + $(val).val());
-                            params[index] = null;
-                            delete params[index];
+                            var index = params{$this->index}.indexOf('&sortBy=' + $(val).val());
+                            params{$this->index}[index] = null;
+                            delete params{$this->index}[index];
                         }
                     });
-                    lastChordRequest.abort();
+                    lastChordRequest{$this->index}.abort();
                     onLoad{$this->index}();
                 });
             }
