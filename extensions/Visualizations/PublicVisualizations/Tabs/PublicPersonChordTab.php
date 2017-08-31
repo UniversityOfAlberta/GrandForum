@@ -1,16 +1,16 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicChordTab::getPublicChordData';
+$wgHooks['UnknownAction'][] = 'PublicPersonChordTab::getPublicPersonChordData';
 
-class PublicChordTab extends AbstractTab {
+class PublicPersonChordTab extends AbstractTab {
 	
-	function PublicChordTab(){
-        parent::AbstractTab("Project Relations");
+	function PublicPersonChordTab(){
+        parent::AbstractTab("Person Relations");
     }
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
-	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
+	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicPersonChordData");
 	    $chord->height = 600;
 	    $chord->width = 600;
 	    $this->html = "<div><a class='button' onClick='$(\"#help{$chord->index}\").show();$(this).hide();'>Show Help</a>
@@ -27,29 +27,22 @@ class PublicChordTab extends AbstractTab {
 	    $this->html .= $chord->show();
 	    $this->html .= "<script type='text/javascript'>
         $('#publicVis').bind('tabsselect', function(event, ui) {
-            if(ui.panel.id == 'project-relations'){
+            if(ui.panel.id == 'person-relations'){
                 onLoad{$chord->index}();
             }
         });
         </script><br />";
 	}
 	
-	static function getPublicChordData($action, $article){
+	static function getPublicPersonChordData($action, $article){
 	    global $wgServer, $wgScriptPath, $config;
 	    $me = Person::newFromWgUser();
 	    $year = (isset($_GET['date'])) ? $_GET['date'] : date('Y');
-	    if($action == "getPublicChordData"){
+	    if($action == "getPublicPersonChordData"){
 	        session_write_close();
 	        $array = array();
             $people = Person::getAllPeopleDuring(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL);
-            $projects = Project::getAllProjectsEver();
-            foreach($projects as $key => $project){
-                if($project->getChallenge()->getName() == "Not Specified" || 
-                   $project->getType() == "Administrative"){
-                    unset($projects[$key]);
-                }
-            }
-            $sortedProjects = array();
+            $sortedPeole = array();
             
             foreach($people as $key => $person){
                 if(!$person->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) &&
@@ -59,28 +52,28 @@ class PublicChordTab extends AbstractTab {
                 }
             }
             
-            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
-                foreach($projects as $project){
-                    $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
+            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'university')){
+                foreach($people as $person){
+                    $sortedPeople[$person->getUni()][] = $person;
                 }
             }
-            else if(isset($_GET['sortBy']) && $_GET['sortBy'] == 'name'){
-                foreach($projects as $project){
-                    $sortedProjects[$project->getName()][] = $project;
+            else if(isset($_GET['sortBy']) && $_GET['sortBy'] == 'department'){
+                foreach($people as $person){
+                    $sortedPeople[$person->getDepartment()][] = $person;
                 }
             }
 
             $colorHashs = array();
             $colors = array();
-            $projects = array();
-            ksort($sortedProjects);
-            foreach($sortedProjects as $key => $sort){
-                foreach($sort as $project){
+            $people = array();
+            ksort($sortedPeople);
+            foreach($sortedPeople as $key => $sort){
+                foreach($sort as $person){
                     $key = explode("-", $key);
                     $key = $key[count($key)-1];
-                    $theme = $project->getChallenge();
-                    $color = $theme->getColor();
-                    $projects[] = $project;
+                    $uni = University::newFromName($person->getUni());
+                    $color = $uni->getColor();
+                    $people[] = $person;
                     $colorHashs[] = $key;
                     $colors[] = $color;
                 }
@@ -88,36 +81,36 @@ class PublicChordTab extends AbstractTab {
             
             $labels = array();
             $matrix = array();
-            
+            $projects = Project::getAllProjects();
             // Initialize
-            foreach($projects as $k1 => $project){
-                foreach($projects as $k2 => $p){
-                    $matrix[$project->getId()][$p->getId()] = 0;
+            foreach($people as $k1 => $p1){
+                foreach($people as $k2 => $p2){
+                    $matrix[$p1->getId()][$p2->getId()] = 0;
                 }
             }
 
-            foreach($people as $k1 => $person){
-                foreach($projects as $project){
-                    if($person->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
-                        foreach($projects as $p){
-                            if($person->isMemberOfDuring($p, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && isset($matrix[$p->getId()]) && $project->getId() != $p->getId()){
-                                $matrix[$project->getId()][$p->getId()] += 1;
-                            }
+            foreach($people as $k1 => $p1){
+                foreach($people as $k1 => $p2){
+                    foreach($projects as $project){
+                        if($p1->getId() != $p2->getId() &&
+                           $p1->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) &&
+                           $p2->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
+                            $matrix[$p1->getId()][$p2->getId()] += 1;
                         }
                     }
                 }
             }
             
             $found = false;
-            foreach($projects as $k1 => $project){
-                if(array_sum($matrix[$project->getId()]) != 0){
+            foreach($people as $k1 => $p1){
+                if(array_sum($matrix[$p1->getId()]) != 0){
                     $found = true;
                     break;
                 }
             }
             if(!$found){
-                foreach($projects as $k1 => $project){
-                    $matrix[$project->getId()][$project->getId()] = 1;
+                foreach($people as $k1 => $p1){
+                    $matrix[$p1->getId()][$p1->getId()] = 1;
                 }
             }
             
@@ -132,12 +125,12 @@ class PublicChordTab extends AbstractTab {
             $matrix = $newMatrix;
             
             $startYear = date('Y');
-            foreach($projects as $project){
-                $created = intval(substr($project->getCreated(), 0, 4));
+            foreach($people as $person){
+                $created = intval(substr($person->getRegistration(), 0, 4));
                 if($created < $startYear){
                     $startYear = intval($created);
                 }
-                $labels[] = $project->getName();
+                $labels[] = $person->getNameForForms();
             }
             
             $dates = array();
@@ -154,7 +147,8 @@ class PublicChordTab extends AbstractTab {
 
             $array['dateOptions'] = $dates;
                                       
-            $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+            $array['sortOptions'] = array(array('name' => 'Institution', 'value' => 'university', 'checked' => 'checked'),
+                                          array('name' => 'Department', 'value' => 'department'));
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
