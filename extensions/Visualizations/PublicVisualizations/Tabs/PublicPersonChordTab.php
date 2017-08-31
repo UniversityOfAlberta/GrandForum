@@ -67,16 +67,49 @@ class PublicPersonChordTab extends AbstractTab {
             $colors = array();
             $people = array();
             ksort($sortedPeople);
+            $presetColors = array("#a6cee3", 
+                                  "#1f78b4", 
+                                  "#b2df8a",
+                                  "#33a02c",
+                                  "#fb9a99",
+                                  "#e31a1c",
+                                  "#fdbf6f",
+                                  "#ff7f00",
+                                  "#cab2d6",
+                                  "#8dd3c7",
+                                  "#ffffb3",
+                                  "#bebada",
+                                  "#fb8072",
+                                  "#80b1d3",
+                                  "#fdb462",
+                                  "#b3de69",
+                                  "#fccde5",
+                                  "#d9d9d9",
+                                  "#fbb4ae",
+                                  "#b3cde3",
+                                  "#ccebc5",
+                                  "#decbe4",
+                                  "#fed9a6",
+                                  "#ffffcc",
+                                  "#e5d8bd",
+                                  "#fddaec",
+                                  "#f2f2f2");
+            $i = 0;
             foreach($sortedPeople as $key => $sort){
+                if(!isset($presetColors[$i])){
+                    $i = 0;
+                }
+                $color = $presetColors[$i];
                 foreach($sort as $person){
                     $key = explode("-", $key);
                     $key = $key[count($key)-1];
                     $uni = University::newFromName($person->getUni());
-                    $color = $uni->getColor();
+                    //$color = $uni->getColor();
                     $people[] = $person;
                     $colorHashs[] = $key;
                     $colors[] = $color;
                 }
+                $i++;
             }
             
             $labels = array();
