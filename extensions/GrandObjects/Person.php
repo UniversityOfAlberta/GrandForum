@@ -2974,7 +2974,7 @@ class Person extends BackboneModel {
                 if($project != null && count($r->getProjects()) > 0){
                     $skip = true;
                     foreach($r->getProjects() as $p){
-                        if($p->getId() == $project->getId()){
+                        if($p != null && $p->getId() == $project->getId()){
                             $skip = false;
                             break;
                         }
