@@ -123,10 +123,9 @@ class PublicPersonChordTab extends AbstractTab {
             }
 
             foreach($people as $k1 => $p1){
-                foreach($people as $k1 => $p2){
-                    foreach($projects as $project){
+                foreach($p1->getProjectsDuring($year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) as $project){
+                    foreach($people as $k2 => $p2){
                         if($p1->getId() != $p2->getId() &&
-                           $p1->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) &&
                            $p2->isMemberOfDuring($project, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL)){
                             $matrix[$p1->getId()][$p2->getId()] += 1;
                         }
