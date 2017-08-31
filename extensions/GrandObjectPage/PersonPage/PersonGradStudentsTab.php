@@ -44,12 +44,12 @@ class PersonGradStudentsTab extends AbstractTab {
     function supervisesHTML($hqpTypes=array(), $startDate=null, $endDate=null){
         $html = "<table class='wikitable relations_table' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                     <thead><tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th style='white-space: nowrap;'>Start Date</th>
-                            <th style='white-space: nowrap;'>End Date</th>
+                            <th width='20%'>Name</th>
+                            <th width='20%'>Position</th>
+                            <th width='20%' style='white-space: nowrap;'>Start Date</th>
+                            <th width='20%' style='white-space: nowrap;'>End Date</th>
                             <!--th style='white-space: nowrap;'>Research Area</th-->
-                            <th>Role</th>
+                            <th width='20%'>Role</th>
                         </tr>
                     </thead><tbody>";
         if($startDate == null || $endDate == null){
@@ -167,14 +167,14 @@ class PersonGradStudentsTab extends AbstractTab {
                     $html .= "<td style='width:100%;' valign='top'>";
                     $html .= "<table id='relations_table2' class='wikitable sortable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                                 <thead><tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th style='white-space: nowrap;'>Start Date</th>
-                                            <th style='white-space: nowrap;'>End Date</th>
-                                            <!--th style='white-space: nowrap;'>Research Area</th-->
-                                            <!--th>Completion Milestones</th>
-                                            <th>Co-Supervisors & Committees</th-->
-                                            <th>Role</th>
+                                    <th width='20%'>Name</th>
+                                    <th width='20%'>Position</th>
+                                    <th width='20%' style='white-space: nowrap;'>Start Date</th>
+                                    <th width='20%' style='white-space: nowrap;'>End Date</th>
+                                    <!--th style='white-space: nowrap;'>Research Area</th-->
+                                    <!--th>Completion Milestones</th>
+                                    <th>Co-Supervisors & Committees</th-->
+                                    <th width='20%'>Role</th>
                                 </tr></thead><tbody>";
                     $relations = $person->getRelationsAll();
                     $students = array();

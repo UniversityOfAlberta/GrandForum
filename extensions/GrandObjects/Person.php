@@ -490,8 +490,6 @@ class Person extends BackboneModel {
     static function generateAuthorshipCache($id="%"){
         if(!isset(self::$authorshipCache[$id])){
             self::$authorshipCache[$id] = array();
-        }
-        else {
             $data = DBFunctions::select(array('grand_product_authors'),
                                         array('author', 'product_id'),
                                         array('author' => COL("REGEXP '[0-9]+'"),
