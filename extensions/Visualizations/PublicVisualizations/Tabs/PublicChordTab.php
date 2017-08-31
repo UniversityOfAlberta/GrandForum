@@ -17,11 +17,10 @@ class PublicChordTab extends AbstractTab {
 	        <div id='help{$chord->index}' style='display:none;'>
 	            <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
 	            <ul>
-	                <li>To filter the results, you can check/uncheck the available roles, which will only show chords for people in the selected roles.</li>
-	                <li>Using the date slider allows the chart to only show projects/people from the specified year.  This is useful to see the evolution of the network.</li>
+	                <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>
 	                <li>To change how the projects are sorted/coloured, select one of the options in the 'Sorting Options'.</li>
 	            </ul>
-	            <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the theme in the legend.</p>
+	            <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the sorting category in the legend.</p>
 	        </div>
 	    </div>";
 	    $this->html .= $chord->show();
