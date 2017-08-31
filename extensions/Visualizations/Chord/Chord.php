@@ -108,7 +108,7 @@ class Chord extends Visualization {
                         $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseover(function(){
                             var ids = Array();
                             var classColor = $(this).children(0).attr('class');
-                            $.each($("path.outer"), function(index, val){
+                            $.each($("#vis{$this->index} path.outer"), function(index, val){
                                 if($(val).attr('class').indexOf(classColor) != -1){
                                     ids.push(index);
                                 }
@@ -120,7 +120,7 @@ class Chord extends Visualization {
                         $("#visLegend{$this->index} table tr td > div > div." + color).parent().mouseout(function(){
                             var ids = Array();
                             var classColor = $(this).children(0).attr('class');
-                            $.each($("path.outer"), function(index, val){
+                            $.each($("#vis{$this->index} path.outer"), function(index, val){
                                 if($(val).attr('class').indexOf(classColor) != -1){
                                     ids.push(index);
                                 }
@@ -169,7 +169,7 @@ class Chord extends Visualization {
                 .on("mouseover", fade(.3))
                 .on("mouseout", fade(1));
                 
-            $("path.outer").qtip({
+            $("#vis{$this->index} path.outer").qtip({
                 position: {
                     target: 'mouse', // Track the mouse as the positioning target
                     adjust: { x: 5, y: 5 } // Offset it slightly from under the mouse

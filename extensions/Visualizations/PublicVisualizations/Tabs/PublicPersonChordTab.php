@@ -103,7 +103,7 @@ class PublicPersonChordTab extends AbstractTab {
                 foreach($sort as $person){
                     $key = explode("-", $key);
                     $key = $key[count($key)-1];
-                    $uni = University::newFromName($person->getUni());
+                    //$uni = University::newFromName($person->getUni());
                     //$color = $uni->getColor();
                     $people[] = $person;
                     $colorHashs[] = $key;
