@@ -3317,7 +3317,7 @@ class Person extends BackboneModel {
             }
             return $hqps;
         }
-        if($this->hqps != null){
+        if($this->hqps !== null){
             return $this->hqps;
         }
         $sql = "SELECT *
