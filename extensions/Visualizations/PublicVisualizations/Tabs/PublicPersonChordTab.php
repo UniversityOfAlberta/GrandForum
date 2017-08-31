@@ -66,14 +66,17 @@ class PublicPersonChordTab extends AbstractTab {
             $colors = array();
             $people = array();
             ksort($sortedPeople);
-            $presetColors = array("#a6cee3", 
-                                  "#1f78b4", 
-                                  "#b2df8a",
+            $presetColors = array("#1f78b4",
                                   "#33a02c",
-                                  "#fb9a99",
                                   "#e31a1c",
-                                  "#fdbf6f",
                                   "#ff7f00",
+                                  "#804C96",
+                                  "#00AAFF",
+                                  "#c51b7d",
+                                  "#8c510a",
+                                  "#f781bf",
+                                  "#ffcc33",
+                                  "#01665e",
                                   "#cab2d6",
                                   "#8dd3c7",
                                   "#ffffb3",
@@ -92,7 +95,11 @@ class PublicPersonChordTab extends AbstractTab {
                                   "#ffffcc",
                                   "#e5d8bd",
                                   "#fddaec",
-                                  "#f2f2f2");
+                                  "#f2f2f2",
+                                  "#a6cee3",
+                                  "#b2df8a",
+                                  "#fb9a99",
+                                  "#fdbf6f");
             $i = 0;
             foreach($sortedPeople as $key => $sort){
                 if(!isset($presetColors[$i])){
