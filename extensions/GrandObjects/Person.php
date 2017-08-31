@@ -3673,9 +3673,8 @@ class Person extends BackboneModel {
                (($date >= $startRange && $date <= $endRange) ||
                 ($acceptanceDateLabel == "Start Date" && $dateLabel = "End Date" && 
                  ($acceptanceDate >= $startRange && $date <= $endRange ||
-                  $acceptanceDate <= $startRange && $date <= $endRange ||
-                  $acceptanceDate >= $startRange && $date >= $endRange ||
-                  $acceptanceDate <= $startRange && $date >= $endRange)))){
+                  $acceptanceDate <= $startRange && $date >= $startRange ||
+                  $acceptanceDate <= $endRange && $date >= $endRange)))){
                 $papersArray[] = $paper;
             }
         }

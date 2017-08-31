@@ -98,6 +98,7 @@ class ReportItemCallback {
             "chair_id" => "getChairId",
             // Products
             "product_id" => "getProductId",
+            "product_type" => "getProductType",
             "product_title" => "getProductTitle",
             "product_description" => "getProductDescription",
             "product_url" => "getProductUrl",
@@ -730,6 +731,11 @@ class ReportItemCallback {
     function getProductId(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getId();
+    }
+    
+    function getProductType(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getType();
     }
     
     function getProductTitle(){

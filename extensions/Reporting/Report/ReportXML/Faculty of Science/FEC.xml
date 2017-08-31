@@ -224,132 +224,30 @@
                 <h2>Supplementary Professional Activities</h2>{$item}
             ]]>
         </ReportItem>
-        <!-- Service to the University and the Profession -->
-        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service to the University and the Profession">
+        
+        <ReportItem id="productsheader" type="StaticReportItem">
             <![CDATA[
                 <h2>Service/Committees/Outreach</h2>
+                <table class='wikitable' style='width:100%'>
+                <thead>
+                    <th>Activity</th><th>Type</th>
+                </thead>
+                <tbody>
             ]]>
         </ReportItem>
-        
-        <!-- Departmental -->
-        <ReportItem id="departmentalbookmark" type="SubBookmarkReportItem" title="Departmental">
-            <![CDATA[
-                <h3>Departmental</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Activity" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
+                    <tr><td>{$product_citation}</td><td>{$product_type}</td></tr>
                 ]]>
             </ReportItem>
         </ReportItemSet>
-        <ReportItem id="departmentalfooter" type="Static">
+        <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
-                </ul>
+                </tbody></table>
             ]]>
         </ReportItem>
         
-        <!-- Faculty -->
-        <ReportItem id="facultybookmark" type="SubBookmarkReportItem" title="Faculty">
-            <![CDATA[
-                <h3>Faculty</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="facultyfooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
-        
-        <!-- University -->
-        <ReportItem id="universitybookmark" type="SubBookmarkReportItem" title="University">
-            <![CDATA[
-                <h3>University</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="universityfooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
-        
-        <!-- Scientific -->
-        <ReportItem id="scientificbookmark" type="SubBookmarkReportItem" title="Scientific">
-            <![CDATA[
-                <h3>Scientific</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="scientificfooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
-        
-        <!-- Outreach and Community Engagement -->
-        <ReportItem id="outreachbookmark" type="SubBookmarkReportItem" title="Outreach and Community Engagement">
-            <![CDATA[
-                <h3>Outreach and Community Engagement</h3>
-                <ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="outreachfooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
-        
-        <!-- Other -->
-        <ReportItem id="otherbookmark" type="SubBookmarkReportItem" title="Other">
-            <![CDATA[
-            	<h3>Other</h3>
-            	<ul>
-            ]]>
-        </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="committee" type="Static">
-                <![CDATA[
-                    <li>{$product_description}, {$product_year_range}</li>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="otherFooter" type="Static">
-            <![CDATA[
-                </ul>
-            ]]>
-        </ReportItem>
         <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
                 <h2>Additional Data</h2>{$item}
