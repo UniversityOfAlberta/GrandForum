@@ -257,7 +257,7 @@
     <ReportSection id="excellence" type="EditableReportSection" blobSection="EXCELLENCE" name="3 - Scientific Excellence" title="Section 3 - Scientific Excellence">
         <ReportItem id="background" blobItem="BACKGROUND" type="Textarea" rich="true">
             <![CDATA[
-                <h3>3.1 Background, Knowledge Gap(s) and Rationale</h3>
+                <h2>3.1: Background, Knowledge Gap(s) and Rationale</h2>
                 <small><i>
                 <ul>
                     <li>Provide a comprehensive review of the relevant background literature and identify the knowledge gaps.</li>
@@ -268,7 +268,7 @@
         </ReportItem>
         <ReportItem id="hypothesis" blobItem="HYPOTHESIS" type="Textarea" rich="true">
             <![CDATA[
-                <h3>3.2 Hypothesis and Research Question(s)</h3>
+                <h2>3.2: Hypothesis and Research Question(s)</h2>
                 <small><i>
                 <ul>
                     <li>State the proposed hypothesis and research question(s) to be addressed in the study.</li>
@@ -279,7 +279,7 @@
         </ReportItem>
         <ReportItem id="goal" blobItem="GOAL" type="Textarea" rich="true">
             <![CDATA[
-                <h3>3.3 Overall Goal and Objectives</h3>
+                <h2>3.3: Overall Goal and Objectives</h2>
                 <small><i>
                 <ul>
                     <li>Describe the overall goal and specific objectives of the study.</li>
@@ -290,7 +290,7 @@
         </ReportItem>
         <ReportItem id="approach" blobItem="APPROACH" type="Textarea" rich="true">
             <![CDATA[
-                <h3>3.4 Methodological Approach</h3>
+                <h2>3.4: Methodological Approach</h2>
                 <small><i>
                 <ul>
                     <li>Describe how this project will be managed overall and who specifically will manage each major aspect of the study.</li>
@@ -303,7 +303,7 @@
         </ReportItem>
         <ReportItem id="outcomes" blobItem="OUTCOMES" type="Textarea" rich="true">
             <![CDATA[
-                <h3>3.5 Research Outcomes, Deliverables and Milestones</h3>
+                <h2>3.5: Research Outcomes, Deliverables and Milestones</h2>
                 <small><i>
                 <ul>
                     <li>Describe all milestones and anticipated deliverables, outputs and outcomes for the duration of the project.</li>
@@ -318,7 +318,7 @@
     <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Feasibility" title="Section 4 - Project Feasibility">
         <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" rich="true">
             <![CDATA[
-                <h3>4.1 Feasibility</h3>
+                <h2>4.1: Feasibility</h2>
                 <small><i>
                 <ul>
                     <li>Identify all feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study.  Specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay or derail timely completion of the study.</li>
@@ -330,7 +330,7 @@
         </ReportItem>
         <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" rich="true">
             <![CDATA[
-                <h3>4.2 Expertise and Experience of Research team</h3>
+                <h2>4.2: Expertise and Experience of Research team</h2>
                 <small><i>
                 <ul>
                     <li>Please describe the expertise and experience of each Principal Investigator, Co-investigator, Partner and other critical team members to demonstrate that the team is capable of delivering on the proposed outputs and achieve the goals and objectives of this proposal.</li>
@@ -357,8 +357,8 @@
     <ReportSection id="hqp" type="EditableReportSection" blobSection="HQP" name="6 - Capacity Building" title="Section 6 - Capacity Building - Highly Qualified Personnel">
         <ReportItem id="hqp" blobItem="HQP" type="Textarea" rich="true" limit="250">
             <![CDATA[
+                <p><small><i>CFN funded proposals must contribute to the development of Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</i></small></p>
                 <small><i>
-                <p>CFN funded proposals must contribute to the development of Highly Qualified Personnel (HQP) through their inclusion as project team members in a meaningful manner.</p>
                 <ul>
                     <li>Briefly summarize the number and level of HQP required and the experience/expertise afforded by involvement in Network-funded research.</li>
                     <li>Specify expected contributions to HQP studies.</li>
@@ -371,9 +371,9 @@
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="7 - Project Networking" title="Section 7 - Project Networking and Engagement">
         <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" rich="true">
             <![CDATA[
-                <h3>7.1 Project Networking</h3>
+                <h2>7.1: Project Networking</h2>
+                <p><small><i>A funded project must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</i></small></p>
                 <small><i>
-                <p>A funded project must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
                 <ul>
                     <li>Describe the networking and engagement planned for the project across disciplines, research sites (universities, hospitals, institutes) and sectors.</li>
                 </ul>
@@ -383,9 +383,9 @@
         </ReportItem>
         <ReportItem id="engagement" blobItem="ENGAGEMENT" type="Textarea" rich="true">
             <![CDATA[
-                <h3>7.2 Citizen Engagement</h3>
+                <h2>7.2: Citizen Engagement</h2>
+                <p><small><i>CFN is committed to empowering and engaging older adults living with frailty and their families and caregivers and other knowledge users.</i></small></p>
                 <small><i>
-                <p>CFN is committed to empowering and engaging older adults living with frailty and their families and caregivers and other knowledge users.</p>
                 <ul>
                     <li>Describe how knowledge users (e.g. patients/families, decision makers, stakeholders, practitioners) will be involved in the research in a meaningful manner.  For clarity, meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</li>
                 </ul>
@@ -397,19 +397,15 @@
     <ReportSection id="translation" type="EditableReportSection" blobSection="TRANSLATION" name="8 - Knowledge Translation" title="Section 8 - Knowledge Translation">
         <ReportItem id="translation" blobItem="NETWORKING" type="Textarea" rich="true">
             <![CDATA[
-                <h3>8.1 Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h3>
-                <small><i>
-                <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
-                </i></small>
+                <h2>8.1: Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h2>
+                <p><small><i>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="framework" blobItem="FRAMEWORK" type="Textarea" rich="true">
             <![CDATA[
-                <h3>8.2 KT Framework/Platform</h3>
-                <small><i>
-                <p>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a target='_blank' href='http://www.who.int/ageing/publications/knowledge_translation.pdf'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
-                </i></small>
+                <h2>8.2: KT Framework/Platform</h2>
+                <p><small><i>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a target='_blank' href='http://www.who.int/ageing/publications/knowledge_translation.pdf'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -417,15 +413,13 @@
     <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="9 - Supporting Information" title="Section 9 - Supporting Information">
         <ReportItem id="information" blobItem="INFORMATION" type="Textarea" rich="true">
             <![CDATA[
-                <small><i>
-                <p>Provide tables and figures and a list of references as necessary to support sections above.</p>
-                </i></small>
+                <p><small><i>Provide tables and figures and a list of references as necessary to support sections above.</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHPS" name="10 - Partnerships" title="Section 10 - Partnerships &amp; Letters of Support">
-        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" labels="Partner Organization/Research Receptor|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="10 - Partnerships" title="Section 10 - Partnerships &amp; Letters of Support">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" labels="Partner Organization/Research Receptor|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" multiple="true" class="wikitable">
             <![CDATA[
                 <small><i>
                 <ul>
@@ -441,11 +435,9 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="11 - Other Funding" title="Section 11 - Other Funding">
-        <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" sizes="120|150|100|200|75|75" multiple="true">
+        <ReportItem id="funding" type="MultiText" types="String|String|Integer|Text|Integer|Integer" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Status of Grant|Funding Source|Budget Amount of Grant|Title of Grant|% Scientific Overlap|% Financial Overlap" multiple="true" class="wikitable">
             <![CDATA[
-                <small><i>
-                <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
-                </i></small>
+                <p><small><i>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</i></small></p>
                 {$item}
             ]]>
         </ReportItem>
