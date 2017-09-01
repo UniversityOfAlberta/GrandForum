@@ -367,19 +367,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="3" size="3">
+        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="100" size="3">
             <![CDATA[
                     <tr>
                         <td colspan="2"><b>Setting of Care -- Highlight the <u>ONE</u> setting of care that your project will most significantly impact:</b><br />
                             {$item} % Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="3" size="3">
+        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="100" size="3">
             <![CDATA[
                             {$item} % Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="3" size="3">
+        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="100" size="3">
             <![CDATA[
                             {$item} % Knowledge translation/mobilization
                         </td>

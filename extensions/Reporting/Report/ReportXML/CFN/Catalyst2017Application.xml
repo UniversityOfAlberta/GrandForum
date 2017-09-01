@@ -227,19 +227,19 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="3" size="3">
+        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="100" size="3">
             <![CDATA[
                     <tr>
                         <td colspan="2"><b>Knowledge Activities - Indicate the portion of your project that addresses the following activities on the knowledge continuum:</b><br />
                             {$item} % Knowledge synthesis<br />
             ]]>
         </ReportItem>
-        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="3" size="3">
+        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="100" size="3">
             <![CDATA[
                             {$item} % Knowledge creation<br />
             ]]>
         </ReportItem>
-        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="3" size="3">
+        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="100" size="3">
             <![CDATA[
                             {$item} % Knowledge translation/mobilization
                         </td>

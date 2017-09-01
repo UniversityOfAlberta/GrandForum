@@ -39,7 +39,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="24">
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="16">
             <![CDATA[
                     <tr>
                         <td>
@@ -49,13 +49,13 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" type="Text">
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer" min="0" max="100000">
             <![CDATA[
                     <tr>
                         <td>
                             <b>Budget:</b>
                         </td>
-                        <td>{$item}</td>
+                        <td>${$item}</td>
                     </tr>
                 </table><br />
             ]]>
@@ -201,7 +201,26 @@
                         <td valign="top"><b>Focus of Impact:</b>{$item}
                         </td>
                     </tr>
-                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="sythesis" type="Integer" blobItem="SYNTHESIS" min="0" max="100" size="3">
+            <![CDATA[
+                    <tr>
+                        <td colspan="2"><b>Knowledge Activities - Indicate the portion of your project that addresses the following activities on the knowledge continuum:</b><br />
+                            {$item} % Knowledge synthesis<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="creation" type="Integer" blobItem="CREATION" min="0" max="100" size="3">
+            <![CDATA[
+                            {$item} % Knowledge creation<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="translation" type="Integer" blobItem="TRANSLATION" min="0" max="100" size="3">
+            <![CDATA[
+                            {$item} % Knowledge translation/mobilization
+                        </td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="ethics" blobItem="ETHICS" type="Radio" options="Yes, I expect that this research will require an ethics review|No, I do not expect that this research will require an ethics review">
