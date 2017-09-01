@@ -95,13 +95,13 @@ class PersonGradStudentsTab extends AbstractTab {
                 continue;
             }
             $names = array();
-            $rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
+            /*$rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
             foreach($rel as $rels){
                 if(count($rel) == 1){
                    break;
                 }
                 $names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
-            } 
+            } */
             $html .= 
             "<tr>
                 <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
@@ -199,13 +199,13 @@ class PersonGradStudentsTab extends AbstractTab {
                             continue;
                         }
                         $names = array();
-                        $rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
+                        /*$rel = array_merge($hqp->getSupervisors(), $hqp->getCommittee());
                         foreach($rel as $rels){
                             if(count($rel) == 1){
                                break;
                             }
                             $names[] = "<a href='{$rels->getUrl()}'>{$rels->getNameForForms()}</a>";
-                        }
+                        }*/
                         $html .=
                         "<tr>
                             <td style='white-space: nowrap;'><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>

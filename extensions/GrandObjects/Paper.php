@@ -815,14 +815,19 @@ class Paper extends BackboneModel{
                     $person = Person::newFromId($author);
                 }
                 else{
-                    $person = Person::newFromNameLike($author);
-                    if($person == null || $person->getName() == null || $person->getName() == ""){
-                        // The name might not match exactly what is in the db, try aliases
-                        try{
-                            $person = Person::newFromAlias($author);
-                        }
-                        catch(DomainException $e){
-                            $person = null;
+                    if(isset(Person::$cache[strtolower($author)])){
+                        $person = Person::$cache[strtolower($author)];
+                    }
+                    else{
+                        $person = Person::newFromNameLike($author);
+                        if($person == null || $person->getName() == null || $person->getName() == ""){
+                            // The name might not match exactly what is in the db, try aliases
+                            try{
+                                $person = Person::newFromAlias($author);
+                            }
+                            catch(DomainException $e){
+                                $person = null;
+                            }
                         }
                     }
                 }
@@ -831,7 +836,7 @@ class Paper extends BackboneModel{
                    $person->getName() == null || 
                    $person->getName() == "" || 
                    isset(self::$illegalAuthorsCache[$person->getNameForForms()]) ||
-                   isset(self::$illegalAuthorsCache[$person->getId()])){
+                   ($person->getId() != 0 && isset(self::$illegalAuthorsCache[$person->getId()]))){
                     // Ok this person is not in the db, make a fake Person object
                     $pdata = array();
                     $pdata[0]['user_id'] = "";
@@ -855,7 +860,7 @@ class Paper extends BackboneModel{
                     $pdata[0]['candidate'] = 0;
                     $person = new Person($pdata);
                     if($cache){
-                        Person::$cache[$author] = $person;
+                        Person::$cache[strtolower($person->getName())] = $person;
                     }
                 }
                 if($person->getName() == "WikiSysop"){

@@ -64,6 +64,7 @@ class Person extends BackboneModel {
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
+    var $splitName = array();
     
     var $dateOfPhd;
     var $dateOfAppointment;
@@ -1481,38 +1482,41 @@ class Person extends BackboneModel {
      * @return array An array containing the first and last names
      */
     function splitName(){
-        if(!empty($this->realname) && strstr($this->realname, ",") !== false){
-             $names = explode(",", $this->realname, 2);
-             $lastname = trim($names[0]);
-             $firstname = trim($names[1]);
-        }
-        else if(!empty($this->realname)){
-            $names = explode(" ", $this->realname);
-            $lastname = ucfirst($names[count($names)-1]);
-            unset($names[count($names)-1]);
-            $firstname = implode(" ", $names);
-        }
-        else if(strstr($this->name, ",") !== false){
-            $names = explode(",", $this->name, 2);
-            $lastname = trim($names[0]);
-            $firstname = trim($names[1]);
-        }
-        else{
-            $names = explode(".", $this->name, 2);
-            $lastname = "";
-            if(count($names) > 1){
-                $lastname = str_ireplace(".", " ", $names[1]);
+        if(count($this->splitName) == 0){
+            if(!empty($this->realname) && strstr($this->realname, ",") !== false){
+                 $names = explode(",", $this->realname, 2);
+                 $lastname = trim($names[0]);
+                 $firstname = trim($names[1]);
             }
-            else if(strstr($names[0], " ") != false){
-            // Some names do not follow the First.Last convention, so we need to do some extra work
-                $names = explode(" ", $this->name, 2);
-                if(count($names > 1)){
-                    $lastname = $names[1];
+            else if(!empty($this->realname)){
+                $names = explode(" ", $this->realname);
+                $lastname = ucfirst($names[count($names)-1]);
+                unset($names[count($names)-1]);
+                $firstname = implode(" ", $names);
+            }
+            else if(strstr($this->name, ",") !== false){
+                $names = explode(",", $this->name, 2);
+                $lastname = trim($names[0]);
+                $firstname = trim($names[1]);
+            }
+            else{
+                $names = explode(".", $this->name, 2);
+                $lastname = "";
+                if(count($names) > 1){
+                    $lastname = str_ireplace(".", " ", $names[1]);
                 }
+                else if(strstr($names[0], " ") != false){
+                    // Some names do not follow the First.Last convention, so we need to do some extra work
+                    $names = explode(" ", $this->name, 2);
+                    if(count($names > 1)){
+                        $lastname = $names[1];
+                    }
+                }
+                $firstname = $names[0];
             }
-            $firstname = $names[0];
+            $this->splitName = array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)), "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));            
         }
-        return array("first" => str_replace("&nbsp;", " ", ucfirst($firstname)), "last" => str_replace("&nbsp;", " ", ucfirst($lastname)));
+        return $this->splitName;
     }
     
     /**
@@ -1611,15 +1615,19 @@ class Person extends BackboneModel {
     }
     
     private function formatName($matches){
+        $firstName = $this->getFirstName();
+        $middleName = str_replace(".","",$this->getMiddleName());
+        $lastName = $this->getLastName();
         foreach($matches as $key => $match){
             $match1 = $match;
             $match2 = $match;
-            $match1 = str_replace("%first", $this->getFirstName(), $match1);
-            $match1 = str_replace("%middle", str_replace(".","",$this->getMiddleName()), $match1);
-            $match1 = str_replace("%last", $this->getLastName(), $match1);
-            $match1 = str_replace("%f", substr($this->getFirstName(), 0,1), $match1);
-            $match1 = str_replace("%m", substr($this->getMiddleName(), 0,1), $match1);
-            $match1 = str_replace("%l", substr($this->getLastName(),0,1), $match1);
+            
+            $match1 = str_replace("%first", $firstName, $match1);
+            $match1 = str_replace("%middle", $middleName, $match1);
+            $match1 = str_replace("%last", $lastName, $match1);
+            $match1 = str_replace("%f", substr($firstName, 0,1), $match1);
+            $match1 = str_replace("%m", substr($middleName, 0,1), $match1);
+            $match1 = str_replace("%l", substr($lastName,0,1), $match1);
 
             $match2 = str_replace("%first", "", $match2);
             $match2 = str_replace("%middle", "", $match2);
@@ -1627,6 +1635,7 @@ class Person extends BackboneModel {
             $match2 = str_replace("%f", "", $match2);
             $match2 = str_replace("%m", "", $match2);
             $match2 = str_replace("%l", "", $match2);
+            
             if($match1 == $match2){
                  $matches[$key] = "";
             }
@@ -1639,13 +1648,6 @@ class Person extends BackboneModel {
 
     function getNameForProduct(){
         global $config;
-        /*if($this->getId() == 0){
-            return $this->getNameForForms();
-        }*/
-        $firstname = $this->getFirstName();
-        $middlename = $this->getMiddleName();
-        $lastname = $this->getLastName();
-
         $regex = "/\{.*?\}/";
         $format = strtolower($config->getValue("nameFormat"));
         $format = preg_replace_callback($regex,"self::formatName",$format);
