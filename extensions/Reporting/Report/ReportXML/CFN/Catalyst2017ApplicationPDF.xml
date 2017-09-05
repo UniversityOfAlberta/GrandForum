@@ -473,5 +473,17 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Proof of Study Submission to Research Ethics Board</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Proof of Completion of one of CIHR Institute of Gender and Health’s (IGH) online sex- and gender-based analysis training modules</h2>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>

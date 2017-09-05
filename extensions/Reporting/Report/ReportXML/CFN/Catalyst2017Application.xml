@@ -464,14 +464,14 @@
         <ReportItem id="pi_cvs" blobItem="PI_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Principal Investigator CV(s)</h2>
-                <p>Please upload a single PDF document containing all PI CVs.</p>
+                <p>Please upload a <b>single PDF document</b> containing all PI CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="team_cvs" blobItem="TEAM_CVS" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Team Member CVs</h2>
-                <p>Please upload a single PDF document containing all Team Member CVs.</p>
+                <p>Please upload a <b>single PDF document</b> containing all Team Member CVs.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -479,6 +479,27 @@
             <![CDATA[
                 <h2>Required Signatures</h2>
                 <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Required Signatures.docx'>template document</a> and upload back onto Forum as a PDF when complete.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Proof of Study Submission to Research Ethics Board</h2>
+                <p>Submit <b>single ZIP file</b> containing a PDF for EACH applicable investigator named CAT2017-##_Surname_REB.pdf, where Surname = investigator’s surname.</p>
+                <ul>
+                    <li>Submit separate documents for each investigator (Principal Investigator or Co-Investigator) where approval from a Research Ethics Board is required for any component of the project.</li>
+                    <li>If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="completion" blobItem="COMPLETION" blobType="BLOB_RAW" type="Upload" fileSize="20">
+            <![CDATA[
+                <h2>Proof of Completion of one of CIHR Institute of Gender and Health’s (IGH) online sex- and gender-based analysis training modules</h2>
+                <p>Submit the PDF certificate that you (Project Leader) received after completing one of the IGH’s online sex- and gender-based analysis training modules.  Name the PDF certificate, CAT2017-##_Surname_IGH.pdf, where Surname = investigator’s surname.</p>
+                <ul>
+                    <li>To access IGH’s online sex- and gender-based analysis training modules please visit <a target='_blank' href='http://www.cihr-irsc-igh-isfh.ca/'>http://www.cihr-irsc-igh-isfh.ca/</a>.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
