@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Catalyst Grant Competition" reportType="RP_CATALYST_APPLICATION" pdfType="RP_CATALYST_APPLICATION" pdfFiles="Catalyst2017ApplicationPDF" year="2017" ajax="true">
     <Permissions>
-        <Role role="NI" subType="CAT2017Applicant" start="2017-08-01" end="2017-08-31">
+        <Role role="NI" subType="CAT2017Applicant" start="2017-08-01" end="2017-12-31">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="excellence" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="NI-Candidate" subType="CAT2017Applicant" start="2017-08-01" end="2017-08-31">
+        <Role role="NI-Candidate" subType="CAT2017Applicant" start="2017-08-01" end="2017-12-31">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
             <SectionPermission id="excellence" permissions="rw" />
@@ -457,7 +457,7 @@
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Budget</h2>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Budget.xlsx'>template Excel document</a> and upload back onto Forum when complete.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/CAT2017 - Budget.xlsx'>template Excel document</a> and upload a <b>single ZIP file</b> containing a completed excel file for each Principal Investigator.</p>
                 {$item}
             ]]>
         </ReportItem>
