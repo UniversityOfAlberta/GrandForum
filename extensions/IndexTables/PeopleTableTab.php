@@ -35,7 +35,7 @@ class PeopleTableTab extends AbstractTab {
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
             if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
-                $epicHeader = "<th style='white-space: nowrap;'>EPIC Due Date</th>";
+                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>";
             }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
@@ -117,7 +117,14 @@ class PeopleTableTab extends AbstractTab {
                 }
                 $this->html .= "</tr>";
         }
-        $this->html .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({'aLengthMenu': [[100,-1], [100,'All']], 'iDisplayLength': 100, 'autoWidth':false});</script>";
+        $this->html .= "</tbody></table><script type='text/javascript'>$('.indexTable').dataTable({
+            'aLengthMenu': [[100,-1], [100,'All']], 
+            'iDisplayLength': 100, 
+            'autoWidth':false,
+            'columnDefs': [
+                {'type': 'date', 'targets': $('.indexTable th').index($('#epicHeader'))}
+            ]
+        });</script>";
         return $this->html;
     }
     
