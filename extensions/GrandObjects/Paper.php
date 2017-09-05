@@ -869,7 +869,6 @@ class Paper extends BackboneModel{
                 }
                 $authors[] = $person;
             }
-            //return $authors;
             $this->authorsWaiting = false;
             $this->authors = $authors;
         }
@@ -1209,37 +1208,39 @@ class Paper extends BackboneModel{
     
     private function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
         $authors = array();
-        foreach($this->getAuthors() as $a){
-            if($a->getId()){
-                $name = $a->getNameForProduct();
-                if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
-                    $name = "{$a->getNameForProduct()}";
-                }
-                else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                    $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
-                    foreach($unis as $uni){
-                        if(strstr($uni['position'], "Graduate Student") !== false ||
-                           strstr($uni['position'], "Post-Doctoral Fellow") !== false){
-                            $name = "<b>{$a->getNameForProduct()}</b>";
+        if(strstr($matches[0], "authors") !== false){
+            foreach($this->getAuthors() as $a){
+                if($a->getId()){
+                    $name = $a->getNameForProduct();
+                    if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
+                        $name = "{$a->getNameForProduct()}";
+                    }
+                    else if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                        $unis = $a->getUniversitiesDuring($this->getDate(), $this->getDate());
+                        foreach($unis as $uni){
+                            if(strstr($uni['position'], "Graduate Student") !== false ||
+                               strstr($uni['position'], "Post-Doctoral Fellow") !== false){
+                                $name = "<b>{$a->getNameForProduct()}</b>";
+                            }
+                            else if(strstr($uni['position'], "Undergraduate") !== false ||
+                                    strstr($uni['position'], "Summer Student") !== false){
+                                $name = "<u>{$a->getNameForProduct()}</u>";
+                            }
                         }
-                        else if(strstr($uni['position'], "Undergraduate") !== false ||
-                                strstr($uni['position'], "Summer Student") !== false){
-                            $name = "<u>{$a->getNameForProduct()}</u>";
-                        }
+                    }
+                    else{
+                        $name = "{$a->getNameForProduct()}";
+                    }
+                    if($hyperlink){
+                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
+                    }
+                    else{
+                        $authors[] = "{$name}";
                     }
                 }
                 else{
-                    $name = "{$a->getNameForProduct()}";
+                    $authors[] = $a->getNameForProduct();
                 }
-                if($hyperlink){
-                    $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
-                }
-                else{
-                    $authors[] = "{$name}";
-                }
-            }
-            else{
-                $authors[] = $a->getNameForProduct();
             }
         }
         $authors = implode("; ", $authors);
