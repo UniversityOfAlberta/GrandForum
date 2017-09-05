@@ -485,9 +485,9 @@
         <ReportItem id="study" blobItem="STUDY" blobType="BLOB_RAW" type="Upload" fileSize="20">
             <![CDATA[
                 <h2>Proof of Study Submission to Research Ethics Board</h2>
-                <p>Submit <b>single ZIP file</b> containing a PDF for EACH applicable investigator named CAT2017-##_Surname_REB.pdf, where Surname = investigator’s surname.</p>
+                <p>Submit <b>single PDF file</b> containing a document for EACH applicable investigator.</p>
                 <ul>
-                    <li>Submit separate documents for each investigator (Principal Investigator or Co-Investigator) where approval from a Research Ethics Board is required for any component of the project.</li>
+                    <li>Include documents for each investigator (Principal Investigator or Co-Investigator) where approval from a Research Ethics Board is required for any component of the project.</li>
                     <li>If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed.</li>
                 </ul>
                 {$item}
