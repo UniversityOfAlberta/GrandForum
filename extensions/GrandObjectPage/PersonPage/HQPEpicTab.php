@@ -32,11 +32,13 @@ class HQPEpicTab extends AbstractEditableTab {
             $this->html .= "<div class='info'>Further information about the EPIC program and requirements is available below.  Please contact the AGE-WELL Education and Training administrator (training@agewell-nce.ca) if you would like to complete the EPIC program requirements to earn the Innovators of Tomorrow Certificate.</div>";
         }
         $position = strtolower($this->person->getPosition());
-        if($this->person->isSubRole("WP/CC Funded HQP") || 
-          ($this->person->isSubRole("Alumni HQP") && $position != "undergraduate student" &&
-                                                     $position != "graduate student - doctoral" &&
-                                                     $position != "graduate student - master's" &&
-                                                     $position != "post-doctoral fellow")){
+        if(($this->person->isSubRole("WP/CC Funded HQP") || 
+            $this->person->isSubRole("Project Funded HQP") ||
+            $this->person->isSubRole("Alumni HQP"))
+           ($position != "undergraduate student" &&
+            $position != "graduate student - doctoral" &&
+            $position != "graduate student - master's" &&
+            $position != "post-doctoral fellow")){
             $this->generateWPCC();
         }
         else if($this->person->isSubRole("Affiliate HQP") || ($position == "undergraduate student" && $this->person->isSubRole("Alumni HQP"))){
