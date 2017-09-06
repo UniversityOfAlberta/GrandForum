@@ -119,7 +119,8 @@ class UploadReportItem extends AbstractReportItem {
         }
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
-                            <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB
+                            <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB<br />
+                            <small><i><b>NOTE:</b> Uploading a new file replaces the old one</i></small>
                         </form>";
         $data = $this->getBlobValue();
         if($data !== null && $data !== ""){
