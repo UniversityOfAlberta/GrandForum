@@ -34,7 +34,7 @@ class HQPEpicTab extends AbstractEditableTab {
         $position = strtolower($this->person->getPosition());
         if(($this->person->isSubRole("WP/CC Funded HQP") || 
             $this->person->isSubRole("Project Funded HQP") ||
-            $this->person->isSubRole("Alumni HQP"))
+            $this->person->isSubRole("Alumni HQP")) &&
            ($position != "undergraduate student" &&
             $position != "graduate student - doctoral" &&
             $position != "graduate student - master's" &&
