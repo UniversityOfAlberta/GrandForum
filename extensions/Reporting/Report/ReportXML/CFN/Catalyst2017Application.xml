@@ -280,7 +280,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="excellence" type="EditableReportSection" blobSection="EXCELLENCE" name="3 - Scientific Excellence" title="Section 3 - Scientific Excellence">
-        <ReportItem id="background" blobItem="BACKGROUND" type="Textarea" rich="true">
+        <ReportItem id="background" blobItem="BACKGROUND" type="Textarea" rich="true" limit="750">
             <![CDATA[
                 <h3>3.1: Background, Knowledge Gap(s) and Rationale</h3>
                 <ul>
@@ -290,7 +290,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="hypothesis" blobItem="HYPOTHESIS" type="Textarea" rich="true">
+        <ReportItem id="hypothesis" blobItem="HYPOTHESIS" type="Textarea" rich="true" limit="150">
             <![CDATA[
                 <h3>3.2: Hypothesis and Research Question(s)</h3>
                 <ul>
@@ -299,7 +299,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="goal" blobItem="GOAL" type="Textarea" rich="true">
+        <ReportItem id="goal" blobItem="GOAL" type="Textarea" rich="true" limit="150">
             <![CDATA[
                 <h3>3.3: Overall Goal and Objectives</h3>
                 <ul>
@@ -308,7 +308,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="approach" blobItem="APPROACH" type="Textarea" rich="true">
+        <ReportItem id="approach" blobItem="APPROACH" type="Textarea" rich="true" limit="750">
             <![CDATA[
                 <h3>3.4: Methodological Approach</h3>
                 <ul>
@@ -319,7 +319,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="outcomes" blobItem="OUTCOMES" type="Textarea" rich="true">
+        <ReportItem id="outcomes" blobItem="OUTCOMES" type="Textarea" rich="true" limit="750">
             <![CDATA[
                 <h3>3.5: Research Outcomes, Deliverables and Milestones</h3>
                 <ul>
@@ -332,7 +332,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Feasibility" title="Section 4 - Project Feasibility">
-        <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" rich="true">
+        <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" rich="true" limit="750">
             <![CDATA[
                 <h3>4.1: Feasibility</h3>
                 <ul>
@@ -342,7 +342,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" rich="true">
+        <ReportItem id="expertise" blobItem="EXPERTISE" type="Textarea" rich="true" limit="500">
             <![CDATA[
                 <h3>4.2: Expertise and Experience of Research team</h3>
                 <ul>
@@ -379,7 +379,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="7 - Project Networking" title="Section 7 - Project Networking and Engagement">
-        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" rich="true">
+        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" rich="true" limit="250">
             <![CDATA[
                 <h3>7.1 Project Networking</h3>
                 <p>A funded project must represent a collaborative effort of different Investigators in more than one discipline (e.g., combinations of biomedical science, natural sciences and/or the social sciences) and at more than one Institution and with involvement of partners and stakeholders from other sectors.</p>
@@ -389,7 +389,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="engagement" blobItem="ENGAGEMENT" type="Textarea" rich="true">
+        <ReportItem id="engagement" blobItem="ENGAGEMENT" type="Textarea" rich="true" limit="250">
             <![CDATA[
                 <h3>7.2: Citizen Engagement</h3>
                 <p>CFN is committed to empowering and engaging older adults living with frailty and their families and caregivers and other knowledge users.</p>
@@ -401,14 +401,14 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="translation" type="EditableReportSection" blobSection="TRANSLATION" name="8 - Knowledge Translation" title="Section 8 - Knowledge Translation">
-        <ReportItem id="translation" blobItem="NETWORKING" type="Textarea" rich="true">
+        <ReportItem id="translation" blobItem="NETWORKING" type="Textarea" rich="true" limit="350">
             <![CDATA[
                 <h3>8.1: Potential for Knowledge Translation/Knowledge Mobilization/Commercialization</h3>
                 <p>Describe the opportunities for knowledge translation and exchange and/or technology transfer or commercialization of the research proposed along a continuum leading to social or economic impacts or policy and practice change. If there are specific companies or organizations that will be involved, list in Section 3 (Partnerships) and ensure that a letter of support is included.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="framework" blobItem="FRAMEWORK" type="Textarea" rich="true">
+        <ReportItem id="framework" blobItem="FRAMEWORK" type="Textarea" rich="true" limit="350">
             <![CDATA[
                 <h3>8.2: KT Framework/Platform</h3>
                 <p>Please identify the KT framework that will be used and how it will be implemented. The framework should be one from the April 2012 Knowledge Translation Framework for Ageing and Health from the World Health Organization (<a target='_blank' href='http://www.who.int/ageing/publications/knowledge_translation.pdf'>http://www.who.int/ageing/publications/knowledge_translation.pdf</a>).</p>
