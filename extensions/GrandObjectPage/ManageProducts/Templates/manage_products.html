@@ -77,18 +77,22 @@
 <%= subview('addProduct') %>
 <table id="listTable" frame="box" rules="all" style="display:none;">
     <thead>
-        <tr style="border-bottom: 1px solid #C8C8C8; border-top: 1px solid #C8C8C8;">
-            <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
-            <% _.each(this.projects.models, function(p){ %>
-                <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
-            <% }) %>
-            <th width="100%" colspan="7"><%= productsTerm %> Information</th>
-        </tr>
+        <% if(projectsEnabled){ %>
+            <tr style="border-bottom: 1px solid #C8C8C8; border-top: 1px solid #C8C8C8;">
+                <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
+                <% _.each(this.projects.models, function(p){ %>
+                    <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
+                <% }) %>
+                <th width="100%" colspan="7"><%= productsTerm %> Information</th>
+            </tr>
+        <% } %>
         <tr style="border-bottom: 2px solid #C8C8C8;">
-            <th width="40px"></th>
-            <% _.each(this.projects.models, function(p){ %>
-                <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
-            <% }) %>
+            <% if(projectsEnabled){ %>
+                <th width="40px"></th>
+                <% _.each(this.projects.models, function(p){ %>
+                    <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
+                <% }) %>
+            <% } %>
             <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
             <th width="1%">Private</th>
             <th width="3%" style="min-width: 70px;">Date</th>
