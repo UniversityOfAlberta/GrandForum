@@ -51,8 +51,8 @@ class Report extends AbstractReport{
             }
         }
         if(($person->isRole(NI) || $person->isRole(NI."-Candidate")) && $person->isSubRole("KT2017Applicant")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KTApplication")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Application", "{$url}KTApplication", $selected);*/
         }
         if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2017Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;

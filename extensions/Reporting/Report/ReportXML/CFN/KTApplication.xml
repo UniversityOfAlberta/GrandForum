@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KTApplicationPDF" year="2017" ajax="true">
+<Report name="2017 Knowledge Translation Competition" reportType="RP_KT_APPLICATION" pdfType="RP_KT_APPLICATION" pdfFiles="KTApplicationPDF" year="2017" disabled="true" ajax="true">
     <Permissions>
         <Role role="NI" subType="KT2017Applicant" start="2017-08-01" end="2017-08-31">
             <SectionPermission id="information" permissions="rw" />
