@@ -41,9 +41,6 @@ class UserCreate {
                         continue;
                     }
                     //Add Role to DB
-                    DBFunctions::insert('mw_user_groups',
-                                        array('ug_user' => $id,
-                                              'ug_group' => $role));
                     DBFunctions::insert('grand_roles',
                                         array('user_id' => $id,
                                               'role' => $role,
@@ -58,9 +55,6 @@ class UserCreate {
             while (list ($key,$val) = @each ($box)) {
                 if($val != null && $val != ""){
                     $project = Project::newFromName($val);
-                    DBFunctions::insert('mw_user_groups',
-                                        array('ug_user' => $id,
-                                              'ug_group' => $val));
                     DBFunctions::insert('grand_project_members',
                                         array('user_id' => $id,
                                               'project_id' => $project->getId(),

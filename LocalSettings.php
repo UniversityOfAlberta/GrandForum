@@ -110,8 +110,8 @@ $wgEnableUserEmail  = true; # UPO
 $wgEmergencyContact = $config->getValue('supportEmail');
 $wgPasswordSender = $config->getValue('supportEmail');
 
-$wgEnotifUserTalk = true; # UPO
-$wgEnotifWatchlist = true; # UPO
+$wgEnotifUserTalk = false; # UPO
+$wgEnotifWatchlist = false; # UPO
 $wgEmailAuthentication = true;
 
 if(TESTING){
