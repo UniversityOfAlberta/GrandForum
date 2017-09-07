@@ -222,7 +222,7 @@ class Person extends BackboneModel {
         if(isset(self::$namesCache[$name])){
             $data[] = self::$namesCache[$name];
         }
-        return @Person::newFromId($data[0]['id']);
+        return @Person::newFromId($data[0]['user_id']);
     }
 
     /**
