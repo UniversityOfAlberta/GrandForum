@@ -80,6 +80,7 @@ class PeopleTableTab extends AbstractTab {
                     foreach($projects as $project){
                         if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
                             $project->getPhase() == PROJECT_PHASE &&
+                            $project->getStatus() != "Proposed" &&
                             $person->isRole($this->table, $project)){
                             $subprojs = array();
                             foreach($project->getSubProjects() as $subproject){
