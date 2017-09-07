@@ -270,7 +270,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="departmental_committee" type="PersonProductsReportItemSet" category="Activity" productType="Departmental Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
@@ -290,7 +290,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="faculty_committee" type="PersonProductsReportItemSet" category="Activity" productType="Faculty Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
@@ -310,7 +310,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="university_committee" type="PersonProductsReportItemSet" category="Activity" productType="University Committee"  includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
@@ -330,7 +330,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="scientific_committee" type="PersonProductsReportItemSet" category="Activity" productType="Scientific Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
@@ -350,7 +350,7 @@
                 <ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="community_committee" type="PersonProductsReportItemSet" category="Activity" productType="Community Outreach Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
@@ -370,7 +370,7 @@
             	<ul>
             ]]>
         </ReportItem>
-        <ReportItemSet type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="other_committee" type="PersonProductsReportItemSet" category="Activity" productType="Other Committee" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="committee" type="Static">
                 <![CDATA[
                     <li>{$product_description}, {$product_year_range}</li>
