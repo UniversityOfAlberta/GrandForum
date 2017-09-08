@@ -191,15 +191,10 @@ class Thread extends BackboneModel{
 						                            'users' => serialize($users),
                                                     'title' => $this->title,
                                                     'category' => $this->category), true);
-                $data = DBFunctions::select(array('grand_threads'),
-                                       array('id'),
-                                       array('user_id' =>$this->user_id,
-					     'title' => $this->title),
-                                       array('date_created'=>'desc')
-                                       );
+                $this->id = DBFunctions::insertId();
+                DBFunctions::commit();
                 if($status){
-                    DBFunctions::commit();
-                    return Thread::newFromId($data[0]['id']);
+                    return $this;
                 }
             }
             return false;

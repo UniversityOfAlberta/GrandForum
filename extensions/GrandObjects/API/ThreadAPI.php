@@ -28,7 +28,6 @@ class ThreadAPI extends RESTAPI {
         if($status === false){
             $this->throwError("The thread <i>{$thread->getTitle()}</i> could not be created");
         }
-	    $thread = Thread::newFromTitle($this->POST('title'));
         if(!$me->isRoleAtLeast(MANAGER)){
             $people = Person::getAllPeople();
             foreach($people as $person){
@@ -38,7 +37,7 @@ class ThreadAPI extends RESTAPI {
 		        }
             }
         }
-        return $status->toJSON();
+        return $thread->toJSON();
     }
 
     function doPUT(){
