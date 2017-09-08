@@ -88,35 +88,10 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="coursesheader" type="StaticReportItem">
+        <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <![CDATA[
                 <h2>Courses</h2>
-                <table class="wikitable" rules="all" frame="box" width="100%"><thead><tr>
-                <th>Subject</th>
-                <th>Term</th>
-                <th>Comp.</th>
-                <th>Section</th>
-                <th>Enroll.</th>
-                <!--th>%</th--></tr></thead><tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
-             <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                    <tr>
-                        <td align='center'>{$course_subject} {$course_number}</td>
-                        <td align='center'>{$course_term}</td>
-                        <td align='center'>{$course_comp}</td>
-                        <td align='center'>{$course_section}</td>
-                        <td align='center'>{$course_enroll}</td>
-                        <!--td align='center'>{$course_enroll_percent}</td-->
-                    </tr>
-                ]]>
-             </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="coursesfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
@@ -217,7 +192,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id ="grantsheader" type="StaticReportItem">
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
             <![CDATA[
                 <h2>Research Grants and Contracts</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
@@ -233,12 +208,14 @@
                     <tbody>
             ]]>
         </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
+        <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
                     <tr>
-                        <td align='center'>{$grant_title}</td>
-                        <td align='center'>{$grant_sponsor}</td>
+                        <td align='left'>{$grant_project_id}<br />
+                            <p>{$grant_description}</p>
+                        </td>
+                        <td align='left'>{$grant_sponsor}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
                         <td align='right'>${$grant_total}</td>
@@ -248,7 +225,7 @@
         </ReportItemSet>
         <ReportItem id="grantsfooter" type="StaticReportItem">
             <![CDATA[
-                </tbody></table>
+                </tbody></table><br />
             ]]>
         </ReportItem>
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">

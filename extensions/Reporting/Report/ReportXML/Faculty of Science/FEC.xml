@@ -49,33 +49,9 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="courses" tooltip="Teaching" name="Teaching" title="Teaching" blobSection="FEC_COURSES" type="EditableReportSection">
-        <ReportItem id="coursesheader" type="StaticReportItem">
+        <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <![CDATA[
-                <h2>Courses</h2>
-                <table class='wikitable' style='width:100%;'><thead><tr>
-                <th>Subject</th>
-                <th>Term</th>
-                <th>Comp.</th>
-                <th>Section</th>
-                <th>Enroll.</th>
-                <!--th>%</th--></tr></thead><tbody>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="courses" type="PersonCoursesReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
-                <![CDATA[
-                 <tr><td align='center'>{$course_subject} {$course_number}</td>
-                     <td>{$course_term}</td>
-                     <td align='center'>{$course_comp}</td>
-                     <td align='center'>{$course_section}</td>
-                     <td align='center'>{$course_enroll}</td>
-                     <!--td align='center'>{$course_enroll_percent}</td--></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="coursesfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
@@ -184,39 +160,41 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="grants" tooltip="Research Grants and Contracts" name="Grants" title="Research Grants and Contracts" blobSection="FEC_GRANTS" type="ReportSection">
-        <ReportItem id ="grantsheader" type="StaticReportItem">
-            <![CDATA[
-                <table class='wikitable' style='width:100%'>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Sponsor</th>
-                            <th>Starts</th>
-                            <th>Ends</th>
-                            <th>$Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </ReportItem> 
-        <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
-            <ReportItem id="row" type="StaticReportItem">
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
                 <![CDATA[
-                    <tr>
-                        <td>{$grant_title}</td>
-                        <td>{$grant_sponsor}</td>
-                        <td align="center">{$grant_start_date}</td>
-                        <td align="center">{$grant_end_date}</td>
-                        <td align="right">${$grant_total}</td>
-                    </tr>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Sponsor</th>
+                                <th>Starts</th>
+                                <th>Ends</th>
+                                <th>$Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </ReportItem> 
+            <ReportItemSet id="grants" type="PersonGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30">
+                <ReportItem id="row" type="StaticReportItem">
+                    <![CDATA[
+                        <tr>
+                            <td align='left'>{$grant_project_id}<br />
+                                {$grant_description}
+                            </td>
+                            <td align='left'>{$grant_sponsor}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                            <td align='right'>${$grant_total}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <ReportItem id="grantsfooter" type="StaticReportItem">
+                <![CDATA[
+                    </tbody></table><br />
                 ]]>
             </ReportItem>
-        </ReportItemSet>
-        <ReportItem id="grantsfooter" type="StaticReportItem">
-            <![CDATA[
-                </tbody></table>
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="additionalInfo" tooltip="Additional Info" name="Additional Info" title="Additional Info" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true">
