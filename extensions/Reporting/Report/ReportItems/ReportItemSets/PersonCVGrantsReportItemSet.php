@@ -58,8 +58,6 @@ class PersonCVGrantsReportItemSet extends ReportItemSet {
                 }
                 else if(strpos($grant->getProjectId(), 'D') === 0 ||
                         strpos($grant->getProjectId(), 'W') === 0 ||
-                        strpos($grant->getProjectId(), 'RES002') === 0 ||
-                        strpos($grant->getProjectId(), 'RES003') === 0 ||
                         strstr(strtolower($grant->getDescription()), "donations") !== false ||
                         strstr(strtolower($grant->getDescription()), "donation") !== false ||
                         strstr(strtolower($grant->getTitle()), "rconf") !== false ||
