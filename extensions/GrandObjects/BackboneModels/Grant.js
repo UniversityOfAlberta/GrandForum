@@ -17,7 +17,6 @@ Grant = Backbone.Model.extend({
             total: 0,
             funds_before: 0,
             funds_after: 0,
-            speed_code: '',
             title: '',
             description: '',
             role: '',

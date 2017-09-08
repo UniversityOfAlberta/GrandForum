@@ -10,7 +10,6 @@ class Grant extends BackboneModel {
     var $total;
     var $funds_before;
     var $funds_after;
-    var $speed_code;
     var $title;
     var $description;
     var $role;
@@ -63,7 +62,6 @@ class Grant extends BackboneModel {
                 $this->total = $row['total'];
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
-                $this->speed_code = $row['speed_code'];
                 $this->title = $row['title'];
                 $this->description = $row['description'];
                 $this->role = $row['role'];
@@ -125,11 +123,7 @@ class Grant extends BackboneModel {
     function getFundsAfter(){
         return $this->funds_after;
     }
-    
-    function getSpeedCode(){
-        return $this->speed_code;
-    }
-    
+  
     function getTitle(){
         return $this->title;
     }
@@ -189,7 +183,6 @@ class Grant extends BackboneModel {
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
-                                  'speed_code' => $this->speed_code,
                                   'title' => $this->title,
                                   'description' => $this->description,
                                   'role' => $this->role,
@@ -219,7 +212,6 @@ class Grant extends BackboneModel {
                                   'total' => str_replace(",", "", $this->total),
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
-                                  'speed_code' => $this->speed_code,
                                   'title' => $this->title,
                                   'description' => $this->description,
                                   'role' => $this->role,
@@ -266,7 +258,6 @@ class Grant extends BackboneModel {
             'total' => $this->total,
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
-            'speed_code' => $this->speed_code,
             'title' => $this->title,
             'description' => $this->description,
             'role' => $this->role,

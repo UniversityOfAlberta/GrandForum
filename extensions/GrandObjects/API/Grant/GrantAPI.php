@@ -24,7 +24,6 @@ class GrantAPI extends RESTAPI {
         $grant->total = $this->POST('total');
         $grant->funds_before = $this->POST('funds_before');
         $grant->funds_after = $this->POST('funds_after');
-        $grant->speed_code = $this->POST('speed_code');
         $grant->title = $this->POST('title');
         $grant->description = $this->POST('description');
         $grant->role = $this->POST('role');
@@ -49,7 +48,6 @@ class GrantAPI extends RESTAPI {
             $grant->total = $this->POST('total');
             $grant->funds_before = $this->POST('funds_before');
             $grant->funds_after = $this->POST('funds_after');
-            $grant->speed_code = $this->POST('speed_code');
             $grant->title = $this->POST('title');
             $grant->description = $this->POST('description');
             $grant->role = $this->POST('role');

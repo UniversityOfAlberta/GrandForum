@@ -54,9 +54,6 @@ class UploadGrantXlsAPI extends API{
                         case "Funds Available After Commitments":
                             $grant->funds_after = floatval(str_replace("$", "", str_replace(",", "", $col)));
                             break;
-                        case "Speed Code":
-                            $grant->speed_code = $col;
-                            break;
                         case "Title":
                             $grant->title = $col;
                             break;
