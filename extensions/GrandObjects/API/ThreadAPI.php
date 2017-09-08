@@ -45,7 +45,7 @@ class ThreadAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         $thread = Thread::newFromId($this->getParam('id'));
 	    $visibility = $this->POST('visibility');
-        if($thread == null || $thread->getTitle() == ""){
+        if($thread == null || $thread->getId() == 0){
             $this->throwError("This thread does not exist");
         }
         elseif(!$thread->canEdit()){
