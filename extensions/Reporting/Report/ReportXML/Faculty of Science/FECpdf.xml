@@ -71,38 +71,61 @@
         </ReportItem>
         <ReportItem id="leaves" type="MultiTextReportItem" blobItem="FEC_INFO_LEAVES" blobType="BLOB_ARRAY" labels="Category|Start Date|End Date" types="Text|Date(yy/mm)|Date(yy/mm)" multiple="true" optional="true" class="wikitable">
             <![CDATA[
-                <h2>Leaves</h2>
+                <h3>Leaves</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="responsibilities" type="RadioReportItem" blobItem="FEC_INFO_RESP" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h2>Responsibilities Variation</h2>
+                <h3>Responsibilities Variation</h3>
                 Is there a formal Variance of Responsibilities Agreement in place as per Articles 7.02.2 and 13.1 of the Faculty Agreement?
                 <div style='margin-left:25px;'>{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="reasons" type="TextareaReportItem" blobItem="FEC_INFO_REASONS" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-                <h2>Reasons For Reduced Teaching <i>(if applicable)</i></h2>
+                <h3>Reasons For Reduced Teaching <i>(if applicable)</i></h3>
                 {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Courses -->
+        <ReportItem id="coursespagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="coursesbookmark" type="BookmarkReportItem" title="Courses">
+            <![CDATA[
+                <h2>Courses</h2>
             ]]>
         </ReportItem>
         <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <![CDATA[
-                <h2>Courses</h2>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="development" type="TextareaReportItem" blobItem="FEC_INFO_DEVELOPMENT" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-                <h2>Teaching Development And Innovation</h2>
+                <h3>Teaching Development And Innovation</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="otherTeaching" type="TextareaReportItem" blobItem="FEC_INFO_TEACHING" blobSection="FEC_COURSES" blobType="BLOB_TEXT" rich="true" optional="true">
             <![CDATA[
-                <h2>Other Teaching</h2>{$item}
+                <h3>Other Teaching</h3>{$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- HQP Supervision -->
+        <ReportItem id="hqppagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqpbookmark" type="BookmarkReportItem" title="HQP Supervision">
+            <![CDATA[
+                <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
         <ReportItem id="students" type="PersonSupervisesReportItem">
@@ -110,25 +133,40 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="productsheader" type="StaticReportItem">
+        
+        <!-- Publications -->
+        <ReportItem id="productspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
             <![CDATA[
                 <h2>Publications</h2>
-                <table class='wikitable' style='width:100%'><tbody>
+                <i>bold = graduate student; underline = undergraduate student</i>
+                <ul>
             ]]>
         </ReportItem>
         <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30">
             <ReportItem id="row" type="StaticReportItem">
                 <![CDATA[
-                    <tr><td>{$product_citation}</td></tr>
+                    <li style="page-break-inside: avoid;">{$product_citation}</li>
                 ]]>
             </ReportItem>
         </ReportItemSet>
         <ReportItem id="productsfooter" type="StaticReportItem">
             <![CDATA[
-                </tbody></table>
+                </ul><br />
             ]]>
         </ReportItem>
-        <ReportItem id="presentationheader" type="StaticReportItem">
+        
+        <!-- Presentations -->
+        <ReportItem id="presentationspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="presentationsbookmark" type="BookmarkReportItem" title="Presentations">
             <![CDATA[
                 <h2>Presentations</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
@@ -162,7 +200,14 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="awardheader" type="StaticReportItem">
+        
+        <!-- Awards Received -->
+        <ReportItem id="awardspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="awardsbookmark" type="BookmarkReportItem" title="Awards Received">
             <![CDATA[
                 <h2>Awards Received</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
@@ -192,7 +237,14 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
+        
+        <!-- Grants -->
+        <ReportItem id="grantspagebreak" type="PageBreakReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Grants and Contracts">
             <![CDATA[
                 <h2>Research Grants and Contracts</h2>
                 <table class='wikitable' frame='box' rules='all' width='100%'>
@@ -228,15 +280,21 @@
                 </tbody></table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+        
+        <!-- Committees -->
+        <ReportItem id="committeespagebreak" type="PageBreakReportItem">
             <![CDATA[
-                <h2>Supplementary Professional Activities</h2>{$item}
+                {$item}
             ]]>
         </ReportItem>
-        <!-- Service to the University and the Profession -->
-        <ReportItem id="servicesbookmark" type="BookmarkReportItem" title="Service to the University and the Profession">
+        <ReportItem id="committeesbookmark" type="BookmarkReportItem" title="Additional Info">
             <![CDATA[
-                <h2>Service/Committees/Outreach</h2>
+                <h2>Additional Info</h2>
+            ]]>
+        </ReportItem> 
+        <ReportItem id="profActivities" type="TextareaReportItem" blobItem="FEC_INFO_ACTIVITIES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
+            <![CDATA[
+                <h3>Supplementary Professional Activities</h3>{$item}
             ]]>
         </ReportItem>
         
@@ -361,7 +419,7 @@
         </ReportItem>
         <ReportItem id="additionalData" type="TextareaReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_TEXT" blobSection="FEC_ADDITIONAL_INFO">
             <![CDATA[
-                <h2>Additional Data</h2>{$item}
+                <h3>Additional Data</h3>{$item}
             ]]>
         </ReportItem>
         <ReportItem id="footnotes" type="TextareaReportItem" blobItem="FEC_INFO_FOOTNOTES" blobType="BLOB_TEXT" rich="true" optional="true" blobSection="FEC_ADDITIONAL_INFO">
